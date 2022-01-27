@@ -54,21 +54,6 @@ public class Institution extends BaseEntity {
 	@ApiModelProperty(value = "机构名称")
 	private String insName;
 	/**
-	 * 机构管理账户id
-	 */
-	@ApiModelProperty(value = "机构管理账户id")
-	private Integer userId;
-	/**
-	 * 机构负责人
-	 */
-	@ApiModelProperty(value = "机构负责人")
-	private String insPrincipalName;
-	/**
-	 * 机构负责人联系方式
-	 */
-	@ApiModelProperty(value = "机构负责人联系方式")
-	private String insPrincipalPhone;
-	/**
 	 * 机构类型
 	 */
 	@ApiModelProperty(value = "机构类型")
@@ -99,7 +84,7 @@ public class Institution extends BaseEntity {
 	@ApiModelProperty(value = "备注")
 	private String insRemark;
 	/**
-	 * 0-正常，1-删除
+	 * 删除状态(0-正常,1-已删除)
 	 */
 	@TableLogic
 	private String delFlag;

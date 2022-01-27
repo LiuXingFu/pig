@@ -14,79 +14,79 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-
 package com.pig4cloud.pig.admin.api.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 网点表
+ * 机构/网点用户关联表
  *
- * @author yuanduo
- * @date 2021-09-02 16:24:58
+ * @author xls
+ * @date 2022-01-27 19:30:49
  */
 @Data
-@TableName("p10_outles")
+@TableName("p10_ins_outles_user")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "网点表")
-public class Outles extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+@ApiModel(value = "机构/网点用户关联表")
+public class InsOutlesUser extends BaseEntity {
+
+    /**
+     * 主键id
+     */
+    @TableId
+    @ApiModelProperty(value="主键id")
+    private Integer insOutlesUserId;
+
+    /**
+     * 机构id
+     */
+    @ApiModelProperty(value="机构id")
+    private Integer insId;
+
+    /**
+     * 网点id
+     */
+    @ApiModelProperty(value="网点id")
+    private Integer outlesId;
+
+    /**
+     * 用户id
+     */
+    @ApiModelProperty(value="用户id")
+    private Integer userId;
+
+    /**
+     * 类型：1-管理员，2-普通员工
+     */
+    @ApiModelProperty(value="类型：1-管理员，2-普通员工")
+    private Integer type;
+
+    /**
+     * 入职时间
+     */
+    @ApiModelProperty(value="入职时间")
+    private LocalDateTime entryTime;
+
+    /**
+     * 职位
+     */
+    @ApiModelProperty(value="职位")
+    private String position;
 
 	/**
-	 * 网点id 主键自增
-	 */
-	@TableId
-	@ApiModelProperty(value = "网点id 主键自增")
-	private Integer outlesId;
-	/**
-	 * 网点名称
-	 */
-	@ApiModelProperty(value = "网点名称")
-	private String outlesName;
-	/**
-	 * 机构id
-	 */
-	@ApiModelProperty(value = "机构id")
-	private Integer insId;
-	/**
-	 * 地址id
-	 */
-	@ApiModelProperty(value = "地址id")
-	private Integer addressId;
-	/**
-	 * 简称
-	 */
-	@ApiModelProperty(value = "简称")
-	private String alias;
-	/**
-	 * 座机电话
-	 */
-	@ApiModelProperty(value = "座机电话")
-	private String outlesLandLinePhone;
-	/**
-	 * 备注
-	 */
-	@ApiModelProperty(value = "备注")
-	private String outlesRemark;
-	/**
-	 * 是否是默认网点 0-否 1-是
-	 */
-	@ApiModelProperty(value = "是否是默认网点 0-否 1-是")
-	private Integer canDefault;
-	/**
-	 * 0-正常，1-删除
+	 * 删除状态(0-正常,1-已删除)
 	 */
 	@TableLogic
 	private String delFlag;
+
+
 }
