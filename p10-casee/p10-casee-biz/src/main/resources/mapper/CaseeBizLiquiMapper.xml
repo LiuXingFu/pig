@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeBizLiquiMapper">
+
+<!--	<resultMap id="caseeMap" type="com.pig4cloud.pig.casee.entity.CaseeBizLiqui">-->
+<!--		<id property="caseeId" column="casee_id"/>-->
+<!--		<result property="createBy" column="create_by"/>-->
+<!--		<result property="createTime" column="create_time"/>-->
+<!--		<result property="updateBy" column="update_by"/>-->
+<!--		<result property="updateTime" column="update_time"/>-->
+<!--		<result property="delFlag" column="del_flag"/>-->
+<!--		<result property="companyCode" column="company_code"/>-->
+<!--		<result property="executionCaseNumber" column="execution_case_number"/>-->
+<!--		<result property="caseeType" column="casee_type"/>-->
+<!--		<result property="status" column="status"/>-->
+<!--		<result property="statusConfirm" column="status_confirm"/>-->
+<!--		<result property="createInsId" column="create_ins_id"/>-->
+<!--		<result property="createOutlesId" column="create_outles_id"/>-->
+<!--		<result property="userId" column="user_id"/>-->
+<!--		<result property="userNickName" column="user_nick_name"/>-->
+<!--		<result property="startTime" column="start_time"/>-->
+<!--		<result property="closeTime" column="close_time"/>-->
+<!--		<result property="year" column="year"/>-->
+<!--		<result property="alias" column="alias"/>-->
+<!--		<result property="word" column="word"/>-->
+<!--		<result property="describes" column="describes"/>-->
+<!--		<result property="proposersNames" column="proposers_names"/>-->
+<!--		<result property="executedPersons" column="executed_persons"/>-->
+<!--		<result property="caseeDetail" column="casee_detail"/>-->
+<!--		<result property="affirmTime" column="affirm_time"/>-->
+<!--	</resultMap>-->
+
+	<select id="selectLiquidateCasee" resultType="com.pig4cloud.pig.casee.vo.CaseeBizLiquiVO">
+ 		 select
+		 casee.casee_id,
+		 casee.company_code,
+		 casee.status,
+		 casee.status_confirm,
+		 casee.execution_case_number,
+		 casee.executed_persons,
+		 casee.proposers_names,
+		 casee.casee_detail,
+		 casee.user_nick_name,
+		 casee.start_time,
+		 casee.close_time,
+		 ins.ins_name as insName,
+		 outles.outles_name as outlesName,
+-- 		 odr.deal_re_id as dealReId,
+-- 		 odr.status as dealReStatus,
+-- 		 odr.status_confirm as statusConfirm,
+-- 		 odr.can_deal as canDeal,
+		 -- 委托机构
+		 entrust_outles_re.ins_id as entrustInsId,
+		 entrust_ins.ins_name as entrustInsName,
+		 		 -- 委托网点
+		entrust_outles_re.outles_id as entrustOutlesId,
+		 entrust_out.outles_name as entrustOutlesName
+		 from p10_casee as casee
+		 -- 	 关联受托机构(显示受托机构网点名称信息等)
+		 left join p10_institution as ins on casee.create_ins_id=ins.ins_id and ins.del_flag='0'
+		 left join p10_outles as outles on outles.outles_id=casee.create_outles_id and outles.del_flag='0'
+		 -- 查询协办网点
+		left join p10_casee_outles_deal_re as jointly_outles on jointly_outles.casee_id=casee.casee_id and jointly_outles.type=2
+         -- 	查询委托机构委托网点
+		 left join p10_casee_outles_deal_re as entrust_outles_re on entrust_outles_re.casee_id=casee.casee_id and entrust_outles_re.type=1
+         -- 	 关联委托机构
+		 left join p10_institution as  entrust_ins on entrust_ins.ins_id=entrust_outles_re.ins_id and entrust_ins.del_flag='0'
+		 left join p10_outles as  entrust_out on entrust_out.outles_id=entrust_outles_re.outles_id and entrust_out.del_flag='0'
+		 <where>
+			 casee.del_flag='0' and casee.casee_type=100
+			 <if test="query.status != null and query.status != 7 and query.status != 11 and query.status != -1">
+				 and  casee.status=#{query.status}
+			 </if>
+
+			 <if test="query.status == 7 or query.status == 11">
+				 and  (casee.status = 2 or casee.status = 3)
+			 </if>
+
+			 <if test="query.statusConfirm != null and query.statusConfirm != 7 and query.statusConfirm != 11 and query.statusConfirm != -1">
+				 and  casee.status_confirm=#{query.statusConfirm}
+			 </if>
+
+			 <if test="query.statusConfirm == 7">
+				 and  casee.status_confirm = 1
+			 </if>
+
+			 <if test="query.statusConfirm == 11">
+				 and  casee.status_confirm = 3
+			 </if>
+
+			 <if test="query.caseeId != null and query.caseeId != ''">
+				 and  casee.casee_id=#{query.caseeId}
+			 </if>
+			 <!--机构网点权限 -->
+			 <if test="query.insId != null and query.insId != ''">
+				 and   (casee.create_ins_id=#{query.insId} or jointly_outles.ins_id=#{query.insId} )
+			 </if>
+			 <if test="query.outlesId != null and query.outlesId != ''">
+				 and   (casee.create_outles_id=#{query.outlesId} or jointly_outles.outles_id=#{query.outlesId} )
+			 </if>
+
+			 <if test="query.companyCode != null and query.companyCode != ''">
+				 and  casee.company_code like concat('%', #{query.companyCode}, '%')
+			 </if>
+			  <!--被执行人 -->
+
+			 <if test="query.executedPersons != null and query.executedPersons != ''">
+				 and  casee.executed_persons like concat('%', #{query.executedPersons}, '%')
+			 </if>
+
+			 <if test="query.keyword != null and query.keyword != ''">
+				 and  (casee.company_code like concat('%', #{query.keyword}, '%') or casee.executed_persons like concat('%', #{query.keyword}, '%')
+				       or casee.user_nick_name=#{query.keyword})
+			 </if>
+
+			 <!--受托机构 -->
+			 <if test="query.createInsId != null and query.createInsId != ''">
+				 and  casee.create_ins_id =#{query.createInsId}
+			 </if>
+			 <!--受托网点 -->
+			 <if test="query.createOutlesId != null and query.createOutlesId != ''">
+				 and   casee.create_outles_id=#{query.createOutlesId}
+			 </if>
+			 <!--办理人 -->
+			 <if test="query.userNickName != null and query.userNickName != ''">
+				 and   casee.user_nick_name=#{query.userNickName}
+			 </if>
+			 <!--移交或者结案日期 -->
+<!--			 <if test="query.beginDate != null and query.beginDate != ''">-->
+<!--				 and (casee.start_time >=#{query.beginDate} or (casee.close_time>=#{query.beginDate} and casee.status=4 and casee.status_confirm=2))-->
+<!--			 </if>-->
+<!--			 &lt;!&ndash;移交或者结案日期 &ndash;&gt;-->
+<!--			 <if test="query.endDate != null and query.endDate != ''">-->
+<!--				 and (casee.start_time  &lt;= #{query.endDate} or (casee.close_time &lt;= #{query.endDate} and casee.status=4 and casee.status_confirm=2))-->
+<!--			 </if>-->
+			 <if test="query.beginDate != null and query.beginDate != '' and query.endDate != null and query.endDate != '' ">
+				 AND (
+				 	casee.start_time BETWEEN #{query.beginDate} and #{query.endDate}
+				   or
+				 	(
+				     casee.status=4 and casee.status_confirm=2
+				    and
+				 	casee.close_time BETWEEN #{query.beginDate} and #{query.endDate}
+				 	)
+				 )
+			 </if>
+		 </where>
+		  GROUP BY casee.casee_id
+		ORDER BY casee.start_time ${query.sequence}, casee.`year`,casee.alias,casee.word desc
+	</select>
+
+	<select id="selectLiquidateCaseeEntrust" resultType="com.pig4cloud.pig.casee.vo.CaseeBizLiquiVO">
+		select
+		casee.casee_id,
+		casee.company_code,
+		casee.status,
+		casee.status_confirm,
+		casee.execution_case_number,
+		casee.executed_persons,
+		casee.proposers_names,
+		casee.casee_detail,
+		casee.user_nick_name,
+		casee.start_time,
+		casee.close_time,
+		ins.ins_name as insName,
+		outles.outles_name as outlesName,
+		entrust_outles_re.deal_re_id as dealReId,
+		-- 		 odr.status as dealReStatus,
+		-- 		 odr.status_confirm as statusConfirm,
+		-- 		 odr.can_deal as canDeal,
+		-- 委托机构
+		entrust_outles_re.ins_id as entrustInsId,
+		entrust_ins.ins_name as entrustInsName,
+		-- 委托网点
+		entrust_outles_re.outles_id as entrustOutlesId,
+		entrust_out.outles_name as entrustOutlesName
+		from p10_casee as casee
+		-- 	 关联受托机构(显示受托机构网点名称信息等)
+		left join p10_institution as ins on casee.create_ins_id=ins.ins_id and ins.del_flag='0'
+		left join p10_outles as outles on outles.outles_id=casee.create_outles_id and outles.del_flag='0'
+		-- 查询协办网点
+		left join p10_casee_outles_deal_re as jointly_outles on jointly_outles.casee_id=casee.casee_id and jointly_outles.type=2
+		-- 	查询委托机构委托网点
+		left join p10_casee_outles_deal_re as entrust_outles_re on entrust_outles_re.casee_id=casee.casee_id and entrust_outles_re.type=1
+		-- 	 关联委托机构
+		left join p10_institution as  entrust_ins on entrust_ins.ins_id=entrust_outles_re.ins_id and entrust_ins.del_flag='0'
+		left join p10_outles as  entrust_out on entrust_out.outles_id=entrust_outles_re.outles_id and entrust_out.del_flag='0'
+		<where>
+			casee.del_flag='0' and casee.casee_type=100
+			<if test="query.status != null">
+				and  casee.status=#{query.status}
+			</if>
+			<if test="query.statusConfirm != null and query.statusConfirm != ''">
+				and  casee.status_confirm=#{query.statusConfirm}
+			</if>
+			<if test="query.caseeId != null and query.caseeId != ''">
+				and  casee.casee_id=#{query.caseeId}
+			</if>
+			<!--机构网点权限 -->
+			<if test="query.insId != null and query.insId != ''">
+				and    entrust_outles_re.ins_id=#{query.insId}
+			</if>
+			<if test="query.outlesId != null and query.outlesId != ''">
+				and  entrust_outles_re.outles_id=#{query.outlesId}
+			</if>
+
+			<if test="query.companyCode != null and query.companyCode != ''">
+				and  casee.company_code like concat('%', #{query.companyCode}, '%')
+			</if>
+			<!--被执行人 -->
+
+			<if test="query.executedPersons != null and query.executedPersons != ''">
+				and  casee.executed_persons like concat('%', #{query.executedPersons}, '%')
+			</if>
+			<!--受托机构 -->
+			<if test="query.createInsId != null and query.createInsId != ''">
+				and  casee.create_ins_id =query.createInsId
+			</if>
+			<!--受托网点 -->
+			<if test="query.createOutlesId != null and query.createOutlesId != ''">
+				and   casee.create_outles_id=#{query.createOutlesId}
+			</if>
+			<!--办理人 -->
+			<if test="query.userNickName != null and query.userNickName != ''">
+				and   casee.user_nick_name=#{query.userNickName}
+			</if>
+			<if test="query.beginDate != null and query.endDate != null">
+				AND (
+				casee.start_time BETWEEN #{query.beginDate} and #{query.endDate}
+				or
+				(
+				 casee.status=4 and casee.status_confirm=2
+				and
+				casee.close_time BETWEEN #{query.beginDate} and #{query.endDate}
+				)
+				)
+			</if>
+		</where>
+		GROUP BY casee.casee_id
+		ORDER BY casee.`year`,casee.alias,casee.word desc
+	</select>
+
+	<!-- 查询受托详情 -->
+	<select id="selectEntrustedDetails" resultType="com.pig4cloud.pig.casee.vo.CaseeDetailsVO">
+		select sys_user.nick_name,sys_user.phone,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address
+		from p10_casee
+		left join sys_user on sys_user.user_id = p10_casee.user_id
+		left join p10_outles on p10_outles.outles_id = p10_casee.create_outles_id
+		left join p10_address on p10_address.address_id = p10_outles.address_id
+		where p10_casee.del_flag = 0 and p10_casee.casee_id = #{caseeId}
+		limit 1
+	</select>
+
+	<!-- 查询委托详情 -->
+	<select id="selectCommissionDetails" resultType="com.pig4cloud.pig.casee.vo.CaseeDetailsVO">
+		select sys_user.nick_name,sys_user.phone,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address
+		from p10_casee
+		left join p10_casee_outles_deal_re on p10_casee_outles_deal_re.casee_id = p10_casee.casee_id and p10_casee_outles_deal_re.type = 1 and p10_casee_outles_deal_re.del_flag = 0
+		left join p10_outles on p10_casee_outles_deal_re.outles_id
+		left join p10_address on p10_address.address_id = p10_outles.address_id
+		left join sys_user on sys_user.user_id = p10_outles.user_id
+		where p10_casee.del_flag = 0 and p10_casee.casee_id = #{caseeId}
+		limit 1
+	</select>
+	<select id="selectCaseeBizLiquiDetail" resultType="com.pig4cloud.pig.casee.vo.CaseeBizLiquiVO">
+		select*
+		from p10_casee
+		where p10_casee.del_flag = 0 and p10_casee.casee_id = #{caseeId}
+		limit 1
+	</select>
+
+	<select id="queryAuditCaseeDetails" resultType="com.pig4cloud.pig.casee.vo.CaseeBizLiquiVO">
+		select
+		casee.casee_id,
+		casee.company_code,
+		casee.status,
+		casee.status_confirm,
+		casee.execution_case_number,
+		casee.executed_persons,
+		casee.proposers_names,
+		casee.casee_detail,
+		casee.user_nick_name,
+		casee.start_time,
+		casee.close_time,
+		ins.ins_name as insName,
+		outles.outles_name as outlesName,
+		entrust_outles_re.deal_re_id as dealReId,
+		-- 委托机构
+		entrust_outles_re.ins_id as entrustInsId,
+		entrust_ins.ins_name as entrustInsName,
+		-- 委托网点
+		entrust_outles_re.outles_id as entrustOutlesId,
+		entrust_out.outles_name as entrustOutlesName
+		from p10_casee as casee
+		-- 	 关联受托机构(显示受托机构网点名称信息等)
+		left join p10_institution as ins on casee.create_ins_id=ins.ins_id and ins.del_flag='0'
+		left join p10_outles as outles on outles.outles_id=casee.create_outles_id and outles.del_flag='0'
+		-- 查询协办网点
+		left join p10_casee_outles_deal_re as jointly_outles on jointly_outles.casee_id=casee.casee_id and jointly_outles.type=2
+		-- 	查询委托机构委托网点
+		left join p10_casee_outles_deal_re as entrust_outles_re on entrust_outles_re.casee_id=casee.casee_id and entrust_outles_re.type=1
+		-- 	 关联委托机构
+		left join p10_institution as  entrust_ins on entrust_ins.ins_id=entrust_outles_re.ins_id and entrust_ins.del_flag='0'
+		left join p10_outles as  entrust_out on entrust_out.outles_id=entrust_outles_re.outles_id and entrust_out.del_flag='0'
+		where
+		casee.del_flag='0' and  casee.casee_id=#{caseeId}
+	</select>
+
+</mapper>
+

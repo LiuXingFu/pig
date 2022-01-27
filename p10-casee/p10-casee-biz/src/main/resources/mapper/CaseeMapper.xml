@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeMapper">
+
+	<resultMap id="caseeMap" type="com.pig4cloud.pig.casee.entity.Casee">
+		<id property="caseeId" column="casee_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="projectId" column="project_id"/>
+		<result property="caseeNumber" column="casee_number"/>
+		<result property="caseeType" column="casee_type"/>
+		<result property="status" column="status"/>
+		<result property="userId" column="user_id"/>
+		<result property="userNickName" column="user_nick_name"/>
+		<result property="startTime" column="start_time"/>
+		<result property="closeTime" column="close_time"/>
+		<result property="remark" column="remark"/>
+		<result property="judicialExpenses" column="judicial_expenses"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="category" column="category"/>
+		<result property="courtId" column="court_id"/>
+		<result property="judgeOutlesId" column="judge_outles_id"/>
+		<result property="judgeId" column="judge_id"/>
+		<result property="judgeName" column="judge_name"/>
+		<result property="caseeAmount" column="casee_amount"/>
+		<result property="executedName" column="executed_name"/>
+		<result property="applicantName" column="applicant_name"/>
+		<result property="caseeDetail" column="casee_detail"/>
+	</resultMap>
+	<select id="selectCaseeList" resultType="com.pig4cloud.pig.casee.vo.CaseeVO">
+		select casee.*,
+		 court.court_name as court_name
+		from p10_casee casee
+		left join p10_court court on court.court_id=casee.court_id
+		where casee.del_flag='0'
+		<if test="query.projectId !=null">
+			and casee.project_id=#{query.projectId}
+		</if>
+
+	</select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.admin.mapper.UserOutlesStaffReMapper">
+
+	<resultMap id="userOutlesMap" type="com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe">
+		<id property="outlesId" column="outles_id"/>
+		<result property="userId" column="user_id"/>
+	</resultMap>
+
+
+	<select id="listStaffReId" resultType="java.lang.Integer">
+		SELECT
+            re.staff_id
+        FROM
+        p10_user_outles_staff_re re, p10_outles o WHERE re.outles_id = o.outles_id AND re.del_flag = 0 and re.staff_id IN (#{userInsId})
+	</select>
+
+	<select id="queryBranchManager" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		SELECT
+		staff.user_id AS id,
+		staff.job_title AS NAME
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN p10_user_outles_staff_re outles_re ON staff.staff_id = outles_re.staff_id
+		WHERE staff.del_flag = 0
+		AND outles_re.ins_id = #{query.insId}
+		AND outles_re.outles_id = #{query.outlesId}
+		AND staff.user_id != #{query.loginUserId}
+		AND outles_re.role_type = 0
+	</select>
+
+	<select id="queryByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		SELECT
+		sys_user.user_id AS id,
+		sys_user.nick_name AS NAME
+		FROM
+		sys_user
+		LEFT JOIN p10_user_outles_staff_re outles_re ON sys_user.user_id = outles_re.user_id
+		WHERE sys_user.del_flag = 0
+		AND outles_re.outles_id = #{outlesId}
+	</select>
+</mapper>
