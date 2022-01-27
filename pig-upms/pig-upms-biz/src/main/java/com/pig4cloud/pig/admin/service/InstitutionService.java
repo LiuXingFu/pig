@@ -86,4 +86,6 @@ public interface InstitutionService extends IService<Institution> {
 	List<OrganizationQueryVO> queryCurrentInstitution(OrganizationQueryDTO organizationQueryDTO);
 
 	List<OrganizationQueryVO> queryAssociatedInstitutions(OrganizationQueryDTO organizationQueryDTO);
+
+	boolean getInstitutionAlias();
 }

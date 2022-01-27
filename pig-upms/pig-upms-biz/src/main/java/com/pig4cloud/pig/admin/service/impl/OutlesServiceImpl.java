@@ -31,6 +31,7 @@ import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	 * @return R
 	 */
 	@Override
+	@Transactional
 	public int saveOutles(OutlesDTO outlesDTO) {
 		// 1.根据当前登录机构id查询机构
 		Institution institution = institutionService.getById(SecurityUtils.getUser().getInsId());
@@ -123,14 +125,14 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	public IPage<OutlesVO> pageOutles(Page page, OutlesDTO outlesDTO) {
 		outlesDTO.setInsId(SecurityUtils.getUser().getInsId());
 		IPage<OutlesVO> outlesVOIPage = this.baseMapper.pageOutles(page, outlesDTO);
-		List<OutlesVO> records = outlesVOIPage.getRecords();
+//		List<OutlesVO> records = outlesVOIPage.getRecords();
 
-		records.forEach(((outlesVO -> {
-			Address address = addressService.getByUserId(outlesVO.getOutlesId(), 3);
-			outlesVO.setAddress(address);
-		})));
+//		records.forEach(((outlesVO -> {
+//			Address address = addressService.getByUserId(outlesVO.getOutlesId(), 3);
+//			outlesVO.setAddress(address);
+//		})));
 
-		outlesVOIPage.setRecords(records);
+//		outlesVOIPage.setRecords(records);
 
 		return outlesVOIPage;
 	}
