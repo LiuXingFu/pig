@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.admin.mapper.UserInstitutionStaffMapper">
+
+	<resultMap id="userInstitutionStaffMap" type="com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff">
+		<id property="staffId" column="staff_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="insId" column="ins_id"/>
+		<result property="jobTitle" column="job_title"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
+
+	<resultMap id="userInstitutionStaffVOMap" type="com.pig4cloud.pig.admin.api.vo.UserInstitutionStaffVO">
+		<id property="staffId" column="staff_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="insId" column="ins_id"/>
+		<result property="jobTitle" column="job_title"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<collection property="sysRoleList" ofType="com.pig4cloud.pig.admin.api.entity.SysRole"
+					select="com.pig4cloud.pig.admin.mapper.StaffRoleMapper.listRolesByUserId" column="staff_id">
+		</collection>
+		<collection property="deptList" ofType="com.pig4cloud.pig.admin.api.entity.SysDept"
+					select="com.pig4cloud.pig.admin.mapper.StaffDeptReMapper.listDeptListByStaffId" column="staff_id">
+		</collection>
+		<collection property="outlesList" ofType="com.pig4cloud.pig.admin.api.entity.Outles"
+					select="com.pig4cloud.pig.admin.mapper.OutlesMapper.listOutles" column="staff_id">
+		</collection>
+	</resultMap>
+
+	<resultMap id="userInsStaffVOMap" type="com.pig4cloud.pig.admin.api.vo.UserInsStaffVO">
+		<id property="staffId" column="staff_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="insId" column="ins_id"/>
+		<result property="jobTitle" column="job_title"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<collection property="roleId" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.admin.mapper.StaffRoleMapper.listRoleIdByUserId" column="staff_id">
+		</collection>
+		<collection property="dept" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.admin.mapper.StaffDeptReMapper.listDeptIdListByStaffId" column="staff_id">
+		</collection>
+		<collection property="outles" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.admin.mapper.OutlesMapper.listOutlesId" column="staff_id">
+		</collection>
+	</resultMap>
+
+	<select id="pageUserInstitutionStaff" resultMap="userInstitutionStaffVOMap">
+		SELECT
+		staff.staff_id,
+		staff.user_id,
+		staff.ins_id,
+		staff.job_title,
+		staff.entry_time,
+		staff.create_time,
+		staff.create_by,
+		staff.update_time,
+		staff.update_by,
+		staff.del_flag,
+		sys_user.nick_name,
+		sys_user.phone
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN sys_user ON sys_user.user_id = staff.user_id
+		<where>
+			ins_id = #{query.insId}
+			and staff.del_flag = 0
+			and sys_user.del_flag = 0
+			and sys_user.user_type = 0
+			<if test="query.jobTitle != null and query.jobTitle != ''">
+				and staff.job_title LIKE CONCAT('%',#{query.jobTitle},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="pageOutlesStaff" parameterType="List" resultMap="userInstitutionStaffVOMap">
+		SELECT
+		staff.staff_id,
+		staff.user_id,
+		staff.ins_id,
+		staff.job_title,
+		staff.entry_time,
+		staff.create_time,
+		staff.create_by,
+		staff.update_time,
+		staff.update_by,
+		staff.del_flag,
+		sys_user.nick_name,
+		sys_user.phone
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN sys_user ON sys_user.user_id = staff.user_id
+		<where>
+			<if test="userType != null">
+				and sys_user.user_type = #{userType}
+			</if>
+			and staff.del_flag = 0
+			and staff.staff_id in
+			<foreach collection="idList" index="index" item="value" open="(" close=")" separator=",">
+				#{value}
+			</foreach>
+			<if test="nickName != null and nickName != ''">
+				and sys_user.nick_name like CONCAT('%',#{nickName},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="pageNotOutlesStaff" parameterType="List" resultMap="userInstitutionStaffVOMap">
+		SELECT
+		staff.staff_id,
+		staff.user_id,
+		staff.ins_id,
+		staff.job_title,
+		staff.entry_time,
+		staff.create_time,
+		staff.create_by,
+		staff.update_time,
+		staff.update_by,
+		staff.del_flag,
+		sys_user.nick_name,
+		sys_user.phone
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN sys_user ON sys_user.user_id = staff.user_id
+		<where>
+			and sys_user.user_type = 0
+			and staff.ins_id = #{insId}
+			and staff.del_flag = 0
+			and staff.staff_id not in
+			<foreach collection="idList" index="index" item="value" open="(" close=")" separator=",">
+				#{value}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="getByIdUserInstitutionStaff" resultMap="userInstitutionStaffVOMap">
+		SELECT
+		staff.staff_id,
+		staff.user_id,
+		staff.ins_id,
+		staff.job_title,
+		staff.entry_time,
+		staff.create_time,
+		staff.create_by,
+		staff.update_time,
+		staff.update_by,
+		staff.del_flag,
+		sys_user.nick_name,
+		sys_user.phone
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN sys_user ON sys_user.user_id = staff.user_id
+		WHERE
+		staff.staff_id = #{staffId}
+		and staff.del_flag = 0
+		and sys_user.del_flag = 0
+	</select>
+
+	<select id="getByIdStaff" resultMap="userInsStaffVOMap">
+		SELECT
+		staff.staff_id,
+		staff.user_id,
+		staff.ins_id,
+		staff.job_title,
+		staff.entry_time,
+		staff.create_time,
+		staff.create_by,
+		staff.update_time,
+		staff.update_by,
+		staff.del_flag,
+		sys_user.phone,
+		sys_user.nick_name
+		FROM
+		p10_user_institution_staff staff
+		LEFT JOIN sys_user ON sys_user.user_id = staff.user_id
+		WHERE
+		staff.staff_id = #{staffId}
+		and sys_user.del_flag = 0
+		and staff.del_flag = 0
+	</select>
+
+	<select id="getStaffsByAuthenticateGoalId" resultType="com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff">
+
+	</select>
+
+</mapper>

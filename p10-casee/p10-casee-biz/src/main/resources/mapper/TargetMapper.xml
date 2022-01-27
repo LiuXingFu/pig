@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.TargetMapper">
+
+<!--	<resultMap id="targetMap" type="com.pig4cloud.pig.casee.entity.Target">-->
+<!--		<id property="targetId" column="target_id"/>-->
+<!--		<result property="createTime" column="create_time"/>-->
+<!--		<result property="createBy" column="create_by"/>-->
+<!--		<result property="updateTime" column="update_time"/>-->
+<!--		<result property="updateBy" column="update_by"/>-->
+<!--		<result property="delFlag" column="del_flag"/>-->
+<!--		<result property="targetName" column="target_name"/>-->
+<!--		<result property="caseeId" column="casee_id"/>-->
+<!--		<result property="businessType" column="business_type"/>-->
+<!--		<result property="status" column="status"/>-->
+<!--		<result property="targetCategory" column="target_category"/>-->
+<!--		<result property="targetType" column="target_type"/>-->
+<!--		<result property="createOutlesId" column="create_outles_id"/>-->
+<!--		<result property="createInsId" column="create_ins_id"/>-->
+<!--		<result property="targetDetail" column="target_detail"/>-->
+<!--		<result property="describes" column="describes"/>-->
+<!--		<result property="businessData" column="business_data"/>-->
+<!--	</resultMap>-->
+
+
+	<select id="queryPageList" resultType="com.pig4cloud.pig.casee.vo.TargetPageVO">
+		select p10_target.*,p10_casee.company_code companyCode,
+		p10_address.information_address,
+		p10_address.province,
+		p10_address.city,
+		p10_address.area
+		from p10_target
+		left join p10_casee on p10_casee.casee_id = p10_target.casee_id
+		left join p10_address on p10_address.address_id=p10_target.address_id and p10_address.del_flag=0
+		where p10_target.del_flag = 0
+		<if test="query.caseeId != null and query.caseeId != ''">
+			and p10_target.casee_id = #{query.caseeId}
+		</if>
+		<if test="query.businessType != null and query.businessType != ''">
+			and p10_target.business_type = #{query.businessType}
+		</if>
+		<if test="query.targetCategory != null and query.targetCategory != ''">
+			and p10_target.target_category = #{query.targetCategory}
+		</if>
+		<if test="query.status != null and query.status != ''">
+			and p10_target.status = #{query.status}
+		</if>
+		<if test="query.targetName != null and query.targetName != ''">
+			and p10_target.target_name like concat('%', #{query.targetName}, '%')
+		</if>
+		<if test="query.companyCode != null and query.companyCode != ''">
+			and p10_target.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+		<if test="query.targetType != null and query.targetType != ''">
+			and p10_target.target_type = #{query.targetType}
+		</if>
+		<!--机构网点权限 -->
+		<if test="query.insId != null and query.insId != ''">
+			and   (p10_target.create_ins_id=#{query.insId}  )
+		</if>
+		<if test="query.outlesId != null and query.outlesId != ''">
+			and   (p10_target.create_outles_id=#{query.outlesId})
+		</if>
+		order by p10_casee.year,p10_casee.alias,p10_casee.word,p10_target.create_time desc
+	</select>
+
+	<update id="updateBusinessData">
+		update p10_target SET
+		<foreach collection="listParams" item="params" separator=",">
+			business_data = JSON_SET(business_data, #{params.key}, #{params.value})
+		</foreach>
+		where target_id=#{query.targetId};
+	</update>
+
+	<select id="queryBusinessData" resultType="java.lang.String">
+		select JSON_EXTRACT(t.business_data, #{query.key}) as jsonValue
+		from p10_target t where t.target_id = #{query.targetId}
+	</select>
+</mapper>

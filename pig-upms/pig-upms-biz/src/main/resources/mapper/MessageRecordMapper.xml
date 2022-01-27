@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.admin.mapper.MessageRecordMapper">
+
+	<resultMap id="messageRecordMap" type="com.pig4cloud.pig.admin.api.entity.MessageRecord">
+		<id property="messageId" column="message_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="isPush" column="is_push"/>
+		<result property="messageType" column="message_type"/>
+		<result property="readFlag" column="read_flag"/>
+		<result property="messageTitle" column="message_title"/>
+		<result property="messageContent" column="message_content"/>
+		<result property="receiverUserId" column="receiver_user_id"/>
+		<result property="receiverInsId" column="receiver_ins_id"/>
+		<result property="receiverOutlesId" column="receiver_outles_id"/>
+		<result property="senderInsId" column="sender_ins_id"/>
+		<result property="senderOutlesId" column="sender_outles_id"/>
+		<result property="remark" column="remark"/>
+		<result property="targetValue" column="target_value"/>
+		<result property="treatmentType" column="treatment_type"/>
+	</resultMap>
+
+	<select id="getMessageRecordVosPage" resultType="com.pig4cloud.pig.admin.api.vo.MessageRecordVO">
+		SELECT
+		`messageRecord`.message_id,
+		`messageRecord`.is_push,
+		`messageRecord`.message_type,
+		`messageRecord`.read_flag,
+		`messageRecord`.message_title,
+		`messageRecord`.message_content,
+		`messageRecord`.receiver_user_id,
+		`messageRecord`.receiver_ins_id,
+		`messageRecord`.receiver_outles_id,
+		`messageRecord`.sender_ins_id,
+		`messageRecord`.sender_outles_id,
+		`messageRecord`.target_value,
+		`messageRecord`.treatment_type,
+		`messageRecord`.remark,
+		`messageRecord`.create_time,
+		`messageRecord`.update_time,
+		`messageRecord`.create_by,
+		`messageRecord`.del_flag,
+		`user_receiver`.nick_name as receiverUserName,
+		`user_sender`.nick_name as senderUserName,
+		institution_receiver.ins_name as receiverInsName,
+		outles_receiver.outles_name as receiverOutlesName,
+		institution_sender.ins_name as senderInsName,
+		outles_sender.outles_name as senderOutlesName
+		FROM
+		p10_message_record AS `messageRecord`
+		LEFT JOIN p10_institution institution_receiver ON institution_receiver.ins_id = messageRecord.receiver_ins_id
+		LEFT JOIN p10_institution institution_sender ON institution_sender.ins_id = messageRecord.sender_ins_id
+		LEFT JOIN p10_outles outles_sender ON outles_sender.outles_id=messageRecord.sender_outles_id
+		LEFT JOIN sys_user user_receiver ON user_receiver.user_id = messageRecord.receiver_user_id
+		LEFT JOIN sys_user user_sender ON user_sender.user_id = messageRecord.create_by
+		LEFT JOIN p10_outles outles_receiver ON outles_receiver.outles_id=messageRecord.receiver_outles_id
+
+		<where>
+			`messageRecord`.del_flag = '0' and (`messageRecord`.receiver_ins_id=#{insId} or
+			`messageRecord`.sender_ins_id=#{insId})
+			<if test="userId != null">
+				and `messageRecord`.receiver_user_id = #{userId}
+			</if>
+
+			<if test="query.messageTitle != null and query.messageTitle != ''">
+				and `messageRecord`.message_title LIKE CONCAT('%',#{query.messageTitle},'%')
+			</if>
+			<if test="query.messageType != null and query.messageType != ''">
+				and `messageRecord`.message_type = #{query.messageType}
+			</if>
+			<if test="query.readFlag != null and query.readFlag != -1  ">
+				and `messageRecord`.read_flag = #{query.readFlag}
+			</if>
+			<if test="query.senderUserName != null and query.senderUserName != ''">
+				and (user_sender.nick_name LIKE CONCAT('%',#{query.senderUserName},'%') or
+				outles_sender.outles_name LIKE CONCAT('%',#{query.senderUserName},'%') )
+			</if>
+
+			<if test="query.beginDate != null    and query.endDate != null  ">
+				AND messageRecord.update_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+				DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+			</if>
+
+
+		</where>
+		ORDER BY `messageRecord`.create_time DESC
+	</select>
+
+	<select id="getById" resultType="com.pig4cloud.pig.admin.api.vo.MessageRecordVO">
+		SELECT
+		`messageRecord`.message_id,
+		`messageRecord`.is_push,
+		`messageRecord`.message_type,
+		`messageRecord`.read_flag,
+		`messageRecord`.message_title,
+		`messageRecord`.message_content,
+		`messageRecord`.receiver_user_id,
+		`messageRecord`.receiver_ins_id,
+		`messageRecord`.receiver_outles_id,
+		`messageRecord`.sender_ins_id,
+		`messageRecord`.sender_outles_id,
+		`messageRecord`.remark,
+		`messageRecord`.create_time,
+		`messageRecord`.update_time,
+		`messageRecord`.create_by,
+		`messageRecord`.del_flag,
+		`user_receiver`.nick_name as receiverUserName,
+		`user_sender`.nick_name as senderUserName,
+		institution_receiver.ins_name as receiverInsName,
+		outles_receiver.outles_name as receiverOutlesName,
+		institution_sender.ins_name as senderInsName,
+		outles_sender.outles_name as senderOutlesName
+		FROM
+		p10_message_record AS `messageRecord`
+		LEFT JOIN p10_institution institution_receiver ON institution_receiver.ins_id = messageRecord.receiver_ins_id
+		LEFT JOIN p10_institution institution_sender ON institution_sender.ins_id = messageRecord.sender_ins_id
+		LEFT JOIN p10_outles outles_sender ON outles_sender.outles_id=messageRecord.sender_outles_id
+		LEFT JOIN sys_user user_receiver ON user_receiver.user_id = messageRecord.receiver_user_id
+		LEFT JOIN sys_user user_sender ON user_sender.user_id = messageRecord.create_by
+		LEFT JOIN p10_outles outles_receiver ON outles_receiver.outles_id=messageRecord.receiver_outles_id
+		where
+		`messageRecord`.del_flag = '0' and `messageRecord`.message_id=#{messageId}
+	</select>
+
+	<select id="withCooperativeAgencies" resultType="com.pig4cloud.pig.admin.api.vo.CooperationNewsVO">
+		SELECT
+		record.*,
+		institution.ins_name
+		FROM
+		p10_message_record record
+		LEFT JOIN p10_institution institution ON institution.ins_id = record.sender_ins_id
+		WHERE
+		record.del_flag = 0
+		AND record.message_type = 400
+		AND record.receiver_ins_id = #{insId}
+		<if test="messageId != null">
+			AND message_id = #{messageId}
+		</if>
+		ORDER BY record.read_flag ASC,record.create_time DESC
+	</select>
+
+	<select id="selectMessageNumber" resultType="java.lang.Integer">
+		SELECT
+		count(`messageRecord`.message_id)
+		FROM
+		p10_message_record AS `messageRecord`
+		<where>
+			`messageRecord`.del_flag = '0'
+			and `messageRecord`.receiver_ins_id=#{insId}
+			and `messageRecord`.receiver_user_id = #{userId}
+			and `messageRecord`.read_flag = 0
+		</where>
+	</select>
+	<select id="selectAuditTaskNumber" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) FROM (
+			SELECT DISTINCT
+			p10_task_audit_handle_record.task_audit_handle_record_id
+			FROM
+			p10_task_audit_handle_record
+			-- 查询我的待办 待处理数据 关联任务流信息以及委托列表信息
+			LEFT JOIN act_hi_procinst ON act_hi_procinst.BUSINESS_KEY_ = p10_task_audit_handle_record.node_id
+			LEFT JOIN act_ru_task ON act_ru_task.PROC_INST_ID_ = act_hi_procinst.PROC_INST_ID_
+			WHERE p10_task_audit_handle_record.del_flag=0
+			-- 查询我的待办 待处理数据 当前任务流办理人等于自己并且状态等于待审核
+			AND act_ru_task.ASSIGNEE_=#{userId}
+			AND p10_task_audit_handle_record.`status` = 101
+			) AS id
+
+	</select>
+	<select id="selectTaskCommissionNumber" resultType="java.lang.Integer">
+		SELECT
+		count(p10_task_commission_list.task_commission_id)
+		FROM
+		p10_task_commission_list
+		LEFT JOIN act_hi_procinst ON act_hi_procinst.BUSINESS_KEY_ = p10_task_commission_list.node_id
+		LEFT JOIN act_ru_task ON act_ru_task.PROC_INST_ID_ = act_hi_procinst.PROC_INST_ID_
+		WHERE p10_task_commission_list.del_flag=0
+		-- 查询委托列表 待办理数据 当前任务流办理人等于自己并且委托人也是自己
+			AND act_ru_task.ASSIGNEE_=#{userId}
+			AND p10_task_commission_list.commission_user_id = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.admin.mapper.OutlesTemplateReMapper">
+
+	<resultMap id="outlesTemplateReMap" type="com.pig4cloud.pig.admin.api.entity.OutlesTemplateRe">
+		<id property="templateReId" column="template_re_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="templateId" column="template_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
+
+	<select id="getByOutlesId" resultType="com.pig4cloud.pig.admin.api.entity.OutlesTemplateRe">
+	SELECT p10_outles_template_re.* FROM `p10_outles_template_re`
+	LEFT JOIN p10_outles ON p10_outles_template_re.outles_id = p10_outles.outles_id
+	WHERE
+	p10_outles_template_re.outles_id = #{outlesId}
+	</select>
+
+	<select id="getTemplateIdByOutlesId" resultType="java.lang.Integer">
+	SELECT p10_outles_template_re.template_id FROM `p10_outles_template_re`
+	LEFT JOIN p10_outles ON p10_outles_template_re.outles_id = p10_outles.outles_id
+	WHERE
+	p10_outles_template_re.outles_id = #{outlesId}
+	</select>
+
+	<select id="queryTemplateByTemplateNature" resultType="com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate">
+	SELECT p10_task_node_template.* FROM `p10_outles_template_re`
+	LEFT JOIN p10_task_node_template ON p10_task_node_template.template_id = p10_outles_template_re.template_id
+	AND p10_task_node_template.del_flag =0
+	where p10_task_node_template.template_nature=#{templateNature} and p10_outles_template_re.outles_id=#{outlesId}
+	</select>
+
+	<update id="updateByOutlesOrRoleType">
+		UPDATE `p10_user_outles_staff_re` SET
+		`role_type` = #{roleType}
+		WHERE
+		outles_id = #{query.outlesId}
+		<if test="userId != null">
+			AND user_id = #{userId}
+		</if>
+		<if test="query.roleType != null">
+			AND `role_type` = #{query.roleType}
+		</if>
+	</update>
+
+</mapper>
