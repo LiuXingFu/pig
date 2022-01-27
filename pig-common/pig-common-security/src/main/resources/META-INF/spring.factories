@@ -1,5 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.pig4cloud.pig.common.security.service.CustomerUserDetailsServiceImpl,\
-  com.pig4cloud.pig.common.security.service.SecurityUtilsService,\
-  com.pig4cloud.pig.common.security.component.PigSecurityInnerAspect
-
