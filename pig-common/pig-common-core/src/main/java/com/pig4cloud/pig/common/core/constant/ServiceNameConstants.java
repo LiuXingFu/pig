@@ -30,11 +30,11 @@ public interface ServiceNameConstants {
 	/**
 	 * UMPS模块
 	 */
-	String UMPS_SERVICE = "pig-upms-biz-yd";
+	String UMPS_SERVICE = "pig-upms-biz";
 
 
 	/**
 	 * 案件处理模块
 	 */
-	String CASEE_SERVICE = "p10-casee-biz-yd";
+	String CASEE_SERVICE = "p10-casee-biz";
 }
