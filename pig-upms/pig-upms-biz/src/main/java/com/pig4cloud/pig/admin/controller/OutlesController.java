@@ -18,7 +18,9 @@
 package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.OutlesAddDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
+import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -167,5 +169,33 @@ public class OutlesController {
 	@Inner
 	public R<Outles> getUserIdOutlesIdByRelevanceInner(Integer userId, Integer outlesId) {
 		return R.ok(outlesService.getUserIdOutlesIdByRelevance(userId,outlesId));
+	}
+
+	/****************************************/
+
+	/**
+	 * 分页查询
+	 *
+	 * @param page   分页查询
+	 * @param outlesPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/queryPage")
+	public R queryPage(Page page, OutlesPageDTO outlesPageDTO) {
+		return R.ok(outlesService.queryPage(page, outlesPageDTO));
+	}
+
+	/**
+	 * 添加网点
+	 *
+	 * @param outlesAddDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加网点", notes = "添加网点")
+	@SysLog("添加网点")
+	@PostMapping("/addOutles")
+	public R addOutles(@RequestBody OutlesAddDTO outlesAddDTO) {
+		return R.ok(outlesService.addOutles(outlesAddDTO));
 	}
 }

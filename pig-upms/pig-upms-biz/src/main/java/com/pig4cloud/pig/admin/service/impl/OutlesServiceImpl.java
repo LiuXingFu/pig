@@ -17,16 +17,18 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.UserInstitutionStaffDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
 import com.pig4cloud.pig.admin.service.*;
+import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,8 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Autowired
 	SysRoleService sysRoleService;
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
 
 	/**
 	 * 新增
@@ -258,5 +262,57 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			return this.baseMapper.selectById(userOutlesStaffRe.getOutlesId());
 		}
 		return null;
+	}
+
+
+	/********************************************/
+
+	@Override
+	public IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO){
+		return this.baseMapper.selectPage(page,outlesPageDTO);
+	}
+
+	@Override
+	public Outles queryByOutlesName(int insId,String outlesName){
+		QueryWrapper<Outles> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Outles::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(Outles::getInsId,insId);
+		queryWrapper.lambda().eq(Outles::getOutlesName,outlesName);
+		return this.baseMapper.selectOne(queryWrapper);
+	}
+
+	@Override
+	public int addOutles(OutlesAddDTO outlesAddDTO){
+		int save = 0;
+		Outles getOne = queryByOutlesName(outlesAddDTO.getInsId(),outlesAddDTO.getOutlesName());
+		if(Objects.nonNull(getOne)){
+			throw new RuntimeException("此网点名称已存在！");
+		}else{
+			Outles outles = new Outles();
+			// 判断地址是否为空
+			if(Objects.nonNull(outlesAddDTO.getInformationAddress())){
+				// 添加地址
+				Address address = new Address();
+				address.setDelFlag(CommonConstants.STATUS_NORMAL);
+				address.setCity(outlesAddDTO.getCity());
+				address.setArea(outlesAddDTO.getArea());
+				address.setInformationAddress(outlesAddDTO.getInformationAddress());
+				// 类型2=机构地址
+				address.setType(2);
+				addressService.save(address);
+				outles.setAddressId(address.getAddressId());
+			}
+			BeanUtils.copyProperties(outlesAddDTO,outles);
+			save = this.baseMapper.insert(outles);
+			// 添加网点负责人用户
+			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+			insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
+			insOutlesUserAddDTO.setOutlesId(outles.getOutlesId());
+			insOutlesUserAddDTO.setType(1);
+			insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
+			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+		}
+
+		return save;
 	}
 }

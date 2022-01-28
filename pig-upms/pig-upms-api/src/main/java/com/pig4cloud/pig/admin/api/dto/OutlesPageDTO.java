@@ -15,28 +15,30 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
+package com.pig4cloud.pig.admin.api.dto;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
-import com.pig4cloud.pig.admin.api.dto.InstitutionAddPrincipalDTO;
-import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
- * 机构/网点用户关联表
+ * 网点表
  *
- * @author xls
- * @date 2022-01-27 19:30:49
+ * @author yuanduo
+ * @date 2021-09-02 16:24:58
  */
-public interface InsOutlesUserService extends IService<InsOutlesUser> {
-
-	int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO);
+@Data
+public class OutlesPageDTO {
 
 	/**
-	 * 移除负责人
-	 * @param insOutlesUserId
-	 * @return
+	 * 网点名称
 	 */
-	int removeInsOutlesUser(int insOutlesUserId);
-
+	@ApiModelProperty(value = "网点名称")
+	private String outlesName;
+	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value = "机构id")
+	private Integer insId;
 }

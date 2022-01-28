@@ -19,6 +19,8 @@ package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAddPrincipalDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.service.InsOutlesUserService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -110,6 +112,38 @@ public class InsOutlesUserController {
     }
 
 
+	/**
+	 * 移除用户
+	 * @param insOutlesUserId 员工id
+	 * @return R
+	 */
+	@ApiOperation(value = "移除用户", notes = "移除用户")
+	@SysLog("移除用户" )
+	@PutMapping("removeInsOutlesUser")
+	public R removeInsOutlesUser(@RequestBody int insOutlesUserId) {
+		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
+	}
+
+
+
+
+	/**
+	 * 添加用户
+	 *
+	 * @param insOutlesUserAddDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加用户", notes = "添加用户")
+	@SysLog("添加用户")
+	@PostMapping("addInsOutlesUser")
+	public R addInsOutlesUser(@RequestBody InsOutlesUserAddDTO insOutlesUserAddDTO) throws Exception {
+		int save = insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+		if (save<=0) {
+			return R.failed("添加失败");
+		} else {
+			return R.ok(save);
+		}
+	}
 
 
 

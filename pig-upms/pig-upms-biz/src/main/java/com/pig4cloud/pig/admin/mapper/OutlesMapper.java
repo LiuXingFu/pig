@@ -20,8 +20,10 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesQueryDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,5 +55,8 @@ public interface OutlesMapper extends BaseMapper<Outles> {
 	List<Integer> listOutlesId(Integer staffId);
 
 	List<Outles> listOutles(Integer staffId);
+
+	/**********************************************************************/
+	IPage<OutlesPageVO> selectPage(Page page, @Param("query") OutlesPageDTO outlesPageDTO);
 
 }

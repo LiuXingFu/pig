@@ -16,11 +16,19 @@
  */
 package com.pig4cloud.pig.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper;
-import com.pig4cloud.pig.admin.service.InsOutlesUserService;
+import com.pig4cloud.pig.admin.service.*;
+import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 机构/网点用户关联表
@@ -30,4 +38,89 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, InsOutlesUser> implements InsOutlesUserService {
+	@Autowired
+	InstitutionService institutionService;
+	@Autowired
+	SysUserService sysUserService;
+	@Autowired
+	SysDictItemService sysDictItemService;
+	@Autowired
+	SysRoleService sysRoleService;
+	@Autowired
+	StaffRoleService staffRoleService;
+
+	@Override
+	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
+		int add = 0;
+		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
+
+		List<SysUser> userList = new ArrayList<>();
+		List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
+		userList.stream().forEach(item ->{
+			InsOutlesUser insOutlesUser = new InsOutlesUser();
+			insOutlesUser.setInsId(institution.getInsId());
+			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
+			insOutlesUser.setType(insOutlesUserAddDTO.getType());
+			insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+			// 判断用户是否存在
+			if(Objects.nonNull(item.getUserId())){
+				insOutlesUser.setUserId(item.getUserId());
+			}else{
+				SysUser sysUser = new SysUser();
+				sysUser.setPassword("a123456");
+				sysUser.setNickName(item.getActualName());
+				sysUser.setPhone(item.getPhone());
+				sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+				sysUser.setLockFlag("0");
+				sysUser.setUsername(item.getPhone());
+				sysUser.setActualName(item.getActualName());
+				sysUserService.save(sysUser);
+				insOutlesUser.setUserId(sysUser.getUserId());
+			}
+			insOutlesUserList.add(insOutlesUser);
+		});
+		this.saveBatch(insOutlesUserList);
+
+		// 5.根据机构类型与字典类型查询角色标识
+		SysDictItem sysDictItem = new SysDictItem();
+		sysDictItem.setType("ins_type");
+		sysDictItem.setValue(institution.getInsType().toString());
+
+		SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
+
+		int userType = insOutlesUserAddDTO.getType();
+		String typeName = "";
+		if(userType==1){
+			typeName = "_ADMIN";
+		}else if(userType==2){
+			typeName = "_STAFF_GENERAL";
+		}
+		// 6.根据角色标识查询角色信息
+		SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + typeName).eq(SysRole::getDelFlag, 0));
+
+		List<StaffRole> staffRoleList = new ArrayList<>();
+		insOutlesUserList.stream().forEach(item ->{
+			StaffRole staffRole = new StaffRole();
+			staffRole.setRoleId(role.getRoleId());
+			staffRole.setStaffId(item.getInsOutlesUserId());
+			staffRoleList.add(staffRole);
+		});
+		staffRoleService.saveBatch(staffRoleList);
+
+		return add;
+	}
+
+
+
+	@Override
+	public int removeInsOutlesUser(int insOutlesUserId){
+		int modify = 0;
+		InsOutlesUser insOutlesUser = new InsOutlesUser();
+		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
+		insOutlesUser.setInsOutlesUserId(insOutlesUserId);
+		modify = this.baseMapper.deleteById(insOutlesUser);
+		// 删除角色权限
+		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId,insOutlesUserId));
+		return modify;
+	}
 }

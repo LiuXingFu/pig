@@ -232,35 +232,6 @@ public class InstitutionController {
 	}
 
 
-	/**
-	 * 移除机构负责人
-	 * @param insOutlesUserId 员工id
-	 * @return R
-	 */
-	@ApiOperation(value = "移除机构负责人", notes = "移除机构负责人")
-	@SysLog("移除机构负责人" )
-	@PutMapping("removePrincipal")
-	public R removePrincipal(@RequestBody int insOutlesUserId) {
-		return R.ok(institutionService.removePrincipal(insOutlesUserId));
-	}
-
-	/**
-	 * 添加机构负责人
-	 *
-	 * @param institutionAddPrincipalDTO
-	 * @return R
-	 */
-	@ApiOperation(value = "添加机构负责人", notes = "添加机构负责人")
-	@SysLog("添加机构负责人")
-	@PostMapping("addPrincipal")
-	public R addPrincipal(@RequestBody InstitutionAddPrincipalDTO institutionAddPrincipalDTO) throws Exception {
-		int save = institutionService.addPrincipal(institutionAddPrincipalDTO);
-		if (save<=0) {
-			return R.failed("添加失败");
-		} else {
-			return R.ok(save);
-		}
-	}
 
 
 

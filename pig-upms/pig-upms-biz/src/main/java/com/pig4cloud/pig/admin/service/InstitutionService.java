@@ -97,14 +97,7 @@ public interface InstitutionService extends IService<Institution> {
 
 	int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO);
 
-	/**
-	 * 移除负责人
-	 * @param insOutlesUserId
-	 * @return
-	 */
-	int removePrincipal(int insOutlesUserId);
 
-	int addPrincipal(InstitutionAddPrincipalDTO institutionAddPrincipalDTO);
 
 
 
