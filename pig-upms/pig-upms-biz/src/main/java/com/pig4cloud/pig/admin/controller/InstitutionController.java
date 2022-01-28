@@ -110,7 +110,7 @@ public class InstitutionController {
 	@GetMapping("/organizationQueryList")
 	public R organizationQueryList(OrganizationQueryDTO organizationQueryDTO) {
 
-		if(organizationQueryDTO.getType() == 0 || organizationQueryDTO.getType() == 2){
+		if (organizationQueryDTO.getType() == 0 || organizationQueryDTO.getType() == 2) {
 			return R.ok(institutionService.queryAssociatedInstitutions(organizationQueryDTO));
 		} else {
 			return R.ok(institutionService.queryCurrentInstitution(organizationQueryDTO));
@@ -119,19 +119,21 @@ public class InstitutionController {
 
 	/**
 	 * 查询机构是否有简称
+	 *
 	 * @return
 	 */
 	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
 	@GetMapping("/getInstitutionAlias")
-	public R getInstitutionAlias(){
+	public R getInstitutionAlias() {
 		return R.ok(institutionService.getInstitutionAlias());
 	}
 
 	/**
 	 * 查询机构名称是否存在
+	 *
 	 * @return
 	 */
-	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
+	@ApiOperation(value = "查询机构名称是否存在", notes = "查询机构名称是否存在")
 	@GetMapping("/getInstitutionIsInsName/{insName}")
 	public R getInstitutionIsInsName(@PathVariable("insName") String insName){
 		return R.ok(institutionService.getInstitutionIsInsName(insName));
@@ -200,11 +202,11 @@ public class InstitutionController {
 
 	/**
 	 * 机构列表分页查询
-	 * @param page        机构列表分页查询
+	 * @param page        分页对象
 	 * @param institutionPageDTO
 	 * @return
 	 */
-	@ApiOperation(value = "机构列表分页查询", notes = "机构列表分页查询")
+	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/pageList")
 	public R queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
 		return R.ok(institutionService.queryPage(page,institutionPageDTO));
@@ -218,7 +220,7 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "添加机构", notes = "添加机构")
 	@SysLog("添加机构")
-	@PostMapping("/addInstitution")
+	@PostMapping("addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
 		if (save<=0) {

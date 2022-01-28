@@ -93,4 +93,6 @@ public interface SysUserService extends IService<SysUser> {
 	Outles selectUsedOutles(Integer outlesId);
 
 	Integer updateUserClientInfo(String username, String clientId);
+
+	SysUser queryUserByPhone(String phone);
 }

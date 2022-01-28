@@ -104,6 +104,6 @@ public interface InstitutionService extends IService<Institution> {
 
 
 
-
+	boolean getInstitutionIsInsName(String insName);
 
 }

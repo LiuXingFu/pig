@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
+import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import org.apache.ibatis.annotations.Mapper;

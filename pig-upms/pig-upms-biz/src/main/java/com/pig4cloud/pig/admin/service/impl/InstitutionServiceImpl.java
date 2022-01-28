@@ -500,7 +500,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	@Override
 	public boolean getInstitutionIsInsName(String insName) {
 		Integer count = this.baseMapper.getInstitutionIsInsName(insName);
-		return count > 0 ? false : true;
+		return count > 0 ? true : false;
 	}
 
 	/**

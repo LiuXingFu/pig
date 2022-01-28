@@ -15,36 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
-
+package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 
 /**
- * 用户网点表
+ * 主体关联银行借贷表
  *
- * @author yuanduo
- * @date 2021-09-03 10:52:47
+ * @author Mjh
+ * @date 2022-01-28 18:52:44
  */
-public interface UserOutlesStaffReService extends IService<UserOutlesStaffRe> {
+public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
 
-	/**
-	 * 查询出自己以为的办理人
-	 * @param organizationQueryDTO
-	 * @return
-	 */
-	List<OrganizationQueryVO> queryBranchManager(OrganizationQueryDTO organizationQueryDTO);
-
-	/**
-	 * 根据网点id查询该网点下所有用户
-	 * @param outlesId
-	 * @return
-	 */
-	List<OrganizationQueryVO> queryByOutlesId(Integer outlesId);
 }

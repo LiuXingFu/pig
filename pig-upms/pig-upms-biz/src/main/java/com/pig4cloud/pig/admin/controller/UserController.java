@@ -225,4 +225,18 @@ public class UserController {
 	public R queryByOutlesId(Integer outlesId) {
 		return R.ok(userOutlesStaffReService.queryByOutlesId(outlesId));
 	}
+
+	/***********************************************************/
+
+	/**
+	 * 根据电话查询用户信息
+	 * @param phone
+	 * @return
+	 */
+	@ApiOperation(value = "根据电话查询用户信息", notes = "根据电话查询用户信息")
+	@GetMapping("/queryUserByPhone/{phone}")
+	public R queryUserByPhone(@PathVariable String phone){
+		return R.ok(userService.queryUserByPhone(phone));
+	}
+
 }
