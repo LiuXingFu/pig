@@ -38,7 +38,5 @@
 	<result property="delFlag" column="del_flag"/>
   </resultMap>
 
-<!--	<select id="selectPage" resultType="">-->
 
-<!--	</select>-->
 </mapper>

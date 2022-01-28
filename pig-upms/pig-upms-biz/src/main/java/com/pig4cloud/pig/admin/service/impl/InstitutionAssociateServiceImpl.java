@@ -120,7 +120,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 //			messageRecordDTO.setReceiverUserId(associate.getUserId());
 //			SysUser user = sysUserService.getById(associate.getUserId());
 
-			List<ClientUserRe> clientUserReList = clientUserReService.list(new LambdaQueryWrapper<ClientUserRe>().eq(ClientUserRe::getUserName, "user.getUsername()"));//此处已修改
+			List<ClientUserRe> clientUserReList = clientUserReService.list(new LambdaQueryWrapper<ClientUserRe>());
 
 			if(clientUserReList.size() > 0){
 				List<String> clientIds = new ArrayList<>();

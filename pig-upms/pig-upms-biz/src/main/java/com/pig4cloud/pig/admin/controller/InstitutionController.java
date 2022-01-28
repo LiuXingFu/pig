@@ -18,7 +18,9 @@
 package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAddDTO;
 import com.pig4cloud.pig.admin.api.dto.InstitutionDTO;
+import com.pig4cloud.pig.admin.api.dto.InstitutionPageDTO;
 import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
 import com.pig4cloud.pig.admin.service.OutlesService;
 import com.pig4cloud.pig.admin.service.UserInstitutionStaffService;
@@ -30,12 +32,8 @@ import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -199,5 +197,40 @@ public class InstitutionController {
 	public R disableById(@PathVariable Integer insId) {
 		return R.ok(institutionService.disableById(insId));
 	}
+
+
+	/******************************************************************/
+
+	/**
+	 * 机构列表分页查询
+	 * @param page        分页对象
+	 * @param institutionPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/pageList")
+	public R queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
+		return R.ok(institutionService.queryPage(page,institutionPageDTO));
+	}
+
+	/**
+	 * 添加机构
+	 *
+	 * @param institutionAddDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "新增", notes = "新增")
+	@SysLog("新增")
+	@PostMapping
+	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
+		int save = institutionService.addInstitution(institutionAddDTO);
+		if (save<=0) {
+			return R.failed("添加失败");
+		} else {
+			return R.ok(save);
+		}
+	}
+
+
 
 }

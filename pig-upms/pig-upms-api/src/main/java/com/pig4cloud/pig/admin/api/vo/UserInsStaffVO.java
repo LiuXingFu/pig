@@ -19,6 +19,11 @@ public class UserInsStaffVO extends UserInstitutionStaff {
 	private String nickName;
 
 	/**
+	 * 真实姓名
+	 */
+	private String actualName;
+
+	/**
 	 * 角色ID
 	 */
 	private Integer roleId;

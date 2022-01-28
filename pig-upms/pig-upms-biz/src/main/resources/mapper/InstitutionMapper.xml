@@ -26,9 +26,9 @@
 	<resultMap id="institutionMap" type="com.pig4cloud.pig.admin.api.entity.Institution">
 		<id property="insId" column="ins_id"/>
 		<result property="insName" column="ins_name"/>
-		<result property="userId" column="user_id"/>
-		<result property="insPrincipalName" column="ins_principal_name"/>
-		<result property="insPrincipalPhone" column="ins_principal_phone"/>
+<!--		<result property="userId" column="user_id"/>-->
+<!--		<result property="insPrincipalName" column="ins_principal_name"/>-->
+<!--		<result property="insPrincipalPhone" column="ins_principal_phone"/>-->
 		<result property="insType" column="ins_type"/>
 		<result property="addressId" column="address_id"/>
 		<result property="insFax" column="ins_fax"/>
@@ -45,9 +45,9 @@
 	<resultMap id="institutionVOMap" type="com.pig4cloud.pig.admin.api.vo.InstitutionVO">
 		<id property="insId" column="ins_id"/>
 		<result property="insName" column="ins_name"/>
-		<result property="userId" column="user_id"/>
-		<result property="insPrincipalName" column="ins_principal_name"/>
-		<result property="insPrincipalPhone" column="ins_principal_phone"/>
+<!--		<result property="userId" column="user_id"/>-->
+<!--		<result property="insPrincipalName" column="ins_principal_name"/>-->
+<!--		<result property="insPrincipalPhone" column="ins_principal_phone"/>-->
 		<result property="insType" column="ins_type"/>
 		<result property="addressId" column="address_id"/>
 		<result property="insFax" column="ins_fax"/>
@@ -65,9 +65,9 @@
 		SELECT  distinct
 		institution.ins_id,
 		institution.ins_name,
-		institution.user_id,
-		institution.ins_principal_name,
-		institution.ins_principal_phone,
+-- 		institution.user_id,
+-- 		institution.ins_principal_name,
+-- 		institution.ins_principal_phone,
 		institution.ins_type,
 		institution.address_id,
 		institution.ins_fax,
@@ -94,8 +94,8 @@
 		SELECT
 		`institution`.ins_id,
 		`institution`.ins_name,
-		`institution`.ins_principal_name,
-		`institution`.ins_principal_phone,
+-- 		`institution`.ins_principal_name,
+-- 		`institution`.ins_principal_phone,
 		`institution`.ins_type,
 		`institution`.address_id,
 		`institution`.ins_fax,
@@ -122,8 +122,8 @@
 	SELECT
 		`institution`.ins_id,
 		`institution`.ins_name,
-		`institution`.ins_principal_name,
-		`institution`.ins_principal_phone,
+-- 		`institution`.ins_principal_name,
+-- 		`institution`.ins_principal_phone,
 		`institution`.ins_type,
 		`institution`.address_id,
 		`institution`.ins_fax,
@@ -275,6 +275,18 @@
 			<if test="query.insId != null and query.outlesId != null and query.userId == null">
 				and staff.job_title like concat('%', #{query.name}, '%')
 			</if>
+		</if>
+	</select>
+
+	<select id="selectPage" resultType=" com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
+		select * from p10_institution
+		left join p10_address on p10_address.address_id = p10_institution.address_id and p10_address.type = 1
+		where p10_institution.del_flag = 0
+		<if test="query.insName != null">
+			and p10_institution.ins_name like concat('%', #{query.insName}, '%')
+		</if>
+		<if test="query.insType != null">
+			and p10_institution.ins_type like concat('%', #{query.insType}, '%')
 		</if>
 	</select>
 

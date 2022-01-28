@@ -48,5 +48,9 @@ public interface InstitutionMapper extends BaseMapper<Institution> {
 
 	List<OrganizationQueryVO> queryAssociatedInstitutions(@Param("query") OrganizationQueryDTO organizationQueryDTO, @Param("roleType") Integer roleType);
 
+	/***********************************************************/
+
+	IPage<InstitutionPageVO> selectPage(Page page, @Param("query")InstitutionPageDTO institutionPageDTO);
+
 	Integer getInstitutionIsInsName(String insName);
 }

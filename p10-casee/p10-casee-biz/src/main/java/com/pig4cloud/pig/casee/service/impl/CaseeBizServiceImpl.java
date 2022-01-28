@@ -282,7 +282,7 @@ public class CaseeBizServiceImpl extends ServiceImpl<CaseeBizMapper, CaseeBizBas
 			//查询当前登录用户网点信息
 			R<OutlesVO> outlesVO = remoteOutlesService.getById(user.getOutlesId(), SecurityConstants.FROM);
 			List list=new ArrayList();
-			list.add(outlesVO.getData().getUserId());
+//			list.add(outlesVO.getData().getUserId());
 			//设置清收案件还款详情审核人id(当前登录网点负责人)
 			caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
 		}else {//案件开启、结案、异常和标的损毁和灭失需要银行审核(审核人可能存在多个)
@@ -303,7 +303,7 @@ public class CaseeBizServiceImpl extends ServiceImpl<CaseeBizMapper, CaseeBizBas
 			List<Integer> outlesId=new ArrayList();
 
 			for (OutlesVO outlesVO : outlesVOList) {
-				outlesId.add(outlesVO.getUserId());
+//				outlesId.add(outlesVO.getUserId());
 			}
 			//设置案件审核人id
 			caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(outlesId);
