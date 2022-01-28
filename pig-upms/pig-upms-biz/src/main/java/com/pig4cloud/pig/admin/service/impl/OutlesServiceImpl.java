@@ -315,4 +315,21 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 		return save;
 	}
+
+	@Override
+	public int modifyOutlesById(OutlesModifyDTO outlesModifyDTO){
+		int modify = 0;
+
+		Outles outles = new Outles();
+		BeanUtils.copyProperties(outles,outlesModifyDTO);
+		modify = this.baseMapper.updateById(outles);
+		if(Objects.nonNull(outlesModifyDTO.getInformationAddress())){
+			// 更新地址
+			Address address = new Address();
+			BeanUtils.copyProperties(address,outlesModifyDTO);
+			addressService.updateById(address);
+		}
+
+		return modify;
+	}
 }

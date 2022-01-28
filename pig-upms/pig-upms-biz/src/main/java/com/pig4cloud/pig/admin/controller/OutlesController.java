@@ -18,9 +18,7 @@
 package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.OutlesAddDTO;
-import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -197,5 +195,18 @@ public class OutlesController {
 	@PostMapping("/addOutles")
 	public R addOutles(@RequestBody OutlesAddDTO outlesAddDTO) {
 		return R.ok(outlesService.addOutles(outlesAddDTO));
+	}
+
+	/**
+	 * 修改网点
+	 *
+	 * @param outlesModifyDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改网点", notes = "修改网点")
+	@SysLog("修改网点")
+	@PutMapping("modifyOutlesById")
+	public R modifyOutlesById(@RequestBody OutlesModifyDTO outlesModifyDTO) throws Exception {
+		return R.ok(outlesService.modifyOutlesById(outlesModifyDTO));
 	}
 }

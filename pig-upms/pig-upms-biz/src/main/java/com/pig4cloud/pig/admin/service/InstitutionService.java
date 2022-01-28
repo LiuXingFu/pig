@@ -91,6 +91,8 @@ public interface InstitutionService extends IService<Institution> {
 
 	/***********************************************************/
 
+	boolean getInstitutionIsInsName(String insName);
+
 	IPage<InstitutionPageVO> queryPage(Page page, InstitutionPageDTO institutionPageDTO);
 
 	int addInstitution(InstitutionAddDTO institutionAddDTO);
