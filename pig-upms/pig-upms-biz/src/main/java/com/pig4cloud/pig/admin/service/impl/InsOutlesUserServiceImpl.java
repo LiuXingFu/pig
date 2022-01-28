@@ -17,45 +17,18 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.mapper.AddressMapper;
-import com.pig4cloud.pig.admin.service.AddressService;
+import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper;
+import com.pig4cloud.pig.admin.service.InsOutlesUserService;
 import org.springframework.stereotype.Service;
 
 /**
- * 地址表
+ * 机构/网点用户关联表
  *
- * @author yuanduo
- * @date 2021-09-03 17:14:47
+ * @author xls
+ * @date 2022-01-27 19:30:49
  */
 @Service
-public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> implements AddressService {
+public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, InsOutlesUser> implements InsOutlesUserService {
 
-	@Override
-	public Address saveAddress(Address address) {
-		if (address.getArea() == null ||
-				address.getCity() == null ||
-				address.getCode() == null ||
-				address.getProvince() == null) {
-			return null;
-		}
-		this.save(address);
-		return address;
-	}
-
-	@Override
-	public Address getById(Integer addressId, Integer type) {
-		return this.baseMapper.getById(addressId, type);
-	}
-
-	/**
-	 * 根据类型id查询
-	 * @param userId
-	 * @param type
-	 * @return
-	 */
-	@Override
-	public Address getByUserId(Integer userId, Integer type) {
-		return this.baseMapper.getByUserId(userId, type);
-	}
 }

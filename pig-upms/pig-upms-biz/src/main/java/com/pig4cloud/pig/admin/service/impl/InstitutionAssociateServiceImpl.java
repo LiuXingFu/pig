@@ -117,10 +117,10 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 			MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
 			messageRecordDTO.setMessageTitle(institution.getInsName() + "向你发送了合作请求");
 			messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
-			messageRecordDTO.setReceiverUserId(associate.getUserId());
-			SysUser user = sysUserService.getById(associate.getUserId());
+//			messageRecordDTO.setReceiverUserId(associate.getUserId());
+//			SysUser user = sysUserService.getById(associate.getUserId());
 
-			List<ClientUserRe> clientUserReList = clientUserReService.list(new LambdaQueryWrapper<ClientUserRe>().eq(ClientUserRe::getUserName, user.getUsername()));
+			List<ClientUserRe> clientUserReList = clientUserReService.list(new LambdaQueryWrapper<ClientUserRe>());
 
 			if(clientUserReList.size() > 0){
 				List<String> clientIds = new ArrayList<>();
@@ -283,7 +283,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 		MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
 		messageRecordDTO.setMessageTitle(institution.getInsName() + (institutionAssociate.getAssociateStatus() == 100 ? "同意" : "拒接") +"了你的合作请求");
 		messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
-		messageRecordDTO.setReceiverUserId(insAssociate.getUserId());
+//		messageRecordDTO.setReceiverUserId(insAssociate.getUserId());
 		messageRecordDTO.setReceiverInsId(insAssociate.getInsId());
 		messageRecordDTO.setMessageType(0);
 		List<MessageRecordDTO> messageRecordDTOList=new ArrayList<>();

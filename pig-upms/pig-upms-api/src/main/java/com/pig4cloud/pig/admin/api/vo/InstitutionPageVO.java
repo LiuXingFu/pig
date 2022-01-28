@@ -15,78 +15,86 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.api.entity;
+package com.pig4cloud.pig.admin.api.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
- * 网点表
- *
- * @author yuanduo
- * @date 2021-09-02 16:24:58
+ * 机构分页VO
  */
 @Data
-@TableName("p10_outles")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "网点表")
-public class Outles extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+public class InstitutionPageVO {
 
 	/**
-	 * 网点id 主键自增
+	 * 机构id 主键自增
 	 */
 	@TableId
-	@ApiModelProperty(value = "网点id 主键自增")
-	private Integer outlesId;
-	/**
-	 * 网点名称
-	 */
-	@ApiModelProperty(value = "网点名称")
-	private String outlesName;
-	/**
-	 * 机构id
-	 */
-	@ApiModelProperty(value = "机构id")
+	@ApiModelProperty(value = "机构id 主键自增")
 	private Integer insId;
 	/**
-	 * 地址id
+	 * 机构名称
 	 */
-	@ApiModelProperty(value = "地址id")
-	private Integer addressId;
+	@ApiModelProperty(value = "机构名称")
+	private String insName;
 	/**
-	 * 简称
+	 * 机构类型
 	 */
-	@ApiModelProperty(value = "简称")
-	private String alias;
+	@ApiModelProperty(value = "机构类型")
+	private Integer insType;
+	/**
+	 * 是否禁用 0-否 1-是
+	 */
+	@ApiModelProperty(value = "是否禁用 0-否 1-是")
+	private Integer canDisable;
+	/**
+	 * 传真
+	 */
+	@ApiModelProperty(value = "传真")
+	private String insFax;
 	/**
 	 * 座机电话
 	 */
 	@ApiModelProperty(value = "座机电话")
-	private String outlesLandLinePhone;
+	private String insLandLinePhone;
 	/**
 	 * 备注
 	 */
 	@ApiModelProperty(value = "备注")
-	private String outlesRemark;
+	private String insRemark;
 	/**
-	 * 是否是默认网点 0-否 1-是
-	 */
-	@ApiModelProperty(value = "是否是默认网点 0-否 1-是")
-	private Integer canDefault;
-	/**
-	 * 0-正常，1-删除
+	 * 删除状态(0-正常,1-已删除)
 	 */
 	@TableLogic
 	private String delFlag;
+
+	/**
+	 * 省
+	 */
+	@ApiModelProperty(value = "省")
+	private String province;
+	/**
+	 * 市
+	 */
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
+
+
 }

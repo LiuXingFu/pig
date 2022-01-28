@@ -15,78 +15,77 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.api.entity;
+package com.pig4cloud.pig.admin.api.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * 网点表
- *
- * @author yuanduo
- * @date 2021-09-02 16:24:58
- */
+
 @Data
-@TableName("p10_outles")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "网点表")
-public class Outles extends BaseEntity {
-	private static final long serialVersionUID = 1L;
+public class InstitutionAddDTO {
 
 	/**
-	 * 网点id 主键自增
+	 * 机构名称
 	 */
-	@TableId
-	@ApiModelProperty(value = "网点id 主键自增")
-	private Integer outlesId;
+	@ApiModelProperty(value = "机构名称")
+	private String insName;
 	/**
-	 * 网点名称
+	 * 机构类型
 	 */
-	@ApiModelProperty(value = "网点名称")
-	private String outlesName;
+	@ApiModelProperty(value = "机构类型")
+	private Integer insType;
 	/**
-	 * 机构id
+	 * 传真
 	 */
-	@ApiModelProperty(value = "机构id")
-	private Integer insId;
-	/**
-	 * 地址id
-	 */
-	@ApiModelProperty(value = "地址id")
-	private Integer addressId;
-	/**
-	 * 简称
-	 */
-	@ApiModelProperty(value = "简称")
-	private String alias;
+	@ApiModelProperty(value = "传真")
+	private String insFax;
 	/**
 	 * 座机电话
 	 */
 	@ApiModelProperty(value = "座机电话")
-	private String outlesLandLinePhone;
+	private String insLandLinePhone;
 	/**
 	 * 备注
 	 */
 	@ApiModelProperty(value = "备注")
-	private String outlesRemark;
+	private String insRemark;
+
+	/**************机构地址************************/
 	/**
-	 * 是否是默认网点 0-否 1-是
+	 * 省
 	 */
-	@ApiModelProperty(value = "是否是默认网点 0-否 1-是")
-	private Integer canDefault;
+	@ApiModelProperty(value = "省")
+	private String province;
 	/**
-	 * 0-正常，1-删除
+	 * 市
 	 */
-	@TableLogic
-	private String delFlag;
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
+
+
+
+	/**
+	 * 负责人集合
+	 */
+	private List<SysUser> userList;
 }

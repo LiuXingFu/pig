@@ -27,7 +27,7 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
-		<result property="userId" column="user_id"/>
+<!--		<result property="userId" column="user_id"/>-->
 		<result property="addressId" column="address_id"/>
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
@@ -44,7 +44,7 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
-		<result property="userId" column="user_id"/>
+<!--		<result property="userId" column="user_id"/>-->
 		<result property="addressId" column="address_id"/>
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
@@ -59,6 +59,12 @@
 		<result property="nickName" column="nick_name"/>
 		<result property="phone" column="phone"/>
 		<result property="insName" column="ins_name"/>
+		<result property="address.addressId" column="address_id"/>
+		<result property="address.province" column="province"/>
+		<result property="address.city" column="city"/>
+		<result property="address.area" column="area"/>
+		<result property="address.informationAddress" column="information_address"/>
+		<result property="address.code" column="code"/>
 		<collection property="templateId" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.admin.mapper.OutlesTemplateReMapper.getTemplateIdByOutlesId" column="outles_id">
 		</collection>
@@ -69,7 +75,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -82,11 +88,18 @@
 		outles.del_flag,
 		ins.ins_name,
 		sys_user.nick_name,
-		sys_user.phone
+		sys_user.phone,
+		address.address_id,
+		address.province,
+		address.city,
+		address.area,
+		address.code,
+		address.information_address
 		FROM
 		p10_outles outles
 		LEFT JOIN p10_institution ins ON ins.ins_id = outles.ins_id
 		LEFT JOIN sys_user ON sys_user.user_id = outles.user_id
+		LEFT JOIN p10_address address ON address.user_id = outles_id and address.type = 3
 		WHERE
 			outles.del_flag = '0'
 			AND ins.del_flag = '0'
@@ -99,7 +112,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -128,7 +141,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -160,7 +173,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -184,7 +197,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -208,7 +221,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,

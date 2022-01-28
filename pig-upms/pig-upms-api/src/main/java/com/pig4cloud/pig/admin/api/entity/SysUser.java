@@ -65,6 +65,12 @@ public class SysUser extends BaseEntity {
 	private String nickName;
 
 	/**
+	 * 真实姓名
+	 */
+	@ApiModelProperty(value = "真实姓名")
+	private String actualName;
+
+	/**
 	 * 用户类型 0-普通 1-机构
 	 */
 	@ApiModelProperty(value = "用户类型 0-普通 1-机构")

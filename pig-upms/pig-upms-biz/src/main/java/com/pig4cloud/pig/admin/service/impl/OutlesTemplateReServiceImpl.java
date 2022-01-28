@@ -76,7 +76,7 @@ public class OutlesTemplateReServiceImpl extends ServiceImpl<OutlesTemplateReMap
 		Outles outles=new Outles();
 		outles.setOutlesId(outlesTemplateReDTO.getOutlesId());
 		outles.setAlias(outlesTemplateReDTO.getAlias());
-		outles.setUserId(outlesTemplateReDTO.getUserId());
+//		outles.setUserId(outlesTemplateReDTO.getUserId());
 		outlesService.updateById(outles);
 
 		//清除当前网点模板关联信息

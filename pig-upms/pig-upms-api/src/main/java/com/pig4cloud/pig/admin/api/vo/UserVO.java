@@ -54,6 +54,11 @@ public class UserVO implements Serializable {
 	private String nickName;
 
 	/**
+	 * 真实姓名
+	 */
+	private String actualName;
+
+	/**
 	 * 用户类型 0-普通 1-机构
 	 */
 	private String userType;
