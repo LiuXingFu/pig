@@ -589,7 +589,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	@Override
 	public InstitutionDetailsVO queryById(int insId){
-		InstitutionDetailsVO institutionVO = this.baseMapper.selectById(insId);
+		InstitutionDetailsVO institutionVO = this.baseMapper.selectDetailsById(insId);
 		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,insId,0);
 		institutionVO.setUserList(userList);
 		return institutionVO;
