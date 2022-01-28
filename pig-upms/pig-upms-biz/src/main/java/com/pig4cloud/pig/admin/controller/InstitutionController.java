@@ -18,10 +18,7 @@
 package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.InstitutionAddDTO;
-import com.pig4cloud.pig.admin.api.dto.InstitutionDTO;
-import com.pig4cloud.pig.admin.api.dto.InstitutionPageDTO;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.service.OutlesService;
 import com.pig4cloud.pig.admin.service.UserInstitutionStaffService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -219,11 +216,55 @@ public class InstitutionController {
 	 * @param institutionAddDTO
 	 * @return R
 	 */
-	@ApiOperation(value = "新增", notes = "新增")
-	@SysLog("新增")
-	@PostMapping
+	@ApiOperation(value = "添加机构", notes = "添加机构")
+	@SysLog("添加机构")
+	@PostMapping("addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
+		if (save<=0) {
+			return R.failed("添加失败");
+		} else {
+			return R.ok(save);
+		}
+	}
+
+	/**
+	 * 修改机构
+	 *
+	 * @param institutionModifyDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改机构", notes = "修改机构")
+	@SysLog("修改机构")
+	@PutMapping("modifyInstitutionById")
+	public R modifyInstitutionById(@RequestBody InstitutionModifyDTO institutionModifyDTO) throws Exception {
+		return R.ok(institutionService.modifyInstitutionById(institutionModifyDTO));
+	}
+
+
+	/**
+	 * 移除机构负责人
+	 * @param insOutlesUserId 员工id
+	 * @return R
+	 */
+	@ApiOperation(value = "移除机构负责人", notes = "移除机构负责人")
+	@SysLog("移除机构负责人" )
+	@PutMapping("removePrincipal")
+	public R removePrincipal(@RequestBody int insOutlesUserId) {
+		return R.ok(institutionService.removePrincipal(insOutlesUserId));
+	}
+
+	/**
+	 * 添加机构负责人
+	 *
+	 * @param institutionAddPrincipalDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加机构负责人", notes = "添加机构负责人")
+	@SysLog("添加机构负责人")
+	@PostMapping("addPrincipal")
+	public R addPrincipal(@RequestBody InstitutionAddPrincipalDTO institutionAddPrincipalDTO) throws Exception {
+		int save = institutionService.addPrincipal(institutionAddPrincipalDTO);
 		if (save<=0) {
 			return R.failed("添加失败");
 		} else {

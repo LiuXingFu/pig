@@ -14,20 +14,42 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.admin.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
-import com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper;
-import com.pig4cloud.pig.admin.service.InsOutlesUserService;
-import org.springframework.stereotype.Service;
+package com.pig4cloud.pig.admin.api.dto;
 
-/**
- * 机构/网点用户关联表
- *
- * @author xls
- * @date 2022-01-27 19:30:49
- */
-@Service
-public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, InsOutlesUser> implements InsOutlesUserService {
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.util.List;
+
+
+@Data
+public class InstitutionAddPrincipalDTO {
+
+	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value = "机构id")
+	private Integer insId;
+
+	/**
+	 * 用户id
+	 */
+	@ApiModelProperty(value = "用户id")
+	private Integer userId;
+
+	/**
+	 * 真实姓名
+	 */
+	@ApiModelProperty(value = "真实姓名")
+	private String actualName;
+
+	/**
+	 * 手机号
+	 */
+	@ApiModelProperty(value = "手机号")
+	private String phone;
 }

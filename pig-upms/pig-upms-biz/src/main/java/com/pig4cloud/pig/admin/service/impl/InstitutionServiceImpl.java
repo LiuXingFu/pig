@@ -578,7 +578,11 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				}else{
 					SysUser sysUser = new SysUser();
 					sysUser.setPassword("a123456");
-					BeanUtils.copyProperties(item,sysUser);
+					sysUser.setPhone(item.getPhone());
+					sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+					sysUser.setLockFlag("0");
+					sysUser.setUsername(item.getPhone());
+					sysUser.setActualName(item.getActualName());
 					sysUserService.save(sysUser);
 					insOutlesUser.setUserId(sysUser.getUserId());
 				}
@@ -606,4 +610,79 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		}
 		return save;
 	}
+
+	@Override
+	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO){
+		int modify = 0;
+		Institution institution = new Institution();
+		BeanUtils.copyProperties(institution,institutionModifyDTO);
+		modify = this.baseMapper.updateById(institution);
+		if(Objects.nonNull(institutionModifyDTO.getInformationAddress())){
+			// 更新地址
+			Address address = new Address();
+			BeanUtils.copyProperties(address,institutionModifyDTO);
+			addressService.updateById(address);
+		}
+		return modify;
+	}
+
+
+	@Override
+	public int removePrincipal(int insOutlesUserId){
+		int modify = 0;
+		InsOutlesUser insOutlesUser = new InsOutlesUser();
+		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
+		insOutlesUser.setInsOutlesUserId(insOutlesUserId);
+		modify = this.baseMapper.deleteById(insOutlesUser);
+		// 删除角色权限
+		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId,insOutlesUserId));
+		return modify;
+	}
+
+	@Override
+	public int addPrincipal(InstitutionAddPrincipalDTO institutionAddPrincipalDTO){
+		int add = 0;
+
+		InsOutlesUser insOutlesUser = new InsOutlesUser();
+		// 判断用户是否存在
+		if(Objects.isNull(institutionAddPrincipalDTO.getUserId())){
+			SysUser sysUser = new SysUser();
+			sysUser.setPassword("a123456");
+			sysUser.setPhone(institutionAddPrincipalDTO.getPhone());
+			sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+			sysUser.setLockFlag("0");
+			sysUser.setUsername(institutionAddPrincipalDTO.getPhone());
+			sysUser.setActualName(institutionAddPrincipalDTO.getActualName());
+			sysUserService.save(sysUser);
+			insOutlesUser.setUserId(sysUser.getUserId());
+		}else{
+			insOutlesUser.setUserId(institutionAddPrincipalDTO.getUserId());
+		}
+		insOutlesUser.setInsId(institutionAddPrincipalDTO.getInsId());
+		insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+		insOutlesUser.setType(1);
+		insOutlesUserService.save(insOutlesUser);
+
+
+
+		Institution getOne = this.baseMapper.selectById(institutionAddPrincipalDTO.getInsId());
+		// 5.根据机构类型与字典类型查询角色标识
+		SysDictItem sysDictItem = new SysDictItem();
+		sysDictItem.setType("ins_type");
+		sysDictItem.setValue(getOne.getInsType().toString());
+
+		SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
+
+		// 6.根据角色标识查询角色信息
+		SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + "_ADMIN").eq(SysRole::getDelFlag, 0));
+
+		StaffRole staffRole = new StaffRole();
+		staffRole.setRoleId(role.getRoleId());
+		staffRole.setStaffId(insOutlesUser.getInsOutlesUserId());
+		staffRoleService.save(staffRole);
+
+		return add;
+	}
+
+
 }
