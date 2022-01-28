@@ -14,37 +14,46 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.admin.api.vo;
 
-package com.pig4cloud.pig.admin.service;
+import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
-
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
- * 用户网点表
+ * 机构/网点用户关联表
  *
- * @author yuanduo
- * @date 2021-09-03 10:52:47
+ * @author xls
+ * @date 2022-01-27 19:30:49
  */
-public interface UserOutlesStaffReService extends IService<UserOutlesStaffRe> {
+@Data
+public class InsOutlesUserListVO {
+
+    /**
+     * 主键id
+     */
+    private Integer insOutlesUserId;
+
+    /**
+     * 入职时间
+     */
+    private LocalDateTime entryTime;
+
+    /**
+     * 职位
+     */
+    private String position;
 
 	/**
-	 * 查询出自己以为的办理人
-	 * @param organizationQueryDTO
-	 * @return
+	 * 真实姓名
 	 */
-	List<OrganizationQueryVO> queryBranchManager(OrganizationQueryDTO organizationQueryDTO);
+	private String actualName;
 
 	/**
-	 * 根据网点id查询该网点下所有用户
-	 * @param outlesId
-	 * @return
+	 * 手机号
 	 */
-	List<OrganizationQueryVO> queryByOutlesId(Integer outlesId);
+	private String phone;
+
+
 }

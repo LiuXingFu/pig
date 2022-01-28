@@ -259,4 +259,27 @@
         p10_outles o, p10_user_outles_staff_re sr WHERE o.outles_id = sr.outles_id AND o.del_flag = '0' and sr.staff_id IN (#{userInsId})
 	</select>
 
+	<!--***********************************************************	-->
+
+	<select id="selectPage" resultType="com.pig4cloud.pig.admin.api.vo.OutlesPageVO">
+		select * from p10_outles
+		left join p10_address on p10_address.user_id = p10_outles.outles_id and p10_address.type = 3
+		where p10_outles.del_flag = 0
+		<if test="query.insId != 0">
+			and p10_outles.ins_id = #{query.insId}
+		</if>
+		<if test="query.outlesName != null">
+			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
+		</if>
+	</select>
+
+	<select id="selectById" resultType="com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO">
+		select * from p10_outles
+		left join p10_address on p10_address.user_id = p10_outles.outles_id and p10_address.type = 3
+		where p10_outles.del_flag = 0
+		and p10_outles.outles_id = #{outlesId}
+		limit 1
+	</select>
+
+
 </mapper>

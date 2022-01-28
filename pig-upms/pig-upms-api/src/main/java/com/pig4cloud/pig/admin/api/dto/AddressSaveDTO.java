@@ -15,36 +15,43 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
+package com.pig4cloud.pig.admin.api.dto;
 
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
-
-import java.util.List;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
- * 用户网点表
+ * 地址表
  *
  * @author yuanduo
- * @date 2021-09-03 10:52:47
+ * @date 2021-09-03 16:26:59
  */
-public interface UserOutlesStaffReService extends IService<UserOutlesStaffRe> {
-
+@Data
+public class AddressSaveDTO {
 	/**
-	 * 查询出自己以为的办理人
-	 * @param organizationQueryDTO
-	 * @return
+	 * 省
 	 */
-	List<OrganizationQueryVO> queryBranchManager(OrganizationQueryDTO organizationQueryDTO);
-
+	@ApiModelProperty(value = "省")
+	private String province;
 	/**
-	 * 根据网点id查询该网点下所有用户
-	 * @param outlesId
-	 * @return
+	 * 市
 	 */
-	List<OrganizationQueryVO> queryByOutlesId(Integer outlesId);
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	@ApiModelProperty(value = "行政区划编号")
+	private String code;
 }

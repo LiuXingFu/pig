@@ -17,16 +17,20 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.UserInstitutionStaffDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
+import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
+import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
 import com.pig4cloud.pig.admin.service.*;
+import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +65,8 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Autowired
 	SysRoleService sysRoleService;
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
 
 	/**
 	 * 新增
@@ -258,5 +264,80 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			return this.baseMapper.selectById(userOutlesStaffRe.getOutlesId());
 		}
 		return null;
+	}
+
+
+	/********************************************/
+
+	@Override
+	public IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO){
+		return this.baseMapper.selectPage(page,outlesPageDTO);
+	}
+
+	@Override
+	public Outles queryByOutlesName(int insId,String outlesName){
+		QueryWrapper<Outles> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Outles::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(Outles::getInsId,insId);
+		queryWrapper.lambda().eq(Outles::getOutlesName,outlesName);
+		return this.baseMapper.selectOne(queryWrapper);
+	}
+
+	@Override
+	public int addOutles(OutlesAddDTO outlesAddDTO){
+		int save = 0;
+		Outles getOne = queryByOutlesName(outlesAddDTO.getInsId(),outlesAddDTO.getOutlesName());
+		if(Objects.nonNull(getOne)){
+			throw new RuntimeException("此网点名称已存在！");
+		}else{
+			Outles outles = new Outles();
+
+			BeanUtils.copyProperties(outlesAddDTO,outles);
+			save = this.baseMapper.insert(outles);
+			// 判断地址是否为空
+			if(Objects.nonNull(outlesAddDTO.getAddress().getInformationAddress())){
+				// 添加地址
+				Address address = new Address();
+				address.setDelFlag(CommonConstants.STATUS_NORMAL);
+				BeanUtils.copyProperties(address,outlesAddDTO.getAddress());
+				// 类型3=网点地址
+				address.setType(3);
+				address.setUserId(outles.getOutlesId());
+				addressService.save(address);
+			}
+			// 添加网点负责人用户
+			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+			insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
+			insOutlesUserAddDTO.setOutlesId(outles.getOutlesId());
+			insOutlesUserAddDTO.setType(1);
+			insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
+			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+		}
+		return save;
+	}
+
+	@Override
+	public int modifyOutlesById(OutlesModifyDTO outlesModifyDTO){
+		int modify = 0;
+
+		Outles outles = new Outles();
+		BeanUtils.copyProperties(outles,outlesModifyDTO);
+		modify = this.baseMapper.updateById(outles);
+		if(Objects.nonNull(outlesModifyDTO.getAddress().getInformationAddress())){
+			// 更新地址
+			Address address = new Address();
+			BeanUtils.copyProperties(address,outlesModifyDTO);
+			addressService.updateById(address);
+		}
+
+		return modify;
+	}
+
+	@Override
+	public OutlesDetailsVO queryById(int outlesId){
+		OutlesDetailsVO outlesDetailsVO = this.baseMapper.selectById(outlesId);
+		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,0,outlesId);
+		outlesDetailsVO.setUserList(userList);
+		return outlesDetailsVO;
 	}
 }

@@ -20,8 +20,13 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.dto.OutlesAddDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
+import com.pig4cloud.pig.admin.api.dto.OutlesModifyDTO;
+import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
+import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 
 import java.util.List;
@@ -103,4 +108,19 @@ public interface OutlesService extends IService<Outles> {
 	 * @return R
 	 */
 	Outles getUserIdOutlesIdByRelevance(Integer userId, Integer outlesId);
+
+	/**************************************************/
+	IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO);
+
+	// 根据网点名称查询
+	Outles queryByOutlesName(int insId,String outlesName);
+
+	int addOutles(OutlesAddDTO outlesAddDTO);
+
+	int modifyOutlesById(OutlesModifyDTO outlesModifyDTO);
+
+	OutlesDetailsVO queryById(int outlesId);
+
+
+
 }

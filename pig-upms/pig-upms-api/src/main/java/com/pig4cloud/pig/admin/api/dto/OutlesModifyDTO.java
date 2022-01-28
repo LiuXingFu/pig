@@ -15,36 +15,46 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
+package com.pig4cloud.pig.admin.api.dto;
 
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
-
-import java.util.List;
+import com.pig4cloud.pig.admin.api.entity.Address;
+import lombok.Data;
 
 /**
- * 用户网点表
+ * 网点表
  *
  * @author yuanduo
- * @date 2021-09-03 10:52:47
+ * @date 2021-09-02 16:24:58
  */
-public interface UserOutlesStaffReService extends IService<UserOutlesStaffRe> {
+@Data
+public class OutlesModifyDTO {
 
 	/**
-	 * 查询出自己以为的办理人
-	 * @param organizationQueryDTO
-	 * @return
+	 * 网点id 主键自增
 	 */
-	List<OrganizationQueryVO> queryBranchManager(OrganizationQueryDTO organizationQueryDTO);
-
+	private Integer outlesId;
 	/**
-	 * 根据网点id查询该网点下所有用户
-	 * @param outlesId
-	 * @return
+	 * 网点名称
 	 */
-	List<OrganizationQueryVO> queryByOutlesId(Integer outlesId);
+	private String outlesName;
+	/**
+	 * 地址id
+	 */
+	private Integer addressId;
+	/**
+	 * 简称
+	 */
+	private String alias;
+	/**
+	 * 座机电话
+	 */
+	private String outlesLandLinePhone;
+	/**
+	 * 备注
+	 */
+	private String outlesRemark;
+	/**
+	 * 地址
+	 */
+	private Address address;
 }
