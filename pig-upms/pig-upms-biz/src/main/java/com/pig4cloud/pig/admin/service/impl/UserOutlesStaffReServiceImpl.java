@@ -16,8 +16,10 @@
  */
 package com.pig4cloud.pig.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.mapper.UserOutlesStaffReMapper;

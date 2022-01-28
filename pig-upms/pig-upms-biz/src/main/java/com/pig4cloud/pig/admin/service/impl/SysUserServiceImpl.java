@@ -152,6 +152,16 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	}
 
 	/**
+	 * 根据电话查询用户信息
+	 * @param phone
+	 * @return
+	 */
+	@Override
+	public SysUser queryUserByPhone(String phone) {
+		return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhone, phone).eq(SysUser::getDelFlag, 0));
+	}
+
+	/**
 	 * 通过查用户的全部信息
 	 *
 	 * @param sysUser 用户

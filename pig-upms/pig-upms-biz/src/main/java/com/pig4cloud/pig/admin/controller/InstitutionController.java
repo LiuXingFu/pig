@@ -110,7 +110,7 @@ public class InstitutionController {
 	@GetMapping("/organizationQueryList")
 	public R organizationQueryList(OrganizationQueryDTO organizationQueryDTO) {
 
-		if(organizationQueryDTO.getType() == 0 || organizationQueryDTO.getType() == 2){
+		if (organizationQueryDTO.getType() == 0 || organizationQueryDTO.getType() == 2) {
 			return R.ok(institutionService.queryAssociatedInstitutions(organizationQueryDTO));
 		} else {
 			return R.ok(institutionService.queryCurrentInstitution(organizationQueryDTO));
@@ -119,21 +119,23 @@ public class InstitutionController {
 
 	/**
 	 * 查询机构是否有简称
+	 *
 	 * @return
 	 */
 	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
 	@GetMapping("/getInstitutionAlias")
-	public R getInstitutionAlias(){
+	public R getInstitutionAlias() {
 		return R.ok(institutionService.getInstitutionAlias());
 	}
 
 	/**
 	 * 查询机构名称是否存在
+	 *
 	 * @return
 	 */
-	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
+	@ApiOperation(value = "查询机构名称是否存在", notes = "查询机构名称是否存在")
 	@GetMapping("/getInstitutionIsInsName/{insName}")
-	public R getInstitutionIsInsName(@PathVariable("insName") String insName){
+	public R getInstitutionIsInsName(@PathVariable("insName") String insName) {
 		return R.ok(institutionService.getInstitutionIsInsName(insName));
 	}
 
@@ -200,14 +202,15 @@ public class InstitutionController {
 
 	/**
 	 * 机构列表分页查询
-	 * @param page        分页对象
+	 *
+	 * @param page               分页对象
 	 * @param institutionPageDTO
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/pageList")
 	public R queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
-		return R.ok(institutionService.queryPage(page,institutionPageDTO));
+		return R.ok(institutionService.queryPage(page, institutionPageDTO));
 	}
 
 	/**
@@ -221,7 +224,7 @@ public class InstitutionController {
 	@PostMapping("addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
-		if (save<=0) {
+		if (save <= 0) {
 			return R.failed("添加失败");
 		} else {
 			return R.ok(save);
@@ -244,11 +247,12 @@ public class InstitutionController {
 
 	/**
 	 * 移除机构负责人
+	 *
 	 * @param insOutlesUserId 员工id
 	 * @return R
 	 */
 	@ApiOperation(value = "移除机构负责人", notes = "移除机构负责人")
-	@SysLog("移除机构负责人" )
+	@SysLog("移除机构负责人")
 	@PutMapping("removePrincipal")
 	public R removePrincipal(@RequestBody int insOutlesUserId) {
 		return R.ok(institutionService.removePrincipal(insOutlesUserId));
@@ -265,13 +269,12 @@ public class InstitutionController {
 	@PostMapping("addPrincipal")
 	public R addPrincipal(@RequestBody InstitutionAddPrincipalDTO institutionAddPrincipalDTO) throws Exception {
 		int save = institutionService.addPrincipal(institutionAddPrincipalDTO);
-		if (save<=0) {
+		if (save <= 0) {
 			return R.failed("添加失败");
 		} else {
 			return R.ok(save);
 		}
 	}
-
 
 
 }

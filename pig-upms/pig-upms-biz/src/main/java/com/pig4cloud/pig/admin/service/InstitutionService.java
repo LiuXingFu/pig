@@ -106,6 +106,6 @@ public interface InstitutionService extends IService<Institution> {
 
 	int addPrincipal(InstitutionAddPrincipalDTO institutionAddPrincipalDTO);
 
-
+	boolean getInstitutionIsInsName(String insName);
 
 }

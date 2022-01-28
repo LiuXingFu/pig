@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.admin.api.entity.UserOutlesStaffRe;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 
