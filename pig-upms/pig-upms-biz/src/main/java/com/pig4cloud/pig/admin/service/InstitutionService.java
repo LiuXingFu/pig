@@ -88,4 +88,6 @@ public interface InstitutionService extends IService<Institution> {
 	List<OrganizationQueryVO> queryAssociatedInstitutions(OrganizationQueryDTO organizationQueryDTO);
 
 	boolean getInstitutionAlias();
+
+	boolean getInstitutionIsInsName(String insName);
 }

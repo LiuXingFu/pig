@@ -76,7 +76,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 		outlesDTO.setInsId(institution.getInsId());
 
-		outlesDTO.setUserId(institution.getUserId());
+//		outlesDTO.setUserId(institution.getUserId());
 
 		Outles outles = new Outles();
 		BeanUtils.copyProperties(outlesDTO, outles);

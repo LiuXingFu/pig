@@ -133,6 +133,16 @@ public class InstitutionController {
 	}
 
 	/**
+	 * 查询机构名称是否存在
+	 * @return
+	 */
+	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
+	@GetMapping("/getInstitutionIsInsName/{insName}")
+	public R getInstitutionIsInsName(@PathVariable("insName") String insName){
+		return R.ok(institutionService.getInstitutionIsInsName(insName));
+	}
+
+	/**
 	 * 新增
 	 *
 	 * @param institutionDTO
