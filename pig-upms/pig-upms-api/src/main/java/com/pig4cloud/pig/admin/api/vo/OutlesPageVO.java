@@ -17,14 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 网点表
@@ -38,63 +31,51 @@ public class OutlesPageVO {
 	/**
 	 * 网点id 主键自增
 	 */
-	@ApiModelProperty(value = "网点id 主键自增")
 	private Integer outlesId;
 	/**
 	 * 网点名称
 	 */
-	@ApiModelProperty(value = "网点名称")
 	private String outlesName;
 	/**
 	 * 机构id
 	 */
-	@ApiModelProperty(value = "机构id")
 	private Integer insId;
 
 	/**
 	 * 简称
 	 */
-	@ApiModelProperty(value = "简称")
 	private String alias;
 	/**
 	 * 座机电话
 	 */
-	@ApiModelProperty(value = "座机电话")
 	private String outlesLandLinePhone;
 	/**
 	 * 备注
 	 */
-	@ApiModelProperty(value = "备注")
 	private String outlesRemark;
 	/**
 	 * 是否是默认网点 0-否 1-是
 	 */
-	@ApiModelProperty(value = "是否是默认网点 0-否 1-是")
 	private Integer canDefault;
 	/**
 	 * 0-正常，1-删除
 	 */
-	@TableLogic
 	private String delFlag;
 
 	/**
 	 * 省
 	 */
-	@ApiModelProperty(value = "省")
 	private String province;
 	/**
 	 * 市
 	 */
-	@ApiModelProperty(value = "市")
 	private String city;
 	/**
 	 * 区
 	 */
-	@ApiModelProperty(value = "区")
 	private String area;
 	/**
 	 * 信息地址
 	 */
-	@ApiModelProperty(value = "信息地址")
 	private String informationAddress;
 }

@@ -16,15 +16,9 @@
  */
 package com.pig4cloud.pig.admin.api.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,40 +30,32 @@ import java.util.List;
  * @date 2022-01-27 19:30:49
  */
 @Data
-@TableName("p10_ins_outles_user")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "机构/网点用户关联表")
 public class InsOutlesUserAddDTO extends BaseEntity {
 
 
     /**
      * 机构id
      */
-    @ApiModelProperty(value="机构id")
     private Integer insId;
 
     /**
      * 网点id
      */
-    @ApiModelProperty(value="网点id")
     private Integer outlesId;
 
     /**
 	 * 类型：1-管理员，2-普通员工
 	 */
-	@ApiModelProperty(value="类型：1-管理员，2-普通员工")
 	private Integer type;
 
     /**
      * 入职时间
      */
-    @ApiModelProperty(value="入职时间")
     private LocalDateTime entryTime;
 
     /**
      * 职位
      */
-    @ApiModelProperty(value="职位")
     private String position;
 
 	/**

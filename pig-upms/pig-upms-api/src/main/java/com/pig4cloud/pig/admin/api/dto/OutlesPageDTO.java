@@ -17,8 +17,6 @@
 
 package com.pig4cloud.pig.admin.api.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -34,11 +32,9 @@ public class OutlesPageDTO {
 	/**
 	 * 网点名称
 	 */
-	@ApiModelProperty(value = "网点名称")
 	private String outlesName;
 	/**
 	 * 机构id
 	 */
-	@ApiModelProperty(value = "机构id")
 	private Integer insId;
 }

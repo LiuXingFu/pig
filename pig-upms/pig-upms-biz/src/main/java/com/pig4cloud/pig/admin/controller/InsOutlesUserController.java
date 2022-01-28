@@ -20,7 +20,6 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
-import com.pig4cloud.pig.admin.api.dto.InstitutionAddPrincipalDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.service.InsOutlesUserService;
 import com.pig4cloud.pig.common.core.util.R;
