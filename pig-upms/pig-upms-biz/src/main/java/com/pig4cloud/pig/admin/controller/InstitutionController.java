@@ -200,11 +200,11 @@ public class InstitutionController {
 
 	/**
 	 * 机构列表分页查询
-	 * @param page        分页对象
+	 * @param page        机构列表分页查询
 	 * @param institutionPageDTO
 	 * @return
 	 */
-	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@ApiOperation(value = "机构列表分页查询", notes = "机构列表分页查询")
 	@GetMapping("/pageList")
 	public R queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
 		return R.ok(institutionService.queryPage(page,institutionPageDTO));
@@ -218,7 +218,7 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "添加机构", notes = "添加机构")
 	@SysLog("添加机构")
-	@PostMapping("addInstitution")
+	@PostMapping("/addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
 		if (save<=0) {
@@ -236,9 +236,21 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "修改机构", notes = "修改机构")
 	@SysLog("修改机构")
-	@PutMapping("modifyInstitutionById")
+	@PutMapping("/modifyInstitutionById")
 	public R modifyInstitutionById(@RequestBody InstitutionModifyDTO institutionModifyDTO) throws Exception {
 		return R.ok(institutionService.modifyInstitutionById(institutionModifyDTO));
+	}
+
+	/**
+	 * 查询机构详情
+	 *
+	 * @param insId id
+	 * @return R
+	 */
+	@ApiOperation(value = "查询机构详情", notes = "查询机构详情")
+	@GetMapping("/queryById")
+	public R queryById(@PathVariable("insId") Integer insId) {
+		return R.ok(institutionService.queryById(insId));
 	}
 
 

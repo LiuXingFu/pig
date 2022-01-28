@@ -14,47 +14,46 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.admin.api.vo;
 
-package com.pig4cloud.pig.admin.api.dto;
-
-import com.pig4cloud.pig.admin.api.entity.Address;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
- * 网点表
+ * 机构/网点用户关联表
  *
- * @author yuanduo
- * @date 2021-09-02 16:24:58
+ * @author xls
+ * @date 2022-01-27 19:30:49
  */
 @Data
-public class OutlesModifyDTO {
+public class InsOutlesUserListVO {
+
+    /**
+     * 主键id
+     */
+    private Integer insOutlesUserId;
+
+    /**
+     * 入职时间
+     */
+    private LocalDateTime entryTime;
+
+    /**
+     * 职位
+     */
+    private String position;
 
 	/**
-	 * 网点id 主键自增
+	 * 真实姓名
 	 */
-	private Integer outlesId;
+	private String actualName;
+
 	/**
-	 * 网点名称
+	 * 手机号
 	 */
-	private String outlesName;
-	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
-	 * 简称
-	 */
-	private String alias;
-	/**
-	 * 座机电话
-	 */
-	private String outlesLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String outlesRemark;
-	/**
-	 * 地址
-	 */
-	private Address address;
+	private String phone;
+
+
 }

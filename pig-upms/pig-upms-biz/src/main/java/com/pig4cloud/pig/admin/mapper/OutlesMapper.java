@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesQueryDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -58,5 +59,7 @@ public interface OutlesMapper extends BaseMapper<Outles> {
 
 	/**********************************************************************/
 	IPage<OutlesPageVO> selectPage(Page page, @Param("query") OutlesPageDTO outlesPageDTO);
+
+	OutlesDetailsVO selectById( @Param("outlesId") int outlesId);
 
 }

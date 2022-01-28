@@ -20,6 +20,9 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
+
+import java.util.List;
 
 /**
  * 机构/网点用户关联表
@@ -37,5 +40,13 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	 * @return
 	 */
 	int removeInsOutlesUser(int insOutlesUserId);
+
+	/**
+	 * 根据机构id或网点id查询员工集合
+	 * @param insId
+	 * @param outlesId
+	 * @return
+	 */
+	List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId);
 
 }

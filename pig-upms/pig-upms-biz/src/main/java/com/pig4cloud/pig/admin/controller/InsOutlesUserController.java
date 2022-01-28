@@ -118,7 +118,7 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "移除用户", notes = "移除用户")
 	@SysLog("移除用户" )
-	@PutMapping("removeInsOutlesUser")
+	@PutMapping("/removeInsOutlesUser")
 	public R removeInsOutlesUser(@RequestBody int insOutlesUserId) {
 		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
 	}
@@ -134,7 +134,7 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "添加用户", notes = "添加用户")
 	@SysLog("添加用户")
-	@PostMapping("addInsOutlesUser")
+	@PostMapping("/addInsOutlesUser")
 	public R addInsOutlesUser(@RequestBody InsOutlesUserAddDTO insOutlesUserAddDTO) throws Exception {
 		int save = insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 		if (save<=0) {

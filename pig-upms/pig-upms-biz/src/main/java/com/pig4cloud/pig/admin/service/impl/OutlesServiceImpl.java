@@ -24,6 +24,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
+import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
@@ -289,21 +291,20 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			throw new RuntimeException("此网点名称已存在！");
 		}else{
 			Outles outles = new Outles();
+
+			BeanUtils.copyProperties(outlesAddDTO,outles);
+			save = this.baseMapper.insert(outles);
 			// 判断地址是否为空
-			if(Objects.nonNull(outlesAddDTO.getInformationAddress())){
+			if(Objects.nonNull(outlesAddDTO.getAddress().getInformationAddress())){
 				// 添加地址
 				Address address = new Address();
 				address.setDelFlag(CommonConstants.STATUS_NORMAL);
-				address.setCity(outlesAddDTO.getCity());
-				address.setArea(outlesAddDTO.getArea());
-				address.setInformationAddress(outlesAddDTO.getInformationAddress());
-				// 类型2=机构地址
-				address.setType(2);
+				BeanUtils.copyProperties(address,outlesAddDTO.getAddress());
+				// 类型3=网点地址
+				address.setType(3);
+				address.setUserId(outles.getOutlesId());
 				addressService.save(address);
-				outles.setAddressId(address.getAddressId());
 			}
-			BeanUtils.copyProperties(outlesAddDTO,outles);
-			save = this.baseMapper.insert(outles);
 			// 添加网点负责人用户
 			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
 			insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
@@ -312,7 +313,6 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
 			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 		}
-
 		return save;
 	}
 
@@ -323,7 +323,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		Outles outles = new Outles();
 		BeanUtils.copyProperties(outles,outlesModifyDTO);
 		modify = this.baseMapper.updateById(outles);
-		if(Objects.nonNull(outlesModifyDTO.getInformationAddress())){
+		if(Objects.nonNull(outlesModifyDTO.getAddress().getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(address,outlesModifyDTO);
@@ -331,5 +331,13 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		}
 
 		return modify;
+	}
+
+	@Override
+	public OutlesDetailsVO queryById(int outlesId){
+		OutlesDetailsVO outlesDetailsVO = this.baseMapper.selectById(outlesId);
+		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,0,outlesId);
+		outlesDetailsVO.setUserList(userList);
+		return outlesDetailsVO;
 	}
 }

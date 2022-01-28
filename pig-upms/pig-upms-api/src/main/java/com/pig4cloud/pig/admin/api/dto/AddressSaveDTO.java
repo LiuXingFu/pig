@@ -17,44 +17,41 @@
 
 package com.pig4cloud.pig.admin.api.dto;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 网点表
+ * 地址表
  *
  * @author yuanduo
- * @date 2021-09-02 16:24:58
+ * @date 2021-09-03 16:26:59
  */
 @Data
-public class OutlesModifyDTO {
-
+public class AddressSaveDTO {
 	/**
-	 * 网点id 主键自增
+	 * 省
 	 */
-	private Integer outlesId;
+	@ApiModelProperty(value = "省")
+	private String province;
 	/**
-	 * 网点名称
+	 * 市
 	 */
-	private String outlesName;
+	@ApiModelProperty(value = "市")
+	private String city;
 	/**
-	 * 地址id
+	 * 区
 	 */
-	private Integer addressId;
+	@ApiModelProperty(value = "区")
+	private String area;
 	/**
-	 * 简称
+	 * 信息地址
 	 */
-	private String alias;
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
 	/**
-	 * 座机电话
+	 * 行政区划编号
 	 */
-	private String outlesLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String outlesRemark;
-	/**
-	 * 地址
-	 */
-	private Address address;
+	@ApiModelProperty(value = "行政区划编号")
+	private String code;
 }

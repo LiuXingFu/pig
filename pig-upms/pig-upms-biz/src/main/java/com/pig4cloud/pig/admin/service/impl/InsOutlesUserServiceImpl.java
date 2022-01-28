@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
@@ -122,5 +123,10 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		// 删除角色权限
 		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId,insOutlesUserId));
 		return modify;
+	}
+
+	@Override
+	public List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId){
+		return this.baseMapper.selectUserList(type,insId,outlesId);
 	}
 }

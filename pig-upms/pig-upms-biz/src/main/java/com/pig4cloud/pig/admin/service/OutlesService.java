@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesModifyDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 
@@ -118,7 +119,7 @@ public interface OutlesService extends IService<Outles> {
 
 	int modifyOutlesById(OutlesModifyDTO outlesModifyDTO);
 
-
+	OutlesDetailsVO queryById(int outlesId);
 
 
 

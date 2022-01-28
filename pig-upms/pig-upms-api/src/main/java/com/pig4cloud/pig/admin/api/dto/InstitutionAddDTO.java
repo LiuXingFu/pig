@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.dto;
 
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
 import lombok.Data;
 
@@ -49,23 +50,9 @@ public class InstitutionAddDTO {
 
 	/**************机构地址************************/
 	/**
-	 * 省
+	 * 地址
 	 */
-	private String province;
-	/**
-	 * 市
-	 */
-	private String city;
-	/**
-	 * 区
-	 */
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
-
-
+	private AddressSaveDTO address;
 
 	/**
 	 * 负责人集合

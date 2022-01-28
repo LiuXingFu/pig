@@ -23,9 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.*;
-import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.mapper.InstitutionMapper;
 import com.pig4cloud.pig.admin.service.*;
@@ -550,21 +548,20 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			throw new RuntimeException("此机构名称已存在！");
 		}else{
 			Institution institution = new Institution();
-			// 判断地址是否为空
-			if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
-				// 添加地址
-				Address address = new Address();
-				address.setDelFlag(CommonConstants.STATUS_NORMAL);
-				address.setCity(institutionAddDTO.getCity());
-				address.setArea(institutionAddDTO.getArea());
-				address.setInformationAddress(institutionAddDTO.getInformationAddress());
-				// 类型2=机构地址
-				address.setType(2);
-				addressService.save(address);
-				institution.setAddressId(address.getAddressId());
-			}
+
 			BeanUtils.copyProperties(institutionAddDTO,institution);
 			save = this.baseMapper.insert(institution);
+			// 判断地址是否为空
+			if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
+				// 添加地址
+				Address address = new Address();
+				BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
+				address.setDelFlag(CommonConstants.STATUS_NORMAL);
+				// 类型2=机构地址
+				address.setType(2);
+				address.setUserId(institution.getInsId());
+				addressService.save(address);
+			}
 			// 添加机构负责人用户
 			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
 			insOutlesUserAddDTO.setInsId(institution.getInsId());
@@ -581,13 +578,21 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		Institution institution = new Institution();
 		BeanUtils.copyProperties(institution,institutionModifyDTO);
 		modify = this.baseMapper.updateById(institution);
-		if(Objects.nonNull(institutionModifyDTO.getInformationAddress())){
+		if(Objects.nonNull(institutionModifyDTO.getAddress().getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(address,institutionModifyDTO);
 			addressService.updateById(address);
 		}
 		return modify;
+	}
+
+	@Override
+	public InstitutionDetailsVO queryById(int insId){
+		InstitutionDetailsVO institutionVO = this.baseMapper.selectById(insId);
+		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,insId,0);
+		institutionVO.setUserList(userList);
+		return institutionVO;
 	}
 
 

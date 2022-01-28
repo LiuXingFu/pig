@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Institution;
+import com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
@@ -98,6 +99,8 @@ public interface InstitutionService extends IService<Institution> {
 	int addInstitution(InstitutionAddDTO institutionAddDTO);
 
 	int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO);
+
+	InstitutionDetailsVO queryById(int insId);
 
 
 

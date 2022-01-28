@@ -205,8 +205,21 @@ public class OutlesController {
 	 */
 	@ApiOperation(value = "修改网点", notes = "修改网点")
 	@SysLog("修改网点")
-	@PutMapping("modifyOutlesById")
+	@PutMapping("/modifyOutlesById")
 	public R modifyOutlesById(@RequestBody OutlesModifyDTO outlesModifyDTO) throws Exception {
 		return R.ok(outlesService.modifyOutlesById(outlesModifyDTO));
 	}
+
+	/**
+	 * 查询网点详情
+	 *
+	 * @param outlesId id
+	 * @return R
+	 */
+	@ApiOperation(value = "查询网点详情", notes = "查询网点详情")
+	@GetMapping("/queryById")
+	public R queryById(@PathVariable("outlesId") Integer outlesId) {
+		return R.ok(outlesService.queryById(outlesId));
+	}
+
 }
