@@ -17,14 +17,8 @@
 
 package com.pig4cloud.pig.admin.api.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 机构分页DTO
@@ -36,11 +30,9 @@ public class InstitutionPageDTO {
 	/**
 	 * 机构名称
 	 */
-	@ApiModelProperty(value = "机构名称")
 	private String insName;
 	/**
 	 * 机构类型
 	 */
-	@ApiModelProperty(value = "机构类型")
 	private Integer insType;
 }

@@ -18,47 +18,40 @@
 package com.pig4cloud.pig.admin.api.dto;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 机构表
+ * 地址表
  *
  * @author yuanduo
- * @date 2021-09-02 16:16:06
+ * @date 2021-09-03 16:26:59
  */
 @Data
-public class InstitutionModifyDTO{
-
+public class AddressSaveDTO {
 	/**
-	 * 机构id 主键自增
+	 * 省
 	 */
-	private Integer insId;
+	@ApiModelProperty(value = "省")
+	private String province;
 	/**
-	 * 机构名称
+	 * 市
 	 */
-	private String insName;
+	@ApiModelProperty(value = "市")
+	private String city;
 	/**
-	 * 地址id
+	 * 区
 	 */
-	private Integer addressId;
-	/**
-	 * 传真
-	 */
-	private String insFax;
-	/**
-	 * 座机电话
-	 */
-	private String insLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String insRemark;
-	/**
-	 * 地址
-	 */
-	private AddressSaveDTO address;
+	@ApiModelProperty(value = "区")
+	private String area;
 	/**
 	 * 信息地址
 	 */
+	@ApiModelProperty(value = "信息地址")
 	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	@ApiModelProperty(value = "行政区划编号")
+	private String code;
 }

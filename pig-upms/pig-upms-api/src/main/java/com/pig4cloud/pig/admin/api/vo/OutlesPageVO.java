@@ -15,41 +15,67 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.api.dto;
+package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-
-
+/**
+ * 网点表
+ *
+ * @author yuanduo
+ * @date 2021-09-02 16:24:58
+ */
 @Data
-public class InstitutionAddPrincipalDTO {
+public class OutlesPageVO {
 
+	/**
+	 * 网点id 主键自增
+	 */
+	private Integer outlesId;
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
 	/**
 	 * 机构id
 	 */
-	@ApiModelProperty(value = "机构id")
 	private Integer insId;
 
 	/**
-	 * 用户id
+	 * 简称
 	 */
-	@ApiModelProperty(value = "用户id")
-	private Integer userId;
+	private String alias;
+	/**
+	 * 座机电话
+	 */
+	private String outlesLandLinePhone;
+	/**
+	 * 备注
+	 */
+	private String outlesRemark;
+	/**
+	 * 是否是默认网点 0-否 1-是
+	 */
+	private Integer canDefault;
+	/**
+	 * 0-正常，1-删除
+	 */
+	private String delFlag;
 
 	/**
-	 * 真实姓名
+	 * 省
 	 */
-	@ApiModelProperty(value = "真实姓名")
-	private String actualName;
-
+	private String province;
 	/**
-	 * 手机号
+	 * 市
 	 */
-	@ApiModelProperty(value = "手机号")
-	private String phone;
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }

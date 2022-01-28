@@ -135,7 +135,7 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "查询机构名称是否存在", notes = "查询机构名称是否存在")
 	@GetMapping("/getInstitutionIsInsName/{insName}")
-	public R getInstitutionIsInsName(@PathVariable("insName") String insName) {
+	public R getInstitutionIsInsName(@PathVariable("insName") String insName){
 		return R.ok(institutionService.getInstitutionIsInsName(insName));
 	}
 
@@ -202,15 +202,14 @@ public class InstitutionController {
 
 	/**
 	 * 机构列表分页查询
-	 *
-	 * @param page               分页对象
+	 * @param page        分页对象
 	 * @param institutionPageDTO
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/pageList")
 	public R queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
-		return R.ok(institutionService.queryPage(page, institutionPageDTO));
+		return R.ok(institutionService.queryPage(page,institutionPageDTO));
 	}
 
 	/**
@@ -224,7 +223,7 @@ public class InstitutionController {
 	@PostMapping("addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
-		if (save <= 0) {
+		if (save<=0) {
 			return R.failed("添加失败");
 		} else {
 			return R.ok(save);
@@ -239,42 +238,25 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "修改机构", notes = "修改机构")
 	@SysLog("修改机构")
-	@PutMapping("modifyInstitutionById")
+	@PutMapping("/modifyInstitutionById")
 	public R modifyInstitutionById(@RequestBody InstitutionModifyDTO institutionModifyDTO) throws Exception {
 		return R.ok(institutionService.modifyInstitutionById(institutionModifyDTO));
 	}
 
-
 	/**
-	 * 移除机构负责人
+	 * 查询机构详情
 	 *
-	 * @param insOutlesUserId 员工id
+	 * @param insId id
 	 * @return R
 	 */
-	@ApiOperation(value = "移除机构负责人", notes = "移除机构负责人")
-	@SysLog("移除机构负责人")
-	@PutMapping("removePrincipal")
-	public R removePrincipal(@RequestBody int insOutlesUserId) {
-		return R.ok(institutionService.removePrincipal(insOutlesUserId));
+	@ApiOperation(value = "查询机构详情", notes = "查询机构详情")
+	@GetMapping("/queryById")
+	public R queryById(@PathVariable("insId") Integer insId) {
+		return R.ok(institutionService.queryById(insId));
 	}
 
-	/**
-	 * 添加机构负责人
-	 *
-	 * @param institutionAddPrincipalDTO
-	 * @return R
-	 */
-	@ApiOperation(value = "添加机构负责人", notes = "添加机构负责人")
-	@SysLog("添加机构负责人")
-	@PostMapping("addPrincipal")
-	public R addPrincipal(@RequestBody InstitutionAddPrincipalDTO institutionAddPrincipalDTO) throws Exception {
-		int save = institutionService.addPrincipal(institutionAddPrincipalDTO);
-		if (save <= 0) {
-			return R.failed("添加失败");
-		} else {
-			return R.ok(save);
-		}
-	}
+
+
 
 
 }

@@ -17,48 +17,49 @@
 
 package com.pig4cloud.pig.admin.api.dto;
 
-
+import com.pig4cloud.pig.admin.api.entity.Address;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
 import lombok.Data;
 
+import java.util.List;
+
 /**
- * 机构表
+ * 网点表
  *
  * @author yuanduo
- * @date 2021-09-02 16:16:06
+ * @date 2021-09-02 16:24:58
  */
 @Data
-public class InstitutionModifyDTO{
+public class OutlesAddDTO{
 
 	/**
-	 * 机构id 主键自增
+	 * 网点名称
+	 */
+	private String outlesName;
+	/**
+	 * 机构id
 	 */
 	private Integer insId;
 	/**
-	 * 机构名称
+	 * 简称
 	 */
-	private String insName;
-	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
-	 * 传真
-	 */
-	private String insFax;
+	private String alias;
 	/**
 	 * 座机电话
 	 */
-	private String insLandLinePhone;
+	private String outlesLandLinePhone;
 	/**
 	 * 备注
 	 */
-	private String insRemark;
+	private String outlesRemark;
+
 	/**
 	 * 地址
 	 */
-	private AddressSaveDTO address;
+	private Address address;
+
 	/**
-	 * 信息地址
+	 * 负责人集合
 	 */
-	private String informationAddress;
+	private List<SysUser> userList;
 }

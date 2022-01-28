@@ -19,7 +19,11 @@ package com.pig4cloud.pig.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 机构/网点用户关联表
@@ -29,5 +33,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface InsOutlesUserMapper extends BaseMapper<InsOutlesUser> {
+
+	List<InsOutlesUserListVO> selectUserList(@Param("type") int type,@Param("insId") Integer insId,@Param("outlesId") Integer outlesId);
 
 }

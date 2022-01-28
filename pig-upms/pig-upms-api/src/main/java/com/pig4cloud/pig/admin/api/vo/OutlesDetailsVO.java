@@ -17,45 +17,61 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.util.List;
 
 /**
- * 机构分页VO
+ * 网点表
+ *
+ * @author yuanduo
+ * @date 2021-09-02 16:24:58
  */
 @Data
-public class InstitutionPageVO {
+public class OutlesDetailsVO{
 
 	/**
-	 * 机构id 主键自增
+	 * 网点id 主键自增
+	 */
+	private Integer outlesId;
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
+	/**
+	 * 机构id
 	 */
 	private Integer insId;
 	/**
-	 * 机构名称
+	 * 地址id
 	 */
-	private String insName;
+	private Integer addressId;
 	/**
-	 * 机构类型
+	 * 简称
 	 */
-	private Integer insType;
-	/**
-	 * 是否禁用 0-否 1-是
-	 */
-	private Integer canDisable;
-	/**
-	 * 传真
-	 */
-	private String insFax;
+	private String alias;
 	/**
 	 * 座机电话
 	 */
-	private String insLandLinePhone;
+	private String outlesLandLinePhone;
 	/**
 	 * 备注
 	 */
-	private String insRemark;
+	private String outlesRemark;
 	/**
-	 * 删除状态(0-正常,1-已删除)
+	 * 是否是默认网点 0-否 1-是
+	 */
+	private Integer canDefault;
+	/**
+	 * 0-正常，1-删除
 	 */
 	private String delFlag;
 
@@ -77,4 +93,9 @@ public class InstitutionPageVO {
 	private String informationAddress;
 
 
+
+	/**
+	 * 负责人集合
+	 */
+	private List<InsOutlesUserListVO> userList;
 }

@@ -14,51 +14,54 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-
 package com.pig4cloud.pig.admin.api.dto;
 
-
+import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
- * 机构表
+ * 机构/网点用户关联表
  *
- * @author yuanduo
- * @date 2021-09-02 16:16:06
+ * @author xls
+ * @date 2022-01-27 19:30:49
  */
 @Data
-public class InstitutionModifyDTO{
+public class InsOutlesUserAddDTO extends BaseEntity {
+
+
+    /**
+     * 机构id
+     */
+    private Integer insId;
+
+    /**
+     * 网点id
+     */
+    private Integer outlesId;
+
+    /**
+	 * 类型：1-管理员，2-普通员工
+	 */
+	private Integer type;
+
+    /**
+     * 入职时间
+     */
+    private LocalDateTime entryTime;
+
+    /**
+     * 职位
+     */
+    private String position;
 
 	/**
-	 * 机构id 主键自增
+	 * 用户集合
 	 */
-	private Integer insId;
-	/**
-	 * 机构名称
-	 */
-	private String insName;
-	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
-	 * 传真
-	 */
-	private String insFax;
-	/**
-	 * 座机电话
-	 */
-	private String insLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String insRemark;
-	/**
-	 * 地址
-	 */
-	private AddressSaveDTO address;
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
+	private List<SysUser> userList;
+
+
 }

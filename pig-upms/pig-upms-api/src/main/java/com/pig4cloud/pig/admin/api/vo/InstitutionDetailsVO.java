@@ -15,10 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.api.dto;
+package com.pig4cloud.pig.admin.api.vo;
 
-
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * 机构表
@@ -27,7 +36,7 @@ import lombok.Data;
  * @date 2021-09-02 16:16:06
  */
 @Data
-public class InstitutionModifyDTO{
+public class InstitutionDetailsVO {
 
 	/**
 	 * 机构id 主键自增
@@ -38,9 +47,17 @@ public class InstitutionModifyDTO{
 	 */
 	private String insName;
 	/**
+	 * 机构类型
+	 */
+	private Integer insType;
+	/**
 	 * 地址id
 	 */
 	private Integer addressId;
+	/**
+	 * 是否禁用 0-否 1-是
+	 */
+	private Integer canDisable;
 	/**
 	 * 传真
 	 */
@@ -54,11 +71,29 @@ public class InstitutionModifyDTO{
 	 */
 	private String insRemark;
 	/**
-	 * 地址
+	 * 删除状态(0-正常,1-已删除)
 	 */
-	private AddressSaveDTO address;
+	private String delFlag;
+
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
 	/**
 	 * 信息地址
 	 */
 	private String informationAddress;
+
+	/**
+	 * 员工集合
+	 */
+	private List<InsOutlesUserListVO> userList;
 }

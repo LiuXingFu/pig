@@ -23,9 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.*;
-import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.mapper.InstitutionMapper;
 import com.pig4cloud.pig.admin.service.*;
@@ -550,63 +548,26 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			throw new RuntimeException("此机构名称已存在！");
 		}else{
 			Institution institution = new Institution();
-			// 判断地址是否为空
-			if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
-				// 添加地址
-				Address address = new Address();
-				address.setDelFlag(CommonConstants.STATUS_NORMAL);
-				address.setCity(institutionAddDTO.getCity());
-				address.setArea(institutionAddDTO.getArea());
-				address.setInformationAddress(institutionAddDTO.getInformationAddress());
-				// 类型2=机构地址
-				address.setType(2);
-				addressService.save(address);
-				institution.setAddressId(address.getAddressId());
-			}
+
 			BeanUtils.copyProperties(institutionAddDTO,institution);
 			save = this.baseMapper.insert(institution);
+			// 判断地址是否为空
+			if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
+				// 添加地址
+				Address address = new Address();
+				BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
+				address.setDelFlag(CommonConstants.STATUS_NORMAL);
+				// 类型2=机构地址
+				address.setType(2);
+				address.setUserId(institution.getInsId());
+				addressService.save(address);
+			}
 			// 添加机构负责人用户
-			List<SysUser> userList = new ArrayList<>();
-			List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
-			userList.stream().forEach(item ->{
-				InsOutlesUser insOutlesUser = new InsOutlesUser();
-				insOutlesUser.setInsId(institution.getInsId());
-				insOutlesUser.setType(1);
-				insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
-				if(Objects.nonNull(item.getUserId())){
-					insOutlesUser.setUserId(item.getUserId());
-				}else{
-					SysUser sysUser = new SysUser();
-					sysUser.setPassword("a123456");
-					sysUser.setPhone(item.getPhone());
-					sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
-					sysUser.setLockFlag("0");
-					sysUser.setUsername(item.getPhone());
-					sysUser.setActualName(item.getActualName());
-					sysUserService.save(sysUser);
-					insOutlesUser.setUserId(sysUser.getUserId());
-				}
-				insOutlesUserList.add(insOutlesUser);
-			});
-			insOutlesUserService.saveBatch(insOutlesUserList);
-			// 5.根据机构类型与字典类型查询角色标识
-			SysDictItem sysDictItem = new SysDictItem();
-			sysDictItem.setType("ins_type");
-			sysDictItem.setValue(institutionAddDTO.getInsType().toString());
-
-			SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
-
-			// 6.根据角色标识查询角色信息
-			SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + "_ADMIN").eq(SysRole::getDelFlag, 0));
-
-			List<StaffRole> staffRoleList = new ArrayList<>();
-			insOutlesUserList.stream().forEach(item ->{
-				StaffRole staffRole = new StaffRole();
-				staffRole.setRoleId(role.getRoleId());
-				staffRole.setStaffId(item.getInsOutlesUserId());
-				staffRoleList.add(staffRole);
-			});
-			staffRoleService.saveBatch(staffRoleList);
+			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+			insOutlesUserAddDTO.setInsId(institution.getInsId());
+			insOutlesUserAddDTO.setType(1);
+			insOutlesUserAddDTO.setUserList(institutionAddDTO.getUserList());
+			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 		}
 		return save;
 	}
@@ -617,7 +578,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		Institution institution = new Institution();
 		BeanUtils.copyProperties(institution,institutionModifyDTO);
 		modify = this.baseMapper.updateById(institution);
-		if(Objects.nonNull(institutionModifyDTO.getInformationAddress())){
+		if(Objects.nonNull(institutionModifyDTO.getAddress().getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(address,institutionModifyDTO);
@@ -626,62 +587,12 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		return modify;
 	}
 
-
 	@Override
-	public int removePrincipal(int insOutlesUserId){
-		int modify = 0;
-		InsOutlesUser insOutlesUser = new InsOutlesUser();
-		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
-		insOutlesUser.setInsOutlesUserId(insOutlesUserId);
-		modify = this.baseMapper.deleteById(insOutlesUser);
-		// 删除角色权限
-		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId,insOutlesUserId));
-		return modify;
-	}
-
-	@Override
-	public int addPrincipal(InstitutionAddPrincipalDTO institutionAddPrincipalDTO){
-		int add = 0;
-
-		InsOutlesUser insOutlesUser = new InsOutlesUser();
-		// 判断用户是否存在
-		if(Objects.isNull(institutionAddPrincipalDTO.getUserId())){
-			SysUser sysUser = new SysUser();
-			sysUser.setPassword("a123456");
-			sysUser.setPhone(institutionAddPrincipalDTO.getPhone());
-			sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
-			sysUser.setLockFlag("0");
-			sysUser.setUsername(institutionAddPrincipalDTO.getPhone());
-			sysUser.setActualName(institutionAddPrincipalDTO.getActualName());
-			sysUserService.save(sysUser);
-			insOutlesUser.setUserId(sysUser.getUserId());
-		}else{
-			insOutlesUser.setUserId(institutionAddPrincipalDTO.getUserId());
-		}
-		insOutlesUser.setInsId(institutionAddPrincipalDTO.getInsId());
-		insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
-		insOutlesUser.setType(1);
-		insOutlesUserService.save(insOutlesUser);
-
-
-
-		Institution getOne = this.baseMapper.selectById(institutionAddPrincipalDTO.getInsId());
-		// 5.根据机构类型与字典类型查询角色标识
-		SysDictItem sysDictItem = new SysDictItem();
-		sysDictItem.setType("ins_type");
-		sysDictItem.setValue(getOne.getInsType().toString());
-
-		SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
-
-		// 6.根据角色标识查询角色信息
-		SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + "_ADMIN").eq(SysRole::getDelFlag, 0));
-
-		StaffRole staffRole = new StaffRole();
-		staffRole.setRoleId(role.getRoleId());
-		staffRole.setStaffId(insOutlesUser.getInsOutlesUserId());
-		staffRoleService.save(staffRole);
-
-		return add;
+	public InstitutionDetailsVO queryById(int insId){
+		InstitutionDetailsVO institutionVO = this.baseMapper.selectById(insId);
+		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,insId,0);
+		institutionVO.setUserList(userList);
+		return institutionVO;
 	}
 
 
