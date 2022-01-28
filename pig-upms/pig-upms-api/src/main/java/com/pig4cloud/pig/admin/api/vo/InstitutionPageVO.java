@@ -19,13 +19,8 @@ package com.pig4cloud.pig.admin.api.vo;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 机构分页VO
