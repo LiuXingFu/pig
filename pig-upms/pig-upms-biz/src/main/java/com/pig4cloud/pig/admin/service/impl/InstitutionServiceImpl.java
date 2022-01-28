@@ -607,7 +607,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		Institution institution = new Institution();
 		BeanUtils.copyProperties(institution,institutionModifyDTO);
 		modify = this.baseMapper.updateById(institution);
-		if(Objects.nonNull(institutionModifyDTO.getAddressId())){
+		if(Objects.nonNull(institutionModifyDTO.getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(address,institutionModifyDTO);
