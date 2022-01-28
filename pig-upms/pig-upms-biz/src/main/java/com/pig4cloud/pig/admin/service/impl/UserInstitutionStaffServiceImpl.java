@@ -388,6 +388,12 @@ public class UserInstitutionStaffServiceImpl extends ServiceImpl<UserInstitution
 		return outlesIds;
 	}
 
+	/**
+	 * 根据认证目标id与认证类型查询员工集合
+	 * @param page
+	 * @param staffRelationshipAuthenticateDTO
+	 * @return
+	 */
 	@Override
 	public IPage<UserInstitutionStaff> getStaffsByAuthenticateGoalId(Page page, StaffRelationshipAuthenticateDTO staffRelationshipAuthenticateDTO) {
 		return this.baseMapper.getStaffsByAuthenticateGoalId(page, staffRelationshipAuthenticateDTO);

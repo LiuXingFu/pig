@@ -30,6 +30,7 @@ import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.mapper.InstitutionMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -144,18 +145,18 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			userDTO.setUserType(1);
 			sysUserService.saveUser(userDTO);
 
-			// 7.新增机构地址
-			Address address = new Address();
-			address.setUserId(userDTO.getUserId());
-			address.setType(2);
-			BeanUtils.copyProperties(institutionDTO.getAddress(), address);
-			addressService.saveAddress(address);
-
 			// 8.新增机构
 			Institution institution = new Institution();
 			BeanUtils.copyProperties(institutionDTO, institution);
 //			institution.setUserId(userDTO.getUserId());
 			this.save(institution);
+
+			// 7.新增机构地址
+			Address address = new Address();
+			address.setUserId(institution.getInsId());
+			address.setType(2);
+			BeanUtils.copyProperties(institutionDTO.getAddress(), address);
+			addressService.saveAddress(address);
 
 			if (institution.getInsType().equals(Integer.valueOf("1500"))) {
 				if (Objects.nonNull(institutionDTO.getCourt().getCourtId())) {
@@ -476,6 +477,21 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				}
 			}
 			return organizationQueryVOS;
+		}
+	}
+
+	/**
+	 * 查询机构是否有简称
+	 * @return
+	 */
+	@Override
+	public boolean getInstitutionAlias() {
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		Institution institution = this.getById(pigUser.getInsId());
+		if(institution.getInsType() == 1100 || institution.getInsType() == 1200){
+			return true;
+		} else {
+			return false;
 		}
 	}
 

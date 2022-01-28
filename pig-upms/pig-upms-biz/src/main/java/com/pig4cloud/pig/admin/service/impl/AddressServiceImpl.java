@@ -36,8 +36,7 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 		if (address.getArea() == null ||
 				address.getCity() == null ||
 				address.getCode() == null ||
-				address.getProvince() == null ||
-				address.getInformationAddress() == null) {
+				address.getProvince() == null) {
 			return null;
 		}
 		this.save(address);

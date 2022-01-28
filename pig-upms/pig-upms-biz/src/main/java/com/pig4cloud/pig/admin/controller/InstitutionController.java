@@ -121,6 +121,16 @@ public class InstitutionController {
 	}
 
 	/**
+	 * 查询机构是否有简称
+	 * @return
+	 */
+	@ApiOperation(value = "查询机构是否有简称", notes = "查询机构是否有简称")
+	@GetMapping("/getInstitutionAlias")
+	public R getInstitutionAlias(){
+		return R.ok(institutionService.getInstitutionAlias());
+	}
+
+	/**
 	 * 新增
 	 *
 	 * @param institutionDTO
