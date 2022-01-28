@@ -27,7 +27,7 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
-		<result property="userId" column="user_id"/>
+<!--		<result property="userId" column="user_id"/>-->
 		<result property="addressId" column="address_id"/>
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
@@ -44,7 +44,7 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
-		<result property="userId" column="user_id"/>
+<!--		<result property="userId" column="user_id"/>-->
 		<result property="addressId" column="address_id"/>
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
@@ -69,7 +69,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -99,7 +99,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -128,7 +128,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -160,7 +160,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -184,7 +184,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
@@ -208,7 +208,7 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
-		outles.user_id,
+-- 		outles.user_id,
 		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,

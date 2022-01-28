@@ -23,6 +23,7 @@
 		<result property="username" column="username"/>
 		<result property="password" column="password"/>
 		<result property="nickName" column="nick_name"/>
+		<result property="actualName" column="actual_name"/>
 		<result property="userType" column="user_type"/>
 		<result property="salt" column="salt"/>
 		<result property="phone" column="phone"/>
@@ -49,6 +50,7 @@
 		<result property="username" column="username"/>
 		<result property="password" column="password"/>
 		<result property="nickName" column="nick_name"/>
+		<result property="actualName" column="actual_name"/>
 		<result property="userType" column="user_type"/>
 		<result property="salt" column="salt"/>
 		<result property="phone" column="phone"/>
@@ -78,6 +80,7 @@
 		`user`.user_id,
 		`user`.username,
 		`user`.nick_name as nickName,
+		`user`.actual_name as actualName,
 		`user`.`password`,
 		`user`.salt,
 		`user`.phone,
@@ -100,6 +103,7 @@
 		`user`.user_id,
 		`user`.username,
 		`user`.nick_name AS nick_name,
+		`user`.actual_name as actualName,
 		`user`.`password`,
 		`user`.salt,
 		`user`.phone,
@@ -149,6 +153,7 @@
 		`user`.avatar,
 		`user`.dept_id,
 		`user`.nick_name,
+		`user`.actual_name,
 		`user`.create_time AS ucreate_time,
 		`user`.update_time AS uupdate_time,
 		`user`.del_flag AS udel_flag,

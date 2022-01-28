@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.admin.admin.mapper.InsOutlesUserMapper">
+<mapper namespace="com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper">
 
-  <resultMap id="insOutlesUserMap" type="com.pig4cloud.pig.admin.admin.entity.InsOutlesUser">
+  <resultMap id="insOutlesUserMap" type="com.pig4cloud.pig.admin.api.entity.InsOutlesUser">
     <id property="insOutlesUserId" column="ins_outles_user_id"/>
     <result property="createBy" column="create_by"/>
     <result property="createTime" column="create_time"/>
@@ -38,7 +38,5 @@
 	<result property="delFlag" column="del_flag"/>
   </resultMap>
 
-	<select id="selectPage" resultType="">
 
-	</select>
 </mapper>

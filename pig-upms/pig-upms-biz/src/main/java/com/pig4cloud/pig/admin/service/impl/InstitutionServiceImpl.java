@@ -21,12 +21,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.InstitutionDTO;
-import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
-import com.pig4cloud.pig.admin.api.dto.UserDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
+import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.mapper.InstitutionMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
@@ -38,7 +38,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -91,6 +90,12 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	@Autowired
 	CourtService courtService;
 
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
+
+	@Autowired
+	StaffRoleService staffRoleService;
+
 	/**
 	 * 新增机构
 	 *
@@ -107,7 +112,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 			// 2.根据负责人联系电话查询用户数据
 			SysUser sysUser = this.sysUserService.getOne(new LambdaQueryWrapper<SysUser>()
-					.eq(SysUser::getPhone, institutionDTO.getInsPrincipalPhone())
+//					.eq(SysUser::getPhone, institutionDTO.getInsPrincipalPhone())
 					.eq(SysUser::getDelFlag, 0));
 
 			// 3.新增机构用户
@@ -116,11 +121,11 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				return -1;
 			}
 
-			userDTO.setUsername(institutionDTO.getInsPrincipalPhone());
+//			userDTO.setUsername(institutionDTO.getInsPrincipalPhone());
 			userDTO.setPassword("a123456!");
-			userDTO.setPhone(institutionDTO.getInsPrincipalPhone());
+//			userDTO.setPhone(institutionDTO.getInsPrincipalPhone());
 			userDTO.setDelFlag(CommonConstants.STATUS_NORMAL);
-			userDTO.setNickName(institutionDTO.getInsPrincipalName());
+//			userDTO.setNickName(institutionDTO.getInsPrincipalName());
 			userDTO.setUserType(1);
 			List<Integer> integers = new ArrayList<>();
 
@@ -149,7 +154,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			// 8.新增机构
 			Institution institution = new Institution();
 			BeanUtils.copyProperties(institutionDTO, institution);
-			institution.setUserId(userDTO.getUserId());
+//			institution.setUserId(userDTO.getUserId());
 			this.save(institution);
 
 			if (institution.getInsType().equals(Integer.valueOf("1500"))) {
@@ -177,7 +182,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			userInstitutionStaff.setUserId(userDTO.getUserId());
 			userInstitutionStaff.setInsId(institution.getInsId());
 			userInstitutionStaff.setEntryTime(LocalDateTime.now());
-			userInstitutionStaff.setJobTitle(institutionDTO.getInsPrincipalName());
+//			userInstitutionStaff.setJobTitle(institutionDTO.getInsPrincipalName());
 			userInstitutionService.save(userInstitutionStaff);
 
 			if (institution.getInsType().equals(Integer.valueOf("1500"))) {
@@ -194,7 +199,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 					outles.setInsId(institution.getInsId());
 					outles.setDelFlag(CommonConstants.STATUS_NORMAL);
 					outles.setOutlesName(courtName);
-					outles.setUserId(userDTO.getUserId());
+//					outles.setUserId(userDTO.getUserId());
 					if (courtName.equals("诉讼庭")) {
 						outles.setCanDefault(1);
 					}
@@ -223,7 +228,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				outles.setInsId(institution.getInsId());
 				outles.setDelFlag(CommonConstants.STATUS_NORMAL);
 				outles.setOutlesName(institution.getInsName() + "网点");
-				outles.setUserId(userDTO.getUserId());
+//				outles.setUserId(userDTO.getUserId());
 				outles.setCanDefault(1);
 				outlesService.save(outles);
 
@@ -257,9 +262,9 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 			// 2.修改用户信息
 			UserDTO userDTO = new UserDTO();
-			userDTO.setUserId(institutionDTO.getUserId());
-			userDTO.setUsername(institutionDTO.getInsPrincipalPhone());
-			userDTO.setPhone(institutionDTO.getInsPrincipalPhone());
+//			userDTO.setUserId(institutionDTO.getUserId());
+//			userDTO.setUsername(institutionDTO.getInsPrincipalPhone());
+//			userDTO.setPhone(institutionDTO.getInsPrincipalPhone());
 
 			// 5.根据机构类型与字典类型查询角色标识
 			SysDictItem sysDictItem = new SysDictItem();
@@ -280,7 +285,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 			//修改员工信息
 			UserInstitutionStaff userInstitutionStaff = userInstitutionService.getOne(new LambdaQueryWrapper<UserInstitutionStaff>().eq(UserInstitutionStaff::getUserId, userDTO.getUserId()).eq(UserInstitutionStaff::getDelFlag, 0));
-			userInstitutionStaff.setJobTitle(institutionDTO.getInsPrincipalName());
+//			userInstitutionStaff.setJobTitle(institutionDTO.getInsPrincipalName());
 			userInstitutionService.updateById(userInstitutionStaff);
 
 			// 3.修改机构地址
@@ -300,7 +305,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			if (institution.getInsType().equals(Integer.valueOf("1500"))) {
 				if (Objects.nonNull(institutionDTO.getCourt().getCourtId())) {
 					RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>().eq(RelationshipAuthenticate::getAuthenticateId, institution.getInsId()));
-					relationshipAuthenticate.setAuthenticateGoalId(institutionDTO.getCourt().getCourtId());
+//					relationshipAuthenticate.setAuthenticateGoalId(institutionDTO.getCourt().getCourtId());
 					relationshipAuthenticateService.updateById(relationshipAuthenticate);
 				} else {
 					throw new Exception("关联法院为空！");
@@ -496,5 +501,83 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			}
 		}
 		return roleType;
+	}
+
+
+
+
+	/********************************************************************************************/
+
+	@Override
+	public IPage<InstitutionPageVO> queryPage(Page page, InstitutionPageDTO institutionPageDTO){
+		return this.baseMapper.selectPage(page,institutionPageDTO);
+	}
+
+	@Override
+	public int addInstitution(InstitutionAddDTO institutionAddDTO){
+		LambdaQueryWrapper<Institution> queryWrapper = new LambdaQueryWrapper<>();
+		queryWrapper.eq(Institution::getDelFlag,CommonConstants.STATUS_NORMAL);
+		queryWrapper.eq(Institution::getInsName,institutionAddDTO.getInsName());
+		Institution getOne = this.baseMapper.selectOne(queryWrapper);
+		int save = 0;
+		if(Objects.nonNull(getOne)){
+			throw new RuntimeException("此机构名称已存在！");
+		}else{
+			Institution institution = new Institution();
+			// 判断地址是否为空
+			if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
+				// 添加地址
+				Address address = new Address();
+				address.setDelFlag(CommonConstants.STATUS_NORMAL);
+				address.setCity(institutionAddDTO.getCity());
+				address.setArea(institutionAddDTO.getArea());
+				address.setInformationAddress(institutionAddDTO.getInformationAddress());
+				// 类型2=机构地址
+				address.setType(2);
+				addressService.save(address);
+				institution.setAddressId(address.getAddressId());
+			}
+			BeanUtils.copyProperties(institutionAddDTO,institution);
+			save = this.baseMapper.insert(institution);
+			// 添加机构负责人用户
+			List<SysUser> userList = new ArrayList<>();
+			List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
+			userList.stream().forEach(item ->{
+				InsOutlesUser insOutlesUser = new InsOutlesUser();
+				insOutlesUser.setInsId(institution.getInsId());
+				insOutlesUser.setType(1);
+				insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+				if(Objects.nonNull(item.getUserId())){
+					insOutlesUser.setUserId(item.getUserId());
+				}else{
+					SysUser sysUser = new SysUser();
+					sysUser.setPassword("a123456");
+					BeanUtils.copyProperties(item,sysUser);
+					sysUserService.save(sysUser);
+					insOutlesUser.setUserId(sysUser.getUserId());
+				}
+				insOutlesUserList.add(insOutlesUser);
+			});
+			insOutlesUserService.saveBatch(insOutlesUserList);
+			// 5.根据机构类型与字典类型查询角色标识
+			SysDictItem sysDictItem = new SysDictItem();
+			sysDictItem.setType("ins_type");
+			sysDictItem.setValue(institutionAddDTO.getInsType().toString());
+
+			SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
+
+			// 6.根据角色标识查询角色信息
+			SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + "_ADMIN").eq(SysRole::getDelFlag, 0));
+
+			List<StaffRole> staffRoleList = new ArrayList<>();
+			insOutlesUserList.stream().forEach(item ->{
+				StaffRole staffRole = new StaffRole();
+				staffRole.setRoleId(role.getRoleId());
+				staffRole.setStaffId(item.getInsOutlesUserId());
+				staffRoleList.add(staffRole);
+			});
+			staffRoleService.saveBatch(staffRoleList);
+		}
+		return save;
 	}
 }

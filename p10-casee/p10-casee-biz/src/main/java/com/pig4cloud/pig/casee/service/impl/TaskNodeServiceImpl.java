@@ -744,7 +744,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//查询当前登录用户网点信息
 			R<OutlesVO> outlesVO = remoteOutlesService.getById(taskFlowDTO.getOutlesId(), SecurityConstants.FROM);
 			//设置审核人id默认为网点负责人id
-			taskFlowDTO.setAuditorId(outlesVO.getData().getUserId());
+//			taskFlowDTO.setAuditorId(outlesVO.getData().getUserId());
 		} else if (taskFlowDTO.getNeedCommission() == 1) {//委托
 			//设置办理人id为委托人id
 			taskFlowDTO.setTransactionId(taskFlowDTO.getCommissionUserId());
