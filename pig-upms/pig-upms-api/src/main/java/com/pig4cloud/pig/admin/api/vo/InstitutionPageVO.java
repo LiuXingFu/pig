@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Institution;
 import lombok.Data;
 
 
@@ -24,40 +25,7 @@ import lombok.Data;
  * 机构分页VO
  */
 @Data
-public class InstitutionPageVO {
-
-	/**
-	 * 机构id 主键自增
-	 */
-	private Integer insId;
-	/**
-	 * 机构名称
-	 */
-	private String insName;
-	/**
-	 * 机构类型
-	 */
-	private Integer insType;
-	/**
-	 * 是否禁用 0-否 1-是
-	 */
-	private Integer canDisable;
-	/**
-	 * 传真
-	 */
-	private String insFax;
-	/**
-	 * 座机电话
-	 */
-	private String insLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String insRemark;
-	/**
-	 * 删除状态(0-正常,1-已删除)
-	 */
-	private String delFlag;
+public class InstitutionPageVO extends Institution {
 
 	/**
 	 * 省
