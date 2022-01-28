@@ -109,4 +109,8 @@ public class InsOutlesUserController {
         return R.ok(insOutlesUserService.removeById(insOutlesUserId));
     }
 
+
+
+
+
 }
