@@ -102,8 +102,4 @@ public interface InstitutionService extends IService<Institution> {
 
 	InstitutionDetailsVO queryById(int insId);
 
-
-
-	boolean getInstitutionIsInsName(String insName);
-
 }

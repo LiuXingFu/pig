@@ -220,7 +220,7 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "添加机构", notes = "添加机构")
 	@SysLog("添加机构")
-	@PostMapping("addInstitution")
+	@PostMapping("/addInstitution")
 	public R addInstitution(@RequestBody InstitutionAddDTO institutionAddDTO) throws Exception {
 		int save = institutionService.addInstitution(institutionAddDTO);
 		if (save<=0) {
