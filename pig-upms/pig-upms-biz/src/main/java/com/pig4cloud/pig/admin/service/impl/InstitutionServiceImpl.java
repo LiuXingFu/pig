@@ -496,6 +496,16 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	/**
+	 * 查询机构名称是否存在
+	 * @return
+	 */
+	@Override
+	public boolean getInstitutionIsInsName(String insName) {
+		Integer count = this.baseMapper.getInstitutionIsInsName(insName);
+		return count > 0 ? false : true;
+	}
+
+	/**
 	 * 获取当前用户登录的角色集合
 	 *
 	 * @return

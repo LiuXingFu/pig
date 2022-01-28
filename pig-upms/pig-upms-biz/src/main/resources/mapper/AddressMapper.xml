@@ -39,6 +39,8 @@
 		<result property="createBy" column="create_by"/>
 		<result property="updateBy" column="update_by"/>
 		<result property="delFlag" column="del_flag"/>
+		<result property="type" column="type"/>
+		<result property="source" column="source"/>
 	</resultMap>
 
 	<select id="getById" resultMap="addressMap">
@@ -48,7 +50,7 @@
 		city,
 		area,
 		information_address,
-		CODE,
+		code,
 		user_id,
 		contact_phone,
 		contact_name,
@@ -73,7 +75,7 @@
 		city,
 		area,
 		information_address,
-		CODE,
+		code,
 		user_id,
 		contact_phone,
 		contact_name,

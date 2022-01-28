@@ -280,7 +280,7 @@
 
 	<!--***********************************************************	-->
 
-	<select id="selectPage" resultType=" com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
+	<select id="selectPage" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
 		select * from p10_institution
 		left join p10_address on p10_address.address_id = p10_institution.address_id and p10_address.type = 1
 		where p10_institution.del_flag = 0
@@ -290,6 +290,10 @@
 		<if test="query.insType != null">
 			and p10_institution.ins_type like concat('%', #{query.insType}, '%')
 		</if>
+	</select>
+
+	<select id="getInstitutionIsInsName" resultType="java.lang.Integer">
+		SELECT COUNT(0) FROM p10_institution WHERE ins_name = #{insName}
 	</select>
 
 </mapper>
