@@ -20,10 +20,15 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.entity.SysRole;
+import com.pig4cloud.pig.admin.service.SysRoleService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.admin.service.OutlesService;
 import com.pig4cloud.pig.common.security.annotation.Inner;
+import com.pig4cloud.pig.common.security.service.PigUser;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -44,6 +50,7 @@ import java.util.List;
 public class OutlesController {
 
 	private final OutlesService outlesService;
+
 
 	/**
 	 * 分页查询
