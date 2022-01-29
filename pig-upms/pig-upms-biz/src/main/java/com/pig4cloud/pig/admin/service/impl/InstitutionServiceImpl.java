@@ -538,6 +538,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	@Override
+	@Transactional
 	public int addInstitution(InstitutionAddDTO institutionAddDTO){
 		LambdaQueryWrapper<Institution> queryWrapper = new LambdaQueryWrapper<>();
 		queryWrapper.eq(Institution::getDelFlag,CommonConstants.STATUS_NORMAL);
@@ -555,7 +556,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
 				// 添加地址
 				Address address = new Address();
-				BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
+				BeanUtils.copyProperties(institutionAddDTO.getAddress(), address);
 				address.setDelFlag(CommonConstants.STATUS_NORMAL);
 				// 类型2=机构地址
 				address.setType(2);

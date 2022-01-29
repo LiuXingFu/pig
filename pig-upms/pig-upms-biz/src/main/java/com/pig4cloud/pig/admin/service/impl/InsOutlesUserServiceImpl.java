@@ -55,9 +55,8 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		int add = 0;
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
-		List<SysUser> userList = new ArrayList<>();
 		List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
-		userList.stream().forEach(item ->{
+		insOutlesUserAddDTO.getUserList().stream().forEach(item ->{
 			InsOutlesUser insOutlesUser = new InsOutlesUser();
 			insOutlesUser.setInsId(institution.getInsId());
 			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
