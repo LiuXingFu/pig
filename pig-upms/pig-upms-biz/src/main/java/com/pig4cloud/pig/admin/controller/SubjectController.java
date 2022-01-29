@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.service.SubjectService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -108,6 +109,18 @@ public class SubjectController {
 	@PostMapping("/saveSubject")
 	public R saveSubject(@RequestBody Subject subject) {
 		return R.ok(subjectService.saveSubject(subject));
+	}
+
+	/**
+	 * 新增主体、债务人地址信息以及主体关联债务人信息
+	 * @param subjectAddressDTOList 新增主体、债务人地址信息以及主体关联债务人信息
+	 * @return R
+	 */
+	@ApiOperation(value = "新增主体、债务人地址信息以及主体关联债务人信息", notes = "新增主体、债务人地址信息以及主体关联债务人信息")
+	@SysLog("新增主体" )
+	@PostMapping("/saveSubjectAddress")
+	public R saveSubjectAddress(@RequestBody List<SubjectAddressDTO> subjectAddressDTOList) {
+		return R.ok(subjectService.saveSubjectAddress(subjectAddressDTOList));
 	}
 
     /**

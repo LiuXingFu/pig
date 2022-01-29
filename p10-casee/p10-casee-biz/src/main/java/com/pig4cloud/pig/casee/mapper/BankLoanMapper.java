@@ -15,41 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.admin.api.entity.Subject;
-
-import java.util.List;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.BankLoan;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 主体
+ * 银行借贷表
  *
- * @author yy
- * @date 2021-09-17 16:55:57
+ * @author Mjh
+ * @date 2022-01-29 10:20:00
  */
-public interface SubjectService extends IService<Subject> {
-	/**
-	 * 保存主体信息
- 	 * @param subjectList
-	 * @return
-	 */
-	boolean saveBatchSubject(List<Subject> subjectList);
-
-	/**
-	 * 保存单条主体信息
-	 * @param subject
-	 * @return
-	 */
-	Subject saveSubject(Subject subject);
-
-	/**
-	 * 新增主体、债务人地址信息以及主体关联债务人信息
-	 * @param subjectAddressDTOList
-	 * @return
-	 */
-	List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
+@Mapper
+public interface BankLoanMapper extends BaseMapper<BankLoan> {
 
 }

@@ -24,86 +24,79 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
- * 移交记录表
+ * 银行借贷表
  *
  * @author Mjh
- * @date 2022-01-28 18:52:40
+ * @date 2022-01-29 10:20:00
  */
 @Data
-@TableName("p10_transfer_record")
+@TableName("p10_bank_loan")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "移交记录表")
-public class TransferRecord extends BaseEntity {
+@ApiModel(value = "银行借贷表")
+public class BankLoan extends BaseEntity {
 
     /**
-     * 移交记录id
+     * 主键id
      */
     @TableId
-    @ApiModelProperty(value="移交记录id")
-    private Integer transferRecordId;
-
-    /**
-     * 银行借贷表id
-     */
-    @ApiModelProperty(value="银行借贷表id")
+    @ApiModelProperty(value="主键id")
     private Integer bankLoanId;
 
     /**
-     * 受托机构id
+     * 删除状态(0-正常,1-已删除)
      */
-    @ApiModelProperty(value="受托机构id")
-    private Integer entrustedInsId;
+    @ApiModelProperty(value="删除状态(0-正常,1-已删除)")
+    private String delFlag;
 
     /**
-     * 受托网点id
+     * 银行机构id
      */
-    @ApiModelProperty(value="受托网点id")
-    private Integer entrustedOutlesId;
+    @ApiModelProperty(value="银行机构id")
+    private Integer insId;
 
     /**
-     * 诉讼情况(0-未诉讼 1-已诉讼)
+     * 银行网点id
      */
-    @ApiModelProperty(value="诉讼情况(0-未诉讼 1-已诉讼)")
-    private Integer litigation;
+    @ApiModelProperty(value="银行网点id")
+    private Integer outlesId;
 
     /**
-     * 移交金额
+     * 本金
      */
-    @ApiModelProperty(value="移交金额")
-    private BigDecimal handoverAmount;
+    @ApiModelProperty(value="本金")
+    private BigDecimal principal;
 
     /**
-     * 移交时间
+     * 利息
      */
-    @ApiModelProperty(value="移交时间")
-    private LocalDateTime handoverTime;
+    @ApiModelProperty(value="利息")
+    private BigDecimal interest;
 
     /**
-     * 申请诉讼/执行时效开始时间
+     * 总额
      */
-    @ApiModelProperty(value="申请诉讼/执行时效开始时间")
-    private LocalDateTime startingTime;
+    @ApiModelProperty(value="总额")
+    private BigDecimal rental;
 
     /**
-     * 接收/退回时间
+     * 抵押情况（0-有，1-无）
      */
-    @ApiModelProperty(value="接收/退回时间")
-    private LocalDateTime returnTime;
+    @ApiModelProperty(value="抵押情况（0-有，1-无）")
+    private Integer mortgageSituation;
 
     /**
-     * 状态(0-待接收 1-已接收 2-退回 )
+     * 借贷合同
      */
-    @ApiModelProperty(value="状态(0-待接收 1-已接收 2-退回 3-已完成)")
-    private Integer status;
+    @ApiModelProperty(value="借贷合同")
+    private String loanContract;
 
     /**
-     * 备注
+     * 其它文件
      */
-    @ApiModelProperty(value="备注")
-    private String remark;
+    @ApiModelProperty(value="其它文件")
+    private String otherFile;
 
 
 }
