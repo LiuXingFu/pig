@@ -59,4 +59,6 @@ public interface InstitutionMapper extends BaseMapper<Institution> {
 	Integer getInstitutionIsInsName(String insName);
 
 	InstitutionDetailsVO selectDetailsById( @Param("insId") int insId);
+
+	List<Institution> selectByUserId( @Param("userId")int userId);
 }

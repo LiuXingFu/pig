@@ -17,17 +17,9 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Outles;
-import com.pig4cloud.pig.admin.api.entity.SysUser;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.pig4cloud.pig.admin.api.entity.Institution;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -38,7 +30,7 @@ import java.util.List;
  * @date 2021-09-02 16:16:06
  */
 @Data
-public class InstitutionDetailsVO extends Outles {
+public class InstitutionDetailsVO extends Institution {
 
 	/**
 	 * 地址信息

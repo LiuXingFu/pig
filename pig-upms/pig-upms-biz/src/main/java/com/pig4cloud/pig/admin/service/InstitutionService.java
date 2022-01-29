@@ -94,12 +94,40 @@ public interface InstitutionService extends IService<Institution> {
 
 	boolean getInstitutionIsInsName(String insName);
 
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param institutionPageDTO
+	 * @return
+	 */
 	IPage<InstitutionPageVO> queryPage(Page page, InstitutionPageDTO institutionPageDTO);
 
+	/**
+	 * 添加机构及机构负责人
+	 * @param institutionAddDTO
+	 * @return
+	 */
 	int addInstitution(InstitutionAddDTO institutionAddDTO);
 
+	/**
+	 * 根据机构id修改机构信息
+	 * @param institutionModifyDTO
+	 * @return
+	 */
 	int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO);
 
-	InstitutionDetailsVO queryById(int insId);
+	/**
+	 * 根据机构id查询机构详情
+	 * @param insId
+	 * @return
+	 */
+	InstitutionDetailsVO queryById(Integer insId);
+
+	/**
+	 * 根据用户id查询相关机构
+	 * @param userId
+	 * @return
+	 */
+	List<Institution> queryByUserIdList(Integer userId);
 
 }

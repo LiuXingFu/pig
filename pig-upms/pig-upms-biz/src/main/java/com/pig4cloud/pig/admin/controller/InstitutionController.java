@@ -256,6 +256,16 @@ public class InstitutionController {
 	}
 
 
+	/**
+	 * 根据用户id查询相关机构
+	 * @return
+	 */
+	@ApiOperation(value = "根据用户id查询相关机构", notes = "根据用户id查询相关机构")
+	@GetMapping("/queryByUserIdList")
+	public R queryByUserIdList(int userId) {
+		return R.ok(institutionService.queryByUserIdList(userId));
+	}
+
 
 
 

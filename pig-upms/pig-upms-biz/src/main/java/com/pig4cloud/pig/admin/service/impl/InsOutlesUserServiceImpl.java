@@ -85,9 +85,14 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
 			insOutlesUser.setType(insOutlesUserAddDTO.getType());
 			insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+
+			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+			queryWrapper.lambda().eq(SysUser::getDelFlag,0);
+			queryWrapper.lambda().eq(SysUser::getPhone,0);
+			SysUser user = sysUserService.getOne(queryWrapper);
 			// 判断用户是否存在
-			if(Objects.nonNull(item.getUserId())){
-				insOutlesUser.setUserId(item.getUserId());
+			if(Objects.nonNull(user)){
+				insOutlesUser.setUserId(user.getUserId());
 			}else{
 				UserDTO sysUser = new UserDTO();
 				sysUser.setPassword("a123456");
@@ -137,7 +142,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int removeInsOutlesUser(int insOutlesUserId){
+	public int removeInsOutlesUser(Integer insOutlesUserId){
 		int modify = 0;
 		InsOutlesUser insOutlesUser = new InsOutlesUser();
 		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
@@ -150,7 +155,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId){
+	public List<InsOutlesUserListVO> queryUserList(Integer type,Integer insId, Integer outlesId){
 		return this.baseMapper.selectUserList(type,insId,outlesId);
 	}
 }
