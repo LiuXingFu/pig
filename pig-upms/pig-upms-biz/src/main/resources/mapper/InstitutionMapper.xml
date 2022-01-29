@@ -280,7 +280,7 @@
 
 	<!--***********************************************************	-->
 
-	<select id="selectPage" resultMap="com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
+	<select id="selectPage" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
 		select
 		p10_institution.*
 		from p10_institution
@@ -298,7 +298,7 @@
 		SELECT COUNT(0) FROM p10_institution WHERE ins_name = #{insName}
 	</select>
 
-	<select id="selectDetailsById" resultMap="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
+	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
 		select
 		p10_institution.*
 		from p10_institution

@@ -304,11 +304,11 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		BeanUtils.copyProperties(outlesAddDTO,outles);
 		save = this.baseMapper.insert(outles);
 		// 判断地址是否为空
-		if(Objects.nonNull(outlesAddDTO.getAddress().getInformationAddress())){
+		if(Objects.nonNull(outlesAddDTO.getInformationAddress())){
 			// 添加地址
 			Address address = new Address();
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);
-			BeanUtils.copyProperties(outlesAddDTO.getAddress(),address);
+			BeanUtils.copyProperties(outlesAddDTO,address);
 			// 类型3=网点地址
 			address.setType(3);
 			address.setUserId(outles.getOutlesId());
@@ -332,7 +332,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		Outles outles = new Outles();
 		BeanUtils.copyProperties(outlesModifyDTO,outles);
 		modify = this.baseMapper.updateById(outles);
-		if(Objects.nonNull(outlesModifyDTO.getAddress().getInformationAddress())){
+		if(Objects.nonNull(outlesModifyDTO.getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(outlesModifyDTO,address);
