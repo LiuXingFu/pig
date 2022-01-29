@@ -51,11 +51,8 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	SysRoleService sysRoleService;
 	@Autowired
 	StaffRoleService staffRoleService;
-	@Autowired
-	InsOutlesUserService insOutlesUserService;
 
 	@Override
-	@Transactional
 	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
 		int add = 0;
 

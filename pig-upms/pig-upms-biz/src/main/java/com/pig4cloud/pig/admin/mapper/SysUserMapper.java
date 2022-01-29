@@ -60,4 +60,5 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 */
 	UserVO getUserVoById(Integer id);
 
+//	IPage<UserOptionVO> queryUserListByPhone(Page page, @Param("phone") String phone);
 }
