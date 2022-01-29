@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.api.vo;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
@@ -40,21 +41,9 @@ import java.util.List;
 public class InstitutionDetailsVO extends Outles {
 
 	/**
-	 * 省
+	 * 地址信息
 	 */
-	private String province;
-	/**
-	 * 市
-	 */
-	private String city;
-	/**
-	 * 区
-	 */
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
+	private Address address;
 
 	/**
 	 * 员工集合
