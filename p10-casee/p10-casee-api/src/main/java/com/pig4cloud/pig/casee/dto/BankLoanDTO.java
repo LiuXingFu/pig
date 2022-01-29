@@ -14,42 +14,42 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.admin.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.admin.api.entity.Subject;
-
+import com.pig4cloud.pig.casee.entity.BankLoan;
+import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
-
 /**
- * 主体
+ * 银行借贷表DTO
  *
- * @author yy
- * @date 2021-09-17 16:55:57
+ * @author Mjh
+ * @date 2022-01-29 10:20:00
  */
-public interface SubjectService extends IService<Subject> {
-	/**
-	 * 保存主体信息
- 	 * @param subjectList
-	 * @return
-	 */
-	boolean saveBatchSubject(List<Subject> subjectList);
+@Data
+public class BankLoanDTO extends BankLoan {
 
 	/**
-	 * 保存单条主体信息
-	 * @param subject
-	 * @return
+	 * 主体表id
 	 */
-	Subject saveSubject(Subject subject);
+	private List<Integer> subjectIdList;
 
 	/**
-	 * 新增主体、债务人地址信息以及主体关联债务人信息
-	 * @param subjectAddressDTOList
-	 * @return
+	 * 抵押金额
 	 */
-	List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
+	private BigDecimal mortgageAmount;
+
+	/**
+	 * 抵押时间
+	 */
+	private LocalDateTime mortgageTime;
+
+	/**
+	 * 抵押财产信息
+	 */
+	private List<AssetsDTO> assetsDTOList;
+
 
 }

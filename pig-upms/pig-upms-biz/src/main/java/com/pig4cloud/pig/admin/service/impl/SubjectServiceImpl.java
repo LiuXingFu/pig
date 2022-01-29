@@ -19,10 +19,14 @@ package com.pig4cloud.pig.admin.service.impl;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
+import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
@@ -38,6 +42,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> implements SubjectService {
+	@Autowired
+	private AddressService addressService;
 
 	@Override
 	public boolean saveBatchSubject(List<Subject> subjectList){
@@ -97,6 +103,22 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		}
 		this.saveOrUpdate(subject);
 		return subject;
+	}
+
+	@Override
+	public List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
+		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
+			//添加债务人主体信息
+			this.saveSubject(subjectAddressDTO.getSubject());
+			List<Address> addressList = subjectAddressDTO.getAddressList();
+			for (Address address : addressList) {
+				address.setUserId(subjectAddressDTO.getSubject().getSubjectId());
+				address.setType(1);
+				//添加债务人地址信息
+				addressService.saveAddress(address);
+			}
+		}
+		return subjectAddressDTOList;
 	}
 
 	/**

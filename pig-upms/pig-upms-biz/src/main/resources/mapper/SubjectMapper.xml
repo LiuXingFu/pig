@@ -36,6 +36,7 @@
                         <result property="phone" column="phone"/>
                         <result property="legalPerson" column="legal_person"/>
                         <result property="email" column="email"/>
+	  					<result property="userId" column="user_id"/>
                         <result property="remark" column="remark"/>
                         <result property="isAuthentication" column="is_authentication"/>
             </resultMap>

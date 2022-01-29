@@ -14,42 +14,23 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.admin.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.admin.api.entity.Subject;
-
-import java.util.List;
-
+import com.pig4cloud.pig.casee.entity.Assets;
+import lombok.Data;
 
 /**
- * 主体
+ * 财产表
  *
- * @author yy
- * @date 2021-09-17 16:55:57
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
-public interface SubjectService extends IService<Subject> {
-	/**
-	 * 保存主体信息
- 	 * @param subjectList
-	 * @return
-	 */
-	boolean saveBatchSubject(List<Subject> subjectList);
+@Data
+public class AssetsDTO extends Assets {
 
 	/**
-	 * 保存单条主体信息
-	 * @param subject
-	 * @return
+	 * 主体表id
 	 */
-	Subject saveSubject(Subject subject);
-
-	/**
-	 * 新增主体、债务人地址信息以及主体关联债务人信息
-	 * @param subjectAddressDTOList
-	 * @return
-	 */
-	List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
-
+	private Integer subjectId;
 }

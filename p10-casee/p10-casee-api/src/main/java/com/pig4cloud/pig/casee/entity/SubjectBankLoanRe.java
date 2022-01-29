@@ -22,7 +22,6 @@ import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 主体关联银行借贷表
@@ -32,9 +31,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_subject_bank_loan_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "主体关联银行借贷表")
-public class SubjectBankLoanRe extends BaseEntity {
+public class SubjectBankLoanRe {
 
     /**
      * 主体关联银行借贷表id
