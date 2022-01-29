@@ -113,4 +113,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 		return null;
 	}
 
+
+	@Override
+	public List<SysRole> queryByUserIdList(int userId,int insId,int outlesId,String roleCode){
+		return this.baseMapper.selectByUserId(userId,insId,outlesId,roleCode);
+	}
+
 }

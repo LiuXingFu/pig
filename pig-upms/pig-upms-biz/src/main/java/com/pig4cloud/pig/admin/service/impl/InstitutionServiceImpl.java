@@ -538,41 +538,47 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	@Override
+	@Transactional
 	public int addInstitution(InstitutionAddDTO institutionAddDTO){
 		LambdaQueryWrapper<Institution> queryWrapper = new LambdaQueryWrapper<>();
 		queryWrapper.eq(Institution::getDelFlag,CommonConstants.STATUS_NORMAL);
 		queryWrapper.eq(Institution::getInsName,institutionAddDTO.getInsName());
-		Institution getOne = this.baseMapper.selectOne(queryWrapper);
 		int save = 0;
-		if(Objects.nonNull(getOne)){
-			throw new RuntimeException("此机构名称已存在！");
-		}else{
-			Institution institution = new Institution();
+		Institution institution = new Institution();
 
-			BeanUtils.copyProperties(institutionAddDTO,institution);
-			save = this.baseMapper.insert(institution);
-			// 判断地址是否为空
-			if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
-				// 添加地址
-				Address address = new Address();
-				BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
-				address.setDelFlag(CommonConstants.STATUS_NORMAL);
-				// 类型2=机构地址
-				address.setType(2);
-				address.setUserId(institution.getInsId());
-				addressService.save(address);
-			}
-			// 添加机构负责人用户
-			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
-			insOutlesUserAddDTO.setInsId(institution.getInsId());
-			insOutlesUserAddDTO.setType(1);
-			insOutlesUserAddDTO.setUserList(institutionAddDTO.getUserList());
-			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+		BeanUtils.copyProperties(institutionAddDTO,institution);
+		save = this.baseMapper.insert(institution);
+		// 判断地址是否为空
+		if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
+			// 添加地址
+			Address address = new Address();
+			BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
+			address.setDelFlag(CommonConstants.STATUS_NORMAL);
+			// 类型2=机构地址
+			address.setType(2);
+			address.setUserId(institution.getInsId());
+			addressService.save(address);
 		}
+		// 添加机构负责人用户
+		InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+		insOutlesUserAddDTO.setInsId(institution.getInsId());
+		insOutlesUserAddDTO.setType(1);
+		insOutlesUserAddDTO.setUserList(institutionAddDTO.getUserList());
+		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+
+		// 新增机构成功后，自动添加默认网点
+		OutlesAddDTO outlesAddDTO = new OutlesAddDTO();
+		outlesAddDTO.setOutlesName("默认网点");
+		outlesAddDTO.setInsId(institution.getInsId());
+		outlesAddDTO.setAddress(institutionAddDTO.getAddress());
+		outlesAddDTO.setUserList(institutionAddDTO.getUserList());
+		outlesService.addOutles(outlesAddDTO);
+
 		return save;
 	}
 
 	@Override
+	@Transactional
 	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO){
 		int modify = 0;
 		Institution institution = new Institution();

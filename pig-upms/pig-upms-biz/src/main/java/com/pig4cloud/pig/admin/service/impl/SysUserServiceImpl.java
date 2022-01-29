@@ -159,6 +159,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@Override
 	public SysUser queryUserByPhone(String phone) {
 		return this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhone, phone).eq(SysUser::getDelFlag, 0));
+//		return this.baseMapper.queryUserListByPhone(page, phone);
 	}
 
 	/**

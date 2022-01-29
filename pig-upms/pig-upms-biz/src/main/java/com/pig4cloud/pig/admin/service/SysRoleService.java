@@ -56,4 +56,10 @@ public interface SysRoleService extends IService<SysRole> {
 	 */
 	List<SysRole> queryRoleList();
 
+	/**
+	 * 通过当前登录用户id、机构id、网点id，查询角色信息
+	 * @return
+	 */
+	List<SysRole> queryByUserIdList(int userId,int insId,int outlesId,String roleCode);
+
 }
