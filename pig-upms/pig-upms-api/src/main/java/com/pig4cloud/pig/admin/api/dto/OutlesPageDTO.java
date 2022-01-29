@@ -33,8 +33,4 @@ public class OutlesPageDTO {
 	 * 网点名称
 	 */
 	private String outlesName;
-	/**
-	 * 机构id
-	 */
-	private Integer insId;
 }

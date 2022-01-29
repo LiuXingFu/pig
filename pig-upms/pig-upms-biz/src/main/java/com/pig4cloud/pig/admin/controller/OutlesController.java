@@ -51,12 +51,6 @@ public class OutlesController {
 
 	private final OutlesService outlesService;
 
-	@Autowired
-	private SecurityUtilsService securityUtilsService;
-
-	@Autowired
-	private SysRoleService sysRoleService;
-
 
 	/**
 	 * 分页查询
@@ -194,12 +188,6 @@ public class OutlesController {
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/queryPage")
 	public R queryPage(Page page, OutlesPageDTO outlesPageDTO) {
-		PigUser pigUser = securityUtilsService.getCacheUser();
-		// 运营平台账号可查所有数据
-		List<SysRole> sysRoleList = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),"PLAT_");
-		if(Objects.isNull(sysRoleList)){
-			outlesPageDTO.setInsId(pigUser.getInsId());
-		}
 		return R.ok(outlesService.queryPage(page, outlesPageDTO));
 	}
 

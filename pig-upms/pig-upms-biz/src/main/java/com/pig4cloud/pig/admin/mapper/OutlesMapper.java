@@ -58,7 +58,7 @@ public interface OutlesMapper extends BaseMapper<Outles> {
 	List<Outles> listOutles(Integer staffId);
 
 	/**********************************************************************/
-	IPage<OutlesPageVO> selectPage(Page page, @Param("query") OutlesPageDTO outlesPageDTO);
+	IPage<OutlesPageVO> selectPage(Page page, @Param("query") OutlesPageDTO outlesPageDTO,@Param("insId") int insId);
 
 	OutlesDetailsVO selectDetailsById( @Param("outlesId") int outlesId);
 

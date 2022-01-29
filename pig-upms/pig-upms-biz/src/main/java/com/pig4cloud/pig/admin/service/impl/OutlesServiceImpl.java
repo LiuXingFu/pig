@@ -31,6 +31,8 @@ import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.security.service.PigUser;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +69,9 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	SysRoleService sysRoleService;
 	@Autowired
 	InsOutlesUserService insOutlesUserService;
+
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
 
 	/**
 	 * 新增
@@ -271,7 +276,14 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Override
 	public IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO){
-		return this.baseMapper.selectPage(page,outlesPageDTO);
+		int insId = 0;
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		// 运营平台账号可查所有数据
+		List<SysRole> sysRoleList = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),"PLAT_");
+		if(Objects.isNull(sysRoleList)){
+			insId = pigUser.getInsId();
+		}
+		return this.baseMapper.selectPage(page,outlesPageDTO,insId);
 	}
 
 	@Override
