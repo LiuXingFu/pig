@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper;
@@ -88,7 +89,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			if(Objects.nonNull(item.getUserId())){
 				insOutlesUser.setUserId(item.getUserId());
 			}else{
-				SysUser sysUser = new SysUser();
+				UserDTO sysUser = new UserDTO();
 				sysUser.setPassword("a123456");
 				sysUser.setNickName(item.getActualName());
 				sysUser.setPhone(item.getPhone());
@@ -96,7 +97,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				sysUser.setLockFlag("0");
 				sysUser.setUsername(item.getPhone());
 				sysUser.setActualName(item.getActualName());
-				sysUserService.save(sysUser);
+				sysUserService.saveUser(sysUser);
 				insOutlesUser.setUserId(sysUser.getUserId());
 			}
 			insOutlesUserList.add(insOutlesUser);
