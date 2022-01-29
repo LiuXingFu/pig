@@ -308,7 +308,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			// 添加地址
 			Address address = new Address();
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);
-			BeanUtils.copyProperties(address,outlesAddDTO.getAddress());
+			BeanUtils.copyProperties(outlesAddDTO.getAddress(),address);
 			// 类型3=网点地址
 			address.setType(3);
 			address.setUserId(outles.getOutlesId());
@@ -330,12 +330,12 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		int modify = 0;
 
 		Outles outles = new Outles();
-		BeanUtils.copyProperties(outles,outlesModifyDTO);
+		BeanUtils.copyProperties(outlesModifyDTO,outles);
 		modify = this.baseMapper.updateById(outles);
 		if(Objects.nonNull(outlesModifyDTO.getAddress().getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
-			BeanUtils.copyProperties(address,outlesModifyDTO);
+			BeanUtils.copyProperties(outlesModifyDTO,address);
 			addressService.updateById(address);
 		}
 

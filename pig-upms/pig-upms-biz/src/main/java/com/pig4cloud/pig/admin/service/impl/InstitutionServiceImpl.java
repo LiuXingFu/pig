@@ -546,13 +546,13 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		int save = 0;
 		Institution institution = new Institution();
 
-		BeanUtils.copyProperties(institutionAddDTO,institution);
+		BeanUtils.copyProperties(institution,institutionAddDTO);
 		save = this.baseMapper.insert(institution);
 		// 判断地址是否为空
 		if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
 			// 添加地址
 			Address address = new Address();
-			BeanUtils.copyProperties(address,institutionAddDTO.getAddress());
+			BeanUtils.copyProperties(institutionAddDTO.getAddress(),address);
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);
 			// 类型2=机构地址
 			address.setType(2);
@@ -582,12 +582,12 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO){
 		int modify = 0;
 		Institution institution = new Institution();
-		BeanUtils.copyProperties(institution,institutionModifyDTO);
+		BeanUtils.copyProperties(institutionModifyDTO,institution);
 		modify = this.baseMapper.updateById(institution);
 		if(Objects.nonNull(institutionModifyDTO.getAddress().getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
-			BeanUtils.copyProperties(address,institutionModifyDTO);
+			BeanUtils.copyProperties(institutionModifyDTO,address);
 			addressService.updateById(address);
 		}
 		return modify;
