@@ -60,4 +60,14 @@
 		</where>
 		ORDER BY `role`.create_time DESC
 	</select>
+
+	<select id="selectByUserId" resultType="com.pig4cloud.pig.admin.api.entity.SysRole">
+		select sys_role.* from sys_user
+		left join p10_ins_outles_user on p10_ins_outles_user.user_id = sys_user.user_id and p10_ins_outles_user.del_flag = 0
+		left join p10_staff_role on p10_staff_role.staff_id = p10_ins_outles_user.user_id
+		left join sys_role on sys_role.role_id = p10_staff_role.role_id and sys_role.del_flag = 0
+		where sys_user.del_flag = 0 and sys_user.user_id = #{userId}
+		and p10_ins_outles_user.ins_id = #{insId} and p10_ins_outles_user.outles_id = #{outlesId}
+		and sys_role.role_code LIKE CONCAT('%',#{roleCode},'%')
+	</select>
 </mapper>

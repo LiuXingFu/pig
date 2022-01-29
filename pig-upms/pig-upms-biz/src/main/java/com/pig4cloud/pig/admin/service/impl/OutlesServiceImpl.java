@@ -284,39 +284,36 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	}
 
 	@Override
+	@Transactional
 	public int addOutles(OutlesAddDTO outlesAddDTO){
 		int save = 0;
-		Outles getOne = queryByOutlesName(outlesAddDTO.getInsId(),outlesAddDTO.getOutlesName());
-		if(Objects.nonNull(getOne)){
-			throw new RuntimeException("此网点名称已存在！");
-		}else{
-			Outles outles = new Outles();
+		Outles outles = new Outles();
 
-			BeanUtils.copyProperties(outlesAddDTO,outles);
-			save = this.baseMapper.insert(outles);
-			// 判断地址是否为空
-			if(Objects.nonNull(outlesAddDTO.getAddress().getInformationAddress())){
-				// 添加地址
-				Address address = new Address();
-				address.setDelFlag(CommonConstants.STATUS_NORMAL);
-				BeanUtils.copyProperties(address,outlesAddDTO.getAddress());
-				// 类型3=网点地址
-				address.setType(3);
-				address.setUserId(outles.getOutlesId());
-				addressService.save(address);
-			}
-			// 添加网点负责人用户
-			InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
-			insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
-			insOutlesUserAddDTO.setOutlesId(outles.getOutlesId());
-			insOutlesUserAddDTO.setType(1);
-			insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
-			insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+		BeanUtils.copyProperties(outlesAddDTO,outles);
+		save = this.baseMapper.insert(outles);
+		// 判断地址是否为空
+		if(Objects.nonNull(outlesAddDTO.getAddress().getInformationAddress())){
+			// 添加地址
+			Address address = new Address();
+			address.setDelFlag(CommonConstants.STATUS_NORMAL);
+			BeanUtils.copyProperties(address,outlesAddDTO.getAddress());
+			// 类型3=网点地址
+			address.setType(3);
+			address.setUserId(outles.getOutlesId());
+			addressService.save(address);
 		}
+		// 添加网点负责人用户
+		InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+		insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
+		insOutlesUserAddDTO.setOutlesId(outles.getOutlesId());
+		insOutlesUserAddDTO.setType(1);
+		insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
+		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 		return save;
 	}
 
 	@Override
+	@Transactional
 	public int modifyOutlesById(OutlesModifyDTO outlesModifyDTO){
 		int modify = 0;
 

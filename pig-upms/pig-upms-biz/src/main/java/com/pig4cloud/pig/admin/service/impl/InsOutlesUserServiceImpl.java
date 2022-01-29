@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
@@ -26,6 +27,7 @@ import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +51,38 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	SysRoleService sysRoleService;
 	@Autowired
 	StaffRoleService staffRoleService;
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
 
 	@Override
+	@Transactional
 	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
 		int add = 0;
+
+
+
+
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = new ArrayList<>();
 		List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
 		userList.stream().forEach(item ->{
+			// 用户已存在的情况下，验证此网点下是否有已存在记录
+			if(Objects.nonNull(item.getUserId())){
+				QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
+				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
+				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
+				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
+				List<InsOutlesUser> users = new ArrayList<>();
+				if(Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
+					queryWrapper.lambda().eq(InsOutlesUser::getOutlesId,insOutlesUserAddDTO.getOutlesId());
+					users = insOutlesUserService.list(queryWrapper);
+				}
+				if(Objects.nonNull(users)){
+					throw new RuntimeException("此用户已是此网点负责人或员工！");
+				}
+			}
+
 			InsOutlesUser insOutlesUser = new InsOutlesUser();
 			insOutlesUser.setInsId(institution.getInsId());
 			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
@@ -114,6 +139,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 
 	@Override
+	@Transactional
 	public int removeInsOutlesUser(int insOutlesUserId){
 		int modify = 0;
 		InsOutlesUser insOutlesUser = new InsOutlesUser();
@@ -126,6 +152,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	}
 
 	@Override
+	@Transactional
 	public List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId){
 		return this.baseMapper.selectUserList(type,insId,outlesId);
 	}
