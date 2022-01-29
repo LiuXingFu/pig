@@ -83,6 +83,28 @@
 		<result property="address.code" column="code"/>
 	</resultMap>
 
+	<resultMap id="institutionDetailsVOMap" type="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
+		<id property="insId" column="ins_id"/>
+		<result property="insName" column="ins_name"/>
+		<result property="insType" column="ins_type"/>
+		<result property="addressId" column="address_id"/>
+		<result property="insFax" column="ins_fax"/>
+		<result property="insLandLinePhone" column="ins_land_line_phone"/>
+		<result property="canDisable" column="can_disable"/>
+		<result property="insRemark" column="ins_remark"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="address.addressId" column="address_id"/>
+		<result property="address.province" column="province"/>
+		<result property="address.city" column="city"/>
+		<result property="address.area" column="area"/>
+		<result property="address.informationAddress" column="information_address"/>
+		<result property="address.code" column="code"/>
+	</resultMap>
+
 	<select id="getByInsName" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionVO">
 		SELECT  distinct
 		institution.ins_id,
@@ -326,10 +348,9 @@
 		SELECT COUNT(0) FROM p10_institution WHERE ins_name = #{insName}
 	</select>
 
-	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
+	<select id="selectDetailsById" resultMap="institutionDetailsVOMap">
 		select
 		p10_institution.*,
-		p10_out
 		p10_address.address_id,
 		p10_address.province,
 		p10_address.city,
