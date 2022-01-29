@@ -51,17 +51,16 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	SysRoleService sysRoleService;
 	@Autowired
 	StaffRoleService staffRoleService;
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
 
 	@Override
+	@Transactional
 	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
 		int add = 0;
-
-
-
-
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
-		List<SysUser> userList = new ArrayList<>();
+		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
 		List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
 		userList.stream().forEach(item ->{
 			// 用户已存在的情况下，验证此网点下是否有已存在记录
