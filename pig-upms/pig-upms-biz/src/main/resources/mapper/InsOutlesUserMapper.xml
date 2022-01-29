@@ -45,7 +45,10 @@
 		<if test="insId != 0">
 			and p10_ins_outles_user.ins_id = #{insId}
 		</if>
-		<if test="outlesId != 0">
+		<if test="outlesId == null or outlesId == 0">
+			and p10_ins_outles_user.outles_id is null
+		</if>
+		<if test="outlesId > 0">
 			and p10_ins_outles_user.outles_id = #{outlesId}
 		</if>
 	</select>
