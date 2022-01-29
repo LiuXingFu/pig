@@ -273,7 +273,7 @@
 		</if>
 	</select>
 
-	<select id="selectById" resultType="com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO">
+	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO">
 		select * from p10_outles
 		left join p10_address on p10_address.user_id = p10_outles.outles_id and p10_address.type = 3
 		where p10_outles.del_flag = 0

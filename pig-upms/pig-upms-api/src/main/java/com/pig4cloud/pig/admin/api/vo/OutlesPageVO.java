@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Outles;
 import lombok.Data;
 
 /**
@@ -26,41 +27,7 @@ import lombok.Data;
  * @date 2021-09-02 16:24:58
  */
 @Data
-public class OutlesPageVO {
-
-	/**
-	 * 网点id 主键自增
-	 */
-	private Integer outlesId;
-	/**
-	 * 网点名称
-	 */
-	private String outlesName;
-	/**
-	 * 机构id
-	 */
-	private Integer insId;
-
-	/**
-	 * 简称
-	 */
-	private String alias;
-	/**
-	 * 座机电话
-	 */
-	private String outlesLandLinePhone;
-	/**
-	 * 备注
-	 */
-	private String outlesRemark;
-	/**
-	 * 是否是默认网点 0-否 1-是
-	 */
-	private Integer canDefault;
-	/**
-	 * 0-正常，1-删除
-	 */
-	private String delFlag;
+public class OutlesPageVO extends Outles {
 
 	/**
 	 * 省
