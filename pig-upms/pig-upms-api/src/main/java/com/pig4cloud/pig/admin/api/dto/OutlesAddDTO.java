@@ -56,7 +56,7 @@ public class OutlesAddDTO{
 	/**
 	 * 地址
 	 */
-	private Address address;
+	private AddressSaveDTO address;
 
 	/**
 	 * 负责人集合
