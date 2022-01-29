@@ -38,10 +38,6 @@ public class InstitutionModifyDTO{
 	 */
 	private String insName;
 	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
 	 * 传真
 	 */
 	private String insFax;
@@ -54,11 +50,27 @@ public class InstitutionModifyDTO{
 	 */
 	private String insRemark;
 	/**
-	 * 地址
+	 * 地址id
 	 */
-	private AddressSaveDTO address;
+	private Integer addressId;
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
 	/**
 	 * 信息地址
 	 */
 	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 }

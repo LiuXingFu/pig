@@ -38,10 +38,6 @@ public class OutlesModifyDTO {
 	 */
 	private String outlesName;
 	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
 	 * 简称
 	 */
 	private String alias;
@@ -54,7 +50,27 @@ public class OutlesModifyDTO {
 	 */
 	private String outlesRemark;
 	/**
-	 * 地址
+	 * 地址id
 	 */
-	private Address address;
+	private Integer addressId;
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 }

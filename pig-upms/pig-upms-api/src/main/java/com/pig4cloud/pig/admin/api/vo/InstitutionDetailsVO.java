@@ -33,9 +33,29 @@ import java.util.List;
 public class InstitutionDetailsVO extends Institution {
 
 	/**
-	 * 地址信息
+	 * 地址id
 	 */
-	private Address address;
+	private Integer addressId;
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
 	 * 员工集合

@@ -236,9 +236,9 @@ public class OutlesController {
 	 * @return R
 	 */
 	@ApiOperation(value = "根据机构id和用户id查询网点", notes = "根据机构id和用户id查询网点")
-	@GetMapping("/queryByUserId")
-	public R queryByUserId(Integer insId,Integer userId) {
-		return R.ok(outlesService.queryByUserId(insId,userId));
+	@GetMapping("/queryByUserIdList/{insId}/{userId}")
+	public R queryByUserIdList(@PathVariable("insId")Integer insId,@PathVariable("userId")Integer userId) {
+		return R.ok(outlesService.queryByUserIdList(insId,userId));
 	}
 
 }

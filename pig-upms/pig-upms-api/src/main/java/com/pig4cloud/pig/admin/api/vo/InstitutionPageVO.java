@@ -28,7 +28,30 @@ import lombok.Data;
 @Data
 public class InstitutionPageVO extends Institution {
 
-	private Address address;
+	/**
+	 * 地址id
+	 */
+	private Integer addressId;
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 
 }

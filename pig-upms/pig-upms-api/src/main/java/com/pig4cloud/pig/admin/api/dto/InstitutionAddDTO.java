@@ -50,9 +50,25 @@ public class InstitutionAddDTO {
 
 	/**************机构地址************************/
 	/**
-	 * 地址
+	 * 省
 	 */
-	private AddressSaveDTO address;
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
 	 * 负责人集合

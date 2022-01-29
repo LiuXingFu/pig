@@ -45,4 +45,8 @@ public class OutlesPageVO extends Outles {
 	 * 信息地址
 	 */
 	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 }

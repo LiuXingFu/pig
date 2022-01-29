@@ -148,7 +148,7 @@ public interface OutlesService extends IService<Outles> {
 	 * @param userId
 	 * @return
 	 */
-	List<Outles> queryByUserId(Integer insId,Integer userId);
+	List<Outles> queryByUserIdList(Integer insId,Integer userId);
 
 
 

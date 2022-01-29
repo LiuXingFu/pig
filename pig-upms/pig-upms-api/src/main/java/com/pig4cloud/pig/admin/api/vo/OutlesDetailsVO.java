@@ -32,6 +32,10 @@ import java.util.List;
 public class OutlesDetailsVO extends Outles {
 
 	/**
+	 * 地址id
+	 */
+	private Integer addressId;
+	/**
 	 * 省
 	 */
 	private String province;
@@ -47,8 +51,10 @@ public class OutlesDetailsVO extends Outles {
 	 * 信息地址
 	 */
 	private String informationAddress;
-
-
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
 	 * 负责人集合

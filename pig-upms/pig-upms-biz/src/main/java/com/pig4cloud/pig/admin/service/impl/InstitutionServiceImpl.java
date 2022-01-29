@@ -549,10 +549,10 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		BeanUtils.copyProperties(institution,institutionAddDTO);
 		save = this.baseMapper.insert(institution);
 		// 判断地址是否为空
-		if(Objects.nonNull(institutionAddDTO.getAddress().getInformationAddress())){
+		if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
 			// 添加地址
 			Address address = new Address();
-			BeanUtils.copyProperties(institutionAddDTO.getAddress(),address);
+			BeanUtils.copyProperties(institutionAddDTO,address);
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);
 			// 类型2=机构地址
 			address.setType(2);
@@ -569,9 +569,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		// 新增机构成功后，自动添加默认网点
 		OutlesAddDTO outlesAddDTO = new OutlesAddDTO();
 		outlesAddDTO.setOutlesName("默认网点");
-		outlesAddDTO.setInsId(institution.getInsId());
-		outlesAddDTO.setAddress(institutionAddDTO.getAddress());
-		outlesAddDTO.setUserList(institutionAddDTO.getUserList());
+		BeanUtils.copyProperties(insOutlesUserAddDTO,outlesAddDTO);
 		outlesService.addOutles(outlesAddDTO);
 
 		return save;
@@ -584,10 +582,10 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		Institution institution = new Institution();
 		BeanUtils.copyProperties(institutionModifyDTO,institution);
 		modify = this.baseMapper.updateById(institution);
-		if(Objects.nonNull(institutionModifyDTO.getAddress())){
+		if(Objects.nonNull(institutionModifyDTO.getInformationAddress())){
 			// 更新地址
 			Address address = new Address();
-			BeanUtils.copyProperties(institutionModifyDTO.getAddress(),address);
+			BeanUtils.copyProperties(institutionModifyDTO,address);
 			address.setUserId(institution.getInsId());
 			address.setType(2);
 			addressService.saveOrUpdate(address);

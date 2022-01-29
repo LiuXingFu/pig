@@ -54,9 +54,29 @@ public class OutlesAddDTO{
 	private String outlesRemark;
 
 	/**
-	 * 地址
+	 * 地址id
 	 */
-	private AddressSaveDTO address;
+	private Integer addressId;
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
 	 * 负责人集合
