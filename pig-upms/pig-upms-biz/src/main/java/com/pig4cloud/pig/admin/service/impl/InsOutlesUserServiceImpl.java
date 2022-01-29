@@ -88,7 +88,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 			queryWrapper.lambda().eq(SysUser::getDelFlag,0);
-			queryWrapper.lambda().eq(SysUser::getPhone,0);
+			queryWrapper.lambda().eq(SysUser::getPhone,item.getPhone());
 			SysUser user = sysUserService.getOne(queryWrapper);
 			// 判断用户是否存在
 			if(Objects.nonNull(user)){
