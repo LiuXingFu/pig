@@ -250,7 +250,7 @@ public class InstitutionController {
 	 * @return R
 	 */
 	@ApiOperation(value = "查询机构详情", notes = "查询机构详情")
-	@GetMapping("/queryById")
+	@GetMapping("/queryById/{insId}")
 	public R queryById(@PathVariable("insId") Integer insId) {
 		return R.ok(institutionService.queryById(insId));
 	}

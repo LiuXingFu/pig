@@ -42,10 +42,10 @@
 		select * from p10_ins_outles_user
 		left join sys_user on sys_user.user_id = p10_ins_outles_user.user_id
 		where p10_ins_outles_user.del_flag = 0 and p10_ins_outles_user.type = #{type}
-		<if test="query.insId != 0">
+		<if test="insId != 0">
 			and p10_ins_outles_user.ins_id = #{insId}
 		</if>
-		<if test="query.outlesId != 0">
+		<if test="outlesId != 0">
 			and p10_ins_outles_user.outles_id = #{outlesId}
 		</if>
 	</select>

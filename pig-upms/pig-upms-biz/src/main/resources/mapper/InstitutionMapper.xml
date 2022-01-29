@@ -326,10 +326,21 @@
 		SELECT COUNT(0) FROM p10_institution WHERE ins_name = #{insName}
 	</select>
 
-	<select id="selectByUserId" resultType="com.pig4cloud.pig.admin.api.entity.Institution">
-		select distinct p10_institution.* from p10_institution
-		left join p10_ins_outles_user on p10_ins_outles_user.ins_id = p10_institution.ins_id and p10_ins_outles_user.del_flag = 0
-		where p10_institution.del_flag = 0 and p10_ins_outles_user.user_id = #{userId}
+	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
+		select
+		p10_institution.*,
+		p10_out
+		p10_address.address_id,
+		p10_address.province,
+		p10_address.city,
+		p10_address.area,
+		p10_address.code,
+		p10_address.information_address
+		from p10_institution
+		left join p10_address on p10_address.user_id = p10_institution.ins_id and p10_address.type = 2
+		where p10_institution.del_flag = 0
+		and p10_institution.ins_id = #{insId}
+		limit 1
 	</select>
 
 </mapper>

@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import lombok.Data;
 
@@ -32,21 +33,9 @@ import java.util.List;
 public class InstitutionDetailsVO extends Institution {
 
 	/**
-	 * 省
+	 * 地址信息
 	 */
-	private String province;
-	/**
-	 * 市
-	 */
-	private String city;
-	/**
-	 * 区
-	 */
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
+	private Address address;
 
 	/**
 	 * 员工集合
