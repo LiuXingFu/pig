@@ -343,10 +343,15 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	}
 
 	@Override
-	public OutlesDetailsVO queryById(int outlesId){
+	public OutlesDetailsVO queryById(Integer outlesId){
 		OutlesDetailsVO outlesDetailsVO = this.baseMapper.selectDetailsById(outlesId);
 		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,0,outlesId);
 		outlesDetailsVO.setUserList(userList);
 		return outlesDetailsVO;
+	}
+
+	@Override
+	public List<Outles> queryByUserId(Integer insId,Integer userId){
+		return this.baseMapper.selectByUserId(userId,insId);
 	}
 }

@@ -142,7 +142,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int removeInsOutlesUser(int insOutlesUserId){
+	public int removeInsOutlesUser(Integer insOutlesUserId){
 		int modify = 0;
 		InsOutlesUser insOutlesUser = new InsOutlesUser();
 		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
@@ -155,7 +155,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId){
+	public List<InsOutlesUserListVO> queryUserList(Integer type,Integer insId, Integer outlesId){
 		return this.baseMapper.selectUserList(type,insId,outlesId);
 	}
 }

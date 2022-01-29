@@ -281,5 +281,11 @@
 		limit 1
 	</select>
 
+	<select id="selectByUserId" resultType="com.pig4cloud.pig.admin.api.entity.Outles">
+		select distinct p10_outles.* from p10_outles
+		left join p10_ins_outles_user on p10_ins_outles_user.outles_id = p10_outles.outles_id and p10_ins_outles_user.del_flag = 0
+		where p10_outles.del_flag = 0 and p10_ins_outles_user.ins_id = #{insId} and p10_ins_outles_user.user_id = #{userId}
+	</select>
+
 
 </mapper>

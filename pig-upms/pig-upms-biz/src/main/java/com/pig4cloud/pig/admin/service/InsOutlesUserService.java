@@ -39,7 +39,7 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	 * @param insOutlesUserId
 	 * @return
 	 */
-	int removeInsOutlesUser(int insOutlesUserId);
+	int removeInsOutlesUser(Integer insOutlesUserId);
 
 	/**
 	 * 根据机构id或网点id查询员工集合
@@ -47,6 +47,6 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	 * @param outlesId
 	 * @return
 	 */
-	List<InsOutlesUserListVO> queryUserList(int type,int insId, int outlesId);
+	List<InsOutlesUserListVO> queryUserList(Integer type,Integer insId, Integer outlesId);
 
 }

@@ -110,16 +110,45 @@ public interface OutlesService extends IService<Outles> {
 	Outles getUserIdOutlesIdByRelevance(Integer userId, Integer outlesId);
 
 	/**************************************************/
+	/**
+	 * 分页查询
+	 * @param page
+	 * @param outlesPageDTO
+	 * @return
+	 */
 	IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO);
 
 	// 根据网点名称查询
 	Outles queryByOutlesName(int insId,String outlesName);
 
+	/**
+	 * 添加网点及网点负责人
+	 * @param outlesAddDTO
+	 * @return
+	 */
 	int addOutles(OutlesAddDTO outlesAddDTO);
 
+	/**
+	 * 根据网点id修改网点信息
+	 * @param outlesModifyDTO
+	 * @return
+	 */
 	int modifyOutlesById(OutlesModifyDTO outlesModifyDTO);
 
-	OutlesDetailsVO queryById(int outlesId);
+	/**
+	 * 根据网点id查询网点详情
+	 * @param outlesId
+	 * @return
+	 */
+	OutlesDetailsVO queryById(Integer outlesId);
+
+	/**
+	 * 根据机构id和用户id查询网点
+	 * @param insId
+	 * @param userId
+	 * @return
+	 */
+	List<Outles> queryByUserId(Integer insId,Integer userId);
 
 
 
