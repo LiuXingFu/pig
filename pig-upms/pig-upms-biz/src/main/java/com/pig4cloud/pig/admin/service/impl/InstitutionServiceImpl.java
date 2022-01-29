@@ -546,7 +546,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		int save = 0;
 		Institution institution = new Institution();
 
-		BeanUtils.copyProperties(institution,institutionAddDTO);
+		BeanUtils.copyProperties(institutionAddDTO,institution);
 		save = this.baseMapper.insert(institution);
 		// 判断地址是否为空
 		if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
