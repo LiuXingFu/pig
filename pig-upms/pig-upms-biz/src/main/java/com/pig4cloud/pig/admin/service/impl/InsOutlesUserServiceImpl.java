@@ -73,8 +73,8 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				List<InsOutlesUser> users = new ArrayList<>();
 				if(Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
 					queryWrapper.lambda().eq(InsOutlesUser::getOutlesId,insOutlesUserAddDTO.getOutlesId());
-					users = insOutlesUserService.list(queryWrapper);
 				}
+				users = insOutlesUserService.list(queryWrapper);
 				if(Objects.nonNull(users)){
 					throw new RuntimeException("此用户已是此网点负责人或员工！");
 				}
