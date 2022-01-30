@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
@@ -27,6 +29,7 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.BankLoanVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,5 +111,10 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 			}
 		}
 		return save;
+	}
+
+	@Override
+	public IPage<BankLoanVO> bankLoanPage(Page page, BankLoanDTO bankLoanDTO) {
+		return this.baseMapper.bankLoanPage(page,bankLoanDTO);
 	}
 }

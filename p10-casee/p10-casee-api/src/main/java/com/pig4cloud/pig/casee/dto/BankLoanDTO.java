@@ -52,4 +52,19 @@ public class BankLoanDTO extends BankLoan {
 	private List<AssetsDTO> assetsDTOList;
 
 
+	//列表条件查询数据
+	/**
+	 * 受托方
+	 */
+	private String trustee;
+
+	/**
+	 * 债务人
+	 */
+	private String debtor;
+
+	/**
+	 * 移交时间
+	 */
+	private LocalDateTime handoverTime;
 }

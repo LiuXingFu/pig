@@ -39,4 +39,48 @@
     <result property="loanContract" column="loan_contract"/>
     <result property="otherFile" column="other_file"/>
   </resultMap>
+
+	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO">
+		<id property="bankLoanId" column="bank_loan_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="insId" column="ins_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="principal" column="principal"/>
+		<result property="interest" column="interest"/>
+		<result property="rental" column="rental"/>
+		<result property="mortgageSituation" column="mortgage_situation"/>
+		<result property="loanContract" column="loan_contract"/>
+		<result property="otherFile" column="other_file"/>
+		<collection property="subjectNameList" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanRe" column="bank_loan_id">
+		</collection>
+	</resultMap>
+
+	<select id="bankLoanPage" resultMap="bankLoanMapVO">
+		select
+		*,
+		p10_institution.ins_name as entrustedInsName,
+		p10_outles.outles_name as entrustedOutlesName,
+		p10_transfer_record.litigation,
+		p10_transfer_record.handover_amount as handoverAmount,
+		p10_transfer_record.handover_time as handoverTime,
+		p10_transfer_record.status
+		from p10_bank_loan
+		left join p10_transfer_record on p10_transfer_record.bank_loan_id=p10_bank_loan.bank_loan_id
+		left join p10_institution on p10_institution.ins_id=p10_transfer_record.entrusted_ins_id
+		left join p10_outles on p10_outles.outles_id=p10_transfer_record.entrusted_outles_id
+		where
+		p10_bank_loan.del_flag=0
+		<if test="query.trustee != null">
+			and  p10_institution.ins_name like concat('%', #{query.trustee}, '%')
+			or p10_outles.outles_name like concat('%', #{query.trustee}, '%')
+		</if>
+		<if test="query.handoverTime != null">
+			and p10_transfer_record.handover_time=#{query.handoverTime}
+		</if>
+	</select>
 </mapper>

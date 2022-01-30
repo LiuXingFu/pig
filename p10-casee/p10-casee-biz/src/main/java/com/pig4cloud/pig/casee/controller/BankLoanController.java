@@ -47,13 +47,13 @@ public class BankLoanController {
     /**
      * 分页查询
      * @param page 分页对象
-     * @param bankLoan 银行借贷表
+     * @param bankLoanDTO 银行借贷表
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    public R getBankLoanPage(Page page, BankLoan bankLoan) {
-        return R.ok(bankLoanService.page(page, Wrappers.query(bankLoan)));
+    public R getBankLoanPage(Page page, BankLoanDTO bankLoanDTO) {
+        return R.ok(bankLoanService.bankLoanPage(page, bankLoanDTO));
     }
 
 

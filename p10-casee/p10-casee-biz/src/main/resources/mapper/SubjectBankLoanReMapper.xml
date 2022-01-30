@@ -28,4 +28,11 @@
     <result property="bankLoanId" column="bank_loan_id"/>
     <result property="subjectId" column="subject_id"/>
   </resultMap>
+
+	<select id="getSubjectBankLoanRe" resultType="java.lang.String">
+	SELECT p10_subject.name FROM `p10_subject_bank_loan_re`
+	LEFT JOIN p10_subject ON p10_subject.subject_id = p10_subject_bank_loan_re.subject_id
+	WHERE
+	p10_subject_bank_loan_re.bank_loan_id = #{bankLoanId}
+	</select>
 </mapper>
