@@ -70,6 +70,7 @@
 		p10_transfer_record.handover_time as handoverTime,
 		p10_transfer_record.status
 		from p10_bank_loan
+		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.bank_loan_id=p10_bank_loan.bank_loan_id
 		left join p10_transfer_record on p10_transfer_record.bank_loan_id=p10_bank_loan.bank_loan_id
 		left join p10_institution on p10_institution.ins_id=p10_transfer_record.entrusted_ins_id
 		left join p10_outles on p10_outles.outles_id=p10_transfer_record.entrusted_outles_id

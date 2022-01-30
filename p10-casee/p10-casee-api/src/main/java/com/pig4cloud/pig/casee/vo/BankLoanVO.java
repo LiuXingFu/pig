@@ -53,14 +53,14 @@ public class BankLoanVO extends BankLoan {
 	private Integer litigation;
 
 	/**
-	 * 移交金额
+	 * 抵押金额
 	 */
-	private BigDecimal handoverAmount;
+	private BigDecimal mortgageAmount;
 
 	/**
-	 * 移交时间
+	 * 抵押时间
 	 */
-	private LocalDateTime handoverTime;
+	private LocalDateTime mortgageTime;
 
 	/**
 	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
