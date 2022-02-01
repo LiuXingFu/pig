@@ -283,7 +283,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		if(Objects.isNull(sysRoleList)){
 			insId = pigUser.getInsId();
 		}
-		return this.baseMapper.selectPage(page,outlesPageDTO,insId);
+		return this.baseMapper.selectPage(page,outlesPageDTO, insId);
 	}
 
 	@Override
@@ -299,8 +299,10 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	@Transactional
 	public int addOutles(OutlesAddDTO outlesAddDTO){
 		int save = 0;
-		Outles outles = new Outles();
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		outlesAddDTO.setInsId(pigUser.getInsId());
 
+		Outles outles = new Outles();
 		BeanUtils.copyProperties(outlesAddDTO,outles);
 		save = this.baseMapper.insert(outles);
 		// 判断地址是否为空

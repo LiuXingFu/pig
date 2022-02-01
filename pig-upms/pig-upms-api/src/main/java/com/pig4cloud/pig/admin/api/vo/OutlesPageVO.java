@@ -30,6 +30,11 @@ import lombok.Data;
 public class OutlesPageVO extends Outles {
 
 	/**
+	 *机构名称
+	 */
+	private String insName;
+
+	/**
 	 * 省
 	 */
 	private String province;
