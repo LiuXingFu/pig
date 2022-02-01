@@ -162,14 +162,14 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 		this.updateById(outles);
 		// 3.判断地址id是否为空
-		if (Objects.nonNull(outlesDTO.getAddressId())) {
+		if (Objects.nonNull(outlesDTO.getAddress().getAddressId())) {
 
 			// 2.查询网点地址
 			Address address = addressService.getByUserId(outles.getOutlesId(), 3);
 			BeanUtils.copyProperties(outlesDTO.getAddress(), address);
 
 			// 3.1不为空修改地址
-			address.setAddressId(outlesDTO.getAddressId());
+			address.setAddressId(outlesDTO.getAddress().getAddressId());
 			addressService.updateById(address);
 		} else {
 			// 3.2新增网点地址

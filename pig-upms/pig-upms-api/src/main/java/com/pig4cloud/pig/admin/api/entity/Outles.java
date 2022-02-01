@@ -60,11 +60,6 @@ public class Outles extends BaseEntity {
 	@ApiModelProperty(value = "机构id")
 	private Integer insId;
 	/**
-	 * 地址id
-	 */
-	@ApiModelProperty(value = "地址id")
-	private Integer addressId;
-	/**
 	 * 简称
 	 */
 	@ApiModelProperty(value = "简称")

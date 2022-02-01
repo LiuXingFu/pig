@@ -67,16 +67,16 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			// 用户已存在的情况下，验证此网点下是否有已存在记录
 			if(Objects.nonNull(item.getUserId())){
 				QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
-				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
+//				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
 				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
-				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
+				queryWrapper.lambda().eq(InsOutlesUser::getInsId, insOutlesUserAddDTO.getInsId());
 				List<InsOutlesUser> users = new ArrayList<>();
 				if(Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
-					queryWrapper.lambda().eq(InsOutlesUser::getOutlesId,insOutlesUserAddDTO.getOutlesId());
+					queryWrapper.lambda().eq(InsOutlesUser::getOutlesId, insOutlesUserAddDTO.getOutlesId());
 				}
 				users = insOutlesUserService.list(queryWrapper);
-				if(Objects.nonNull(users)){
-					throw new RuntimeException("此用户已是此网点负责人或员工！");
+				if(users.size() > 0){
+					throw new RuntimeException(item.getActualName() + "已是此网点负责人或员工！");
 				}
 			}
 

@@ -30,7 +30,6 @@
 <!--		<result property="insPrincipalName" column="ins_principal_name"/>-->
 <!--		<result property="insPrincipalPhone" column="ins_principal_phone"/>-->
 		<result property="insType" column="ins_type"/>
-		<result property="addressId" column="address_id"/>
 		<result property="insFax" column="ins_fax"/>
 		<result property="insLandLinePhone" column="ins_land_line_phone"/>
 		<result property="canDisable" column="can_disable"/>
@@ -49,7 +48,6 @@
 <!--		<result property="insPrincipalName" column="ins_principal_name"/>-->
 <!--		<result property="insPrincipalPhone" column="ins_principal_phone"/>-->
 		<result property="insType" column="ins_type"/>
-		<result property="addressId" column="address_id"/>
 		<result property="insFax" column="ins_fax"/>
 		<result property="insLandLinePhone" column="ins_land_line_phone"/>
 		<result property="canDisable" column="can_disable"/>
@@ -282,7 +280,7 @@
 
 	<select id="selectPage" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionPageVO">
 		select
-		p10_institution.*
+		*
 		from p10_institution
 		left join p10_address on p10_address.user_id = p10_institution.ins_id and p10_address.type = 2
 		where p10_institution.del_flag = 0
@@ -292,6 +290,7 @@
 		<if test="query.insType != null">
 			and p10_institution.ins_type like concat('%', #{query.insType}, '%')
 		</if>
+		ORDER BY `p10_institution`.create_time DESC
 	</select>
 
 	<select id="getInstitutionIsInsName" resultType="java.lang.Integer">
@@ -300,7 +299,7 @@
 
 	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO">
 		select
-		p10_institution.*
+		*
 		from p10_institution
 		left join p10_address on p10_address.user_id = p10_institution.ins_id and p10_address.type = 2
 		where p10_institution.del_flag = 0

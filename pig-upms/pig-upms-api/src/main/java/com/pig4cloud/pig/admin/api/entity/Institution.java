@@ -59,11 +59,6 @@ public class Institution extends BaseEntity {
 	@ApiModelProperty(value = "机构类型")
 	private Integer insType;
 	/**
-	 * 地址id
-	 */
-	@ApiModelProperty(value = "地址id")
-	private Integer addressId;
-	/**
 	 * 是否禁用 0-否 1-是
 	 */
 	@ApiModelProperty(value = "是否禁用 0-否 1-是")
