@@ -20,7 +20,9 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserModifyDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import com.pig4cloud.pig.admin.service.InsOutlesUserService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -29,6 +31,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -123,7 +127,19 @@ public class InsOutlesUserController {
 		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
 	}
 
-
+	/**
+	 * 根据类型、机构id或网点id查询相应机构/网点用户关联表信息
+	 *
+	 * @param type
+	 * @param insId
+	 * @param outlesId
+	 * @return
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/queryUserList")
+	public R queryUserList(Integer type, Integer insId, Integer outlesId){
+		return R.ok(insOutlesUserService.queryUserList(type, insId, outlesId));
+	}
 
 
 	/**
@@ -144,6 +160,11 @@ public class InsOutlesUserController {
 		}
 	}
 
-
+	@ApiOperation(value = "修改用户", notes = "修改用户")
+	@SysLog("修改用户")
+	@PostMapping("/updateInsOutlesUser")
+	public R updateInsOutlesUser(@RequestBody InsOutlesUserModifyDTO insOutlesUserModifyDTO) {
+		return R.ok(this.insOutlesUserService.updateInsOutlesUser(insOutlesUserModifyDTO));
+	}
 
 }

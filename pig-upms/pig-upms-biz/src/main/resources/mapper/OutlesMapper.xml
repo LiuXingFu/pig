@@ -111,7 +111,6 @@
 		outles.outles_name,
 		outles.ins_id,
 -- 		outles.user_id,
-		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
 		outles.outles_remark,

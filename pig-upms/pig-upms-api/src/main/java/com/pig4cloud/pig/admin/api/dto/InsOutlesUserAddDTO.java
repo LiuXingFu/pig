@@ -30,38 +30,6 @@ import java.util.List;
  * @date 2022-01-27 19:30:49
  */
 @Data
-public class InsOutlesUserAddDTO extends BaseEntity {
-
-
-    /**
-     * 机构id
-     */
-    private Integer insId;
-
-    /**
-     * 网点id
-     */
-    private Integer outlesId;
-
-    /**
-	 * 类型：1-管理员，2-普通员工
-	 */
-	private Integer type;
-
-    /**
-     * 入职时间
-     */
-    private LocalDateTime entryTime;
-
-    /**
-     * 职位
-     */
-    private String position;
-
-	/**
-	 * 用户集合
-	 */
-	private List<SysUser> userList;
-
+public class InsOutlesUserAddDTO extends InsOutlesUserObjectDTO {
 
 }

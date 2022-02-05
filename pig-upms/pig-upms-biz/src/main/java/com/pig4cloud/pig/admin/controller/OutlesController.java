@@ -224,7 +224,7 @@ public class OutlesController {
 	 * @return R
 	 */
 	@ApiOperation(value = "查询网点详情", notes = "查询网点详情")
-	@GetMapping("/queryById")
+	@GetMapping("/queryById/{outlesId}")
 	public R queryById(@PathVariable("outlesId") Integer outlesId) {
 		return R.ok(outlesService.queryById(outlesId));
 	}

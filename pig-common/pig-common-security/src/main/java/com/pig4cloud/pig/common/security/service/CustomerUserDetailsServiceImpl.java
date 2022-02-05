@@ -117,9 +117,6 @@ import java.util.*;
 			log.info("数据升级了，需要重新登录");
 		}
 
-
-
-
 		R<UserInfo> result = remoteUserService.info(username, SecurityConstants.FROM_IN);
 		if(result.getData()==null){
 			throw new UsernameNotFoundException("用户不存在");
