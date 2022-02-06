@@ -126,11 +126,16 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 		Institution institution = institutionService.getById(insOutlesUserModifyDTO.getInsId());
 
-		List<Integer> insOutlesUserIds = this.list(new LambdaQueryWrapper<InsOutlesUser>()
+		LambdaQueryWrapper<InsOutlesUser> query = new LambdaQueryWrapper<InsOutlesUser>()
 				.eq(InsOutlesUser::getInsId, institution.getInsId())
-				.eq(InsOutlesUser::getOutlesId, insOutlesUserModifyDTO.getOutlesId())
 				.eq(InsOutlesUser::getType, insOutlesUserModifyDTO.getType())
-				.eq(InsOutlesUser::getDelFlag, 0)).stream().map(insOutlesUser -> insOutlesUser.getInsOutlesUserId()).collect(Collectors.toList());
+				.eq(InsOutlesUser::getDelFlag, 0);
+
+		if(Objects.nonNull(insOutlesUserModifyDTO.getOutlesId()) || insOutlesUserModifyDTO.getOutlesId() > 0){
+			query.eq(InsOutlesUser::getOutlesId, insOutlesUserModifyDTO.getOutlesId());
+		}
+
+		List<Integer> insOutlesUserIds = this.list().stream().map(insOutlesUser -> insOutlesUser.getInsOutlesUserId()).collect(Collectors.toList());
 
 //		this.staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().in(StaffRole::getStaffId, insOutlesUserIds));
 //
