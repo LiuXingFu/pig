@@ -62,6 +62,10 @@ public class InsOutlesUserController {
         return R.ok(insOutlesUserService.page(page, Wrappers.query(insOutlesUser)));
     }
 
+    public R getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser){
+    	return R.ok(insOutlesUserService.getInsOutlesUserPageByOutles(page, insOutlesUser));
+	}
+
 
     /**
      * 通过id查询机构/网点用户关联表

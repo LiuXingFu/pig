@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pig.admin.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserModifyDTO;
@@ -54,4 +56,6 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	int updateInsOutlesUser(InsOutlesUserModifyDTO insOutlesUserModifyDTO);
 
 	int removeInsOutlesUserList(List<Integer> insOutlesUserIds);
+
+	IPage<InsOutlesUser> getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser);
 }

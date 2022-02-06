@@ -23,20 +23,20 @@
 
 <mapper namespace="com.pig4cloud.pig.admin.mapper.InsOutlesUserMapper">
 
-  <resultMap id="insOutlesUserMap" type="com.pig4cloud.pig.admin.api.entity.InsOutlesUser">
-    <id property="insOutlesUserId" column="ins_outles_user_id"/>
-    <result property="createBy" column="create_by"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="insId" column="ins_id"/>
-    <result property="outlesId" column="outles_id"/>
-    <result property="userId" column="user_id"/>
-    <result property="type" column="type"/>
-    <result property="entryTime" column="entry_time"/>
-    <result property="position" column="position"/>
-	<result property="delFlag" column="del_flag"/>
-  </resultMap>
+	<resultMap id="insOutlesUserMap" type="com.pig4cloud.pig.admin.api.entity.InsOutlesUser">
+		<id property="insOutlesUserId" column="ins_outles_user_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="insId" column="ins_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="type" column="type"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="position" column="position"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
 
 	<select id="selectUserList" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO">
 		select * from p10_ins_outles_user
@@ -53,5 +53,16 @@
 		</if>
 	</select>
 
+	<select id="getInsOutlesUserPageByOutles">
+		SELECT
+		*
+		FROM
+		p10_ins_outles_user iou
+		LEFT JOIN sys_user ON iou.user_id = sys_user.user_id and sys_user.del_flag = 0
+		WHERE iou.del_flag = '0'
+		AND type != 1
+		AND outles_id = #{outlesId}
+		AND sys_user.actual_name = #{actualName}
+	</select>
 
 </mapper>
