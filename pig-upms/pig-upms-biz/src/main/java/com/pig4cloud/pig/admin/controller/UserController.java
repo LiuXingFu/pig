@@ -239,4 +239,15 @@ public class UserController {
 		return R.ok(userService.queryUserByPhone(phone));
 	}
 
+	/**
+	 * 根据机构id、网点id获取用户机构信息、网点信息、角色信息
+	 * @param insId
+	 * @return
+	 */
+	@ApiOperation(value = "根据机构id、网点id获取用户机构信息、网点信息、角色信息", notes = "根据机构id、网点id获取用户机构信息、网点信息、角色信息")
+	@GetMapping("/getInsOutlesRole")
+	public R getInsOutlesRole(Integer insId,@RequestParam(value = "outlesId" ,required=false)Integer outlesId){
+		return R.ok(userService.getInsOutlesRole(insId,outlesId));
+	}
+
 }

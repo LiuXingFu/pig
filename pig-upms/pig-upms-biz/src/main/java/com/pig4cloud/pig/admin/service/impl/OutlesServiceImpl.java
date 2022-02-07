@@ -279,7 +279,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		int insId = 0;
 		PigUser pigUser = securityUtilsService.getCacheUser();
 		// 运营平台账号可查所有数据
-		List<SysRole> sysRoleList = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),"PLAT_");
+		SysRole sysRoleList = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),"PLAT_");
 		if(Objects.isNull(sysRoleList)){
 			insId = pigUser.getInsId();
 		}

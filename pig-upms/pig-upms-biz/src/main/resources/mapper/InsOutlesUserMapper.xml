@@ -70,7 +70,7 @@
 		left join p10_outles on p10_outles.outles_id = p10_ins_outles_user.outles_id and p10_outles.del_flag = 0
 		where p10_ins_outles_user.del_flag = 0
 		and p10_ins_outles_user.user_id = #{userId}
-		<if test="insId != 0 and insId != null">
+		<if test="insId != 0 or insId != null">
 			and p10_ins_outles_user.ins_id = #{insId}
 		</if>
 	</select>

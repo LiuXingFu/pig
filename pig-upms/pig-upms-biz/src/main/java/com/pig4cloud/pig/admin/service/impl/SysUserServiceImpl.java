@@ -26,12 +26,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.admin.mapper.SysUserMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CacheConstants;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.security.service.PigUser;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -89,6 +92,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 	@Autowired
 	private final ClientUserReService clientUserReService;
+
+	@Autowired
+	private final SysRoleService sysRoleService;
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
 
 	/**
 	 * 保存用户信息
@@ -309,6 +317,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 		Integer parentId = sysDept.getParentId();
 		return this.list(Wrappers.<SysUser>query().lambda().eq(SysUser::getDeptId, parentId));
+	}
+
+	@Override
+	public UserInsOutlesRoleVO getInsOutlesRole(Integer insId, Integer outlesId){
+		UserInsOutlesRoleVO userInsOutlesRoleVO = new UserInsOutlesRoleVO();
+		Institution institution = institutionService.getById(insId);
+		userInsOutlesRoleVO.setInstitution(institution);
+		if(Objects.nonNull(outlesId)){
+			Outles outles = outlesService.getById(outlesId);
+			userInsOutlesRoleVO.setOutles(outles);
+		}
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		SysRole sysRole = sysRoleService.queryByUserIdList(pigUser.getId(),insId,outlesId,null);
+		userInsOutlesRoleVO.setSysRole(sysRole);
+		return userInsOutlesRoleVO;
 	}
 
 }
