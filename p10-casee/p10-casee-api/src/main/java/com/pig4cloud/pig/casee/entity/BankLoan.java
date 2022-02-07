@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 银行借贷表
@@ -98,5 +99,10 @@ public class BankLoan extends BaseEntity {
     @ApiModelProperty(value="其它文件")
     private String otherFile;
 
+	/**
+	 * 借贷日期
+	 */
+	@ApiModelProperty(value="借贷日期")
+	private LocalDateTime transferDate;
 
 }

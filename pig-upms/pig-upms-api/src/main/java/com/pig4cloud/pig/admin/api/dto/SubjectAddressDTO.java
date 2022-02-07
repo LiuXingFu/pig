@@ -18,7 +18,6 @@
 package com.pig4cloud.pig.admin.api.dto;
 
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import lombok.Data;
 
 import java.util.List;
@@ -32,7 +31,65 @@ import java.util.List;
 @Data
 public class SubjectAddressDTO {
 	//债务人主体信息
-	Subject subject;
+	/**
+	 * 主体id
+	 */
+	private Integer subjectId;
+
+	/**
+	 * 统一标识(身份证/统一社会信用代码/组织机构代码)
+	 */
+	private String unifiedIdentity;
+
+	/**
+	 * 性质类型 0-个人 1-企业/公司
+	 */
+	private Integer natureType;
+
+	/**
+	 * 名称
+	 */
+	private String name;
+
+	/**
+	 * 联系方式
+	 */
+	private String phone;
+
+	/**
+	 * 法人
+	 */
+	private String legalPerson;
+
+	/**
+	 * 电子邮件
+	 */
+	private String email;
+
+	/**
+	 * 备注
+	 */
+	private String remark;
+
+	/**
+	 * 是否认证(0-否，1-是)
+	 */
+	private Integer isAuthentication;
+
+	/**
+	 * 用户id
+	 */
+	private Integer userId;
+
+	/**
+	 * 工作单位
+	 */
+	private String employer;
+
+	/**
+	 * 债务类型(1-贷款人 2-担保人)
+	 */
+	private Integer debtType;
 
 	//债务人联系地址
 	List<Address> addressList;

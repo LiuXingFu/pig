@@ -38,6 +38,7 @@
     <result property="mortgageSituation" column="mortgage_situation"/>
     <result property="loanContract" column="loan_contract"/>
     <result property="otherFile" column="other_file"/>
+	<result property="transferDate" column="transfer_date"/>
   </resultMap>
 
 	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO">

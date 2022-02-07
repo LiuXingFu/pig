@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.mapper.TransferRecordMapper;
@@ -31,4 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransferRecordServiceImpl extends ServiceImpl<TransferRecordMapper, TransferRecord> implements TransferRecordService {
 
+	@Override
+	public IPage<TransferRecord> TransferRecordPage(Page page, TransferRecord transferRecord) {
+		return this.baseMapper.TransferRecordPage(page,transferRecord);
+	}
 }

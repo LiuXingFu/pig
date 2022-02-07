@@ -14,21 +14,30 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import lombok.Data;
+
 
 /**
- * 移交记录表
+ * 移送记录VO
  *
  * @author Mjh
  * @date 2022-01-28 18:52:40
  */
-public interface TransferRecordService extends IService<TransferRecord> {
+@Data
+public class TransferRecordVO extends TransferRecord {
 
-	IPage<TransferRecord> TransferRecordPage(Page page,TransferRecord transferRecord);
+	/**
+	 * 移送机构
+	 */
+	private String entrustedInsName;
+
+	/**
+	 * 移送网点
+	 */
+	private String entrustedOutlesName;
+
 }
