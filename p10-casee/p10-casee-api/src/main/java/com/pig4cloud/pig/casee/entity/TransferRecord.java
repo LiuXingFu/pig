@@ -35,14 +35,14 @@ import java.time.LocalDateTime;
 @Data
 @TableName("p10_transfer_record")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "移交记录表")
+@ApiModel(value = "移送记录表")
 public class TransferRecord extends BaseEntity {
 
     /**
-     * 移交记录id
+     * 移送记录id
      */
     @TableId
-    @ApiModelProperty(value="移交记录id")
+    @ApiModelProperty(value="移送记录id")
     private Integer transferRecordId;
 
     /**
@@ -70,15 +70,15 @@ public class TransferRecord extends BaseEntity {
     private Integer litigation;
 
     /**
-     * 移交金额
+     * 移送金额
      */
-    @ApiModelProperty(value="移交金额")
+    @ApiModelProperty(value="移送金额")
     private BigDecimal handoverAmount;
 
     /**
-     * 移交时间
+     * 移送时间
      */
-    @ApiModelProperty(value="移交时间")
+    @ApiModelProperty(value="移送时间")
     private LocalDateTime handoverTime;
 
     /**

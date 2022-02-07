@@ -64,7 +64,7 @@ public class BankLoanDTO extends BankLoan {
 	private String debtor;
 
 	/**
-	 * 移交时间
+	 * 移送时间
 	 */
 	private LocalDateTime handoverTime;
 }
