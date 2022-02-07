@@ -620,8 +620,6 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			reselectInfoVO.setOutles(outles);
 		}
 
-
-
 		return reselectInfoVO;
 	}
 

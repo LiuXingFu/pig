@@ -17,15 +17,11 @@
 
 package com.pig4cloud.pig.admin.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserModifyDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
-import com.pig4cloud.pig.common.core.util.R;
 
 import java.util.List;
 
@@ -54,11 +50,6 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	 */
 	List<InsOutlesUserListVO> queryUserList(Integer type,Integer insId, Integer outlesId);
 
-	int updateInsOutlesUser(InsOutlesUserModifyDTO insOutlesUserModifyDTO);
-
-	int removeInsOutlesUserList(List<Integer> insOutlesUserIds);
-
-	IPage<InsOutlesUser> getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser);
 	/**
 	 * 根据用户id查询员工权限、网点名称
 	 * @param userId
