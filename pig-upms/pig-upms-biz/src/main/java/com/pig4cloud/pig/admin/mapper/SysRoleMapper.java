@@ -52,5 +52,5 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
 	 */
 	IPage<List<SysRole>> getRoleVosPage(Page page, @Param("query") SysRole sysRole);
 
-	List<SysRole> selectByUserId(@Param("userId")Integer userId, @Param("insId")Integer insId, @Param("outlesId")Integer outlesId, @Param("roleCode")String roleCode);
+	SysRole selectByUserId(@Param("userId")Integer userId, @Param("insId")Integer insId, @Param("outlesId")Integer outlesId, @Param("roleCode")String roleCode);
 }

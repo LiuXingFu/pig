@@ -23,6 +23,7 @@ import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 
 import java.util.List;
@@ -95,4 +96,12 @@ public interface SysUserService extends IService<SysUser> {
 	Integer updateUserClientInfo(String username, String clientId);
 
 	SysUser queryUserByPhone(String phone);
+
+	/**
+	 * 根据机构id、网点id获取用户机构信息、网点信息、角色信息
+	 * @param insId
+	 * @param outlesId
+	 * @return
+	 */
+	UserInsOutlesRoleVO getInsOutlesRole(Integer insId,Integer outlesId);
 }

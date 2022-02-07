@@ -17,17 +17,23 @@
 package com.pig4cloud.pig.admin.controller;
 
 import com.pig4cloud.pig.admin.api.entity.SysMenu;
+import com.pig4cloud.pig.admin.api.entity.SysRole;
 import com.pig4cloud.pig.admin.service.SysMenuService;
+import com.pig4cloud.pig.admin.service.SysRoleService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
+import com.pig4cloud.pig.common.security.service.PigUser;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,6 +49,11 @@ public class MenuController {
 
 	private final SysMenuService sysMenuService;
 
+	private final SysRoleService sysRoleService;
+
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
+
 	/**
 	 * 返回当前用户的树形菜单集合
 	 * @param parentId 父节点ID
@@ -50,10 +61,17 @@ public class MenuController {
 	 */
 	@GetMapping
 	public R getUserMenu(Integer parentId) {
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		SysRole sysRole = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),null);
+		List<SysMenu> sysMenuList = sysMenuService.findMenuByRoleId(sysRole.getRoleId());
 
 		// 获取符合条件的菜单
 		Set<SysMenu> all = new HashSet<>();
-		SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(roleId)));
+		sysMenuList.stream().forEach(item ->{
+			all.add(item);
+		});
+		//SecurityUtils.getRoles().forEach(roleId -> all.addAll(sysMenuService.findMenuByRoleId(sysRole.getRoleId())));
+
 		return R.ok(sysMenuService.filterMenu(all, parentId));
 	}
 
