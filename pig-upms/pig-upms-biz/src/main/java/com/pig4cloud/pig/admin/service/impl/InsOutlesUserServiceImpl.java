@@ -59,7 +59,6 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	@Override
 	@Transactional
 	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
-		int add = 0;
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
@@ -132,7 +131,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		});
 		staffRoleService.saveBatch(staffRoleList);
 
-		return add;
+		return 1;
 	}
 
 
