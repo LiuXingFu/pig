@@ -35,6 +35,11 @@ public class InsOutlesUserListVO {
      */
     private Integer insOutlesUserId;
 
+	/**
+	 * 用户id
+	 */
+	private Integer userId;
+
     /**
      * 入职时间
      */

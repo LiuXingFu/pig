@@ -131,4 +131,14 @@ public class RoleController {
 	public R queryRoleList() {
 		return R.ok(sysRoleService.queryRoleList());
 	}
+
+	/**
+	 * 通过当前登录用户id、机构id、网点id，查询角色信息
+	 * @return
+	 */
+	@GetMapping("/queryByUserIdList")
+	public R queryByUserIdList(Integer userId,Integer insId,Integer outlesId,String roleCode) {
+		return R.ok(sysRoleService.queryByUserIdList(userId,insId,outlesId,roleCode));
+	}
+
 }

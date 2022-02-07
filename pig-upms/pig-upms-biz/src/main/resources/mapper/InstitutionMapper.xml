@@ -287,7 +287,7 @@
 		<if test="query.insType != null">
 			and p10_institution.ins_type like concat('%', #{query.insType}, '%')
 		</if>
-		ORDER BY `p10_institution`.create_time DESC
+		ORDER BY p10_institution.create_time DESC
 	</select>
 
 	<select id="getInstitutionIsInsName" resultType="java.lang.Integer">

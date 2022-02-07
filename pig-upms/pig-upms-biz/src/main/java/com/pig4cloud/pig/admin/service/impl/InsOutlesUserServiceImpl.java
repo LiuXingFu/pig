@@ -59,7 +59,6 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	@Override
 	@Transactional
 	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
-		int add = 0;
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
@@ -73,7 +72,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
 				List<InsOutlesUser> users = insOutlesUserService.list(queryWrapper);
 				if(Objects.nonNull(users)){
-					throw new RuntimeException("此用户已是此网点负责人或员工！");
+					throw new RuntimeException("此用户已是负责人或员工！");
 				}
 			}
 
@@ -132,7 +131,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		});
 		staffRoleService.saveBatch(staffRoleList);
 
-		return add;
+		return 1;
 	}
 
 	@Override

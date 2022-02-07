@@ -18,6 +18,8 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -30,4 +32,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TransferRecordMapper extends BaseMapper<TransferRecord> {
 
+	IPage<TransferRecord> TransferRecordPage(Page page, TransferRecord transferRecord);
 }

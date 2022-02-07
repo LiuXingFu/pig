@@ -26,6 +26,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -109,10 +110,12 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	public List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
 			//添加债务人主体信息
-			this.saveSubject(subjectAddressDTO.getSubject());
+			Subject subject=new Subject();
+			BeanCopyUtil.copyBean(subjectAddressDTO,subject);
+			this.saveSubject(subject);
 			List<Address> addressList = subjectAddressDTO.getAddressList();
 			for (Address address : addressList) {
-				address.setUserId(subjectAddressDTO.getSubject().getSubjectId());
+				address.setUserId(subject.getSubjectId());
 				address.setType(1);
 				//添加债务人地址信息
 				addressService.saveAddress(address);

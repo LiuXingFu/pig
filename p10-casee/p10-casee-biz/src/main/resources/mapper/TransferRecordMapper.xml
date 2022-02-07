@@ -36,4 +36,17 @@
     <result property="status" column="status"/>
     <result property="remark" column="remark"/>
   </resultMap>
+
+	<select id="TransferRecordPage" resultType="com.pig4cloud.pig.casee.vo.TransferRecordVO">
+		select
+		*,
+		p10_institution.ins_name as entrustedInsName,
+		p10_outles.outles_name as entrustedOutlesName
+		from p10_transfer_record
+		left join p10_institution on p10_institution.ins_id=p10_transfer_record.entrusted_ins_id
+		left join p10_outles on p10_outles.outles_id=p10_transfer_record.entrusted_outles_id
+		where
+		p10_transfer_record.del_flag=0
+	</select>
+
 </mapper>
