@@ -23,11 +23,9 @@ import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 /**
  * @author lengleng
@@ -43,6 +41,6 @@ public interface RemoteSysRoleService {
 	 * @return
 	 */
 	@GetMapping("/role/queryByUserIdList")
-	R<List<SysRole>> queryByUserIdList(@RequestParam(value = "userId" )Integer userId, @RequestParam(value = "insId" )Integer insId, @RequestParam(value = "outlesId" ) Integer outlesId, @RequestParam(value = "roleCode" ) String roleCode, @RequestHeader(SecurityConstants.FROM) String from);
+	R<SysRole> queryByUserIdList(@RequestParam(value = "userId" )Integer userId, @RequestParam(value = "insId" )Integer insId, @RequestParam(value = "outlesId" ) Integer outlesId, @RequestParam(value = "roleCode" ) String roleCode, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

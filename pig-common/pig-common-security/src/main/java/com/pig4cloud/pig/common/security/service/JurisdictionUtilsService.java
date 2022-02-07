@@ -29,8 +29,8 @@ public class JurisdictionUtilsService {
 		Integer insId = 0;
 		PigUser pigUser = securityUtilsService.getCacheUser();
 		// 运营平台账号可查所有数据
-		R<List<SysRole>> sysRoleList = remoteSysRoleService.queryByUserIdList(pigUser.getId(), pigUser.getInsId(), pigUser.getOutlesId(), roleCode, SecurityConstants.FROM);
-		if(sysRoleList.getData().size()<=0){
+		R<SysRole> sysRole = remoteSysRoleService.queryByUserIdList(pigUser.getId(), pigUser.getInsId(), pigUser.getOutlesId(), roleCode, SecurityConstants.FROM);
+		if(Objects.isNull(sysRole.getData())){
 			insId = pigUser.getInsId();
 		}
 		return insId;

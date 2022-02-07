@@ -23,7 +23,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 /**
  * @author lengleng
@@ -38,7 +37,7 @@ public class RemoteSysRoleServiceFallbackImpl implements RemoteSysRoleService {
 
 
 	@Override
-	public R<List<SysRole>> queryByUserIdList(Integer userId, Integer insId, Integer outlesId, String roleCode, String from) {
+	public R<SysRole> queryByUserIdList(Integer userId, Integer insId, Integer outlesId, String roleCode, String from) {
 		log.error("查询角色失败", cause);
 		return null;
 	}
