@@ -150,6 +150,8 @@ public interface OutlesService extends IService<Outles> {
 	 */
 	List<Outles> queryByUserIdList(Integer insId,Integer userId);
 
+	Integer addDefaultOutles(Outles outles);
 
+	Outles queryByOutlesId(Integer outlesId);
 
 }

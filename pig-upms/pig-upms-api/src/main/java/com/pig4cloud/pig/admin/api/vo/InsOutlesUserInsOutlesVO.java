@@ -14,19 +14,10 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.admin.api.vo;
 
-package com.pig4cloud.pig.admin.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
-import com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO;
-import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import lombok.Data;
 
 /**
  * 机构/网点用户关联表
@@ -34,14 +25,18 @@ import java.util.List;
  * @author xls
  * @date 2022-01-27 19:30:49
  */
-@Mapper
-public interface InsOutlesUserMapper extends BaseMapper<InsOutlesUser> {
+@Data
+public class InsOutlesUserInsOutlesVO extends InsOutlesUser {
 
-	List<InsOutlesUserListVO> selectUserList(@Param("type") Integer type,@Param("insId") Integer insId,@Param("outlesId") Integer outlesId);
+	/**
+	 * 机构名称
+	 */
+	private String insName;
 
-	List<InsOutlesUserInsOutlesVO> selectOutlesName(@Param("userId") Integer userId,@Param("insId")Integer insId);
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
 
-	List<InsOutlesUserInsOutlesVO> selectInsName(@Param("userId") Integer userId);
 
-	IPage<InsOutlesUser> getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser);
 }
