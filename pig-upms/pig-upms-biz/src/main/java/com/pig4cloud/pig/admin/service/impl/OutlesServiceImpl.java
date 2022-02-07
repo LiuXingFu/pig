@@ -356,4 +356,16 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	public List<Outles> queryByUserIdList(Integer insId,Integer userId){
 		return this.baseMapper.selectByUserId(userId,insId);
 	}
+
+	@Override
+	public Integer addDefaultOutles(Outles outles){
+		outles.setCanDefault(1);
+		outles.setOutlesName("默认网点");
+		return this.baseMapper.insert(outles);
+	}
+
+	@Override
+	public Outles queryByOutlesId(Integer outlesId){
+		return this.baseMapper.selectById(outlesId);
+	}
 }

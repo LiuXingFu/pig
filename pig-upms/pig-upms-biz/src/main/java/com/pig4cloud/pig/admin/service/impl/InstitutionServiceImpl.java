@@ -567,10 +567,9 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 
 		// 新增机构成功后，自动添加默认网点
-		OutlesAddDTO outlesAddDTO = new OutlesAddDTO();
-		outlesAddDTO.setOutlesName("默认网点");
-		BeanUtils.copyProperties(insOutlesUserAddDTO,outlesAddDTO);
-		outlesService.addOutles(outlesAddDTO);
+		Outles outles = new Outles();
+		outles.setInsId(insOutlesUserAddDTO.getInsId());
+		outlesService.addDefaultOutles(outles);
 
 		return save;
 	}
@@ -606,5 +605,22 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		return this.baseMapper.selectByUserId(userId);
 	}
 
+	@Override
+	public Institution queryByInsId(Integer insId){
+		return this.baseMapper.selectById(insId);
+	}
+
+	@Override
+	public ReselectInfoVO queryReselectInfo(Integer insId,Integer outlesId){
+		ReselectInfoVO reselectInfoVO = new ReselectInfoVO();
+		Institution institution = this.baseMapper.selectById(insId);
+		reselectInfoVO.setInstitution(institution);
+		if(Objects.nonNull(outlesId) || outlesId != 0){
+			Outles outles = outlesService.queryByOutlesId(outlesId);
+			reselectInfoVO.setOutles(outles);
+		}
+
+		return reselectInfoVO;
+	}
 
 }

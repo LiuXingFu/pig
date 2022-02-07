@@ -62,10 +62,6 @@ public class InsOutlesUserController {
         return R.ok(insOutlesUserService.page(page, Wrappers.query(insOutlesUser)));
     }
 
-    public R getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser){
-    	return R.ok(insOutlesUserService.getInsOutlesUserPageByOutles(page, insOutlesUser));
-	}
-
 
     /**
      * 通过id查询机构/网点用户关联表
@@ -163,12 +159,27 @@ public class InsOutlesUserController {
 			return R.ok(save);
 		}
 	}
-
-	@ApiOperation(value = "修改用户", notes = "修改用户")
-	@SysLog("修改用户")
-	@PostMapping("/updateInsOutlesUser")
-	public R updateInsOutlesUser(@RequestBody InsOutlesUserModifyDTO insOutlesUserModifyDTO) {
-		return R.ok(this.insOutlesUserService.updateInsOutlesUser(insOutlesUserModifyDTO));
+	/**
+	 * 根据用户id查询员工权限、网点名称
+	 * @param userId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据用户id查询员工权限、网点名称", notes = "根据用户id查询员工权限、网点名称")
+	@GetMapping("/queryOutlesName/{userId}/{insId}" )
+	public R queryOutlesName(@PathVariable("userId" ) Integer userId,@PathVariable("insId" )Integer insId) {
+		return R.ok(insOutlesUserService.queryOutlesName(userId,insId));
 	}
+
+	/**
+	 * 根据用户id查询员工权限、机构名称
+	 * @param userId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据用户id查询员工权限、机构名称", notes = "根据用户id查询员工权限、机构名称")
+	@GetMapping("/queryInsName/{userId}" )
+	public R queryInsName(@PathVariable("userId" ) Integer userId) {
+		return R.ok(insOutlesUserService.queryInsName(userId));
+	}
+
 
 }

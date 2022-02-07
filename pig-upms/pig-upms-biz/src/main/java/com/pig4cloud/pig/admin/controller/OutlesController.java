@@ -92,7 +92,7 @@ public class OutlesController {
 	 * @return R
 	 */
 	@ApiOperation(value = "通过id查询", notes = "通过id查询")
-	@GetMapping("/{outlesId}")
+	@GetMapping("/getById/{outlesId}")
 	public R getById(@PathVariable("outlesId") Integer outlesId) {
 		return R.ok(outlesService.getByIdOutles(outlesId));
 	}
@@ -239,6 +239,18 @@ public class OutlesController {
 	@GetMapping("/queryByUserIdList/{insId}/{userId}")
 	public R queryByUserIdList(@PathVariable("insId")Integer insId,@PathVariable("userId")Integer userId) {
 		return R.ok(outlesService.queryByUserIdList(insId,userId));
+	}
+
+	/**
+	 * 通过id查询
+	 *
+	 * @param outlesId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/queryByOutlesId/{outlesId}")
+	public R queryByOutlesId(@PathVariable("outlesId") Integer outlesId) {
+		return R.ok(outlesService.queryByOutlesId(outlesId));
 	}
 
 }

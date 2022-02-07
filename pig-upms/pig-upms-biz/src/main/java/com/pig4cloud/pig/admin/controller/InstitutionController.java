@@ -266,7 +266,17 @@ public class InstitutionController {
 		return R.ok(institutionService.queryByUserIdList(userId));
 	}
 
-
+	/**
+	 * 通过id查询
+	 *
+	 * @param insId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/queryByInsId/{insId}")
+	public R queryByInsId(@PathVariable("insId") Integer insId) {
+		return R.ok(institutionService.queryByInsId(insId));
+	}
 
 
 }

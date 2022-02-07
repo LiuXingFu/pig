@@ -64,5 +64,23 @@
 		AND outles_id = #{outlesId}
 		AND sys_user.actual_name = #{actualName}
 	</select>
+	<select id="selectOutlesName" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO">
+		select p10_ins_outles_user.*,p10_outles.outles_name from p10_ins_outles_user
+		left join p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0
+		left join p10_outles on p10_outles.outles_id = p10_ins_outles_user.outles_id and p10_outles.del_flag = 0
+		where p10_ins_outles_user.del_flag = 0
+		and p10_ins_outles_user.user_id = #{userId}
+		<if test="insId != 0 and insId != null">
+			and p10_ins_outles_user.ins_id = #{insId}
+		</if>
+	</select>
+
+	<select id="selectInsName" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO">
+		select distinct p10_ins_outles_user.*,p10_institution.ins_name from p10_ins_outles_user
+		left join p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0
+		where p10_ins_outles_user.del_flag = 0
+		and p10_ins_outles_user.user_id = #{userId}
+	</select>
+
 
 </mapper>

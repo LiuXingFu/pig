@@ -22,10 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Institution;
-import com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 
 import java.util.List;
 
@@ -129,5 +126,15 @@ public interface InstitutionService extends IService<Institution> {
 	 * @return
 	 */
 	List<Institution> queryByUserIdList(Integer userId);
+
+	Institution queryByInsId(Integer insId);
+
+	/**
+	 * 查询当前登录用户机构、网点、角色信息
+	 * @param insId
+	 * @param outlesId
+	 * @return
+	 */
+	ReselectInfoVO queryReselectInfo(Integer insId,Integer outlesId);
 
 }
