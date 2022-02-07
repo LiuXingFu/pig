@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.feign.RemoteSysRoleService;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
@@ -31,6 +32,7 @@ import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
@@ -72,6 +74,9 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Autowired
 	private SecurityUtilsService securityUtilsService;
+
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	/**
 	 * 新增
@@ -276,14 +281,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Override
 	public IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO){
-		int insId = 0;
-		PigUser pigUser = securityUtilsService.getCacheUser();
-		// 运营平台账号可查所有数据
-		SysRole sysRoleList = sysRoleService.queryByUserIdList(pigUser.getId(),pigUser.getInsId(),pigUser.getOutlesId(),"PLAT_");
-		if(Objects.isNull(sysRoleList)){
-			insId = pigUser.getInsId();
-		}
-		return this.baseMapper.selectPage(page,outlesPageDTO, insId);
+		return this.baseMapper.selectPage(page,outlesPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"));
 	}
 
 	@Override
