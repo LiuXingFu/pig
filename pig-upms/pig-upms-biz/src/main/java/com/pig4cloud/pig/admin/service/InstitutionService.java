@@ -57,7 +57,7 @@ public interface InstitutionService extends IService<Institution> {
 	 * @param insName
 	 * @return
 	 */
-	List<InstitutionVO> getByInsName(String insName);
+	IPage<InstitutionAssociatePageVO> getByInsName(Page page, String insName);
 
 	/**
 	 * 分页查询机构信息

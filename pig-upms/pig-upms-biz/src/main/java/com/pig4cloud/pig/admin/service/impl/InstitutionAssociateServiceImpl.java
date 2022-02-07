@@ -25,6 +25,8 @@ import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
+import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
+import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
 import com.pig4cloud.pig.admin.api.vo.MessageRecordVO;
 import com.pig4cloud.pig.admin.mapper.InstitutionAssociateMapper;
@@ -39,6 +41,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * 机构关联表
@@ -79,6 +82,9 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	@Autowired
 	ClientUserReService clientUserReService;
 
+	@Autowired
+	InsOutlesUserService insOutlesUserService;
+
 
 	/**
 	 *	关联机构
@@ -94,50 +100,44 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 			institutionAssociate.setAssociateTime(LocalDateTime.now());
 			this.save(institutionAssociate);
 
-			Outles outles = outlesService.getOne(new LambdaQueryWrapper<Outles>().eq(Outles::getInsId, institutionAssociate.getInsId())
-					.eq(Outles::getCanDefault, 1).eq(Outles::getDelFlag, 0));
+//			Outles outles = outlesService.getOne(new LambdaQueryWrapper<Outles>().eq(Outles::getInsId, institutionAssociate.getInsId())
+//					.eq(Outles::getCanDefault, 1).eq(Outles::getDelFlag, 0));
 
-			if(Objects.nonNull(outles)){
-				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
-				associateOutlesRe.setOutlesId(outles.getOutlesId());
-				associateOutlesRe.setAssociateId(institutionAssociate.getAssociateId());
-				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
-				associateOutlesRe.setInsId(institutionAssociate.getInsId());
-				associateOutlesRe.setInsAssociateId(institutionAssociate.getInsAssociateId());
-				associateOutlesReService.save(associateOutlesRe);
-			} else {
-				throw new Exception("默认网点不存在，请联系系统相关人员！");
-			}
+//			if(Objects.nonNull(outles)){
+//				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
+//				associateOutlesRe.setOutlesId(outles.getOutlesId());
+//				associateOutlesRe.setAssociateId(institutionAssociate.getAssociateId());
+//				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
+//				associateOutlesRe.setInsId(institutionAssociate.getInsId());
+//				associateOutlesRe.setInsAssociateId(institutionAssociate.getInsAssociateId());
+//				associateOutlesReService.save(associateOutlesRe);
+//			} else {
+//				throw new Exception("默认网点不存在，请联系系统相关人员！");
+//			}
 
 			// 根据关联机构ID发送关联
 			Institution institution = institutionService.getById(SecurityUtils.getUser().getInsId());
 
 			Institution associate = institutionService.getById(institutionAssociate.getInsAssociateId());
 
-			MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
-			messageRecordDTO.setMessageTitle(institution.getInsName() + "向你发送了合作请求");
-			messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
-//			messageRecordDTO.setReceiverUserId(associate.getUserId());
-//			SysUser user = sysUserService.getById(associate.getUserId());
+			List<InsOutlesUserListVO> insOutlesUserListVOS = insOutlesUserService.queryUserList(1, associate.getInsId(), 0);
 
-			List<ClientUserRe> clientUserReList = clientUserReService.list(new LambdaQueryWrapper<ClientUserRe>());
+			List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
 
-			if(clientUserReList.size() > 0){
-				List<String> clientIds = new ArrayList<>();
-
-				for (ClientUserRe clientUserRe : clientUserReList) {
-					clientIds.add(clientUserRe.getClientId());
+			insOutlesUserListVOS.stream().forEach(new Consumer<InsOutlesUserListVO>() {
+				@Override
+				public void accept(InsOutlesUserListVO insOutlesUserListVO) {
+					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
+					messageRecordDTO.setMessageTitle(institution.getInsName() + "向你发送了合作请求");
+					messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
+//					messageRecordDTO.setReceiverUserId(insOutlesUserListVO.get());
+					messageRecordDTO.setReceiverInsId(associate.getInsId());
+					messageRecordDTO.setMessageType(400);
+					messageRecordDTOList.add(messageRecordDTO);
 				}
+			});
 
-				//内容暂时有问题 后续还需测试
 
-				requestAppService.pushAppMessage(clientIds, institution.getInsName() + "向你发送了合作请求", "你好，我想和你合作！");
-			}
-
-			messageRecordDTO.setReceiverInsId(associate.getInsId());
-			messageRecordDTO.setMessageType(400);
-			List<MessageRecordDTO> messageRecordDTOList=new ArrayList<>();
-			messageRecordDTOList.add(messageRecordDTO);
 
 			messageRecordService.batchSendMessageRecordPush(messageRecordDTOList);
 
@@ -156,7 +156,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	 * @return
 	 */
 	@Override
-	public IPage<InstitutionAssociateVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate) {
+	public IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate) {
 		institutionAssociate.setInsId( SecurityUtils.getUser().getInsId());
 		return this.baseMapper.pageInstitutionAssociate(page, institutionAssociate);
 	}

@@ -122,8 +122,8 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "移除用户", notes = "移除用户")
 	@SysLog("移除用户" )
-	@PutMapping("/removeInsOutlesUser")
-	public R removeInsOutlesUser(@RequestBody int insOutlesUserId) {
+	@PutMapping("/removeInsOutlesUser/{insOutlesUserId}")
+	public R removeInsOutlesUser(@PathVariable int insOutlesUserId) {
 		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
 	}
 

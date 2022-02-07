@@ -135,8 +135,6 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		return add;
 	}
 
-
-
 	@Override
 	@Transactional
 	public int removeInsOutlesUser(Integer insOutlesUserId){
