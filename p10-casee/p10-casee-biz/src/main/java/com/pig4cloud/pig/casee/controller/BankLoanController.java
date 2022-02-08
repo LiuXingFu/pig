@@ -65,7 +65,7 @@ public class BankLoanController {
     @ApiOperation(value = "通过id查询银行借贷基本信息", notes = "通过id查询银行借贷基本信息")
     @GetMapping("/{bankLoanId}" )
     public R getById(@PathVariable("bankLoanId" ) Integer bankLoanId) {
-        return R.ok(bankLoanService.getByBankLoanId(bankLoanId));
+        return R.ok(bankLoanService.getByBankLoanInformation(bankLoanId));
     }
 
     /**

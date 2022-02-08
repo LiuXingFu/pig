@@ -31,4 +31,13 @@
     <result property="mortgageAmount" column="mortgage_amount"/>
     <result property="mortgageTime" column="mortgage_time"/>
   </resultMap>
+
+	<select id="getAssetsBankLoanRe" resultType="com.pig4cloud.pig.casee.vo.AssetsInformationVO">
+	SELECT p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets.*,p10_address.*
+	FROM `p10_assets_bank_loan_re`
+	LEFT JOIN p10_assets ON p10_assets.assets_id = p10_assets_bank_loan_re.assets_id
+	LEFT JOIN p10_address ON p10_address.address_id = p10_assets.address_id
+	WHERE
+	p10_assets_bank_loan_re.bank_loan_id = #{bankLoanId} and p10_assets_bank_loan_re.del_flag=0
+	</select>
 </mapper>

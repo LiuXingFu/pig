@@ -120,7 +120,7 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	}
 
 	@Override
-	public BankLoanInformationVO getByBankLoanId(Integer bankLoanId) {
-		return null;
+	public BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId) {
+		return this.baseMapper.getByBankLoanInformation(bankLoanId);
 	}
 }

@@ -19,7 +19,10 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 财产关联银行借贷表
@@ -29,5 +32,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AssetsBankLoanReMapper extends BaseMapper<AssetsBankLoanRe> {
+	List<AssetsInformationVO> getAssetsBankLoanRe(Integer bankLoanId);
 
 }

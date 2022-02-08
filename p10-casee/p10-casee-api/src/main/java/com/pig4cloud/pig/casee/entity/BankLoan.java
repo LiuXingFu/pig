@@ -105,10 +105,4 @@ public class BankLoan extends BaseEntity {
 	@ApiModelProperty(value="借贷日期")
 	private LocalDateTime transferDate;
 
-	/**
-	 * 债务类型(1-贷款人 2-担保人)
-	 */
-	@ApiModelProperty(value = "债务类型(1-贷款人 2-担保人)")
-	private Integer debtType;
-
 }

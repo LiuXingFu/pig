@@ -37,5 +37,5 @@ public interface BankLoanService extends IService<BankLoan> {
 
 	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
 
-	BankLoanInformationVO getByBankLoanId(Integer bankLoanId);
+	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
 }
