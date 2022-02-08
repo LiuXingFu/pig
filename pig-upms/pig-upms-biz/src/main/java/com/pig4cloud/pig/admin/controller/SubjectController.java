@@ -73,6 +73,17 @@ public class SubjectController {
         return R.ok(subjectService.getById(subjectId));
     }
 
+	/**
+	 * 通过主体id集合查询主体信息
+	 * @param subjectIds 主体id集合
+	 * @return R
+	 */
+	@ApiOperation(value = "通过主体id集合查询主体信息", notes = "通过主体id集合查询主体信息")
+	@GetMapping("/getByIdList" )
+	public R getByIdList(@RequestParam("subjectIds") List<Integer> subjectIds) {
+		return R.ok(subjectService.listByIds(subjectIds));
+	}
+
     /**
      * 新增主体
      * @param subject 主体

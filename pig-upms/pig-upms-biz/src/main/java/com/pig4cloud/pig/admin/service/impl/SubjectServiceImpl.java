@@ -30,6 +30,7 @@ import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -107,7 +108,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
+	public List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
+		List subjectIds=new ArrayList();
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
 			//添加债务人主体信息
 			Subject subject=new Subject();
@@ -120,8 +122,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 				//添加债务人地址信息
 				addressService.saveAddress(address);
 			}
+			subjectIds.add(subject.getSubjectId());
 		}
-		return subjectAddressDTOList;
+		return subjectIds;
 	}
 
 	/**

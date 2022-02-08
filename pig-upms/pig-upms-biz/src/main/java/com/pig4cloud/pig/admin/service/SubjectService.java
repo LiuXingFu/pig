@@ -50,6 +50,6 @@ public interface SubjectService extends IService<Subject> {
 	 * @param subjectAddressDTOList
 	 * @return
 	 */
-	List<SubjectAddressDTO> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
+	List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
 
 }
