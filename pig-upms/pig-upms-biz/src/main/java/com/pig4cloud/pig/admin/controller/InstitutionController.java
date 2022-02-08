@@ -96,9 +96,9 @@ public class InstitutionController {
 	 * @return
 	 */
 	@ApiOperation(value = "根据机构insName模糊搜索合作机构", notes = "根据机构insName模糊搜索合作机构")
-	@GetMapping("/getByInsName/{insName}")
-	public R getByInsName(@PathVariable("insName") String insName) {
-		return R.ok(institutionService.getByInsName(insName));
+	@GetMapping("/getByInsName")
+	public R getByInsName(Page page, String insName) {
+		return R.ok(institutionService.getByInsName(page, insName));
 	}
 
 	/**

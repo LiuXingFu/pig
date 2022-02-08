@@ -52,18 +52,6 @@
 			and p10_ins_outles_user.outles_id = #{outlesId}
 		</if>
 	</select>
-
-	<select id="getInsOutlesUserPageByOutles">
-		SELECT
-		*
-		FROM
-		p10_ins_outles_user iou
-		LEFT JOIN sys_user ON iou.user_id = sys_user.user_id and sys_user.del_flag = 0
-		WHERE iou.del_flag = '0'
-		AND type != 1
-		AND outles_id = #{outlesId}
-		AND sys_user.actual_name = #{actualName}
-	</select>
 	<select id="selectOutlesName" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO">
 		select p10_ins_outles_user.*,p10_outles.outles_name from p10_ins_outles_user
 		left join p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0

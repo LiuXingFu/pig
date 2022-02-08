@@ -325,8 +325,8 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	 * @return
 	 */
 	@Override
-	public List<InstitutionVO> getByInsName(String insName) {
-		return this.baseMapper.getByInsName(insName, SecurityUtils.getUser().getInsId());
+	public IPage<InstitutionAssociatePageVO> getByInsName(Page page, String insName) {
+		return this.baseMapper.getByInsName(page, insName, SecurityUtils.getUser().getInsId());
 	}
 
 	/**

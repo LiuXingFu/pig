@@ -43,5 +43,4 @@ public interface InsOutlesUserMapper extends BaseMapper<InsOutlesUser> {
 
 	List<InsOutlesUserInsOutlesVO> selectInsName(@Param("userId") Integer userId);
 
-	IPage<InsOutlesUser> getInsOutlesUserPageByOutles(Page page, InsOutlesUser insOutlesUser);
 }
