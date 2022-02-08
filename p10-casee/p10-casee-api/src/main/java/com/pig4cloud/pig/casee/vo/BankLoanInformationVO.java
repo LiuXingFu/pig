@@ -14,28 +14,28 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
-import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
-import com.pig4cloud.pig.casee.vo.BankLoanVO;
+import lombok.Data;
+
+
+import java.util.List;
 
 /**
- * 银行借贷表
+ * 银行借贷基本信息
  *
  * @author Mjh
  * @date 2022-01-29 10:20:00
  */
-public interface BankLoanService extends IService<BankLoan> {
+@Data
+public class BankLoanInformationVO extends BankLoan {
 
-	boolean saveBankLoanDebtorPawn(BankLoanDTO bankLoanDTO);
+	/**
+	 * 债务人基本信息
+	 */
+	private List<SubjectInformationVO> subjectInformationVOS;
 
-	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
 
-	BankLoanInformationVO getByBankLoanId(Integer bankLoanId);
+
 }

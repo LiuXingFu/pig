@@ -29,6 +29,7 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +97,8 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 			assetsBankLoanRe.setAssetsId(assets.getAssetsId());
 			assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
 			assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-			assetsBankLoanRe.setMortgageTime(bankLoanDTO.getMortgageTime());
-			assetsBankLoanRe.setMortgageAmount(bankLoanDTO.getMortgageAmount());
+			assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+			assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
 			assetsBankLoanReService.save(assetsBankLoanRe);
 		}
 
@@ -116,5 +117,10 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	@Override
 	public IPage<BankLoanVO> bankLoanPage(Page page, BankLoanDTO bankLoanDTO) {
 		return this.baseMapper.bankLoanPage(page,bankLoanDTO);
+	}
+
+	@Override
+	public BankLoanInformationVO getByBankLoanId(Integer bankLoanId) {
+		return null;
 	}
 }

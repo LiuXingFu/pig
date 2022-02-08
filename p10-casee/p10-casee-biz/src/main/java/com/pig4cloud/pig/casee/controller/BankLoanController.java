@@ -58,14 +58,14 @@ public class BankLoanController {
 
 
     /**
-     * 通过id查询银行借贷表
+     * 通过id查询银行借贷基本信息
      * @param bankLoanId id
      * @return R
      */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
+    @ApiOperation(value = "通过id查询银行借贷基本信息", notes = "通过id查询银行借贷基本信息")
     @GetMapping("/{bankLoanId}" )
     public R getById(@PathVariable("bankLoanId" ) Integer bankLoanId) {
-        return R.ok(bankLoanService.getById(bankLoanId));
+        return R.ok(bankLoanService.getByBankLoanId(bankLoanId));
     }
 
     /**
