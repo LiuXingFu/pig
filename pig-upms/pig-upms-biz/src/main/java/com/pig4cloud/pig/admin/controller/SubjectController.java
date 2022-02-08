@@ -80,7 +80,7 @@ public class SubjectController {
 	 */
 	@ApiOperation(value = "通过主体id集合查询主体信息", notes = "通过主体id集合查询主体信息")
 	@GetMapping("/getByIdList" )
-	public R getByIdList(@RequestParam("subjectIds") List<Integer> subjectIds) {
+	public R getByIdList(@RequestParam(value = "subjectIds" ,required=false) List<Integer> subjectIds) {
 		return R.ok(subjectService.listByIds(subjectIds));
 	}
 
