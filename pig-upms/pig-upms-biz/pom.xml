@@ -24,7 +24,7 @@
 		<version>3.3.0</version>
 	</parent>
 
-	<artifactId>pig-upms-biz</artifactId>
+	<artifactId>pig-upms-biz-mjh</artifactId>
 	<packaging>jar</packaging>
 
 	<description>pig 通用用户权限管理系统业务处理模块</description>
@@ -105,7 +105,13 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>p10-casee-api</artifactId>
+			<version>3.3.0</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
