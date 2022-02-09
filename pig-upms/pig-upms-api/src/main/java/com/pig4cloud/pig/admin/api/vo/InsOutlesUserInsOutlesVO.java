@@ -38,5 +38,15 @@ public class InsOutlesUserInsOutlesVO extends InsOutlesUser {
 	 */
 	private String outlesName;
 
+	/**
+	 * 真实姓名
+	 */
+	private String actualName;
+
+	/**
+	 * 电话
+	 */
+	private String phone;
+
 
 }

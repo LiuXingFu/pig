@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
@@ -43,4 +44,5 @@ public interface InsOutlesUserMapper extends BaseMapper<InsOutlesUser> {
 
 	List<InsOutlesUserInsOutlesVO> selectInsName(@Param("userId") Integer userId);
 
+	IPage<InsOutlesUserInsOutlesVO> queryInsOutlesUserByOutles(Page page, @Param("query") InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO);
 }

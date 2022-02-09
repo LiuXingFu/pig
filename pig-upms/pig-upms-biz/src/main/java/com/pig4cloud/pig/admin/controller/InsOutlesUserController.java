@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserModifyDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
@@ -181,5 +182,14 @@ public class InsOutlesUserController {
 		return R.ok(insOutlesUserService.queryInsName(userId));
 	}
 
+	/**
+	 * 根据用户id查询员工权限、机构名称
+	 * @return R
+	 */
+	@ApiOperation(value = "根据用户id查询员工权限、机构名称", notes = "根据用户id查询员工权限、机构名称")
+	@GetMapping("/queryInsOutlesUserByOutles" )
+	public R queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO){
+		return R.ok(insOutlesUserService.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO));
+	}
 
 }
