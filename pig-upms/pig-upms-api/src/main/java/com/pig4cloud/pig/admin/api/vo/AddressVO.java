@@ -15,28 +15,21 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.mapper;
+package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.vo.AddressVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import lombok.Data;
 
 /**
- * 地址表
+ * 地址表VO
  *
  * @author yuanduo
- * @date 2021-09-03 17:14:47
+ * @date 2021-09-03 16:26:59
  */
-@Mapper
-public interface AddressMapper extends BaseMapper<Address> {
-
-	Address getById(@Param("addressId") Integer addressId,@Param("type") Integer type);
-
-	Address getByUserId(@Param("userId") Integer userId,@Param("type") Integer type);
-
-	List<AddressVO> getByAddressList(@Param("userId") Integer userId);
+@Data
+public class AddressVO extends Address {
+	/**
+	 * 省市区
+	 */
+	private String addressACPName;
 }
