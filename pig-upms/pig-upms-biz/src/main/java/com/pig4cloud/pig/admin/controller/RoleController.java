@@ -62,7 +62,7 @@ public class RoleController {
 	 */
 	@SysLog("添加角色")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('sys_role_add')")
+//	@PreAuthorize("@pms.hasPermission('sys_role_add')")
 	public R save(@Valid @RequestBody SysRole sysRole) {
 		return R.ok(sysRoleService.save(sysRole));
 	}
@@ -74,7 +74,7 @@ public class RoleController {
 	 */
 	@SysLog("修改角色")
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('sys_role_edit')")
+//	@PreAuthorize("@pms.hasPermission('sys_role_edit')")
 	public R update(@Valid @RequestBody SysRole sysRole) {
 		return R.ok(sysRoleService.updateById(sysRole));
 	}
@@ -86,7 +86,7 @@ public class RoleController {
 	 */
 	@SysLog("删除角色")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('sys_role_del')")
+//	@PreAuthorize("@pms.hasPermission('sys_role_del')")
 	public R removeById(@PathVariable Integer id) {
 		return R.ok(sysRoleService.removeRoleById(id));
 	}
@@ -117,7 +117,7 @@ public class RoleController {
 	 */
 	@SysLog("更新角色菜单")
 	@PutMapping("/menu")
-	@PreAuthorize("@pms.hasPermission('sys_role_perm')")
+//	@PreAuthorize("@pms.hasPermission('sys_role_perm')")
 	public R saveRoleMenus(@RequestBody RoleVo roleVo) {
 		SysRole sysRole = sysRoleService.getById(roleVo.getRoleId());
 		return R.ok(sysRoleMenuService.saveRoleMenus(sysRole.getRoleCode(), roleVo.getRoleId(), roleVo.getMenuIds()));
