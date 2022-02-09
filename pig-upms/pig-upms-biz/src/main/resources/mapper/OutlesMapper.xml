@@ -27,7 +27,6 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
-<!--		<result property="userId" column="user_id"/>-->
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
 		<result property="outlesRemark" column="outles_remark"/>
@@ -217,8 +216,6 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
--- 		outles.user_id,
-		outles.address_id,
 		outles.alias,
 		outles.outles_land_line_phone,
 		outles.outles_remark,
@@ -232,11 +229,14 @@
 		p10_outles outles
 		<where>
 			outles.del_flag = '0'
-			<if test="insId != null and insId != ''">
-				and outles.ins_id =#{insId}
+			<if test="query.insId != null and query.insId != ''">
+				and outles.ins_id =#{query.insId}
 			</if>
-			<if test="outlesName != null and outlesName != ''">
-				and outles.outles_name LIKE CONCAT('%',#{outlesName},'%')
+			<if test="query.outlesId != null and query.outlesId != ''">
+				and outles.ins_id =#{query.outlesId}
+			</if>
+			<if test="query.outlesName != null and query.outlesName != ''">
+				and outles.outles_name LIKE CONCAT('%',#{query.outlesName},'%')
 			</if>
 		</where>
 	</select>

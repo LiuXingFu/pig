@@ -184,7 +184,13 @@
 <!--	</select>-->
 
 	<select id="pageOutlesUser" resultType="com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO">
-		select sys_user.*,p10_institution.ins_name,p10_outles.outles_name from sys_user
+		select sys_user.*,
+		p10_institution.ins_name,
+		p10_outles.outles_name,
+		p10_ins_outles_user.ins_outles_user_id,
+		p10_ins_outles_user.position,
+		p10_ins_outles_user.entry_time
+		from sys_user
 		LEFT JOIN p10_ins_outles_user on p10_ins_outles_user.user_id = sys_user.user_id and p10_ins_outles_user.del_flag = 0
 		LEFT JOIN p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0
 		LEFT JOIN p10_outles on p10_outles.outles_id = p10_ins_outles_user.outles_id and p10_outles.del_flag = 0

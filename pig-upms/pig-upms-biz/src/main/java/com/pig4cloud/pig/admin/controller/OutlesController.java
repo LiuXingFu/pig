@@ -112,13 +112,13 @@ public class OutlesController {
 	/**
 	 * 通过机构id和网点名称查询所有网点
 	 *
-	 * @param insId
+	 * @param outlesDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "通过机构id和网点名称查询所有网点", notes = "通过机构id和网点名称查询所有网点")
 	@GetMapping("/getInsIdOrOutlesNameList")
-	public R getInsIdOrOutlesNameList(Integer insId, String outlesName) {
-		return R.ok(outlesService.getInsIdOrOutlesNameList(insId, outlesName));
+	public R getInsIdOrOutlesNameList(Page page, OutlesPageDTO outlesDTO) {
+		return R.ok(outlesService.getInsIdOrOutlesNameList(page, outlesDTO));
 	}
 
 	/**

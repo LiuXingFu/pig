@@ -96,10 +96,9 @@ public interface OutlesService extends IService<Outles> {
 	/**
 	 * 通过机构id和网点名称查询所有网点
 	 *
-	 * @param insId
 	 * @return R
 	 */
-	List<Outles> getInsIdOrOutlesNameList(Integer insId,String outlesName);
+	IPage<Outles> getInsIdOrOutlesNameList(Page page, OutlesPageDTO outlesDTO);
 
 	/**
 	 * 通过用户id和网点id查询该用户是否关联该网点

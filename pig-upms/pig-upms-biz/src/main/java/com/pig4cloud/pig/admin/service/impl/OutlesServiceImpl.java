@@ -253,12 +253,12 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	/**
 	 * 通过机构id和网点名称查询所有网点
 	 *
-	 * @param insId
+	 * @param outlesDTO
 	 * @return R
 	 */
 	@Override
-	public List<Outles> getInsIdOrOutlesNameList(Integer insId, String outlesName) {
-		return this.baseMapper.getInsIdOrOutlesNameList(insId, outlesName);
+	public IPage<Outles> getInsIdOrOutlesNameList(Page page, OutlesPageDTO outlesDTO) {
+		return this.baseMapper.getInsIdOrOutlesNameList(page, outlesDTO);
 	}
 
 	/**
