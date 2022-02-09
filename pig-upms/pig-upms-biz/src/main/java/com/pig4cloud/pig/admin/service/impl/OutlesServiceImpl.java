@@ -336,6 +336,8 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(outlesModifyDTO,address);
+			address.setUserId(outles.getInsId());
+			address.setType(3);
 			addressService.saveOrUpdate(address);
 		}
 

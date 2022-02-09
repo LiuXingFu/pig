@@ -22,4 +22,9 @@ public class UserInsOutlesRoleVO {
 	 * 角色信息
 	 */
 	private SysRole sysRole;
+
+	/**
+	 * 权限标识集合
+	 */
+	private String[] permissions;
 }

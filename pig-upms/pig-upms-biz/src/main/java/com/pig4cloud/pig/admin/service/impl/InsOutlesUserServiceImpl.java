@@ -18,8 +18,11 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO;
@@ -31,7 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,7 +78,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
 				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
 				List<InsOutlesUser> users = insOutlesUserService.list(queryWrapper);
-				if(Objects.nonNull(users)){
+				if(users.size() > 0){
 					throw new RuntimeException("此用户已是负责人或员工！");
 				}
 			}
@@ -91,7 +98,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				insOutlesUser.setUserId(user.getUserId());
 			}else{
 				UserDTO sysUser = new UserDTO();
-				sysUser.setPassword("a123456");
+				sysUser.setPassword("123456");
 				sysUser.setNickName(item.getActualName());
 				sysUser.setPhone(item.getPhone());
 				sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
@@ -101,6 +108,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				sysUserService.saveUser(sysUser);
 				insOutlesUser.setUserId(sysUser.getUserId());
 			}
+			insOutlesUser.setEntryTime(LocalDateTime.now());
 			insOutlesUserList.add(insOutlesUser);
 		});
 		this.saveBatch(insOutlesUserList);
@@ -161,6 +169,11 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	@Override
 	public List<InsOutlesUserInsOutlesVO> queryInsName(Integer userId){
 		return this.baseMapper.selectInsName(userId);
+	}
+
+	@Override
+	public IPage<InsOutlesUserInsOutlesVO> queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO) {
+		return this.baseMapper.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO);
 	}
 
 

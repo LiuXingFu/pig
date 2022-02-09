@@ -331,6 +331,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		PigUser pigUser = securityUtilsService.getCacheUser();
 		SysRole sysRole = sysRoleService.queryByUserIdList(pigUser.getId(),insId,outlesId,null);
 		userInsOutlesRoleVO.setSysRole(sysRole);
+
+
+		List<SysMenu> sysMenuList = sysMenuService.findMenuByRoleId(sysRole.getRoleId());
+		// 设置权限列表（menu.permission）
+		Set<String> permissions = new HashSet<>();
+		sysMenuList.stream().forEach(item ->{
+			permissions.add(item.getPermission());
+		});
+		userInsOutlesRoleVO.setPermissions(ArrayUtil.toArray(permissions, String.class));
+
+		// 保存缓存用户信息机构id和网点id
+		Cache cache = cacheManager.getCache(CacheConstants.USER_DETAILS);
+		PigUser cacheUser = cache.get(SecurityUtils.getUser().getUsername(), PigUser.class);
+		cacheUser.setInsId(institution.getInsId());
+		cache.put(SecurityUtils.getUser().getUsername(), cacheUser);
+		if (Objects.nonNull(userInsOutlesRoleVO.getOutles())) {
+			cacheUser.setOutlesId(userInsOutlesRoleVO.getOutles().getOutlesId());
+		}
+		cache.put(SecurityUtils.getUser().getUsername(), cacheUser);
+
 		return userInsOutlesRoleVO;
 	}
 
