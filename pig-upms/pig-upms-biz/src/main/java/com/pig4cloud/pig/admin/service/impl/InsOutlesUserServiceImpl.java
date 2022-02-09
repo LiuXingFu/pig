@@ -74,6 +74,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
 				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
 				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
+				queryWrapper.lambda().isNull(InsOutlesUser::getOutlesId);
 				List<InsOutlesUser> users = insOutlesUserService.list(queryWrapper);
 				if(users.size() > 0){
 					throw new RuntimeException("此用户已是负责人或员工！");
