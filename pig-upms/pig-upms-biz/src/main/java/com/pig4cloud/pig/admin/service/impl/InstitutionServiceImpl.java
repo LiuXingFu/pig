@@ -565,11 +565,11 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		insOutlesUserAddDTO.setType(1);
 		insOutlesUserAddDTO.setUserList(institutionAddDTO.getUserList());
 		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
-
-		// 新增机构成功后，自动添加默认网点
-		Outles outles = new Outles();
-		outles.setInsId(insOutlesUserAddDTO.getInsId());
-		outlesService.addDefaultOutles(outles);
+//
+//		// 新增机构成功后，自动添加默认网点
+//		Outles outles = new Outles();
+//		outles.setInsId(insOutlesUserAddDTO.getInsId());
+//		outlesService.addDefaultOutles(outles);
 
 		return save;
 	}

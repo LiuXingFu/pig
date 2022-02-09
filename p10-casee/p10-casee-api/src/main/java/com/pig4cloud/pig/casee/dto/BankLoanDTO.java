@@ -37,16 +37,6 @@ public class BankLoanDTO extends BankLoan {
 	private List<Integer> subjectIdList;
 
 	/**
-	 * 抵押金额
-	 */
-	private BigDecimal mortgageAmount;
-
-	/**
-	 * 抵押时间
-	 */
-	private LocalDateTime mortgageTime;
-
-	/**
 	 * 抵押财产信息
 	 */
 	private List<AssetsDTO> assetsDTOList;

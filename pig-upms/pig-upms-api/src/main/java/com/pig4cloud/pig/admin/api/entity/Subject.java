@@ -115,10 +115,5 @@ public class Subject extends BaseEntity {
 	@ApiModelProperty(value = "工作单位")
 	private String employer;
 
-	/**
-	 * 债务类型(1-贷款人 2-担保人)
-	 */
-	@ApiModelProperty(value = "债务类型(1-贷款人 2-担保人)")
-	private Integer debtType;
 
 }

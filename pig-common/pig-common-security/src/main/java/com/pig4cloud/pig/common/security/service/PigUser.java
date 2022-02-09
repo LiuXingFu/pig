@@ -47,6 +47,7 @@ public class PigUser extends User {
 	 * 机构ID
 	 */
 	@Getter
+	@Setter
 	private Integer insId;
 
 	/**

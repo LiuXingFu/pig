@@ -55,7 +55,6 @@ public class SubjectController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-
     public R getSubjectPage(Page page, Subject subject) {
         return R.ok(subjectService.page(page, Wrappers.query(subject)));
     }
@@ -68,10 +67,31 @@ public class SubjectController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{subjectId}" )
-
     public R getById(@PathVariable("subjectId" ) Integer subjectId) {
         return R.ok(subjectService.getById(subjectId));
     }
+
+	/**
+	 * 通过身份证查询主体信息
+	 * @param unifiedIdentity 身份证
+	 * @return R
+	 */
+	@ApiOperation(value = "通过身份证查询主体信息", notes = "通过身份证查询主体信息")
+	@GetMapping("/getByUnifiedIdentity/{unifiedIdentity}" )
+	public R getByUnifiedIdentity(@PathVariable("unifiedIdentity" ) String unifiedIdentity) {
+		return R.ok(subjectService.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getUnifiedIdentity,unifiedIdentity)));
+	}
+
+	/**
+	 * 通过主体id集合查询主体信息
+	 * @param subjectIds 主体id集合
+	 * @return R
+	 */
+	@ApiOperation(value = "通过主体id集合查询主体信息", notes = "通过主体id集合查询主体信息")
+	@GetMapping("/getByIdList" )
+	public R getByIdList(@RequestParam(value = "subjectIds" ,required=false) List<Integer> subjectIds) {
+		return R.ok(subjectService.listByIds(subjectIds));
+	}
 
     /**
      * 新增主体
@@ -81,7 +101,6 @@ public class SubjectController {
     @ApiOperation(value = "新增主体", notes = "新增主体")
     @SysLog("新增主体" )
     @PostMapping
-
     public R save(@RequestBody Subject subject) {
         return R.ok(subjectService.save(subject));
     }
@@ -131,7 +150,6 @@ public class SubjectController {
     @ApiOperation(value = "修改主体", notes = "修改主体")
     @SysLog("修改主体" )
     @PutMapping
-
     public R updateById(@RequestBody Subject subject) {
         return R.ok(subjectService.updateById(subject));
     }
@@ -144,7 +162,6 @@ public class SubjectController {
     @ApiOperation(value = "通过id删除主体", notes = "通过id删除主体")
     @SysLog("通过id删除主体" )
     @DeleteMapping("/{subjectId}" )
-
     public R removeById(@PathVariable Integer subjectId) {
         return R.ok(subjectService.removeById(subjectId));
     }

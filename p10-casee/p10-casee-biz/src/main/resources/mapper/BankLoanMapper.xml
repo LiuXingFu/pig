@@ -56,8 +56,34 @@
 		<result property="mortgageSituation" column="mortgage_situation"/>
 		<result property="loanContract" column="loan_contract"/>
 		<result property="otherFile" column="other_file"/>
+		<result property="transferDate" column="transfer_date"/>
 		<collection property="subjectNameList" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanRe" column="bank_loan_id">
+		</collection>
+	</resultMap>
+
+	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO">
+		<id property="bankLoanId" column="bank_loan_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="insId" column="ins_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="principal" column="principal"/>
+		<result property="interest" column="interest"/>
+		<result property="rental" column="rental"/>
+		<result property="mortgageSituation" column="mortgage_situation"/>
+		<result property="loanContract" column="loan_contract"/>
+		<result property="otherFile" column="other_file"/>
+		<result property="transferDate" column="transfer_date"/>
+		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
+					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
+
+		</collection>
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
+					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.getAssetsBankLoanRe" column="bank_loan_id">
 		</collection>
 	</resultMap>
 
@@ -84,5 +110,17 @@
 		<if test="query.handoverTime != null">
 			and p10_transfer_record.handover_time=#{query.handoverTime}
 		</if>
+	</select>
+
+	<select id="getByBankLoanInformation" resultMap="BankLoanInformationVO">
+		select
+		*,
+		p10_institution.ins_name as entrustedInsName,
+		p10_outles.outles_name as entrustedOutlesName
+		from p10_bank_loan
+		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
+		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
+		where
+		p10_bank_loan.del_flag=0
 	</select>
 </mapper>
