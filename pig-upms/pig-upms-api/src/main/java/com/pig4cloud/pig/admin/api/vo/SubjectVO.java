@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import lombok.Data;
 
@@ -35,5 +34,5 @@ public class SubjectVO extends Subject {
 	/**
 	 * 主体地址信息
 	 */
-	private List<Address> addressList;
+	private List<AddressVO> addressList;
 }
