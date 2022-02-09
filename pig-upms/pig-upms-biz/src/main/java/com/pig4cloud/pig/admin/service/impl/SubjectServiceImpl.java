@@ -129,7 +129,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 				address.setUserId(subject.getSubjectId());
 				address.setType(1);
 				//添加债务人地址信息
-				addressService.saveAddress(address);
+				addressService.saveOrUpdate(address);
 			}
 			//添加主体关联银行借贷信息
 			SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
@@ -144,9 +144,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public SubjectVO getByUnifiedIdentity(String unifiedIdentity) {
 		SubjectVO subjectVO = this.baseMapper.getByUnifiedIdentity(unifiedIdentity);
-		List<AddressVO> addressList = subjectVO.getAddressList();
-		for (AddressVO addressVO : addressList) {
-			addressVO.setAddressACPName(addressVO.getProvince()+addressVO.getCity()+addressVO.getArea());
+		if (subjectVO!=null){
+			List<AddressVO> addressList = subjectVO.getAddressList();
+			for (AddressVO addressVO : addressList) {
+				addressVO.setAddressACPName(addressVO.getProvince()+addressVO.getCity()+addressVO.getArea());
+			}
 		}
 		return subjectVO;
 	}

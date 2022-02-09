@@ -14,31 +14,36 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.BankLoan;
-import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
-import com.pig4cloud.pig.casee.vo.BankLoanVO;
+import lombok.Data;
+
+import java.util.List;
 
 /**
- * 银行借贷表
+ * 银行借贷基本信息
  *
  * @author Mjh
  * @date 2022-01-29 10:20:00
  */
-public interface BankLoanService extends IService<BankLoan> {
+@Data
+public class BankLoanInformationDTO extends BankLoan {
 
-	boolean saveBankLoanDebtorPawn(BankLoanDTO bankLoanDTO);
+	/**
+	 * 债务人信息以及债务人地址信息
+	 */
+	private List<SubjectAddressDTO> subjectAddressDTOList;
 
-	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
+	/**
+	 * 主体表id
+	 */
+	private List<Integer> subjectIdList;
 
-	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
-
-	boolean updateBankLoanInformation(BankLoanInformationDTO bankLoanInformationDTO);
+	/**
+	 * 抵押财产信息
+	 */
+	private List<AssetsDTO> assetsDTOList;
 }

@@ -43,4 +43,10 @@ public class RemoteAddressServiceFallbackImpl implements RemoteAddressService {
 		log.error("添加地址失败", cause);
 		return null;
 	}
+
+	@Override
+	public R saveOrUpdateById(List<Address> addressList, String from) {
+		log.error("添加或修改地址失败", cause);
+		return null;
+	}
 }

@@ -122,10 +122,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			if(address != null){
 				address.setType(4);
 				address.setCode("0");
+//				address.setUserId(projectLiqui.getProjectId());
 				R rest=remoteAddressService.saveAddress(address, SecurityConstants.FROM);//保存财产地址
 				if(rest!=null && rest.getData()!=null){
 					address= objectMapper.convertValue( rest.getData(), Address.class);
-					assetsLiqui.setAddressId(address.getAddressId());
+//					assetsLiqui.setAddressId(address.getAddressId());
 				}
 			}
 			assetsLiqui.setType(20200);
