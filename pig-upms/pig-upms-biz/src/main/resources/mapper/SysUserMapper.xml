@@ -182,4 +182,27 @@
 <!--		AND phone LIKE CONCAT(#{phone},'%')-->
 <!--		AND user_id != 1-->
 <!--	</select>-->
+
+	<select id="pageOutlesUser" resultType="com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO">
+		select sys_user.*,p10_institution.ins_name,p10_outles.outles_name from sys_user
+		LEFT JOIN p10_ins_outles_user on p10_ins_outles_user.user_id = sys_user.user_id and p10_ins_outles_user.del_flag = 0
+		LEFT JOIN p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0
+		LEFT JOIN p10_outles on p10_outles.outles_id = p10_ins_outles_user.outles_id and p10_outles.del_flag = 0
+		where sys_user.del_flag = 0
+		<if test="query.insId != null and query.insId != ''">
+			and p10_institution.ins_id = #{query.insId}
+		</if>
+		<if test="query.outlesId != null and query.outlesId != ''">
+			and p10_outles.outles_id = #{query.outlesId}
+		</if>
+		<if test="query.userId != null and query.userId != ''">
+			and sys_user.user_id = #{query.userId}
+		</if>
+		<if test="query.outlesName != null and query.outlesName != ''">
+			and p10_outles.outles_name LIKE CONCAT('%',#{query.outlesName},'%')
+		</if>
+		<if test="query.actualName != null and query.actualName != ''">
+			and sys_user.actual_name LIKE CONCAT('%',#{query.actualName},'%')
+		</if>
+	</select>
 </mapper>

@@ -23,9 +23,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.admin.mapper.SysUserMapper;
@@ -352,6 +354,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		cache.put(SecurityUtils.getUser().getUsername(), cacheUser);
 
 		return userInsOutlesRoleVO;
+	}
+
+	@Override
+	public IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO){
+		return this.baseMapper.pageOutlesUser(page,sysUserInsOutlesDTO);
 	}
 
 }

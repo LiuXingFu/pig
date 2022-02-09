@@ -19,6 +19,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.Outles;
@@ -248,6 +249,17 @@ public class UserController {
 	@GetMapping("/getInsOutlesRole")
 	public R getInsOutlesRole(Integer insId,@RequestParam(value = "outlesId" ,required=false)Integer outlesId){
 		return R.ok(userService.getInsOutlesRole(insId,outlesId));
+	}
+
+	/**
+	 * 分页查询网点员工列表
+	 * @param page 参数集
+	 * @param sysUserInsOutlesDTO 查询参数列表
+	 * @return 用户集合
+	 */
+	@GetMapping("/pageOutlesUser")
+	public R pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO) {
+		return R.ok(userService.pageOutlesUser(page, sysUserInsOutlesDTO));
 	}
 
 }
