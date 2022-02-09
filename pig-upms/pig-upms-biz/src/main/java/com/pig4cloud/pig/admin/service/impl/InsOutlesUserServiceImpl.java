@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
@@ -34,11 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,7 +62,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
+	public int addInsOutlesUser(InsOutlesUserObjectDTO insOutlesUserAddDTO){
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
@@ -88,6 +85,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
 			insOutlesUser.setType(insOutlesUserAddDTO.getType());
 			insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+			insOutlesUser.setPosition(insOutlesUserAddDTO.getPosition());
 
 			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 			queryWrapper.lambda().eq(SysUser::getDelFlag,0);

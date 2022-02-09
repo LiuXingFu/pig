@@ -315,7 +315,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			addressService.save(address);
 		}
 		// 添加网点负责人用户
-		InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+		InsOutlesUserObjectDTO insOutlesUserAddDTO = new InsOutlesUserObjectDTO();
 		insOutlesUserAddDTO.setInsId(outlesAddDTO.getInsId());
 		insOutlesUserAddDTO.setOutlesId(outles.getOutlesId());
 		insOutlesUserAddDTO.setType(1);
@@ -336,7 +336,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(outlesModifyDTO,address);
-			address.setUserId(outles.getInsId());
+			address.setUserId(outles.getOutlesId());
 			address.setType(3);
 			addressService.saveOrUpdate(address);
 		}

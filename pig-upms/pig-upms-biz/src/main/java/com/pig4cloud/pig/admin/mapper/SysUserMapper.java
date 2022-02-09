@@ -19,8 +19,10 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -61,4 +63,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	UserVO getUserVoById(Integer id);
 
 //	IPage<UserOptionVO> queryUserListByPhone(Page page, @Param("phone") String phone);
+
+	/**
+	 * 分页查询网点员工列表
+	 * @param page
+	 * @param sysUserInsOutlesDTO
+	 * @return
+	 */
+	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, @Param("query")SysUserInsOutlesDTO sysUserInsOutlesDTO);
 }

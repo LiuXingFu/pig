@@ -560,7 +560,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			addressService.save(address);
 		}
 		// 添加机构负责人用户
-		InsOutlesUserAddDTO insOutlesUserAddDTO = new InsOutlesUserAddDTO();
+		InsOutlesUserObjectDTO insOutlesUserAddDTO = new InsOutlesUserObjectDTO();
 		insOutlesUserAddDTO.setInsId(institution.getInsId());
 		insOutlesUserAddDTO.setType(1);
 		insOutlesUserAddDTO.setUserList(institutionAddDTO.getUserList());

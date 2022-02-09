@@ -19,10 +19,12 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 
@@ -104,4 +106,12 @@ public interface SysUserService extends IService<SysUser> {
 	 * @return
 	 */
 	UserInsOutlesRoleVO getInsOutlesRole(Integer insId,Integer outlesId);
+
+	/**
+	 * 分页查询网点员工列表
+	 * @param page
+	 * @param sysUserInsOutlesDTO
+	 * @return
+	 */
+	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO);
 }
