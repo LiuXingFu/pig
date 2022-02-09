@@ -21,9 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserModifyDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
-import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
 import com.pig4cloud.pig.admin.service.InsOutlesUserService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -33,7 +31,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 /**
