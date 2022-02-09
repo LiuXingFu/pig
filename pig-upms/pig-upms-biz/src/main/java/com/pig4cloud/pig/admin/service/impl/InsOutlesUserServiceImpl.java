@@ -91,7 +91,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				insOutlesUser.setUserId(user.getUserId());
 			}else{
 				UserDTO sysUser = new UserDTO();
-				sysUser.setPassword("a123456");
+				sysUser.setPassword("123456");
 				sysUser.setNickName(item.getActualName());
 				sysUser.setPhone(item.getPhone());
 				sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);

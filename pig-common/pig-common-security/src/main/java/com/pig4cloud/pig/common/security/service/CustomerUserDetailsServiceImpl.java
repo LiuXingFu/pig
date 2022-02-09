@@ -121,11 +121,9 @@ import java.util.*;
 		if(result.getData()==null){
 			throw new UsernameNotFoundException("用户不存在");
 		}
-		if(result.getData().getInstitution()==null
-				|| result.getData().getRoles()==null
-				|| result.getData().getPermissions()==null ){
-			throw new UsernameNotFoundException("用户没有后台登录权限");
-		}
+//		if(result.getData().getInstitution()==null){
+//			throw new UsernameNotFoundException("用户没有后台登录权限");
+//		}
 		UserDetails userDetails = getUserDetails(result);
 		if (cache != null) {
 			cache.put(username, userDetails);
@@ -158,7 +156,7 @@ import java.util.*;
 		Institution institution = info.getInstitution();
 		// 构造security用户
 		return new PigUser(user.getUserId(), user.getDeptId(),
-				institution!=null?institution.getInsId():null,
+				null,
 				null,
 				user.getUsername(),
 				SecurityConstants.BCRYPT + user.getPassword(),

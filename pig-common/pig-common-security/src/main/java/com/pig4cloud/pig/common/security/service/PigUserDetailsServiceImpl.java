@@ -121,7 +121,7 @@ import java.util.Set;
 		Institution institution = info.getInstitution();
 		// 构造security用户
 		return new PigUser(user.getUserId(), user.getDeptId(),
-				institution!=null?institution.getInsId():null,
+				null,
 				null,
 				user.getUsername(),
 				SecurityConstants.BCRYPT + user.getPassword(),
