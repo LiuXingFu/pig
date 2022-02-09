@@ -19,7 +19,7 @@ package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.service.InsOutlesUserService;
@@ -149,7 +149,7 @@ public class InsOutlesUserController {
 	@ApiOperation(value = "添加用户", notes = "添加用户")
 	@SysLog("添加用户")
 	@PostMapping("/addInsOutlesUser")
-	public R addInsOutlesUser(@RequestBody InsOutlesUserAddDTO insOutlesUserAddDTO) throws Exception {
+	public R addInsOutlesUser(@RequestBody InsOutlesUserObjectDTO insOutlesUserAddDTO) throws Exception {
 		int save = insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 		if (save<=0) {
 			return R.failed("添加失败");

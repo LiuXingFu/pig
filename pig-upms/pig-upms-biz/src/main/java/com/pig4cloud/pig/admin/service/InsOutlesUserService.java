@@ -20,7 +20,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public interface InsOutlesUserService extends IService<InsOutlesUser> {
 
-	int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO);
+	int addInsOutlesUser(InsOutlesUserObjectDTO insOutlesUserAddDTO);
 
 	/**
 	 * 移除负责人

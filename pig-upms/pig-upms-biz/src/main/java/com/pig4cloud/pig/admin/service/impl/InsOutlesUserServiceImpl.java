@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
@@ -62,7 +62,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int addInsOutlesUser(InsOutlesUserAddDTO insOutlesUserAddDTO){
+	public int addInsOutlesUser(InsOutlesUserObjectDTO insOutlesUserAddDTO){
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
