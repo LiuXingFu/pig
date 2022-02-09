@@ -19,13 +19,10 @@ package com.pig4cloud.pig.admin.api.feign.fallback;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -49,6 +46,13 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	@Override
 	public R saveSubject(Subject subject, String from){
 		log.error("添加单条主体失败", cause);
+		return null;
+	}
+
+	@Override
+	public R saveOrUpdateById(Subject subject, String from) {
+		log.error("添加或修改主体失败", cause);
+
 		return null;
 	}
 }

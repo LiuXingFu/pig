@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.dto;
 
 
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.Assets;
 import lombok.Data;
 
@@ -47,6 +48,11 @@ public class AssetsDTO extends Assets {
 	 */
 	private LocalDate mortgageTime;
 
+
+	/**
+	 * 地址信息
+	 */
+	private Address address;
 
 
 }

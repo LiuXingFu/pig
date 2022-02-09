@@ -57,4 +57,12 @@ public interface RemoteSubjectService {
 	R saveSubject(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 
 
+	/**
+	 *  新增或修改主体信息
+	 * @param subject
+	 * @param from 内部调用标志
+	 * @return
+	 */
+	@PostMapping("/subject/saveOrUpdateById")
+	R saveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 }
