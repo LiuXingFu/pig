@@ -114,7 +114,7 @@ public class MenuController {
 	 */
 	@SysLog("新增菜单")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('sys_menu_add')")
+	//@PreAuthorize("@pms.hasPermission('sys_menu_add')")
 	public R save(@Valid @RequestBody SysMenu sysMenu) {
 		sysMenuService.save(sysMenu);
 		return R.ok(sysMenu);
@@ -127,7 +127,7 @@ public class MenuController {
 	 */
 	@SysLog("删除菜单")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('sys_menu_del')")
+	//@PreAuthorize("@pms.hasPermission('sys_menu_del')")
 	public R removeById(@PathVariable Integer id) {
 		return R.ok(sysMenuService.removeMenuById(id));
 	}
@@ -139,7 +139,7 @@ public class MenuController {
 	 */
 	@SysLog("更新菜单")
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('sys_menu_edit')")
+	//@PreAuthorize("@pms.hasPermission('sys_menu_edit')")
 	public R update(@Valid @RequestBody SysMenu sysMenu) {
 		return R.ok(sysMenuService.updateMenuById(sysMenu));
 	}
