@@ -88,6 +88,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			insOutlesUser.setOutlesId(insOutlesUserAddDTO.getOutlesId());
 			insOutlesUser.setType(insOutlesUserAddDTO.getType());
 			insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+			insOutlesUser.setPosition(insOutlesUserAddDTO.getPosition());
 
 			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
 			queryWrapper.lambda().eq(SysUser::getDelFlag,0);
