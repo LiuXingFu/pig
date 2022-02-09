@@ -53,5 +53,10 @@ public class SubjectBankLoanRe {
     @ApiModelProperty(value="主体表id")
     private Integer subjectId;
 
+	/**
+	 * 债务类型(1-贷款人 2-担保人)
+	 */
+	@ApiModelProperty(value = "债务类型(1-贷款人 2-担保人)")
+	private Integer debtType;
 
 }

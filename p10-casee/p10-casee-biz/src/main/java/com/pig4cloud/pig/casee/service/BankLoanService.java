@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanVO;
 
 /**
@@ -35,4 +36,6 @@ public interface BankLoanService extends IService<BankLoan> {
 	boolean saveBankLoanDebtorPawn(BankLoanDTO bankLoanDTO);
 
 	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
+
+	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
 }

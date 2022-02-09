@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
+import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,7 +35,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface InstitutionAssociateMapper extends BaseMapper<InstitutionAssociate> {
 
-	IPage<InstitutionAssociateVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociate institutionAssociate);
+	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociate institutionAssociate);
 
 	InstitutionAssociateVO queryById(Integer associateId);
 

@@ -332,11 +332,11 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		Outles outles = new Outles();
 		BeanUtils.copyProperties(outlesModifyDTO,outles);
 		modify = this.baseMapper.updateById(outles);
-		if(Objects.nonNull(outlesModifyDTO.getInformationAddress())){
+		if(Objects.nonNull(outlesModifyDTO.getCode())){
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(outlesModifyDTO,address);
-			addressService.updateById(address);
+			addressService.saveOrUpdate(address);
 		}
 
 		return modify;

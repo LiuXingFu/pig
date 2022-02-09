@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,6 +30,7 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +69,6 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 		//银行借贷信息
 		BankLoan bankLoan=new BankLoan();
 
-		//主体关联银行借贷信息
-		SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
-
 		//财产关联银行借贷信息
 		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
 
@@ -86,28 +85,27 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 		//添加银行借贷信息
 		boolean save = this.save(bankLoan);
 
+		//添加主体关联银行借贷信息
+		List<SubjectBankLoanRe> subjectBankLoanReList = subjectBankLoanReService.list(new LambdaQueryWrapper<SubjectBankLoanRe>().isNull(SubjectBankLoanRe::getBankLoanId).in(SubjectBankLoanRe::getSubjectId, bankLoanDTO.getSubjectIdList()));
+		for (SubjectBankLoanRe bankLoanRe : subjectBankLoanReList) {
+			bankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+		}
+		subjectBankLoanReService.updateBatchById(subjectBankLoanReList);
+
 		//添加抵押财产信息
 		List<AssetsDTO> assetsDTOList = bankLoanDTO.getAssetsDTOList();
-		for (AssetsDTO assetsDTO : assetsDTOList) {
-			BeanCopyUtil.copyBean(assetsDTO,assets);
-			assetsService.save(assets);
+		if (assetsDTOList!=null){
+			for (AssetsDTO assetsDTO : assetsDTOList) {
+				BeanCopyUtil.copyBean(assetsDTO,assets);
+				assetsService.save(assets);
 
-			//添加财产关联银行借贷信息
-			assetsBankLoanRe.setAssetsId(assets.getAssetsId());
-			assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-			assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-			assetsBankLoanRe.setMortgageTime(bankLoanDTO.getMortgageTime());
-			assetsBankLoanRe.setMortgageAmount(bankLoanDTO.getMortgageAmount());
-			assetsBankLoanReService.save(assetsBankLoanRe);
-		}
-
-		//添加主体关联银行借贷信息
-		List<Integer> subjectIdList = bankLoanDTO.getSubjectIdList();
-		if(subjectIdList.size()>0){
-			for (Integer subjectId : subjectIdList) {
-				subjectBankLoanRe.setSubjectId(subjectId);
-				subjectBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-				subjectBankLoanReService.save(subjectBankLoanRe);
+				//添加财产关联银行借贷信息
+				assetsBankLoanRe.setAssetsId(assets.getAssetsId());
+				assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
+				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
+				assetsBankLoanReService.save(assetsBankLoanRe);
 			}
 		}
 		return save;
@@ -116,5 +114,10 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	@Override
 	public IPage<BankLoanVO> bankLoanPage(Page page, BankLoanDTO bankLoanDTO) {
 		return this.baseMapper.bankLoanPage(page,bankLoanDTO);
+	}
+
+	@Override
+	public BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId) {
+		return this.baseMapper.getByBankLoanInformation(bankLoanId);
 	}
 }

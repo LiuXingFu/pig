@@ -23,11 +23,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InstitutionPageDTO;
 import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
 import com.pig4cloud.pig.admin.api.entity.Institution;
-import com.pig4cloud.pig.admin.api.vo.InstitutionDetailsVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionPageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
-import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,7 +39,7 @@ import java.util.List;
 @Mapper
 public interface InstitutionMapper extends BaseMapper<Institution> {
 
-	List<InstitutionVO> getByInsName(@Param("insName") String insName,@Param("insId") Integer insId);
+	IPage<InstitutionAssociatePageVO> getByInsName(Page page, @Param("insName") String insName, @Param("insId") Integer insId);
 
 	IPage<InstitutionVO> getInstitutionVosPage(Page page, @Param("query") Institution institution);
 

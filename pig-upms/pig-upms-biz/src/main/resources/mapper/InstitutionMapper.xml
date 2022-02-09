@@ -59,18 +59,15 @@
 		<result property="delFlag" column="del_flag"/>
 	</resultMap>
 
-	<select id="getByInsName" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionVO">
+	<select id="getByInsName" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO">
 		SELECT  distinct
-		institution.ins_id,
-		institution.ins_name,
--- 		institution.user_id,
--- 		institution.ins_principal_name,
--- 		institution.ins_principal_phone,
-		institution.ins_type,
-		institution.address_id,
-		institution.ins_fax,
-		institution.ins_land_line_phone,
-		institution.ins_remark,
+		institution.*,
+		p10_address.address_id,
+		p10_address.province,
+		p10_address.city,
+		p10_address.area,
+		p10_address.information_address,
+		p10_address.code,
 		CASE
 			WHEN institution_associate.associate_status IS NULL THEN
 				- 1
@@ -79,13 +76,13 @@
 			END associate_status
 		FROM
 			p10_institution institution
+			left join p10_address on p10_address.user_id = institution.ins_id and p10_address.type = 2
 			LEFT JOIN p10_institution_associate institution_associate ON institution.ins_id = institution_associate.ins_associate_id AND institution_associate.ins_id = #{insId}
 			WHERE
 			institution.del_flag = '0'
 			AND institution.ins_name LIKE CONCAT('%', #{insName},'%')
 			AND institution.ins_id != #{insId}
 			AND ins_type != 1000
-			LIMIT 15
 	</select>
 
 	<select id="getInstitutionVosPage" resultMap="institutionVOMap">

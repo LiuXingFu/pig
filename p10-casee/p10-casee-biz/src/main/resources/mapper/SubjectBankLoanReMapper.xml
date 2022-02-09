@@ -27,6 +27,7 @@
     <id property="subjectBankLoanId" column="subject_bank_loan_id"/>
     <result property="bankLoanId" column="bank_loan_id"/>
     <result property="subjectId" column="subject_id"/>
+	<result property="debtType" column="debt_type"/>
   </resultMap>
 
 	<select id="getSubjectBankLoanRe" resultType="java.lang.String">
@@ -35,4 +36,14 @@
 	WHERE
 	p10_subject_bank_loan_re.bank_loan_id = #{bankLoanId}
 	</select>
+
+	<select id="getSubjectBankLoanReInformationVO" resultType="com.pig4cloud.pig.casee.vo.SubjectInformationVO">
+	SELECT p10_subject.*,p10_subject_bank_loan_re.debt_type as debtType
+	FROM `p10_subject_bank_loan_re`
+	LEFT JOIN p10_subject ON p10_subject.subject_id = p10_subject_bank_loan_re.subject_id
+	LEFT JOIN p10_bank_loan ON p10_bank_loan.bank_loan_id = p10_subject.subject_id
+	WHERE
+	p10_subject_bank_loan_re.bank_loan_id = #{bankLoanId}
+	</select>
+
 </mapper>
