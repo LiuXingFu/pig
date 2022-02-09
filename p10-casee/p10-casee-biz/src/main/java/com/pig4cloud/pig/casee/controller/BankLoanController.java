@@ -17,9 +17,9 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.service.BankLoanService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -67,6 +67,17 @@ public class BankLoanController {
     public R getById(@PathVariable("bankLoanId" ) Integer bankLoanId) {
         return R.ok(bankLoanService.getByBankLoanInformation(bankLoanId));
     }
+
+	/**
+	 * 修改银行借贷基本信息
+	 * @param bankLoanInformationDTO 银行借贷基本信息
+	 * @return R
+	 */
+	@ApiOperation(value = "修改银行借贷基本信息", notes = "修改银行借贷基本信息")
+	@PutMapping("/updateBankLoanInformation" )
+	public R updateBankLoanInformation(@RequestBody BankLoanInformationDTO bankLoanInformationDTO) {
+		return R.ok(bankLoanService.updateBankLoanInformation(bankLoanInformationDTO));
+	}
 
     /**
      * 新增银行借贷表

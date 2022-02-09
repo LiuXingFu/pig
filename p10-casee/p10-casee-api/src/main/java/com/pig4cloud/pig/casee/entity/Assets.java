@@ -55,11 +55,11 @@ public class Assets extends BaseEntity {
     @ApiModelProperty(value="财产名称")
     private String assetsName;
 
-    /**
-     * 地址id
-     */
-    @ApiModelProperty(value="地址id")
-    private Integer addressId;
+//    /**
+//     * 地址id
+//     */
+//    @ApiModelProperty(value="地址id")
+//    private Integer addressId;
 
     /**
      * 财产类型（20100-资金财产 20200-实体财产）
@@ -78,6 +78,12 @@ public class Assets extends BaseEntity {
      */
     @ApiModelProperty(value="描述")
     private String describes;
+
+	/**
+	 * 所有权人
+	 */
+	@ApiModelProperty(value="所有权人")
+	private String owner;
 
 	/**
 	 * 财产详情

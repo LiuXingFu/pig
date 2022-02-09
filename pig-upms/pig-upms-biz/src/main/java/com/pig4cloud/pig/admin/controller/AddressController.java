@@ -29,6 +29,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 地址表
@@ -96,6 +98,19 @@ public class AddressController {
 	@PutMapping
 	public R updateById(@RequestBody Address address) {
 		return R.ok(addressService.updateById(address));
+	}
+
+	/**
+	 * 新增或修改地址表
+	 *
+	 * @param addressList 地址表
+	 * @return R
+	 */
+	@ApiOperation(value = "新增或修改地址表", notes = "新增或修改地址表")
+	@SysLog("新增或修改地址表")
+	@PutMapping("/saveOrUpdateById")
+	public R saveOrUpdateById(@RequestBody List<Address> addressList) {
+		return R.ok(addressService.saveOrUpdateBatch(addressList));
 	}
 
 	/**

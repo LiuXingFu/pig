@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.admin.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
@@ -165,5 +164,17 @@ public class SubjectController {
     public R removeById(@PathVariable Integer subjectId) {
         return R.ok(subjectService.removeById(subjectId));
     }
+
+	/**
+	 * 新增或修改主体
+	 * @param subject 主体
+	 * @return R
+	 */
+	@ApiOperation(value = "新增或修改主体", notes = "新增或修改主体")
+	@SysLog("新增或修改主体" )
+	@PutMapping("/saveOrUpdateById")
+	public R saveOrUpdateById(@RequestBody Subject subject) {
+		return R.ok(subjectService.saveOrUpdate(subject));
+	}
 
 }
