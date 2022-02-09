@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.dto;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,5 +57,5 @@ public class BankLoanDTO extends BankLoan {
 	/**
 	 * 移送时间
 	 */
-	private LocalDateTime handoverTime;
+	private LocalDate handoverTime;
 }

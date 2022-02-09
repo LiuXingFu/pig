@@ -15,43 +15,25 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.service;
+package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.admin.api.vo.SubjectVO;
+import lombok.Data;
 
 import java.util.List;
 
-
 /**
- * 主体
+ * 主体VO
  *
  * @author yy
  * @date 2021-09-17 16:55:57
  */
-public interface SubjectService extends IService<Subject> {
-	/**
-	 * 保存主体信息
- 	 * @param subjectList
-	 * @return
-	 */
-	boolean saveBatchSubject(List<Subject> subjectList);
+@Data
+public class SubjectVO extends Subject {
 
 	/**
-	 * 保存单条主体信息
-	 * @param subject
-	 * @return
+	 * 主体地址信息
 	 */
-	Subject saveSubject(Subject subject);
-
-	/**
-	 * 新增主体、债务人地址信息以及主体关联债务人信息
-	 * @param subjectAddressDTOList
-	 * @return
-	 */
-	List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
-
-	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
+	private List<Address> addressList;
 }

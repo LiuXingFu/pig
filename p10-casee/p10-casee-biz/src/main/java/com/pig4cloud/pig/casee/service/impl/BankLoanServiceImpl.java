@@ -86,11 +86,13 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 		boolean save = this.save(bankLoan);
 
 		//添加主体关联银行借贷信息
-		List<SubjectBankLoanRe> subjectBankLoanReList = subjectBankLoanReService.list(new LambdaQueryWrapper<SubjectBankLoanRe>().isNull(SubjectBankLoanRe::getBankLoanId).in(SubjectBankLoanRe::getSubjectId, bankLoanDTO.getSubjectIdList()));
-		for (SubjectBankLoanRe bankLoanRe : subjectBankLoanReList) {
-			bankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+		if (bankLoanDTO.getSubjectIdList().size()>0){
+			List<SubjectBankLoanRe> subjectBankLoanReList = subjectBankLoanReService.list(new LambdaQueryWrapper<SubjectBankLoanRe>().isNull(SubjectBankLoanRe::getBankLoanId).in(SubjectBankLoanRe::getSubjectId, bankLoanDTO.getSubjectIdList()));
+			for (SubjectBankLoanRe bankLoanRe : subjectBankLoanReList) {
+				bankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+			}
+			subjectBankLoanReService.updateBatchById(subjectBankLoanReList);
 		}
-		subjectBankLoanReService.updateBatchById(subjectBankLoanReList);
 
 		//添加抵押财产信息
 		List<AssetsDTO> assetsDTOList = bankLoanDTO.getAssetsDTOList();

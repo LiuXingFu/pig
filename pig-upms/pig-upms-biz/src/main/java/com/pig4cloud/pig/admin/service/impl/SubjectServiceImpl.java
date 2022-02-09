@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
@@ -137,6 +138,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			subjectIds.add(subject.getSubjectId());
 		}
 		return subjectIds;
+	}
+
+	@Override
+	public SubjectVO getByUnifiedIdentity(String unifiedIdentity) {
+
+
+		return null;
 	}
 
 	/**

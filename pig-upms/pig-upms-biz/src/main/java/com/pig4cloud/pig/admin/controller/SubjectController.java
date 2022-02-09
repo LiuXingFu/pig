@@ -79,7 +79,7 @@ public class SubjectController {
 	@ApiOperation(value = "通过身份证查询主体信息", notes = "通过身份证查询主体信息")
 	@GetMapping("/getByUnifiedIdentity/{unifiedIdentity}" )
 	public R getByUnifiedIdentity(@PathVariable("unifiedIdentity" ) String unifiedIdentity) {
-		return R.ok(subjectService.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getUnifiedIdentity,unifiedIdentity)));
+		return R.ok(subjectService.getByUnifiedIdentity(unifiedIdentity));
 	}
 
 	/**
