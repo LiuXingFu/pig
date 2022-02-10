@@ -107,7 +107,6 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 			for (Integer outlesId : associateOutlesDTO.getOutless()) {
 				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
 				BeanUtils.copyProperties(associateOutlesDTO, associateOutlesRe);
-				associateOutlesRe.setAssociateId(associateOutlesDTO.getAssociateId());
 				associateOutlesRe.setInsId(SecurityUtils.getUser().getInsId());
 				associateOutlesRe.setOutlesId(outlesId);
 				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());

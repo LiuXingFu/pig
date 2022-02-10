@@ -42,4 +42,22 @@ public class SysUserInsOutlesVO extends SysUser {
 	@ApiModelProperty(value = "网点名称")
 	private String outlesName;
 
+	/**
+	 * 机构网点用户id
+	 */
+	@ApiModelProperty("机构网点用户id")
+	private Integer insOutlesUserId;
+
+	/**
+	 * 职位
+	 */
+	@ApiModelProperty(value = "职位")
+	private String position;
+
+	/**
+	 * 入职时间
+	 */
+	@ApiModelProperty(value = "入职时间")
+	private LocalDateTime entryTime;
+
 }

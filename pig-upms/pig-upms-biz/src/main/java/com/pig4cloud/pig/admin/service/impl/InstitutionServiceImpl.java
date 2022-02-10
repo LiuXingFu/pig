@@ -330,7 +330,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	 */
 	@Override
 	public IPage<InstitutionAssociatePageVO> getByInsName(Page page, String insName) {
-		return this.baseMapper.getByInsName(page, insName, SecurityUtils.getUser().getInsId());
+		return this.baseMapper.getByInsName(page, insName, securityUtilsService.getCacheUser().getInsId());
 	}
 
 	/**

@@ -250,12 +250,12 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	/**
 	 * 通过机构id和网点名称查询所有网点
 	 *
-	 * @param insId
+	 * @param outlesDTO
 	 * @return R
 	 */
 	@Override
-	public List<Outles> getInsIdOrOutlesNameList(Integer insId, String outlesName) {
-		return this.baseMapper.getInsIdOrOutlesNameList(insId, outlesName);
+	public IPage<Outles> getInsIdOrOutlesNameList(Page page, OutlesPageDTO outlesDTO) {
+		return this.baseMapper.getInsIdOrOutlesNameList(page, outlesDTO);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		BeanUtils.copyProperties(outlesAddDTO,outles);
 		save = this.baseMapper.insert(outles);
 		// 判断地址是否为空
-		if(Objects.nonNull(outlesAddDTO.getInformationAddress())){
+		if(Objects.nonNull(outlesAddDTO.getCode()) || Objects.nonNull(outlesAddDTO.getInformationAddress())){
 			// 添加地址
 			Address address = new Address();
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);

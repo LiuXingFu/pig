@@ -30,7 +30,18 @@ import lombok.Data;
 public class OutlesPageDTO {
 
 	/**
+	 * 机构id
+	 */
+	private Integer insId;
+
+	/**
+	 * 网点id
+	 */
+	private Integer outlesId;
+
+	/**
 	 * 网点名称
 	 */
 	private String outlesName;
+
 }
