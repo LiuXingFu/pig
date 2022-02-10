@@ -19,6 +19,7 @@ package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddOutlesListDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
@@ -32,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 
-
 /**
  * 机构/网点用户关联表
  *
@@ -41,85 +41,91 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/insoutlesuser" )
+@RequestMapping("/insoutlesuser")
 @Api(value = "insoutlesuser", tags = "机构/网点用户关联表管理")
 public class InsOutlesUserController {
 
-    private final InsOutlesUserService insOutlesUserService;
+	private final InsOutlesUserService insOutlesUserService;
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param insOutlesUser 机构/网点用户关联表
-     * @return
-     */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')" )
-    public R getInsOutlesUserPage(Page page, InsOutlesUser insOutlesUser) {
-        return R.ok(insOutlesUserService.page(page, Wrappers.query(insOutlesUser)));
-    }
+	/**
+	 * 分页查询
+	 *
+	 * @param page          分页对象
+	 * @param insOutlesUser 机构/网点用户关联表
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/page")
+	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')")
+	public R getInsOutlesUserPage(Page page, InsOutlesUser insOutlesUser) {
+		return R.ok(insOutlesUserService.page(page, Wrappers.query(insOutlesUser)));
+	}
 
 
-    /**
-     * 通过id查询机构/网点用户关联表
-     * @param insOutlesUserId id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{insOutlesUserId}" )
-    @PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')" )
-    public R getById(@PathVariable("insOutlesUserId" ) Integer insOutlesUserId) {
-        return R.ok(insOutlesUserService.getById(insOutlesUserId));
-    }
+	/**
+	 * 通过id查询机构/网点用户关联表
+	 *
+	 * @param insOutlesUserId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/{insOutlesUserId}")
+	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')")
+	public R getById(@PathVariable("insOutlesUserId") Integer insOutlesUserId) {
+		return R.ok(insOutlesUserService.getById(insOutlesUserId));
+	}
 
-    /**
-     * 新增机构/网点用户关联表
-     * @param insOutlesUser 机构/网点用户关联表
-     * @return R
-     */
-    @ApiOperation(value = "新增机构/网点用户关联表", notes = "新增机构/网点用户关联表")
-    @SysLog("新增机构/网点用户关联表" )
-    @PostMapping
-    @PreAuthorize("@pms.hasPermission('admin_insoutlesuser_add')" )
-    public R save(@RequestBody InsOutlesUser insOutlesUser) {
-        return R.ok(insOutlesUserService.save(insOutlesUser));
-    }
+	/**
+	 * 新增机构/网点用户关联表
+	 *
+	 * @param insOutlesUser 机构/网点用户关联表
+	 * @return R
+	 */
+	@ApiOperation(value = "新增机构/网点用户关联表", notes = "新增机构/网点用户关联表")
+	@SysLog("新增机构/网点用户关联表")
+	@PostMapping
+	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_add')")
+	public R save(@RequestBody InsOutlesUser insOutlesUser) {
+		return R.ok(insOutlesUserService.save(insOutlesUser));
+	}
 
-    /**
-     * 修改机构/网点用户关联表
-     * @param insOutlesUser 机构/网点用户关联表
-     * @return R
-     */
-    @ApiOperation(value = "修改机构/网点用户关联表", notes = "修改机构/网点用户关联表")
-    @SysLog("修改机构/网点用户关联表" )
-    @PutMapping
-    @PreAuthorize("@pms.hasPermission('admin_insoutlesuser_edit')" )
-    public R updateById(@RequestBody InsOutlesUser insOutlesUser) {
-        return R.ok(insOutlesUserService.updateById(insOutlesUser));
-    }
+	/**
+	 * 修改机构/网点用户关联表
+	 *
+	 * @param insOutlesUser 机构/网点用户关联表
+	 * @return R
+	 */
+	@ApiOperation(value = "修改机构/网点用户关联表", notes = "修改机构/网点用户关联表")
+	@SysLog("修改机构/网点用户关联表")
+	@PutMapping
+	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_edit')")
+	public R updateById(@RequestBody InsOutlesUser insOutlesUser) {
+		return R.ok(insOutlesUserService.updateById(insOutlesUser));
+	}
 
-    /**
-     * 通过id删除机构/网点用户关联表
-     * @param insOutlesUserId id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除机构/网点用户关联表", notes = "通过id删除机构/网点用户关联表")
-    @SysLog("通过id删除机构/网点用户关联表" )
-    @DeleteMapping("/{insOutlesUserId}" )
-    @PreAuthorize("@pms.hasPermission('admin_insoutlesuser_del')" )
-    public R removeById(@PathVariable Integer insOutlesUserId) {
-        return R.ok(insOutlesUserService.removeById(insOutlesUserId));
-    }
+	/**
+	 * 通过id删除机构/网点用户关联表
+	 *
+	 * @param insOutlesUserId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除机构/网点用户关联表", notes = "通过id删除机构/网点用户关联表")
+	@SysLog("通过id删除机构/网点用户关联表")
+	@DeleteMapping("/{insOutlesUserId}")
+	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_del')")
+	public R removeById(@PathVariable Integer insOutlesUserId) {
+		return R.ok(insOutlesUserService.removeById(insOutlesUserId));
+	}
 
 
 	/**
 	 * 移除用户
+	 *
 	 * @param insOutlesUserId 员工id
 	 * @return R
 	 */
 	@ApiOperation(value = "移除用户", notes = "移除用户")
-	@SysLog("移除用户" )
+	@SysLog("移除用户")
 	@PutMapping("/removeInsOutlesUser/{insOutlesUserId}")
 	public R removeInsOutlesUser(@PathVariable int insOutlesUserId) {
 		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
@@ -135,7 +141,7 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "通过id查询", notes = "通过id查询")
 	@GetMapping("/queryUserList")
-	public R queryUserList(Integer type, Integer insId, Integer outlesId){
+	public R queryUserList(Integer type, Integer insId, Integer outlesId) {
 		return R.ok(insOutlesUserService.queryUserList(type, insId, outlesId));
 	}
 
@@ -151,41 +157,63 @@ public class InsOutlesUserController {
 	@PostMapping("/addInsOutlesUser")
 	public R addInsOutlesUser(@RequestBody InsOutlesUserObjectDTO insOutlesUserAddDTO) throws Exception {
 		int save = insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
-		if (save<=0) {
+		if (save <= 0) {
 			return R.failed("添加失败");
 		} else {
 			return R.ok(save);
 		}
 	}
+
+	/**
+	 * 根据网点id集合添加用户集合
+	 *
+	 * @param insOutlesUserAddOutlesListDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "根据网点id集合添加用户集合", notes = "根据网点id集合添加用户集合")
+	@SysLog("根据网点id集合添加用户集合")
+	@PostMapping("/addInsOutlesUserByOutlesIds")
+	public R addInsOutlesUserByOutlesIds(@RequestBody InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) throws Exception {
+		int save = insOutlesUserService.addInsOutlesUserByOutlesIds(insOutlesUserAddOutlesListDTO);
+		if (save <= 0) {
+			return R.failed("添加失败");
+		} else {
+			return R.ok(save);
+		}
+	}
+
 	/**
 	 * 根据用户id查询员工权限、网点名称
+	 *
 	 * @param userId id
 	 * @return R
 	 */
 	@ApiOperation(value = "根据用户id查询员工权限、网点名称", notes = "根据用户id查询员工权限、网点名称")
-	@GetMapping("/queryOutlesName/{userId}/{insId}" )
-	public R queryOutlesName(@PathVariable("userId" ) Integer userId,@PathVariable("insId" )Integer insId) {
-		return R.ok(insOutlesUserService.queryOutlesName(userId,insId));
+	@GetMapping("/queryOutlesName/{userId}/{insId}")
+	public R queryOutlesName(@PathVariable("userId") Integer userId, @PathVariable("insId") Integer insId) {
+		return R.ok(insOutlesUserService.queryOutlesName(userId, insId));
 	}
 
 	/**
 	 * 根据用户id查询员工权限、机构名称
+	 *
 	 * @param userId id
 	 * @return R
 	 */
 	@ApiOperation(value = "根据用户id查询员工权限、机构名称", notes = "根据用户id查询员工权限、机构名称")
-	@GetMapping("/queryInsName/{userId}" )
-	public R queryInsName(@PathVariable("userId" ) Integer userId) {
+	@GetMapping("/queryInsName/{userId}")
+	public R queryInsName(@PathVariable("userId") Integer userId) {
 		return R.ok(insOutlesUserService.queryInsName(userId));
 	}
 
 	/**
 	 * 根据用户id查询员工权限、机构名称
+	 *
 	 * @return R
 	 */
 	@ApiOperation(value = "根据用户id查询员工权限、机构名称", notes = "根据用户id查询员工权限、机构名称")
-	@GetMapping("/queryInsOutlesUserByOutles" )
-	public R queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO){
+	@GetMapping("/queryInsOutlesUserByOutles")
+	public R queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO) {
 		return R.ok(insOutlesUserService.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO));
 	}
 

@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddOutlesListDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
@@ -70,4 +71,5 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 
 	IPage<InsOutlesUserInsOutlesVO> queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO);
 
+	int addInsOutlesUserByOutlesIds(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO);
 }
