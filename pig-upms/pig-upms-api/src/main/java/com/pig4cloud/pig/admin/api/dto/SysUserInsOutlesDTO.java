@@ -7,24 +7,6 @@ import lombok.Data;
 public class SysUserInsOutlesDTO {
 
 	/**
-	 * 用户id
-	 */
-	@ApiModelProperty(value = "用户id")
-	private Integer userId;
-
-	/**
-	 * 机构id
-	 */
-	@ApiModelProperty(value = "机构id")
-	private Integer insId;
-
-	/**
-	 * 网点id
-	 */
-	@ApiModelProperty(value = "网点id")
-	private Integer outlesId;
-
-	/**
 	 * 网点名称
 	 */
 	@ApiModelProperty(value = "网点名称")

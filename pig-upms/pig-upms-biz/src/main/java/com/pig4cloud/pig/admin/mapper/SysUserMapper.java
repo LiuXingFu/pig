@@ -70,5 +70,5 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @param sysUserInsOutlesDTO
 	 * @return
 	 */
-	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, @Param("query")SysUserInsOutlesDTO sysUserInsOutlesDTO);
+	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, @Param("query")SysUserInsOutlesDTO sysUserInsOutlesDTO,@Param("insId") Integer insId,@Param("outlesId") Integer outlesId);
 }

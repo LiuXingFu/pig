@@ -20,11 +20,9 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.OutlesAddDTO;
-import com.pig4cloud.pig.admin.api.dto.OutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.OutlesModifyDTO;
-import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
@@ -153,5 +151,12 @@ public interface OutlesService extends IService<Outles> {
 	Integer addDefaultOutles(Outles outles);
 
 	Outles queryByOutlesId(Integer outlesId);
+
+	/**
+	 * 查询网点下拉框组件集合
+	 * @param outlesSelectDTO
+	 * @return
+	 */
+	public List<OrganizationQueryVO> queryOutlesIdSelect(OutlesSelectDTO outlesSelectDTO);
 
 }

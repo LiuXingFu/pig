@@ -22,8 +22,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.OutlesPageDTO;
 import com.pig4cloud.pig.admin.api.dto.OutlesQueryDTO;
+import com.pig4cloud.pig.admin.api.dto.OutlesSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
@@ -61,8 +63,12 @@ public interface OutlesMapper extends BaseMapper<Outles> {
 	/**********************************************************************/
 	IPage<OutlesPageVO> selectPage(Page page, @Param("query") OutlesPageDTO outlesPageDTO,@Param("insId") int insId);
 
-	OutlesDetailsVO selectDetailsById( @Param("outlesId") int outlesId);
+	OutlesDetailsVO selectDetailsById( @Param("outlesId") Integer outlesId);
 
-	List<Outles> selectByUserId( @Param("userId")int userId,@Param("insId")int insId);
+	List<Outles> selectByUserId( @Param("userId")Integer userId,@Param("insId")Integer insId);
+
+	List<OrganizationQueryVO> querySelectByOutlesId(@Param("insId")Integer insId,@Param("outlesId") Integer outlesId);
+
+	List<OrganizationQueryVO> pageCooperateByOutlesId(@Param("query")OutlesSelectDTO outlesSelectDTO,@Param("loginInsId")Integer loginInsId);
 
 }

@@ -285,5 +285,30 @@
 		where p10_outles.del_flag = 0 and p10_ins_outles_user.ins_id = #{insId} and p10_ins_outles_user.user_id = #{userId}
 	</select>
 
+	<select id="querySelectByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
+		where p10_outles.del_flag = 0
+		<if test="outlesId != null and outlesId != 0">
+			and p10_outles.outles_id = #{outlesId}
+		</if>
+		<if test="insId != null and insId != 0">
+			and p10_outles.ins_id = #{insId}
+		</if>
+		LIMIT 10
+	</select>
+
+	<select id="pageCooperateByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
+		LEFT JOIN p10_associate_outles_re on p10_associate_outles_re.outles_id = p10_outles.outles_id and p10_associate_outles_re.ins_id = #{insId}
+		where p10_outles.del_flag = 0
+		<if test="loginInsId != null and loginInsId != 0">
+			and p10_associate_outles_re.ins_associate_id = #{loginInsId}
+		</if>
+		<if test="query.outlesName != null and query.outlesName != ''">
+			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
+		</if>
+		LIMIT 10
+	</select>
+
 
 </mapper>
