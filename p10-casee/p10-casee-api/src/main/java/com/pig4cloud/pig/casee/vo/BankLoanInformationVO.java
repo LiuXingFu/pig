@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import lombok.Data;
 

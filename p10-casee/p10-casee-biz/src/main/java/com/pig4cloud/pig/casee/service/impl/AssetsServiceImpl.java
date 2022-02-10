@@ -17,6 +17,8 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsLiqui;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
@@ -32,4 +34,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> implements AssetsService {
 
+	@Override
+	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
+		AssetsGetByIdDTO assetsGetByIdDTO = this.baseMapper.getByAssets(assetsId);
+		assetsGetByIdDTO.setAddressACPName(assetsGetByIdDTO.getProvince()+assetsGetByIdDTO.getCity()+assetsGetByIdDTO.getArea());
+		return assetsGetByIdDTO;
+	}
 }

@@ -82,6 +82,17 @@ public class SubjectController {
 	}
 
 	/**
+	 * 通过id查询主体以及地址信息
+	 * @param subjectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询主体以及地址信息", notes = "通过id查询主体以及地址信息")
+	@GetMapping("/getBySubjectId/{subjectId}" )
+	public R getBySubjectId(@PathVariable("subjectId" ) Integer subjectId) {
+		return R.ok(subjectService.getBySubjectId(subjectId));
+	}
+
+	/**
 	 * 通过主体id集合查询主体信息
 	 * @param subjectIds 主体id集合
 	 * @return R

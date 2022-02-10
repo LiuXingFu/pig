@@ -18,8 +18,8 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.AssetsLiqui;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -30,5 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AssetsMapper extends BaseMapper<Assets> {
+
+	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
 }

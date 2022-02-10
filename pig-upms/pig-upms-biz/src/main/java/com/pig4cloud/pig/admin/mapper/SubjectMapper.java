@@ -34,4 +34,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
 
+	SubjectVO getBySubjectId(Integer subjectId);
+
 }

@@ -36,4 +36,12 @@
 		<result property="assetsDetail" column="assets_detail"/>
 		<result property="describes" column="describes"/>
 	</resultMap>
+
+	<select id="getByAssets" resultType="com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO">
+		select p10_assets.*,p10_address.*,p10_assets_bank_loan_re.mortgage_amount as mortgageAmount,p10_assets_bank_loan_re.mortgage_time as mortgageTime
+		from p10_assets
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.assets_id=p10_assets.assets_id
+		where p10_assets.assets_id=#{assetsId}
+	</select>
 </mapper>

@@ -153,6 +153,12 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		return subjectVO;
 	}
 
+	@Override
+	public SubjectVO getBySubjectId(Integer subjectId) {
+
+		return this.baseMapper.getBySubjectId(subjectId);
+	}
+
 	/**
 	 * 判断身份证格式
 	 *

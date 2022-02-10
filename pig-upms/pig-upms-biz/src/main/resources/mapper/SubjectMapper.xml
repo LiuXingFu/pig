@@ -65,4 +65,8 @@
 	<select id="getByUnifiedIdentity" resultMap="SubjectVO">
 		select * from p10_subject where unified_identity=#{unifiedIdentity} and del_flag=0
 	</select>
+
+	<select id="getBySubjectId" resultMap="SubjectVO">
+		select * from p10_subject where subject_id=#{subjectId} and del_flag=0
+	</select>
 </mapper>

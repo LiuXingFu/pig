@@ -54,4 +54,6 @@ public interface SubjectService extends IService<Subject> {
 	List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
 
 	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
+
+	SubjectVO getBySubjectId(Integer subjectId);
 }

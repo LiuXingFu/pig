@@ -14,12 +14,15 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 财产表
@@ -27,7 +30,54 @@ import com.pig4cloud.pig.casee.entity.Assets;
  * @author ligt
  * @date 2022-01-11 10:29:44
  */
-public interface AssetsService extends IService<Assets> {
+@Data
+public class AssetsGetByIdDTO extends Assets {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
+	/**
+	 * 主体表id
+	 */
+	private Integer subjectId;
+
+	/**
+	 * 抵押金额
+	 */
+	private BigDecimal mortgageAmount;
+
+	/**
+	 * 抵押时间
+	 */
+	private LocalDate mortgageTime;
+
+	/**
+	 * 省市区
+	 */
+	private String addressACPName;
+
+	/**
+	 * 省
+	 */
+	@ApiModelProperty(value = "省")
+	private String province;
+	/**
+	 * 市
+	 */
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	@ApiModelProperty(value = "行政区划编号")
+	private String code;
+
+
 }
