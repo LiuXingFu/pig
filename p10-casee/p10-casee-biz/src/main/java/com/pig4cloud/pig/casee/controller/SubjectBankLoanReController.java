@@ -28,6 +28,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 主体关联银行借贷表
@@ -103,4 +105,16 @@ public class SubjectBankLoanReController {
         return R.ok(subjectBankLoanReService.removeById(subjectBankLoanId));
     }
 
+	/**
+	 * 删除主体以及主体关联银行借贷信息
+	 * @param bankLoanId 银行借贷id
+	 * @param subjectIds 主体id
+	 * @return R
+	 */
+	@ApiOperation(value = "删除主体以及主体关联银行借贷信息", notes = "删除主体以及主体关联银行借贷信息")
+	@SysLog("删除主体以及主体关联银行借贷信息" )
+	@DeleteMapping("/removeSubjectAndBankLoan" )
+	public R removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds) {
+		return R.ok(subjectBankLoanReService.removeSubjectAndBankLoan(bankLoanId,subjectIds));
+	}
 }

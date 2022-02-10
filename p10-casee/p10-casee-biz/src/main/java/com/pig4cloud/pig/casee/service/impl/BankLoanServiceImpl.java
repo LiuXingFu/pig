@@ -34,8 +34,10 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanVO;
+import com.pig4cloud.pig.casee.vo.SubjectInformationVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +134,15 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 	@Override
 	public BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId) {
-		return this.baseMapper.getByBankLoanInformation(bankLoanId);
+		BankLoanInformationVO bankLoanInformation = this.baseMapper.getByBankLoanInformation(bankLoanId);
+		List<SubjectInformationVO> subjectInformationVOList = bankLoanInformation.getSubjectInformationVOList();
+		List<AssetsInformationVO> assetsList = bankLoanInformation.getAssetsList();
+		for (SubjectInformationVO subjectInformationVO : subjectInformationVOList) {
+			for (AssetsInformationVO assetsInformationVO : assetsList) {
+				assetsInformationVO.getSubjectIdList().add(subjectInformationVO.getSubjectId());
+			}
+		}
+		return bankLoanInformation;
 	}
 
 	@Override

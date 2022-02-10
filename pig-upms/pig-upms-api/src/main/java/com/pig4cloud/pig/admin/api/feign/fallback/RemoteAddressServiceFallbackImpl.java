@@ -49,4 +49,11 @@ public class RemoteAddressServiceFallbackImpl implements RemoteAddressService {
 		log.error("添加或修改地址失败", cause);
 		return null;
 	}
+
+	@Override
+	public R removeUserIdAndType(Integer userId, Integer type, String from) {
+		log.error("删除地址失败", cause);
+
+		return null;
+	}
 }

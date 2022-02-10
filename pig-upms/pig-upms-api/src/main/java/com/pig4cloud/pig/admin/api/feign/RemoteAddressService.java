@@ -24,9 +24,7 @@ import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +44,9 @@ public interface RemoteAddressService {
 
 	@PostMapping("/saveOrUpdateById")
 	R saveOrUpdateById(@RequestBody List<Address> addressList,@RequestHeader(SecurityConstants.FROM) String from);
+
+	@DeleteMapping("/address/removeUserIdAndType")
+	R removeUserIdAndType(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type,@RequestHeader(SecurityConstants.FROM) String from);
+
 
 }

@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.Address;
@@ -122,9 +123,21 @@ public class AddressController {
 	@ApiOperation(value = "通过id删除地址表", notes = "通过id删除地址表")
 	@SysLog("通过id删除地址表")
 	@DeleteMapping("/{addressId}")
-	@PreAuthorize("@pms.hasPermission('generator_address_del')")
 	public R removeById(@PathVariable Integer addressId) {
 		return R.ok(addressService.removeById(addressId));
 	}
 
+	/**
+	 * 通过类型id和类型删除地址表
+	 *
+	 * @param userId 类型id
+	 * @param type 类型
+	 * @return R
+	 */
+	@ApiOperation(value = "通过类型id和类型删除地址表", notes = "通过类型id和类型删除地址表")
+	@SysLog("通过类型id和类型删除地址表")
+	@DeleteMapping("/removeUserIdAndType")
+	public R removeUserIdAndType(Integer userId,Integer type) {
+		return R.ok(addressService.remove(new LambdaQueryWrapper<Address>().eq(Address::getUserId,userId).eq(Address::getType,type)));
+	}
 }

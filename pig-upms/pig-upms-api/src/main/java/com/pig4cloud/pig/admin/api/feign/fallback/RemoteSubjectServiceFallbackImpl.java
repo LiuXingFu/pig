@@ -55,4 +55,11 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 
 		return null;
 	}
+
+	@Override
+	public R removeById(Integer subjectId, String from) {
+		log.error("删除主体失败", cause);
+
+		return null;
+	}
 }
