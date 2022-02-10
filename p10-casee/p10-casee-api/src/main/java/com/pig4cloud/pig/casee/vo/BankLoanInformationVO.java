@@ -16,7 +16,6 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import lombok.Data;
 
@@ -40,6 +39,6 @@ public class BankLoanInformationVO extends BankLoan {
 	/**
 	 * 抵押物信息
 	 */
-	private List<Assets> assetsList;
+	private List<AssetsInformationVO> assetsList;
 
 }

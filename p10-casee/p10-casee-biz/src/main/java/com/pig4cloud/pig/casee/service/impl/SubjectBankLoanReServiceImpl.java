@@ -16,11 +16,18 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 主体关联银行借贷表
@@ -30,5 +37,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReMapper, SubjectBankLoanRe> implements SubjectBankLoanReService {
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
+	@Autowired
+	private RemoteAddressService remoteAddressService;
 
+	@Override
+	public boolean removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds) {
+		for (Integer subjectId : subjectIds) {
+			//删除主体信息
+			remoteSubjectService.removeById(subjectId, SecurityConstants.FROM);
+			//删除主体关联地址信息
+			remoteAddressService.removeUserIdAndType(subjectId,1, SecurityConstants.FROM);
+			//删除主体关联银行借贷信息
+			this.remove(new LambdaQueryWrapper<SubjectBankLoanRe>().eq(SubjectBankLoanRe::getBankLoanId, bankLoanId).eq(SubjectBankLoanRe::getSubjectId, subjectId));
+		}
+		return true;
+	}
 }

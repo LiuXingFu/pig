@@ -7,6 +7,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 	抵押物信息DTO
@@ -27,4 +29,14 @@ public class AssetsInformationVO extends Assets {
 	 * 地址信息
 	 */
 	private Address address;
+
+	/**
+	 * 关联财产债务人id
+	 */
+	private Integer subjectId;
+
+	/**
+	 * 银行借贷所有债务人id
+	 */
+	private List<Integer> subjectIdList=new ArrayList<>();
 }

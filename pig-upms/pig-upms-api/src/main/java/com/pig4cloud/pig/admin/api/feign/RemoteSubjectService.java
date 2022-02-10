@@ -22,9 +22,7 @@ import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -65,4 +63,14 @@ public interface RemoteSubjectService {
 	 */
 	@PostMapping("/subject/saveOrUpdateById")
 	R saveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 *  删除主体信息以及主体关联地址信息
+	 * @param subjectId
+	 * @param from 内部调用标志
+	 * @return
+	 */
+	@DeleteMapping("/subject/{subjectId}")
+	R removeById(@PathVariable("subjectId") Integer subjectId, @RequestHeader(SecurityConstants.FROM) String from);
+
 }
