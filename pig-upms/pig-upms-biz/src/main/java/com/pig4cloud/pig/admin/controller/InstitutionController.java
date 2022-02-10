@@ -278,5 +278,16 @@ public class InstitutionController {
 		return R.ok(institutionService.queryByInsId(insId));
 	}
 
+	/**
+	 * 查询机构下拉框组件集合
+	 * @param insOulesSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询机构下拉框组件集合", notes = "查询机构下拉框组件集合")
+	@GetMapping("/queryInsSelect")
+	public R queryInsSelect(InstitutionSelectDTO insOulesSelectDTO) {
+		return R.ok(institutionService.queryInsSelect(insOulesSelectDTO));
+	}
+
 
 }

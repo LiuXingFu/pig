@@ -25,10 +25,7 @@ import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.UserInstitutionStaff;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteSysRoleService;
-import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
-import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
-import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
-import com.pig4cloud.pig.admin.api.vo.OutlesVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.OutlesMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
@@ -367,5 +364,17 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	@Override
 	public Outles queryByOutlesId(Integer outlesId){
 		return this.baseMapper.selectById(outlesId);
+	}
+
+	@Override
+	public List<OrganizationQueryVO> queryOutlesIdSelect(OutlesSelectDTO outlesSelectDTO){
+		Integer type = outlesSelectDTO.getType();
+		List<OrganizationQueryVO> organizationQueryVOS = new ArrayList<>();
+		if(type == 1){
+			organizationQueryVOS = this.baseMapper.pageCooperateByOutlesId(outlesSelectDTO,securityUtilsService.getCacheUser().getInsId());
+		}else if(type == 2){
+			organizationQueryVOS = this.baseMapper.querySelectByOutlesId(securityUtilsService.getCacheUser().getInsId(),jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		}
+		return organizationQueryVOS;
 	}
 }
