@@ -18,16 +18,17 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.vo.*;
-import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.mapper.InstitutionMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
@@ -94,6 +95,9 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	@Autowired
 	StaffRoleService staffRoleService;
+
+	@Autowired
+	JurisdictionUtilsService jurisdictionUtilsService;
 
 	/**
 	 * 新增机构
@@ -619,8 +623,20 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			Outles outles = outlesService.queryByOutlesId(outlesId);
 			reselectInfoVO.setOutles(outles);
 		}
-
 		return reselectInfoVO;
+	}
+
+	@Override
+	public List<OrganizationQueryVO> queryInsSelect(InstitutionSelectDTO insOulesSelectDTO){
+		List<OrganizationQueryVO> organizationQueryVOS = new ArrayList<>();
+		Integer insId = jurisdictionUtilsService.queryByInsId("PLAT_");
+		Integer type = insOulesSelectDTO.getType();
+		if(type == 1){
+			organizationQueryVOS = this.baseMapper.pageCooperateByInsId(insOulesSelectDTO,insId);
+		}else if(type == 2){
+			organizationQueryVOS = this.baseMapper.querySelectByInsId(insId);
+		}
+		return organizationQueryVOS;
 	}
 
 }

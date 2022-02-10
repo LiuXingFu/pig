@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -33,5 +34,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
+
+	SubjectGetByIdVO getBySubjectId(Integer subjectId);
 
 }

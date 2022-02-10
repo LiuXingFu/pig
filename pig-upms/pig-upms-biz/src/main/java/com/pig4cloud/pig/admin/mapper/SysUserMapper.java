@@ -21,7 +21,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
+import com.pig4cloud.pig.admin.api.dto.UserSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -70,5 +72,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	 * @param sysUserInsOutlesDTO
 	 * @return
 	 */
-	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, @Param("query")SysUserInsOutlesDTO sysUserInsOutlesDTO);
+	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, @Param("query")SysUserInsOutlesDTO sysUserInsOutlesDTO,@Param("insId") Integer insId,@Param("outlesId") Integer outlesId);
+
+	List<OrganizationQueryVO> pageCooperateByUserId(@Param("query")UserSelectDTO userSelectDTO);
 }

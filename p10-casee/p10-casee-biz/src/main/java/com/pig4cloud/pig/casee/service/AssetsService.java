@@ -18,8 +18,8 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.AssetsLiqui;
 
 /**
  * 财产表
@@ -29,4 +29,5 @@ import com.pig4cloud.pig.casee.entity.AssetsLiqui;
  */
 public interface AssetsService extends IService<Assets> {
 
+	AssetsGetByIdDTO getByAssets(Integer assetsId);
 }

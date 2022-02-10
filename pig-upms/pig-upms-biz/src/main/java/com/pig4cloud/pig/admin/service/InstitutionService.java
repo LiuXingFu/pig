@@ -137,4 +137,11 @@ public interface InstitutionService extends IService<Institution> {
 	 */
 	ReselectInfoVO queryReselectInfo(Integer insId,Integer outlesId);
 
+	/**
+	 * 查询机构下拉框组件集合
+	 * @param insOulesSelectDTO
+	 * @return
+	 */
+	List<OrganizationQueryVO> queryInsSelect(InstitutionSelectDTO insOulesSelectDTO);
+
 }

@@ -74,7 +74,7 @@ public class BankLoanController {
 	 * @return R
 	 */
 	@ApiOperation(value = "修改银行借贷基本信息", notes = "修改银行借贷基本信息")
-	@PutMapping("/updateBankLoanInformation" )
+	@PostMapping("/updateBankLoanInformation" )
 	public R updateBankLoanInformation(@RequestBody BankLoanInformationDTO bankLoanInformationDTO) {
 		return R.ok(bankLoanService.updateBankLoanInformation(bankLoanInformationDTO));
 	}

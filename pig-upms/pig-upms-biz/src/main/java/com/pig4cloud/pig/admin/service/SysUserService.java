@@ -22,8 +22,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
+import com.pig4cloud.pig.admin.api.dto.UserSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
@@ -114,4 +116,11 @@ public interface SysUserService extends IService<SysUser> {
 	 * @return
 	 */
 	IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO);
+
+	/**
+	 * 查询用户下拉框组件集合
+	 * @param userSelectDTO
+	 * @return
+	 */
+	List<OrganizationQueryVO> pageCooperateByUserId(UserSelectDTO userSelectDTO);
 }

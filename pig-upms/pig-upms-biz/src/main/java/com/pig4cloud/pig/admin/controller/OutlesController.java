@@ -253,4 +253,15 @@ public class OutlesController {
 		return R.ok(outlesService.queryByOutlesId(outlesId));
 	}
 
+	/**
+	 * 查询网点下拉框组件集合
+	 * @param outlesSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询网点下拉框组件集合", notes = "查询网点下拉框组件集合")
+	@GetMapping("/queryOutlesIdSelect")
+	public R queryOutlesIdSelect(OutlesSelectDTO outlesSelectDTO) {
+		return R.ok(outlesService.queryOutlesIdSelect(outlesSelectDTO));
+	}
+
 }

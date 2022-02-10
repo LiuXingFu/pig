@@ -14,32 +14,24 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.casee.entity.BankLoan;
+package com.pig4cloud.pig.admin.api.vo;
+
 import lombok.Data;
-
 
 import java.util.List;
 
 /**
- * 银行借贷基本信息
+ * 主体VO
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author yy
+ * @date 2021-09-17 16:55:57
  */
 @Data
-public class BankLoanInformationVO extends BankLoan {
+public class SubjectGetByIdVO{
 
 	/**
-	 * 债务人信息
+	 * 主体地址信息
 	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
-
-	/**
-	 * 抵押物信息
-	 */
-	private List<AssetsInformationVO> assetsList;
-
+	private List<AddressVO> addressList;
 }
