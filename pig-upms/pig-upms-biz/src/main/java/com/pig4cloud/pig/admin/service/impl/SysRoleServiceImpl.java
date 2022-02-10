@@ -32,6 +32,7 @@ import com.pig4cloud.pig.admin.service.InstitutionService;
 import com.pig4cloud.pig.admin.service.SysDictItemService;
 import com.pig4cloud.pig.admin.service.SysRoleService;
 import com.pig4cloud.pig.common.core.constant.CacheConstants;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
 	@Autowired
 	private SysDictItemService dictItemService;
+
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
 
 	/**
 	 * 通过用户ID，查询角色信息
@@ -96,7 +100,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 	@Override
 	public List<SysRole> queryRoleList() {
 		// 1.获取token中的当前的机构id
-		Integer insId = SecurityUtils.getUser().getInsId();
+		Integer insId = securityUtilsService.getCacheUser().getInsId();
 		// 2.根据当前登录机构id查询当前机构信息
 		Institution institution = institutionService.getOne(new LambdaQueryWrapper<Institution>().eq(Institution::getInsId, insId).eq(Institution::getDelFlag, 0));
 		// 3.判断机构是否为空

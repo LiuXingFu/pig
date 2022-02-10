@@ -23,10 +23,12 @@ import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.admin.service.TaskNodeTemplateService;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -43,6 +45,9 @@ import org.springframework.web.bind.annotation.*;
 public class TaskNodeTemplateController {
 
     private final  TaskNodeTemplateService taskNodeTemplateService;
+
+    @Autowired
+	SecurityUtilsService securityUtilsService;
 
     /**
      * 分页查询
@@ -77,7 +82,7 @@ public class TaskNodeTemplateController {
     @SysLog("新增流程节点模板表" )
     @PostMapping
     public R save(@RequestBody TaskNodeTemplate taskNodeTemplate) {
-    	taskNodeTemplate.setInsUserId(SecurityUtils.getUser().getInsId());
+    	taskNodeTemplate.setInsUserId(securityUtilsService.getCacheUser().getInsId());
         return R.ok(taskNodeTemplateService.save(taskNodeTemplate));
     }
 

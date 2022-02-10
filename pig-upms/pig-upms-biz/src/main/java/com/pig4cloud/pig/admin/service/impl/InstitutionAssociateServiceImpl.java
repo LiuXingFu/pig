@@ -95,28 +95,13 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	@Transactional
 	public int saveInstitutionAssociate(InstitutionAssociate institutionAssociate) throws Exception {
 		if(Objects.nonNull(institutionAssociate)){
-			institutionAssociate.setInsId( SecurityUtils.getUser().getInsId());
+			institutionAssociate.setInsId( securityUtilsService.getCacheUser().getInsId());
 			institutionAssociate.setAssociateStatus(0);
 			institutionAssociate.setAssociateTime(LocalDateTime.now());
 			this.save(institutionAssociate);
 
-//			Outles outles = outlesService.getOne(new LambdaQueryWrapper<Outles>().eq(Outles::getInsId, institutionAssociate.getInsId())
-//					.eq(Outles::getCanDefault, 1).eq(Outles::getDelFlag, 0));
-
-//			if(Objects.nonNull(outles)){
-//				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
-//				associateOutlesRe.setOutlesId(outles.getOutlesId());
-//				associateOutlesRe.setAssociateId(institutionAssociate.getAssociateId());
-//				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
-//				associateOutlesRe.setInsId(institutionAssociate.getInsId());
-//				associateOutlesRe.setInsAssociateId(institutionAssociate.getInsAssociateId());
-//				associateOutlesReService.save(associateOutlesRe);
-//			} else {
-//				throw new Exception("默认网点不存在，请联系系统相关人员！");
-//			}
-
 			// 根据关联机构ID发送关联
-			Institution institution = institutionService.getById(SecurityUtils.getUser().getInsId());
+			Institution institution = institutionService.getById(securityUtilsService.getCacheUser().getInsId());
 
 			Institution associate = institutionService.getById(institutionAssociate.getInsAssociateId());
 
@@ -137,8 +122,6 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 				}
 			});
 
-
-
 			messageRecordService.batchSendMessageRecordPush(messageRecordDTOList);
 
 			return institutionAssociate.getAssociateId();
@@ -157,7 +140,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	 */
 	@Override
 	public IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate) {
-		institutionAssociate.setInsId( SecurityUtils.getUser().getInsId());
+		institutionAssociate.setInsId( securityUtilsService.getCacheUser().getInsId());
 		return this.baseMapper.pageInstitutionAssociate(page, institutionAssociate);
 	}
 
@@ -227,19 +210,6 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 			certificationRelationshipDTO.setAssociateRemark("同意合作");
 			// 2.2 创建当前合作机构关联数据
 			this.save(certificationRelationshipDTO);
-
-			Outles outles = this.outlesService.getOne(new LambdaQueryWrapper<Outles>()
-					.eq(Outles::getInsId, insId)
-					.eq(Outles::getCanDefault, 1)
-					.eq(Outles::getDelFlag, 0));
-
-			AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
-			associateOutlesRe.setInsId(insId);
-			associateOutlesRe.setInsAssociateId(certificationRelationshipDTO.getInsAssociateId());
-			associateOutlesRe.setAssociateId(certificationRelationshipDTO.getAssociateId());
-			associateOutlesRe.setOutlesId(outles.getOutlesId());
-			associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
-			associateOutlesReService.save(associateOutlesRe);
 
 			// 2.3 发送提示消息
 			sendMessages(certificationRelationshipDTO, insId);

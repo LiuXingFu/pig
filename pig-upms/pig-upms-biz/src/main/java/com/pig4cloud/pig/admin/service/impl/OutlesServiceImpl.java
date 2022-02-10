@@ -88,7 +88,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	@Transactional
 	public int saveOutles(OutlesDTO outlesDTO) {
 		// 1.根据当前登录机构id查询机构
-		Institution institution = institutionService.getById(SecurityUtils.getUser().getInsId());
+		Institution institution = institutionService.getById(securityUtilsService.getCacheUser().getInsId());
 
 		outlesDTO.setInsId(institution.getInsId());
 
@@ -122,7 +122,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		// 根据用户id与机构id查询网点信息集合
 		UserInstitutionStaff userInstitutionStaff = userInstitutionStaffService.getOne(new LambdaQueryWrapper<UserInstitutionStaff>()
 				.eq(UserInstitutionStaff::getUserId, SecurityUtils.getUser().getId())
-				.eq(UserInstitutionStaff::getInsId, SecurityUtils.getUser().getInsId())
+				.eq(UserInstitutionStaff::getInsId, securityUtilsService.getCacheUser().getInsId())
 				.eq(UserInstitutionStaff::getDelFlag, 0));
 
 		userInstitutionStaffService.addUserOutlesStaffRe(userInstitutionStaffDTO, userInstitutionStaff);
@@ -139,16 +139,8 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	 */
 	@Override
 	public IPage<OutlesVO> pageOutles(Page page, OutlesDTO outlesDTO) {
-		outlesDTO.setInsId(SecurityUtils.getUser().getInsId());
+		outlesDTO.setInsId(securityUtilsService.getCacheUser().getInsId());
 		IPage<OutlesVO> outlesVOIPage = this.baseMapper.pageOutles(page, outlesDTO);
-//		List<OutlesVO> records = outlesVOIPage.getRecords();
-
-//		records.forEach(((outlesVO -> {
-//			Address address = addressService.getByUserId(outlesVO.getOutlesId(), 3);
-//			outlesVO.setAddress(address);
-//		})));
-
-//		outlesVOIPage.setRecords(records);
 
 		return outlesVOIPage;
 	}
@@ -245,7 +237,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		// 根据用户id与机构id查询网点信息集合
 		UserInstitutionStaff userInstitutionStaff = userInstitutionStaffService.getOne(new LambdaQueryWrapper<UserInstitutionStaff>()
 				.eq(UserInstitutionStaff::getUserId, SecurityUtils.getUser().getId())
-				.eq(UserInstitutionStaff::getInsId, SecurityUtils.getUser().getInsId())
+				.eq(UserInstitutionStaff::getInsId, securityUtilsService.getCacheUser().getInsId())
 				.eq(UserInstitutionStaff::getDelFlag, 0));
 		return this.baseMapper.getOutlesListByStaffId(userInstitutionStaff.getStaffId());
 	}
