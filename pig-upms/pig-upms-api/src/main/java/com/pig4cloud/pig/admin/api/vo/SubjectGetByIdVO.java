@@ -14,46 +14,24 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
+package com.pig4cloud.pig.admin.api.vo;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
- * 财产表
+ * 主体VO
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author yy
+ * @date 2021-09-17 16:55:57
  */
 @Data
-public class AssetsGetByIdDTO {
+public class SubjectGetByIdVO{
 
 	/**
-	 * 省
+	 * 主体地址信息
 	 */
-	@ApiModelProperty(value = "省")
-	private String province;
-	/**
-	 * 市
-	 */
-	@ApiModelProperty(value = "市")
-	private String city;
-	/**
-	 * 区
-	 */
-	@ApiModelProperty(value = "区")
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	@ApiModelProperty(value = "信息地址")
-	private String informationAddress;
-	/**
-	 * 行政区划编号
-	 */
-	@ApiModelProperty(value = "行政区划编号")
-	private String code;
-
-
+	private List<AddressVO> addressList;
 }

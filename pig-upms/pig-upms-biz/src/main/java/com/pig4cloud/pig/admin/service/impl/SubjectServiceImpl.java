@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.vo.AddressVO;
+import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
@@ -154,9 +155,15 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public SubjectVO getBySubjectId(Integer subjectId) {
-
-		return this.baseMapper.getBySubjectId(subjectId);
+	public SubjectGetByIdVO getBySubjectId(Integer subjectId) {
+		SubjectGetByIdVO subjectGetByIdVO = this.baseMapper.getBySubjectId(subjectId);
+		if (subjectGetByIdVO!=null){
+			List<AddressVO> addressList = subjectGetByIdVO.getAddressList();
+			for (AddressVO addressVO : addressList) {
+				addressVO.setAddressACPName(addressVO.getProvince()+addressVO.getCity()+addressVO.getArea());
+			}
+		}
+		return subjectGetByIdVO;
 	}
 
 	/**

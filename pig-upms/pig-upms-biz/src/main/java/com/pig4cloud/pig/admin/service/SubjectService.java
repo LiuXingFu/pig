@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 
 import java.util.List;
@@ -55,5 +56,5 @@ public interface SubjectService extends IService<Subject> {
 
 	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
 
-	SubjectVO getBySubjectId(Integer subjectId);
+	SubjectGetByIdVO getBySubjectId(Integer subjectId);
 }
