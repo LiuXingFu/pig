@@ -26,7 +26,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
 import com.pig4cloud.pig.admin.api.dto.UserInfo;
+import com.pig4cloud.pig.admin.api.dto.UserSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.SysUserInsOutlesVO;
 import com.pig4cloud.pig.admin.api.vo.UserInsOutlesRoleVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
@@ -363,6 +365,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@Override
 	public IPage<SysUserInsOutlesVO> pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO){
 		return this.baseMapper.pageOutlesUser(page,sysUserInsOutlesDTO,jurisdictionUtilsService.queryByInsId("PLAT_"),securityUtilsService.getCacheUser().getOutlesId());
+	}
+
+	@Override
+	public List<OrganizationQueryVO> pageCooperateByUserId(UserSelectDTO userSelectDTO){
+		return this.baseMapper.pageCooperateByUserId(userSelectDTO);
 	}
 
 }

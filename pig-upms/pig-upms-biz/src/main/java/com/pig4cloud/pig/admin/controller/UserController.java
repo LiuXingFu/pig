@@ -19,9 +19,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.SysUserInsOutlesDTO;
-import com.pig4cloud.pig.admin.api.dto.UserDTO;
-import com.pig4cloud.pig.admin.api.dto.UserInfo;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
 import com.pig4cloud.pig.admin.service.SysUserService;
@@ -260,6 +258,17 @@ public class UserController {
 	@GetMapping("/pageOutlesUser")
 	public R pageOutlesUser(Page page, SysUserInsOutlesDTO sysUserInsOutlesDTO) {
 		return R.ok(userService.pageOutlesUser(page, sysUserInsOutlesDTO));
+	}
+
+	/**
+	 * 查询用户下拉框组件集合
+	 * @param userSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询用户下拉框组件集合", notes = "查询用户下拉框组件集合")
+	@GetMapping("/pageCooperateByUserId")
+	public R pageCooperateByUserId(UserSelectDTO userSelectDTO) {
+		return R.ok(userService.pageCooperateByUserId(userSelectDTO));
 	}
 
 }
