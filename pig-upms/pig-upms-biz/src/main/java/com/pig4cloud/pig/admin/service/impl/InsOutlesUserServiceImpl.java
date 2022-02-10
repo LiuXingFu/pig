@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddOutlesListDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserObjectDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserByOutlesDTO;
 import com.pig4cloud.pig.admin.api.dto.UserDTO;
@@ -38,6 +39,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * 机构/网点用户关联表
@@ -74,7 +76,9 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
 				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
 				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
-				queryWrapper.lambda().isNull(InsOutlesUser::getOutlesId);
+				if(Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
+					queryWrapper.lambda().and(wrapper -> wrapper.isNull(InsOutlesUser::getOutlesId).or().eq(InsOutlesUser::getOutlesId, insOutlesUserAddDTO.getOutlesId()));
+				}
 				List<InsOutlesUser> users = insOutlesUserService.list(queryWrapper);
 				if(users.size() > 0){
 					throw new RuntimeException("此用户已是负责人或员工！");
@@ -173,6 +177,27 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 	@Override
 	public IPage<InsOutlesUserInsOutlesVO> queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO) {
 		return this.baseMapper.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO);
+	}
+
+	@Override
+	public int addInsOutlesUserByOutlesIds(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) {
+
+		insOutlesUserAddOutlesListDTO.getOutlesIds().forEach(integer -> {
+				InsOutlesUserObjectDTO insOutlesUserObjectDTO = new InsOutlesUserObjectDTO();
+				insOutlesUserObjectDTO.setInsId(insOutlesUserAddOutlesListDTO.getInsId());
+				insOutlesUserObjectDTO.setType(insOutlesUserAddOutlesListDTO.getType());
+				insOutlesUserObjectDTO.setOutlesId(integer);
+				insOutlesUserObjectDTO.setPosition(insOutlesUserAddOutlesListDTO.getPosition());
+				List<SysUser> sysUserList = new ArrayList<>();
+				SysUser sysUser = new SysUser();
+				sysUser.setPhone(insOutlesUserAddOutlesListDTO.getPhone());
+				sysUser.setUserId(insOutlesUserAddOutlesListDTO.getUserId());
+				sysUser.setActualName(insOutlesUserAddOutlesListDTO.getActualName());
+				sysUserList.add(sysUser);
+				insOutlesUserObjectDTO.setUserList(sysUserList);
+				insOutlesUserService.addInsOutlesUser(insOutlesUserObjectDTO);
+			});
+		return 1;
 	}
 
 
