@@ -14,29 +14,24 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.TransferRecord;
-import com.pig4cloud.pig.casee.mapper.TransferRecordMapper;
-import com.pig4cloud.pig.casee.service.TransferRecordService;
-import org.springframework.stereotype.Service;
+package com.pig4cloud.pig.admin.api.vo;
+
+import lombok.Data;
 
 import java.util.List;
 
 /**
- * 移交记录表
+ * 主体VO
  *
- * @author Mjh
- * @date 2022-01-28 18:52:40
+ * @author yy
+ * @date 2021-09-17 16:55:57
  */
-@Service
-public class TransferRecordServiceImpl extends ServiceImpl<TransferRecordMapper, TransferRecord> implements TransferRecordService {
+@Data
+public class SubjectGetByIdVO{
 
-	@Override
-	public List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId) {
-		return this.baseMapper.getBankLoanIdTransferRecord(bankLoanId);
-	}
+	/**
+	 * 主体地址信息
+	 */
+	private List<AddressVO> addressList;
 }

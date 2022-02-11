@@ -440,7 +440,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				// 3.2.1根据部分条件查询所有合作机构
 				organizationQueryVOS = this.baseMapper.queryAssociatedInstitutions(organizationQueryDTO, roleType);
 				// 3.2.2查询当前机构
-				Institution institution = this.getById(SecurityUtils.getUser().getInsId());
+				Institution institution = this.getById(securityUtilsService.getCacheUser().getInsId());
 				OrganizationQueryVO organizationQueryVO = new OrganizationQueryVO();
 				organizationQueryVO.setId(institution.getInsId());
 				organizationQueryVO.setName(institution.getInsName());

@@ -14,32 +14,46 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.casee.entity.BankLoan;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
-import java.util.List;
-
 /**
- * 银行借贷基本信息
+ * 财产表
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
 @Data
-public class BankLoanInformationVO extends BankLoan {
+public class AssetsGetByIdDTO {
 
 	/**
-	 * 债务人信息
+	 * 省
 	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
-
+	@ApiModelProperty(value = "省")
+	private String province;
 	/**
-	 * 抵押物信息
+	 * 市
 	 */
-	private List<AssetsInformationVO> assetsList;
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	@ApiModelProperty(value = "行政区划编号")
+	private String code;
+
 
 }

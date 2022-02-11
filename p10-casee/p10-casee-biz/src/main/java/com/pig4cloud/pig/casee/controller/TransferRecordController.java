@@ -52,9 +52,19 @@ public class TransferRecordController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R getTransferRecordPage(Page page, TransferRecord transferRecord) {
-        return R.ok(transferRecordService.TransferRecordPage(page, transferRecord));
+        return R.ok(transferRecordService.page(page, Wrappers.query(transferRecord)));
     }
 
+	/**
+	 * 通过银行借贷id查询移送详情
+	 * @param bankLoanId 银行借贷id
+	 * @return
+	 */
+	@ApiOperation(value = "通过银行借贷id查询移送详情", notes = "通过银行借贷id查询移送详情")
+	@GetMapping("/getBankLoanIdTransferRecord" )
+	public R getBankLoanIdTransferRecordPage(Integer bankLoanId) {
+		return R.ok(transferRecordService.getBankLoanIdTransferRecord(bankLoanId));
+	}
 
     /**
      * 通过id查询移交记录表

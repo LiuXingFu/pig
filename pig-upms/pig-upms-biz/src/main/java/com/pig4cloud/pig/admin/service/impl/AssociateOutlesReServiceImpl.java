@@ -28,6 +28,7 @@ import com.pig4cloud.pig.admin.mapper.AssociateOutlesReMapper;
 import com.pig4cloud.pig.admin.service.AssociateOutlesReService;
 import com.pig4cloud.pig.admin.service.InstitutionAssociateService;
 import com.pig4cloud.pig.admin.service.OutlesService;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 
 	@Autowired
 	InstitutionAssociateService institutionAssociateService;
+
+	@Autowired
+	SecurityUtilsService securityUtilsService;
 
 	/**
 	 * 分页查询已授权的网点信息
@@ -107,7 +111,7 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 			for (Integer outlesId : associateOutlesDTO.getOutless()) {
 				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
 				BeanUtils.copyProperties(associateOutlesDTO, associateOutlesRe);
-				associateOutlesRe.setInsId(SecurityUtils.getUser().getInsId());
+				associateOutlesRe.setInsId(securityUtilsService.getCacheUser().getInsId());
 				associateOutlesRe.setOutlesId(outlesId);
 				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
 				list.add(associateOutlesRe);

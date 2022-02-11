@@ -56,15 +56,14 @@ public class AssetsController {
 
 
 	/**
-	 * 通过id查询财产表
+	 * 通过id查询财产以及地址信息接口
 	 * @param assetsId id
 	 * @return R
 	 */
-	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@ApiOperation(value = "通过id查询财产以及地址信息接口", notes = "通过id查询财产以及地址信息接口")
 	@GetMapping("/{assetsId}" )
-	@PreAuthorize("@pms.hasPermission('casee_assets_get')" )
-	public R getById(@PathVariable("assetsId" ) Integer assetsId) {
-		return R.ok(assetsService.getById(assetsId));
+	public R getByAssets(@PathVariable("assetsId" ) Integer assetsId) {
+		return R.ok(assetsService.getByAssets(assetsId));
 	}
 
 	/**

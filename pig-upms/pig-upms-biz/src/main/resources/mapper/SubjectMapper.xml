@@ -62,7 +62,17 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="SubjectGetByIdVO" type="com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO">
+		<collection property="addressList" ofType="com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO"
+					select="com.pig4cloud.pig.admin.mapper.AddressMapper.getByAddressList" column="subject_id">
+		</collection>
+	</resultMap>
+
 	<select id="getByUnifiedIdentity" resultMap="SubjectVO">
 		select * from p10_subject where unified_identity=#{unifiedIdentity} and del_flag=0
+	</select>
+
+	<select id="getBySubjectId" resultMap="SubjectGetByIdVO">
+		select * from p10_subject where subject_id=#{subjectId} and del_flag=0
 	</select>
 </mapper>

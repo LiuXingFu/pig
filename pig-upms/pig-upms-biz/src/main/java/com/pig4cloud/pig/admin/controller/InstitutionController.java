@@ -25,6 +25,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.service.InstitutionService;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +51,9 @@ public class InstitutionController {
 
 	@Autowired
 	private UserInstitutionStaffService userInstitutionStaffService;
+
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
 
 	/**
 	 * 分页查询
@@ -86,7 +90,7 @@ public class InstitutionController {
 	@ApiOperation(value = "查询当前登录用户所属机构id", notes = "查询当前登录用户所属机构id")
 	@GetMapping("/getByInsId")
 	public R getByInsId() {
-		return R.ok(SecurityUtils.getUser().getInsId());
+		return R.ok(securityUtilsService.getCacheUser().getInsId());
 	}
 
 	/**

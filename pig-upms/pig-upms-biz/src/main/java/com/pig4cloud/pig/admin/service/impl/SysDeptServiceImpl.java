@@ -29,9 +29,11 @@ import com.pig4cloud.pig.admin.api.vo.DeptVO;
 import com.pig4cloud.pig.admin.mapper.SysDeptMapper;
 import com.pig4cloud.pig.admin.service.SysDeptRelationService;
 import com.pig4cloud.pig.admin.service.SysDeptService;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
 	private final SysDeptRelationService sysDeptRelationService;
 
+	@Autowired
+	SecurityUtilsService securityUtilsService;
+
 	/**
 	 * 添加信息部门
 	 * @param dept 部门
@@ -65,7 +70,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 		// 1.判断当前机构是否为空
 		if(Objects.isNull(dept.getInsId())){
 			// 1.1为空将当前登录的机构id存入部门对象中
-			dept.setInsId(SecurityUtils.getUser().getInsId());
+			dept.setInsId(securityUtilsService.getCacheUser().getInsId());
 		}
 		this.save(dept);
 		sysDeptRelationService.saveDeptRelation(dept);
@@ -118,7 +123,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	@Override
 	public List<Tree<Integer>> lisInsDeptTrees() {
-		Integer insId = SecurityUtils.getUser().getInsId();
+		Integer insId = securityUtilsService.getCacheUser().getInsId();
 		SysDept dept = this.getOne(new LambdaQueryWrapper<SysDept>().eq(SysDept::getInsId, insId).eq(SysDept::getParentId, 0).eq(SysDept::getDelFlag, 0));
 		List<Integer> list = sysDeptRelationService.list(new LambdaQueryWrapper<SysDeptRelation>().eq(SysDeptRelation::getAncestor, dept.getDeptId())).stream().map(SysDeptRelation::getDescendant).collect(Collectors.toList());
 		List<SysDept> deptList = baseMapper.selectBatchIds(list);
@@ -137,7 +142,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 	 */
 	@Override
 	public List<Tree<Integer>> listDeptTrees() {
-		return getDeptTree(this.list(new LambdaQueryWrapper<SysDept>().eq(SysDept::getInsId,SecurityUtils.getUser().getInsId()).eq(SysDept::getDelFlag, 0)));
+		return getDeptTree(this.list(new LambdaQueryWrapper<SysDept>().eq(SysDept::getInsId, securityUtilsService.getCacheUser().getInsId()).eq(SysDept::getDelFlag, 0)));
 	}
 
 	/**

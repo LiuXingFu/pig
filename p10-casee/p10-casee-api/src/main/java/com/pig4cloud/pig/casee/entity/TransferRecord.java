@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -79,19 +80,19 @@ public class TransferRecord extends BaseEntity {
      * 移送时间
      */
     @ApiModelProperty(value="移送时间")
-    private LocalDateTime handoverTime;
+    private LocalDate handoverTime;
 
     /**
      * 申请诉讼/执行时效开始时间
      */
     @ApiModelProperty(value="申请诉讼/执行时效开始时间")
-    private LocalDateTime startingTime;
+    private LocalDate startingTime;
 
     /**
      * 接收/退回时间
      */
     @ApiModelProperty(value="接收/退回时间")
-    private LocalDateTime returnTime;
+    private LocalDate returnTime;
 
     /**
      * 状态(0-待接收 1-已接收 2-退回 )
