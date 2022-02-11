@@ -28,6 +28,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 移交记录表
@@ -61,8 +63,8 @@ public class TransferRecordController {
 	 * @return
 	 */
 	@ApiOperation(value = "通过银行借贷id查询移送详情", notes = "通过银行借贷id查询移送详情")
-	@GetMapping("/getBankLoanIdTransferRecord" )
-	public R getBankLoanIdTransferRecordPage(Integer bankLoanId) {
+	@GetMapping("/getBankLoanIdTransferRecord/{bankLoanId}" )
+	public R getBankLoanIdTransferRecordPage(@PathVariable("bankLoanId") Integer bankLoanId) {
 		return R.ok(transferRecordService.getBankLoanIdTransferRecord(bankLoanId));
 	}
 
@@ -100,6 +102,18 @@ public class TransferRecordController {
     public R updateById(@RequestBody TransferRecord transferRecord) {
         return R.ok(transferRecordService.updateById(transferRecord));
     }
+
+	/**
+	 * 批量修改移交记录表
+	 * @param transferRecordList 移交记录表
+	 * @return R
+	 */
+	@ApiOperation(value = "批量修改移交记录表", notes = "批量修改移交记录表")
+	@SysLog("批量修改移交记录表" )
+	@PostMapping("/updateBatchById")
+	public R updateBatchById(@RequestBody List<TransferRecord> transferRecordList) {
+		return R.ok(transferRecordService.updateBatchById(transferRecordList));
+	}
 
     /**
      * 通过id删除移交记录表
