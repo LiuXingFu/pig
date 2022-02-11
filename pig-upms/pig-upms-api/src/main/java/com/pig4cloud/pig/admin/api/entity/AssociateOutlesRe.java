@@ -48,11 +48,6 @@ public class AssociateOutlesRe extends Model<AssociateOutlesRe> {
 	@ApiModelProperty(value = "网点授权id")
 	private Integer associateOutlesId;
 	/**
-	 * 机构关联id
-	 */
-	@ApiModelProperty(value = "机构关联id")
-	private Integer associateId;
-	/**
 	 * 网点id
 	 */
 	@ApiModelProperty(value = "网点id")

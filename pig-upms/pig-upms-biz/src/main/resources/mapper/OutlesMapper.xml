@@ -310,5 +310,22 @@
 		LIMIT 10
 	</select>
 
+	<select id="pageOutlesList" resultType="com.pig4cloud.pig.admin.api.entity.Outles">
+		select * from p10_outles
+		where del_flag = 0
+		<if test="insId != '' and insId != null">
+			and ins_id = #{insId}
+		</if>
+		<if test="outlesName != '' and outlesName != null">
+			and outles_name like CONCAT('%',#{outlesName},'%')
+		</if>
+		<if test="outlesIds != null and outlesIds.size > 0">
+			and outles_id not in
+			<foreach item="item" index="index" collection="outlesIds" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY create_time DESC
+	</select>
 
 </mapper>

@@ -56,7 +56,7 @@
 	</select>
 
 
-	<select id="queryById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO">
+	<select id="queryById" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO">
 		select
 		institution_associate.associate_id,
 		institution_associate.ins_id,
@@ -65,13 +65,12 @@
 		institution_associate.associate_status,
 		institution_associate.associate_remark,
 		institution.ins_name,
-		institution.ins_principal_name,
-		institution.ins_principal_phone,
-		institution.address_id,
-		institution.ins_type
+		institution.ins_type,
+		p10_address.*
 		from
 		p10_institution_associate institution_associate
 		LEFT JOIN p10_institution institution ON institution.ins_id = institution_associate.ins_associate_id
+		LEFT JOIN p10_address ON p10_address.user_id = institution.ins_id and p10_address.type = 2
 		WHERE
 		institution.del_flag = '0'
 		AND institution_associate.associate_id = #{associateId}
