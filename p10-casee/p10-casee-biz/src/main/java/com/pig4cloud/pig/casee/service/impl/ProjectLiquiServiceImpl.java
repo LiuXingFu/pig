@@ -19,13 +19,12 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
-import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,25 +39,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Project> implements ProjectLiquiService {
 
-
-	@Autowired
-	private AssetsService assetsService;
-
-	@Autowired
-	private RemoteSubjectService remoteSubjectService;
-
-	@Autowired
-	private ProjectSubjectReService projectSubjectReService;
-
-	@Autowired
-	private RemoteAddressService remoteAddressService;
-
-	@Autowired
-	private ProjectOutlesDealReService projectOutlesDealReService;
-
-	@Autowired
-	private AssetsReService assetsReService;
-
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
 
@@ -68,6 +48,18 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPageLiqui(page,projectLiquiPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public Integer addProjectLiqui(ProjectLiquiAddDTO projectLiquiAddVO){
+		ProjectOutlesDealRe projectOutlesDealRe = new ProjectOutlesDealRe();
+		projectOutlesDealRe.setInsId(projectLiquiAddVO.getInsId());
+		projectOutlesDealRe.setOutlesId(projectLiquiAddVO.getOutlesId());
+		projectOutlesDealRe.setUserId(projectLiquiAddVO.getUserId());
+
+
+
+		return 0;
 	}
 
 

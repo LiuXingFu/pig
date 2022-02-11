@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 
 /**
@@ -33,5 +34,7 @@ import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 public interface ProjectLiquiService extends IService<Project> {
 
 	IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO);
+
+	Integer addProjectLiqui(ProjectLiquiAddDTO projectLiquiAddVO);
 
 }

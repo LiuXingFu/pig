@@ -14,13 +14,15 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.pig4cloud.pig.casee.entity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 项目表
@@ -29,17 +31,54 @@ import java.math.BigDecimal;
  * @date 2022-02-10 17:30:36
  */
 @Data
-public class ProjectLiquiAddVO extends ProjectLiqui {
+public class ProjectLiquiAddDTO extends ProjectLiqui {
 
 	/**
-	 * 机构id
+	 * 移送记录id
 	 */
-	Integer insId;
+	Integer transferRecordId;
 
 	/**
-	 * 网点id
+	 * 公司业务案号
 	 */
-	Integer outlesId;
+	@ApiModelProperty(value="公司业务案号")
+	private String companyCode;
+
+	/**
+	 * 办理人id
+	 */
+	@ApiModelProperty(value="办理人id")
+	private Integer userId;
+
+	/**
+	 * 接收时间
+	 */
+	@ApiModelProperty(value="接收时间")
+	private LocalDate takeTime;
+
+	/**
+	 * 年份
+	 */
+	@ApiModelProperty(value="年份")
+	private String year;
+
+	/**
+	 * 简称
+	 */
+	@ApiModelProperty(value="简称")
+	private String alias;
+
+	/**
+	 * 字号
+	 */
+	@ApiModelProperty(value="字号")
+	private Integer word;
+
+	/**
+	 * 项目详情数据
+	 */
+	@ApiModelProperty(value="项目详情数据")
+	private String projectDetail;
 
 
 }
