@@ -24,6 +24,8 @@ import com.pig4cloud.pig.casee.mapper.TransferRecordMapper;
 import com.pig4cloud.pig.casee.service.TransferRecordService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 移交记录表
  *
@@ -34,7 +36,7 @@ import org.springframework.stereotype.Service;
 public class TransferRecordServiceImpl extends ServiceImpl<TransferRecordMapper, TransferRecord> implements TransferRecordService {
 
 	@Override
-	public IPage<TransferRecord> TransferRecordPage(Page page, TransferRecord transferRecord) {
-		return this.baseMapper.TransferRecordPage(page,transferRecord);
+	public List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId) {
+		return this.baseMapper.getBankLoanIdTransferRecord(bankLoanId);
 	}
 }
