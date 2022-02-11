@@ -17,9 +17,9 @@
 
 package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 
 import java.util.List;
 
@@ -32,4 +32,6 @@ import java.util.List;
 public interface TransferRecordService extends IService<TransferRecord> {
 
 	List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId);
+
+	TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId);
 }
