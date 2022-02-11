@@ -79,6 +79,17 @@ public class TransferRecordController {
         return R.ok(transferRecordService.getById(transferRecordId));
     }
 
+	/**
+	 * 通过id查询移交记录和银行借贷信息
+	 * @param transferRecordId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询移交记录和银行借贷信息", notes = "通过id查询移交记录和银行借贷信息")
+	@GetMapping("/getByTransferRecordBankLoan/{transferRecordId}" )
+	public R getByTransferRecordBankLoan(@PathVariable("transferRecordId" ) Integer transferRecordId) {
+		return R.ok(transferRecordService.getTransferRecordBankLoan(transferRecordId));
+	}
+
     /**
      * 新增移交记录表
      * @param transferRecord 移交记录表

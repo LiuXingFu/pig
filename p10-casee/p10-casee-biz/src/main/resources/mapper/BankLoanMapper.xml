@@ -39,6 +39,7 @@
     <result property="loanContract" column="loan_contract"/>
     <result property="otherFile" column="other_file"/>
 	<result property="transferDate" column="transfer_date"/>
+	<result property="remark" column="remark"/>
   </resultMap>
 
 	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO">
@@ -57,6 +58,7 @@
 		<result property="loanContract" column="loan_contract"/>
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
+		<result property="remark" column="remark"/>
 		<collection property="subjectNameList" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanRe" column="bank_loan_id">
 		</collection>
@@ -78,6 +80,7 @@
 		<result property="loanContract" column="loan_contract"/>
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
+		<result property="remark" column="remark"/>
 		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
 
