@@ -104,7 +104,7 @@ public class UserInstitutionStaffServiceImpl extends ServiceImpl<UserInstitution
 			if (Objects.nonNull(sysUser)) {
 				// 根据账户id与机构id查询员工是否存在
 				UserInstitutionStaff userInstitutionStaff = this.getOne(new LambdaQueryWrapper<UserInstitutionStaff>().eq(UserInstitutionStaff::getUserId, sysUser.getUserId())
-						.eq(UserInstitutionStaff::getInsId, SecurityUtils.getUser().getInsId()).eq(UserInstitutionStaff::getDelFlag, 0));
+						.eq(UserInstitutionStaff::getInsId, securityUtilsService.getCacheUser().getInsId()).eq(UserInstitutionStaff::getDelFlag, 0));
 				// 员工存在返回提示信息
 				if (Objects.nonNull(userInstitutionStaff)) {
 					return 100;
@@ -114,7 +114,7 @@ public class UserInstitutionStaffServiceImpl extends ServiceImpl<UserInstitution
 				userInstitutionStaff.setUserId(sysUser.getUserId());
 				userInstitutionStaff.setEntryTime(LocalDateTime.now());
 				userInstitutionStaff.setJobTitle(userInstitutionStaffDTO.getJobTitle());
-				userInstitutionStaff.setInsId(SecurityUtils.getUser().getInsId());
+				userInstitutionStaff.setInsId(securityUtilsService.getCacheUser().getInsId());
 				this.save(userInstitutionStaff);
 				//添加用户网点关联信息
 				saveUserOutlesStaffRe(userInstitutionStaffDTO, userInstitutionStaff);
@@ -135,7 +135,7 @@ public class UserInstitutionStaffServiceImpl extends ServiceImpl<UserInstitution
 
 				// 创建员工信息
 				UserInstitutionStaff userInstitutionStaff = new UserInstitutionStaff();
-				userInstitutionStaff.setInsId(SecurityUtils.getUser().getInsId());
+				userInstitutionStaff.setInsId(securityUtilsService.getCacheUser().getInsId());
 				userInstitutionStaff.setJobTitle(userInstitutionStaffDTO.getJobTitle());
 				userInstitutionStaff.setEntryTime(LocalDateTime.now());
 				userInstitutionStaff.setUserId(userDTO.getUserId());
@@ -229,7 +229,7 @@ public class UserInstitutionStaffServiceImpl extends ServiceImpl<UserInstitution
 	 */
 	@Override
 	public IPage<UserInstitutionStaffVO> pageUserInstitutionStaff(Page page, UserInstitutionStaff userInstitutionStaff) {
-		userInstitutionStaff.setInsId(SecurityUtils.getUser().getInsId());
+		userInstitutionStaff.setInsId(securityUtilsService.getCacheUser().getInsId());
 		return this.baseMapper.pageUserInstitutionStaff(page, userInstitutionStaff);
 	}
 
