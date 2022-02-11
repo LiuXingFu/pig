@@ -14,28 +14,32 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
+import com.pig4cloud.pig.casee.entity.ProjectLiqui;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
-import com.pig4cloud.pig.casee.entity.Project;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import java.math.BigDecimal;
 
 /**
- * 清收项目表
+ * 项目表
  *
- * @author ligt
- * @date 2022-01-10 15:05:49
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
-@Mapper
-public interface ProjectLiquiMapper extends BaseMapper<Project> {
+@Data
+public class ProjectLiquiAddVO extends ProjectLiqui {
 
-	IPage<ProjectLiquiPageVO> selectPageLiqui(Page page, @Param("query") ProjectLiquiPageDTO projectLiquiPageDTO, @Param("login")InsOutlesDTO insOutlesDTO);
+	/**
+	 * 机构id
+	 */
+	Integer insId;
+
+	/**
+	 * 网点id
+	 */
+	Integer outlesId;
+
 
 }

@@ -77,7 +77,7 @@ public class CaseeServiceImpl extends ServiceImpl<CaseeMapper, Casee> implements
 		Project project = projectLiquiService.getById(caseeAddDTO.getProjectId());
 		PigUser pigUser=securityUtilsService.getCacheUser();
 
-		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeAddDTO.getCaseeType(),project.getCreateOutlesId(), SecurityConstants.FROM);
+		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
 
 		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
 		if (taskNodeTemplate.getData()==null){
@@ -125,8 +125,8 @@ public class CaseeServiceImpl extends ServiceImpl<CaseeMapper, Casee> implements
 	public void configurationNodeTemplate(Casee casee,TargetAddDTO targetAddDTO,Project project, Integer templateId) {
 		TaskNodeTemplateDTO taskNodeTemplateDTO=new TaskNodeTemplateDTO();
 		taskNodeTemplateDTO.setCaseeId(casee.getCaseeId());
-		taskNodeTemplateDTO.setInsId(project.getCreateInsId());
-		taskNodeTemplateDTO.setOutlesId(project.getCreateOutlesId());
+		taskNodeTemplateDTO.setInsId(project.getInsId());
+		taskNodeTemplateDTO.setOutlesId(project.getOutlesId());
 		taskNodeTemplateDTO.setProjectId(casee.getProjectId());
 		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
 		taskNodeTemplateDTO.setTemplateId(templateId);

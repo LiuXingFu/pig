@@ -23,286 +23,36 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper">
 
-  <resultMap id="projectMap" type="com.pig4cloud.pig.casee.entity.Project">
-    <id property="projectId" column="project_id"/>
-    <result property="createBy" column="create_by"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="projectType" column="project_type"/>
-    <result property="companyCode" column="company_code"/>
-    <result property="status" column="status"/>
-    <result property="createInsId" column="create_ins_id"/>
-    <result property="createOutlesId" column="create_outles_id"/>
-    <result property="startTime" column="start_time"/>
-    <result property="closeTime" column="close_time"/>
-    <result property="year" column="year"/>
-    <result property="alias" column="alias"/>
-    <result property="word" column="word"/>
-    <result property="describes" column="describes"/>
-    <result property="proposersNames" column="proposers_names"/>
-    <result property="subjectPersons" column="subject_persons"/>
-    <result property="projectDetail" column="project_detail"/>
-    <result property="takeTime" column="take_time"/>
-    <result property="userId" column="user_id"/>
-    <result property="userNickName" column="user_nick_name"/>
-  </resultMap>
-	<select id="selectLiquiProject" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiVO">
-		select
-		project.project_id,
-		project.company_code,
-		project.status,
-		project.subject_persons,
--- 		json_extract(project.project_detail,"$.transfer") as transfer,
--- 		json_extract(project.project_detail,"$.mortgageSituation") as mortgageSituation,
-		project.start_time,
-		project.project_detail,
-		project.user_nick_name,
-		project.close_time,
-		project.take_time,
-		ins.ins_name as insName,
-		outles.outles_name as outlesName,
-		-- 委托机构
-		entrust_outles_re.ins_id as entrustInsId,
-		entrust_ins.ins_name as entrustInsName,
-		-- 委托网点
-		entrust_outles_re.outles_id as entrustOutlesId,
-		entrust_out.outles_name as entrustOutlesName
-		from p10_project as project
-		-- 	 关联受托机构(显示受托机构网点名称信息等)
-		left join p10_institution as ins on project.create_ins_id=ins.ins_id and ins.del_flag='0'
-		left join p10_outles as outles on outles.outles_id=project.create_outles_id and outles.del_flag='0'
-		-- 	查询委托机构委托网点
-		left join p10_project_outles_deal_re as entrust_outles_re on entrust_outles_re.project_id=project.project_id and entrust_outles_re.type=1
-		-- 	 关联委托机构
-		left join p10_institution as  entrust_ins on entrust_ins.ins_id=entrust_outles_re.ins_id and entrust_ins.del_flag='0'
-		left join p10_outles as  entrust_out on entrust_out.outles_id=entrust_outles_re.outles_id and entrust_out.del_flag='0'
-		<where>
-			project.del_flag='0' and project.project_type=100
-			<if test="query.status != null and query.status != -1">
-				and  project.status=#{query.status}
-			</if>
-
-			<!--机构网点权限 -->
-			<if test="query.insId != null and query.insId != ''">
-				and   (project.create_ins_id=#{query.insId})
-			</if>
-			<if test="query.outlesId != null and query.outlesId != ''">
-				and   (project.create_outles_id=#{query.outlesId})
-			</if>
-
-			<if test="query.companyCode != null and query.companyCode != ''">
-				and  project.company_code like concat('%', #{query.companyCode}, '%')
-			</if>
-			<!--被执行人 -->
-
-			<if test="query.subjectPersons != null and query.subjectPersons != ''">
-				and  project.subject_persons like concat('%', #{query.subjectPersons}, '%')
-			</if>
-
-			<!--<if test="query.keyword != null and query.keyword != ''">
-				and  (project.company_code like concat('%', #{query.keyword}, '%') or casee.executed_persons like concat('%', #{query.keyword}, '%')
-				or casee.user_nick_name=#{query.keyword})
-			</if>-->
-
-			<!--受托机构 -->
-			<if test="query.createInsId != null and query.createInsId != ''">
-				and  project.create_ins_id =#{query.createInsId}
-			</if>
-			<!--受托网点 -->
-			<if test="query.createOutlesId != null and query.createOutlesId != ''">
-				and   project.create_outles_id=#{query.createOutlesId}
-			</if>
-			<if test="query.belongOutlesIds != null">
-				and project.create_outles_id in
-				<foreach collection="query.belongOutlesIds" item="belongOutlesId" separator="," open="(" close=")">
-					#{belongOutlesId}
-				</foreach>
-			</if>
-			<!--办理人 -->
-			<if test="query.userNickName != null and query.userNickName != ''">
-				and   project.user_nick_name=#{query.userNickName}
-			</if>
-			<if test="query.beginDate != null and query.beginDate != '' and query.endDate != null and query.endDate != '' ">
-				AND (
-				project.start_time BETWEEN #{query.beginDate} and #{query.endDate}
-				or
-				(
-				project.status=4
-				and
-				project.close_time BETWEEN #{query.beginDate} and #{query.endDate}
-				)
-				)
-			</if>
-		</where>
-		GROUP BY project.project_id
-		ORDER BY IFNULL(project.update_time,project.create_time) desc, project.`year`,project.alias,project.word desc
-	</select>
-
-
-	<resultMap id="projectDetailMap" type="com.pig4cloud.pig.casee.vo.ProjectLiquiVO">
-		<id property="projectId" column="project_id"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="projectType" column="project_type"/>
-		<result property="companyCode" column="company_code"/>
-		<result property="status" column="status"/>
-		<result property="createInsId" column="create_ins_id"/>
-		<result property="createOutlesId" column="create_outles_id"/>
-		<result property="startTime" column="start_time"/>
-		<result property="closeTime" column="close_time"/>
-		<result property="year" column="year"/>
-		<result property="alias" column="alias"/>
-		<result property="word" column="word"/>
-		<result property="describes" column="describes"/>
-		<result property="proposersNames" column="proposers_names"/>
-		<result property="subjectPersons" column="subject_persons"/>
-		<result property="projectDetail" column="project_detail"/>
-		<result property="takeTime" column="take_time"/>
-		<result property="userId" column="user_id"/>
-		<result property="userNickName" column="user_nick_name"/>
-		<result property="insName" column="insName"/>
-		<result property="outlesName" column="outlesName"/>
-		<result property="entrustInsId" column="entrustInsId"/>
-		<result property="entrustInsName" column="entrustInsName"/>
-		<result property="entrustOutlesId" column="entrustOutlesId"/>
-		<result property="entrustOutlesName" column="entrustOutlesName"/>
-		<collection property="subjectList" ofType="com.pig4cloud.pig.casee.entity.ProjectSubject"
-					select="listSubjectListByProjectId" column="project_id">
-		</collection>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.entity.AssetsLiqui"
-					select="assetsListByProjectId" column="project_id">
-		</collection>
-	</resultMap>
-
-	<select id="selectLiquiProjectById" resultMap="projectDetailMap">
-		select
-		project.*,
--- 		json_extract(project.project_detail,"$.transfer") as transfer,
--- 		json_extract(project.project_detail,"$.mortgageSituation") as mortgageSituation,
-		ins.ins_name as insName,
-		outles.outles_name as outlesName,
-		-- 委托机构
-		entrust_outles_re.ins_id as entrustInsId,
-		entrust_ins.ins_name as entrustInsName,
-		-- 委托网点
-		entrust_outles_re.outles_id as entrustOutlesId,
-		entrust_out.outles_name as entrustOutlesName
-		from p10_project as project
-		-- 	 关联受托机构(显示受托机构网点名称信息等)
-		left join p10_institution as ins on project.create_ins_id=ins.ins_id and ins.del_flag='0'
-		left join p10_outles as outles on outles.outles_id=project.create_outles_id and outles.del_flag='0'
-		-- 	查询委托机构委托网点
-		left join p10_project_outles_deal_re as entrust_outles_re on entrust_outles_re.project_id=project.project_id and entrust_outles_re.type=1
-		-- 	 关联委托机构
-		left join p10_institution as  entrust_ins on entrust_ins.ins_id=entrust_outles_re.ins_id and entrust_ins.del_flag='0'
-		left join p10_outles as  entrust_out on entrust_out.outles_id=entrust_outles_re.outles_id and entrust_out.del_flag='0'
-		<where>
-			project.del_flag='0' and project.project_type=100 and project.project_id=#{query.projectId}
-		</where>
-	</select>
-
-
-	<resultMap id="subjectDetailMap" type="com.pig4cloud.pig.casee.entity.ProjectSubject">
-		<id property="subjectId" column="subject_id"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="unifiedIdentity" column="unified_identity"/>
-		<result property="natureType" column="nature_type"/>
-		<result property="name" column="name"/>
-		<result property="phone" column="phone"/>
-		<result property="legalPerson" column="legal_person"/>
-		<result property="email" column="email"/>
-		<result property="remark" column="remark"/>
-		<result property="isAuthentication" column="is_authentication"/>
-		<result property="userId" column="user_id"/>
-		<result property="employer" column="employer"/>
-		<result property="debtType" column="debt_type"/>
-		<collection property="addressList" ofType="com.pig4cloud.pig.admin.api.entity.Address"
-					select="listAddressListBySubjectId" column="subject_id">
-		</collection>
-	</resultMap>
-
-	<select id="listSubjectListByProjectId" resultMap="subjectDetailMap">
-		select
-		subject.*
-		from p10_subject as subject
-		left join p10_project_subject_re as re on re.subject_id=subject.subject_id and re.del_flag='0'
-		left join p10_project as project on project.project_id=re.project_id and project.del_flag='0'
-		<where>
-			subject.del_flag='0' and re.type=1 and project.project_id=#{projectId}
-		</where>
-	</select>
-
-
-	<select id="listAddressListBySubjectId" resultType="com.pig4cloud.pig.admin.api.entity.Address">
-		select
-		address.*
-		from p10_address as address
-		<where>
-			address.del_flag='0' and address.user_id=#{subjectId} and address.type=1
-		</where>
-	</select>
-
-	<resultMap id="assetsDetailMap" type="com.pig4cloud.pig.casee.entity.AssetsLiqui">
-		<id property="assetsId" column="assets_id"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="assetsName" column="assets_name"/>
-<!--		<result property="projectId" column="project_id"/>-->
-		<result property="addressId" column="address_id"/>
-<!--		<result property="subjectId" column="subject_id"/>-->
-<!--		<result property="subjectName" column="subject_name"/>-->
-		<result property="type" column="type"/>
-		<result property="assetsType" column="assets_type"/>
-		<result property="assetsDetail" column="assets_detail"/>
-		<result property="describes" column="describes"/>
-		<collection property="address" ofType="com.pig4cloud.pig.admin.api.entity.Address"
-					select="listAddressListByAddressId" column="address_id">
-		</collection>
-		<collection property="assetsRe" ofType="com.pig4cloud.pig.casee.entity.AssetsReLiqui"
-					select="listAssetsReById" column="{assetsId=assets_id,projectId=projectId}">
-		</collection>
-	</resultMap>
-
-	<select id="assetsListByProjectId" resultMap="assetsDetailMap">
-		select
-		assets.*,
-		#{projectId} as projectId
-		from p10_assets as assets
-		left join p10_assets_re as assets_re on assets.assets_id=assets_re.assets_id
-		left join p10_project as project on project.project_id=assets_re.project_id and project.del_flag='0'
-		<where>
-			assets.del_flag='0' and assets_re.project_id=#{projectId}
-		</where>
-	</select>
-
-	<select id="listAssetsReById" resultType="com.pig4cloud.pig.casee.entity.AssetsReLiqui">
-		select
-		assets.*
-		from p10_assets_re as assets
-		<where>
-			assets.del_flag='0' and assets.project_id=#{projectId} and assets.assets_id=#{assetsId}
-		</where>
-	</select>
-
-	<select id="listAddressListByAddressId" resultType="com.pig4cloud.pig.admin.api.entity.Address">
-		select
-		address.*
-		from p10_address as address
-		<where>
-			address.del_flag='0' and address.address_id=#{addressId}
-		</where>
+	<select id="selectPageLiqui" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO">
+		select p10_project.*,p10_institution.ins_name,p10_outles.outles_name from p10_project
+		left join p10_project_outles_deal_re on p10_project_outles_deal_re.project_id = p10_project.project_id and p10_project_outles_deal_re.del_flag = 0 and p10_project_outles_deal_re.type = 1
+		where p10_project.del_flag = 0 and p10_project.project_type = 100
+		<if test="query.status != null and query.status >= 0">
+			and p10_project.status = #{query.status}
+		</if>
+		<if test="login.insId != null and login.insId >= 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId >= 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.proposersNames != null and query.proposersNames != ''">
+			and  p10_project.proposers_names like concat('%', #{query.proposersNames}, '%')
+		</if>
+		<if test="query.subjectPersons != null and query.subjectPersons != ''">
+			and  p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
+		</if>
+		<if test="query.userNickName != null and query.userNickName != ''">
+			and  p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
+		</if>
+		<if test="query.companyCode != null and query.companyCode != ''">
+			and  p10_project.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		ORDER BY p10_project.status asc,p10_project.take_time desc
 	</select>
 
 </mapper>

@@ -33,8 +33,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 项目表
  *
- * @author ligt
- * @date 2022-01-10 15:05:49
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @RestController
 @RequiredArgsConstructor
@@ -52,7 +52,7 @@ public class ProjectController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-//    @PreAuthorize("@pms.hasPermission('casee_project_get')" )
+    @PreAuthorize("@pms.hasPermission('demo_project_get')" )
     public R getProjectPage(Page page, Project project) {
         return R.ok(projectService.page(page, Wrappers.query(project)));
     }
@@ -65,7 +65,7 @@ public class ProjectController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{projectId}" )
-//    @PreAuthorize("@pms.hasPermission('casee_project_get')" )
+    @PreAuthorize("@pms.hasPermission('demo_project_get')" )
     public R getById(@PathVariable("projectId" ) Integer projectId) {
         return R.ok(projectService.getById(projectId));
     }
@@ -78,7 +78,7 @@ public class ProjectController {
     @ApiOperation(value = "新增项目表", notes = "新增项目表")
     @SysLog("新增项目表" )
     @PostMapping
-//    @PreAuthorize("@pms.hasPermission('casee_project_add')" )
+    @PreAuthorize("@pms.hasPermission('demo_project_add')" )
     public R save(@RequestBody Project project) {
         return R.ok(projectService.save(project));
     }
@@ -91,7 +91,7 @@ public class ProjectController {
     @ApiOperation(value = "修改项目表", notes = "修改项目表")
     @SysLog("修改项目表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('casee_project_edit')" )
+    @PreAuthorize("@pms.hasPermission('demo_project_edit')" )
     public R updateById(@RequestBody Project project) {
         return R.ok(projectService.updateById(project));
     }
@@ -104,7 +104,7 @@ public class ProjectController {
     @ApiOperation(value = "通过id删除项目表", notes = "通过id删除项目表")
     @SysLog("通过id删除项目表" )
     @DeleteMapping("/{projectId}" )
-    @PreAuthorize("@pms.hasPermission('casee_project_del')" )
+    @PreAuthorize("@pms.hasPermission('demo_project_del')" )
     public R removeById(@PathVariable Integer projectId) {
         return R.ok(projectService.removeById(projectId));
     }

@@ -20,12 +20,9 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiDTO;
-import com.pig4cloud.pig.casee.dto.ProjectQueryLiquiDTO;
-import com.pig4cloud.pig.casee.entity.CaseeBizLiqui;
+import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
-import com.pig4cloud.pig.casee.entity.ProjectLiqui;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiVO;
+import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 
 /**
  * 清收项目表
@@ -34,31 +31,7 @@ import com.pig4cloud.pig.casee.vo.ProjectLiquiVO;
  * @date 2022-01-10 15:05:49
  */
 public interface ProjectLiquiService extends IService<Project> {
-	/**
-	 * 新增清收项目
-	 * @return
-	 */
-	ProjectLiqui addProject(ProjectLiquiDTO projectDTO);
 
-	/**
-	 * 修改项目状态
-	 * @param project
-	 * @return
-	 */
-	Integer modifyProjectStatus(Project project) throws Exception;
+	IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO);
 
-	/**
-	 * 查询清收项目列表
-	 * @param page
-	 * @param projectQueryLiquiDTO
-	 * @return
-	 */
-	IPage<ProjectLiquiVO> queryLiquiProjectPage(Page page, ProjectQueryLiquiDTO projectQueryLiquiDTO);
-
-	/**
-	 * 查询清收项目明细
-	 * @param projectId
-	 * @return
-	 */
-	ProjectLiquiVO queryLiquiProjectById(Integer projectId);
 }
