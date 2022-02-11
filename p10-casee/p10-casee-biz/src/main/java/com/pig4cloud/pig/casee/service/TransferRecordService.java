@@ -17,10 +17,11 @@
 
 package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+
+import java.util.List;
 
 /**
  * 移交记录表
@@ -30,5 +31,7 @@ import com.pig4cloud.pig.casee.entity.TransferRecord;
  */
 public interface TransferRecordService extends IService<TransferRecord> {
 
-	IPage<TransferRecord> TransferRecordPage(Page page,TransferRecord transferRecord);
+	List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId);
+
+	TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId);
 }

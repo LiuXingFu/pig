@@ -39,6 +39,7 @@
     <result property="loanContract" column="loan_contract"/>
     <result property="otherFile" column="other_file"/>
 	<result property="transferDate" column="transfer_date"/>
+	<result property="remark" column="remark"/>
   </resultMap>
 
 	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO">
@@ -57,6 +58,7 @@
 		<result property="loanContract" column="loan_contract"/>
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
+		<result property="remark" column="remark"/>
 		<collection property="subjectNameList" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanRe" column="bank_loan_id">
 		</collection>
@@ -78,6 +80,7 @@
 		<result property="loanContract" column="loan_contract"/>
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
+		<result property="remark" column="remark"/>
 		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
 
@@ -92,14 +95,11 @@
 		*,
 		p10_institution.ins_name as entrustedInsName,
 		p10_outles.outles_name as entrustedOutlesName,
-		p10_transfer_record.litigation,
-		p10_transfer_record.handover_amount as handoverAmount,
-		p10_transfer_record.handover_time as handoverTime,
 		p10_transfer_record.status
 		from p10_bank_loan
 		left join p10_transfer_record on p10_transfer_record.bank_loan_id=p10_bank_loan.bank_loan_id
-		left join p10_institution on p10_institution.ins_id=p10_transfer_record.entrusted_ins_id
-		left join p10_outles on p10_outles.outles_id=p10_transfer_record.entrusted_outles_id
+		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
+		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
 		where
 		p10_bank_loan.del_flag=0
 		<if test="query.trustee != null">
@@ -115,11 +115,16 @@
 		select
 		*,
 		p10_institution.ins_name as entrustedInsName,
-		p10_outles.outles_name as entrustedOutlesName
+		p10_outles.outles_name as entrustedOutlesName,
+		p10_transfer_record.status
 		from p10_bank_loan
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
+		left join p10_transfer_record ON p10_transfer_record.bank_loan_id = p10_bank_loan.bank_loan_id
 		where
 		p10_bank_loan.del_flag=0 AND p10_bank_loan.bank_loan_id=#{bankLoanId}
+		ORDER BY
+		p10_transfer_record.create_time desc
+		LIMIT 1
 	</select>
 </mapper>

@@ -201,9 +201,6 @@
 		<if test="outlesId != null and outlesId != 0">
 			and p10_outles.outles_id = #{outlesId}
 		</if>
-		<if test="query.userId != null and query.userId != ''">
-			and sys_user.user_id = #{query.userId}
-		</if>
 		<if test="query.outlesName != null and query.outlesName != ''">
 			and p10_outles.outles_name LIKE CONCAT('%',#{query.outlesName},'%')
 		</if>

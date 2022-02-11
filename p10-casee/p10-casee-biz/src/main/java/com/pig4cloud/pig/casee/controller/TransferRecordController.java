@@ -28,6 +28,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 移交记录表
@@ -52,9 +54,19 @@ public class TransferRecordController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R getTransferRecordPage(Page page, TransferRecord transferRecord) {
-        return R.ok(transferRecordService.TransferRecordPage(page, transferRecord));
+        return R.ok(transferRecordService.page(page, Wrappers.query(transferRecord)));
     }
 
+	/**
+	 * 通过银行借贷id查询移送详情
+	 * @param bankLoanId 银行借贷id
+	 * @return
+	 */
+	@ApiOperation(value = "通过银行借贷id查询移送详情", notes = "通过银行借贷id查询移送详情")
+	@GetMapping("/getBankLoanIdTransferRecord/{bankLoanId}" )
+	public R getBankLoanIdTransferRecordPage(@PathVariable("bankLoanId") Integer bankLoanId) {
+		return R.ok(transferRecordService.getBankLoanIdTransferRecord(bankLoanId));
+	}
 
     /**
      * 通过id查询移交记录表
@@ -66,6 +78,17 @@ public class TransferRecordController {
     public R getById(@PathVariable("transferRecordId" ) Integer transferRecordId) {
         return R.ok(transferRecordService.getById(transferRecordId));
     }
+
+	/**
+	 * 通过id查询移交记录和银行借贷信息
+	 * @param transferRecordId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询移交记录和银行借贷信息", notes = "通过id查询移交记录和银行借贷信息")
+	@GetMapping("/getByTransferRecordBankLoan/{transferRecordId}" )
+	public R getByTransferRecordBankLoan(@PathVariable("transferRecordId" ) Integer transferRecordId) {
+		return R.ok(transferRecordService.getTransferRecordBankLoan(transferRecordId));
+	}
 
     /**
      * 新增移交记录表
@@ -90,6 +113,18 @@ public class TransferRecordController {
     public R updateById(@RequestBody TransferRecord transferRecord) {
         return R.ok(transferRecordService.updateById(transferRecord));
     }
+
+	/**
+	 * 批量修改移交记录表
+	 * @param transferRecordList 移交记录表
+	 * @return R
+	 */
+	@ApiOperation(value = "批量修改移交记录表", notes = "批量修改移交记录表")
+	@SysLog("批量修改移交记录表" )
+	@PostMapping("/updateBatchById")
+	public R updateBatchById(@RequestBody List<TransferRecord> transferRecordList) {
+		return R.ok(transferRecordService.updateBatchById(transferRecordList));
+	}
 
     /**
      * 通过id删除移交记录表
