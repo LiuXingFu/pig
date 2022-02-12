@@ -112,9 +112,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		// 查询办理人名称
 		R<UserVO> userVOR = userService.getUserById(projectLiquiAddVO.getUserId(), SecurityConstants.FROM);
 		projectLiqui.setUserNickName(userVOR.getData().getActualName());
-		// 查询委托机构名称
-		R<InstitutionVO> institutionVOR = institutionService.getById(transferRecordBankLoanVO.getInsId(), SecurityConstants.FROM);
-		projectLiqui.setProposersNames(institutionVOR.getData().getInsName());
+		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
+		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());
 		this.baseMapper.insert(projectLiqui);
 
 		// 保存项目状态变更记录表
@@ -144,9 +143,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		ProjectOutlesDealRe projectOutlesDealRe = new ProjectOutlesDealRe();
 		projectOutlesDealRe.setInsId(transferRecordBankLoanVO.getInsId());
 		projectOutlesDealRe.setOutlesId(transferRecordBankLoanVO.getOutlesId());
-		projectOutlesDealRe.setUserId(0);
+		projectOutlesDealRe.setUserId(transferRecordBankLoanVO.getCreateBy());
 		projectOutlesDealRe.setType(1);
-		projectOutlesDealRe.setProjectId(0);
+		projectOutlesDealRe.setProjectId(projectLiqui.getProjectId());
 		projectOutlesDealReService.save(projectOutlesDealRe);
 		// 返回添加的项目id
 		return projectLiqui.getProjectId();
