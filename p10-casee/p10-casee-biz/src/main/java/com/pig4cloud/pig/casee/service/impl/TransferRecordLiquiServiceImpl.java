@@ -68,6 +68,7 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 		BeanUtils.copyProperties(transferRecordDTO,projectLiquiAddDTO);
 		TransferRecordLiqui transferRecordLiqui=new TransferRecordLiqui();
 		BeanUtils.copyProperties(transferRecordDTO,transferRecordLiqui);
+		projectLiquiAddDTO.setTakeTime(transferRecordDTO.getReturnTime());
 		//添加项目信息
 		Integer projectId = projectLiquiService.addProjectLiqui(projectLiquiAddDTO);
 		transferRecordLiqui.setProjectId(projectId);
