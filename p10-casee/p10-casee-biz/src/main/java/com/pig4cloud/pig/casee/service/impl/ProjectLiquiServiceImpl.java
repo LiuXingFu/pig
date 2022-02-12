@@ -139,6 +139,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
 			BeanCopyUtil.copyBean(item,projectSubjectRe);
 			projectSubjectRe.setProjectId(projectLiqui.getProjectId());
+			projectSubjectRe.setType(item.getDebtType());
 			projectSubjectRes.add(projectSubjectRe);
 		});
 		// 保存项目主体关联表
