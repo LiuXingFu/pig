@@ -58,14 +58,14 @@ public class AssociateOutlesReController {
 
 	/**
 	 * 根据associateID查询授权列表
-	 * @param page 分页对象
-	 * @param associateId 机构关联ID
+	 * @param insAssociateId 合作机构id
+	 * @param  outlesName 网点名称
 	 * @return
 	 */
 	@ApiOperation(value = "根据associateID查询授权列表", notes = "分页查询")
 	@GetMapping("/getAuthorizationPage" )
-	public R getAuthorizationPage(Page page, Integer associateId) throws Exception {
-		return R.ok(associateOutlesReService.getAuthorizationPage(page, associateId));
+	public R getAuthorizationPage(Integer insAssociateId, String outlesName) throws Exception {
+		return R.ok(associateOutlesReService.getAuthorizationPage(insAssociateId, outlesName));
 	}
 
 
@@ -126,14 +126,19 @@ public class AssociateOutlesReController {
 
 	/**
 	 * 解除网点授权关系
-	 * @param associateOutlesRe
+	 * @param associateOutlesId
 	 * @return R
 	 */
 	@ApiOperation(value = "解除网点授权关系", notes = "解除网点授权关系")
 	@SysLog("解除网点授权关系" )
-	@DeleteMapping("/dismissById" )
-	public R dismissById(@RequestBody AssociateOutlesRe associateOutlesRe) {
-		return R.ok(associateOutlesReService.dismissById(associateOutlesRe));
+	@DeleteMapping("/dismissById/{associateOutlesId}" )
+	public R dismissById(@PathVariable Integer associateOutlesId) {
+		boolean b = associateOutlesReService.dismissById(associateOutlesId);
+		if(b) {
+			return R.ok("解除网点授权成功！");
+		} else {
+			return R.failed("解除网点授权失败！");
+		}
 	}
 
 }

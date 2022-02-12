@@ -26,6 +26,7 @@ import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesPageVO;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -158,4 +159,5 @@ public interface OutlesService extends IService<Outles> {
 	 */
 	public List<OrganizationQueryVO> queryOutlesIdSelect(OutlesSelectDTO outlesSelectDTO);
 
+	List<Outles> pageOutlesList(Integer insId, String outlesName, List<Integer> outlesIds);
 }

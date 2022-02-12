@@ -21,25 +21,15 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.admin.mapper.AssociateOutlesReMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.DeadlineConfigureMapper">
 
-	<resultMap id="associateOutlesMap" type="com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe">
-		<result property="outlesId" column="outles_id"/>
-		<result property="insAssociateId" column="ins_associate_id"/>
-		<result property="authorizationTime" column="authorization_time"/>
-	</resultMap>
-
-	<select id="pageAssociateOutles" resultType="com.pig4cloud.pig.admin.api.vo.AssociateOutlesReVO">
-		SELECT
-		associate_outles.*,
-		outles.outles_name,
-		institution.ins_name
-		FROM
-		p10_associate_outles_re associate_outles
-		LEFT JOIN p10_outles outles ON outles.outles_id = associate_outles.outles_id
-		LEFT JOIN p10_institution institution ON institution.ins_id = associate_outles.ins_associate_id
-		WHERE associate_outles.ins_id = #{query.insId} and associate_outles.ins_associate_id = #{query.insAssociateId}
-		ORDER BY associate_outles.authorization_time DESC
-	</select>
-
+  <resultMap id="deadlineConfigureMap" type="com.pig4cloud.pig.casee.entity.DeadlineConfigure">
+    <id property="periodConfigureId" column="period_configure_id"/>
+    <result property="key" column="key"/>
+    <result property="deadlineConfigureName" column="deadline_configure_name"/>
+    <result property="deadlineConfigureNum" column="deadline_configure_num"/>
+    <result property="unit" column="unit"/>
+    <result property="reminderDays" column="reminder_days"/>
+    <result property="deadlineConfigureRemark" column="deadline_configure_remark"/>
+  </resultMap>
 </mapper>

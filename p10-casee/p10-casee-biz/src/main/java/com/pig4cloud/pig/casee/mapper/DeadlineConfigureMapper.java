@@ -15,29 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.mapper;
+package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
+import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
- * 机构关联表
+ * 期限配置表
  *
  * @author yuanduo
- * @date 2021-09-03 11:01:07
+ * @date 2022-02-11 21:13:38
  */
 @Mapper
-public interface InstitutionAssociateMapper extends BaseMapper<InstitutionAssociate> {
-
-	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociate institutionAssociate);
-
-	InstitutionAssociateDetailsVO queryById(Integer associateId);
+public interface DeadlineConfigureMapper extends BaseMapper<DeadlineConfigure> {
 
 }
