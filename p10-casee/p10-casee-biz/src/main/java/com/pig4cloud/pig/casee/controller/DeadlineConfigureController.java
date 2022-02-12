@@ -108,4 +108,21 @@ public class DeadlineConfigureController {
 		}
     }
 
+	/**
+	 * 通过id恢复期限配置
+	 * @param periodConfigureId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id恢复期限配置", notes = "通过id恢复期限配置")
+	@SysLog("通过id恢复期限配置" )
+	@PutMapping("/recoverById/{periodConfigureId}" )
+    public R recoverById(@PathVariable Integer periodConfigureId) {
+		boolean b = this.deadlineConfigureService.recoverById(periodConfigureId);
+		if(b) {
+			return R.ok("恢复成功！");
+		} else {
+			return R.failed("恢复失败！");
+		}
+	}
+
 }

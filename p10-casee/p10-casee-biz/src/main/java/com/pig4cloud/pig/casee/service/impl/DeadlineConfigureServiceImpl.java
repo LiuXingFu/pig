@@ -37,4 +37,16 @@ public class DeadlineConfigureServiceImpl extends ServiceImpl<DeadlineConfigureM
 	public IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, DeadlineConfigure deadlineConfigure) {
 		return this.baseMapper.getDeadlineConfigurePage(page, deadlineConfigure);
 	}
+
+	/**
+	 * 通过id恢复期限配置
+	 *
+	 * @param periodConfigureId
+	 * @return
+	 */
+	@Override
+	public boolean recoverById(Integer periodConfigureId) {
+		int count = this.baseMapper.recoverById(periodConfigureId);
+		return count > 0 ? true : false;
+	}
 }
