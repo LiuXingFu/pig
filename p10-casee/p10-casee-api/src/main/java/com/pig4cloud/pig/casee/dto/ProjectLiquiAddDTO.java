@@ -72,11 +72,5 @@ public class ProjectLiquiAddDTO {
 	@ApiModelProperty(value="字号")
 	private Integer word;
 
-	/**
-	 * 项目详情数据
-	 */
-	@ApiModelProperty(value="项目详情数据")
-	private ProjectLiqui projectDetail;
-
 
 }
