@@ -20,6 +20,8 @@ import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 项目表
  *
@@ -44,7 +46,14 @@ public class ProjectLiquiDetailsVO extends ProjectLiqui {
 	/**
 	 * 银行借贷和移交信息
 	 */
+	@ApiModelProperty(value="银行借贷和移交信息")
 	TransferRecordBankLoanVO transferRecordBankLoanVO;
+
+	/**
+	 * 债务人集合
+	 */
+	@ApiModelProperty(value="债务人集合")
+	List<ProjectSubjectVO> projectSubjectVOList;
 
 
 }
