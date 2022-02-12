@@ -31,4 +31,6 @@ import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 public interface DeadlineConfigureService extends IService<DeadlineConfigure> {
 
 	IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, DeadlineConfigure deadlineConfigure);
+
+	boolean recoverById(Integer periodConfigureId);
 }

@@ -34,4 +34,6 @@ import org.apache.ibatis.annotations.Param;
 public interface DeadlineConfigureMapper extends BaseMapper<DeadlineConfigure> {
 
 	IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, @Param("query") DeadlineConfigure deadlineConfigure);
+
+	int recoverById(Integer periodConfigureId);
 }
