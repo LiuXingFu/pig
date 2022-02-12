@@ -16,7 +16,7 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

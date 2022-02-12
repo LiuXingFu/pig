@@ -20,13 +20,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
-import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiDTO;
-import com.pig4cloud.pig.casee.dto.ProjectQueryLiquiDTO;
-import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
@@ -36,10 +29,9 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.entity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiVO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
@@ -47,7 +39,6 @@ import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
-import org.springframework.beans.BeanUtils;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +62,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Autowired
-	private TransferRecordService transferRecordService;
+	private TransferRecordLiquiService transferRecordLiquiService;
 
 	@Autowired
 	private ProjectOutlesDealReService projectOutlesDealReService;
@@ -110,12 +101,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		ProjectLiqui projectLiqui = new ProjectLiqui();
 		BeanCopyUtil.copyBean(projectLiquiAddVO,projectLiqui);
 		// 查询银行借贷和移送记录表
-		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordService.getTransferRecordBankLoan(projectLiquiAddVO.getTransferRecordId());
+		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(projectLiquiAddVO.getTransferRecordId(),null);
 		projectLiqui.setInsId(transferRecordBankLoanVO.getEntrustedInsId());
 		projectLiqui.setOutlesId(transferRecordBankLoanVO.getEntrustedOutlesId());
 		projectLiqui.setProjectType(100);
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
-		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getHandoverAmount());
+		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setRemainingPayment(BigDecimal.valueOf(0));
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		// 查询办理人名称
@@ -136,7 +127,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		// 查询银行借贷主体关联表
 		QueryWrapper<SubjectBankLoanRe> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(SubjectBankLoanRe::getBankLoanId,transferRecordBankLoanVO.getBankLoanId());
+		queryWrapper.lambda().eq(SubjectBankLoanRe::getBankLoanId,transferRecordBankLoanVO.getSourceId());
 		List<SubjectBankLoanRe> subjectBankLoanReList =  subjectBankLoanReService.list(queryWrapper);
 		List<ProjectSubjectRe> projectSubjectRes = new ArrayList<>();
 		// 遍历银行借贷关联表copy到项目主体关联表中

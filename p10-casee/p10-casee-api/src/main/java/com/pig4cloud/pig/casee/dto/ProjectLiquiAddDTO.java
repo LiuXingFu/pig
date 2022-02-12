@@ -16,12 +16,10 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.pig4cloud.pig.casee.entity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**

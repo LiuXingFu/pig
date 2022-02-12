@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -30,7 +31,7 @@ import java.time.LocalDate;
  * @date 2022-01-28 18:52:40
  */
 @Data
-public class TransferRecordBankLoanVO extends TransferRecord {
+public class TransferRecordBankLoanVO extends TransferRecordLiqui {
 
 	/**
 	 * 银行机构id

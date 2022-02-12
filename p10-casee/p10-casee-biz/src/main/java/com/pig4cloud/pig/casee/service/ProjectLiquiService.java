@@ -22,14 +22,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiDTO;
-import com.pig4cloud.pig.casee.dto.ProjectQueryLiquiDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
-import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiVO;
 
 /**
  * 清收项目表
