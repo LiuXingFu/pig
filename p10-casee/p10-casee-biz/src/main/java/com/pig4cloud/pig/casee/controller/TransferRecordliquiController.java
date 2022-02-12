@@ -55,7 +55,7 @@ public class TransferRecordliquiController {
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page" )
-	public R getTransferRecordPage(Page page, TransferRecord transferRecord) {
+	public R getTransferRecordPage(Page page, TransferRecordLiqui transferRecord) {
 		return R.ok(transferRecordLiquiService.getTransferRecordPage(page,transferRecord));
 	}
 
@@ -79,6 +79,17 @@ public class TransferRecordliquiController {
 	@GetMapping("/{transferRecordId}" )
 	public R getById(@PathVariable("transferRecordId" ) Integer transferRecordId) {
 		return R.ok(transferRecordLiquiService.getById(transferRecordId));
+	}
+
+	/**
+	 * 通过项目id查询抵押财产信息
+	 * @param projectId 项目id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询抵押财产信息", notes = "通过项目id查询抵押财产信息")
+	@GetMapping("/getProjectIdByAssets/{projectId}" )
+	public R getProjectIdByAssets(@PathVariable("projectId" ) Integer projectId) {
+		return R.ok(transferRecordLiquiService.getProjectIdByAssets(projectId));
 	}
 
 	/**

@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 
 	@Override
 	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord) {
+		if (transferRecord.getHandoverTime()!=null){
+			String s =transferRecord.getHandoverTime().toString();
+		}
 		return this.baseMapper.getTransferRecordPage(page,transferRecord);
 	}
 
@@ -68,5 +72,10 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 		Integer projectId = projectLiquiService.addProjectLiqui(projectLiquiAddDTO);
 		transferRecordLiqui.setProjectId(projectId);
 		return this.updateById(transferRecordLiqui);
+	}
+
+	@Override
+	public List<AssetsInformationVO> getProjectIdByAssets(Integer projectId) {
+		return this.baseMapper.getProjectIdByAssets(projectId);
 	}
 }
