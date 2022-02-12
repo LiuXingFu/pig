@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.Assets;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -26,9 +27,25 @@ public class AssetsInformationVO extends Assets {
 	private LocalDateTime mortgageTime;
 
 	/**
-	 * 地址信息
+	 * 省
 	 */
-	private Address address;
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
 	 * 关联财产债务人id

@@ -18,12 +18,17 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
+import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
-import com.pig4cloud.pig.casee.mapper.TransferRecordMapper;
+import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
-import com.pig4cloud.pig.casee.service.TransferRecordService;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,9 +41,14 @@ import java.util.List;
  */
 @Service
 public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLiquiMapper, TransferRecord> implements TransferRecordLiquiService {
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
 
 	@Override
 	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord) {
+		if (transferRecord.getHandoverTime()!=null){
+			String s =transferRecord.getHandoverTime().toString();
+		}
 		return this.baseMapper.getTransferRecordPage(page,transferRecord);
 	}
 
@@ -50,5 +60,22 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Override
 	public TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId,Integer projectId) {
 		return this.baseMapper.getTransferRecordBankLoan(transferRecordId,projectId);
+	}
+
+	@Override
+	public boolean reception(TransferRecordDTO transferRecordDTO) {
+		ProjectLiquiAddDTO projectLiquiAddDTO =new ProjectLiquiAddDTO();
+		BeanUtils.copyProperties(transferRecordDTO,projectLiquiAddDTO);
+		TransferRecordLiqui transferRecordLiqui=new TransferRecordLiqui();
+		BeanUtils.copyProperties(transferRecordDTO,transferRecordLiqui);
+		//添加项目信息
+		Integer projectId = projectLiquiService.addProjectLiqui(projectLiquiAddDTO);
+		transferRecordLiqui.setProjectId(projectId);
+		return this.updateById(transferRecordLiqui);
+	}
+
+	@Override
+	public List<AssetsInformationVO> getProjectIdByAssets(Integer projectId) {
+		return this.baseMapper.getProjectIdByAssets(projectId);
 	}
 }

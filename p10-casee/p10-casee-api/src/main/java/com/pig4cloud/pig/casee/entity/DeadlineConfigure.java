@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * 期限配置表
  *
  * @author yuanduo
- * @date 2022-02-11 21:13:38
+ * @date 2022-02-12 10:28:39
  */
 @Data
 @TableName("p10_deadline_configure")
@@ -36,48 +37,55 @@ import lombok.EqualsAndHashCode;
 @ApiModel(value = "期限配置表")
 public class DeadlineConfigure extends BaseEntity {
 
-    /**
-     * 期限配置id
-     */
-    @TableId
-    @ApiModelProperty(value="期限配置id")
-    private Integer periodConfigureId;
+	/**
+	 * 期限配置id
+	 */
+	@TableId
+	@ApiModelProperty(value = "期限配置id")
+	private Integer periodConfigureId;
 
-    /**
-     * key
-     */
-    @ApiModelProperty(value="key")
-    private String key;
+	/**
+	 * key
+	 */
+	@ApiModelProperty(value = "key")
+	private String periodConfigureKey;
 
-    /**
-     * 期限名称
-     */
-    @ApiModelProperty(value="期限名称")
-    private String deadlineConfigureName;
+	/**
+	 * 期限名称
+	 */
+	@ApiModelProperty(value = "期限名称")
+	private String deadlineName;
 
-    /**
-     * 期限 
-     */
-    @ApiModelProperty(value="期限 ")
-    private Integer deadlineConfigureNum;
+	/**
+	 * 期限
+	 */
+	@ApiModelProperty(value = "期限 ")
+	private Integer deadlineNum;
 
-    /**
-     * 单位 （1：天、2：月、3：年）
-     */
-    @ApiModelProperty(value="单位 （1：天、2：月、3：年）")
-    private Integer unit;
+	/**
+	 * 单位 （1：天、2：月、3：年）
+	 */
+	@ApiModelProperty(value = "单位 （1：天、2：月、3：年）")
+	private Integer unit;
 
-    /**
-     * 提前提醒天数
-     */
-    @ApiModelProperty(value="提前提醒天数")
-    private Integer reminderDays;
+	/**
+	 * 提前提醒天数
+	 */
+	@ApiModelProperty(value = "提前提醒天数")
+	private Integer reminderDays;
 
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String deadlineConfigureRemark;
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value = "备注")
+	private String deadlineConfigureRemark;
+
+	/**
+	 * 删除状态(0-正常,1-已删除)
+	 */
+	@ApiModelProperty(value = "删除状态(0-正常,1-已删除)")
+	@TableLogic
+	private String delFlag;
 
 
 }

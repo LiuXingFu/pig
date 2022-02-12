@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import com.pig4cloud.pig.casee.mapper.DeadlineConfigureMapper;
@@ -31,4 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeadlineConfigureServiceImpl extends ServiceImpl<DeadlineConfigureMapper, DeadlineConfigure> implements DeadlineConfigureService {
 
+	@Override
+	public IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, DeadlineConfigure deadlineConfigure) {
+		return this.baseMapper.getDeadlineConfigurePage(page, deadlineConfigure);
+	}
 }

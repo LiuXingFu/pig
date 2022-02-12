@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
@@ -54,7 +55,7 @@ public class TransferRecordliquiController {
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page" )
-	public R getTransferRecordPage(Page page, TransferRecord transferRecord) {
+	public R getTransferRecordPage(Page page, TransferRecordLiqui transferRecord) {
 		return R.ok(transferRecordLiquiService.getTransferRecordPage(page,transferRecord));
 	}
 
@@ -78,6 +79,17 @@ public class TransferRecordliquiController {
 	@GetMapping("/{transferRecordId}" )
 	public R getById(@PathVariable("transferRecordId" ) Integer transferRecordId) {
 		return R.ok(transferRecordLiquiService.getById(transferRecordId));
+	}
+
+	/**
+	 * 通过项目id查询抵押财产信息
+	 * @param projectId 项目id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询抵押财产信息", notes = "通过项目id查询抵押财产信息")
+	@GetMapping("/getProjectIdByAssets/{projectId}" )
+	public R getProjectIdByAssets(@PathVariable("projectId" ) Integer projectId) {
+		return R.ok(transferRecordLiquiService.getProjectIdByAssets(projectId));
 	}
 
 	/**
@@ -139,4 +151,27 @@ public class TransferRecordliquiController {
 		return R.ok(transferRecordLiquiService.removeById(transferRecordId));
 	}
 
+	/**
+	 * 接收移交记录
+	 * @param transferRecordDTO 接收移交记录
+	 * @return R
+	 */
+	@ApiOperation(value = "接收移交记录", notes = "接收移交记录")
+	@SysLog("接收移交记录" )
+	@PutMapping("/reception")
+	public R reception(@RequestBody TransferRecordDTO transferRecordDTO) {
+		return R.ok(transferRecordLiquiService.reception(transferRecordDTO));
+	}
+
+	/**
+	 * 退回移交记录
+	 * @param transferRecordLiqui 退回移交记录
+	 * @return R
+	 */
+	@ApiOperation(value = "退回移交记录", notes = "退回移交记录")
+	@SysLog("退回移交记录" )
+	@PutMapping("/returnTransfer")
+	public R returnTransfer(@RequestBody TransferRecordLiqui transferRecordLiqui) {
+		return R.ok(transferRecordLiquiService.updateById(transferRecordLiqui));
+	}
 }
