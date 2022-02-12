@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.BankLoanService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -28,6 +29,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 
 /**
@@ -44,7 +47,10 @@ public class BankLoanController {
 
     private final BankLoanService bankLoanService;
 
-    /**
+	private final BankLoanMapper bankLoanMapper;
+
+
+	/**
      * 分页查询
      * @param page 分页对象
      * @param bankLoanDTO 银行借贷表
@@ -88,7 +94,11 @@ public class BankLoanController {
     @SysLog("新增银行借贷表" )
     @PostMapping
     public R save(@RequestBody BankLoan bankLoan) {
-        return R.ok(bankLoanService.save(bankLoan));
+		BigDecimal principal = bankLoan.getPrincipal();
+		BigDecimal interest = bankLoan.getInterest();
+		bankLoan.setRental(principal.add(interest));
+		bankLoanMapper.insert(bankLoan);
+        return R.ok(bankLoan.getBankLoanId());
     }
 
 	/**

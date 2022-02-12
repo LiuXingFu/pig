@@ -23,12 +23,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
- * 移交记录表
+ * 移送记录表
  *
  * @author Mjh
  * @date 2022-01-28 18:52:40
@@ -47,12 +45,6 @@ public class TransferRecord extends BaseEntity {
     private Integer transferRecordId;
 
     /**
-     * 银行借贷表id
-     */
-    @ApiModelProperty(value="银行借贷表id")
-    private Integer bankLoanId;
-
-    /**
      * 受托机构id
      */
     @ApiModelProperty(value="受托机构id")
@@ -64,29 +56,23 @@ public class TransferRecord extends BaseEntity {
     @ApiModelProperty(value="受托网点id")
     private Integer entrustedOutlesId;
 
-    /**
-     * 诉讼情况(0-未诉讼 1-已诉讼)
-     */
-    @ApiModelProperty(value="诉讼情况(0-未诉讼 1-已诉讼)")
-    private Integer litigation;
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
 
-    /**
-     * 移送金额
-     */
-    @ApiModelProperty(value="移送金额")
-    private BigDecimal handoverAmount;
+	/**
+	 * 源id
+	 */
+	@ApiModelProperty(value="源id")
+	private Integer sourceId;
 
     /**
      * 移送时间
      */
     @ApiModelProperty(value="移送时间")
     private LocalDate handoverTime;
-
-    /**
-     * 申请诉讼/执行时效开始时间
-     */
-    @ApiModelProperty(value="申请诉讼/执行时效开始时间")
-    private LocalDate startingTime;
 
     /**
      * 接收/退回时间
@@ -100,11 +86,29 @@ public class TransferRecord extends BaseEntity {
     @ApiModelProperty(value="状态(0-待接收 1-已接收 2-退回 3-已完成)")
     private Integer status;
 
+	/**
+	 * 移送类型(0-银行借贷 )
+	 */
+	@ApiModelProperty(value="移送类型(0-银行借贷 )")
+	private Integer transferType;
+
     /**
      * 备注
      */
     @ApiModelProperty(value="备注")
     private String remark;
+
+	/**
+	 * 反馈备注
+	 */
+	@ApiModelProperty(value="反馈备注")
+	private String feedbackNotes;
+
+	/**
+	 * 移送详情数据
+	 */
+	@ApiModelProperty(value="移送详情数据")
+	private String transferDetail;
 
 
 }

@@ -347,6 +347,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	}
 
 	@Override
+	@Transactional
 	public Integer addDefaultOutles(Outles outles){
 		outles.setCanDefault(1);
 		outles.setOutlesName("默认网点");

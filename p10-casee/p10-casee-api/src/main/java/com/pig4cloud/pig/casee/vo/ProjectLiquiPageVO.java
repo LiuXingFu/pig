@@ -14,22 +14,28 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
+package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.ProjectStatus;
-import com.pig4cloud.pig.casee.mapper.ProjectStatusMapper;
-import com.pig4cloud.pig.casee.service.ProjectStatusService;
-import org.springframework.stereotype.Service;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
- * 项目/案件状态表
+ * 项目表
  *
- * @author ligt
- * @date 2022-01-18 15:21:05
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
-@Service
-public class ProjectStatusServiceImpl extends ServiceImpl<ProjectStatusMapper, ProjectStatus> implements ProjectStatusService {
+@Data
+public class ProjectLiquiPageVO extends ProjectLiqui {
+
+
+	@ApiModelProperty(value="诉讼情况(0-未诉讼 1-已诉讼)")
+	private Integer litigation;
+
+	@ApiModelProperty(value="移送金额")
+	private BigDecimal handoverAmount;
 
 }

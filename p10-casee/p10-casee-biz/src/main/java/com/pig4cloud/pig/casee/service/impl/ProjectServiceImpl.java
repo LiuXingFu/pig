@@ -17,16 +17,16 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.service.ProjectService;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.mapper.ProjectMapper;
-import com.pig4cloud.pig.casee.service.ProjectService;
 import org.springframework.stereotype.Service;
 
 /**
  * 项目表
  *
- * @author ligt
- * @date 2022-01-10 15:05:49
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {

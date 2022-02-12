@@ -107,6 +107,13 @@ public class BankLoan extends BaseEntity {
 	private LocalDate transferDate;
 
 	/**
+	 * 银行借贷所有债务人名称
+	 */
+	@ApiModelProperty(value="银行借贷所有债务人名称")
+	private String subjectName;
+
+
+	/**
 	 * 备注
 	 */
 	@ApiModelProperty(value="备注")

@@ -17,11 +17,22 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Address;
+import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
+import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
+import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 财产表
@@ -31,9 +42,44 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> implements AssetsService {
+	@Autowired
+	RemoteAddressService remoteAddressService;
+	@Autowired
+	AssetsBankLoanReService assetsBankLoanReService;
 
 	@Override
 	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
 		return this.baseMapper.getByAssets(assetsId);
+	}
+
+	@Override
+	public boolean saveAssets(BankLoanDTO bankLoanDTO) {
+		//抵押财产信息
+		Assets assets=new Assets();
+		//财产关联银行借贷信息
+		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
+
+		assets.setType(20200);//默认实体财产类型
+
+		if (bankLoanDTO.getAssetsDTOList()!=null){
+			for (AssetsDTO assetsDTO : bankLoanDTO.getAssetsDTOList()) {
+				BeanCopyUtil.copyBean(assetsDTO,assets);
+				this.save(assets);//添加财产信息
+
+				Address address = assetsDTO.getAddress();
+				address.setType(4);
+				address.setUserId(assets.getAssetsId());
+				remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+
+				//添加财产关联银行借贷信息
+				assetsBankLoanRe.setAssetsId(assets.getAssetsId());
+				assetsBankLoanRe.setBankLoanId(assetsDTO.getBankLoanId());
+				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
+				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
+				assetsBankLoanReService.save(assetsBankLoanRe);
+			}
+		}
+		return true;
 	}
 }

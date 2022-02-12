@@ -18,27 +18,29 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
-import com.pig4cloud.pig.casee.entity.Project;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
+import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
- * 清收项目表
+ * 移交记录表
  *
- * @author ligt
- * @date 2022-01-10 15:05:49
+ * @author Mjh
+ * @date 2022-01-28 18:52:40
  */
 @Mapper
-public interface ProjectLiquiMapper extends BaseMapper<Project> {
+public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 
-	IPage<ProjectLiquiPageVO> selectPageLiqui(Page page, @Param("query") ProjectLiquiPageDTO projectLiquiPageDTO, @Param("login")InsOutlesDTO insOutlesDTO);
+	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page,@Param("query") TransferRecord transferRecord);
 
-	ProjectLiquiDetailsVO selectByProjectId(@Param("projectId") Integer projectId);
+	List<TransferRecord> getBankLoanIdTransferRecord(@Param("sourceId")Integer sourceId,@Param("transferType") Integer transferType);
 
+	TransferRecordBankLoanVO getTransferRecordBankLoan(@Param("transferRecordId") Integer transferRecordId, @Param("projectId")Integer projectId);
+
+	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
 }

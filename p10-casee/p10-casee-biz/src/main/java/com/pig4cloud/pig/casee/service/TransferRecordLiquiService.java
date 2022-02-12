@@ -17,23 +17,31 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 
 import java.util.List;
 
 /**
- * 财产表
+ * 移交记录表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author Mjh
+ * @date 2022-01-28 18:52:40
  */
-public interface AssetsService extends IService<Assets> {
+public interface TransferRecordLiquiService extends IService<TransferRecord> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
+	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord);
 
-	boolean	saveAssets(BankLoanDTO bankLoanDTO);
+	List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId);
+
+	TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId,Integer projectId);
+
+	boolean reception(TransferRecordDTO transferRecordDTO);
+
+	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
 }

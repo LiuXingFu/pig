@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,48 +24,36 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
+
 /**
- * 项目主体关联表
+ * 项目表
  *
- * @author ligt
- * @date 2022-01-11 14:52:12
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Data
-@TableName("p10_project_subject_re")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "项目主体关联表")
-public class ProjectSubjectRe extends BaseEntity {
+public class ProjectLiquiPageDTO {
 
-    /**
-     * id
-     */
-    @TableId
-    @ApiModelProperty(value="id")
-    private Integer subjectReId;
+    @ApiModelProperty(value="公司业务案号")
+    private String companyCode;
 
-    /**
-     * 主体表id
-     */
-    @ApiModelProperty(value="主体表id")
-    private Integer subjectId;
+    @ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
+    private Integer status;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
+    @ApiModelProperty(value="办理人名称")
+    private String userNickName;
 
-    /**
-     * 类型（0-申请人，1-债务人）
-     */
-    @ApiModelProperty(value="类型（0-申请人，1-贷款人，2-担保人）")
-    private Integer type;
+    @ApiModelProperty(value="所有委托机构名称(用于显示，多个用，号隔开)")
+    private String proposersNames;
 
-    /**
-     * 删除标识（0-正常,1-删除）
-     */
-    @ApiModelProperty(value="删除标识（0-正常,1-删除）")
-    private String delFlag;
+    @ApiModelProperty(value="所有债务人名称(用于显示，多个用，号隔开)")
+    private String subjectPersons;
 
+	@ApiModelProperty(value="开始时间")
+	private LocalDate beginDate;
+
+	@ApiModelProperty(value="结束时间")
+	private LocalDate endDate;
 
 }

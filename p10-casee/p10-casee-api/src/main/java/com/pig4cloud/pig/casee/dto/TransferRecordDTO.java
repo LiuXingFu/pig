@@ -14,99 +14,64 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.TransferRecord;
-import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * 移交记录银行借贷VO
+ * 移送记录表
  *
  * @author Mjh
  * @date 2022-01-28 18:52:40
  */
 @Data
-public class TransferRecordBankLoanVO extends TransferRecordLiqui {
+
+public class TransferRecordDTO extends TransferRecord {
+	/**
+	 * 公司业务案号
+	 */
+	@ApiModelProperty(value="公司业务案号")
+	private String companyCode;
 
 	/**
-	 * 银行机构id
+	 * 办理人id
 	 */
-	private Integer insId;
+	@ApiModelProperty(value="办理人id")
+	private Integer userId;
 
 	/**
-	 * 银行网点id
+	 * 接收时间
 	 */
-	private Integer outlesId;
+	@ApiModelProperty(value="接收时间")
+	private LocalDate takeTime;
 
 	/**
-	 * 银行机构名称
+	 * 年份
 	 */
-	private String insName;
+	@ApiModelProperty(value="年份")
+	private String year;
 
 	/**
-	 * 银行网点名称
+	 * 简称
 	 */
-	private String outlesName;
+	@ApiModelProperty(value="简称")
+	private String alias;
 
 	/**
-	 * 受托机构名称
+	 * 字号
 	 */
-	private String entrustedInsName;
+	@ApiModelProperty(value="字号")
+	private Integer word;
 
 	/**
-	 * 受托网点名称
+	 * 项目详情数据
 	 */
-	private String entrustedOutlesName;
-
-	/**
-	 * 本金
-	 */
-	private BigDecimal principal;
-
-	/**
-	 * 利息
-	 */
-	private BigDecimal interest;
-
-	/**
-	 * 总额
-	 */
-	private BigDecimal rental;
-
-	/**
-	 * 抵押情况（0-有，1-无）
-	 */
-	private Integer mortgageSituation;
-
-    /**
-     * 借贷合同
-     */
-    private String loanContract;
-
-    /**
-     * 其它文件
-     */
-    private String otherFile;
-
-	/**
-	 * 借贷日期
-	 */
-	private LocalDate transferDate;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
-
-	/**
-	 * 银行借贷所有债务人名称
-	 */
-	private String subjectName;
-
+	@ApiModelProperty(value="项目详情数据")
+	private ProjectLiqui projectDetail;
 
 }

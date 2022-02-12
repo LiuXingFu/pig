@@ -43,6 +43,12 @@ public class ProjectOutlesDealRe extends BaseEntity {
     @ApiModelProperty(value="dealReId")
     private Integer dealReId;
 
+	/**
+	 * 删除标识（0-正常,1-删除）
+	 */
+	@ApiModelProperty(value="删除标识（0-正常,1-删除）")
+	private String delFlag;
+
     /**
      * 项目id
      */
@@ -62,9 +68,9 @@ public class ProjectOutlesDealRe extends BaseEntity {
     private Integer outlesId;
 
     /**
-     * 网点选中用户id
+     * 用户id
      */
-    @ApiModelProperty(value="网点选中用户id")
+    @ApiModelProperty(value="用户id")
     private Integer userId;
 
     /**
@@ -76,14 +82,8 @@ public class ProjectOutlesDealRe extends BaseEntity {
     /**
      * 类型(1-委托机构，2-协办网点（待定）)
      */
-    @ApiModelProperty(value="类型(1-委托机构，2-协办网点（待定）)")
+    @ApiModelProperty(value="类型(1-委托机构)")
     private Integer type;
-
-    /**
-     * 删除标识（0-正常,1-删除）
-     */
-    @ApiModelProperty(value="删除标识（0-正常,1-删除）")
-    private String delFlag;
 
     /**
      * 备注

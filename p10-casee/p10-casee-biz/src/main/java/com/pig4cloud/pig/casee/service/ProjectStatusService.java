@@ -27,10 +27,4 @@ import com.pig4cloud.pig.casee.entity.ProjectStatus;
  * @date 2022-01-18 15:21:05
  */
 public interface ProjectStatusService extends IService<ProjectStatus> {
-	/**
-	 * 保存项目状态
-	 * @param projectStatus
-	 * @return
-	 */
-	ProjectStatus saveProjectStatus(ProjectStatus projectStatus);
 }

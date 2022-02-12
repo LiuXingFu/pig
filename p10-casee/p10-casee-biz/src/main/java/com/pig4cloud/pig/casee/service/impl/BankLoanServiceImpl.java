@@ -93,6 +93,14 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 		//添加银行借贷信息
 		boolean save = this.save(bankLoan);
+//
+//		//添加债务人信息
+//		if (bankLoanDTO.getSubjectAddressDTOList().size()>0){
+//			List<SubjectAddressDTO> subjectAddressDTOList = bankLoanDTO.getSubjectAddressDTOList();
+//			for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
+//
+//			}
+//		}
 
 		//添加主体关联银行借贷信息
 		if (bankLoanDTO.getSubjectIdList().size()>0){

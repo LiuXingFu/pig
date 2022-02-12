@@ -20,11 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.mapper.TransferRecordMapper;
 import com.pig4cloud.pig.casee.service.TransferRecordService;
-import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 /**
  * 移交记录表
  *
@@ -34,13 +30,4 @@ import java.util.List;
 @Service
 public class TransferRecordServiceImpl extends ServiceImpl<TransferRecordMapper, TransferRecord> implements TransferRecordService {
 
-	@Override
-	public List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId) {
-		return this.baseMapper.getBankLoanIdTransferRecord(bankLoanId);
-	}
-
-	@Override
-	public TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId) {
-		return this.baseMapper.getTransferRecordBankLoan(transferRecordId);
-	}
 }

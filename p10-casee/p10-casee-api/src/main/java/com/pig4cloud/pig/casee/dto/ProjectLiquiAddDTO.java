@@ -16,52 +16,67 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 银行借贷表DTO
+ * 项目表
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Data
-public class BankLoanDTO extends BankLoan {
+public class ProjectLiquiAddDTO {
 
 	/**
-	 * 主体表id
+	 * 移送记录id
 	 */
-	private List<Integer> subjectIdList;
+	Integer transferRecordId;
 
 	/**
-	 * 抵押财产信息
+	 * 公司业务案号
 	 */
-	private List<AssetsDTO> assetsDTOList;
+	@ApiModelProperty(value="公司业务案号")
+	private String companyCode;
 
 	/**
-	 * 债务人信息
+	 * 办理人id
 	 */
-	private List<SubjectAddressDTO> subjectAddressDTOList;
-
-
-	//列表条件查询数据
-	/**
-	 * 受托方
-	 */
-	private String trustee;
+	@ApiModelProperty(value="办理人id")
+	private Integer userId;
 
 	/**
-	 * 债务人
+	 * 接收时间
 	 */
-	private String debtor;
+	@ApiModelProperty(value="接收时间")
+	private LocalDate takeTime;
 
 	/**
-	 * 移送时间
+	 * 年份
 	 */
-	private LocalDate handoverTime;
+	@ApiModelProperty(value="年份")
+	private String year;
+
+	/**
+	 * 简称
+	 */
+	@ApiModelProperty(value="简称")
+	private String alias;
+
+	/**
+	 * 字号
+	 */
+	@ApiModelProperty(value="字号")
+	private Integer word;
+
+	/**
+	 * 项目详情数据
+	 */
+	@ApiModelProperty(value="项目详情数据")
+	private ProjectLiqui projectDetail;
+
+
 }

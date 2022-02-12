@@ -25,13 +25,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 项目表
  *
- * @author ligt
- * @date 2022-01-10 15:05:49
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Data
 @TableName("p10_project")
@@ -65,34 +64,46 @@ public class Project extends BaseEntity {
     private String companyCode;
 
     /**
-     * 项目状态(0-待接收，1-在办、2-暂缓、3-和解、4-退出，5-退回)
+     * 项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)
      */
-    @ApiModelProperty(value="项目状态(0-待接收，1-在办、2-暂缓、3-和解、4-退出，5-退回)")
+    @ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
     private Integer status;
 
     /**
-     * 受托机构id
+     * 机构id
      */
-    @ApiModelProperty(value="受托机构id")
-    private Integer createInsId;
+    @ApiModelProperty(value="机构id")
+    private Integer insId;
 
     /**
-     * 受托网点id
+     * 网点id
      */
-    @ApiModelProperty(value="受托网点id")
-    private Integer createOutlesId;
+    @ApiModelProperty(value="网点id")
+    private Integer outlesId;
 
     /**
-     * 移交日期
+     * 办理人id
      */
-    @ApiModelProperty(value="移交日期")
-    private LocalDate startTime;
+    @ApiModelProperty(value="办理人id")
+    private Integer userId;
+
+    /**
+     * 办理人名称
+     */
+    @ApiModelProperty(value="办理人名称")
+    private String userNickName;
+
+    /**
+     * 接收时间
+     */
+    @ApiModelProperty(value="接收时间")
+    private LocalDate takeTime;
 
     /**
      * 退出日期
      */
     @ApiModelProperty(value="退出日期")
-    private LocalDateTime closeTime;
+    private LocalDate closeTime;
 
     /**
      * 年份
@@ -113,12 +124,6 @@ public class Project extends BaseEntity {
     private Integer word;
 
     /**
-     * 描述
-     */
-    @ApiModelProperty(value="描述")
-    private String describes;
-
-    /**
      * 所有委托机构名称(用于显示，多个用，号隔开)
      */
     @ApiModelProperty(value="所有委托机构名称(用于显示，多个用，号隔开)")
@@ -137,22 +142,10 @@ public class Project extends BaseEntity {
     private String projectDetail;
 
     /**
-     * 接收时间
+     * 描述
      */
-    @ApiModelProperty(value="接收时间")
-    private LocalDate takeTime;
-
-    /**
-     * 接受人id
-     */
-    @ApiModelProperty(value="接受人id")
-    private Integer userId;
-
-    /**
-     * 接收人名称
-     */
-    @ApiModelProperty(value="接收人名称")
-    private String userNickName;
+    @ApiModelProperty(value="描述")
+    private String describes;
 
 
 }

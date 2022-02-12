@@ -36,8 +36,4 @@ import java.util.List;
 @Mapper
 public interface TransferRecordMapper extends BaseMapper<TransferRecord> {
 
-	List<TransferRecord> getBankLoanIdTransferRecord(Integer bankLoanId);
-
-	TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId);
-
 }

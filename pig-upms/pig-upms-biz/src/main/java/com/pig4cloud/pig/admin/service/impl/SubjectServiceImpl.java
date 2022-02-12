@@ -30,7 +30,9 @@ import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
+import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
+import com.pig4cloud.pig.casee.feign.RemoteBankLoanService;
 import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -56,6 +58,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	@Autowired
 	private RemoteSubjectBankLoanReService remoteSubjectBankLoanReService;
+
+	@Autowired
+	private RemoteBankLoanService remoteBankLoanService;
 
 	@Override
 	public boolean saveBatchSubject(List<Subject> subjectList){
@@ -120,11 +125,16 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
 		List subjectIds=new ArrayList();
+		BankLoan bankLoan=new BankLoan();
+
+		String subjectNames=null;//银行借贷所有债务人名称
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
+			bankLoan.setBankLoanId(subjectAddressDTO.getBankLoanId());
 			//添加债务人主体信息
 			Subject subject=new Subject();
 			BeanCopyUtil.copyBean(subjectAddressDTO,subject);
 			this.saveSubject(subject);
+			subjectNames=subject.getName()+" ";
 			List<Address> addressList = subjectAddressDTO.getAddressList();
 			for (Address address : addressList) {
 				address.setUserId(subject.getSubjectId());
@@ -136,9 +146,12 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
 			subjectBankLoanRe.setSubjectId(subject.getSubjectId());
 			subjectBankLoanRe.setDebtType(subjectAddressDTO.getDebtType());
+			subjectBankLoanRe.setBankLoanId(subjectAddressDTO.getBankLoanId());
 			remoteSubjectBankLoanReService.saveSubjectBankLoanRe(subjectBankLoanRe, SecurityConstants.FROM);
 			subjectIds.add(subject.getSubjectId());
 		}
+		bankLoan.setSubjectName(subjectNames);
+		remoteBankLoanService.updateBankLoan(bankLoan,SecurityConstants.FROM);
 		return subjectIds;
 	}
 

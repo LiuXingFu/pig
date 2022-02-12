@@ -24,6 +24,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
+
 /**
  * 项目/案件状态表
  *
@@ -62,27 +64,26 @@ public class ProjectStatus extends BaseEntity {
     private String delFlag;
 
     /**
-     * 描述
-     */
-    @ApiModelProperty(value="描述")
-    private String describes;
-
-    /**
      * 创建人名称
      */
     @ApiModelProperty(value="创建人名称")
     private String userName;
 
-    /**
-     * 状态（根据类型关联字典）
-     */
-    @ApiModelProperty(value="状态（根据类型关联字典）")
-    private Integer status;
-
+	/**
+	 * 状态名称
+	 */
+	@ApiModelProperty(value="状态名称")
+	private String statusName;
 
 	/**
-	 * 状态对应类型（暂缓类型、结案类型）
+	 * 变更时间
 	 */
-	@ApiModelProperty(value="状态对应类型（暂缓类型、结案类型）")
-	private Integer statusType;
+	@ApiModelProperty(value="变更时间")
+	private LocalDate changeTime;
+
+	/**
+	 * 描述
+	 */
+	@ApiModelProperty(value="描述")
+	private String describes;
 }
