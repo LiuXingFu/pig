@@ -15,25 +15,27 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 财产表
+ * 移交记录表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author Mjh
+ * @date 2022-01-28 18:52:40
  */
-public interface AssetsService extends IService<Assets> {
+@Mapper
+public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
+	List<TransferRecord> getBankLoanIdTransferRecord(@Param("sourceId")Integer sourceId,@Param("transferType") Integer transferType);
 
-	boolean	saveAssets(BankLoanDTO bankLoanDTO);
+	TransferRecordBankLoanVO getTransferRecordBankLoan(@Param("transferRecordId") Integer transferRecordId, @Param("projectId")Integer projectId);
+
 }

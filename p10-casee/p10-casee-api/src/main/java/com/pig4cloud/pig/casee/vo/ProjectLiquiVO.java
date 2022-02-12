@@ -18,7 +18,7 @@ package com.pig4cloud.pig.casee.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.AssetsLiqui;
-import com.pig4cloud.pig.casee.entity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.ProjectOutlesDealRe;
 import com.pig4cloud.pig.casee.entity.ProjectSubject;
 import io.swagger.annotations.ApiModel;

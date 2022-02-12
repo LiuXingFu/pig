@@ -32,6 +32,10 @@ import java.time.LocalDate;
  */
 @Data
 public class AssetsDTO extends Assets {
+	/**
+	 * 银行借贷表id
+	 */
+	private Integer bankLoanId;
 
 	/**
 	 * 主体表id
@@ -53,6 +57,11 @@ public class AssetsDTO extends Assets {
 	 * 地址信息
 	 */
 	private Address address;
+
+	/**
+	 * 财产性质名称
+	 */
+	private String assetsTypeName;
 
 
 }

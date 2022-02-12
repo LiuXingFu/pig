@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
@@ -68,15 +70,14 @@ public class AssetsController {
 
 	/**
 	 * 新增财产表
-	 * @param assets 财产表
+	 * @param bankLoanDTO 财产表
 	 * @return R
 	 */
 	@ApiOperation(value = "新增财产表", notes = "新增财产表")
 	@SysLog("新增财产表" )
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('casee_assets_add')" )
-	public R save(@RequestBody Assets assets) {
-		return R.ok(assetsService.save(assets));
+	public R saveAssets(@RequestBody BankLoanDTO bankLoanDTO) {
+		return R.ok(assetsService.saveAssets(bankLoanDTO));
 	}
 
 	/**

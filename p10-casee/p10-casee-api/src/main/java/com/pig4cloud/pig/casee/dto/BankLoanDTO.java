@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import lombok.Data;
 import java.math.BigDecimal;
@@ -41,6 +42,11 @@ public class BankLoanDTO extends BankLoan {
 	 * 抵押财产信息
 	 */
 	private List<AssetsDTO> assetsDTOList;
+
+	/**
+	 * 债务人信息
+	 */
+	private List<SubjectAddressDTO> subjectAddressDTOList;
 
 
 	//列表条件查询数据

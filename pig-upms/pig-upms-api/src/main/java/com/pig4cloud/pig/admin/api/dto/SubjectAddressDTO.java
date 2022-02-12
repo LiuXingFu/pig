@@ -30,6 +30,11 @@ import java.util.List;
  */
 @Data
 public class SubjectAddressDTO {
+	/**
+	 * 银行借贷id
+	 */
+	private Integer bankLoanId;
+
 	//债务人主体信息
 	/**
 	 * 主体id
