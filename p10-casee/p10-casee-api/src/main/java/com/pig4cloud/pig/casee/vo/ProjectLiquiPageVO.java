@@ -38,4 +38,10 @@ public class ProjectLiquiPageVO extends ProjectLiqui {
 	@ApiModelProperty(value="移送金额")
 	private BigDecimal handoverAmount;
 
+	/**
+	 * 抵押情况（0-有，1-无）
+	 */
+	@ApiModelProperty(value="抵押情况（0-有，1-无）")
+	private Integer mortgageSituation;
+
 }

@@ -24,7 +24,9 @@
 <mapper namespace="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper">
 
 	<select id="selectPageLiqui" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO">
-		select p10_project.* from p10_project
+		select p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as handoverAmount,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as litigation,p10_bank_loan.mortgage_situation from p10_project
+		left join p10_transfer_record on p10_transfer_record.source_id = p10_project.project_id and p10_transfer_record.del_flag = 0 and p10_transfer_record.transfer_type = 0 and p10_transfer_record.status = 1
+		left join p10_bank_loan on p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and p10_transfer_record.transfer_type = 0
 		where p10_project.del_flag = 0 and p10_project.project_type = 100
 		<if test="query.status != null and query.status >= 0">
 			and p10_project.status = #{query.status}
@@ -61,6 +63,13 @@
 		where p10_project.del_flag = 0 and p10_project.project_type = 100
 		and p10_project.project_id = #{projectId}
 		LIMIT 1
+	</select>
+
+	<select id="selectProjectSubject" resultType="com.pig4cloud.pig.casee.vo.ProjectSubjectVO">
+		select p10_subject.*,p10_project_subject_re.type from p10_project_subject_re
+		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
+		where p10_project_subject_re.del_flag = 0
+		and p10_project_subject_re.project_id = #{projectId}
 	</select>
 
 </mapper>

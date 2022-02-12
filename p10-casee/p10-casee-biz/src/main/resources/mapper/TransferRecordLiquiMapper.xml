@@ -77,16 +77,12 @@
 
 	<select id="getTransferRecordBankLoan" resultType="com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO">
 		SELECT
-			*,
-			entrustedInstitution.ins_name AS entrustedInsName,
-			entrustedOutles.outles_name AS entrustedOutlesName,
+			p10_transfer_record.*,
 			institution.ins_name AS insName,
 			outles.outles_name AS outlesName,
 			p10_bank_loan.*
 		FROM
 			p10_transfer_record
-			LEFT JOIN p10_institution AS entrustedInstitution ON entrustedInstitution.ins_id = p10_transfer_record.entrusted_ins_id
-			LEFT JOIN p10_outles AS entrustedOutles ON entrustedOutles.outles_id = p10_transfer_record.entrusted_outles_id
 			LEFT JOIN p10_bank_loan ON p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and transfer_type=0
 			LEFT JOIN p10_institution AS institution ON institution.ins_id = p10_bank_loan.ins_id
 			LEFT JOIN p10_outles AS outles ON outles.outles_id = p10_bank_loan.outles_id
@@ -96,8 +92,9 @@
 				and p10_transfer_record.transfer_record_id=#{transferRecordId}
 			</if>
 			<if test="projectId != null">
-				and p10_transfer_record.projectId=#{projectId}
+				and p10_transfer_record.project_id=#{projectId}
 			</if>
+		LIMIT 1
 	</select>
 
 	<select id="getProjectIdByAssets" resultType="com.pig4cloud.pig.casee.vo.AssetsInformationVO">

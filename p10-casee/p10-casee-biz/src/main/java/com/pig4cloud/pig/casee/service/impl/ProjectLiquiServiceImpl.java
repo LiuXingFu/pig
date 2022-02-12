@@ -30,12 +30,12 @@ import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
+import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
@@ -85,6 +85,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private SecurityUtilsService securityUtilsService;
 
+	@Autowired
+	private AssetsReService assetsReService;
+
+	@Autowired
+	private AssetsBankLoanReMapper assetsBankLoanReMapper;
+
 
 
 	@Override
@@ -123,7 +129,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectStatus.setSourceId(projectLiqui.getProjectId());
 		projectStatusService.save(projectStatus);
 
-
 		// 查询银行借贷主体关联表
 		QueryWrapper<SubjectBankLoanRe> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(SubjectBankLoanRe::getBankLoanId,transferRecordBankLoanVO.getSourceId());
@@ -138,6 +143,23 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		});
 		// 保存项目主体关联表
 		projectSubjectReService.saveBatch(projectSubjectRes);
+
+		// 抵押情况0=有
+		if(transferRecordBankLoanVO.getMortgageSituation()==0){
+			// 查询银行借贷抵押财产
+			List<AssetsInformationVO> assetsInformationVOS = assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
+			List<AssetsRe> assetsReList = new ArrayList<>();
+			assetsInformationVOS.stream().forEach(item ->{
+				AssetsRe assetsRe = new AssetsRe();
+				assetsRe.setAssetsId(item.getAssetsId());
+				assetsRe.setSubjectId(item.getSubjectId());
+				assetsRe.setProjectId(projectLiqui.getProjectId());
+				// 案件来源1=抵押财产
+				assetsRe.setAssetsSource(1);
+				assetsReList.add(assetsRe);
+			});
+			assetsReService.saveBatch(assetsReList);
+		}
 
 		// 保存项目委托关联表
 		ProjectOutlesDealRe projectOutlesDealRe = new ProjectOutlesDealRe();
@@ -156,6 +178,15 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		// 获取项目基本信息及办理机构名称和网点名称
 		ProjectLiquiDetailsVO projectLiquiDetailsVO = this.baseMapper.selectByProjectId(projectId);
 
+
+		// 查询银行借贷和移送记录表
+		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(null,projectId);
+		projectLiquiDetailsVO.setTransferRecordBankLoanVO(transferRecordBankLoanVO);
+
+		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectId);
+		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
+
+//		assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
 
 		return projectLiquiDetailsVO;
 	}

@@ -97,5 +97,12 @@ public class AssetsRe extends BaseEntity {
     @ApiModelProperty(value="备注")
     private String remark;
 
+	/**
+	 * 财产来源（1-抵押财产，2-案件）
+	 */
+	@ApiModelProperty(value="财产来源（1-抵押财产，2-案件）")
+	private Integer assetsSource;
+
+
 
 }
