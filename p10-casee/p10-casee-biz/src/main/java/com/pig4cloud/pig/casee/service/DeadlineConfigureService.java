@@ -17,6 +17,8 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 
@@ -28,4 +30,5 @@ import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
  */
 public interface DeadlineConfigureService extends IService<DeadlineConfigure> {
 
+	IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, DeadlineConfigure deadlineConfigure);
 }

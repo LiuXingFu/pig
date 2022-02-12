@@ -18,8 +18,11 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 期限配置表
@@ -30,4 +33,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DeadlineConfigureMapper extends BaseMapper<DeadlineConfigure> {
 
+	IPage<DeadlineConfigure> getDeadlineConfigurePage(Page page, @Param("query") DeadlineConfigure deadlineConfigure);
 }

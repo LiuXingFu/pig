@@ -23,13 +23,25 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.DeadlineConfigureMapper">
 
-  <resultMap id="deadlineConfigureMap" type="com.pig4cloud.pig.casee.entity.DeadlineConfigure">
-    <id property="periodConfigureId" column="period_configure_id"/>
-    <result property="key" column="key"/>
-    <result property="deadlineConfigureName" column="deadline_configure_name"/>
-    <result property="deadlineConfigureNum" column="deadline_configure_num"/>
-    <result property="unit" column="unit"/>
-    <result property="reminderDays" column="reminder_days"/>
-    <result property="deadlineConfigureRemark" column="deadline_configure_remark"/>
-  </resultMap>
+	<resultMap id="deadlineConfigureMap" type="com.pig4cloud.pig.casee.entity.DeadlineConfigure">
+		<id property="periodConfigureId" column="period_configure_id"/>
+		<result property="periodConfigureKey" column="period_configure_key"/>
+		<result property="deadlineName" column="deadline_name"/>
+		<result property="deadlineNum" column="deadline_num"/>
+		<result property="unit" column="unit"/>
+		<result property="reminderDays" column="reminder_days"/>
+		<result property="deadlineConfigureRemark" column="deadline_configure_remark"/>
+	</resultMap>
+
+	<select id="getDeadlineConfigurePage" resultType="com.pig4cloud.pig.casee.entity.DeadlineConfigure">
+		SELECT * FROM p10_deadline_configure
+		WHERE 1 = 1
+		<if test="query.periodConfigureId != null and query.periodConfigureId != 0">
+			and period_configure_id = #{query.periodConfigureId}
+		</if>
+		<if test="query.deadlineName != null and query.deadlineName != ''">
+			and deadline_name like concat('%', #{query.deadlineName}, '%')
+		</if>
+		ORDER BY create_time DESC
+	</select>
 </mapper>

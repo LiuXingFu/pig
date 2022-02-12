@@ -19,11 +19,10 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import com.pig4cloud.pig.casee.service.DeadlineConfigureService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -52,9 +51,8 @@ public class DeadlineConfigureController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('casee_deadlineconfigure_get')" )
     public R getDeadlineConfigurePage(Page page, DeadlineConfigure deadlineConfigure) {
-        return R.ok(deadlineConfigureService.page(page, Wrappers.query(deadlineConfigure)));
+        return R.ok(deadlineConfigureService.getDeadlineConfigurePage(page, deadlineConfigure));
     }
 
 
@@ -65,7 +63,6 @@ public class DeadlineConfigureController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{periodConfigureId}" )
-    @PreAuthorize("@pms.hasPermission('casee_deadlineconfigure_get')" )
     public R getById(@PathVariable("periodConfigureId" ) Integer periodConfigureId) {
         return R.ok(deadlineConfigureService.getById(periodConfigureId));
     }
@@ -78,7 +75,6 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "新增期限配置表", notes = "新增期限配置表")
     @SysLog("新增期限配置表" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('casee_deadlineconfigure_add')" )
     public R save(@RequestBody DeadlineConfigure deadlineConfigure) {
         return R.ok(deadlineConfigureService.save(deadlineConfigure));
     }
@@ -91,7 +87,6 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "修改期限配置表", notes = "修改期限配置表")
     @SysLog("修改期限配置表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('casee_deadlineconfigure_edit')" )
     public R updateById(@RequestBody DeadlineConfigure deadlineConfigure) {
         return R.ok(deadlineConfigureService.updateById(deadlineConfigure));
     }
@@ -104,9 +99,13 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "通过id删除期限配置表", notes = "通过id删除期限配置表")
     @SysLog("通过id删除期限配置表" )
     @DeleteMapping("/{periodConfigureId}" )
-    @PreAuthorize("@pms.hasPermission('casee_deadlineconfigure_del')" )
     public R removeById(@PathVariable Integer periodConfigureId) {
-        return R.ok(deadlineConfigureService.removeById(periodConfigureId));
+		boolean b = deadlineConfigureService.removeById(periodConfigureId);
+		if (b) {
+			return R.ok("移除成功！");
+		} else {
+			return R.failed("移除失败!");
+		}
     }
 
 }
