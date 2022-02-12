@@ -14,22 +14,37 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
+package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.ProjectStatus;
-import com.pig4cloud.pig.casee.mapper.ProjectStatusMapper;
-import com.pig4cloud.pig.casee.service.ProjectStatusService;
-import org.springframework.stereotype.Service;
+import com.pig4cloud.pig.casee.entity.ProjectLiqui;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
- * 项目/案件状态表
+ * 项目表
  *
  * @author ligt
- * @date 2022-01-18 15:21:05
+ * @date 2022-01-10 15:05:49
  */
-@Service
-public class ProjectStatusServiceImpl extends ServiceImpl<ProjectStatusMapper, ProjectStatus> implements ProjectStatusService {
+@Data
+public class ProjectLiquiDetailsVO extends ProjectLiqui {
+
+	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value="机构id")
+	private String insName;
+
+	/**
+	 * 网点id
+	 */
+	@ApiModelProperty(value="网点id")
+	private String outlesName;
+
+	/**
+	 * 银行借贷和移交信息
+	 */
+	TransferRecordBankLoanVO transferRecordBankLoanVO;
+
 
 }

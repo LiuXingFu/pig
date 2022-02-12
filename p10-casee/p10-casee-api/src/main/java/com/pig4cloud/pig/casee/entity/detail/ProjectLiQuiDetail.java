@@ -13,6 +13,14 @@ import java.time.LocalDateTime;
 @ApiModel(value = "清收项目详情表")
 public class ProjectLiQuiDetail {
 
+	/**
+	 * 项目金额
+	 */
+	BigDecimal projectAmount;
 
+	/**
+	 * 剩余回款
+	 */
+	BigDecimal remainingPayment;
 
 }

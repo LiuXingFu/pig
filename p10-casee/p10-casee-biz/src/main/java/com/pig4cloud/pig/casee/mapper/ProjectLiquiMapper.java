@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -37,5 +38,7 @@ import org.apache.ibatis.annotations.Param;
 public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	IPage<ProjectLiquiPageVO> selectPageLiqui(Page page, @Param("query") ProjectLiquiPageDTO projectLiquiPageDTO, @Param("login")InsOutlesDTO insOutlesDTO);
+
+	ProjectLiquiDetailsVO selectByProjectId(@Param("projectId") Integer projectId);
 
 }

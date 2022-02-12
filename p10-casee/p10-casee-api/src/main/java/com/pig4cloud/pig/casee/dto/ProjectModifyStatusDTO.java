@@ -16,13 +16,8 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
@@ -33,27 +28,36 @@ import java.time.LocalDate;
  * @date 2022-02-10 17:30:36
  */
 @Data
-public class ProjectLiquiPageDTO {
+public class ProjectModifyStatusDTO {
 
-    @ApiModelProperty(value="公司业务案号")
-    private String companyCode;
+    /**
+     * projectId
+     */
+    @ApiModelProperty(value="projectId")
+    private Integer projectId;
 
+    /**
+     * 项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)
+     */
     @ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
     private Integer status;
 
-    @ApiModelProperty(value="办理人名称")
-    private String userNickName;
+	/**
+	 * 变更时间
+	 */
+	@ApiModelProperty(value="变更时间")
+	private LocalDate changeTime;
 
-    @ApiModelProperty(value="所有委托机构名称(用于显示，多个用，号隔开)")
-    private String proposersNames;
+	/**
+	 * 状态名称
+	 */
+	@ApiModelProperty(value="状态名称")
+	private String statusName;
 
-    @ApiModelProperty(value="所有债务人名称(用于显示，多个用，号隔开)")
-    private String subjectPersons;
-
-	@ApiModelProperty(value="开始时间")
-	private LocalDate beginDate;
-
-	@ApiModelProperty(value="结束时间")
-	private LocalDate endDate;
+	/**
+	 * 说明
+	 */
+	@ApiModelProperty(value="说明")
+	private String describes;
 
 }

@@ -82,9 +82,7 @@ public class ProjectStatusController {
     @SysLog("新增项目/案件状态表" )
     @PostMapping
     public R save(@RequestBody ProjectStatus projectStatus) {
-		PigUser pigUser= securityUtilsService.getCacheUser();
-		projectStatus.setUserName(pigUser.getUsername());
-    	return R.ok(projectStatusService.saveProjectStatus(projectStatus));
+    	return R.ok(projectStatusService.save(projectStatus));
     }
 
     /**

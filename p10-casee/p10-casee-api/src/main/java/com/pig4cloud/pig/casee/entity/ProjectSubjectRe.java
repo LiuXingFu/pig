@@ -58,7 +58,7 @@ public class ProjectSubjectRe extends BaseEntity {
     /**
      * 类型（0-申请人，1-债务人）
      */
-    @ApiModelProperty(value="类型（0-申请人，1-债务人）")
+    @ApiModelProperty(value="类型（0-申请人，1-贷款人，2-担保人）")
     private Integer type;
 
     /**

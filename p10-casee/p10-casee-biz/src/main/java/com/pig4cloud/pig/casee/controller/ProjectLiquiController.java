@@ -19,12 +19,16 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
+import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -55,9 +59,27 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.queryPageLiqui(page, projectLiquiPageDTO));
 	}
 
+	/**
+	 * 通过id查询项目清收详情
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询项目清收详情", notes = "通过id查询项目清收详情")
+	@GetMapping("/getProjectDetails/{projectId}" )
+	public R getProjectDetails(@PathVariable("projectId" )Integer projectId) {
+		return R.ok(projectLiquiService.getProjectDetails(projectId));
+	}
 
-
-
+	/**
+	 * 根据id修改项目状态
+	 * @param projectModifyStatusDTO 项目表
+	 * @return R
+	 */
+	@ApiOperation(value = "根据id修改项目状态", notes = "根据id修改项目状态")
+	@PutMapping("/modifyStatusById")
+	public R modifyStatusById(@RequestBody ProjectModifyStatusDTO projectModifyStatusDTO) {
+		return R.ok(projectLiquiService.modifyStatusById(projectModifyStatusDTO));
+	}
 
 
 }

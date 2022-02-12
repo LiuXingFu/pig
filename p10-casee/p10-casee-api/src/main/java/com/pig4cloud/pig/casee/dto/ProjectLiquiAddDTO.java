@@ -31,7 +31,7 @@ import java.time.LocalDate;
  * @date 2022-02-10 17:30:36
  */
 @Data
-public class ProjectLiquiAddDTO extends ProjectLiqui {
+public class ProjectLiquiAddDTO {
 
 	/**
 	 * 移送记录id
@@ -78,7 +78,7 @@ public class ProjectLiquiAddDTO extends ProjectLiqui {
 	 * 项目详情数据
 	 */
 	@ApiModelProperty(value="项目详情数据")
-	private String projectDetail;
+	private ProjectLiqui projectDetail;
 
 
 }
