@@ -55,7 +55,7 @@ public class TransferRecordliquiController {
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page" )
 	public R getTransferRecordPage(Page page, TransferRecord transferRecord) {
-		return R.ok(transferRecordLiquiService.page(page, Wrappers.query(transferRecord)));
+		return R.ok(transferRecordLiquiService.getTransferRecordPage(page,transferRecord));
 	}
 
 	/**

@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -101,6 +102,10 @@ public class TransferRecordBankLoanVO extends TransferRecord {
 	 */
 	private String remark;
 
+	/**
+	 * 银行借贷所有债务人名称
+	 */
+	private String subjectName;
 
 
 }

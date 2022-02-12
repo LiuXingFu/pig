@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
@@ -35,6 +36,11 @@ import java.util.List;
  */
 @Service
 public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLiquiMapper, TransferRecord> implements TransferRecordLiquiService {
+
+	@Override
+	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord) {
+		return this.baseMapper.getTransferRecordPage(page,transferRecord);
+	}
 
 	@Override
 	public List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId) {

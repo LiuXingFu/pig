@@ -50,6 +50,31 @@
 		p10_transfer_record.del_flag=0 and p10_transfer_record.source_id=#{sourceId} and p10_transfer_record.transfer_type=#{transferType}
 	</select>
 
+	<select id="getTransferRecordPage" resultType="com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO">
+		SELECT
+		*,
+		entrustedInstitution.ins_name AS entrustedInsName,
+		entrustedOutles.outles_name AS entrustedOutlesName,
+		institution.ins_name AS insName,
+		outles.outles_name AS outlesName,
+		p10_bank_loan.*
+		FROM
+		p10_transfer_record
+		LEFT JOIN p10_institution AS entrustedInstitution ON entrustedInstitution.ins_id = p10_transfer_record.entrusted_ins_id
+		LEFT JOIN p10_outles AS entrustedOutles ON entrustedOutles.outles_id = p10_transfer_record.entrusted_outles_id
+		LEFT JOIN p10_bank_loan ON p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and transfer_type=0
+		LEFT JOIN p10_institution AS institution ON institution.ins_id = p10_bank_loan.ins_id
+		LEFT JOIN p10_outles AS outles ON outles.outles_id = p10_bank_loan.outles_id
+		WHERE
+		p10_transfer_record.del_flag = 0
+		<if test="query.status != null">
+			and p10_transfer_record.status=#{query.status}
+		</if>
+		<if test="query.transferType != null">
+			and p10_transfer_record.transfer_type=#{query.transferType}
+		</if>
+	</select>
+
 	<select id="getTransferRecordBankLoan" resultType="com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO">
 		SELECT
 			*,
