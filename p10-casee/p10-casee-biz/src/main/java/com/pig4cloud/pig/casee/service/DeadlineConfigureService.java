@@ -18,22 +18,14 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 
 /**
- * 财产表
+ * 期限配置表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author yuanduo
+ * @date 2022-02-11 21:13:38
  */
-public interface AssetsService extends IService<Assets> {
+public interface DeadlineConfigureService extends IService<DeadlineConfigure> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
-
-	boolean	saveAssets(BankLoanDTO bankLoanDTO);
 }

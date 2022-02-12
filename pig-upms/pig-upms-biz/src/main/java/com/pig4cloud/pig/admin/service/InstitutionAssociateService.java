@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
+import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
 
@@ -53,7 +54,7 @@ public interface InstitutionAssociateService extends IService<InstitutionAssocia
 	 * @param associateId
 	 * @return
 	 */
-	InstitutionAssociateVO queryById(Integer associateId);
+	InstitutionAssociateDetailsVO queryById(Integer associateId);
 
 	/**
 	 * 通过id解除关联

@@ -61,56 +61,51 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 
 	/**
 	 * 分页查询已授权的网点信息
+	 *
 	 * @param page
 	 * @param associateOutlesRe
 	 * @return
 	 */
 	@Override
 	public IPage<AssociateOutlesRe> pageAssociateOutles(Page page, AssociateOutlesRe associateOutlesRe) {
+		associateOutlesRe.setInsId(securityUtilsService.getCacheUser().getInsId());
 		return this.baseMapper.pageAssociateOutles(page, associateOutlesRe);
 	}
 
 	/**
 	 * 根据associateID查询授权列表
-	 * @param page
-	 * @param associateId
+	 *
+	 * @param insAssociateId
+	 * @patam outlesName
 	 * @return
 	 */
 	@Override
-	public IPage<Outles> getAuthorizationPage(Page page, Integer associateId) throws Exception {
-		// 1.根据关联机构id查询关联机构信息
-		InstitutionAssociate institutionAssociate = institutionAssociateService.getOne(new LambdaQueryWrapper<InstitutionAssociate>().eq(InstitutionAssociate::getAssociateId, associateId));
-		// 2.判断关联信息是否为空
-		if(Objects.nonNull(institutionAssociate)){
-			// 2.1根据网点id与关联id查询
-			List<Integer> outlesIds = this.list(new LambdaQueryWrapper<AssociateOutlesRe>().eq(AssociateOutlesRe::getAssociateId, associateId)).stream().map(AssociateOutlesRe::getOutlesId)
-					.collect(Collectors.toList());
-			LambdaQueryWrapper<Outles> query = new LambdaQueryWrapper<Outles>().eq(Outles::getInsId, institutionAssociate.getInsId());
-			if(Objects.nonNull(outlesIds)){
-				if(outlesIds.size() > 0){
-					query.notIn(Outles::getOutlesId, outlesIds);
-				}
-			}
-			IPage<Outles> pageList = outlesService.page(page, query);
-			return pageList;
-		} else {
-			throw new Exception("合作机构不存在！");
-		}
+	public List<Outles> getAuthorizationPage(Integer insAssociateId, String outlesName) throws Exception {
+		// 2.1根据网点id与关联id查询
+		List<Integer> outlesIds = this.list(new LambdaQueryWrapper<AssociateOutlesRe>()
+				.eq(AssociateOutlesRe::getInsId, securityUtilsService.getCacheUser().getInsId())
+				.eq(AssociateOutlesRe::getInsAssociateId, insAssociateId))
+				.stream().map(AssociateOutlesRe::getOutlesId).collect(Collectors.toList());
+
+		List<Outles> outlesList = outlesService.pageOutlesList(securityUtilsService.getCacheUser().getInsId(), outlesName, outlesIds);
+
+		return outlesList;
 	}
 
 	/**
 	 * 新增机构授权网点
-	 * @param associateOutlesDTO 机构关联网点表
+	 *
+	 * @param associateOutlesDTO 机构关联网点DTO
 	 * @return R
 	 */
 	@Override
 	@Transactional
 	public boolean saveAssociateOutles(AssociateOutlesReDTO associateOutlesDTO) throws Exception {
-		if(Objects.nonNull(associateOutlesDTO)) {
+		if (Objects.nonNull(associateOutlesDTO.getOutlesIds()) && associateOutlesDTO.getOutlesIds().size() > 0) {
 			List<AssociateOutlesRe> list = new ArrayList<>();
-			for (Integer outlesId : associateOutlesDTO.getOutless()) {
+			for (Integer outlesId : associateOutlesDTO.getOutlesIds()) {
 				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
-				BeanUtils.copyProperties(associateOutlesDTO, associateOutlesRe);
+				associateOutlesRe.setInsAssociateId(associateOutlesDTO.getInsAssociateId());
 				associateOutlesRe.setInsId(securityUtilsService.getCacheUser().getInsId());
 				associateOutlesRe.setOutlesId(outlesId);
 				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
@@ -118,20 +113,19 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 			}
 			return this.saveBatch(list);
 		} else {
-			throw new Exception("参数异常！");
+			throw new Exception("请选择勾线网点！");
 		}
 	}
 
 	/**
 	 * 解除网点授权关系
-	 * @param associateOutlesRe
+	 *
+	 * @param associateOutlesId
 	 * @return R
 	 */
 	@Override
 	@Transactional
-	public boolean dismissById(AssociateOutlesRe associateOutlesRe) {
-		return this.remove(new LambdaQueryWrapper<AssociateOutlesRe>()
-				.eq(AssociateOutlesRe::getAssociateId, associateOutlesRe.getAssociateId())
-				.eq(AssociateOutlesRe::getOutlesId, associateOutlesRe.getOutlesId()));
+	public boolean dismissById(Integer associateOutlesId) {
+		return this.removeById(associateOutlesId);
 	}
 }

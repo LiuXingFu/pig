@@ -15,29 +15,30 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.mapper;
+package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
+import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
- * 机构关联表
+ * 移交记录表
  *
- * @author yuanduo
- * @date 2021-09-03 11:01:07
+ * @author Mjh
+ * @date 2022-01-28 18:52:40
  */
 @Mapper
-public interface InstitutionAssociateMapper extends BaseMapper<InstitutionAssociate> {
+public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 
-	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociate institutionAssociate);
+	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page,@Param("query") TransferRecord transferRecord);
 
-	InstitutionAssociateDetailsVO queryById(Integer associateId);
+	List<TransferRecord> getBankLoanIdTransferRecord(@Param("sourceId")Integer sourceId,@Param("transferType") Integer transferType);
+
+	TransferRecordBankLoanVO getTransferRecordBankLoan(@Param("transferRecordId") Integer transferRecordId, @Param("projectId")Integer projectId);
 
 }

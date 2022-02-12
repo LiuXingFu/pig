@@ -23,6 +23,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.AssociateOutlesReDTO;
 import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.AssociateOutlesReVO;
+
+import java.util.List;
 
 /**
  * 机构关联网点表
@@ -42,11 +45,11 @@ public interface AssociateOutlesReService extends IService<AssociateOutlesRe> {
 
 	/**
 	 * 根据associateID查询授权列表
-	 * @param page
 	 * @param associateId
+	 * @Patam outlesName
 	 * @return
 	 */
-	IPage<Outles> getAuthorizationPage(Page page, Integer associateId) throws Exception;
+	List<Outles> getAuthorizationPage(Integer associateId, String outlesName) throws Exception;
 
 	/**
 	 * 新增机构授权网点
@@ -57,8 +60,8 @@ public interface AssociateOutlesReService extends IService<AssociateOutlesRe> {
 
 	/**
 	 * 解除网点授权关系
-	 * @param associateOutlesRe
+	 * @param associateOutlesId
 	 * @return R
 	 */
-	boolean dismissById(AssociateOutlesRe associateOutlesRe);
+	boolean dismissById(Integer associateOutlesId);
 }

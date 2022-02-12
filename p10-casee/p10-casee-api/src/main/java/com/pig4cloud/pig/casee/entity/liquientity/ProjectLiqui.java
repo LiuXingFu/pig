@@ -14,14 +14,14 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.entity.liquientity;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.casee.entity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**

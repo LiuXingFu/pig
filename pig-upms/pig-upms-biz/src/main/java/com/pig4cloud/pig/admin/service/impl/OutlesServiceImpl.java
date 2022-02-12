@@ -371,4 +371,9 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		}
 		return organizationQueryVOS;
 	}
+
+	@Override
+	public List<Outles> pageOutlesList(Integer insId, String outlesName, List<Integer> outlesIds) {
+		return this.baseMapper.pageOutlesList(insId, outlesName, outlesIds);
+	}
 }

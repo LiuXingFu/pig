@@ -16,19 +16,14 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.entity.*;
-import com.pig4cloud.pig.casee.entity.detail.CaseeLiQuiDateDetail;
-import com.pig4cloud.pig.casee.entity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**

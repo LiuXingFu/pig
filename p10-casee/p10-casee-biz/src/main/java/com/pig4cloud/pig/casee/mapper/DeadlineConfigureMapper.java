@@ -15,25 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 财产表
+ * 期限配置表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author yuanduo
+ * @date 2022-02-11 21:13:38
  */
-public interface AssetsService extends IService<Assets> {
+@Mapper
+public interface DeadlineConfigureMapper extends BaseMapper<DeadlineConfigure> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
-
-	boolean	saveAssets(BankLoanDTO bankLoanDTO);
 }

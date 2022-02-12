@@ -25,10 +25,7 @@ import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
-import com.pig4cloud.pig.admin.api.vo.InsOutlesUserListVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
-import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
-import com.pig4cloud.pig.admin.api.vo.MessageRecordVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.InstitutionAssociateMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
@@ -150,11 +147,8 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	 * @return
 	 */
 	@Override
-	public InstitutionAssociateVO queryById(Integer associateId) {
-		InstitutionAssociateVO institutionAssociateVO = this.baseMapper.queryById(associateId);
-		Address address = addressService.getByUserId(institutionAssociateVO.getInsAssociateId(), 2);
-		institutionAssociateVO.setAddress(address);
-		return institutionAssociateVO;
+	public InstitutionAssociateDetailsVO queryById(Integer associateId) {
+		return this.baseMapper.queryById(associateId);
 	}
 
 	/**
@@ -179,10 +173,12 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 		associateIdList.add(institutionAssociate.getAssociateId());
 
 		//根据被关联机构对象id删除授权网点
-		associateOutlesReService.remove(new LambdaQueryWrapper<AssociateOutlesRe>().eq(AssociateOutlesRe::getAssociateId, institutionAssociate.getAssociateId()));
+		associateOutlesReService.remove(new LambdaQueryWrapper<AssociateOutlesRe>().eq(AssociateOutlesRe::getInsId, institutionAssociate.getInsId())
+				.eq(AssociateOutlesRe::getInsAssociateId, institutionAssociate.getInsAssociateId()));
 
 		//根据关联机构对象id删除授权网点
-		associateOutlesReService.remove(new LambdaQueryWrapper<AssociateOutlesRe>().eq(AssociateOutlesRe::getAssociateId, associate.getAssociateId()));
+		associateOutlesReService.remove(new LambdaQueryWrapper<AssociateOutlesRe>().eq(AssociateOutlesRe::getInsId, associate.getInsId())
+				.eq(AssociateOutlesRe::getInsAssociateId, associate.getInsAssociateId()));
 
 		//删除关联对象
 		return this.removeByIds(associateIdList);
