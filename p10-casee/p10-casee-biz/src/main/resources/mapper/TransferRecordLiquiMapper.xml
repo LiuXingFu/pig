@@ -67,11 +67,11 @@
 		LEFT JOIN p10_outles AS outles ON outles.outles_id = p10_bank_loan.outles_id
 		WHERE
 		p10_transfer_record.del_flag = 0
-		<if test="query.status != null">
+		<if test="query.status != null and query.status != -1">
 			and p10_transfer_record.status=#{query.status}
 		</if>
-		<if test="query.transferType != null">
-			and p10_transfer_record.transfer_type=#{query.transferType}
+		<if test="query.handoverTime != null">
+			and p10_transfer_record.handover_time=#{query.handoverTime}
 		</if>
 	</select>
 
