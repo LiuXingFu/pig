@@ -299,13 +299,16 @@
 
 	<select id="pageCooperateByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
 		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
-		LEFT JOIN p10_associate_outles_re on p10_associate_outles_re.outles_id = p10_outles.outles_id and p10_associate_outles_re.ins_id = #{query.insId}
+		LEFT JOIN p10_associate_outles_re on p10_associate_outles_re.outles_id = p10_outles.outles_id
 		where p10_outles.del_flag = 0
 		<if test="loginInsId != null and loginInsId != 0">
 			and p10_associate_outles_re.ins_associate_id = #{loginInsId}
 		</if>
 		<if test="query.outlesName != null and query.outlesName != ''">
 			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
+		</if>
+		<if test="query.insId != '' and query.insId != null">
+			and p10_associate_outles_re.ins_id = #{query.insId}
 		</if>
 		LIMIT 10
 	</select>
