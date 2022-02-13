@@ -158,7 +158,7 @@ public class TransferRecordliquiController {
 	 */
 	@ApiOperation(value = "接收移交记录", notes = "接收移交记录")
 	@SysLog("接收移交记录" )
-	@PutMapping("/reception")
+	@PostMapping("/reception")
 	public R reception(@RequestBody TransferRecordDTO transferRecordDTO) {
 		return R.ok(transferRecordLiquiService.reception(transferRecordDTO));
 	}
@@ -170,7 +170,7 @@ public class TransferRecordliquiController {
 	 */
 	@ApiOperation(value = "退回移交记录", notes = "退回移交记录")
 	@SysLog("退回移交记录" )
-	@PutMapping("/returnTransfer")
+	@PostMapping("/returnTransfer")
 	public R returnTransfer(@RequestBody TransferRecordLiqui transferRecordLiqui) {
 		return R.ok(transferRecordLiquiService.updateById(transferRecordLiqui));
 	}
