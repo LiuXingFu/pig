@@ -73,42 +73,42 @@ public class CaseeServiceImpl extends ServiceImpl<CaseeMapper, Casee> implements
 	@Transactional
 	public Integer addCase(CaseeAddDTO caseeAddDTO) throws Exception{
 
-		//查询项目信息
-		Project project = projectLiquiService.getById(caseeAddDTO.getProjectId());
-		PigUser pigUser=securityUtilsService.getCacheUser();
-
-		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
-
-		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
-		if (taskNodeTemplate.getData()==null){
-			//如果当前受托网点没有配置模板直接返回
-			return -1;
-		}
-
-		//添加案件基础信息
-		Casee casee = new Casee();
-		BeanUtils.copyProperties(caseeAddDTO, casee);
-		int insert = this.baseMapper.insert(casee);
-		//添加案件主体关联信息
-		if(caseeAddDTO.getCaseeSubjectReList()!=null&&caseeAddDTO.getCaseeSubjectReList().size()!=0){
-			caseeAddDTO.getCaseeSubjectReList().stream().forEach(val -> {
-				val.setCaseeId(casee.getCaseeId());
-			});
-			caseeSubjectReService.saveBatch(caseeAddDTO.getCaseeSubjectReList());
-		}
-
-		//增加程序
-
-		TargetAddDTO targetAddDTO = new TargetAddDTO();
-//		targetAddDTO.setCreateInsId(pigUser.getInsId());
-//		targetAddDTO.setCreateOutlesId(pigUser.getOutlesId());
-		targetAddDTO.setCaseeId(casee.getCaseeId());
-		targetAddDTO.setProcedureNature(casee.getCaseeType());
-
-		TargetAddDTO addDTO = targetService.saveTargetAddDTO(targetAddDTO);
-		//添加任务数据
-		configurationNodeTemplate(casee,addDTO,project,taskNodeTemplate.getData().getTemplateId());
-		return insert;
+//		//查询项目信息
+//		Project project = projectLiquiService.getById(caseeAddDTO.getProjectId());
+//		PigUser pigUser=securityUtilsService.getCacheUser();
+//
+//		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
+//
+//		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
+//		if (taskNodeTemplate.getData()==null){
+//			//如果当前受托网点没有配置模板直接返回
+//			return -1;
+//		}
+//
+//		//添加案件基础信息
+//		Casee casee = new Casee();
+//		BeanUtils.copyProperties(caseeAddDTO, casee);
+//		int insert = this.baseMapper.insert(casee);
+//		//添加案件主体关联信息
+//		if(caseeAddDTO.getCaseeSubjectReList()!=null&&caseeAddDTO.getCaseeSubjectReList().size()!=0){
+//			caseeAddDTO.getCaseeSubjectReList().stream().forEach(val -> {
+//				val.setCaseeId(casee.getCaseeId());
+//			});
+//			caseeSubjectReService.saveBatch(caseeAddDTO.getCaseeSubjectReList());
+//		}
+//
+//		//增加程序
+//
+//		TargetAddDTO targetAddDTO = new TargetAddDTO();
+////		targetAddDTO.setCreateInsId(pigUser.getInsId());
+////		targetAddDTO.setCreateOutlesId(pigUser.getOutlesId());
+//		targetAddDTO.setCaseeId(casee.getCaseeId());
+//		targetAddDTO.setProcedureNature(casee.getCaseeType());
+//
+//		TargetAddDTO addDTO = targetService.saveTargetAddDTO(targetAddDTO);
+//		//添加任务数据
+//		configurationNodeTemplate(casee,addDTO,project,taskNodeTemplate.getData().getTemplateId());
+		return 0;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class CaseeServiceImpl extends ServiceImpl<CaseeMapper, Casee> implements
 		taskNodeTemplateDTO.setCaseeId(casee.getCaseeId());
 		taskNodeTemplateDTO.setInsId(project.getInsId());
 		taskNodeTemplateDTO.setOutlesId(project.getOutlesId());
-		taskNodeTemplateDTO.setProjectId(casee.getProjectId());
+//		taskNodeTemplateDTO.setProjectId(casee.getProjectId());
 		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
 		taskNodeTemplateDTO.setTemplateId(templateId);
 
