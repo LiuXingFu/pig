@@ -70,6 +70,9 @@
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project_subject_re.del_flag = 0
 		and p10_project_subject_re.project_id = #{projectId}
+		<if test="subjectName != null and subjectName != ''">
+			and p10_subject.name = like concat('%', #{subjectName}, '%')
+		</if>
 	</select>
 
 	<select id="getByProjectId" resultType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui">
