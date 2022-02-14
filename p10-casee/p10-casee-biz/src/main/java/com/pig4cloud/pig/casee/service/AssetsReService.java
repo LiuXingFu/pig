@@ -29,6 +29,6 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
  */
 public interface AssetsReService extends IService<AssetsRe> {
 
-	AssetsDTO getProjectIdByAssets();
+	AssetsDTO getProjectIdByAssets(Integer projectId);
 
 }

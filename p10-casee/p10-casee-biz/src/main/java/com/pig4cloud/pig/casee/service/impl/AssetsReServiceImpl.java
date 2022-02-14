@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
 import com.pig4cloud.pig.casee.service.AssetsReService;
@@ -31,4 +32,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> implements AssetsReService {
 
+
+	@Override
+	public AssetsDTO getProjectIdByAssets(Integer projectId) {
+		return this.baseMapper.getProjectIdByAssets(projectId);
+	}
 }

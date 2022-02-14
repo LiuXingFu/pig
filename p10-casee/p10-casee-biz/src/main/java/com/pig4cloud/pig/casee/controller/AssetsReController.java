@@ -70,6 +70,18 @@ public class AssetsReController {
         return R.ok(assetsReService.getById(assetsReId));
     }
 
+
+	/**
+	 * 通过项目id查询财产信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询财产信息", notes = "通过项目id查询财产信息")
+	@GetMapping("/getProjectIdByAssets/{projectId}" )
+	public R getProjectIdByAssets(@PathVariable("projectId" ) Integer projectId) {
+		return R.ok(assetsReService.getProjectIdByAssets(projectId));
+	}
+
     /**
      * 新增财产关联表
      * @param assetsRe 财产关联表

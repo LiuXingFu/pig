@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReMapper">
+
+	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.AssetsRe">
+		<id property="assetsId" column="assets_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="assetsId" column="assets_id"/>
+		<result property="targetId" column="target_id"/>
+		<result property="projectId" column="project_id"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="subjectId" column="subject_id"/>
+		<result property="subjectName" column="subject_name"/>
+		<result property="assetsReDetail" column="assets_re_detail"/>
+		<result property="remark" column="remark"/>
+		<result property="assetsSource" column="assets_source"/>
+
+	</resultMap>
+
+	<select id="getProjectIdByAssets" resultType="com.pig4cloud.pig.casee.dto.AssetsDTO">
+		select p10_address.*,p10_assets.*,p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id
+		from p10_assets_re
+		left join p10_assets on p10_assets.assets_id=p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id=p10_assets_re.assets_id and p10_address.type=4
+		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.assets_id=p10_assets.assets_id
+		where p10_assets_re.project_id=#{projectId}
+	</select>
+</mapper>
