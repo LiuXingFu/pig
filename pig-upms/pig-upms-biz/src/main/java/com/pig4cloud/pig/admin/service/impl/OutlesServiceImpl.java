@@ -365,9 +365,9 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		List<OrganizationQueryVO> organizationQueryVOS = new ArrayList<>();
 		PigUser cacheUser = securityUtilsService.getCacheUser();
 		if(type == 1){
-			organizationQueryVOS = this.baseMapper.pageCooperateByOutlesId(outlesSelectDTO,securityUtilsService.getCacheUser().getInsId());
+			organizationQueryVOS = this.baseMapper.pageCooperateByOutlesId(outlesSelectDTO,jurisdictionUtilsService.queryByInsId("PLAT_"));
 		}else if(type == 2){
-			organizationQueryVOS = this.baseMapper.querySelectByOutlesId(securityUtilsService.getCacheUser().getInsId(),jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+			organizationQueryVOS = this.baseMapper.querySelectByOutlesId(outlesSelectDTO,jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		}
 		return organizationQueryVOS;
 	}

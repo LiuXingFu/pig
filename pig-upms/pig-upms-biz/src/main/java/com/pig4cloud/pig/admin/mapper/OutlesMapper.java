@@ -68,7 +68,7 @@ public interface OutlesMapper extends BaseMapper<Outles> {
 
 	List<Outles> selectByUserId( @Param("userId")Integer userId,@Param("insId")Integer insId);
 
-	List<OrganizationQueryVO> querySelectByOutlesId(@Param("insId")Integer insId,@Param("outlesId") Integer outlesId);
+	List<OrganizationQueryVO> querySelectByOutlesId(@Param("query")OutlesSelectDTO outlesSelectDTO,@Param("loginOutlesId") Integer outlesId);
 
 	List<OrganizationQueryVO> pageCooperateByOutlesId(@Param("query")OutlesSelectDTO outlesSelectDTO,@Param("loginInsId")Integer loginInsId);
 
