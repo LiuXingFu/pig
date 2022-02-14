@@ -109,4 +109,8 @@ public class BehaviorController {
         return R.ok(behaviorService.removeById(behaviorId));
     }
 
+    public R queryPageBehaviorOrProject(Page page, Integer subjectId){
+    	return R.ok(this.behaviorService.queryPageBehaviorOrProject(page, subjectId));
+	}
+
 }

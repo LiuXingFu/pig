@@ -16,10 +16,13 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
 import com.pig4cloud.pig.casee.service.BehaviorService;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,4 +34,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> implements BehaviorService {
 
+	@Override
+	public IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId) {
+		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId);
+	}
 }

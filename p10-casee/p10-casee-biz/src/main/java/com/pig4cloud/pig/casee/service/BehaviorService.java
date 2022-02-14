@@ -17,8 +17,11 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 
 /**
  * 行为表
@@ -28,4 +31,5 @@ import com.pig4cloud.pig.casee.entity.Behavior;
  */
 public interface BehaviorService extends IService<Behavior> {
 
+	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId);
 }

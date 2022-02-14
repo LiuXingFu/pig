@@ -48,5 +48,5 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
 
-	SubjectVO queryById(Integer subjectId);
+	SubjectVO selectSubjectById(Integer subjectId);
 }

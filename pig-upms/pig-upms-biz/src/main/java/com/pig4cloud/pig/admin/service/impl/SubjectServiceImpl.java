@@ -193,8 +193,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public SubjectVO queryById(Integer subjectId) {
-		return this.baseMapper.queryById(subjectId);
+	public SubjectVO selectSubjectById(Integer subjectId) {
+		return this.baseMapper.selectSubjectById(subjectId);
 	}
 
 	/**

@@ -130,7 +130,7 @@
 		AND p10_project_subject_re.subject_id = #{subjectId}
 	</select>
 
-	<select id="queryById" resultMap="SubjectVO">
+	<select id="selectSubjectById" resultMap="SubjectVO">
 		SELECT * FROM p10_subject WHERE del_flag = 0 AND subject_id = #{subjectId}
 	</select>
 
