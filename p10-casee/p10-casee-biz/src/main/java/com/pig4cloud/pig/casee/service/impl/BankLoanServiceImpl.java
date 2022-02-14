@@ -41,6 +41,7 @@ import com.pig4cloud.pig.casee.vo.BankLoanVO;
 import com.pig4cloud.pig.casee.vo.SubjectInformationVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,7 +120,8 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 				BeanCopyUtil.copyBean(assetsDTO,assets);
 				assetsService.save(assets);//添加财产信息
 
-				Address address = assetsDTO.getAddress();
+				Address address=new Address();
+				BeanUtils.copyProperties(assetsDTO,address);
 				address.setType(4);
 				address.setUserId(assets.getAssetsId());
 				remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
@@ -208,27 +210,21 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
 					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
 					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-					assetsBankLoanReService.updateById(assetsBankLoanRe);
-				}else {
-					//添加财产关联银行借贷信息
-					assets.setType(20200);//默认实体财产类型
-					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
-					assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-					assetsBankLoanReService.save(assetsBankLoanRe);
+					assetsBankLoanReService.update(assetsBankLoanRe,new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId,assets.getAssetsId()));
 				}
-				assetsService.saveOrUpdate(assets);//添加或修改财产信息
 
-				Address address = assetsDTO.getAddress();
+				assetsService.updateById(assets);//修改财产信息
+
+				Address address=new Address();
+				BeanUtils.copyProperties(assetsDTO,address);
 				if (address!=null){
+					address.setAddressId(assetsDTO.getAddressAsId());
 					address.setType(4);
 					address.setUserId(assets.getAssetsId());
 					addressDTO.getAddressList().add(address);
 				}
 			}
-			remoteAddressService.saveOrUpdateById(addressDTO, SecurityConstants.FROM);//添加或修改财产地址信息
+			remoteAddressService.updateById(addressDTO, SecurityConstants.FROM);//修改财产地址信息
 
 		}
 
