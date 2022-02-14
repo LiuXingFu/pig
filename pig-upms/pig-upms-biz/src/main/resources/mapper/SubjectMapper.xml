@@ -23,23 +23,24 @@
 
 <mapper namespace="com.pig4cloud.pig.admin.mapper.SubjectMapper">
 
-  <resultMap id="subjectMap" type="com.pig4cloud.pig.admin.api.entity.Subject">
-                  <id property="subjectId" column="subject_id"/>
-                        <result property="createBy" column="create_by"/>
-                        <result property="createTime" column="create_time"/>
-                        <result property="updateBy" column="update_by"/>
-                        <result property="updateTime" column="update_time"/>
-                        <result property="delFlag" column="del_flag"/>
-                        <result property="unifiedIdentity" column="unified_identity"/>
-                        <result property="natureType" column="nature_type"/>
-                        <result property="name" column="name"/>
-                        <result property="phone" column="phone"/>
-                        <result property="legalPerson" column="legal_person"/>
-                        <result property="email" column="email"/>
-	  					<result property="userId" column="user_id"/>
-                        <result property="remark" column="remark"/>
-                        <result property="isAuthentication" column="is_authentication"/>
-            </resultMap>
+	<resultMap id="subjectMap" type="com.pig4cloud.pig.admin.api.entity.Subject">
+		<id property="subjectId" column="subject_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="unifiedIdentity" column="unified_identity"/>
+		<result property="natureType" column="nature_type"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="legalPerson" column="legal_person"/>
+		<result property="email" column="email"/>
+		<result property="userId" column="user_id"/>
+		<result property="remark" column="remark"/>
+		<result property="isAuthentication" column="is_authentication"/>
+		<result property="employer" column="employer"></result>
+	</resultMap>
 
 	<resultMap id="SubjectVO" type="com.pig4cloud.pig.admin.api.vo.SubjectVO">
 		<id property="subjectId" column="subject_id"/>
@@ -68,11 +69,65 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="pageSubjectMap" type="com.pig4cloud.pig.admin.api.vo.SubjectPageVO">
+		<id property="subjectId" column="subject_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="unifiedIdentity" column="unified_identity"/>
+		<result property="natureType" column="nature_type"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="legalPerson" column="legal_person"/>
+		<result property="email" column="email"/>
+		<result property="userId" column="user_id"/>
+		<result property="remark" column="remark"/>
+		<result property="isAuthentication" column="is_authentication"/>
+		<result property="employer" column="employer"></result>
+		<collection property="addressList" ofType="com.pig4cloud.pig.admin.api.vo.SubjectVO"
+					select="com.pig4cloud.pig.admin.mapper.AddressMapper.getByAddressList" column="subject_id">
+		</collection>
+		<collection property="amountInvolved" ofType="java.math.BigDecimal"
+					select="com.pig4cloud.pig.admin.mapper.SubjectMapper.getProjectAmountBySubjectId"
+					column="subject_id">
+		</collection>
+	</resultMap>
+
 	<select id="getByUnifiedIdentity" resultMap="SubjectVO">
-		select * from p10_subject where unified_identity=#{unifiedIdentity} and del_flag=0
+		select * from p10_subject where unified_identity=#{unifiedIdentity} and del_flag = 0
 	</select>
 
 	<select id="getBySubjectId" resultMap="SubjectGetByIdVO">
 		select * from p10_subject where subject_id=#{subjectId} and del_flag=0
 	</select>
+
+	<select id="pageSubject" resultMap="pageSubjectMap">
+		SELECT * FROM p10_subject
+		WHERE del_flag = 0
+		<if test="query.name != null and query.name != ''">
+			AND `name` LIKE concat('%', #{query.name}, '%')
+		</if>
+		<if test="query.phone != null and query.phone != ''">
+			AND phone LIKE concat(#{query.phone}, '%')
+		</if>
+		<if test="query.unifiedIdentity != null and query.unifiedIdentity != ''">
+			AND unified_identity LIKE concat(#{query.unifiedIdentity}, '%')
+		</if>
+		<if test="query.natureType != -1">
+			AND nature_type = #{query.natureType}
+		</if>
+	</select>
+
+	<select id="getProjectAmountBySubjectId" resultType="java.math.BigDecimal">
+		SELECT
+		if(sum(json_extract(p10_project.project_detail, "$.projectAmount" )) is null,0,sum(json_extract(p10_project.project_detail, "$.projectAmount" )))
+		FROM
+		p10_project
+		LEFT JOIN p10_project_subject_re ON p10_project_subject_re.project_id = p10_project.project_id and p10_project_subject_re.del_flag = 0
+		WHERE p10_project.del_flag = 0
+		AND p10_project_subject_re.subject_id = #{subjectId}
+	</select>
+
 </mapper>

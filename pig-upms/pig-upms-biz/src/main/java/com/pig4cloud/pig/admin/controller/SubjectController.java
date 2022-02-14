@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.service.SubjectService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -186,6 +187,18 @@ public class SubjectController {
 	@PostMapping("/saveOrUpdateById")
 	public R saveOrUpdateById(@RequestBody Subject subject) {
 		return R.ok(subjectService.saveOrUpdate(subject));
+	}
+
+	/**
+	 *	根据特定条件分页查询债务人
+	 * @param page
+	 * @param subjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据特定条件分页查询债务人", notes = "根据特定条件分页查询债务人")
+	@GetMapping("/pageSubject")
+	public R pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
+		return R.ok(this.subjectService.pageSubject(page, subjectPageDTO));
 	}
 
 }

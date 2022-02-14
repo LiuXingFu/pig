@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -52,12 +53,6 @@ public class Casee extends BaseEntity {
     private String delFlag;
 
     /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
-
-    /**
      * 案号
      */
     @ApiModelProperty(value="案号")
@@ -76,28 +71,16 @@ public class Casee extends BaseEntity {
     private Integer status;
 
     /**
-     * 办理人id
-     */
-    @ApiModelProperty(value="办理人id")
-    private Integer userId;
-
-    /**
-     * 办理人名称
-     */
-    @ApiModelProperty(value="办理人名称")
-    private String userNickName;
-
-    /**
      * 立案日期
      */
     @ApiModelProperty(value="立案日期")
-    private LocalDateTime startTime;
+    private LocalDate startTime;
 
     /**
      * 结案日期
      */
     @ApiModelProperty(value="结案日期")
-    private LocalDateTime closeTime;
+    private LocalDate closeTime;
 
     /**
      * 备注

@@ -14,14 +14,16 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.liquientity;
+package com.pig4cloud.pig.casee.vo;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -31,27 +33,11 @@ import lombok.EqualsAndHashCode;
  * @date 2022-01-10 15:05:49
  */
 
-@TableName("p10_project")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "清收项目表")
-public class ProjectLiqui extends Project {
+@Data
+public class ProjectLiquiDealtVO {
 
 	@ApiModelProperty(value="清收项目详情表")
-	private ProjectLiQuiDetail projectLiQuiDetail;
+	private ProjectLiqui projectLiqui;
 
-	public void setProjectLiQuiDetail(ProjectLiQuiDetail projectLiQuiDetail) {
-		this.projectLiQuiDetail = projectLiQuiDetail;
-		this.setProjectDetail(JSON.toJSONString(projectLiQuiDetail));
-	}
 
-	public void initProjectLiQuiDetail(){
-		projectLiQuiDetail = JSON.parseObject(this.getProjectDetail(), ProjectLiQuiDetail.class );
-	}
-
-	public ProjectLiQuiDetail getProjectLiQuiDetail() {
-		if(projectLiQuiDetail==null && this.getProjectDetail()!=null){
-			projectLiQuiDetail = JSON.parseObject(this.getProjectDetail(), ProjectLiQuiDetail.class );
-		}
-		return projectLiQuiDetail;
-	}
 }

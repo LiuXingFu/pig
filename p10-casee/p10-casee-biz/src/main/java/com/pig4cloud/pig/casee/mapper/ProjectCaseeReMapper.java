@@ -15,36 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.mapper;
+package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
-import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectVO;
+import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.math.BigDecimal;
 
 /**
- * 主体
+ * 
  *
- * @author yy
- * @date 2021-09-17 16:55:57
+ * @author pig code generator
+ * @date 2022-02-13 22:13:19
  */
 @Mapper
-public interface SubjectMapper extends BaseMapper<Subject> {
+public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
 
-	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
-
-	SubjectGetByIdVO getBySubjectId(Integer subjectId);
-
-	IPage<SubjectPageVO> pageSubject(Page page, @Param("query") SubjectPageDTO subjectPageDTO);
-
-	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
 }

@@ -20,7 +20,9 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.vo.ProjectLiquiDealtVO;
 import com.pig4cloud.pig.common.core.util.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -76,6 +78,20 @@ public class ProjectLiquiController {
 	@PutMapping("/modifyStatusById")
 	public R modifyStatusById(@RequestBody ProjectModifyStatusDTO projectModifyStatusDTO) {
 		return R.ok(projectLiquiService.modifyStatusById(projectModifyStatusDTO));
+	}
+
+	/**
+	 * 通过id查询项目清收详情
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询项目清收详情", notes = "通过id查询项目清收详情")
+	@GetMapping("/getByProjectId/{projectId}" )
+	public R getByProjectId(@PathVariable("projectId" )Integer projectId) {
+		ProjectLiquiDealtVO projectLiquiDealtVO = new ProjectLiquiDealtVO();
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(projectId);
+		projectLiquiDealtVO.setProjectLiqui(projectLiqui);
+		return R.ok(projectLiquiDealtVO);
 	}
 
 
