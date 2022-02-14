@@ -28,6 +28,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,7 +46,8 @@ import java.util.List;
 @Api(value = "subject", tags = "主体管理")
 public class SubjectController {
 
-    private final SubjectService subjectService;
+	@Autowired
+    private SubjectService subjectService;
 
     /**
      * 分页查询
@@ -198,7 +200,18 @@ public class SubjectController {
 	@ApiOperation(value = "根据特定条件分页查询债务人", notes = "根据特定条件分页查询债务人")
 	@GetMapping("/pageSubject")
 	public R pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
-		return R.ok(this.subjectService.pageSubject(page, subjectPageDTO));
+		return R.ok(subjectService.pageSubject(page, subjectPageDTO));
+	}
+
+	/**
+	 * 根据id查询主体信息
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据id查询主体信息", notes = "根据id查询主体信息")
+	@GetMapping("/queryById/{subjectId}")
+	private R queryById(@PathVariable Integer subjectId) {
+		return R.ok(subjectService.queryById(subjectId));
 	}
 
 }

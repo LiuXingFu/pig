@@ -218,5 +218,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return this.baseMapper.getByProjectId(projectId);
 	}
 
+	@Override
+	public IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, Integer subjectId) {
+		return this.baseMapper.queryPageProjectLiqui(page, subjectId);
+	}
+
 
 }
