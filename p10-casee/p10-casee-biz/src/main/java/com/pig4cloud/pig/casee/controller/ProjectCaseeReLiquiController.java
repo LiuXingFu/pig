@@ -14,36 +14,27 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.BankLoan;
-import lombok.Data;
+package com.pig4cloud.pig.casee.controller;
 
-import java.util.List;
+import com.pig4cloud.pig.casee.service.ProjectCaseeReLiquiService;
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
- * 银行借贷基本信息
+ * 
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author pig code generator
+ * @date 2022-02-13 22:13:19
  */
-@Data
-public class BankLoanInformationDTO extends BankLoan {
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/projectcaseereLiqui" )
+@Api(value = "projectcaseereLiqui", tags = "项目案件关联")
+public class ProjectCaseeReLiquiController {
 
-	/**
-	 * 债务人信息以及债务人地址信息
-	 */
-	private List<SubjectAddressDTO> subjectInformationVOList;
+    private final ProjectCaseeReLiquiService projectCaseeReLiquiService;
 
-	/**
-	 * 主体表id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 抵押财产信息
-	 */
-	private List<AssetsDTO> assetsList;
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class AssetsInformationVO extends Assets {
 	/**
 	 * 抵押时间
 	 */
-	private LocalDateTime mortgageTime;
+	private LocalDate mortgageTime;
 
 	/**
 	 * 省

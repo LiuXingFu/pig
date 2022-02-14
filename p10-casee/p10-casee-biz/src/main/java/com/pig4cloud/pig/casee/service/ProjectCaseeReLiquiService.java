@@ -14,36 +14,18 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.BankLoan;
-import lombok.Data;
+package com.pig4cloud.pig.casee.service;
 
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
 
 /**
- * 银行借贷基本信息
+ * 
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author pig code generator
+ * @date 2022-02-13 22:13:19
  */
-@Data
-public class BankLoanInformationDTO extends BankLoan {
+public interface ProjectCaseeReLiquiService extends IService<ProjectCaseeRe> {
 
-	/**
-	 * 债务人信息以及债务人地址信息
-	 */
-	private List<SubjectAddressDTO> subjectInformationVOList;
-
-	/**
-	 * 主体表id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 抵押财产信息
-	 */
-	private List<AssetsDTO> assetsList;
 }

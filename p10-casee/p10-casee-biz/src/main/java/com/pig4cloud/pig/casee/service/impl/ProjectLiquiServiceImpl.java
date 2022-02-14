@@ -213,5 +213,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return this.baseMapper.updateById(projectLiqui);
 	}
 
+	@Override
+	public ProjectLiqui getByProjectId(Integer projectId){
+		return this.baseMapper.getByProjectId(projectId);
+	}
+
 
 }

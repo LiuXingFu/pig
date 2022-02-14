@@ -79,8 +79,8 @@
 	<sql id="userRoleSql">
 		`user`.user_id,
 		`user`.username,
-		`user`.nick_name as nickName,
-		`user`.actual_name as actualName,
+		`user`.nick_name,
+		`user`.actual_name,
 		`user`.`password`,
 		`user`.salt,
 		`user`.phone,

@@ -11,7 +11,7 @@ public class OutlesSelectDTO {
 	private Integer type;
 
 	/**
-	 * 机构id
+	 * 选中机构id
 	 */
 	private Integer insId;
 

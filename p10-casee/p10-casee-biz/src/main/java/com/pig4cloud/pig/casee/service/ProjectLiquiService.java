@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 
@@ -42,5 +43,7 @@ public interface ProjectLiquiService extends IService<Project> {
 	ProjectLiquiDetailsVO getProjectDetails(Integer projectId);
 
 	Integer modifyStatusById(ProjectModifyStatusDTO projectModifyStatusDTO);
+
+	ProjectLiqui getByProjectId(Integer projectId);
 
 }

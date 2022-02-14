@@ -14,36 +14,27 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.BankLoan;
+package com.pig4cloud.pig.admin.api.dto;
+
+
+import com.pig4cloud.pig.admin.api.entity.Address;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 银行借贷基本信息
+ * 地址表
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author yuanduo
+ * @date 2021-09-03 16:26:59
  */
 @Data
-public class BankLoanInformationDTO extends BankLoan {
-
+public class AddressDTO {
 	/**
-	 * 债务人信息以及债务人地址信息
+	 * 地址信息
+	 *
 	 */
-	private List<SubjectAddressDTO> subjectInformationVOList;
-
-	/**
-	 * 主体表id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 抵押财产信息
-	 */
-	private List<AssetsDTO> assetsList;
+	private List<Address> addressList=new ArrayList<>();
 }

@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.AddressDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -104,14 +105,14 @@ public class AddressController {
 	/**
 	 * 新增或修改地址表
 	 *
-	 * @param addressList 地址表
+	 * @param addressDTO 地址表
 	 * @return R
 	 */
 	@ApiOperation(value = "新增或修改地址表", notes = "新增或修改地址表")
 	@SysLog("新增或修改地址表")
-	@PutMapping("/saveOrUpdateById")
-	public R saveOrUpdateById(@RequestBody List<Address> addressList) {
-		return R.ok(addressService.saveOrUpdateBatch(addressList));
+	@PostMapping("/saveOrUpdateById")
+	public R saveOrUpdateById(@RequestBody AddressDTO addressDTO) {
+		return R.ok(addressService.saveOrUpdateBatch(addressDTO.getAddressList()));
 	}
 
 	/**
