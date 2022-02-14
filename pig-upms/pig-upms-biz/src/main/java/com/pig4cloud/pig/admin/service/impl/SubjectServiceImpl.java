@@ -27,10 +27,7 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.admin.api.vo.AddressVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectVO;
+import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
@@ -184,9 +181,20 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		return subjectGetByIdVO;
 	}
 
+	/**
+	 * 根据特定条件分页查询债务人
+	 * @param page
+	 * @param subjectPageDTO
+	 * @return
+	 */
 	@Override
 	public IPage<SubjectPageVO> pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
 		return this.baseMapper.pageSubject(page, subjectPageDTO);
+	}
+
+	@Override
+	public SubjectVO queryById(Integer subjectId) {
+		return this.baseMapper.queryById(subjectId);
 	}
 
 	/**
