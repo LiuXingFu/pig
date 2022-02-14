@@ -16,6 +16,7 @@
 
 package com.pig4cloud.pig.admin.api.feign;
 
+import com.pig4cloud.pig.admin.api.dto.AddressDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteAddressServiceFallbackFactory;
@@ -42,8 +43,8 @@ public interface RemoteAddressService {
 	@PostMapping("/address")
 	R saveAddress(@RequestBody Address address,@RequestHeader(SecurityConstants.FROM) String from);
 
-	@PostMapping("/saveOrUpdateById")
-	R saveOrUpdateById(@RequestBody List<Address> addressList,@RequestHeader(SecurityConstants.FROM) String from);
+	@PostMapping("/address/saveOrUpdateById")
+	R saveOrUpdateById(@RequestBody AddressDTO addressDTO, @RequestHeader(SecurityConstants.FROM) String from);
 
 	@DeleteMapping("/address/removeUserIdAndType")
 	R removeUserIdAndType(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type,@RequestHeader(SecurityConstants.FROM) String from);
