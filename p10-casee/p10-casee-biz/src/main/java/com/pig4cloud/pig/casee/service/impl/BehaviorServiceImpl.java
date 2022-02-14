@@ -17,24 +17,18 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
-import com.pig4cloud.pig.casee.service.AssetsReService;
+import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
+import com.pig4cloud.pig.casee.service.BehaviorService;
 import org.springframework.stereotype.Service;
 
 /**
- * 财产关联表
+ * 行为表
  *
- * @author ligt
- * @date 2022-01-19 15:19:24
+ * @author yuanduo
+ * @date 2022-02-14 15:51:27
  */
 @Service
-public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> implements AssetsReService {
+public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> implements BehaviorService {
 
-
-	@Override
-	public AssetsDTO getProjectIdByAssets(Integer projectId) {
-		return this.baseMapper.getProjectIdByAssets(projectId);
-	}
 }

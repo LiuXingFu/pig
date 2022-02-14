@@ -28,6 +28,11 @@ public class AssetsInformationVO extends Assets {
 	private LocalDate mortgageTime;
 
 	/**
+	 * 地址id
+	 */
+	private Integer assetsAsId;
+
+	/**
 	 * 省
 	 */
 	private String province;

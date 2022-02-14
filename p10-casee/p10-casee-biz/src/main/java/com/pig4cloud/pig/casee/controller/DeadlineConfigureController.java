@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.service.DeadlineConfigureService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -75,6 +76,7 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "新增期限配置表", notes = "新增期限配置表")
     @SysLog("新增期限配置表" )
     @PostMapping
+	@Transactional
     public R save(@RequestBody DeadlineConfigure deadlineConfigure) {
         return R.ok(deadlineConfigureService.save(deadlineConfigure));
     }
@@ -87,6 +89,7 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "修改期限配置表", notes = "修改期限配置表")
     @SysLog("修改期限配置表" )
     @PutMapping
+	@Transactional
     public R updateById(@RequestBody DeadlineConfigure deadlineConfigure) {
         return R.ok(deadlineConfigureService.updateById(deadlineConfigure));
     }
@@ -99,6 +102,7 @@ public class DeadlineConfigureController {
     @ApiOperation(value = "通过id删除期限配置表", notes = "通过id删除期限配置表")
     @SysLog("通过id删除期限配置表" )
     @DeleteMapping("/{periodConfigureId}" )
+	@Transactional
     public R removeById(@PathVariable Integer periodConfigureId) {
 		boolean b = deadlineConfigureService.removeById(periodConfigureId);
 		if (b) {

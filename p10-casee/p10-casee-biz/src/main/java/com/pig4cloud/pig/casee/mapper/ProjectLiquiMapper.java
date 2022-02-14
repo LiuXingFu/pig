@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
+import com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -49,4 +50,5 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	ProjectLiqui getByProjectId(@Param("projectId") Integer projectId);
 
+	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, @Param("subjectId") Integer subjectId);
 }

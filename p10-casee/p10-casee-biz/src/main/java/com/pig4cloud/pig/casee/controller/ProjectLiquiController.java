@@ -95,6 +95,17 @@ public class ProjectLiquiController {
 	}
 
 	/**
+	 *	根据主体id分页查询项目与项目下的行为数据
+	 * @param page
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据主体id分页查询项目与项目下的行为数据", notes = "根据主体id分页查询项目与项目下的行为数据")
+	@GetMapping("/queryPageProjectLiqui")
+	public R queryPageProjectLiqui(Page page, Integer subjectId){
+		return R.ok(projectLiquiService.queryPageProjectLiqui(page, subjectId));
+	}
+	/**
 	 * 通过id查询项目清收详情
 	 * @param projectId id
 	 * @return R

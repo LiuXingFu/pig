@@ -14,27 +14,25 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
-import com.pig4cloud.pig.casee.service.AssetsReService;
-import org.springframework.stereotype.Service;
+package com.pig4cloud.pig.casee.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
- * 财产关联表
+ * 行为表
  *
- * @author ligt
- * @date 2022-01-19 15:19:24
+ * @author yuanduo
+ * @date 2022-02-14 15:51:27
  */
-@Service
-public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> implements AssetsReService {
+@Mapper
+public interface BehaviorMapper extends BaseMapper<Behavior> {
 
+	List<BehaviorOrCaseeVO> getBehaviorByProjectId(Integer projectId);
 
-	@Override
-	public AssetsDTO getProjectIdByAssets(Integer projectId) {
-		return this.baseMapper.getProjectIdByAssets(projectId);
-	}
 }
