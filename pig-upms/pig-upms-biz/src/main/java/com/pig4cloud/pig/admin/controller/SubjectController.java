@@ -183,7 +183,7 @@ public class SubjectController {
 	 */
 	@ApiOperation(value = "新增或修改主体", notes = "新增或修改主体")
 	@SysLog("新增或修改主体" )
-	@PutMapping("/saveOrUpdateById")
+	@PostMapping("/saveOrUpdateById")
 	public R saveOrUpdateById(@RequestBody Subject subject) {
 		return R.ok(subjectService.saveOrUpdate(subject));
 	}

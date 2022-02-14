@@ -16,6 +16,7 @@
 
 package com.pig4cloud.pig.admin.api.feign.fallback;
 
+import com.pig4cloud.pig.admin.api.dto.AddressDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
@@ -45,7 +46,7 @@ public class RemoteAddressServiceFallbackImpl implements RemoteAddressService {
 	}
 
 	@Override
-	public R saveOrUpdateById(List<Address> addressList, String from) {
+	public R saveOrUpdateById(AddressDTO addressDTO, String from) {
 		log.error("添加或修改地址失败", cause);
 		return null;
 	}
