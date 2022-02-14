@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.entity.DeadlineConfigure;
 import com.pig4cloud.pig.casee.mapper.DeadlineConfigureMapper;
 import com.pig4cloud.pig.casee.service.DeadlineConfigureService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 期限配置表
@@ -45,6 +46,7 @@ public class DeadlineConfigureServiceImpl extends ServiceImpl<DeadlineConfigureM
 	 * @return
 	 */
 	@Override
+	@Transactional
 	public boolean recoverById(Integer periodConfigureId) {
 		int count = this.baseMapper.recoverById(periodConfigureId);
 		return count > 0 ? true : false;

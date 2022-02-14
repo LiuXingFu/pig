@@ -233,7 +233,7 @@
 				and outles.ins_id =#{query.insId}
 			</if>
 			<if test="query.outlesId != null and query.outlesId != ''">
-				and outles.ins_id =#{query.outlesId}
+				and outles.outles_id =#{query.outlesId}
 			</if>
 			<if test="query.outlesName != null and query.outlesName != ''">
 				and outles.outles_name LIKE CONCAT('%',#{query.outlesName},'%')

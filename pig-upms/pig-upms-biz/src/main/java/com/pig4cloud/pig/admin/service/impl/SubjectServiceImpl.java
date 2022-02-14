@@ -18,14 +18,18 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.vo.AddressVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
+import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
@@ -39,6 +43,7 @@ import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -177,6 +182,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			}
 		}
 		return subjectGetByIdVO;
+	}
+
+	@Override
+	public IPage<SubjectPageVO> pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
+		return this.baseMapper.pageSubject(page, subjectPageDTO);
 	}
 
 	/**

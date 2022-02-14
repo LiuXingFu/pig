@@ -19,10 +19,17 @@ package com.pig4cloud.pig.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
+import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.math.BigDecimal;
 
 /**
  * 主体
@@ -37,4 +44,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectGetByIdVO getBySubjectId(Integer subjectId);
 
+	IPage<SubjectPageVO> pageSubject(Page page, @Param("query") SubjectPageDTO subjectPageDTO);
+
+	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
 }
