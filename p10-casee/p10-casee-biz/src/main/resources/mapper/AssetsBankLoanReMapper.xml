@@ -33,7 +33,7 @@
   </resultMap>
 
 	<select id="getAssetsBankLoanRe" resultType="com.pig4cloud.pig.casee.vo.AssetsInformationVO">
-	SELECT p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id,p10_assets.*,p10_address.*
+	SELECT p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id,p10_assets.*,p10_address.*,p10_address.address_id as assetsAsId
 	FROM `p10_assets_bank_loan_re`
 	LEFT JOIN p10_assets ON p10_assets.assets_id = p10_assets_bank_loan_re.assets_id
 	LEFT JOIN p10_address ON p10_address.user_id = p10_assets.assets_id and p10_address.type=4

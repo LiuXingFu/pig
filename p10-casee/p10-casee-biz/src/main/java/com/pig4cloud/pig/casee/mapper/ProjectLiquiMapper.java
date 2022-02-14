@@ -46,7 +46,7 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	ProjectLiquiDetailsVO selectByProjectId(@Param("projectId") Integer projectId);
 
-	List<ProjectSubjectVO> selectProjectSubject(@Param("projectId") Integer projectId);
+	List<ProjectSubjectVO> selectProjectSubject(@Param("projectId") Integer projectId,@Param("subjectName")String subjectName);
 
 	ProjectLiqui getByProjectId(@Param("projectId") Integer projectId);
 

@@ -29,6 +29,7 @@ import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +67,8 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 				BeanCopyUtil.copyBean(assetsDTO,assets);
 				this.save(assets);//添加财产信息
 
-				Address address = assetsDTO.getAddress();
+				Address address=new Address();
+				BeanUtils.copyProperties(assetsDTO,address);
 				address.setType(4);
 				address.setUserId(assets.getAssetsId());
 				remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息

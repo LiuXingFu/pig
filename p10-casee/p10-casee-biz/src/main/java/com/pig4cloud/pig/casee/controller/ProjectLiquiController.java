@@ -105,5 +105,16 @@ public class ProjectLiquiController {
 	public R queryPageProjectLiqui(Page page, Integer subjectId){
 		return R.ok(projectLiquiService.queryPageProjectLiqui(page, subjectId));
 	}
+	/**
+	 * 通过id查询项目清收详情
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询项目清收详情", notes = "通过id查询项目清收详情")
+	@GetMapping("/queryProjectSubjectList/{projectId}/{subjectName}" )
+	public R queryProjectSubjectList(@PathVariable("projectId" )Integer projectId,@PathVariable("subjectName" )String subjectName) {
+		return R.ok(projectLiquiService.queryProjectSubjectList(projectId,subjectName));
+	}
+
 
 }

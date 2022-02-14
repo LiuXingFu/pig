@@ -17,7 +17,6 @@
 package com.pig4cloud.pig.casee.dto;
 
 
-import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.Assets;
 import lombok.Data;
 
@@ -43,6 +42,11 @@ public class AssetsDTO extends Assets {
 	private Integer subjectId;
 
 	/**
+	 * 地址id
+	 */
+	private Integer addressAsId;
+
+	/**
 	 * 抵押金额
 	 */
 	private BigDecimal mortgageAmount;
@@ -52,11 +56,31 @@ public class AssetsDTO extends Assets {
 	 */
 	private LocalDate mortgageTime;
 
+	/**
+	 * 省
+	 */
+	private String province;
+	/**
+	 * 市
+	 */
+	private String city;
+	/**
+	 * 区
+	 */
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
 
 	/**
-	 * 地址信息
+	 * 地址来源（比如裁判文书网）
 	 */
-	private Address address;
+	private String source;
 
 	/**
 	 * 财产性质名称

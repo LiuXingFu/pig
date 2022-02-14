@@ -46,6 +46,9 @@ public interface RemoteAddressService {
 	@PostMapping("/address/saveOrUpdateById")
 	R saveOrUpdateById(@RequestBody AddressDTO addressDTO, @RequestHeader(SecurityConstants.FROM) String from);
 
+	@PutMapping("/address")
+	R updateById(@RequestBody AddressDTO addressDTO, @RequestHeader(SecurityConstants.FROM) String from);
+
 	@DeleteMapping("/address/removeUserIdAndType")
 	R removeUserIdAndType(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type,@RequestHeader(SecurityConstants.FROM) String from);
 

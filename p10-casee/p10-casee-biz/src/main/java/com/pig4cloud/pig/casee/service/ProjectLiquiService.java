@@ -28,6 +28,9 @@ import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
+import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
+
+import java.util.List;
 
 /**
  * 清收项目表
@@ -48,4 +51,7 @@ public interface ProjectLiquiService extends IService<Project> {
 	ProjectLiqui getByProjectId(Integer projectId);
 
 	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, Integer subjectId);
+
+	List<ProjectSubjectVO> queryProjectSubjectList(Integer projectId,String subjectName);
+
 }

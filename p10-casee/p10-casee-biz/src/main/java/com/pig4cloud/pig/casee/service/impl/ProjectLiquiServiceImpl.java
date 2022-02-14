@@ -184,7 +184,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(null,projectId);
 		projectLiquiDetailsVO.setTransferRecordBankLoanVO(transferRecordBankLoanVO);
 
-		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectId);
+		// 债务人列表
+		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectId,null);
 		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
 
 //		assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
@@ -221,6 +222,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, Integer subjectId) {
 		return this.baseMapper.queryPageProjectLiqui(page, subjectId);
+	}
+
+	@Override
+	public List<ProjectSubjectVO> queryProjectSubjectList(Integer projectId,String subjectName){
+		return this.baseMapper.selectProjectSubject(projectId,subjectName);
 	}
 
 
