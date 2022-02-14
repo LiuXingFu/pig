@@ -102,7 +102,7 @@ public class DictController {
 	 */
 	@SysLog("添加字典")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('sys_dict_add')")
+//	@PreAuthorize("@pms.hasPermission('sys_dict_add')")
 	public R save(@Valid @RequestBody SysDict sysDict) {
 		return R.ok(sysDictService.save(sysDict));
 	}
@@ -114,7 +114,7 @@ public class DictController {
 	 */
 	@SysLog("删除字典")
 	@DeleteMapping("/{id}")
-	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
+//	@PreAuthorize("@pms.hasPermission('sys_dict_del')")
 	public R removeById(@PathVariable Integer id) {
 		sysDictService.removeDict(id);
 		return R.ok();
