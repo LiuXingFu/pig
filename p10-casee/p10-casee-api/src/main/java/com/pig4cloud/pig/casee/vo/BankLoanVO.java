@@ -21,7 +21,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 银行借贷表
@@ -41,11 +40,6 @@ public class BankLoanVO extends BankLoan {
 	 * 受托网点
 	 */
 	private String entrustedOutlesName;
-
-	/**
-	 * 债务人
-	 */
-	private List<String> subjectNameList;
 
 	/**
 	 * 诉讼情况(0-未诉讼 1-已诉讼)
