@@ -56,9 +56,9 @@ public class BankLoanDTO extends BankLoan {
 	private String trustee;
 
 	/**
-	 * 债务人
+	 * 状态
 	 */
-	private String debtor;
+	private Integer status;
 
 	/**
 	 * 移送时间

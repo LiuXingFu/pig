@@ -32,4 +32,9 @@ public class AddressVO extends Address {
 	 * 省市区
 	 */
 	private String addressACPName;
+
+	/**
+	 * 债务类型(1-贷款人 2-担保人)
+	 */
+	private Integer debtType;
 }

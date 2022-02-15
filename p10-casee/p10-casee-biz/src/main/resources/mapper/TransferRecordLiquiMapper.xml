@@ -73,6 +73,9 @@
 		<if test="query.handoverTime != null">
 			and p10_transfer_record.handover_time=#{query.handoverTime}
 		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and  p10_bank_loan.subject_name like concat('%', #{query.subjectName}, '%')
+		</if>
 	</select>
 
 	<select id="getTransferRecordBankLoan" resultType="com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO">

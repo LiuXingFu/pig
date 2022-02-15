@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
@@ -50,13 +49,13 @@ public class TransferRecordliquiController {
 	/**
 	 * 分页查询
 	 * @param page 分页对象
-	 * @param transferRecord 移交记录表
+	 * @param transferRecordDTO 移交记录表
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page" )
-	public R getTransferRecordPage(Page page, TransferRecordLiqui transferRecord) {
-		return R.ok(transferRecordLiquiService.getTransferRecordPage(page,transferRecord));
+	public R getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
+		return R.ok(transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO));
 	}
 
 	/**

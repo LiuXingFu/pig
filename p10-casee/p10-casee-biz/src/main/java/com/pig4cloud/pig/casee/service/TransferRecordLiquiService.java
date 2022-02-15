@@ -35,7 +35,7 @@ import java.util.List;
  */
 public interface TransferRecordLiquiService extends IService<TransferRecord> {
 
-	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord);
+	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO);
 
 	List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId);
 
