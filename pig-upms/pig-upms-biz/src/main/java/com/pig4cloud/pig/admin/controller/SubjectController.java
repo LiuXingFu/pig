@@ -203,7 +203,12 @@ public class SubjectController {
 		return R.ok(subjectService.pageSubject(page, subjectPageDTO));
 	}
 
-	@ApiOperation(value = "根据特定条件分页查询债务人", notes = "根据特定条件分页查询债务人")
+	/**
+	 * 根据id查询债务人信息
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据id查询债务人信息", notes = "根据id查询债务人信息")
 	@GetMapping("/selectSubjectById/{subjectId}")
 	public R selectSubjectById(@PathVariable("subjectId") Integer subjectId) {
 		return R.ok(subjectService.selectSubjectById(subjectId));

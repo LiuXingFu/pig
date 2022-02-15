@@ -109,6 +109,14 @@ public class BehaviorController {
         return R.ok(behaviorService.removeById(behaviorId));
     }
 
+	/**
+	 * 根据主体id分页查询行为数据
+	 * @param page
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/queryPageBehaviorOrProject" )
     public R queryPageBehaviorOrProject(Page page, Integer subjectId){
     	return R.ok(this.behaviorService.queryPageBehaviorOrProject(page, subjectId));
 	}

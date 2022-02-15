@@ -9,9 +9,19 @@ import lombok.Data;
 public class BehaviorOrProjectPageVO extends Behavior {
 
 	/**
+	 * 项目id
+	 */
+	private Integer projectId;
+
+	/**
 	 * 项目信息
 	 */
 	private String companyCode;
+
+	/**
+	 * 项目状态
+	 */
+	private String status;
 
 	/**
 	 * 执行案号

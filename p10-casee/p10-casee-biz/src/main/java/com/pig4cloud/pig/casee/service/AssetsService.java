@@ -17,11 +17,14 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 
 import java.util.List;
 
@@ -36,4 +39,6 @@ public interface AssetsService extends IService<Assets> {
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
 	boolean	saveAssets(BankLoanDTO bankLoanDTO);
+
+	IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId);
 }

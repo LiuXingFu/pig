@@ -34,6 +34,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> implements BehaviorService {
 
+	/**
+	 * 根据主体id分页查询行为数据
+	 * @param page
+	 * @param subjectId
+	 * @return
+	 */
 	@Override
 	public IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId) {
 		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId);

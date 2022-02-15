@@ -192,6 +192,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		return this.baseMapper.pageSubject(page, subjectPageDTO);
 	}
 
+	/**
+	 * 根据id查询债务人信息
+	 * @param subjectId
+	 * @return
+	 */
 	@Override
 	public SubjectVO selectSubjectById(Integer subjectId) {
 		return this.baseMapper.selectSubjectById(subjectId);
