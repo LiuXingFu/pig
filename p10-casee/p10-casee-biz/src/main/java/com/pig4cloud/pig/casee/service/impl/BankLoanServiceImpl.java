@@ -217,14 +217,18 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 				Address address=new Address();
 				BeanUtils.copyProperties(assetsDTO,address);
-				if (address!=null){
+				if (assetsDTO.getAddressAsId()!=null){
 					address.setAddressId(assetsDTO.getAddressAsId());
 					address.setType(4);
 					address.setUserId(assets.getAssetsId());
 					addressDTO.getAddressList().add(address);
+					remoteAddressService.updateById(addressDTO, SecurityConstants.FROM);//修改财产地址信息
+				}else {
+					address.setType(4);
+					address.setUserId(assets.getAssetsId());
+					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//新增财产地址信息
 				}
 			}
-			remoteAddressService.updateById(addressDTO, SecurityConstants.FROM);//修改财产地址信息
 
 		}
 
