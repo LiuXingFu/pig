@@ -89,13 +89,13 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 	/**
-	 *
-	 * @param page
-	 * @param subjectId
+	 * 根据主体id分页查询
+	 * @param page 分页对象
+	 * @param subjectId 主体id
 	 * @return
 	 */
 	@Override
 	public IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId) {
-		return this.queryPageAssetsOrProject(page, subjectId);
+		return this.baseMapper.queryPageAssetsOrProject(page, subjectId);
 	}
 }
