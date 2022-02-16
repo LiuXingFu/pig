@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 财产表
@@ -36,5 +37,5 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId);
+	IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, @Param("subjectId") Integer subjectId);
 }
