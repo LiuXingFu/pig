@@ -91,4 +91,9 @@ public class Assets extends BaseEntity {
 	@ApiModelProperty(value="财产详情")
 	private String assetsDetail;
 
+	/**
+	 * 财产账号/编号
+	 */
+	@ApiModelProperty(value="财产账号/编号")
+	private String accountNumber;
 }

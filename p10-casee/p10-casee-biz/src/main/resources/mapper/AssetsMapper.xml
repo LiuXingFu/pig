@@ -35,6 +35,7 @@
 		<result property="assetsType" column="assets_type"/>
 		<result property="assetsDetail" column="assets_detail"/>
 		<result property="describes" column="describes"/>
+		<result property="accountNumber" column="account_number"/>
 	</resultMap>
 
 	<select id="getByAssets" resultType="com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO">
