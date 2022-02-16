@@ -74,4 +74,9 @@ public class TransferRecordDTO extends TransferRecord {
 	@ApiModelProperty(value="项目详情数据")
 	private ProjectLiqui projectDetail;
 
+	/**
+	 * 债务人名称
+	 */
+	private String subjectName;
+
 }

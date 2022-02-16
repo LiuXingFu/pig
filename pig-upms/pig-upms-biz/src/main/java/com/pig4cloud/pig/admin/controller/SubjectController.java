@@ -204,14 +204,14 @@ public class SubjectController {
 	}
 
 	/**
-	 * 根据id查询主体信息
+	 * 根据id查询债务人信息
 	 * @param subjectId
 	 * @return
 	 */
-	@ApiOperation(value = "根据id查询主体信息", notes = "根据id查询主体信息")
-	@GetMapping("/queryById/{subjectId}")
-	private R queryById(@PathVariable Integer subjectId) {
-		return R.ok(subjectService.queryById(subjectId));
+	@ApiOperation(value = "根据id查询债务人信息", notes = "根据id查询债务人信息")
+	@GetMapping("/selectSubjectById/{subjectId}")
+	public R selectSubjectById(@PathVariable("subjectId") Integer subjectId) {
+		return R.ok(subjectService.selectSubjectById(subjectId));
 	}
 
 	/**

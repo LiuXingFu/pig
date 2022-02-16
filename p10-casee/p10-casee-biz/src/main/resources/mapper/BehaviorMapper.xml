@@ -23,27 +23,43 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.BehaviorMapper">
 
-  <resultMap id="behaviorMap" type="com.pig4cloud.pig.casee.entity.Behavior">
-    <id property="behaviorId" column="behavior_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="createBy" column="create_by"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="projectId" column="project_id"/>
-    <result property="subjectId" column="subject_id"/>
-    <result property="caseeId" column="casee_id"/>
-    <result property="targetId" column="target_id"/>
-    <result property="type" column="type"/>
-    <result property="behaviorDate" column="behavior_date"/>
-    <result property="limitType" column="limit_type"/>
-    <result property="behaviorDetail" column="behavior_detail"/>
-    <result property="behaviorStatus" column="behavior_status"/>
-    <result property="remark" column="remark"/>
-  </resultMap>
+	<resultMap id="behaviorMap" type="com.pig4cloud.pig.casee.entity.Behavior">
+		<id property="behaviorId" column="behavior_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="projectId" column="project_id"/>
+		<result property="subjectId" column="subject_id"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="targetId" column="target_id"/>
+		<result property="type" column="type"/>
+		<result property="behaviorDate" column="behavior_date"/>
+		<result property="limitType" column="limit_type"/>
+		<result property="behaviorDetail" column="behavior_detail"/>
+		<result property="behaviorStatus" column="behavior_status"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
 
 	<select id="getBehaviorByProjectId" resultType="com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO">
 		SELECT p10_behavior.*,p10_casee.casee_number FROM p10_behavior LEFT JOIN p10_casee ON p10_behavior.casee_id = p10_casee.casee_id and p10_casee.del_flag = 0
 		WHERE p10_behavior.del_flag = 0 and p10_behavior.project_id = #{projectId}
 	</select>
+
+	<select id="queryPageBehaviorOrProject" resultType="com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO">
+		SELECT
+		p10_behavior.*,
+		p10_project.project_id,
+		p10_project.company_code,
+		p10_project.status,
+		p10_casee.casee_number
+		FROM
+		p10_behavior
+		LEFT JOIN p10_casee ON p10_behavior.casee_id = p10_casee.casee_id and p10_casee.del_flag = 0
+		LEFT JOIN p10_project ON p10_behavior.project_id = p10_project.project_id and p10_project.del_flag = 0
+		WHERE p10_behavior.del_flag = 0
+		AND p10_behavior.subject_id = #{subjectId}
+	</select>
+
 </mapper>

@@ -39,7 +39,7 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ extends CommonalityData implements 
 	/**
 	 * 附件
 	 */
-	private List<FileAdder> appendixList;
+	private String appendixFile;
 
 	/**
 	 * 备注

@@ -111,4 +111,16 @@ public class AssetsController {
 		return R.ok(assetsService.removeByIds(assetsIds));
 	}
 
+	/**
+	 * 根据主体id分页查询
+	 * @param page 分页对象
+	 * @param subjectId 主体id
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/queryPageAssetsOrProject" )
+	public R queryPageAssetsOrProject(Page page, Integer subjectId) {
+		return R.ok(assetsService.queryPageAssetsOrProject(page, subjectId));
+	}
+
 }

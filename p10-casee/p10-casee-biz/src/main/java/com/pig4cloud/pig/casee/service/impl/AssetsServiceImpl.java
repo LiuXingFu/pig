@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
@@ -27,6 +29,7 @@ import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.BeanUtils;
@@ -83,5 +86,16 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 根据主体id分页查询
+	 * @param page 分页对象
+	 * @param subjectId 主体id
+	 * @return
+	 */
+	@Override
+	public IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId) {
+		return this.baseMapper.queryPageAssetsOrProject(page, subjectId);
 	}
 }

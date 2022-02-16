@@ -30,7 +30,7 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 文书
 	 */
-	private String writ;
+	private String writFile;
 
 	/**
 	 * 裁判/调解结果（0-发回重审 1-维持一审裁判结果 2-改判、撤销或变更内容）
@@ -66,12 +66,12 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 判决书
 	 */
-	private String verdict;
+	private String verdictFile;
 
 	/**
 	 * 调解书
 	 */
-	private String mediation;
+	private String mediationFile;
 
 	/**
 	 * 分期履行记录

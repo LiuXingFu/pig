@@ -45,11 +45,11 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	private ProjectLiquiService projectLiquiService;
 
 	@Override
-	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecord transferRecord) {
-		if (transferRecord.getHandoverTime()!=null){
-			String s =transferRecord.getHandoverTime().toString();
+	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
+		if (transferRecordDTO.getHandoverTime()!=null){
+			String s =transferRecordDTO.getHandoverTime().toString();
 		}
-		return this.baseMapper.getTransferRecordPage(page,transferRecord);
+		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO);
 	}
 
 	@Override

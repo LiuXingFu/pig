@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
@@ -36,7 +37,7 @@ import java.util.List;
 @Mapper
 public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 
-	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page,@Param("query") TransferRecord transferRecord);
+	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page,@Param("query") TransferRecordDTO transferRecordDTO);
 
 	List<TransferRecord> getBankLoanIdTransferRecord(@Param("sourceId")Integer sourceId,@Param("transferType") Integer transferType);
 

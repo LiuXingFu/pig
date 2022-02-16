@@ -29,7 +29,7 @@ public class EntityZX_STZX_CCZXCJCD_CCZXCJCD extends CommonalityData implements 
 	/**
 	 * 成交裁定文书
 	 */
-	private List<FileAdder> completionRulingList;
+	private String completionRulingFile;
 
 	/**
 	 * 备注

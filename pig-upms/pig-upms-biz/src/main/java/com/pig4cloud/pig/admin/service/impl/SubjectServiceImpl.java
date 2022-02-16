@@ -25,8 +25,6 @@ import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
-
-import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
@@ -39,8 +37,6 @@ import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -129,14 +125,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		List subjectIds=new ArrayList();
 		BankLoan bankLoan=new BankLoan();
 
-		String subjectNames=null;//银行借贷所有债务人名称
+		String subjectNames="";//银行借贷所有债务人名称
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
 			bankLoan.setBankLoanId(subjectAddressDTO.getBankLoanId());
 			//添加债务人主体信息
 			Subject subject=new Subject();
 			BeanCopyUtil.copyBean(subjectAddressDTO,subject);
 			this.saveSubject(subject);
-			subjectNames=subject.getName()+" ";
+			subjectNames+=subject.getName()+" ";
 			List<Address> addressList = subjectAddressDTO.getAddressList();
 			for (Address address : addressList) {
 				address.setUserId(subject.getSubjectId());
@@ -192,9 +188,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		return this.baseMapper.pageSubject(page, subjectPageDTO);
 	}
 
+	/**
+	 * 根据id查询债务人信息
+	 * @param subjectId
+	 * @return
+	 */
 	@Override
-	public SubjectVO queryById(Integer subjectId) {
-		return this.baseMapper.queryById(subjectId);
+	public SubjectVO selectSubjectById(Integer subjectId) {
+		return this.baseMapper.selectSubjectById(subjectId);
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class AssetsInformationVO extends Assets {
 	/**
 	 * 地址id
 	 */
-	private Integer assetsAsId;
+	private Integer addressAsId;
 
 	/**
 	 * 省

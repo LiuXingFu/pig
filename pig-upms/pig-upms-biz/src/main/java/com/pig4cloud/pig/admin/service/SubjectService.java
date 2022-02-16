@@ -67,4 +67,5 @@ public interface SubjectService extends IService<Subject> {
 	SubjectVO queryById(Integer subjectId);
 
 	List<Subject> queryBySubjectIdList(List<Integer> subjectIdList);
+	SubjectVO selectSubjectById(Integer subjectId);
 }

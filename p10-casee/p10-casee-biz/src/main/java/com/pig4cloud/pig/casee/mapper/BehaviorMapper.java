@@ -18,9 +18,13 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,4 +39,5 @@ public interface BehaviorMapper extends BaseMapper<Behavior> {
 
 	List<BehaviorOrCaseeVO> getBehaviorByProjectId(Integer projectId);
 
+	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, @Param("subjectId") Integer subjectId);
 }

@@ -30,7 +30,7 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	/**
 	 * 文书上传
 	 */
-	private List<FileAdder> writList;
+	private String writFile;
 
 	/**
 	 * 裁判/调解结果（0-驳回 1-确定）
@@ -65,12 +65,12 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	/**
 	 * 判决书
 	 */
-	private List<FileAdder> verdictList;
+	private String verdictFile;
 
 	/**
 	 * 调解书
 	 */
-	private List<FileAdder> mediationList;
+	private String mediationFile;
 
 	/**
 	 * 分期履行记录
