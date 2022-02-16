@@ -108,17 +108,17 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	/**
 	 * 图片
 	 */
-	private List<FileAdder> pictureList;
+	private String pictureFile;
 
 	/**
 	 * 附件
 	 */
-	private List<FileAdder> appendixList;
+	private String appendixFile;
 
 	/**
 	 * VR
 	 */
-	private List<FileAdder> vrList;
+	private String vrFile;
 
 	/**
 	 * 备注
