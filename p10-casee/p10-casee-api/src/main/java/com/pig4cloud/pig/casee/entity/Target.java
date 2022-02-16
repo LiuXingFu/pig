@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 /**
- * 标的表
+ * 程序表
  *
  * @author yy
  * @date 2021-11-05 16:28:49
@@ -35,7 +35,7 @@ import java.time.LocalDateTime;
 @Data
 @TableName("p10_target")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "标的表")
+@ApiModel(value = "程序表")
 public class Target extends BaseEntity {
 
 	/**

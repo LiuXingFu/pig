@@ -24,9 +24,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
-import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
@@ -34,7 +32,6 @@ import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -184,8 +181,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(null,projectId);
 		projectLiquiDetailsVO.setTransferRecordBankLoanVO(transferRecordBankLoanVO);
 
+		ProjectSubjectDTO projectSubjectDTO = new ProjectSubjectDTO();
+		projectSubjectDTO.setProjectId(projectId);
 		// 债务人列表
-		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectId,null);
+		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectSubjectDTO);
 		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
 
 //		assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
@@ -225,8 +224,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public List<ProjectSubjectVO> queryProjectSubjectList(Integer projectId,String subjectName){
-		return this.baseMapper.selectProjectSubject(projectId,subjectName);
+	public List<ProjectSubjectVO> queryProjectSubjectList(ProjectSubjectDTO projectSubjectDTO){
+		return this.baseMapper.selectProjectSubject(projectSubjectDTO);
 	}
 
 

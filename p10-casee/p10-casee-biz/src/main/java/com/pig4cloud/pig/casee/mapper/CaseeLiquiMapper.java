@@ -14,20 +14,25 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.Target;
-import lombok.Data;
+package com.pig4cloud.pig.casee.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.pig4cloud.pig.casee.entity.Casee;
+import com.pig4cloud.pig.casee.vo.CaseeVO;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
- * 程序表
+ * 案件表
  *
  * @author yy
- * @date 2021-11-05 16:28:49
+ * @date 2022-01-10 14:51:59
  */
-@Data
-public class TargetAddDTO extends Target {
-
-
+@Mapper
+public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 }

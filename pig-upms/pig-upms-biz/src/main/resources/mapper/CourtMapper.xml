@@ -55,7 +55,7 @@
 			and court.court_name LIKE CONCAT('%',#{query.courtName},'%')
 		</if>
 		<if test="query.courtId != null">
-			and court.court_id LIKE CONCAT('%',#{query.courtId},'%')
+			and court.court_id = #{query.courtId}
 		</if>
 	</select>
 

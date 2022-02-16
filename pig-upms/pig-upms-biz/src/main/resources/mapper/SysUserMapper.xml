@@ -214,6 +214,9 @@
 		LEFT JOIN p10_ins_outles_user on p10_ins_outles_user.user_id = sys_user.user_id and p10_ins_outles_user.del_flag = 0
 		where sys_user.del_flag = 0
 		<if test="query.insId != null and query.insId != 0">
+			and p10_ins_outles_user.type = #{query.type}
+		</if>
+		<if test="query.insId != null and query.insId != 0">
 			and p10_ins_outles_user.ins_id = #{query.insId}
 		</if>
 		<if test="query.outlesId != null and query.outlesId != 0">

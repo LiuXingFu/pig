@@ -214,4 +214,15 @@ public class SubjectController {
 		return R.ok(subjectService.queryById(subjectId));
 	}
 
+	/**
+	 * 根据id集合查询主体信息
+	 * @param subjectIdList
+	 * @return
+	 */
+	@ApiOperation(value = "根据id集合查询主体信息", notes = "根据id集合查询主体信息")
+	@GetMapping("/queryBySubjectIdList/{subjectIdList}")
+	private R queryBySubjectIdList(@PathVariable List<Integer> subjectIdList) {
+		return R.ok(subjectService.queryBySubjectIdList(subjectIdList));
+	}
+
 }
