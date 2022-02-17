@@ -23,7 +23,7 @@ public class LiQui_SSYS_SSYSYGSS_SSYSYGSS extends CommonalityData implements Ser
 	/**
 	 * 上诉状
 	 */
-	private List<FileAdder> petitionList;
+	private String petitionFile;
 
 	/**
 	 * 备注

@@ -18,20 +18,14 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 
 /**
- * 主体关联银行借贷表
+ * 回款记录关联主体信息表
  *
  * @author Mjh
- * @date 2022-01-28 18:52:44
+ * @date 2022-02-17 17:52:08
  */
-public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
+public interface PaymentRecordSubjectReService extends IService<PaymentRecordSubjectRe> {
 
-	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
-
-
-	List<Integer> selectSubjectId(Integer bankLoanId);
 }

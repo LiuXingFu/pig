@@ -75,10 +75,10 @@ public interface RemoteSubjectService {
 
 	/**
 	 * 根据id集合查询主体信息
-	 * @param subjectIdList
+	 * @param subjectIdList subjectIdList
 	 * @return
 	 */
-	@GetMapping("/queryBySubjectIdList/{subjectIdList}")
-	R queryBySubjectIdList(@PathVariable("subjectIdList") List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
+	@GetMapping("/subject/queryBySubjectIdList")
+	R<List<Subject>> queryBySubjectIdList(@RequestParam(value = "subjectIdList" ,required=false)List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

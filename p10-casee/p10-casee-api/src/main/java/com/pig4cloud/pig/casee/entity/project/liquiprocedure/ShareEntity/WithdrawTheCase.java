@@ -24,7 +24,7 @@ public class WithdrawTheCase extends CommonalityData implements Serializable {
 	/**
 	 * 撤案文书
 	 */
-	private List<FileAdder> withdrawalDocumentList;
+	private String withdrawalDocumentFile;
 
 	/**
 	 * 备注

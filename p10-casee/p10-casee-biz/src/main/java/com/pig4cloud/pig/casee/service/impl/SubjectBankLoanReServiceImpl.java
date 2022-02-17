@@ -54,4 +54,9 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		}
 		return true;
 	}
+
+	@Override
+	public List<Integer> selectSubjectId(Integer bankLoanId) {
+		return this.baseMapper.selectSubjectId(bankLoanId);
+	}
 }

@@ -33,7 +33,7 @@ public class End extends CommonalityData implements Serializable {
 	/**
 	 * 终结文书
 	 */
-	private List<FileAdder> endPaperworkList;
+	private String endPaperworkFile;
 
 
 

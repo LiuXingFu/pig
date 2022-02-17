@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 
@@ -37,11 +38,13 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 
 	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO);
 
-	List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId);
+	List<TransferRecordLiqui> getBankLoanIdTransferRecord(Integer sourceId);
 
 	TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId,Integer projectId);
 
 	boolean reception(TransferRecordDTO transferRecordDTO);
 
 	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
+
+	boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui);
 }

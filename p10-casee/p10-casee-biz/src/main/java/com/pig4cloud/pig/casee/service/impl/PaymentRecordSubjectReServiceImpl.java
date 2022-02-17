@@ -14,24 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
+import com.pig4cloud.pig.casee.mapper.PaymentRecordSubjectReMapper;
+import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
+import org.springframework.stereotype.Service;
 
 /**
- * 主体关联银行借贷表
+ * 回款记录关联主体信息表
  *
  * @author Mjh
- * @date 2022-01-28 18:52:44
+ * @date 2022-02-17 17:52:08
  */
-public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
+@Service
+public class PaymentRecordSubjectReServiceImpl extends ServiceImpl<PaymentRecordSubjectReMapper, PaymentRecordSubjectRe> implements PaymentRecordSubjectReService {
 
-	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
-
-
-	List<Integer> selectSubjectId(Integer bankLoanId);
 }

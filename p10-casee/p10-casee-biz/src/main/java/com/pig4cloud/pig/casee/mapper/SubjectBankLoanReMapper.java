@@ -37,4 +37,5 @@ public interface SubjectBankLoanReMapper extends BaseMapper<SubjectBankLoanRe> {
 
 	List<SubjectInformationVO> getSubjectBankLoanReInformationVO(Integer bankLoanId);
 
+	List<Integer> selectSubjectId(Integer bankLoanId);
 }

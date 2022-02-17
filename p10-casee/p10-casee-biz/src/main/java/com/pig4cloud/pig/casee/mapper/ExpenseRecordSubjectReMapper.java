@@ -15,23 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 主体关联银行借贷表
+ * 费用记录关联主体信息
  *
  * @author Mjh
- * @date 2022-01-28 18:52:44
+ * @date 2022-02-17 17:53:00
  */
-public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
+@Mapper
+public interface ExpenseRecordSubjectReMapper extends BaseMapper<ExpenseRecordSubjectRe> {
 
-	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
-
-
-	List<Integer> selectSubjectId(Integer bankLoanId);
 }
