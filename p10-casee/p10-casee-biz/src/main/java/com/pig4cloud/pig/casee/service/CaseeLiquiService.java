@@ -14,19 +14,22 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.Target;
-import lombok.Data;
+package com.pig4cloud.pig.casee.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
+import com.pig4cloud.pig.casee.entity.Casee;
 
 /**
- * 程序表
+ * 案件表
  *
  * @author yy
- * @date 2021-11-05 16:28:49
+ * @date 2021-09-15 10:03:22
  */
-@Data
-public class TargetAddDTO extends Target {
+public interface CaseeLiquiService extends IService<Casee> {
+
+	Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
 
 
 

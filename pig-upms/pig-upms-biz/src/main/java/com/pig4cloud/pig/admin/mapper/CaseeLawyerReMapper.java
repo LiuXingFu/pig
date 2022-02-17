@@ -14,20 +14,20 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.Target;
-import lombok.Data;
+package com.pig4cloud.pig.admin.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.CaseeLawyerRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 程序表
+ * 案件律师关联表
  *
- * @author yy
- * @date 2021-11-05 16:28:49
+ * @author pig code generator
+ * @date 2022-02-15 10:56:32
  */
-@Data
-public class TargetAddDTO extends Target {
-
-
+@Mapper
+public interface CaseeLawyerReMapper extends BaseMapper<CaseeLawyerRe> {
 
 }

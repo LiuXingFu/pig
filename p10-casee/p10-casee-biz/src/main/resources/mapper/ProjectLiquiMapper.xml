@@ -97,9 +97,9 @@
 		select p10_subject.*,p10_project_subject_re.type from p10_project_subject_re
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project_subject_re.del_flag = 0
-		and p10_project_subject_re.project_id = #{projectId}
-		<if test="subjectName != null and subjectName != ''">
-			and p10_subject.name = like concat('%', #{subjectName}, '%')
+		and p10_project_subject_re.project_id = #{query.projectId}
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and p10_subject.name like concat('%', #{query.subjectName}, '%')
 		</if>
 	</select>
 

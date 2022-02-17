@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
+import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDealtVO;
@@ -107,13 +108,13 @@ public class ProjectLiquiController {
 	}
 	/**
 	 * 通过id查询项目清收详情
-	 * @param projectId id
+	 * @param projectSubjectDTO id
 	 * @return R
 	 */
 	@ApiOperation(value = "通过id查询项目清收详情", notes = "通过id查询项目清收详情")
-	@GetMapping("/queryProjectSubjectList/{projectId}/{subjectName}" )
-	public R queryProjectSubjectList(@PathVariable("projectId" )Integer projectId,@PathVariable("subjectName" )String subjectName) {
-		return R.ok(projectLiquiService.queryProjectSubjectList(projectId,subjectName));
+	@GetMapping("/queryProjectSubjectList" )
+	public R queryProjectSubjectList(ProjectSubjectDTO projectSubjectDTO) {
+		return R.ok(projectLiquiService.queryProjectSubjectList(projectSubjectDTO));
 	}
 
 

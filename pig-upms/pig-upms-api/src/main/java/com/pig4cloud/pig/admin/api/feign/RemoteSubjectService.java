@@ -73,4 +73,12 @@ public interface RemoteSubjectService {
 	@DeleteMapping("/subject/{subjectId}")
 	R removeById(@PathVariable("subjectId") Integer subjectId, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 * 根据id集合查询主体信息
+	 * @param subjectIdList
+	 * @return
+	 */
+	@GetMapping("/queryBySubjectIdList/{subjectIdList}")
+	R queryBySubjectIdList(@PathVariable("subjectIdList") List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

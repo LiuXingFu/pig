@@ -14,20 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
+package com.pig4cloud.pig.admin.service.impl;
 
-import com.pig4cloud.pig.casee.entity.Target;
-import lombok.Data;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.mapper.CaseeLawyerReMapper;
+import com.pig4cloud.pig.admin.service.CaseeLawyerReService;
+import com.pig4cloud.pig.casee.entity.CaseeLawyerRe;
+import org.springframework.stereotype.Service;
 
 /**
- * 程序表
+ * 案件律师关联表
  *
- * @author yy
- * @date 2021-11-05 16:28:49
+ * @author pig code generator
+ * @date 2022-02-15 10:56:32
  */
-@Data
-public class TargetAddDTO extends Target {
-
-
+@Service
+public class CaseeLawyerReServiceImpl extends ServiceImpl<CaseeLawyerReMapper, CaseeLawyerRe> implements CaseeLawyerReService {
 
 }

@@ -314,4 +314,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 		return true;
 	}
+
+	@Override
+	public List<Subject> queryBySubjectIdList(List<Integer> subjectIdList){
+		return this.baseMapper.selectBatchIds(subjectIdList);
+	}
 }
