@@ -23,12 +23,14 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
+import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -97,5 +99,20 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	@Override
 	public IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId) {
 		return this.baseMapper.queryPageAssetsOrProject(page, subjectId);
+	}
+
+	/**
+	 * 根据财产id查询财产信息与财产地址信息
+	 * @param assetsId
+	 * @return
+	 */
+	@Override
+	public AssetsDeailsVO queryById(Integer assetsId) {
+		return this.baseMapper.queryById(assetsId);
+	}
+
+	@Override
+	public Object getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return null;
 	}
 }

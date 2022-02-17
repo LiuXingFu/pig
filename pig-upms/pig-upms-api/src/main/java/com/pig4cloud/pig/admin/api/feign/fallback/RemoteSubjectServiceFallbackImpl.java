@@ -68,4 +68,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("删除主体失败", cause);
 		return null;
 	}
+
+	@Override
+	public R queryByProjectId(Integer projectId, String from) {
+		log.error("根据项目id查询主体失败");
+		return null;
+	}
 }

@@ -19,11 +19,20 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
 import com.pig4cloud.pig.casee.service.BehaviorService;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.R;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 行为表
@@ -34,6 +43,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> implements BehaviorService {
 
+	@Autowired
+	RemoteSubjectService remoteSubjectService;
+
 	/**
 	 * 根据主体id分页查询行为数据
 	 * @param page
@@ -43,5 +55,21 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	@Override
 	public IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId) {
 		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId);
+	}
+
+	/**
+	 * 根据行为id查询行为信息、项目信息、案件信息
+	 * @param behaviorId
+	 * @return
+	 */
+	@Override
+	public BehaviorOrProjectOrCasee queryById(Integer behaviorId) {
+		BehaviorOrProjectOrCasee behaviorOrProjectOrCasee = this.baseMapper.queryById(behaviorId);
+
+		if(Objects.nonNull(behaviorOrProjectOrCasee)) {
+			behaviorOrProjectOrCasee.setSubjectList(remoteSubjectService.queryByProjectId(424, SecurityConstants.FROM).getData());
+		}
+
+		return behaviorOrProjectOrCasee;
 	}
 }

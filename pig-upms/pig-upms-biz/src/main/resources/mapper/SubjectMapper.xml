@@ -105,6 +105,7 @@
 
 	<select id="pageSubject" resultMap="pageSubjectMap">
 		SELECT * FROM p10_subject
+
 		WHERE del_flag = 0
 		<if test="query.name != null and query.name != ''">
 			AND `name` LIKE concat('%', #{query.name}, '%')
@@ -128,10 +129,23 @@
 		LEFT JOIN p10_project_subject_re ON p10_project_subject_re.project_id = p10_project.project_id and p10_project_subject_re.del_flag = 0
 		WHERE p10_project.del_flag = 0
 		AND p10_project_subject_re.subject_id = #{subjectId}
+		AND p10_project_subject_re.`type` != 0
 	</select>
 
 	<select id="selectSubjectById" resultMap="SubjectVO">
 		SELECT * FROM p10_subject WHERE del_flag = 0 AND subject_id = #{subjectId}
+	</select>
+
+	<select id="queryByProjectId" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
+		SELECT
+		p10_subject.*
+		FROM
+			p10_subject
+			LEFT JOIN p10_project_subject_re ON p10_subject.subject_id = p10_project_subject_re.subject_id
+			AND p10_project_subject_re.del_flag = 0
+		WHERE
+			p10_subject.del_flag = 0
+		AND p10_project_subject_re.project_id = #{projectId}
 	</select>
 
 </mapper>

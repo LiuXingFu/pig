@@ -30,6 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 主体
@@ -49,4 +50,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
 
 	SubjectVO selectSubjectById(Integer subjectId);
+
+	List<Subject> queryByProjectId(Integer projectId);
 }

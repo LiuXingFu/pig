@@ -199,6 +199,16 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	/**
+	 * 根据项目id查询债务人信息
+	 * @param projectId
+	 * @return
+	 */
+	@Override
+	public List<Subject> queryByProjectId(Integer projectId) {
+		return this.baseMapper.queryByProjectId(projectId);
+	}
+
+	/**
 	 * 判断身份证格式
 	 *
 	 * @param idNum

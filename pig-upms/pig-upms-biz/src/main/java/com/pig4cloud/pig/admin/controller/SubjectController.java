@@ -221,8 +221,19 @@ public class SubjectController {
 	 */
 	@ApiOperation(value = "根据id集合查询主体信息", notes = "根据id集合查询主体信息")
 	@GetMapping("/queryBySubjectIdList/{subjectIdList}")
-	private R queryBySubjectIdList(@PathVariable List<Integer> subjectIdList) {
+	public R queryBySubjectIdList(@PathVariable List<Integer> subjectIdList) {
 		return R.ok(subjectService.queryBySubjectIdList(subjectIdList));
+	}
+
+	/**
+	 * 根据项目id查询债务人信息
+	 * @param projectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id查询债务人信息", notes = "根据项目id查询债务人信息")
+	@GetMapping("/queryByProjectId/{projectId}")
+	public R<List<Subject>> queryByProjectId(@PathVariable("projectId") Integer projectId) {
+		return R.ok(subjectService.queryByProjectId(projectId));
 	}
 
 }

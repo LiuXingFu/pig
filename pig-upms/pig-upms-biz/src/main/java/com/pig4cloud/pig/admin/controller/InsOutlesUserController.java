@@ -165,16 +165,15 @@ public class InsOutlesUserController {
 	}
 
 	/**
-	 * 根据网点id集合添加用户集合
+	 * 根据网点id添加这个网点的普通用户
 	 *
 	 * @param insOutlesUserAddOutlesListDTO
 	 * @return R
 	 */
-	@ApiOperation(value = "根据网点id集合添加用户集合", notes = "根据网点id集合添加用户集合")
-	@SysLog("根据网点id集合添加用户集合")
-	@PostMapping("/addInsOutlesUserByOutlesIds")
-	public R addInsOutlesUserByOutlesIds(@RequestBody InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) throws Exception {
-		int save = insOutlesUserService.addInsOutlesUserByOutlesIds(insOutlesUserAddOutlesListDTO);
+	@ApiOperation(value = "根据网点id添加这个网点的普通用户", notes = "根据网点id添加这个网点的普通用户")
+	@PostMapping("/addInsOutlesUserByOutlesId")
+	public R addInsOutlesUserByOutlesId(@RequestBody InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) throws Exception {
+		int save = insOutlesUserService.addInsOutlesUserByOutlesId(insOutlesUserAddOutlesListDTO);
 		if (save <= 0) {
 			return R.failed("添加失败");
 		} else {

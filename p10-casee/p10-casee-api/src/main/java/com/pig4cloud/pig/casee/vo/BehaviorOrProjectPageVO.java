@@ -14,7 +14,7 @@ public class BehaviorOrProjectPageVO extends Behavior {
 	private Integer projectId;
 
 	/**
-	 * 项目信息
+	 * 公司业务案号
 	 */
 	private String companyCode;
 

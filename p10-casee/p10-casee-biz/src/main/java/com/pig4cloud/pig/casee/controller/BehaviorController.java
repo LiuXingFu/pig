@@ -121,4 +121,15 @@ public class BehaviorController {
     	return R.ok(this.behaviorService.queryPageBehaviorOrProject(page, subjectId));
 	}
 
+	/**
+	 * 根据行为id查询行为信息、项目信息、案件信息
+	 * @param behaviorId
+	 * @return
+	 */
+	@ApiOperation(value = "根据行为id查询行为信息、项目信息、案件信息", notes = "根据行为id查询行为信息、项目信息、案件信息")
+	@GetMapping("/queryById/{behaviorId}")
+	public R queryById(@PathVariable Integer behaviorId) {
+		return R.ok(this.behaviorService.queryById(behaviorId));
+	}
+
 }

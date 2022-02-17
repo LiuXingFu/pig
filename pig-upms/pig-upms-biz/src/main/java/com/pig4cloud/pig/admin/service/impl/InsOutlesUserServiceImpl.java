@@ -179,14 +179,18 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		return this.baseMapper.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO);
 	}
 
+	/**
+	 * 根据网点id添加这个网点的普通用户
+	 * @param insOutlesUserAddOutlesListDTO
+	 * @return
+	 */
 	@Override
-	public int addInsOutlesUserByOutlesIds(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) {
+	public int addInsOutlesUserByOutlesId(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) {
 
-		insOutlesUserAddOutlesListDTO.getOutlesIds().forEach(integer -> {
 				InsOutlesUserObjectDTO insOutlesUserObjectDTO = new InsOutlesUserObjectDTO();
 				insOutlesUserObjectDTO.setInsId(insOutlesUserAddOutlesListDTO.getInsId());
 				insOutlesUserObjectDTO.setType(insOutlesUserAddOutlesListDTO.getType());
-				insOutlesUserObjectDTO.setOutlesId(integer);
+				insOutlesUserObjectDTO.setOutlesId(insOutlesUserAddOutlesListDTO.getOutlesId());
 				insOutlesUserObjectDTO.setPosition(insOutlesUserAddOutlesListDTO.getPosition());
 				List<SysUser> sysUserList = new ArrayList<>();
 				SysUser sysUser = new SysUser();
@@ -196,7 +200,6 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 				sysUserList.add(sysUser);
 				insOutlesUserObjectDTO.setUserList(sysUserList);
 				insOutlesUserService.addInsOutlesUser(insOutlesUserObjectDTO);
-			});
 		return 1;
 	}
 
