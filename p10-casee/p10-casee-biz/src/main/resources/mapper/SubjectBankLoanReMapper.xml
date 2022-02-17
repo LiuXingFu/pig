@@ -46,4 +46,9 @@
 	p10_subject_bank_loan_re.bank_loan_id = #{bankLoanId}
 	</select>
 
+	<select id="selectSubjectId" resultType="integer">
+	SELECT subject_id FROM `p10_subject_bank_loan_re`
+	WHERE
+	p10_subject_bank_loan_re.bank_loan_id = #{bankLoanId}
+	</select>
 </mapper>

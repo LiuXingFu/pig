@@ -32,4 +32,6 @@ public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
 
 	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
 
+
+	List<Integer> selectSubjectId(Integer bankLoanId);
 }

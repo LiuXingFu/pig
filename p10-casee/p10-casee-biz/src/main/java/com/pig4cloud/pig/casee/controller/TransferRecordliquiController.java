@@ -111,7 +111,7 @@ public class TransferRecordliquiController {
 	@SysLog("新增移交记录表" )
 	@PostMapping("/saveTransferRecord")
 	public R saveTransferRecord(@RequestBody TransferRecordLiqui transferRecordLiqui) {
-		return R.ok(transferRecordLiquiService.save(transferRecordLiqui));
+		return R.ok(transferRecordLiquiService.saveTransferRecord(transferRecordLiqui));
 	}
 
 	/**
