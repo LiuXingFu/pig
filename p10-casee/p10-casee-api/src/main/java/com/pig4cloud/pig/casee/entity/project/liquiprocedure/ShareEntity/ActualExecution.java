@@ -33,6 +33,6 @@ public class ActualExecution extends CommonalityData implements Serializable {
 	/**
 	 * 结案申请文书
 	 */
-	private List<FileAdder> closingApplicationDocumentsList;
+	private String closingApplicationDocumentsFile;
 
 }

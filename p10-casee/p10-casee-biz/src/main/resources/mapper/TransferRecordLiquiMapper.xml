@@ -38,7 +38,7 @@
 	<result property="remark" column="remark"/>
   </resultMap>
 
-	<select id="getBankLoanIdTransferRecord" resultType="com.pig4cloud.pig.casee.vo.TransferRecordVO">
+	<select id="getBankLoanIdTransferRecord" resultType="com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui">
 		select
 		*,
 		p10_institution.ins_name as entrustedInsName,

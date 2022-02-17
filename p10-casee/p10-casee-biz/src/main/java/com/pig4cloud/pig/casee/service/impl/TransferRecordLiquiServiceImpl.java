@@ -53,7 +53,7 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	}
 
 	@Override
-	public List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId) {
+	public List<TransferRecordLiqui> getBankLoanIdTransferRecord(Integer sourceId) {
 		return this.baseMapper.getBankLoanIdTransferRecord(sourceId,0);
 	}
 
