@@ -18,6 +18,7 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
@@ -27,6 +28,7 @@ import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,12 +46,19 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
 
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
+
 	@Override
 	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
 		if (transferRecordDTO.getHandoverTime()!=null){
-			String s =transferRecordDTO.getHandoverTime().toString();
+			String andoverTime =transferRecordDTO.getHandoverTime().toString();
 		}
-		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO);
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+
+		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO,insOutlesDTO);
 	}
 
 	@Override

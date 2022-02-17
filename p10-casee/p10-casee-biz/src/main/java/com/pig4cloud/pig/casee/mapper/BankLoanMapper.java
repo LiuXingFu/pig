@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import com.pig4cloud.pig.casee.vo.BankLoanVO;
@@ -36,7 +37,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface BankLoanMapper extends BaseMapper<BankLoan> {
 
-	IPage<BankLoanVO> bankLoanPage(Page page, @Param("query") BankLoanDTO bankLoanDTO);
+	IPage<BankLoanVO> bankLoanPage(Page page, @Param("query") BankLoanDTO bankLoanDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
 

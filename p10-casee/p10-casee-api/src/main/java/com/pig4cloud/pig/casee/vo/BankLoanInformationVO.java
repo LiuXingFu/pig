@@ -48,4 +48,7 @@ public class BankLoanInformationVO extends BankLoan {
 	 */
 	private Integer status;
 
+	private String entrustedInsName;
+
+	private String entrustedOutlesName;
 }

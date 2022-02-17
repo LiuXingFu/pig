@@ -29,6 +29,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.entity.BankLoan;
@@ -41,6 +42,7 @@ import com.pig4cloud.pig.casee.vo.BankLoanVO;
 import com.pig4cloud.pig.casee.vo.SubjectInformationVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,9 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 	@Autowired
 	AssetsService assetsService;
+
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	@Transactional
@@ -140,7 +145,10 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 	@Override
 	public IPage<BankLoanVO> bankLoanPage(Page page, BankLoanDTO bankLoanDTO) {
-		return this.baseMapper.bankLoanPage(page,bankLoanDTO);
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.bankLoanPage(page,bankLoanDTO,insOutlesDTO);
 	}
 
 	@Override
