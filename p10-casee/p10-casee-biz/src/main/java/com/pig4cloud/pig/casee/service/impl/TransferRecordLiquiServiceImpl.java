@@ -18,15 +18,22 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,16 +51,29 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
 
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
+
+	@Autowired
+	private SubjectBankLoanReService subjectBankLoanReService;
+
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
+
 	@Override
 	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
 		if (transferRecordDTO.getHandoverTime()!=null){
-			String s =transferRecordDTO.getHandoverTime().toString();
+			String andoverTime =transferRecordDTO.getHandoverTime().toString();
 		}
-		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO);
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+
+		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO,insOutlesDTO);
 	}
 
 	@Override
-	public List<TransferRecord> getBankLoanIdTransferRecord(Integer sourceId) {
+	public List<TransferRecordLiqui> getBankLoanIdTransferRecord(Integer sourceId) {
 		return this.baseMapper.getBankLoanIdTransferRecord(sourceId,0);
 	}
 
@@ -78,5 +98,18 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Override
 	public List<AssetsInformationVO> getProjectIdByAssets(Integer projectId) {
 		return this.baseMapper.getProjectIdByAssets(projectId);
+	}
+
+	@Override
+	public boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui) {
+		//通过银行借贷id查询所有债务人信息
+		List<Integer> subjectIdList = subjectBankLoanReService.selectSubjectId(transferRecordLiqui.getSourceId());
+		R<List<Subject>> result = remoteSubjectService.queryBySubjectIdList(subjectIdList, SecurityConstants.FROM);
+		List<Subject> subjects = result.getData();
+		for (Subject subject : subjects) {
+
+		}
+
+		return false;
 	}
 }

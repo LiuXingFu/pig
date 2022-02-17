@@ -38,7 +38,7 @@
 	<result property="remark" column="remark"/>
   </resultMap>
 
-	<select id="getBankLoanIdTransferRecord" resultType="com.pig4cloud.pig.casee.vo.TransferRecordVO">
+	<select id="getBankLoanIdTransferRecord" resultType="com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui">
 		select
 		*,
 		p10_institution.ins_name as entrustedInsName,
@@ -67,6 +67,12 @@
 		LEFT JOIN p10_outles AS outles ON outles.outles_id = p10_bank_loan.outles_id
 		WHERE
 		p10_transfer_record.del_flag = 0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_transfer_record.entrusted_ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_transfer_record.entrusted_outles_id = #{login.outlesId}
+		</if>
 		<if test="query.status != null and query.status != -1">
 			and p10_transfer_record.status=#{query.status}
 		</if>

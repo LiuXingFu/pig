@@ -18,7 +18,7 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData impleme
 	/**
 	 * 拍卖申请书
 	 */
-	private List<FileAdder> auctionApplicationList;
+	private String auctionApplicationFile;
 
 	/**
 	 * 申请提交时间

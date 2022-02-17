@@ -64,8 +64,8 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	}
 
 	@Override
-	public R queryBySubjectIdList(List<Integer> subjectIdList, String from) {
-		log.error("删除主体失败", cause);
+	public R<List<Subject>> queryBySubjectIdList(List<Integer> subjectIdList, String from) {
+		log.error("查询主体失败", cause);
 		return null;
 	}
 

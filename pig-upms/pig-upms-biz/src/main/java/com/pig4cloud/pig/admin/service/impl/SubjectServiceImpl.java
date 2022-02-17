@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,7 +133,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			Subject subject=new Subject();
 			BeanCopyUtil.copyBean(subjectAddressDTO,subject);
 			this.saveSubject(subject);
-			subjectNames+=subject.getName()+" ";
+			if (subjectNames.equals("")){
+				subjectNames=subject.getName();
+			}else {
+				subjectNames=subjectNames+","+subject.getName();
+			}
 			List<Address> addressList = subjectAddressDTO.getAddressList();
 			for (Address address : addressList) {
 				address.setUserId(subject.getSubjectId());

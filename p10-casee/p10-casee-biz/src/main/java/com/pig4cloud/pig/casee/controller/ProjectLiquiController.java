@@ -17,14 +17,17 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.vo.ProjectLiquiDealtVO;
 import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -115,6 +118,27 @@ public class ProjectLiquiController {
 	@GetMapping("/queryProjectSubjectList" )
 	public R queryProjectSubjectList(ProjectSubjectDTO projectSubjectDTO) {
 		return R.ok(projectLiquiService.queryProjectSubjectList(projectSubjectDTO));
+	}
+
+	/**
+	 * 案件表-获取字号
+	 *
+	 * @return
+	 */
+	@ApiOperation(value = "项目表-获取字号", notes = "项目表-获取字号")
+	@SysLog("案件表-获取字号" )
+	@GetMapping("/getWord")
+	public R getWord(ProjectLiqui projectLiqui) {
+		QueryWrapper<Project> caseeBizBaseQueryWrapper =new QueryWrapper<>();
+		caseeBizBaseQueryWrapper.eq("project_type",projectLiqui.getProjectType()).eq("year",projectLiqui.getYear()).eq("alias",projectLiqui.getAlias()).orderByDesc("word").last("limit 1");
+		Project projectres=projectLiquiService.getOne(caseeBizBaseQueryWrapper);
+		int word;
+		if(projectres==null){
+			word=1;
+		}else {
+			word =projectres.getWord()+1;
+		}
+		return R.ok(word);
 	}
 
 
