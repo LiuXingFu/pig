@@ -94,7 +94,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		if(subjectIdList.getData().size()>0){
 			String executedName = "";
 			for(Subject subject:subjectIdList.getData()){
-				if(Objects.isNull(executedName)){
+				if(executedName.equals("")){
 					executedName = subject.getName();
 				}else{
 					executedName = executedName+","+subject.getName();
