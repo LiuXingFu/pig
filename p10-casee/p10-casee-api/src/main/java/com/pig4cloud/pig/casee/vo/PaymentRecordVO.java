@@ -14,14 +14,12 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * 回款详细记录表
@@ -29,7 +27,14 @@ import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
  * @author Mjh
  * @date 2022-02-17 17:52:51
  */
-public interface PaymentRecordService extends IService<PaymentRecord> {
+@Data
+public class PaymentRecordVO extends PaymentRecord {
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord);
+	/**
+	 * 项目金额
+	 */
+	private BigDecimal projectAmount;
+
+
+
 }

@@ -36,6 +36,8 @@
     <result property="costAmount" column="cost_amount"/>
     <result property="status" column="status"/>
     <result property="caseeId" column="casee_id"/>
-    <result property="companyCode" column="company_code"/>
+	<result property="companyCode" column="company_code"/>
+	<result property="caseeNumber" column="casee_number"/>
+	<result property="subjectName" column="subject_name"/>
   </resultMap>
 </mapper>

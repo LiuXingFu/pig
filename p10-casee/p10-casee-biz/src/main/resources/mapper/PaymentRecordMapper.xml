@@ -34,9 +34,33 @@
     <result property="paymentType" column="payment_type"/>
     <result property="fundsType" column="funds_type"/>
     <result property="paymentDate" column="payment_date"/>
-    <result property="subjectId" column="subject_id"/>
+    <result property="fatherId" column="father_id"/>
     <result property="paymentAmount" column="payment_amount"/>
     <result property="caseeId" column="casee_id"/>
     <result property="companyCode" column="company_code"/>
+	<result property="caseeNumber" column="casee_number"/>
+	<result property="subjectName" column="subject_name"/>
   </resultMap>
+
+	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from p10_payment_record
+		left join p10_project on p10_project.project_id=p10_payment_record.project_id
+		where
+		p10_payment_record.del_flag=0 and ISNULL(p10_payment_record.father_id)
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.companyCode != null and query.companyCode != ''">
+			and p10_payment_record.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and p10_payment_record.subject_name like concat('%', #{query.subjectName}, '%')
+		</if>
+		<if test="query.paymentDate != null">
+			and p10_payment_record.payment_date =#{query.paymentDate}
+		</if>
+	</select>
 </mapper>

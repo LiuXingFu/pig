@@ -45,6 +45,12 @@ public class TransferRecordDTO extends TransferRecord {
 	private Integer userId;
 
 	/**
+	 * 办理人名称
+	 */
+	@ApiModelProperty(value="办理人名称")
+	private String  userNickName;
+
+	/**
 	 * 接收时间
 	 */
 	@ApiModelProperty(value="接收时间")

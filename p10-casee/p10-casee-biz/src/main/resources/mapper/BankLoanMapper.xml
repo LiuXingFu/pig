@@ -118,6 +118,7 @@
 		<if test="query.status != -1">
 			and  p10_transfer_record.status = #{query.status}
 		</if>
+		ORDER BY p10_bank_loan.create_time desc
 	</select>
 
 	<select id="getByBankLoanInformation" resultMap="BankLoanInformationVO">

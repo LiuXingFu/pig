@@ -18,8 +18,13 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 回款详细记录表
@@ -29,5 +34,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
+
+	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecord paymentRecord, @Param("login") InsOutlesDTO insOutlesDTO);
 
 }
