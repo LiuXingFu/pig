@@ -108,12 +108,9 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
 		caseeLiqui.setApplicantName(project.getProposersNames());
 		Integer save = this.baseMapper.insert(caseeLiqui);
-		// 查询办理人名称
-		R<UserVO> userVOR = userService.getUserById(caseeLiquiAddDTO.getUserId(),SecurityConstants.FROM);
 		// 保存项目案件关联表
 		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
 		BeanCopyUtil.copyBean(caseeLiquiAddDTO,projectCaseeRe);
-		projectCaseeRe.setActualName(userVOR.getData().getActualName());
 		projectCaseeRe.setCaseeId(caseeLiqui.getCaseeId());
 		projectCaseeReLiquiService.save(projectCaseeRe);
 		// 查询抵押财产，更新财产关联表
