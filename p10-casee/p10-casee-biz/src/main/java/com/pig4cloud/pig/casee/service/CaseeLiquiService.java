@@ -20,6 +20,10 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.vo.CaseeListVO;
+
+import java.util.List;
 
 /**
  * 案件表
@@ -31,6 +35,20 @@ public interface CaseeLiquiService extends IService<Casee> {
 
 	Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
 
+	/**
+	 * 根据项目id、案件类型查询案件信息
+	 * @param projectId
+	 * @param caseeType
+	 * @return
+	 */
+	List<CaseeListVO> queryByIdList(Integer projectId,List<Integer> caseeType);
 
+	/**
+	 * 根据项目id、案件类型查询一审或首执案件信息
+	 * @param projectId
+	 * @param caseeType
+	 * @return
+	 */
+	CaseeLiqui getCaseeParentId(Integer projectId,Integer caseeType);
 
 }

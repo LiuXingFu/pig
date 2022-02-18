@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -113,18 +114,6 @@ public class AssetsController {
 	}
 
 	/**
-	 * 根据主体id分页查询
-	 * @param page 分页对象
-	 * @param subjectId 主体id
-	 * @return
-	 */
-	@ApiOperation(value = "分页查询", notes = "分页查询")
-	@GetMapping("/queryPageAssetsOrProject" )
-	public R queryPageAssetsOrProject(Page page, Integer subjectId) {
-		return R.ok(assetsService.queryPageAssetsOrProject(page, subjectId));
-	}
-
-	/**
 	 * 根据财产id查询财产信息与财产地址信息
 	 * @param assetsId
 	 * @return
@@ -135,8 +124,20 @@ public class AssetsController {
 		return R.ok(assetsService.queryById(assetsId));
 	}
 
+	/**
+	 * 根据特定条件分页查询财产与项目数据
+	 * @param page
+	 * @param assetsOrProjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据特定条件分页查询财产与项目数据", notes = "根据特定条件分页查询财产与项目数据")
+	@GetMapping("/getPageAssetsManage" )
 	public R getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
 		return R.ok(assetsService.getPageAssetsManage(page, assetsOrProjectPageDTO));
+	}
+
+	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO){
+		this.exportXls(response, assetsOrProjectPageDTO);
 	}
 
 }

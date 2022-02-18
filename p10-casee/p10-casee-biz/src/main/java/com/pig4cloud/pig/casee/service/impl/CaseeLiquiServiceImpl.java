@@ -25,13 +25,16 @@ import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
+import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.CaseeListVO;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -79,7 +82,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private RemoteSubjectService subjectService;
 
 	@Autowired
-	private RemoteInstitutionService institutionService;
+	private RemoteUserService userService;
 
 
 
@@ -90,7 +93,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
 		BeanCopyUtil.copyBean(caseeLiquiAddDTO,caseeLiqui);
 		// 查询被告/被执行人/被上诉人等名称
-		R<List<Subject>> subjectIdList = subjectService.queryBySubjectIdList(caseeLiquiAddDTO.getSubjectList(),SecurityConstants.FROM);
+		R<List<Subject>> subjectIdList = subjectService.queryBySubjectIdList(caseeLiquiAddDTO.getSubjectIdList(),SecurityConstants.FROM);
 		if(subjectIdList.getData().size()>0){
 			String executedName = "";
 			for(Subject subject:subjectIdList.getData()){
@@ -102,7 +105,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			}
 			caseeLiqui.setExecutedName(executedName);
 		}
-		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getParentId());
+		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
 		caseeLiqui.setApplicantName(project.getProposersNames());
 		Integer save = this.baseMapper.insert(caseeLiqui);
 		// 保存项目案件关联表
@@ -130,7 +133,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		}
 		// 保存案件人员关联
 		List<CaseeSubjectRe> caseeSubjectReList = new ArrayList<>();
-		caseeLiquiAddDTO.getSubjectList().stream().forEach(item->{
+		caseeLiquiAddDTO.getSubjectIdList().stream().forEach(item->{
 			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
 			caseeSubjectRe.setCaseeId(caseeLiqui.getCaseeId());
 			caseeSubjectRe.setSubjectId(item);
@@ -138,23 +141,23 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			caseeSubjectReList.add(caseeSubjectRe);
 		});
 		caseeSubjectReService.saveBatch(caseeSubjectReList);
-		// 查询
-		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeLiquiAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
-		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
-		if (taskNodeTemplate.getData()==null){
-			//如果当前受托网点没有配置模板直接返回
-			return -1;
-		}
-		//增加程序
-		TargetAddDTO targetAddDTO = new TargetAddDTO();
-//		targetAddDTO.setCreateInsId(pigUser.getInsId());
-//		targetAddDTO.setCreateOutlesId(pigUser.getOutlesId());
-		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
-		targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
-
-		TargetAddDTO addDTO = targetService.saveTargetAddDTO(targetAddDTO);
-		//添加任务数据
-		configurationNodeTemplate(caseeLiqui.getCaseeId(),addDTO,project,taskNodeTemplate.getData().getTemplateId());
+//		// 查询
+//		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeLiquiAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
+//		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
+//		if (taskNodeTemplate.getData()==null){
+//			//如果当前受托网点没有配置模板直接返回
+//			return -1;
+//		}
+//		//增加程序
+//		TargetAddDTO targetAddDTO = new TargetAddDTO();
+////		targetAddDTO.setCreateInsId(pigUser.getInsId());
+////		targetAddDTO.setCreateOutlesId(pigUser.getOutlesId());
+//		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
+//		targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
+//
+//		TargetAddDTO addDTO = targetService.saveTargetAddDTO(targetAddDTO);
+//		//添加任务数据
+//		configurationNodeTemplate(caseeLiqui.getCaseeId(),addDTO,project,taskNodeTemplate.getData().getTemplateId());
 		return save;
 	}
 
@@ -173,6 +176,16 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			//生成任务
 			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO,jsonObject);
 		}
+	}
+
+	@Override
+	public List<CaseeListVO> queryByIdList(Integer caseeId, List<Integer> caseeType){
+		return this.baseMapper.selectByIdList(caseeId,caseeType);
+	}
+
+	@Override
+	public CaseeLiqui getCaseeParentId(Integer projectId,Integer caseeType){
+		return this.baseMapper.getCaseeParentId(projectId,caseeType);
 	}
 
 }

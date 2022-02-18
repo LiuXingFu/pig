@@ -26,10 +26,7 @@ import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
+import com.pig4cloud.pig.casee.vo.*;
 
 import java.util.List;
 
@@ -55,4 +52,10 @@ public interface ProjectLiquiService extends IService<Project> {
 
 	List<ProjectSubjectVO> queryProjectSubjectList(ProjectSubjectDTO projectSubjectDTO);
 
+	/**
+	 * 通过项目id查询办理信息
+	 * @param projectId
+	 * @return
+	 */
+	ProjectLiquiDealtVO queryDealt(Integer projectId);
 }
