@@ -45,6 +45,4 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 	boolean reception(TransferRecordDTO transferRecordDTO);
 
 	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
-
-	boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui);
 }

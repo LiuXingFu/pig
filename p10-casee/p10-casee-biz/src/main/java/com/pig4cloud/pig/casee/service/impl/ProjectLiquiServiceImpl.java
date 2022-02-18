@@ -20,9 +20,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
@@ -30,7 +31,6 @@ import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
-import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -88,7 +88,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
 
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
+
+	@Autowired
+	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
@@ -118,6 +125,27 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
 		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());
 		this.baseMapper.insert(projectLiqui);
+
+		//查询银行借贷债务人信息
+		List<Integer> subjectIdList = subjectBankLoanReService.selectSubjectId(transferRecordBankLoanVO.getSourceId());
+		R<List<Subject>> result = remoteSubjectService.queryBySubjectIdList(subjectIdList, SecurityConstants.FROM);
+		//添加费用产生记录
+		ExpenseRecord expenseRecord=new ExpenseRecord();
+		expenseRecord.setProjectId(projectLiqui.getProjectId());
+		expenseRecord.setCostType(0);
+		expenseRecord.setCostIncurredTime(projectLiqui.getTakeTime());
+		expenseRecord.setCostAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount());
+		expenseRecord.setStatus(0);
+		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
+		expenseRecordService.save(expenseRecord);
+
+		//添加费用记录关联主体信息
+		ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
+		for (Subject subject : result.getData()) {
+			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+		}
 
 		// 保存项目状态变更记录表
 		ProjectStatus projectStatus = new ProjectStatus();

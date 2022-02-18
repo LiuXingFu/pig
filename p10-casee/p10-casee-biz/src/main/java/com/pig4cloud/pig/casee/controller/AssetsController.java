@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
@@ -121,6 +122,21 @@ public class AssetsController {
 	@GetMapping("/queryPageAssetsOrProject" )
 	public R queryPageAssetsOrProject(Page page, Integer subjectId) {
 		return R.ok(assetsService.queryPageAssetsOrProject(page, subjectId));
+	}
+
+	/**
+	 * 根据财产id查询财产信息与财产地址信息
+	 * @param assetsId
+	 * @return
+	 */
+	@ApiOperation(value = "根据财产id查询财产信息与财产地址信息", notes = "根据财产id查询财产信息与财产地址信息")
+	@GetMapping("/queryById/{assetsId}" )
+	public R queryById(@PathVariable Integer assetsId){
+		return R.ok(assetsService.queryById(assetsId));
+	}
+
+	public R getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return R.ok(assetsService.getPageAssetsManage(page, assetsOrProjectPageDTO));
 	}
 
 }

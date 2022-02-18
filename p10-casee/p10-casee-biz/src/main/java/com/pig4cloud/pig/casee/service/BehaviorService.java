@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 
 /**
@@ -32,4 +33,6 @@ import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 public interface BehaviorService extends IService<Behavior> {
 
 	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId);
+
+	BehaviorOrProjectOrCasee queryById(Integer behaviorId);
 }

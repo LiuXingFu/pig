@@ -21,6 +21,7 @@ import com.pig4cloud.pig.admin.api.feign.factory.RemoteSubjectServiceFallbackFac
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,5 +81,13 @@ public interface RemoteSubjectService {
 	 */
 	@GetMapping("/subject/queryBySubjectIdList")
 	R<List<Subject>> queryBySubjectIdList(@RequestParam(value = "subjectIdList" ,required=false)List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 根据项目id查询债务人信息
+	 * @param projectId
+	 * @return
+	 */
+	@GetMapping("/subject/queryByProjectId/{projectId}")
+	R<List<Subject>> queryByProjectId(@PathVariable("projectId") Integer projectId, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

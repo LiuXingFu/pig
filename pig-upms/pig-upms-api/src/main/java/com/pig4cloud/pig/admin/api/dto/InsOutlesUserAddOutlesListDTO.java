@@ -22,11 +22,6 @@ public class InsOutlesUserAddOutlesListDTO extends SysUser {
 	private Integer insId;
 
 	/**
-	 * 网点集合
-	 */
-	List<Integer> outlesIds;
-
-	/**
 	 * 网点id
 	 */
 	private Integer outlesId;
