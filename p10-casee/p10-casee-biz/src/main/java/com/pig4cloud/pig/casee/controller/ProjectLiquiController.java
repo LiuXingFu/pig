@@ -92,10 +92,7 @@ public class ProjectLiquiController {
 	@ApiOperation(value = "通过id查询项目清收详情", notes = "通过id查询项目清收详情")
 	@GetMapping("/getByProjectId/{projectId}" )
 	public R getByProjectId(@PathVariable("projectId" )Integer projectId) {
-		ProjectLiquiDealtVO projectLiquiDealtVO = new ProjectLiquiDealtVO();
-		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(projectId);
-		projectLiquiDealtVO.setProjectLiqui(projectLiqui);
-		return R.ok(projectLiquiDealtVO);
+		return R.ok(projectLiquiService.getByProjectId(projectId));
 	}
 
 	/**
@@ -139,6 +136,17 @@ public class ProjectLiquiController {
 			word =projectres.getWord()+1;
 		}
 		return R.ok(word);
+	}
+
+	/**
+	 * 通过项目id查询办理信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询办理信息", notes = "通过项目id查询办理信息")
+	@GetMapping("/queryDealt/{projectId}" )
+	public R queryDealt(@PathVariable("projectId" )Integer projectId) {
+		return R.ok(projectLiquiService.queryDealt(projectId));
 	}
 
 

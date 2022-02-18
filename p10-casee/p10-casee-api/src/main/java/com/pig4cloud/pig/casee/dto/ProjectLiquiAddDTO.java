@@ -72,5 +72,11 @@ public class ProjectLiquiAddDTO {
 	@ApiModelProperty(value="字号")
 	private Integer word;
 
+	/**
+	 * 办理人名称
+	 */
+	@ApiModelProperty(value="办理人名称")
+	private String userNickName;
+
 
 }

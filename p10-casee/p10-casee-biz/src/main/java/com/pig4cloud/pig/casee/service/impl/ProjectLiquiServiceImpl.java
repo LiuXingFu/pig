@@ -68,9 +68,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private RemoteUserService userService;
 
 	@Autowired
-	private RemoteInstitutionService institutionService;
-
-	@Autowired
 	private ProjectStatusService projectStatusService;
 
 	@Autowired
@@ -87,6 +84,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	@Autowired
 	private AssetsBankLoanReMapper assetsBankLoanReMapper;
+
+	@Autowired
+	private CaseeLiquiService caseeLiquiService;
 
 	@Autowired
 	private RemoteSubjectService remoteSubjectService;
@@ -119,9 +119,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setRemainingPayment(BigDecimal.valueOf(0));
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
-		// 查询办理人名称
-		R<UserVO> userVOR = userService.getUserById(projectLiquiAddVO.getUserId(), SecurityConstants.FROM);
-		projectLiqui.setUserNickName(userVOR.getData().getActualName());
 		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
 		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());
 		this.baseMapper.insert(projectLiqui);
@@ -254,6 +251,37 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public List<ProjectSubjectVO> queryProjectSubjectList(ProjectSubjectDTO projectSubjectDTO){
 		return this.baseMapper.selectProjectSubject(projectSubjectDTO);
+	}
+
+	@Override
+	public ProjectLiquiDealtVO queryDealt(Integer projectId){
+		ProjectLiquiDealtVO projectLiquiDealtVO = new ProjectLiquiDealtVO();
+		// 查询项目基本详情
+		ProjectLiqui projectLiqui = this.baseMapper.getByProjectId(projectId);
+		projectLiquiDealtVO.setProjectLiqui(projectLiqui);
+
+		// 查询诉前阶段案件信息
+		List<Integer> typeList = new ArrayList<>();
+		typeList.add(1010);
+		List<CaseeListVO> prePleadingList = caseeLiquiService.queryByIdList(projectId,typeList);
+		projectLiquiDealtVO.setPrePleadingList(prePleadingList);
+
+		// 查询诉讼阶段案件信息
+		typeList = new ArrayList<>();
+		typeList.add(2010);
+		typeList.add(2020);
+		typeList.add(2021);
+		typeList.add(2030);
+		List<CaseeListVO> litigationList = caseeLiquiService.queryByIdList(projectId,typeList);
+		projectLiquiDealtVO.setLitigationList(litigationList);
+
+		// 查询执行阶段案件信息
+		typeList = new ArrayList<>();
+		typeList.add(3010);
+		typeList.add(3031);
+		List<CaseeListVO> executeList = caseeLiquiService.queryByIdList(projectId,typeList);
+		projectLiquiDealtVO.setExecuteList(executeList);
+		return projectLiquiDealtVO;
 	}
 
 

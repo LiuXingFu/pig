@@ -71,7 +71,7 @@ public class ProjectCaseeRe extends BaseEntity {
      * 办理人名称
      */
     @ApiModelProperty(value="办理人名称")
-    private Integer actualName;
+    private String actualName;
 
     /**
      * 项目案件详情

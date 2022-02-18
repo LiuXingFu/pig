@@ -14,19 +14,19 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
-import com.pig4cloud.pig.casee.vo.CaseeListVO;
-import com.pig4cloud.pig.casee.vo.CaseeVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 案件表
@@ -34,11 +34,23 @@ import java.util.List;
  * @author yy
  * @date 2022-01-10 14:51:59
  */
-@Mapper
-public interface CaseeLiquiMapper extends BaseMapper<Casee> {
+@Data
+public class CaseeListVO extends Casee {
 
-	List<CaseeListVO> selectByIdList(@Param("projectId") Integer projectId,@Param("caseeType")List<Integer> caseeType);
+	/**
+	 * 法院名称
+	 */
+	String courtName;
 
-	CaseeLiqui getCaseeParentId(@Param("projectId") Integer projectId,@Param("caseeType")Integer caseeType);
+	/**
+	 * 律师名称
+	 */
+	String lawyerName;
+
+	/**
+	 * 办理人名称
+	 */
+	String actualName;
+
 
 }

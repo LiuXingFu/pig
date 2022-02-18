@@ -103,7 +103,7 @@ public class Casee extends BaseEntity {
     /**
      * 类别（0-一审 1-二审 2-首执 3- 执恢）
      */
-    @ApiModelProperty(value="类别（0-一审 1-二审 2-首执 3- 执恢）")
+    @ApiModelProperty(value="类别（20201：一审，20211：二审，30101：首执，30311：执恢）")
     private Integer category;
 
     /**

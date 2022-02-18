@@ -53,4 +53,15 @@ public class CaseeLiquiController {
 		return R.ok(caseeLiquiService.addCaseeLiqui(caseeLiquiAddDTO));
 	}
 
+	/**
+	 * 根据项目id、案件类型查询一审或首执案件信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件类型查询一审或首执案件信息", notes = "根据项目id、案件类型查询一审或首执案件信息")
+	@GetMapping("/getCaseeParentId/{projectId}/{caseeType}" )
+	public R getCaseeParentId(@PathVariable("projectId" )Integer projectId,Integer caseeType) {
+		return R.ok(caseeLiquiService.getCaseeParentId(projectId,caseeType));
+	}
+
 }

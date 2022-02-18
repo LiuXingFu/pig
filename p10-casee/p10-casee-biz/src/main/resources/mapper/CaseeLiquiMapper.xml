@@ -23,5 +23,33 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper">
 
+	<select id="selectByIdList" resultType="com.pig4cloud.pig.casee.vo.CaseeListVO">
+		select p10_casee.*,p10_court.court_name as courtName,p10_casee_lawyer_re.actual_name as lawyerName,p10_project_casee_re.actual_name as actualName from p10_casee
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		where p10_casee.del_flag = 0
+		<if test="projectId!=null and projectId!=''">
+			and p10_project_casee_re.project_id = #{projectId}
+		</if>
+		<if test="caseeType.size>0">
+			and p10_casee.casee_type in
+			<foreach item="item" index="index" collection="caseeType"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by p10_casee.casee_type,p10_casee.category,p10_casee.start_time
+	</select>
+
+	<select id="getCaseeParentId" resultType="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">
+		select * from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		where p10_casee.del_flag = 0
+		and p10_casee.casee_type = #{caseeType}
+		and p10_project_casee_re.project_id = #{projectId}
+		order by p10_casee.start_time desc
+		LIMIT 1
+	</select>
 
 </mapper>

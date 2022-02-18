@@ -98,7 +98,7 @@ public class CaseeLiquiAddDTO {
 	 * 债务人集合
 	 */
 	@ApiModelProperty(value="债务人集合")
-	private List<Integer> subjectList;
+	private List<Integer> subjectIdList;
 
 
 
