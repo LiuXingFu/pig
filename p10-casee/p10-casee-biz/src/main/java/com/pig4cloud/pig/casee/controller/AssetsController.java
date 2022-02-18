@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -133,6 +134,10 @@ public class AssetsController {
 	@GetMapping("/getPageAssetsManage" )
 	public R getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
 		return R.ok(assetsService.getPageAssetsManage(page, assetsOrProjectPageDTO));
+	}
+
+	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO){
+		this.exportXls(response, assetsOrProjectPageDTO);
 	}
 
 }
