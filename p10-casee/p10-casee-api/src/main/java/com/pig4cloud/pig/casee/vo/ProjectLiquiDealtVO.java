@@ -26,6 +26,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * 项目表
  *
@@ -38,6 +40,28 @@ public class ProjectLiquiDealtVO {
 
 	@ApiModelProperty(value="清收项目详情表")
 	private ProjectLiqui projectLiqui;
+
+	/**
+	 * 诉前阶段
+	 */
+	List<CaseeListVO> prePleadingList;
+
+	/**
+	 * 诉讼阶段
+	 */
+	List<CaseeListVO> litigationList;
+
+	/**
+	 * 履行阶段
+	 */
+	List<CaseeListVO> carryList;
+
+	/**
+	 * 执行阶段
+	 */
+	List<CaseeListVO> executeList;
+
+
 
 
 }
