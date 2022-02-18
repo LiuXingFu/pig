@@ -27,6 +27,12 @@ public class AssetsOrProjectPageDTO {
 	private String assetsName;
 
 	/**
+	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
+	 */
+	@ApiModelProperty(value="财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））")
+	private Integer assetsType;
+
+	/**
 	 * 债务人名称
 	 */
 	@ApiModelProperty(value="债务人名称")
@@ -37,5 +43,11 @@ public class AssetsOrProjectPageDTO {
 	 */
 	@ApiModelProperty(value="财产账号/编号")
 	private String accountNumber;
+
+	/**
+	 * 主体id
+	 */
+	@ApiModelProperty(value="主体id")
+	private Integer subjectId;
 
 }

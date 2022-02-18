@@ -37,6 +37,7 @@ public class AssetsOrProjectPageVO {
 	/**
 	 * 财产编号/账号
 	 */
+	private String accountNumber;
 
 	/**
 	 * 项目id
@@ -72,29 +73,5 @@ public class AssetsOrProjectPageVO {
 	 * 查封情况(0-首封 1-轮候)
 	 */
 	private String sealUpCondition;
-
-//	/**
-//	 * 冻结
-//	 */
-//	private FundingZX_ZJZX_ZJZXDJ_ZJZXDJ dj;
-//
-//	/**
-//	 * 查封
-//	 */
-//	private EntityZX_STZX_CCZXCF_CCZXCF cf;
-//
-//	public FundingZX_ZJZX_ZJZXDJ_ZJZXDJ getDj() {
-//		if (dj == null && this.getAssetsReDetailDJ() != null) {
-//			dj = JSON.parseObject(this.getAssetsReDetailDJ(), FundingZX_ZJZX_ZJZXDJ_ZJZXDJ.class);
-//		}
-//		return dj;
-//	}
-//
-//	public EntityZX_STZX_CCZXCF_CCZXCF getCf() {
-//		if (cf == null && this.getAssetsReDetailCF() != null && this.getType().equals(20200)) {
-//			cf = JSON.parseObject(this.getAssetsReDetailCF(), EntityZX_STZX_CCZXCF_CCZXCF.class);
-//		}
-//		return cf;
-//	}
 
 }

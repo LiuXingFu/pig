@@ -42,9 +42,7 @@ public interface AssetsService extends IService<Assets> {
 
 	boolean	saveAssets(BankLoanDTO bankLoanDTO);
 
-	IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId);
-
 	AssetsDeailsVO queryById(Integer assetsId);
 
-	Object getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 }

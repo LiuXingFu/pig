@@ -91,17 +91,6 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 	/**
-	 * 根据主体id分页查询
-	 * @param page 分页对象
-	 * @param subjectId 主体id
-	 * @return
-	 */
-	@Override
-	public IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, Integer subjectId) {
-		return this.baseMapper.queryPageAssetsOrProject(page, subjectId);
-	}
-
-	/**
 	 * 根据财产id查询财产信息与财产地址信息
 	 * @param assetsId
 	 * @return
@@ -111,8 +100,14 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 		return this.baseMapper.queryById(assetsId);
 	}
 
+	/**
+	 * 根据特定条件分页查询财产与项目数据
+	 * @param page
+	 * @param assetsOrProjectPageDTO
+	 * @return
+	 */
 	@Override
-	public Object getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
-		return null;
+	public IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return this.baseMapper.getPageAssetsManage(page, assetsOrProjectPageDTO);
 	}
 }
