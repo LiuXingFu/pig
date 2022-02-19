@@ -17,7 +17,11 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.CaseeLawsuitsDTO;
 import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
+import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
+import com.pig4cloud.pig.casee.dto.CaseeReinstatementDTO;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -43,7 +47,7 @@ public class CaseeLiquiController {
 
 	/**
 	 * 新增案件表
-	 * @param caseeLiquiAddDTO 案件表
+	 * @param caseeLiquiAddDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "新增清收案件表", notes = "新增清收案件表")
@@ -51,6 +55,54 @@ public class CaseeLiquiController {
 	@PostMapping("/saveCaseeLiqui")
 	public R saveCaseeLiqui(@RequestBody CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		return R.ok(caseeLiquiService.addCaseeLiqui(caseeLiquiAddDTO));
+	}
+
+	/**
+	 * 添加保全案件
+	 * @param caseeLiquiAddDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加保全案件", notes = "添加保全案件")
+	@SysLog("添加保全案件" )
+	@PostMapping("/savePreservationCasee")
+	public R savePreservationCasee(@RequestBody CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
+		return R.ok(caseeLiquiService.addPreservationCasee(caseeLiquiAddDTO));
+	}
+
+	/**
+	 * 添加诉讼案件
+	 * @param caseeLawsuitsDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加诉讼案件", notes = "添加诉讼案件")
+	@SysLog("添加诉讼案件" )
+	@PostMapping("/saveLawsuitsCasee")
+	public R saveLawsuitsCasee(@RequestBody CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception {
+		return R.ok(caseeLiquiService.addLawsuitsCasee(caseeLawsuitsDTO));
+	}
+
+	/**
+	 * 添加首执案件
+	 * @param caseeLiquiAddDTO 案件表
+	 * @return R
+	 */
+	@ApiOperation(value = "添加首执案件", notes = "添加首执案件")
+	@SysLog("添加首执案件" )
+	@PostMapping("/saveExecutionCasee")
+	public R saveExecutionCasee(@RequestBody CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
+		return R.ok(caseeLiquiService.addExecutionCasee(caseeLiquiAddDTO));
+	}
+
+	/**
+	 * 添加执恢案件
+	 * @param caseeReinstatementDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加执恢案件", notes = "添加执恢案件")
+	@SysLog("添加执恢案件" )
+	@PostMapping("/saveReinstatementCasee")
+	public R saveReinstatementCasee(@RequestBody CaseeReinstatementDTO caseeReinstatementDTO) throws Exception {
+		return R.ok(caseeLiquiService.addReinstatementCasee(caseeReinstatementDTO));
 	}
 
 	/**
@@ -62,6 +114,18 @@ public class CaseeLiquiController {
 	@GetMapping("/getCaseeParentId/{projectId}/{caseeType}" )
 	public R getCaseeParentId(@PathVariable("projectId" )Integer projectId,Integer caseeType) {
 		return R.ok(caseeLiquiService.getCaseeParentId(projectId,caseeType));
+	}
+
+	/**
+	 * 案件清收分页查询
+	 * @param page 分页对象
+	 * @param caseeLiquiPageDTO 案件清收表
+	 * @return
+	 */
+	@ApiOperation(value = "案件清收分页查询", notes = "案件清收分页查询")
+	@GetMapping("/queryPageCaseeLiqui" )
+	public R queryPageCaseeLiqui(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
+		return R.ok(caseeLiquiService.queryPage(page, caseeLiquiPageDTO));
 	}
 
 }

@@ -54,14 +54,17 @@ public class ProjectLiquiDealtVO {
 	/**
 	 * 履行阶段
 	 */
-	List<CaseeListVO> carryList;
+	CaseeListVO carryList;
 
 	/**
 	 * 执行阶段
 	 */
 	List<CaseeListVO> executeList;
 
-
+	/**
+	 * 添加案件按钮控制
+	 */
+	Boolean addCaseeBtn;
 
 
 }

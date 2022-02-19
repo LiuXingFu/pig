@@ -73,6 +73,12 @@ public class AssetsRe extends BaseEntity {
     @ApiModelProperty(value="案件id")
     private Integer caseeId;
 
+	/**
+	 * 财产创建案件id
+	 */
+	@ApiModelProperty(value="财产创建案件id")
+    private Integer createCaseeId;
+
     /**
      * 债务人id
      */

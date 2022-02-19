@@ -17,10 +17,16 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.CaseeLawsuitsDTO;
 import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
+import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
+import com.pig4cloud.pig.casee.dto.CaseeReinstatementDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 
 import java.util.List;
@@ -33,10 +39,44 @@ import java.util.List;
  */
 public interface CaseeLiquiService extends IService<Casee> {
 
+	/**
+	 * 添加基本案件
+	 * @param caseeLiquiAddDTO
+	 * @return
+	 * @throws Exception
+	 */
 	Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
 
 	/**
-	 * 根据项目id、案件类型查询案件信息
+	 * 添加保全案件
+	 * @return
+	 * @throws Exception
+	 */
+	Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
+
+	/**
+	 * 添加诉讼案件
+	 * @return
+	 * @throws Exception
+	 */
+	Integer addLawsuitsCasee(CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception;
+
+	/**
+	 * 添加首执案件
+	 * @return
+	 * @throws Exception
+	 */
+	Integer addExecutionCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
+
+	/**
+	 * 添加执恢案件
+	 * @return
+	 * @throws Exception
+	 */
+	Integer addReinstatementCasee(CaseeReinstatementDTO caseeReinstatementDTO) throws Exception;
+
+	/**
+	 * 根据项目id、案件类型集合查询案件信息
 	 * @param projectId
 	 * @param caseeType
 	 * @return
@@ -50,5 +90,21 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	CaseeLiqui getCaseeParentId(Integer projectId,Integer caseeType);
+
+	/**
+	 * 根据项目id、案件状态集合查询案件信息
+	 * @param projectId
+	 * @param statusList
+	 * @return
+	 */
+	CaseeLiqui queryByStatusList(Integer projectId,List<Integer> statusList);
+
+	/**
+	 * 分页查询清收案件
+	 * @param page
+	 * @param caseeLiquiPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO);
 
 }

@@ -27,6 +27,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
@@ -45,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 清收项目表
@@ -281,6 +283,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		typeList.add(3031);
 		List<CaseeListVO> executeList = caseeLiquiService.queryByIdList(projectId,typeList);
 		projectLiquiDealtVO.setExecuteList(executeList);
+
+		Boolean addCaseeBtn = false;
+		List<Integer> statusList = new ArrayList<>();
+		statusList.add(0);
+		statusList.add(1);
+		CaseeLiqui caseeLiqui = caseeLiquiService.queryByStatusList(projectId,statusList);
+		if(Objects.isNull(caseeLiqui)){
+			addCaseeBtn = true;
+		}
+		projectLiquiDealtVO.setAddCaseeBtn(addCaseeBtn);
+
 		return projectLiquiDealtVO;
 	}
 

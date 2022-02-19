@@ -18,9 +18,13 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 import com.pig4cloud.pig.casee.vo.CaseeVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,5 +44,9 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	List<CaseeListVO> selectByIdList(@Param("projectId") Integer projectId,@Param("caseeType")List<Integer> caseeType);
 
 	CaseeLiqui getCaseeParentId(@Param("projectId") Integer projectId,@Param("caseeType")Integer caseeType);
+
+	CaseeLiqui selectByStatusList(@Param("projectId") Integer projectId,@Param("statusList")List<Integer> statusList);
+
+	IPage<CaseeLiquiPageVO> selectPage(Page page, @Param("query")CaseeLiquiPageDTO caseeLiquiPageDTO);
 
 }

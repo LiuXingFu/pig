@@ -38,18 +38,6 @@ public class CaseeLiquiAddDTO {
 	private BigDecimal judicialExpenses;
 
 	/**
-	 * 父案件id
-	 */
-	@ApiModelProperty(value = "父案件id")
-	private Integer parentId;
-
-	/**
-	 * 类别（0-一审 1-二审 2-首执 3- 执恢）
-	 */
-	@ApiModelProperty(value = "类别（0-一审 1-二审 2-首执 3- 执恢）")
-	private Integer category;
-
-	/**
 	 * 承办法院id
 	 */
 	@ApiModelProperty(value = "承办法院id")
@@ -105,11 +93,6 @@ public class CaseeLiquiAddDTO {
 	 */
 	@ApiModelProperty(value = "债务人集合")
 	private List<Integer> subjectIdList;
-
-	/**
-	 * 律师名称
-	 */
-	String lawyerName;
 
 
 }
