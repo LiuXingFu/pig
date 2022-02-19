@@ -99,4 +99,53 @@
 		WHERE p10_assets.del_flag = 0 and p10_assets.assets_id = #{assetsId}
 	</select>
 
+	<select id="getListAssetsManage" resultType="com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO">
+		SELECT
+		p10_assets.assets_id,
+		p10_assets.assets_name,
+		p10_assets.assets_type,
+		p10_assets.`type`,
+		p10_assets.`owner`,
+		p10_project.project_id,
+		p10_project.company_code,
+		p10_project.`status`,
+		p10_assets_re.assets_re_id,
+		p10_assets_re.assets_source,
+		json_extract( p10_assets_re.assets_re_detail, '$.entityZX_STZX.entityZX_STZX_CCZXCF.entityZX_STZX_CCZXCF_CCZXCF.sealUpCondition' ) AS sealUpCondition,
+		json_extract( p10_assets_re.assets_re_detail, '$.fundingZX_ZJZX.fundingZX_ZJZX_ZJZXDJ.fundingZX_ZJZX_ZJZXDJ_ZJZXDJ.whetherFirstFrozen' ) AS whetherFirstFrozen
+		FROM
+		p10_assets
+		INNER JOIN p10_assets_re ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
+		INNER JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_project.del_flag = 0
+		WHERE
+		p10_assets.del_flag = 0
+		<if test="query.subjectId != null">
+			and p10_assets_re.subject_id = #{query.subjectId}
+		</if>
+		<if test="query.companyCode != null and query.companyCode != ''">
+			and p10_project.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+		<if test="query.assetsType != null and query.assetsType != -1">
+			and p10_assets.assets_type = #{query.assetsType}
+		</if>
+		<if test="query.accountNumber != null and query.accountNumber != ''">
+			and p10_assets.account_number like concat(#{query.accountNumber}, '%')
+		</if>
+		<if test="query.debtorName != null and query.debtorName != ''">
+			and p10_project.project_id in
+			(SELECT
+			project_id
+			FROM
+			p10_project_subject_re
+			LEFT JOIN p10_subject ON p10_project_subject_re.subject_id = p10_subject.subject_id and p10_subject.del_flag = 0
+			WHERE
+			p10_project_subject_re.del_flag = 0
+			AND p10_project_subject_re.`type` != 0
+			and p10_subject.`name` like concat('%', #{query.debtorName}, '%'))
+		</if>
+	</select>
+
 </mapper>

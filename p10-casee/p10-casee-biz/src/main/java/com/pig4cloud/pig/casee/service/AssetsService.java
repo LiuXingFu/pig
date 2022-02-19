@@ -28,6 +28,7 @@ import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -45,4 +46,6 @@ public interface AssetsService extends IService<Assets> {
 	AssetsDeailsVO queryById(Integer assetsId);
 
 	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+
+	void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception;
 }

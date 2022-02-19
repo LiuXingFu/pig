@@ -25,8 +25,11 @@ import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 财产表
@@ -42,4 +45,6 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
 	AssetsDeailsVO queryById(Integer assetsId);
+
+	List<ExportXlsAssetsOrProjectVO> getListAssetsManage( @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 }
