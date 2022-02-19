@@ -86,7 +86,7 @@
 			and p10_project_casee_re.actual_name like concat('%', #{query.actualName}, '%')
 		</if>
 		<if test="query.caseeType != null and query.caseeType != ''">
-			and p10_casee.casee_type = #{caseeType}
+			and p10_casee.casee_type = #{query.caseeType}
 		</if>
 		<if test="query.beginDate != null and query.endDate != null  ">
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
