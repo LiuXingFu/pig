@@ -82,6 +82,7 @@
 		<if test="query.subjectName != null and query.subjectName != ''">
 			and  p10_bank_loan.subject_name like concat('%', #{query.subjectName}, '%')
 		</if>
+		ORDER BY p10_transfer_record.create_time desc
 	</select>
 
 	<select id="getTransferRecordBankLoan" resultType="com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO">

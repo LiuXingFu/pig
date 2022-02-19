@@ -14,22 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.CaseeLawyerRe;
+import com.pig4cloud.pig.casee.mapper.CaseeLawyerReMapper;
+import com.pig4cloud.pig.casee.service.CaseeLawyerReService;
+import org.springframework.stereotype.Service;
 
 /**
- * 回款详细记录表
+ * 案件律师关联表
  *
- * @author Mjh
- * @date 2022-02-17 17:52:51
+ * @author pig code generator
+ * @date 2022-02-15 10:56:32
  */
-public interface PaymentRecordService extends IService<PaymentRecord> {
+@Service
+public class CaseeLawyerReServiceImpl extends ServiceImpl<CaseeLawyerReMapper, CaseeLawyerRe> implements CaseeLawyerReService {
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord);
 }

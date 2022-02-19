@@ -64,9 +64,9 @@ public class PaymentRecord extends BaseEntity {
     private Integer paymentType;
 
     /**
-     * 款项类型(0-本金/利息 1-首次执行费 2-一审诉讼费 3-二审诉讼费)
+     * 款项类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)
      */
-    @ApiModelProperty(value="款项类型(0-本金/利息 1-首次执行费 2-一审诉讼费 3-二审诉讼费)")
+    @ApiModelProperty(value="款项类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)")
     private Integer fundsType;
 
     /**
@@ -74,12 +74,6 @@ public class PaymentRecord extends BaseEntity {
      */
     @ApiModelProperty(value="回款时间")
     private LocalDate paymentDate;
-
-    /**
-     * 还款人
-     */
-    @ApiModelProperty(value="还款人")
-    private Integer subjectId;
 
     /**
      * 回款金额
@@ -99,5 +93,22 @@ public class PaymentRecord extends BaseEntity {
     @ApiModelProperty(value="公司业务案号")
     private String companyCode;
 
+	/**
+	 * 案件案号
+	 */
+	@ApiModelProperty(value="案件案号")
+	private String caseeNumber;
+
+	/**
+	 * 还款人名称
+	 */
+	@ApiModelProperty(value="还款人名称")
+	private String subjectName;
+
+	/**
+	 * 父id
+	 */
+	@ApiModelProperty(value="父id")
+	private Integer fatherId;
 
 }

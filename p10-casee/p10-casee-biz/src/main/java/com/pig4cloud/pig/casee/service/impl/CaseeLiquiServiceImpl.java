@@ -82,25 +82,23 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private RemoteSubjectService subjectService;
 
 	@Autowired
-	private RemoteUserService userService;
-
-
+	private CaseeLawyerReService caseeLawyerReService;
 
 	@Override
 	@Transactional
-	public Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
+	public Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		// 保存清收案件
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
-		BeanCopyUtil.copyBean(caseeLiquiAddDTO,caseeLiqui);
+		BeanCopyUtil.copyBean(caseeLiquiAddDTO, caseeLiqui);
 		// 查询被告/被执行人/被上诉人等名称
-		R<List<Subject>> subjectIdList = subjectService.queryBySubjectIdList(caseeLiquiAddDTO.getSubjectIdList(),SecurityConstants.FROM);
-		if(subjectIdList.getData().size()>0){
+		R<List<Subject>> subjectIdList = subjectService.queryBySubjectIdList(caseeLiquiAddDTO.getSubjectIdList(), SecurityConstants.FROM);
+		if (subjectIdList.getData().size() > 0) {
 			String executedName = "";
-			for(Subject subject:subjectIdList.getData()){
-				if(executedName.equals("")){
+			for (Subject subject : subjectIdList.getData()) {
+				if (executedName.equals("")) {
 					executedName = subject.getName();
-				}else{
-					executedName = executedName+","+subject.getName();
+				} else {
+					executedName = executedName + "," + subject.getName();
 				}
 			}
 			caseeLiqui.setExecutedName(executedName);
@@ -110,30 +108,32 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		Integer save = this.baseMapper.insert(caseeLiqui);
 		// 保存项目案件关联表
 		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
-		BeanCopyUtil.copyBean(caseeLiquiAddDTO,projectCaseeRe);
+		BeanCopyUtil.copyBean(caseeLiquiAddDTO, projectCaseeRe);
 		projectCaseeRe.setCaseeId(caseeLiqui.getCaseeId());
 		projectCaseeReLiquiService.save(projectCaseeRe);
-		// 查询抵押财产，更新财产关联表
-		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
-		queryWrapper.lambda().eq(AssetsRe::getProjectId, caseeLiquiAddDTO.getParentId());
-		queryWrapper.lambda().eq(AssetsRe::getAssetsSource, 1);
-		queryWrapper.lambda().isNull(AssetsRe::getCaseeId);
-		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
-		// 遍历保存财产关联
-		if(assetsRes.size()>0){
-			List<AssetsRe> assetsReList = new ArrayList<>();
-			assetsRes.stream().forEach(item->{
-				AssetsRe assetsRe = new AssetsRe();
-				assetsRe.setAssetsId(item.getAssetsId());
-				assetsRe.setCaseeId(caseeLiqui.getCaseeId());
-				assetsReList.add(assetsRe);
-			});
-			assetsReService.saveBatch(assetsReList);
+		if (caseeLiquiAddDTO.getCaseeType() == 1010 || caseeLiquiAddDTO.getCaseeType() == 2010 || caseeLiquiAddDTO.getCaseeType() == 3010) {
+			// 查询抵押财产，更新财产关联表
+			QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+			queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
+			queryWrapper.lambda().eq(AssetsRe::getProjectId, caseeLiquiAddDTO.getProjectId());
+			queryWrapper.lambda().eq(AssetsRe::getAssetsSource, 1);
+			queryWrapper.lambda().isNull(AssetsRe::getCaseeId);
+			List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
+			// 遍历保存财产关联
+			if (assetsRes.size() > 0) {
+				List<AssetsRe> assetsReList = new ArrayList<>();
+				assetsRes.stream().forEach(item -> {
+					AssetsRe assetsRe = new AssetsRe();
+					assetsRe.setAssetsId(item.getAssetsId());
+					assetsRe.setCaseeId(caseeLiqui.getCaseeId());
+					assetsReList.add(assetsRe);
+				});
+				assetsReService.saveBatch(assetsReList);
+			}
 		}
 		// 保存案件人员关联
 		List<CaseeSubjectRe> caseeSubjectReList = new ArrayList<>();
-		caseeLiquiAddDTO.getSubjectIdList().stream().forEach(item->{
+		caseeLiquiAddDTO.getSubjectIdList().stream().forEach(item -> {
 			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
 			caseeSubjectRe.setCaseeId(caseeLiqui.getCaseeId());
 			caseeSubjectRe.setSubjectId(item);
@@ -141,6 +141,12 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			caseeSubjectReList.add(caseeSubjectRe);
 		});
 		caseeSubjectReService.saveBatch(caseeSubjectReList);
+		if (Objects.nonNull(caseeLiquiAddDTO.getLawyerName())) {
+			CaseeLawyerRe caseeLawyerRe = new CaseeLawyerRe();
+			caseeLawyerRe.setActualName(caseeLiquiAddDTO.getLawyerName());
+			caseeLawyerRe.setCaseeId(caseeLiqui.getCaseeId());
+			caseeLawyerReService.save(caseeLawyerRe);
+		}
 //		// 查询
 //		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeLiquiAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
 //		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
@@ -161,8 +167,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		return save;
 	}
 
-	public void configurationNodeTemplate(Integer caseeId,TargetAddDTO targetAddDTO,Project project, Integer templateId) {
-		TaskNodeTemplateDTO taskNodeTemplateDTO=new TaskNodeTemplateDTO();
+	public void configurationNodeTemplate(Integer caseeId, TargetAddDTO targetAddDTO, Project project, Integer templateId) {
+		TaskNodeTemplateDTO taskNodeTemplateDTO = new TaskNodeTemplateDTO();
 		taskNodeTemplateDTO.setCaseeId(caseeId);
 		taskNodeTemplateDTO.setInsId(project.getInsId());
 		taskNodeTemplateDTO.setOutlesId(project.getOutlesId());
@@ -171,21 +177,21 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		taskNodeTemplateDTO.setTemplateId(templateId);
 
 		String businessData = targetAddDTO.getBusinessData();
-		if (businessData!=null){
-			JSONObject jsonObject= JSONObject.fromObject(businessData);
+		if (businessData != null) {
+			JSONObject jsonObject = JSONObject.fromObject(businessData);
 			//生成任务
-			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO,jsonObject);
+			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
 		}
 	}
 
 	@Override
-	public List<CaseeListVO> queryByIdList(Integer caseeId, List<Integer> caseeType){
-		return this.baseMapper.selectByIdList(caseeId,caseeType);
+	public List<CaseeListVO> queryByIdList(Integer caseeId, List<Integer> caseeType) {
+		return this.baseMapper.selectByIdList(caseeId, caseeType);
 	}
 
 	@Override
-	public CaseeLiqui getCaseeParentId(Integer projectId,Integer caseeType){
-		return this.baseMapper.getCaseeParentId(projectId,caseeType);
+	public CaseeLiqui getCaseeParentId(Integer projectId, Integer caseeType) {
+		return this.baseMapper.getCaseeParentId(projectId, caseeType);
 	}
 
 }

@@ -15,21 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.CaseeLawyerRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 回款详细记录表
+ * 案件律师关联表
  *
- * @author Mjh
- * @date 2022-02-17 17:52:51
+ * @author pig code generator
+ * @date 2022-02-15 10:56:32
  */
-public interface PaymentRecordService extends IService<PaymentRecord> {
+@Mapper
+public interface CaseeLawyerReMapper extends BaseMapper<CaseeLawyerRe> {
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord);
 }

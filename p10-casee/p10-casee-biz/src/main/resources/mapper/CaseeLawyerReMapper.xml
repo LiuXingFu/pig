@@ -21,23 +21,16 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeLawyerReMapper">
 
-  <resultMap id="expenseRecordMap" type="com.pig4cloud.pig.casee.entity.ExpenseRecord">
-    <id property="expenseRecordId" column="expense_record_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateTime" column="update_time"/>
+  <resultMap id="caseeLawyerReMap" type="com.pig4cloud.pig.casee.entity.CaseeLawyerRe">
+    <id property="caseeLawyerId" column="casee_lawyer_id"/>
     <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
     <result property="updateBy" column="update_by"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="projectId" column="project_id"/>
-    <result property="costType" column="cost_type"/>
-    <result property="costIncurredTime" column="cost_incurred_time"/>
-    <result property="costAmount" column="cost_amount"/>
-    <result property="status" column="status"/>
+    <result property="updateTime" column="update_time"/>
     <result property="caseeId" column="casee_id"/>
-	<result property="companyCode" column="company_code"/>
-	<result property="caseeNumber" column="casee_number"/>
-	<result property="subjectName" column="subject_name"/>
+    <result property="userId" column="user_id"/>
+    <result property="actualName" column="actual_name"/>
   </resultMap>
 </mapper>
