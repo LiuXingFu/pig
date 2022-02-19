@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
+import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
@@ -38,7 +39,7 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	IPage<AssetsOrProjectPageVO> queryPageAssetsOrProject(Page page, @Param("subjectId") Integer subjectId);
+	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
 	AssetsDeailsVO queryById(Integer assetsId);
 }

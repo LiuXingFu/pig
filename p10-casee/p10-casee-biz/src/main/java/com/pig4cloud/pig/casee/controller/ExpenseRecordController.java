@@ -23,7 +23,6 @@ import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.service.ExpenseRecordService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +51,6 @@ public class ExpenseRecordController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('casee_expenserecord_get')" )
     public R getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
         return R.ok(expenseRecordService.page(page, Wrappers.query(expenseRecord)));
     }
@@ -65,7 +63,6 @@ public class ExpenseRecordController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{expenseRecordId}" )
-    @PreAuthorize("@pms.hasPermission('casee_expenserecord_get')" )
     public R getById(@PathVariable("expenseRecordId" ) Integer expenseRecordId) {
         return R.ok(expenseRecordService.getById(expenseRecordId));
     }
@@ -78,7 +75,6 @@ public class ExpenseRecordController {
     @ApiOperation(value = "新增费用产生记录表", notes = "新增费用产生记录表")
     @SysLog("新增费用产生记录表" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('casee_expenserecord_add')" )
     public R save(@RequestBody ExpenseRecord expenseRecord) {
         return R.ok(expenseRecordService.save(expenseRecord));
     }
@@ -91,7 +87,6 @@ public class ExpenseRecordController {
     @ApiOperation(value = "修改费用产生记录表", notes = "修改费用产生记录表")
     @SysLog("修改费用产生记录表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('casee_expenserecord_edit')" )
     public R updateById(@RequestBody ExpenseRecord expenseRecord) {
         return R.ok(expenseRecordService.updateById(expenseRecord));
     }
@@ -104,7 +99,6 @@ public class ExpenseRecordController {
     @ApiOperation(value = "通过id删除费用产生记录表", notes = "通过id删除费用产生记录表")
     @SysLog("通过id删除费用产生记录表" )
     @DeleteMapping("/{expenseRecordId}" )
-    @PreAuthorize("@pms.hasPermission('casee_expenserecord_del')" )
     public R removeById(@PathVariable Integer expenseRecordId) {
         return R.ok(expenseRecordService.removeById(expenseRecordId));
     }

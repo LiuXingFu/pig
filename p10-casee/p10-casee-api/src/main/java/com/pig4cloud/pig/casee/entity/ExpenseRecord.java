@@ -58,9 +58,9 @@ public class ExpenseRecord extends BaseEntity {
     private Integer projectId;
 
     /**
-     * 费用类型(0-本金/利息 1-保全费 2-一审诉讼费 3-二审诉讼费 4-首次执行费 5-定价费 6-拍辅费 7-代理费 8-其它费用)
+     * 费用类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)
      */
-    @ApiModelProperty(value="费用类型(0-本金/利息 1-保全费 2-一审诉讼费 3-二审诉讼费 4-首次执行费 5-定价费 6-拍辅费 7-代理费 8-其它费用)")
+    @ApiModelProperty(value="费用类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)")
     private Integer costType;
 
     /**
@@ -88,10 +88,21 @@ public class ExpenseRecord extends BaseEntity {
     private Integer caseeId;
 
     /**
-     * 业务案号
+     * 公司业务案号
      */
-    @ApiModelProperty(value="业务案号")
+    @ApiModelProperty(value="公司业务案号")
     private String companyCode;
 
+	/**
+	 * 案件案号
+	 */
+	@ApiModelProperty(value="案件案号")
+	private String caseeNumber;
+
+	/**
+	 * 所有债务人名称
+	 */
+	@ApiModelProperty(value="所有债务人名称")
+	private String subjectName;
 
 }

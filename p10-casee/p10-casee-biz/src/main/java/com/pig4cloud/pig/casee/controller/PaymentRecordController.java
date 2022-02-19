@@ -17,17 +17,18 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -52,9 +53,8 @@ public class PaymentRecordController {
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    @PreAuthorize("@pms.hasPermission('casee_paymentrecord_get')" )
     public R getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
-        return R.ok(paymentRecordService.page(page, Wrappers.query(paymentRecord)));
+        return R.ok(paymentRecordService.getPaymentRecordPage(page, paymentRecord));
     }
 
 
@@ -65,10 +65,31 @@ public class PaymentRecordController {
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
     @GetMapping("/{paymentRecordId}" )
-    @PreAuthorize("@pms.hasPermission('casee_paymentrecord_get')" )
     public R getById(@PathVariable("paymentRecordId" ) Integer paymentRecordId) {
         return R.ok(paymentRecordService.getById(paymentRecordId));
     }
+
+	/**
+	 * 通过id查询回款详细记录表
+	 * @param paymentRecordId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/getByPaymentRecord/{paymentRecordId}" )
+	public R getByPaymentRecord(@PathVariable("paymentRecordId" ) Integer paymentRecordId) {
+		return R.ok(paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordId)));
+	}
+
+	/**
+	 * 通过项目id查询回款详细记录表
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询回款详细记录表", notes = "通过项目id查询回款详细记录表")
+	@GetMapping("/getProjectIdByPaymentRecord" )
+	public R getProjectIdByPaymentRecord(Page page, String projectId) {
+		return R.ok(paymentRecordService.page(page,new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getProjectId, projectId).isNotNull(PaymentRecord::getFatherId)));
+	}
 
     /**
      * 新增回款详细记录表
@@ -78,7 +99,6 @@ public class PaymentRecordController {
     @ApiOperation(value = "新增回款详细记录表", notes = "新增回款详细记录表")
     @SysLog("新增回款详细记录表" )
     @PostMapping
-    @PreAuthorize("@pms.hasPermission('casee_paymentrecord_add')" )
     public R save(@RequestBody PaymentRecord paymentRecord) {
         return R.ok(paymentRecordService.save(paymentRecord));
     }
@@ -91,7 +111,6 @@ public class PaymentRecordController {
     @ApiOperation(value = "修改回款详细记录表", notes = "修改回款详细记录表")
     @SysLog("修改回款详细记录表" )
     @PutMapping
-    @PreAuthorize("@pms.hasPermission('casee_paymentrecord_edit')" )
     public R updateById(@RequestBody PaymentRecord paymentRecord) {
         return R.ok(paymentRecordService.updateById(paymentRecord));
     }
@@ -104,7 +123,6 @@ public class PaymentRecordController {
     @ApiOperation(value = "通过id删除回款详细记录表", notes = "通过id删除回款详细记录表")
     @SysLog("通过id删除回款详细记录表" )
     @DeleteMapping("/{paymentRecordId}" )
-    @PreAuthorize("@pms.hasPermission('casee_paymentrecord_del')" )
     public R removeById(@PathVariable Integer paymentRecordId) {
         return R.ok(paymentRecordService.removeById(paymentRecordId));
     }
