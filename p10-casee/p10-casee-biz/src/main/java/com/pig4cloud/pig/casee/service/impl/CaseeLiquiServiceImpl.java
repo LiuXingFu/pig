@@ -282,4 +282,9 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		return this.baseMapper.selectPage(page,caseeLiquiPageDTO);
 	}
 
+	@Override
+	public List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO){
+		return this.baseMapper.selectCaseeSubject(caseeSubjectDTO);
+	}
+
 }

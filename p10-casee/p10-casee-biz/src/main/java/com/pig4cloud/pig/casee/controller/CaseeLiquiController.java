@@ -18,10 +18,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.CaseeLawsuitsDTO;
-import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
-import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
-import com.pig4cloud.pig.casee.dto.CaseeReinstatementDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -126,6 +123,17 @@ public class CaseeLiquiController {
 	@GetMapping("/queryPageCaseeLiqui" )
 	public R queryPageCaseeLiqui(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
 		return R.ok(caseeLiquiService.queryPage(page, caseeLiquiPageDTO));
+	}
+
+	/**
+	 * 查询案件主体集合
+	 * @param caseeSubjectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询案件主体集合", notes = "查询案件主体集合")
+	@GetMapping("/queryCaseeSubjectList" )
+	public R queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO) {
+		return R.ok(caseeLiquiService.queryCaseeSubjectList(caseeSubjectDTO));
 	}
 
 }

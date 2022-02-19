@@ -20,37 +20,26 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
-import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
-import com.pig4cloud.pig.casee.dto.CaseeSubjectDTO;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.CaseeListVO;
-import com.pig4cloud.pig.casee.vo.CaseeVO;
+import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
+import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
+import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.AssetsPageVO;
+import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 案件表
+ * 财产表
  *
- * @author yy
- * @date 2022-01-10 14:51:59
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
 @Mapper
-public interface CaseeLiquiMapper extends BaseMapper<Casee> {
+public interface AssetsCapitalMapper extends BaseMapper<Assets> {
 
-	List<CaseeListVO> selectByIdList(@Param("projectId") Integer projectId,@Param("caseeType")List<Integer> caseeType);
-
-	CaseeLiqui getCaseeParentId(@Param("projectId") Integer projectId,@Param("caseeType")Integer caseeType);
-
-	CaseeLiqui selectByStatusList(@Param("projectId") Integer projectId,@Param("statusList")List<Integer> statusList);
-
-	IPage<CaseeLiquiPageVO> selectPage(Page page, @Param("query")CaseeLiquiPageDTO caseeLiquiPageDTO);
-
-	List<Subject> selectCaseeSubject(@Param("query")CaseeSubjectDTO caseeSubjectDTO);
 
 }

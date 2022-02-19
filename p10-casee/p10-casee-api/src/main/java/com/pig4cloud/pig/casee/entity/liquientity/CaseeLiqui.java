@@ -1,10 +1,17 @@
 package com.pig4cloud.pig.casee.entity.liquientity;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@TableName("p10_casee")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "案件表")
 public class CaseeLiqui extends Casee {
 
 	@ApiModelProperty(value="清收案件详情表")
