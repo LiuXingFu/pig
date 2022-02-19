@@ -136,8 +136,15 @@ public class AssetsController {
 		return R.ok(assetsService.getPageAssetsManage(page, assetsOrProjectPageDTO));
 	}
 
-	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO){
-		this.exportXls(response, assetsOrProjectPageDTO);
+	/**
+	 * 根据特定条件导出.xls文件
+	 * @param assetsOrProjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据特定条件导出.xls文件", notes = "根据特定条件导出.xls文件")
+	@GetMapping("/exportXls" )
+	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception{
+		this.assetsService.exportXls(response, assetsOrProjectPageDTO);
 	}
 
 }

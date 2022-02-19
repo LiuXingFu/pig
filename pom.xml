@@ -57,6 +57,8 @@
 		<docker.namespace>pig4cloud</docker.namespace>
 		<docker.username>username</docker.username>
 		<docker.password>password</docker.password>
+		<!-- Excel 数据导入导出 -->
+		<easyexcel.version>2.2.6</easyexcel.version>
 	</properties>
 
 	<dependencies>
@@ -99,6 +101,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>easyexcel</artifactId>
+			<version>${easyexcel.version}</version>
 		</dependency>
 	</dependencies>
 

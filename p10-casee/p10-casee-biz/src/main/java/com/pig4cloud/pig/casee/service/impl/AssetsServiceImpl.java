@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,12 +33,15 @@ import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -109,5 +113,22 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	@Override
 	public IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
 		return this.baseMapper.getPageAssetsManage(page, assetsOrProjectPageDTO);
+	}
+
+	@Override
+	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception {
+		List<ExportXlsAssetsOrProjectVO> listAssetsManage = this.baseMapper.getListAssetsManage(assetsOrProjectPageDTO);
+		writeExcel(response, listAssetsManage, "财产信息列表", "sheet", ExportXlsAssetsOrProjectVO.class);
+	}
+
+	private void writeExcel(HttpServletResponse response, List<ExportXlsAssetsOrProjectVO> list, String fileName, String sheetName, Class<ExportXlsAssetsOrProjectVO> clazz) throws Exception {
+		response.setCharacterEncoding("utf8");
+		response.setContentType("application/vnd.ms-excel;charset=utf-8");
+		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName + ".xlsx", "UTF-8")); //文件名
+		response.setHeader("Cache-Control", "no-store");
+		response.addHeader("Cache-Control", "max-age=0");
+		EasyExcel.write(response.getOutputStream(), clazz)
+				.sheet(sheetName) //sheet名
+				.doWrite(list);
 	}
 }
