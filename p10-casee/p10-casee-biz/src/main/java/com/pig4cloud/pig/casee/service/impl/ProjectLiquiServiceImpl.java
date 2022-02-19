@@ -148,7 +148,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		// 保存项目状态变更记录表
 		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setUserName("在办");
+		projectStatus.setStatusName("在办");
+		projectStatus.setUserName(projectLiquiAddVO.getUserNickName());
 		projectStatus.setType(1);
 		projectStatus.setSourceId(projectLiqui.getProjectId());
 		projectStatusService.save(projectStatus);

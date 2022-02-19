@@ -61,30 +61,20 @@ import java.util.Objects;
 public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> implements CaseeLiquiService {
 	@Autowired
 	private ProjectCaseeReLiquiService projectCaseeReLiquiService;
-
-	@Autowired
-	private RemoteOutlesTemplateReService remoteOutlesTemplateReService;
-
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
-
-	@Autowired
-	private TargetService targetService;
-
 	@Autowired
 	private TaskNodeService taskNodeService;
-
 	@Autowired
 	private AssetsReService assetsReService;
-
 	@Autowired
 	private CaseeSubjectReService caseeSubjectReService;
-
 	@Autowired
 	private RemoteSubjectService subjectService;
-
 	@Autowired
 	private CaseeLawyerReService caseeLawyerReService;
+	@Autowired
+	private ProjectStatusService projectStatusService;
 
 	@Override
 	@Transactional
@@ -123,6 +113,14 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			caseeSubjectReList.add(caseeSubjectRe);
 		});
 		caseeSubjectReService.saveBatch(caseeSubjectReList);
+
+		ProjectStatus projectStatus = new ProjectStatus();
+		projectStatus.setType(2);
+		projectStatus.setSourceId(caseeLiqui.getCaseeId());
+		projectStatus.setStatusName("案件立案");
+		projectStatus.setUserName(caseeLiquiAddDTO.getActualName());
+		projectStatus.setChangeTime(caseeLiquiAddDTO.getStartTime());
+		projectStatusService.save(projectStatus);
 
 //		// 查询
 //		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeLiquiAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
@@ -180,13 +178,33 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public Integer addExecutionCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
-		saveAssetsReService(caseeLiquiAddDTO.getProjectId(),caseeId);
 		// 更新案件类别
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
 		caseeLiqui.setCaseeId(caseeId);
 		// 30101=首执
 		caseeLiqui.setCategory(30101);
 		this.baseMapper.updateById(caseeLiqui);
+
+		// 查询所有财产，更新财产关联表
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(AssetsRe::getProjectId, caseeLiquiAddDTO.getProjectId());
+		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
+		// 遍历修改财产案件关联
+		if (assetsRes.size() > 0) {
+			List<AssetsRe> assetsReList = new ArrayList<>();
+			assetsRes.stream().forEach(item -> {
+				AssetsRe assetsRe = new AssetsRe();
+				assetsRe.setAssetsReId(item.getAssetsReId());
+				assetsRe.setCaseeId(caseeId);
+				// 假如没有创建案件id，将首执案件id保存
+				if(Objects.isNull(item.getCreateCaseeId())){
+					assetsRe.setCreateCaseeId(caseeId);
+				}
+				assetsReList.add(assetsRe);
+			});
+			assetsReService.updateBatchById(assetsReList);
+		}
 		return caseeId;
 	}
 
