@@ -19,4 +19,10 @@ public class CaseeLiquiPageVO extends CaseeLiqui {
 	@ApiModelProperty(value="代理律师名称")
 	private String lawyerName;
 
+	/**
+	 * 法院名称
+	 */
+	@ApiModelProperty(value="法院名称")
+	private String courtName;
+
 }
