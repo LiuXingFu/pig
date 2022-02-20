@@ -22,11 +22,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
 import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
+import com.pig4cloud.pig.casee.dto.CaseeOrSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.CaseeListVO;
-import com.pig4cloud.pig.casee.vo.CaseeVO;
+import com.pig4cloud.pig.casee.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -49,4 +48,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	IPage<CaseeLiquiPageVO> selectPage(Page page, @Param("query")CaseeLiquiPageDTO caseeLiquiPageDTO);
 
+	CaseeLiquiDetailsVO queryByCaseeId(Integer caseeId);
+
+	List<CaseeOrSubjectVO> selectCaseeOrSubject(@Param("query") CaseeOrSubjectDTO caseeOrSubjectDTO);
 }

@@ -24,6 +24,11 @@ public class BehaviorOrProjectPageVO extends Behavior {
 	private String status;
 
 	/**
+	 * 债务人
+	 */
+	private String subjectPersons;
+
+	/**
 	 * 执行案号
 	 */
 	private String caseeNumber;

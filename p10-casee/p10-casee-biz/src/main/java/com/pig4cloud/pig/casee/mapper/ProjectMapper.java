@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.Project;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
+
 /**
  * 项目表
  *
@@ -30,4 +32,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProjectMapper extends BaseMapper<Project> {
 
+	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
 }

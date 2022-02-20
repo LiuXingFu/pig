@@ -42,9 +42,9 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
 	AssetsDeailsVO queryById(Integer assetsId);
 
-	List<ExportXlsAssetsOrProjectVO> getListAssetsManage( @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

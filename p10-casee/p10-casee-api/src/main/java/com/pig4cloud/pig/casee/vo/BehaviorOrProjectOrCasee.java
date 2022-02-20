@@ -33,8 +33,8 @@ public class BehaviorOrProjectOrCasee extends Behavior {
 	private String caseeNumber;
 
 	/**
-	 * 项目债务人
+	 * 债务人
 	 */
-	private List<Subject> subjectList;
+	private String projectDetail;
 
 }

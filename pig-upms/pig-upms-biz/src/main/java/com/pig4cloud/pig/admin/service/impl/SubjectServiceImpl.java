@@ -32,11 +32,15 @@ import com.pig4cloud.pig.admin.service.SubjectService;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.feign.RemoteBankLoanService;
+import com.pig4cloud.pig.casee.feign.RemoteProjectService;
 import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -60,6 +64,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	@Autowired
 	private RemoteBankLoanService remoteBankLoanService;
+
+	@Autowired
+	private RemoteProjectService remoteProjectService;
 
 	@Override
 	public boolean saveBatchSubject(List<Subject> subjectList){
@@ -190,6 +197,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 */
 	@Override
 	public IPage<SubjectPageVO> pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
+//		IPage<SubjectPageVO> subjectPageVOIPage = this.baseMapper.pageSubject(page, subjectPageDTO);
+//		subjectPageVOIPage.getRecords().forEach(subjectPageVO -> {
+//			subjectPageVO.setAmountInvolved(remoteProjectService.getProjectAmountBySubjectId(subjectPageVO.getSubjectId(), SecurityConstants.FROM).getData());
+//		});
 		return this.baseMapper.pageSubject(page, subjectPageDTO);
 	}
 
@@ -201,16 +212,6 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public SubjectVO selectSubjectById(Integer subjectId) {
 		return this.baseMapper.selectSubjectById(subjectId);
-	}
-
-	/**
-	 * 根据项目id查询债务人信息
-	 * @param projectId
-	 * @return
-	 */
-	@Override
-	public List<Subject> queryByProjectId(Integer projectId) {
-		return this.baseMapper.queryByProjectId(projectId);
 	}
 
 	/**

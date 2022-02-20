@@ -47,4 +47,16 @@
     <result property="projectDetail" column="project_detail"/>
     <result property="describes" column="describes"/>
   </resultMap>
+
+	<select id="getProjectAmountBySubjectId" resultType="java.math.BigDecimal">
+		SELECT
+		if(sum(json_extract(p10_project.project_detail, "$.projectAmount" )) is null,0,sum(json_extract(p10_project.project_detail, "$.projectAmount" )))
+		FROM
+		p10_project
+		LEFT JOIN p10_project_subject_re ON p10_project_subject_re.project_id = p10_project.project_id and p10_project_subject_re.del_flag = 0
+		WHERE p10_project.del_flag = 0
+		AND p10_project_subject_re.subject_id = #{subjectId}
+		AND p10_project_subject_re.`type` != 0
+	</select>
+
 </mapper>

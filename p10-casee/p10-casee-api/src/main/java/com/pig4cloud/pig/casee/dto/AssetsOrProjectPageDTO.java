@@ -45,9 +45,9 @@ public class AssetsOrProjectPageDTO {
 	private String accountNumber;
 
 	/**
-	 * 主体id
+	 * 债务人id
 	 */
-	@ApiModelProperty(value="主体id")
+	@ApiModelProperty(value="债务人id")
 	private Integer subjectId;
 
 }

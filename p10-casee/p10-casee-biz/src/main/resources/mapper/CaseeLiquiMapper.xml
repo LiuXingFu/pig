@@ -24,7 +24,8 @@
 <mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper">
 
 	<select id="selectByIdList" resultType="com.pig4cloud.pig.casee.vo.CaseeListVO">
-		select p10_casee.*,p10_court.court_name as courtName,p10_casee_lawyer_re.actual_name as lawyerName,p10_project_casee_re.actual_name as actualName from p10_casee
+		select p10_casee.*,p10_court.court_name as courtName,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_project_casee_re.actual_name as actualName from p10_casee
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
@@ -70,7 +71,8 @@
 	</select>
 
 	<select id="selectPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
-		select p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		select p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
@@ -78,7 +80,7 @@
 		where p10_casee.del_flag = 0
 		<if test="query.caseeNumber != null and query.caseeNumber != ''">
 			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
-				or p10_casee.caseeNumber like concat('%', #{query.caseeNumber}, '%'))
+			or p10_casee.caseeNumber like concat('%', #{query.caseeNumber}, '%'))
 		</if>
 		<if test="query.executedName != null and query.executedName != ''">
 			and p10_subject.executedName like concat('%', #{query.executedName}, '%')
@@ -94,6 +96,29 @@
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
+	</select>
+
+	<select id="queryByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO">
+		select p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_casee.del_flag = 0
+		and p10_casee.casee_id = #{caseeId}
+	</select>
+
+	<select id="selectCaseeOrSubject" resultType="com.pig4cloud.pig.casee.vo.CaseeOrSubjectVO">
+		SELECT
+		p10_subject.*,
+		p10_casee_subject_re.type
+		FROM
+		p10_casee_subject_re
+		LEFT JOIN p10_subject ON p10_casee_subject_re.subject_id = p10_subject.subject_id
+		AND p10_subject.del_flag = 0
+		WHERE
+		p10_casee_subject_re.del_flag = 0
+		AND p10_casee_subject_re.casee_id = #{query.caseeId}
 	</select>
 
 </mapper>
