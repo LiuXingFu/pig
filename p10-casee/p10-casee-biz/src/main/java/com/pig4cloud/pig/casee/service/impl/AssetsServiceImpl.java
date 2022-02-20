@@ -22,10 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
@@ -33,6 +30,7 @@ import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -40,6 +38,7 @@ import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
@@ -138,5 +137,25 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 		EasyExcel.write(response.getOutputStream(), clazz)
 				.sheet(sheetName) //sheet名
 				.doWrite(list);
+	}
+
+	/**
+	 * **************************************************************************
+	 */
+
+	@Override
+	public IPage<AssetsPageVO> queryPageByCaseeId(Page page, Integer caseeId){
+		return this.baseMapper.selectPageByCaseeId(page,caseeId);
+	}
+
+	@Override
+	@Transactional
+	public Integer saveAssets(AssetsAddDTO assetsAddDTO){
+
+
+
+
+
+		return 0;
 	}
 }

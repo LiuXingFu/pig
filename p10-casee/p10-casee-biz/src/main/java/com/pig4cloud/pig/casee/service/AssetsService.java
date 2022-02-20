@@ -20,13 +20,11 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -50,4 +48,23 @@ public interface AssetsService extends IService<Assets> {
 	void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception;
 
 	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+
+	/**
+	 * ************************************************************
+	 */
+
+	/**
+	 * 根据案件id分页查询财产
+	 * @param page
+	 * @param caseeId
+	 * @return
+	 */
+	IPage<AssetsPageVO> queryPageByCaseeId(Page page,Integer caseeId);
+
+	/**
+	 * 保存财产
+	 * @param assetsAddDTO
+	 * @return
+	 */
+	Integer saveAssets(AssetsAddDTO assetsAddDTO);
 }

@@ -15,22 +15,20 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.mapper;
+package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
 import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
+import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
-import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 财产表
@@ -38,19 +36,6 @@ import java.util.List;
  * @author ligt
  * @date 2022-01-11 10:29:44
  */
-@Mapper
-public interface AssetsMapper extends BaseMapper<Assets> {
+public interface AssetsCapitalService extends IService<Assets> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
-
-	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
-
-	AssetsDeailsVO queryById(Integer assetsId);
-
-	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
-
-	/**
-	 * **************************************************************************
-	 */
-	IPage<AssetsPageVO> selectPageByCaseeId(Page page, @Param("caseeId")Integer caseeId);
 }

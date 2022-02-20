@@ -39,18 +39,7 @@ import java.util.List;
  * @date 2022-01-11 10:29:44
  */
 @Mapper
-public interface AssetsMapper extends BaseMapper<Assets> {
+public interface AssetsCapitalMapper extends BaseMapper<Assets> {
 
-	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
-
-	AssetsDeailsVO queryById(Integer assetsId);
-
-	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
-
-	/**
-	 * **************************************************************************
-	 */
-	IPage<AssetsPageVO> selectPageByCaseeId(Page page, @Param("caseeId")Integer caseeId);
 }

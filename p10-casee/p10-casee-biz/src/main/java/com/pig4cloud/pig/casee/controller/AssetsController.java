@@ -159,4 +159,19 @@ public class AssetsController {
 		this.assetsService.exportXls(response, assetsOrProjectPageDTO);
 	}
 
+	/**
+	 * ******************************************************************
+	 */
+	/**
+	 * 根据案件id分页查询财产
+	 * @param page 分页对象
+	 * @param caseeId 案件id
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件id分页查询财产", notes = "根据案件id分页查询财产")
+	@GetMapping("/queryPageByCaseeId" )
+	public R queryPageByCaseeId(Page page, Integer caseeId) {
+		return R.ok(assetsService.queryPageByCaseeId(page, caseeId));
+	}
+
 }

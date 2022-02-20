@@ -20,10 +20,8 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.CaseeLawsuitsDTO;
-import com.pig4cloud.pig.casee.dto.CaseeLiquiAddDTO;
-import com.pig4cloud.pig.casee.dto.CaseeLiquiPageDTO;
-import com.pig4cloud.pig.casee.dto.CaseeReinstatementDTO;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
@@ -109,4 +107,7 @@ public interface CaseeLiquiService extends IService<Casee> {
 	IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO);
 
 	CaseeLiquiDetailsVO queryByCaseeId(Integer caseeId);
+
+	List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO);
+
 }
