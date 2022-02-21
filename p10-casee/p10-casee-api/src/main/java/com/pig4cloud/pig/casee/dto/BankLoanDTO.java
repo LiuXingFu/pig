@@ -51,7 +51,7 @@ public class BankLoanDTO extends BankLoan {
 
 	//列表条件查询数据
 	/**
-	 * 受托方
+	 * 所属银行
 	 */
 	private String trustee;
 

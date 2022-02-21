@@ -107,7 +107,6 @@
 		</if>
 		<if test="query.trustee != null and query.trustee != ''" >
 			and  p10_institution.ins_name like concat('%', #{query.trustee}, '%')
-			or p10_outles.outles_name like concat('%', #{query.trustee}, '%')
 		</if>
 		<if test="query.subjectName != null and query.subjectName != ''">
 			and  p10_bank_loan.subject_name like concat('%', #{query.subjectName}, '%')
