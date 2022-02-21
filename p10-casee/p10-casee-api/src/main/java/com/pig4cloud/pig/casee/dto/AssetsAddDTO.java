@@ -31,6 +31,12 @@ import lombok.Data;
 public class AssetsAddDTO {
 
 	/**
+	 * 财产id
+	 */
+	@ApiModelProperty(value="财产id")
+	private Integer assetsId;
+
+	/**
 	 * 财产名称
 	 */
 	@ApiModelProperty(value="财产名称")

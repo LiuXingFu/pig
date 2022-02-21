@@ -19,8 +19,9 @@ public class ProjectLiQuiDetail {
 	BigDecimal projectAmount;
 
 	/**
-	 * 剩余回款
+	 * 回款金额
 	 */
-	BigDecimal remainingPayment;
+	BigDecimal repaymentAmount;
+
 
 }

@@ -1,6 +1,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
@@ -11,6 +12,7 @@ import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -160,6 +162,34 @@ public class AssetsController {
 	@GetMapping("/queryPageByCaseeId" )
 	public R queryPageByCaseeId(Page page, Integer caseeId) {
 		return R.ok(assetsService.queryPageByCaseeId(page, caseeId));
+	}
+
+	/**
+	 * 验证财产名称
+	 * @param assetsName 财产名称
+	 * @return
+	 */
+	@ApiOperation(value = "验证财产名称", notes = "验证财产名称")
+	@GetMapping("/verifyAssetsName" )
+	public R verifyAssetsName(String assetsName) {
+		QueryWrapper<Assets> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Assets::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(Assets::getAssetsName, assetsName);
+		return R.ok(assetsService.getOne(queryWrapper));
+	}
+
+	/**
+	 * 模糊查询财产名称
+	 * @param assetsName 财产名称
+	 * @return
+	 */
+	@ApiOperation(value = "模糊查询财产名称", notes = "模糊查询财产名称")
+	@GetMapping("/queryAssetsName" )
+	public R queryAssetsName(String assetsName) {
+		QueryWrapper<Assets> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Assets::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().like(Assets::getAssetsName, assetsName);
+		return R.ok(assetsService.list(queryWrapper));
 	}
 
 }
