@@ -70,14 +70,14 @@ public class PaymentRecordController {
     }
 
 	/**
-	 * 通过id查询回款详细记录表
+	 * 通过id查询回款详细记录分页记录
 	 * @param paymentRecordId id
 	 * @return R
 	 */
-	@ApiOperation(value = "通过id查询", notes = "通过id查询")
-	@GetMapping("/getByPaymentRecord/{paymentRecordId}" )
-	public R getByPaymentRecord(@PathVariable("paymentRecordId" ) Integer paymentRecordId) {
-		return R.ok(paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordId)));
+	@ApiOperation(value = "通过id查询回款详细记录分页记录", notes = "通过id查询回款详细记录分页记录")
+	@GetMapping("/getByPaymentRecordPage" )
+	public R getByPaymentRecordPage(Page page, Integer paymentRecordId) {
+		return R.ok(paymentRecordService.page(page,new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordId)));
 	}
 
 	/**

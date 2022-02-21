@@ -18,8 +18,14 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 费用产生记录表
@@ -29,5 +35,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ExpenseRecordMapper extends BaseMapper<ExpenseRecord> {
+	IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, @Param("query")ExpenseRecord expenseRecord);
 
 }

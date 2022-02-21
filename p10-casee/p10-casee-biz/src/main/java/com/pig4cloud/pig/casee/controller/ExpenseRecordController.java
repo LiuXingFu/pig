@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.service.ExpenseRecordService;
@@ -52,7 +51,7 @@ public class ExpenseRecordController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
-        return R.ok(expenseRecordService.page(page, Wrappers.query(expenseRecord)));
+        return R.ok(expenseRecordService.getExpenseRecordPage(page, expenseRecord));
     }
 
 
