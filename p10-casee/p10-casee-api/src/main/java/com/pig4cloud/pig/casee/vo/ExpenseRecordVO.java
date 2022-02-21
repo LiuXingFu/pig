@@ -14,23 +14,24 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Project;
-import org.apache.ibatis.annotations.Mapper;
-
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import lombok.Data;
 import java.math.BigDecimal;
 
 /**
- * 项目表
+ * 费用产生记录表
  *
- * @author pig code generator
- * @date 2022-02-10 17:30:36
+ * @author Mjh
+ * @date 2022-02-17 17:53:07
  */
-@Mapper
-public interface ProjectMapper extends BaseMapper<Project> {
+@Data
 
-	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
+public class ExpenseRecordVO extends ExpenseRecord {
+	/**
+	 * 项目金额
+	 */
+	private BigDecimal projectAmount;
+
 }

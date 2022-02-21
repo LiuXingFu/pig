@@ -35,6 +35,7 @@ import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
@@ -280,6 +281,21 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO){
 		return this.baseMapper.selectPage(page,caseeLiquiPageDTO);
+	}
+
+	/**
+	 * 根据案件id查询案件信息
+	 * @param caseeId
+	 * @return
+	 */
+	@Override
+	public CaseeLiquiDetailsVO queryByCaseeId(Integer caseeId) {
+		CaseeLiquiDetailsVO caseeLiquiDetailsVO = this.baseMapper.queryByCaseeId(caseeId);
+		CaseeOrSubjectDTO caseeOrSubjectDTO = new CaseeOrSubjectDTO();
+		caseeOrSubjectDTO.setCaseeId(caseeId);
+		caseeLiquiDetailsVO.setCaseeOrSubjectVOList(this.baseMapper.selectCaseeOrSubject(caseeOrSubjectDTO));
+		caseeLiquiDetailsVO.setCaseeOrAssetsVOList(this.assetsReService.selectCaseeOrAssets(caseeId));
+		return caseeLiquiDetailsVO;
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 
@@ -104,6 +105,8 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO);
+
+	CaseeLiquiDetailsVO queryByCaseeId(Integer caseeId);
 
 	List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO);
 

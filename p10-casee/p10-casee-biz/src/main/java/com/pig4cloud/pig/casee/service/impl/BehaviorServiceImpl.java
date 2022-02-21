@@ -64,12 +64,6 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	 */
 	@Override
 	public BehaviorOrProjectOrCasee queryById(Integer behaviorId) {
-		BehaviorOrProjectOrCasee behaviorOrProjectOrCasee = this.baseMapper.queryById(behaviorId);
-
-		if(Objects.nonNull(behaviorOrProjectOrCasee)) {
-			behaviorOrProjectOrCasee.setSubjectList(remoteSubjectService.queryByProjectId(424, SecurityConstants.FROM).getData());
-		}
-
-		return behaviorOrProjectOrCasee;
+		return this.baseMapper.queryById(behaviorId);
 	}
 }

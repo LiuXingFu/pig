@@ -126,6 +126,17 @@ public class CaseeLiquiController {
 	}
 
 	/**
+	 * 根据案件id查询案件信息
+	 * @param caseeId
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件id查询案件信息", notes = "根据案件id查询案件信息")
+	@GetMapping("/queryByCaseeId/{caseeId}")
+	public R queryByCaseeId(@PathVariable("caseeId") Integer caseeId){
+		return R.ok(this.caseeLiquiService.queryByCaseeId(caseeId));
+	}
+
+	/**
 	 * 查询案件主体集合
 	 * @param caseeSubjectDTO
 	 * @return

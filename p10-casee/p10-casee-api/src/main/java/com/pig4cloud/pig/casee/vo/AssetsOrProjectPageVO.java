@@ -55,6 +55,11 @@ public class AssetsOrProjectPageVO {
 	private Integer status;
 
 	/**
+	 * 债务人
+	 */
+	private String subjectPersons;
+
+	/**
 	 * 是否抵押
 	 */
 	private Integer assetsSource;

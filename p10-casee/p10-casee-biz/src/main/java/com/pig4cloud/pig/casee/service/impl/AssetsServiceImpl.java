@@ -34,6 +34,7 @@ import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,8 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	RemoteAddressService remoteAddressService;
 	@Autowired
 	AssetsBankLoanReService assetsBankLoanReService;
+	@Autowired
+	JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
@@ -111,13 +114,18 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	 */
 	@Override
 	public IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
-		return this.baseMapper.getPageAssetsManage(page, assetsOrProjectPageDTO);
+		return this.baseMapper.getPageAssetsManage(page, assetsOrProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	@Override
 	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception {
-		List<ExportXlsAssetsOrProjectVO> listAssetsManage = this.baseMapper.getListAssetsManage(assetsOrProjectPageDTO);
-		writeExcel(response, listAssetsManage, "财产信息列表", "sheet", ExportXlsAssetsOrProjectVO.class);
+//		List<ExportXlsAssetsOrProjectVO> listAssetsManage = this.baseMapper.getListAssetsManage(assetsOrProjectPageDTO);
+//		writeExcel(response, listAssetsManage, "财产信息列表", "sheet", ExportXlsAssetsOrProjectVO.class);
+	}
+
+	@Override
+	public IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return this.baseMapper.getPageDebtorAssets(page, assetsOrProjectPageDTO);
 	}
 
 	private void writeExcel(HttpServletResponse response, List<ExportXlsAssetsOrProjectVO> list, String fileName, String sheetName, Class<ExportXlsAssetsOrProjectVO> clazz) throws Exception {

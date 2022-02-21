@@ -96,6 +96,29 @@
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
+	<select id="queryByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO">
+		select p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_casee.del_flag = 0
+		and p10_casee.casee_id = #{caseeId}
+	</select>
+
+	<select id="selectCaseeOrSubject" resultType="com.pig4cloud.pig.casee.vo.CaseeOrSubjectVO">
+		SELECT
+		p10_subject.*,
+		p10_casee_subject_re.type
+		FROM
+		p10_casee_subject_re
+		LEFT JOIN p10_subject ON p10_casee_subject_re.subject_id = p10_subject.subject_id
+		AND p10_subject.del_flag = 0
+		WHERE
+		p10_casee_subject_re.del_flag = 0
+		AND p10_casee_subject_re.casee_id = #{query.caseeId}
+	</select>
+
 	<select id="selectCaseeSubject" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
 		select p10_subject.* from p10_casee_subject_re
 		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id

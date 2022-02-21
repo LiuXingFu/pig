@@ -127,12 +127,24 @@ public class AssetsController {
 	}
 
 	/**
-	 * 根据特定条件分页查询财产与项目数据
+	 * 根据债务人id分页查询财产与项目数据
 	 * @param page
 	 * @param assetsOrProjectPageDTO
 	 * @return
 	 */
 	@ApiOperation(value = "根据特定条件分页查询财产与项目数据", notes = "根据特定条件分页查询财产与项目数据")
+	@GetMapping("/getPageDebtorAssets" )
+	public R getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return R.ok(assetsService.getPageDebtorAssets(page, assetsOrProjectPageDTO));
+	}
+
+	/**
+	 * 查询财产项目相关数据
+	 * @param page
+	 * @param assetsOrProjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询财产项目相关数据", notes = "查询财产项目相关数据")
 	@GetMapping("/getPageAssetsManage" )
 	public R getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
 		return R.ok(assetsService.getPageAssetsManage(page, assetsOrProjectPageDTO));

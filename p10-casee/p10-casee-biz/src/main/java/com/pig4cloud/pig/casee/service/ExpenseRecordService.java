@@ -17,8 +17,13 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
+
+import java.util.List;
 
 /**
  * 费用产生记录表
@@ -27,5 +32,5 @@ import com.pig4cloud.pig.casee.entity.ExpenseRecord;
  * @date 2022-02-17 17:53:07
  */
 public interface ExpenseRecordService extends IService<ExpenseRecord> {
-
+   IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord);
 }

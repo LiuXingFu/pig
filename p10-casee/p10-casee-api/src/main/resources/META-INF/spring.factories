@@ -2,4 +2,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.pig4cloud.pig.casee.feign.fallback.RemoteSubjectBankLoanReServiceFallbackImpl,\
   com.pig4cloud.pig.casee.feign.factory.RemoteSubjectBankLoanReServiceFallbackFactory,\
 com.pig4cloud.pig.casee.feign.fallback.RemoteBankLoanServiceFallbackImpl,\
-  com.pig4cloud.pig.casee.feign.factory.RemoteBankLoanServiceFallbackFactory
+  com.pig4cloud.pig.casee.feign.factory.RemoteBankLoanServiceFallbackFactory,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteProjectServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.factory.RemoteProjectServiceFallbackFactory

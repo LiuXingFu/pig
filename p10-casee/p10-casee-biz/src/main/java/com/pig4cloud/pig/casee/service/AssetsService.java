@@ -47,6 +47,8 @@ public interface AssetsService extends IService<Assets> {
 
 	void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception;
 
+	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+
 	/**
 	 * ************************************************************
 	 */

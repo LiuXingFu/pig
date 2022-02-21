@@ -22,6 +22,8 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.mapper.ProjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 /**
  * 项目表
  *
@@ -31,4 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
 
+	@Override
+	public BigDecimal getProjectAmountBySubjectId(Integer subjectId) {
+		return this.baseMapper.getProjectAmountBySubjectId(subjectId);
+	}
 }

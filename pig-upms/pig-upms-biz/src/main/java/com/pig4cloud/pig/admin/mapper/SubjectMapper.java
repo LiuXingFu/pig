@@ -51,5 +51,4 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectVO selectSubjectById(Integer subjectId);
 
-	List<Subject> queryByProjectId(Integer projectId);
 }

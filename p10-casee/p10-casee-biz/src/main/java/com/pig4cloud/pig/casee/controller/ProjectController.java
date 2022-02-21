@@ -109,4 +109,15 @@ public class ProjectController {
         return R.ok(projectService.removeById(projectId));
     }
 
+	/**
+	 * 根据主体id查询项目
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据主体id查询项目", notes = "根据主体id查询项目")
+	@GetMapping("/getProjectAmountBySubjectId/{subjectId}")
+	public R getProjectAmountBySubjectId(@PathVariable("subjectId") Integer subjectId){
+    	return R.ok(projectService.getProjectAmountBySubjectId(subjectId));
+	}
+
 }

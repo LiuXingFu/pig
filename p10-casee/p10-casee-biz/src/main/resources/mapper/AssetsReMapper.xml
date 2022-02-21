@@ -50,4 +50,19 @@
 		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.assets_id=p10_assets.assets_id
 		where p10_assets_re.project_id=#{projectId}
 	</select>
+
+	<select id="selectCaseeOrAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO">
+		SELECT
+			p10_assets.*,
+			p10_assets_re.assets_source,
+			json_extract( p10_assets_re.assets_re_detail, '$.entityZX_STZX.entityZX_STZX_CCZXCF.entityZX_STZX_CCZXCF_CCZXCF.sealUpCondition' ) AS sealUpCondition,
+			json_extract( p10_assets_re.assets_re_detail, '$.fundingZX_ZJZX.fundingZX_ZJZX_ZJZXDJ.fundingZX_ZJZX_ZJZXDJ_ZJZXDJ.whetherFirstFrozen' ) AS whetherFirstFrozen
+		FROM
+			p10_assets_re
+			LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id
+			AND p10_assets.del_flag = 0
+		WHERE
+			p10_assets_re.del_flag = 0
+			AND p10_assets_re.casee_id = #{caseeId}
+	</select>
 </mapper>

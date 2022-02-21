@@ -16,11 +16,16 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper;
 import com.pig4cloud.pig.casee.service.ExpenseRecordService;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 费用产生记录表
@@ -31,4 +36,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, ExpenseRecord> implements ExpenseRecordService {
 
+	@Override
+	public IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
+		return this.baseMapper.getExpenseRecordPage(page,expenseRecord);
+	}
 }
