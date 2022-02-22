@@ -18,9 +18,9 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
+import com.pig4cloud.pig.casee.dto.TargetCaseeProjectPageDTO;
 import com.pig4cloud.pig.casee.dto.TargetPageDTO;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.service.TargetBizLiquiService;
@@ -28,7 +28,6 @@ import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -134,5 +133,18 @@ public class TargetController {
 		return R.ok(targetService.update(targetLambdaUpdateWrapper));
 
     }
+
+
+	/**
+	 * 根据案件类型分页查询立案未送达
+	 * @param page
+	 * @param targetCaseeProjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件类型分页查询立案未送达", notes = "根据案件类型分页查询立案未送达")
+	@GetMapping("/standCaseUndeliveredPage")
+	public R standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
+		return R.ok(targetService.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO));
+	}
 
 }

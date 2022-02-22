@@ -21,8 +21,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
+import com.pig4cloud.pig.casee.dto.TargetCaseeProjectPageDTO;
 import com.pig4cloud.pig.casee.dto.TargetPageDTO;
 import com.pig4cloud.pig.casee.entity.Target;
+import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
 import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
@@ -51,4 +53,6 @@ public interface TargetMapper extends BaseMapper<Target> {
 	void updateBusinessData(@Param("query") AuditTargetDTO auditTargetDTO, @Param("listParams") List<KeyValue> listParams);
 
 	String queryBusinessData(@Param("query") AuditTargetDTO auditTargetDTO);
+
+	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO, Integer insId, Integer outelsId);
 }

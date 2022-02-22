@@ -20,11 +20,9 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
-import com.pig4cloud.pig.casee.dto.TargetAddDTO;
-import com.pig4cloud.pig.casee.dto.TargetThingAddDTO;
-import com.pig4cloud.pig.casee.dto.TargetPageDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Target;
+import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
 
 import java.util.List;
@@ -68,4 +66,12 @@ public interface TargetService extends IService<Target> {
 	 * @throws Exception
 	 */
 	Boolean saveTargetAddDTO(List<TargetAddDTO> targetAddDTOList) throws Exception ;
+
+	/**
+	 * 根据案件类型分页查询立案未送达
+	 * @param page
+	 * @param targetCaseeProjectPageDTO
+	 * @return
+	 */
+	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO);
 }
