@@ -14,27 +14,30 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
-import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
+import lombok.Data;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
- * 费用产生记录表
+ * 回款详细记录表
  *
  * @author Mjh
- * @date 2022-02-17 17:53:07
+ * @date 2022-02-17 17:52:51
  */
-public interface ExpenseRecordService extends IService<ExpenseRecord> {
-   IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord);
+@Data
+public class PaymentRecordCourtPaymentVO {
+	/**
+	 * 回款详细记录信息
+	 */
+	private Page PaymentRecordPage;
 
-   boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord);
+	/**
+	 * 法院到款总金额
+	 */
+	private BigDecimal courtPayment;
 
-   boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord);
+
 }

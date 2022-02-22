@@ -40,6 +40,7 @@
     <result property="companyCode" column="company_code"/>
 	<result property="caseeNumber" column="casee_number"/>
 	<result property="subjectName" column="subject_name"/>
+	<result property="status" column="status"/>
   </resultMap>
 
 	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">

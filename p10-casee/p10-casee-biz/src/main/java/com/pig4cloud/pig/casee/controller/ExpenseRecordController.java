@@ -114,6 +114,18 @@ public class ExpenseRecordController {
         return R.ok(expenseRecordService.updateById(expenseRecord));
     }
 
+	/**
+	 * 修改费用产生记录以及项目金额
+	 * @param expenseRecord
+	 * @return R
+	 */
+	@ApiOperation(value = "修改费用产生记录以及项目金额", notes = "修改费用产生记录以及项目金额")
+	@SysLog("修改费用产生记录以及项目金额" )
+	@PutMapping("/updateExpenseRecordAndProjectAmount")
+	public R updateExpenseRecordAndProjectAmount(@RequestBody ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.updateExpenseRecordAndProjectAmount(expenseRecord));
+	}
+
     /**
      * 通过id删除费用产生记录表
      * @param expenseRecordId id

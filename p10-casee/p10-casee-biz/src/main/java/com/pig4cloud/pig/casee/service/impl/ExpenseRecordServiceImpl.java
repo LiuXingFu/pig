@@ -34,7 +34,6 @@ import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,31 +63,54 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
 		expenseRecord.setSubjectName(project.getSubjectPersons());
 
-		if (record!=null){
+		if (record!=null){//如果当前费用类型的案件费用信息已经存在则修改
 			record.setCostAmount(expenseRecord.getCostAmount());
 			record.setCostIncurredTime(expenseRecord.getCostIncurredTime());
 			this.updateById(record);
 		}else {
+			//添加费用产出记录
 			this.save(expenseRecord);
+
+			//查询项目关联主体信息
+			List<ProjectSubjectRe> list = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, project.getProjectId()));
+
+			List<ExpenseRecordSubjectRe> expenseRecordSubjectReList=new ArrayList<>();
+			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
+			for (ProjectSubjectRe projectSubjectRe : list) {
+				expenseRecordSubjectRe.setSubjectId(projectSubjectRe.getSubjectId());
+				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+			}
+			//添加费用产出记录主体关联信息
+			recordSubjectReService.saveBatch(expenseRecordSubjectReList);
 		}
 
 		ProjectLiQuiDetail projectLiQuiDetail = project.getProjectLiQuiDetail();
 		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(expenseRecord.getCostAmount()));
 		project.setProjectLiQuiDetail(projectLiQuiDetail);
 		//修改项目金额
-		projectLiquiService.updateById(project);
-		//查询项目关联主体信息
-		List<ProjectSubjectRe> list = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, project.getProjectId()));
+		return projectLiquiService.updateById(project);
+	}
 
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList=new ArrayList<>();
-		ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-		for (ProjectSubjectRe projectSubjectRe : list) {
-			expenseRecordSubjectRe.setSubjectId(projectSubjectRe.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+	@Override
+	public boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord) {
+		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
+		ProjectLiQuiDetail projectLiQuiDetail = project.getProjectLiQuiDetail();
+		if (expenseRecord.getStatus()==0){//恢复正常
+			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(expenseRecord.getCostAmount()));
+			project.setProjectLiQuiDetail(projectLiQuiDetail);
+		}else if (expenseRecord.getStatus()==2){//作废
+			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(expenseRecord.getCostAmount()));
+			project.setProjectLiQuiDetail(projectLiQuiDetail);
 		}
+		//修改项目金额
+		projectLiquiService.updateById(project);
 
-		//添加费用产出记录主体关联信息
-		return recordSubjectReService.saveBatch(expenseRecordSubjectReList);
+		if(expenseRecord.getExpenseRecordId()!=null){
+			ExpenseRecord record = this.getById(expenseRecord.getExpenseRecordId());
+			record.setCostAmount(record.getCostAmount().add(expenseRecord.getCostAmount()));
+		}
+		//修改费用产生信息
+		return this.updateById(expenseRecord);
 	}
 }

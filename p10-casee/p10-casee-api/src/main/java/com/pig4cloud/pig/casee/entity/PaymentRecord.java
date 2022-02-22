@@ -58,15 +58,15 @@ public class PaymentRecord extends BaseEntity {
     private Integer projectId;
 
     /**
-     * 回款类型(0-法院领款 1-存款划扣 2-拍卖款)
+     * 回款类型(100-法院领款 200-法院到款)
      */
-    @ApiModelProperty(value="回款类型(0-法院领款 1-存款划扣 2-拍卖款)")
+    @ApiModelProperty(value="回款类型(100-法院领款 200-法院到款)")
     private Integer paymentType;
 
     /**
-     * 款项类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)
+     * 款项类型(10001-本金/利息 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-法院执行款 20002-法院履行款 20003-拍卖款 20004-资金划扣)
      */
-    @ApiModelProperty(value="款项类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)")
+    @ApiModelProperty(value="款项类型(10001-本金/利息 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-法院执行款 20002-法院履行款 20003-拍卖款 20004-资金划扣)")
     private Integer fundsType;
 
     /**
@@ -111,4 +111,9 @@ public class PaymentRecord extends BaseEntity {
 	@ApiModelProperty(value="父id")
 	private Integer fatherId;
 
+	/**
+	 * 状态(0-未领款 1-已领款)
+	 */
+	@ApiModelProperty(value="状态(0-未领款 1-已领款)")
+	private Integer status;
 }
