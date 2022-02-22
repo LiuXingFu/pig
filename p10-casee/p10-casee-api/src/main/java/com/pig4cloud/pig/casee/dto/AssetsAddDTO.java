@@ -16,8 +16,7 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsCapitalDetail;
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsPhysicalDetail;
+import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -29,6 +28,18 @@ import lombok.Data;
  */
 @Data
 public class AssetsAddDTO {
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件
+	 */
+	@ApiModelProperty(value="案件")
+	private Integer caseeId;
 
 	/**
 	 * 财产id
@@ -72,23 +83,18 @@ public class AssetsAddDTO {
 	@ApiModelProperty(value="描述")
 	private String describes;
 
-	/**
-	 * 资金财产
-	 */
-	@ApiModelProperty(value="资金财产")
-	private AssetsCapitalDetail assetsCapitalDetail;
-
-	/**
-	 * 实体财产
-	 */
-	@ApiModelProperty(value="实体财产")
-	private AssetsPhysicalDetail assetsPhysicalDetail;
 
 	/**
 	 * 债务人主体id
 	 */
 	@ApiModelProperty(value="债务人主体id")
 	private Integer subjectId;
+
+	/**
+	 * 债务人名称
+	 */
+	@ApiModelProperty(value="债务人名称")
+	private String subjectName;
 
 	/**
 	 * 行政区划编号
@@ -117,4 +123,10 @@ public class AssetsAddDTO {
 	 */
 	@ApiModelProperty(value = "信息地址")
 	private String informationAddress;
+
+	/**
+	 * 抵押权人
+	 */
+	@ApiModelProperty(value = "抵押权人")
+	private AssetsReCaseeDetail assetsReCaseeDetail;
 }

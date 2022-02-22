@@ -14,21 +14,28 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.mapper.AssetsPhysicalMapper;
-import com.pig4cloud.pig.casee.service.AssetsPhysicalService;
-import org.springframework.stereotype.Service;
+package com.pig4cloud.pig.casee.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
+import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 
 /**
- * 财产表
+ * 财产关联表
  *
  * @author ligt
- * @date 2022-01-11 10:29:44
+ * @date 2022-01-19 15:19:24
  */
-@Service
-public class AssetsPhysicalImpl extends ServiceImpl<AssetsPhysicalMapper, Assets> implements AssetsPhysicalService {
+public interface AssetsReCaseeService extends IService<AssetsRe> {
+
+	/**
+	 * 添加案件财产
+	 * @param assetsAddDTO
+	 * @return
+	 */
+	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO);
+
 
 }

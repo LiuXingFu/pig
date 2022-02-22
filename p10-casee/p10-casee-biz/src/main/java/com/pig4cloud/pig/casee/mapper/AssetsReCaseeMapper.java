@@ -15,27 +15,23 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.AssetsGetByIdDTO;
-import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
-import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
-import com.pig4cloud.pig.casee.vo.AssetsPageVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
+import org.apache.ibatis.annotations.Mapper;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
- * 财产表
+ * 财产关联表
  *
  * @author ligt
- * @date 2022-01-11 10:29:44
+ * @date 2022-01-19 15:19:24
  */
-public interface AssetsCapitalService extends IService<Assets> {
+@Mapper
+public interface AssetsReCaseeMapper extends BaseMapper<AssetsRe> {
 
 }

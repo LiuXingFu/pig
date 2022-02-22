@@ -105,6 +105,12 @@ public class Behavior extends BaseEntity {
     @ApiModelProperty(value="行为状态（1-正常 2-撤销）")
     private Integer behaviorStatus;
 
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
+
     /**
      * 备注
      */

@@ -27,6 +27,8 @@ import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
@@ -82,7 +84,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private SecurityUtilsService securityUtilsService;
 
 	@Autowired
-	private AssetsReService assetsReService;
+	private AssetsReCaseeService assetsReCaseeService;
 
 	@Autowired
 	private AssetsBankLoanReMapper assetsBankLoanReMapper;
@@ -174,17 +176,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		if(transferRecordBankLoanVO.getMortgageSituation()==0){
 			// 查询银行借贷抵押财产
 			List<AssetsInformationVO> assetsInformationVOS = assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
-			List<AssetsRe> assetsReList = new ArrayList<>();
+			List<AssetsReCasee> assetsReCaseeList = new ArrayList<>();
 			assetsInformationVOS.stream().forEach(item ->{
-				AssetsRe assetsRe = new AssetsRe();
-				assetsRe.setAssetsId(item.getAssetsId());
-				assetsRe.setSubjectId(item.getSubjectId());
-				assetsRe.setProjectId(projectLiqui.getProjectId());
+				AssetsReCasee assetsReCasee = new AssetsReCasee();
+				assetsReCasee.setAssetsId(item.getAssetsId());
+				assetsReCasee.setSubjectId(item.getSubjectId());
+				assetsReCasee.setProjectId(projectLiqui.getProjectId());
 				// 案件来源1=抵押财产
-				assetsRe.setAssetsSource(1);
-				assetsReList.add(assetsRe);
+				assetsReCasee.setAssetsSource(1);
+				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+				assetsReCaseeDetail.setMortgagee(0);
+				assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+				assetsReCaseeList.add(assetsReCasee);
+				assetsReCaseeService.save(assetsReCasee);
 			});
-			assetsReService.saveBatch(assetsReList);
 		}
 
 		// 保存项目委托关联表

@@ -39,4 +39,10 @@ public class AssetsPageVO extends Assets {
 	 */
 	@ApiModelProperty(value="财产来源（1-抵押财产，2-案件）")
 	private Integer assetsSource;
+
+	/**
+	 * 抵押权人
+	 */
+	@ApiModelProperty(value = "抵押权人")
+	private Integer mortgagee;
 }
