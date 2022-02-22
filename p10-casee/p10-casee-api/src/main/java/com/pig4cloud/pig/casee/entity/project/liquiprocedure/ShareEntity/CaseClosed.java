@@ -26,6 +26,11 @@ public class CaseClosed extends CommonalityData implements Serializable {
 	private Integer caseClosedType;
 
 	/**
+	 * 结案文书
+	 */
+	private String closingDocuments;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

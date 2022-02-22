@@ -48,4 +48,9 @@ public class BeIllegal_XWWF_SSXWWF_SSXWWF extends CommonalityData implements Ser
 	 * 备注
 	 */
 	private String remark;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

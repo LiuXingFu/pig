@@ -20,6 +20,11 @@ public class EntityZX_STZX_CCZXTTCG_CCZXTTCG extends CommonalityData implements 
 	private Date vacateDate;
 
 	/**
+	 * 附件
+	 */
+	private String appendixFile;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

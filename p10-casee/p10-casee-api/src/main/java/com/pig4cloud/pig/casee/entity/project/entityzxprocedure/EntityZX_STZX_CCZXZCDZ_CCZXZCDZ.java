@@ -35,6 +35,11 @@ public class EntityZX_STZX_CCZXZCDZ_CCZXZCDZ extends CommonalityData implements 
 	private Double AuxiliaryFee;
 
 	/**
+	 * 附件
+	 */
+	private String appendixFile;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

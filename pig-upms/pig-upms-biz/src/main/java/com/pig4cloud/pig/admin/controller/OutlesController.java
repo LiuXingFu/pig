@@ -76,6 +76,18 @@ public class OutlesController {
 	}
 
 	/**
+	 * 通过id查询
+	 *
+	 * @param outlesId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/{outlesId}")
+	public R getByOutlesId(@PathVariable("outlesId") Integer outlesId) {
+		return R.ok(outlesService.getByIdOutles(outlesId));
+	}
+
+	/**
 	 * 根据员工id查询用户网点集合
 	 * @return
 	 */

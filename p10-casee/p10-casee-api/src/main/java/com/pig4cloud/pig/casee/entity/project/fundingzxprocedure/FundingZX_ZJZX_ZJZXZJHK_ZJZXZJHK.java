@@ -26,9 +26,9 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK extends CommonalityData implements
 	private Integer deductionAmount;
 
 	/**
-	 * 款项记录
+	 * 附件
 	 */
-	private List<PaymentRecord> paymentRecordList;
+	private String appendixFile;
 
 	/**
 	 * 备注

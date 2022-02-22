@@ -22,6 +22,11 @@ public class LiQui_ZXSZ extends CommonalityData implements Serializable {
 	LiQui_ZXSZ_ZXSZLK liQui_ZXSZ_ZXSZLK = new LiQui_ZXSZ_ZXSZLK();
 
 	/**
+	 *	执行阶段首次执行法院到款
+	 */
+	LiQui_ZXSZ_ZXSZFYDK liQui_ZXSZ_ZXSZFYDK = new LiQui_ZXSZ_ZXSZFYDK();
+
+	/**
 	 * 执行阶段首次执行终结
 	 */
 	LiQui_ZXSZ_ZXSZZJ liQui_ZXSZ_ZXSZZJ = new LiQui_ZXSZ_ZXSZZJ();

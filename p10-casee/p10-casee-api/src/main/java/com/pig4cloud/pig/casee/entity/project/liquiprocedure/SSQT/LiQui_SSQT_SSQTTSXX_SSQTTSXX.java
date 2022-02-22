@@ -53,6 +53,11 @@ public class LiQui_SSQT_SSQTTSXX_SSQTTSXX extends CommonalityData implements Ser
 	private String presidingJudge;
 
 	/**
+	 * 附件
+	 */
+	private String appendixFile;
+
+	/**
 	 * 其他合议庭成员
 	 */
 	private List<OtherPanelMembers> otherPanelMembersList;

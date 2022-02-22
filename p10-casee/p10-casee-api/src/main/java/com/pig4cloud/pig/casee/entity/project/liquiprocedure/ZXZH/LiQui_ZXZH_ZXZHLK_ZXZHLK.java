@@ -16,15 +16,15 @@ import java.util.List;
 @Data
 public class LiQui_ZXZH_ZXZHLK_ZXZHLK extends CommonalityData implements Serializable {
 	/**
-	 * 到款时间
+	 * 领款时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date arrivalTime;
+	private Date collectionTime;
 
 	/**
-	 * 到款总金额
+	 * 款项金额
 	 */
-	private BigDecimal arrivalTotalAmount;
+	private BigDecimal paymentAmount;
 
 	/**
 	 * 备注
@@ -32,12 +32,17 @@ public class LiQui_ZXZH_ZXZHLK_ZXZHLK extends CommonalityData implements Seriali
 	private String remark;
 
 	/**
-	 * 款项来源(0-法院执行到款 1-自动履行到法院 2-自动履行到申请人)
+	 * 领款来源(0-法院领款 1-履行到申请人)
 	 */
 	private Integer sourceOfPayment;
 
 	/**
-	 * 款项记录
+	 * 分配款项记录
 	 */
 	private List<PaymentRecord> paymentRecordList;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }
