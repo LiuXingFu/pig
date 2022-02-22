@@ -33,4 +33,8 @@ import java.util.List;
  */
 public interface ExpenseRecordService extends IService<ExpenseRecord> {
    IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord);
+
+   boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord);
+
+   boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord);
 }

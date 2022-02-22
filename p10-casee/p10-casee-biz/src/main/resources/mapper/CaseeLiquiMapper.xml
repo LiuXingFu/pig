@@ -32,7 +32,7 @@
 		<if test="projectId!=null and projectId!=''">
 			and p10_project_casee_re.project_id = #{projectId}
 		</if>
-		<if test="caseeType.size>0">
+		<if test="caseeType!=null and caseeType.size()>0">
 			and p10_casee.casee_type in
 			<foreach item="item" index="index" collection="caseeType"
 					 open="(" separator="," close=")">

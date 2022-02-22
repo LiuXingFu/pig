@@ -14,54 +14,30 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
+package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * 银行借贷表DTO
+ * 回款详细记录表
  *
  * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @date 2022-02-17 17:52:51
  */
 @Data
-public class BankLoanDTO extends BankLoan {
+public class PaymentRecordCourtPaymentVO {
+	/**
+	 * 回款详细记录信息
+	 */
+	private Page PaymentRecordPage;
 
 	/**
-	 * 主体表id
+	 * 法院到款总金额
 	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 抵押财产信息
-	 */
-	private List<AssetsDTO> assetsDTOList;
-
-	/**
-	 * 债务人信息
-	 */
-	private List<SubjectAddressDTO> subjectAddressDTOList;
+	private BigDecimal courtPayment;
 
 
-	//列表条件查询数据
-	/**
-	 * 所属银行
-	 */
-	private String trustee;
-
-	/**
-	 * 状态
-	 */
-	private Integer status;
-
-	/**
-	 * 移送时间
-	 */
-	private LocalDate handoverTime;
 }

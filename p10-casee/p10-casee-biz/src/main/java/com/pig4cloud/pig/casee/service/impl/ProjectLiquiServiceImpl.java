@@ -119,7 +119,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiqui.setProjectType(100);
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
 		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
-		projectLiQuiDetail.setRemainingPayment(BigDecimal.valueOf(0));
+		projectLiQuiDetail.setRepaymentAmount(BigDecimal.valueOf(0));
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
 		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());
