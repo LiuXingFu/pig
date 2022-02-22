@@ -24,6 +24,11 @@ public class LiQui_SSBQ_SSBQBQJG_SSBQBQJG extends CommonalityData implements Ser
 	private Integer preservationWhetherFullAmount;
 
 	/**
+	 * 附件上传
+	 */
+	private String appendixFile;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

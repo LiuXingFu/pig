@@ -43,4 +43,9 @@ public class LiQui_LX_LXDC_LXDC extends CommonalityData implements Serializable 
 	 * 债务人
 	 */
 	private List<String> executedNameList;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

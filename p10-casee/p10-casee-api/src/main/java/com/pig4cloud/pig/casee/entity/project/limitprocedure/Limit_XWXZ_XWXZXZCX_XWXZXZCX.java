@@ -29,6 +29,11 @@ public class Limit_XWXZ_XWXZXZCX_XWXZXZCX extends CommonalityData implements Ser
 	private String groundsForRevocation;
 
 	/**
+	 * 附件
+	 */
+	private String appendixFile;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

@@ -28,4 +28,9 @@ public class EntityZX_STZX_CCZXSQYS_CCZXSQYS extends CommonalityData implements 
 	 * 备注
 	 */
 	private String remark;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

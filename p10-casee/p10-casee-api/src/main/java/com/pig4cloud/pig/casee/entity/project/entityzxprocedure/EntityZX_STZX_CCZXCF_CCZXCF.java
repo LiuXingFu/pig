@@ -54,4 +54,9 @@ public class EntityZX_STZX_CCZXCF_CCZXCF extends CommonalityData implements Seri
 	 * 备注
 	 */
 	private String remark;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

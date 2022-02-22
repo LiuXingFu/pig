@@ -11,35 +11,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 执行阶段首次执行领款
+ * 执行阶段首次执行法院到款
  */
 @Data
-public class LiQui_ZXSZ_ZXSZLK_ZXSZLK extends CommonalityData implements Serializable {
+public class LiQui_ZXSZ_ZXSZFYDK_ZXSZFYDK extends CommonalityData implements Serializable {
 	/**
-	 * 领款时间
+	 * 到款时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date collectionTime;
+	private Date arrivalTime;
 
 	/**
-	 * 款项金额
+	 * 到款类型(0-法院执行到款 1-法院履行款)
 	 */
-	private BigDecimal paymentAmount;
+	private Integer arrivalType;
+
+	/**
+	 * 到款金额
+	 */
+	private BigDecimal arrivalTotalAmount;
 
 	/**
 	 * 备注
 	 */
 	private String remark;
-
-	/**
-	 * 领款来源(0-法院领款 1-履行到申请人)
-	 */
-	private Integer sourceOfPayment;
-
-	/**
-	 * 分配款项记录
-	 */
-	private List<PaymentRecord> paymentRecordList;
 
 	/**
 	 * 附件

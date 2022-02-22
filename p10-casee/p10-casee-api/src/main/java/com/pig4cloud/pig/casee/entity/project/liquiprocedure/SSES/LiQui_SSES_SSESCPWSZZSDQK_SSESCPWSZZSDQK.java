@@ -22,4 +22,9 @@ public class LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK extends CommonalityData im
 	 * 最终送达情况备注
 	 */
 	private String finalDeliveryRemark;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

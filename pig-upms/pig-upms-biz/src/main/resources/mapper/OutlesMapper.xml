@@ -119,16 +119,12 @@
 		outles.update_time,
 		outles.update_by,
 		outles.del_flag,
-		ins.ins_name,
-		sys_user.nick_name,
-		sys_user.phone
+		ins.ins_name
 		FROM
 		p10_outles outles
 		LEFT JOIN p10_institution ins ON ins.ins_id = outles.ins_id
-		LEFT JOIN sys_user ON sys_user.user_id = outles.user_id
 		WHERE
 			outles.del_flag = '0'
-			AND sys_user.del_flag = '0'
 			AND outles.outles_id = #{outlesId}
 	</select>
 

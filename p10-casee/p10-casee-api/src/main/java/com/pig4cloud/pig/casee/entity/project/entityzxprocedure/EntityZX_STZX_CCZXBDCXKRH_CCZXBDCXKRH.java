@@ -41,4 +41,8 @@ public class EntityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH extends CommonalityData imple
 	 */
 	private String remark;
 
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

@@ -29,6 +29,11 @@ public class BeIllegal_XWWF_XWWFXZCX_XWWFXZCX extends CommonalityData implements
 	private String groundsForRevocation;
 
 	/**
+	 * 附件
+	 */
+	private String appendixFile;
+
+	/**
 	 * 备注
 	 */
 	private String remark;

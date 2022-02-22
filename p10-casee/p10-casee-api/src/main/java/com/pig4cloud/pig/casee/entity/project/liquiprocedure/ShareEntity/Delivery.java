@@ -44,4 +44,8 @@ public class Delivery extends CommonalityData implements Serializable {
 	 */
 	private String remark;
 
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 }

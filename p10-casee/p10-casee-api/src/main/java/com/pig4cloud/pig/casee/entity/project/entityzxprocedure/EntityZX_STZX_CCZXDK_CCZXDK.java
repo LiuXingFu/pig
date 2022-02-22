@@ -31,9 +31,9 @@ public class EntityZX_STZX_CCZXDK_CCZXDK extends CommonalityData implements Seri
 	private String finalPayer;
 
 	/**
-	 * 款项记录
+	 * 附件
 	 */
-	private List<PaymentRecord> paymentRecordList;
+	private String appendixFile;
 
 	/**
 	 * 备注
