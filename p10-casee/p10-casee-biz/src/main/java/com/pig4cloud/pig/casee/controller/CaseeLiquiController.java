@@ -27,6 +27,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * 案件表
@@ -147,4 +149,18 @@ public class CaseeLiquiController {
 		return R.ok(caseeLiquiService.queryCaseeSubjectList(caseeSubjectDTO));
 	}
 
+	/**
+	 * 根据项目id、案件类型集合查询案件信息
+	 * @param caseeByProjectIdListDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id、案件类型集合查询案件信息", notes = "根据项目id、案件类型集合查询案件信息")
+	@GetMapping("/queryByIdList" )
+	public R queryByIdList(CaseeByProjectIdListDTO caseeByProjectIdListDTO) {
+		if (caseeByProjectIdListDTO.getCaseeType()!=null){
+			return R.ok(caseeLiquiService.queryByIdList(caseeByProjectIdListDTO.getProjectId(),caseeByProjectIdListDTO.getCaseeType()));
+		}else {
+			return R.ok(caseeLiquiService.queryByIdList(caseeByProjectIdListDTO.getProjectId(),null));
+		}
+	}
 }

@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.service.ExpenseRecordService;
@@ -66,6 +67,17 @@ public class ExpenseRecordController {
         return R.ok(expenseRecordService.getById(expenseRecordId));
     }
 
+	/**
+	 * 根据案件案号和费用类型查询费用信息
+	 * @param expenseRecord
+	 * @return R
+	 */
+	@ApiOperation(value = "根据案件案号和费用类型查询费用信息", notes = "根据案件案号和费用类型查询费用信息")
+	@GetMapping("/getByCaseeNumberAndCostType" )
+	public R getByCaseeNumberAndCostType(ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCostType,expenseRecord.getCostType()).eq(ExpenseRecord::getCaseeNumber,expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getStatus,0)));
+	}
+
     /**
      * 新增费用产生记录表
      * @param expenseRecord 费用产生记录表
@@ -78,6 +90,18 @@ public class ExpenseRecordController {
         return R.ok(expenseRecordService.save(expenseRecord));
     }
 
+	/**
+	 * 新增费用产生记录并修改项目金额
+	 * @param expenseRecord 新增费用产生记录并修改项目金额
+	 * @return R
+	 */
+	@ApiOperation(value = "新增费用产生记录并修改项目金额", notes = "新增费用产生记录并修改项目金额")
+	@SysLog("新增费用产生记录并修改项目金额" )
+	@PostMapping("/saveExpenseRecordUpdateProject")
+	public R saveExpenseRecordUpdateProject(@RequestBody ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.saveExpenseRecordUpdateProject(expenseRecord));
+	}
+
     /**
      * 修改费用产生记录表
      * @param expenseRecord 费用产生记录表
@@ -89,6 +113,18 @@ public class ExpenseRecordController {
     public R updateById(@RequestBody ExpenseRecord expenseRecord) {
         return R.ok(expenseRecordService.updateById(expenseRecord));
     }
+
+	/**
+	 * 修改费用产生记录以及项目金额
+	 * @param expenseRecord
+	 * @return R
+	 */
+	@ApiOperation(value = "修改费用产生记录以及项目金额", notes = "修改费用产生记录以及项目金额")
+	@SysLog("修改费用产生记录以及项目金额" )
+	@PutMapping("/updateExpenseRecordAndProjectAmount")
+	public R updateExpenseRecordAndProjectAmount(@RequestBody ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.updateExpenseRecordAndProjectAmount(expenseRecord));
+	}
 
     /**
      * 通过id删除费用产生记录表

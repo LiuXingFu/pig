@@ -13,32 +13,32 @@ import java.util.Map;
 @Component
 public class NodeTaskHandlerRegister {
 
-	@Autowired
-	PAIFU_JGRZ_SFYJ_YJJG_NODEHandler paifu_jgrz_sfyj_yjjg_nodeHandler;
+//	@Autowired
+//	PAIFU_JGRZ_SFYJ_YJJG_NODEHandler paifu_jgrz_sfyj_yjjg_nodeHandler;
+//
+//	@Autowired
+//	PAIFU_JGRZ_DXXJ_XJJG_NODEHandler paifu_jgrz_dxxj_xjjg_nodeHandler;
+//
+//	@Autowired
+//	PAIFU_JGRZ_WLXJ_XTLR_NODEHandler paifu_jgrz_wlxj_xtlr_nodeHandler;
+//
+//	@Autowired
+//	PAIFU_JGRZ_PGDJ_XTLR_NODEHandler paifu_jgrz_pgdj_xtlr_nodeHandler;
+//
+//	@Autowired
+//	PAIFU_PMFZ_PMJGYP_PMJG_NODEHandler paifu_pmfz_pmjgyp_pmjg_nodeHandler;
+//
+//	@Autowired
+//	LIQUI_LX_ZQCS_ZQCS_NODEHandler liqui_lx_zqcs_zqcs_nodeHandler;
 
-	@Autowired
-	PAIFU_JGRZ_DXXJ_XJJG_NODEHandler paifu_jgrz_dxxj_xjjg_nodeHandler;
-
-	@Autowired
-	PAIFU_JGRZ_WLXJ_XTLR_NODEHandler paifu_jgrz_wlxj_xtlr_nodeHandler;
-
-	@Autowired
-	PAIFU_JGRZ_PGDJ_XTLR_NODEHandler paifu_jgrz_pgdj_xtlr_nodeHandler;
-
-	@Autowired
-	PAIFU_PMFZ_PMJGYP_PMJG_NODEHandler paifu_pmfz_pmjgyp_pmjg_nodeHandler;
-
-	@Autowired
-	LIQUI_LX_ZQCS_ZQCS_NODEHandler liqui_lx_zqcs_zqcs_nodeHandler;
-
-	@Autowired
-	PAIFUGENERALLY_NODEHandler paiFuGenerallyNodeHandler;
+//	@Autowired
+//	PAIFUGENERALLY_NODEHandler paiFuGenerallyNodeHandler;
 
 	@Autowired
 	LIQUIGENERALLY_NODEHandler liQuiGenerallyNodeHandler;
 
-	@Autowired
-	lIQUI_CASEE_REPAYMENTDETAILS_NODEHandler liqui_casee_repaymentdetails_nodeHandler;
+//	@Autowired
+//	lIQUI_CASEE_REPAYMENTDETAILS_NODEHandler liqui_casee_repaymentdetails_nodeHandler;
 
 	@Autowired
 	LIQUI_SQ_SQBQJG_SQBQJG_NODEHandler liqui_sq_sqbqjg_sqbqjg_nodeHandler;

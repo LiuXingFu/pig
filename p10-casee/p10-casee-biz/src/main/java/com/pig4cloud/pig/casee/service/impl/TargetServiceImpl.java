@@ -20,10 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
-import com.pig4cloud.pig.casee.dto.TargetAddDTO;
-import com.pig4cloud.pig.casee.dto.TargetThingAddDTO;
-import com.pig4cloud.pig.casee.dto.TargetPageDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX;
@@ -38,10 +35,12 @@ import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXSZ.LiQuiZXSZ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXZH.LiQuiZXZH;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
 import com.pig4cloud.pig.casee.service.TargetService;
+import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.KeyValue;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +62,8 @@ import java.util.Objects;
 public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> implements TargetService {
 	@Autowired
 	private SecurityUtilsService securityUtilsService;
+	@Autowired
+	JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public IPage<TargetPageVO> queryPageList(Page page, TargetPageDTO targetPageDTO) {
@@ -165,6 +166,17 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 		}
 
 		return this.saveBatch(target);
+	}
+
+	/**
+	 * 根据案件类型分页查询立案未送达
+	 * @param page
+	 * @param targetCaseeProjectPageDTO
+	 * @return
+	 */
+	@Override
+	public IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
+		return this.baseMapper.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	/**
