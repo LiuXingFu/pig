@@ -131,4 +131,19 @@
 		and p10_assets_re.create_casee_id = #{caseeId}
 	</select>
 
+	<select id="selectBySujectId" resultType="com.pig4cloud.pig.casee.vo.AssetsPageVO">
+		select p10_assets.*,p10_assets_re.assets_source,json_extract(p10_assets_re.assets_re_detail, "$.mortgagee") as mortgagee from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		where p10_assets.del_flag = 0
+		<if test="projectId!=null and projectId!=''">
+			and p10_assets_re.project_id = #{projectId}
+		</if>
+		<if test="caseeId!=null and caseeId!=''">
+			and p10_assets_re.casee_id = #{caseeId}
+		</if>
+		<if test="subjectId!=null and subjectId!=''">
+			and p10_assets_re.subject_id = #{subjectId}
+		</if>
+	</select>
+
 </mapper>

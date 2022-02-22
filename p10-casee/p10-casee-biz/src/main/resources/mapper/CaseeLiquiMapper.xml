@@ -132,4 +132,21 @@
 		</if>
 	</select>
 
+	<resultMap id="retultAssetsBehavior" type="com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO">
+		<id property="subjectId" column="subject_id"/>
+		<result property="name" column="name"/>
+		<result property="caseeId" column="casee_id"/>
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO" column="{subjectId=subject_id,caseeId=casee_id}"
+					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
+		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior" column="{subjectId=subject_id,caseeId=casee_id}"
+					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
+	</resultMap>
+
+	<select id="selectAssetsBehavior" resultMap="retultAssetsBehavior">
+		select p10_subject.*,p10_casee_subject_re.casee_id from p10_casee_subject_re
+		left join p10_subject on p10_casee_subject_re.subject_id = p10_subject.subject_id
+		where p10_casee_subject_re.del_flag = 0
+		and p10_casee_subject_re.casee_id = #{caseeId}
+	</select>
+
 </mapper>

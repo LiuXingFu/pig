@@ -36,13 +36,6 @@ import java.util.List;
  * @date 2022-02-14 15:51:27
  */
 @Mapper
-public interface BehaviorMapper extends BaseMapper<Behavior> {
+public interface BehaviorLiquiMapper extends BaseMapper<Behavior> {
 
-	List<BehaviorOrCaseeVO> getBehaviorByProjectId(Integer projectId);
-
-	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, @Param("subjectId") Integer subjectId);
-
-	BehaviorOrProjectOrCasee queryById(Integer behaviorId);
-
-	List<Behavior> selectBySubjectId(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("subjectId") Integer subjectId);
 }

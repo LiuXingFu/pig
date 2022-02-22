@@ -21,12 +21,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.BehaviorLiquiDetail;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
+import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
 import com.pig4cloud.pig.casee.service.BehaviorService;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +50,8 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+	@Autowired
+	BehaviorLiquiService behaviorLiquiService;
 
 	/**
 	 * 根据主体id分页查询行为数据
@@ -65,5 +72,22 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	@Override
 	public BehaviorOrProjectOrCasee queryById(Integer behaviorId) {
 		return this.baseMapper.queryById(behaviorId);
+	}
+
+	@Override
+	public Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO){
+		Integer save = 0;
+		if(behaviorSaveDTO.getLimitType()==102){
+			BehaviorLiqui behaviorLiqui = new BehaviorLiqui();
+			BeanCopyUtil.copyBean(behaviorSaveDTO,behaviorLiqui);
+			BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+			BeanCopyUtil.copyBean(behaviorSaveDTO,behaviorLiquiDetail);
+			behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+			save = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
+		}else {
+			Behavior behavior = new Behavior();
+			save = this.baseMapper.insert(behavior);
+		}
+		return save;
 	}
 }

@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.Behavior;
@@ -131,5 +132,18 @@ public class BehaviorController {
 	public R queryById(@PathVariable Integer behaviorId) {
 		return R.ok(this.behaviorService.queryById(behaviorId));
 	}
+
+	/**
+	 * 新增行为表
+	 * @param behaviorSaveDTO 行为表
+	 * @return R
+	 */
+	@ApiOperation(value = "新增行为表", notes = "新增行为表")
+	@SysLog("新增行为表" )
+	@PostMapping("/saveBehavior")
+	public R saveBehavior(@RequestBody BehaviorSaveDTO behaviorSaveDTO) {
+		return R.ok(behaviorService.saveBehavior(behaviorSaveDTO));
+	}
+
 
 }

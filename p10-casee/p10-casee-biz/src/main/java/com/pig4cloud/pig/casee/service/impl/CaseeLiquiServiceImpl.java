@@ -38,6 +38,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
+import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -301,6 +302,11 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO){
 		return this.baseMapper.selectCaseeSubject(caseeSubjectDTO);
+	}
+
+	@Override
+	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId){
+		return this.baseMapper.selectAssetsBehavior(caseeId);
 	}
 
 }
