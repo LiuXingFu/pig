@@ -20,7 +20,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
+import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
+import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX;
@@ -35,11 +39,14 @@ import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXSZ.LiQuiZXSZ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXZH.LiQuiZXZH;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
 import com.pig4cloud.pig.casee.service.TargetService;
+import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.KeyValue;
+import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
@@ -64,6 +71,10 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	private SecurityUtilsService securityUtilsService;
 	@Autowired
 	JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	RemoteOutlesTemplateReService remoteOutlesTemplateReService;
+	@Autowired
+	TaskNodeService taskNodeService;
 
 	@Override
 	public IPage<TargetPageVO> queryPageList(Page page, TargetPageDTO targetPageDTO) {
@@ -125,51 +136,56 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	}
 
 	/**
-	 * 根据添加程序DTO添加相应程序
+	 * 根据程序DTO添加相应程序与相应任务
+	 *
 	 * @param targetAddDTO
 	 * @return
 	 * @throws Exception
 	 */
 	@Override
-	public TargetAddDTO saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception {
-		setTargetAddDTO(targetAddDTO);
+	@Transactional
+	public int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception {
 
 		this.save(targetAddDTO);
 
-		return targetAddDTO;
+		// 查询
+		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(targetAddDTO.getProcedureNature(), securityUtilsService.getCacheUser().getOutlesId(), SecurityConstants.FROM);
+		//根据案件类型以及当前网点id查询该网点是否配置了对应模板
+		if (taskNodeTemplate.getData() == null) {
+			//如果当前受托网点没有配置模板直接返回
+			throw new RuntimeException("当前网点没有配置模板！");
+		}
+		//添加任务数据
+		configurationNodeTemplate(targetAddDTO, taskNodeTemplate.getData().getTemplateId());
+
+		return 1;
 	}
 
 	/**
-	 * 根据程序DTO集合，添加相应集合程序
-	 * @param targetAddDTOList
-	 * @return
-	 * @throws Exception
+	 * 根据添加程序DTO添加相应任务
+	 * @param targetAddDTO
+	 * @param templateId
 	 */
-	@Override
-	@Transactional
-	public Boolean saveTargetAddDTO(List<TargetAddDTO> targetAddDTOList) throws Exception {
+	public void configurationNodeTemplate(TargetAddDTO targetAddDTO, Integer templateId) {
+		TaskNodeTemplateDTO taskNodeTemplateDTO = new TaskNodeTemplateDTO();
+		taskNodeTemplateDTO.setCaseeId(targetAddDTO.getCaseeId());
+		taskNodeTemplateDTO.setInsId(securityUtilsService.getCacheUser().getInsId());
+		taskNodeTemplateDTO.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
+		taskNodeTemplateDTO.setTemplateId(templateId);
 
-		List<Target> target = new ArrayList<>();
+		String businessData = targetAddDTO.getBusinessData();
 
-		if(Objects.nonNull(targetAddDTOList)) {
-
-			targetAddDTOList.forEach(((targetAddDTO) -> {
-				try {
-					setTargetAddDTO(targetAddDTO);
-					target.add(targetAddDTO);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}));
-		} else {
-			throw new RuntimeException("程序集合参数异常");
+		if (businessData != null) {
+			net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(businessData);
+			//生成任务
+			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
 		}
-
-		return this.saveBatch(target);
 	}
 
 	/**
 	 * 根据案件类型分页查询立案未送达
+	 *
 	 * @param page
 	 * @param targetCaseeProjectPageDTO
 	 * @return
@@ -181,6 +197,7 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 
 	/**
 	 * 根据性质类型，将实体转换成json
+	 *
 	 * @param targetAddDTO
 	 * @throws Exception
 	 */

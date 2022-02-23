@@ -57,15 +57,7 @@ public interface TargetService extends IService<Target> {
 	 * @return
 	 * @throws Exception
 	 */
-	TargetAddDTO saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception ;
-
-	/**
-	 * 根据程序DTO集合，添加相应集合程序
-	 * @param targetAddDTOList
-	 * @return
-	 * @throws Exception
-	 */
-	Boolean saveTargetAddDTO(List<TargetAddDTO> targetAddDTOList) throws Exception ;
+	int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception;
 
 	/**
 	 * 根据案件类型分页查询立案未送达
