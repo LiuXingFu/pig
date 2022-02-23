@@ -71,4 +71,18 @@
 		AND p10_behavior.behavior_id = #{behaviorId}
 	</select>
 
+	<select id="selectBySubjectId" resultType="com.pig4cloud.pig.casee.entity.Behavior">
+		select * from p10_behavior
+		where p10_behavior.del_flag = 0
+		<if test="projectId!=null and projectId!=''">
+			and project_id = #{projectId}
+		</if>
+		<if test="caseeId!=null and caseeId!=''">
+			and casee_id = #{caseeId}
+		</if>
+		<if test="subjectId!=null and subjectId!=''">
+			and subject_id = #{subjectId}
+		</if>
+	</select>
+
 </mapper>

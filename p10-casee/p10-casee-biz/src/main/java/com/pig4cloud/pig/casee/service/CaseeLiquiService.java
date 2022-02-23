@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
+import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
 
 import java.util.List;
 
@@ -109,5 +110,7 @@ public interface CaseeLiquiService extends IService<Casee> {
 	CaseeLiquiDetailsVO queryByCaseeId(Integer caseeId);
 
 	List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO);
+
+	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId);
 
 }

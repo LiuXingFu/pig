@@ -163,4 +163,15 @@ public class CaseeLiquiController {
 			return R.ok(caseeLiquiService.queryByIdList(caseeByProjectIdListDTO.getProjectId(),null));
 		}
 	}
+
+	/**
+	 * 查询债务人信息及财产和行为集合
+	 * @param caseeId
+	 * @return
+	 */
+	@ApiOperation(value = "查询债务人信息及财产和行为集合", notes = "查询债务人信息及财产和行为集合")
+	@GetMapping("/queryAssetsBehavior" )
+	public R queryAssetsBehavior(Integer caseeId) {
+		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId));
+	}
 }

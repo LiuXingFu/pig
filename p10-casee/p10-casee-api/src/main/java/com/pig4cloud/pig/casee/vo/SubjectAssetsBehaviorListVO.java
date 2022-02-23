@@ -15,28 +15,51 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.util.List;
 
 /**
- * 行为表
+ * 债务人信息及财产、行为集合
  *
- * @author yuanduo
- * @date 2022-02-14 15:51:27
+ * @author yy
+ * @date 2021-09-17 16:55:57
  */
-public interface BehaviorService extends IService<Behavior> {
+@Data
+public class SubjectAssetsBehaviorListVO {
 
-	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId);
+	/**
+	 * 主体id
+	 */
+	@ApiModelProperty(value = "主体id")
+	private Integer subjectId;
 
-	BehaviorOrProjectOrCasee queryById(Integer behaviorId);
+	/**
+	 * 名称
+	 */
+	@ApiModelProperty(value = "名称")
+	private String name;
 
-	Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO);
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value = "案件id")
+	private Integer caseeId;
+
+	/**
+	 *	财产集合
+	 */
+	@ApiModelProperty(value = "财产集合")
+	List<AssetsPageVO> assetsList;
+
+	/**
+	 *	行为集合
+	 */
+	@ApiModelProperty(value = "行为集合")
+	List<Behavior> behaviorList;
 
 }

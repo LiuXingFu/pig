@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -34,23 +34,7 @@ import java.time.LocalDateTime;
  * @date 2022-02-14 15:51:27
  */
 @Data
-@TableName("p10_behavior")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "行为表")
-public class Behavior extends BaseEntity {
-
-    /**
-     * 行为表id
-     */
-    @TableId
-    @ApiModelProperty(value="行为表id")
-    private Integer behaviorId;
-
-    /**
-     * 删除标识（0-正常,1-删除）
-     */
-    @ApiModelProperty(value="删除标识（0-正常,1-删除）")
-    private String delFlag;
+public class BehaviorSaveDTO{
 
     /**
      * 项目id
@@ -71,12 +55,6 @@ public class Behavior extends BaseEntity {
     private Integer caseeId;
 
     /**
-     * 程序id
-     */
-    @ApiModelProperty(value="程序id")
-    private Integer targetId;
-
-    /**
      * 行为类型(100-行为限制 200-行为违法)
      */
     @ApiModelProperty(value="行为类型(100-行为限制 200-行为违法)")
@@ -94,18 +72,6 @@ public class Behavior extends BaseEntity {
     @ApiModelProperty(value="限制类型（101-限制高消费 102-纳入失信名单 103-限制出境 201-伪造证据、暴力、威胁等方法妨碍法院强制执行 202-虚假诉讼、虚假仲裁、隐匿、转移财产等规避执行 203-涉及刑事犯罪）")
     private Integer limitType;
 
-    /**
-     * 行为详情
-     */
-    @ApiModelProperty(value="行为详情")
-    private String behaviorDetail;
-
-    /**
-     * 行为状态（1-正常 2-撤销）
-     */
-    @ApiModelProperty(value="行为状态（1-正常 2-撤销）")
-    private Integer behaviorStatus;
-
 	/**
 	 * 附件
 	 */
@@ -117,6 +83,12 @@ public class Behavior extends BaseEntity {
      */
     @ApiModelProperty(value="备注")
     private String remark;
+
+	/**
+	 * 限制期限
+	 */
+	@ApiModelProperty(value="限制期限")
+	private Integer restrictedPeriod;
 
 
 }

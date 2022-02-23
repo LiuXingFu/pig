@@ -17,13 +17,9 @@
 
 package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
+import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 
 /**
  * 行为表
@@ -31,12 +27,7 @@ import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
  * @author yuanduo
  * @date 2022-02-14 15:51:27
  */
-public interface BehaviorService extends IService<Behavior> {
+public interface BehaviorLiquiService extends IService<Behavior> {
 
-	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId);
-
-	BehaviorOrProjectOrCasee queryById(Integer behaviorId);
-
-	Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO);
-
+	Integer saveBehaviorLiqui(BehaviorLiqui behaviorLiqui);
 }

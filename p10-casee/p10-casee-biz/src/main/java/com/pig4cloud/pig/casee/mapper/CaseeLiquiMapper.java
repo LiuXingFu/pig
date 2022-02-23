@@ -56,4 +56,6 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	List<Subject> selectCaseeSubject(@Param("query")CaseeSubjectDTO caseeSubjectDTO);
 
+	List<SubjectAssetsBehaviorListVO> selectAssetsBehavior(@Param("caseeId") Integer caseeId);
+
 }
