@@ -102,7 +102,7 @@ public class TargetController {
 	 */
     @ApiOperation(value = "根据程序DTO添加相应程序与相应任务", notes = "根据程序DTO添加相应程序与相应任务")
     @SysLog("根据程序DTO添加相应程序与相应任务" )
-    @PostMapping
+    @PostMapping("/saveTargetAddDTO")
 //    @PreAuthorize("@pms.hasPermission('casee_target_add')" )
     public R saveTargetAddDTO(@RequestBody TargetAddDTO targetAddDTO) throws Exception  {
         return R.ok(targetService.saveTargetAddDTO(targetAddDTO));

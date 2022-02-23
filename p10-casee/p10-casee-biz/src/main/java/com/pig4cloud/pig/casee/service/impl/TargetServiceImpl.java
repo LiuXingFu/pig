@@ -162,7 +162,7 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	}
 
 	/**
-	 * 根据相应
+	 * 根据添加程序DTO添加相应任务
 	 * @param targetAddDTO
 	 * @param templateId
 	 */
