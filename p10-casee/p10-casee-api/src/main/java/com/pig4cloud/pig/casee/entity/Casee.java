@@ -154,5 +154,11 @@ public class Casee extends BaseEntity {
     @ApiModelProperty(value="案件明细")
     private String caseeDetail;
 
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
+
 
 }
