@@ -52,27 +52,27 @@ public class OutlesTemplateReServiceImpl extends ServiceImpl<OutlesTemplateReMap
 	@Transactional
 	public boolean configureOutlesTemplate(OutlesTemplateReDTO outlesTemplateReDTO) {
 
-		// 数据库数据全部清空后需要修改
+//		// 数据库数据全部清空后需要修改
+//
+//		//修改用户网点表权限，将新的网点负责人权限改为管理，旧网点负责人改为普通
+//
+//		//1.根据网点加管理权限查询网点负责人集合
+//		List<UserOutlesStaffRe> list = userOutlesStaffReService.list(new LambdaQueryWrapper<UserOutlesStaffRe>()
+//				.eq(UserOutlesStaffRe::getOutlesId, outlesTemplateReDTO.getOutlesId()).eq(UserOutlesStaffRe::getRoleType, 1));
+//
+//		//2.将旧网点负责人权限修改为普通
+//
+//		for (UserOutlesStaffRe userOutlesStaffRe : list) {
+//			this.baseMapper.updateByOutlesOrRoleType(userOutlesStaffRe, null, 0);
+//		}
+//
+//		//3.将新网点负责人权限修改为管理
+//		UserOutlesStaffRe userOutlesStaffRe = userOutlesStaffReService.getOne(new LambdaQueryWrapper<UserOutlesStaffRe>()
+//				.eq(UserOutlesStaffRe::getOutlesId, outlesTemplateReDTO.getOutlesId()).eq(UserOutlesStaffRe::getUserId, outlesTemplateReDTO.getUserId()));
+//
+//		this.baseMapper.updateByOutlesOrRoleType(userOutlesStaffRe, outlesTemplateReDTO.getUserId(),1);
 
-		//修改用户网点表权限，将新的网点负责人权限改为管理，旧网点负责人改为普通
-
-		//1.根据网点加管理权限查询网点负责人集合
-		List<UserOutlesStaffRe> list = userOutlesStaffReService.list(new LambdaQueryWrapper<UserOutlesStaffRe>()
-				.eq(UserOutlesStaffRe::getOutlesId, outlesTemplateReDTO.getOutlesId()).eq(UserOutlesStaffRe::getRoleType, 1));
-
-		//2.将旧网点负责人权限修改为普通
-
-		for (UserOutlesStaffRe userOutlesStaffRe : list) {
-			this.baseMapper.updateByOutlesOrRoleType(userOutlesStaffRe, null, 0);
-		}
-
-		//3.将新网点负责人权限修改为管理
-		UserOutlesStaffRe userOutlesStaffRe = userOutlesStaffReService.getOne(new LambdaQueryWrapper<UserOutlesStaffRe>()
-				.eq(UserOutlesStaffRe::getOutlesId, outlesTemplateReDTO.getOutlesId()).eq(UserOutlesStaffRe::getUserId, outlesTemplateReDTO.getUserId()));
-
-		this.baseMapper.updateByOutlesOrRoleType(userOutlesStaffRe, outlesTemplateReDTO.getUserId(),1);
-
-		//修改网点简称与负责人
+		//修改网点简称
 		Outles outles=new Outles();
 		outles.setOutlesId(outlesTemplateReDTO.getOutlesId());
 		outles.setAlias(outlesTemplateReDTO.getAlias());
