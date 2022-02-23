@@ -79,31 +79,34 @@ public class TargetController {
     }
 
 	/**
-	 * 根据程序DTO添加相应程序
+	 * 根据程序DTO添加相应程序与相应任务
+	 *
+	 * @param target
+	 * @return
+	 * @throws Exception
+	 */
+	@ApiOperation(value = "根据程序DTO添加相应程序与相应任务", notes = "根据程序DTO添加相应程序与相应任务")
+	@SysLog("根据程序DTO添加相应程序与相应任务" )
+	@PostMapping
+//    @PreAuthorize("@pms.hasPermission('casee_target_add')" )
+	public R save(@RequestBody Target target) {
+		return R.ok(targetService.save(target));
+	}
+
+	/**
+	 * 根据程序DTO添加相应程序与相应任务
+	 *
 	 * @param targetAddDTO
 	 * @return
 	 * @throws Exception
 	 */
-    @ApiOperation(value = "根据添加程序DTO添加相应程序", notes = "根据添加程序DTO添加相应程序")
-    @SysLog("根据添加程序DTO添加相应程序" )
+    @ApiOperation(value = "根据程序DTO添加相应程序与相应任务", notes = "根据程序DTO添加相应程序与相应任务")
+    @SysLog("根据程序DTO添加相应程序与相应任务" )
     @PostMapping
 //    @PreAuthorize("@pms.hasPermission('casee_target_add')" )
-    public R save(@RequestBody TargetAddDTO targetAddDTO) throws Exception  {
+    public R saveTargetAddDTO(@RequestBody TargetAddDTO targetAddDTO) throws Exception  {
         return R.ok(targetService.saveTargetAddDTO(targetAddDTO));
     }
-
-	/**
-	 * 根据程序DTO集合，添加相应集合程序
-	 * @param targetAddDTOList
-	 * @return
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "根据添加程序DTO添加相应程序", notes = "根据添加程序DTO添加相应程序")
-	@SysLog("根据添加程序DTO添加相应程序" )
-	@PostMapping("/saveList")
-	public R saveList(@RequestBody List<TargetAddDTO> targetAddDTOList) throws Exception {
-    	return R.ok(targetService.saveTargetAddDTO(targetAddDTOList));
-	}
 
     /**
      * 修改程序表

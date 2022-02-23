@@ -124,23 +124,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectStatus.setChangeTime(caseeLiquiAddDTO.getStartTime());
 		projectStatusService.save(projectStatus);
 
-//		// 查询
-//		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(caseeLiquiAddDTO.getCaseeType(),project.getOutlesId(), SecurityConstants.FROM);
-//		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
-//		if (taskNodeTemplate.getData()==null){
-//			//如果当前受托网点没有配置模板直接返回
-//			return -1;
-//		}
-//		//增加程序
-//		TargetAddDTO targetAddDTO = new TargetAddDTO();
-////		targetAddDTO.setCreateInsId(pigUser.getInsId());
-////		targetAddDTO.setCreateOutlesId(pigUser.getOutlesId());
-//		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
-//		targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
-//
-//		TargetAddDTO addDTO = targetService.saveTargetAddDTO(targetAddDTO);
-//		//添加任务数据
-//		configurationNodeTemplate(caseeLiqui.getCaseeId(),addDTO,project,taskNodeTemplate.getData().getTemplateId());
 		return caseeLiqui.getCaseeId();
 	}
 
@@ -244,23 +227,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				assetsReList.add(assetsRe);
 			});
 			assetsReService.updateBatchById(assetsReList);
-		}
-	}
-
-	public void configurationNodeTemplate(Integer caseeId, TargetAddDTO targetAddDTO, Project project, Integer templateId) {
-		TaskNodeTemplateDTO taskNodeTemplateDTO = new TaskNodeTemplateDTO();
-		taskNodeTemplateDTO.setCaseeId(caseeId);
-		taskNodeTemplateDTO.setInsId(project.getInsId());
-		taskNodeTemplateDTO.setOutlesId(project.getOutlesId());
-//		taskNodeTemplateDTO.setProjectId(casee.getProjectId());
-		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
-		taskNodeTemplateDTO.setTemplateId(templateId);
-
-		String businessData = targetAddDTO.getBusinessData();
-		if (businessData != null) {
-			JSONObject jsonObject = JSONObject.fromObject(businessData);
-			//生成任务
-			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
 		}
 	}
 

@@ -28,6 +28,4 @@ import lombok.Data;
 @Data
 public class TargetAddDTO extends Target {
 
-
-
 }
