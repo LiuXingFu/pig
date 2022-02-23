@@ -260,6 +260,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Override
 	@Transactional
 	public TaskNodeTemplate queryNodeTemplateAddTaskNode(TaskNodeTemplateDTO taskNodeTemplateDTO, JSONObject jsonObject) {
+		//查询模板数据
 		R<TaskNodeTemplate> result = remoteNodeTemplateService.getById(taskNodeTemplateDTO.getTemplateId(), SecurityConstants.FROM);
 
 		if (result == null || result.getData() == null) {

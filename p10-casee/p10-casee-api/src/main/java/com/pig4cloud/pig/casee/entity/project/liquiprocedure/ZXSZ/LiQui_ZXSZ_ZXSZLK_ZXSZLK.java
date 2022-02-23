@@ -22,7 +22,7 @@ public class LiQui_ZXSZ_ZXSZLK_ZXSZLK extends CommonalityData implements Seriali
 	private Date collectionTime;
 
 	/**
-	 * 款项金额
+	 * 领款金额
 	 */
 	private BigDecimal paymentAmount;
 

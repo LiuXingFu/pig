@@ -27,5 +27,9 @@ import lombok.Data;
  */
 @Data
 public class TargetAddDTO extends Target {
+	/**
+	 * 项目id
+	 */
+	private Integer projectId;
 
 }

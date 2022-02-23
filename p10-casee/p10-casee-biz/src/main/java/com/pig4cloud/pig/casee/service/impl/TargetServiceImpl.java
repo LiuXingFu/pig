@@ -24,19 +24,26 @@ import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.casee.dto.*;
-import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX;
 import com.pig4cloud.pig.casee.entity.project.fundingzxprocedure.FundingZX;
 import com.pig4cloud.pig.casee.entity.project.limitprocedure.Limit;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.LX.LiQui_LX;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SQ.LiQuiSQ;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SQ.LiQui_SQ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSBQ.LiQuiSSBQ;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSBQ.LiQui_SSBQ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQuiSSES;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSQT.LiQuiSSQT;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSQT.LiQui_SSQT;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS.LiQuiSSYS;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS.LiQui_SSYS;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXSZ.LiQuiZXSZ;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXSZ.LiQui_ZXSZ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXZH.LiQuiZXZH;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXZH.LiQui_ZXZH;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
 import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
@@ -173,14 +180,69 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 		taskNodeTemplateDTO.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
 		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
 		taskNodeTemplateDTO.setTemplateId(templateId);
+		taskNodeTemplateDTO.setProjectId(targetAddDTO.getProjectId());
+		net.sf.json.JSONObject jsonObject=null;
+		//根据案件类型创建各各程序实体
+		switch (targetAddDTO.getProcedureNature()){
+			case 1010:
+				LiQui_SQ liQui_sq=new LiQui_SQ();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_sq);
+				break;
+			case 2010:
+				LiQui_SSBQ liQui_ssbq=new LiQui_SSBQ();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_ssbq);
+				break;
+			case 2020:
+				LiQui_SSYS liQui_ssys=new LiQui_SSYS();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_ssys);
+				break;
+			case 2021:
+				LiQui_SSES liQui_sses=new LiQui_SSES();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_sses);
+				break;
+			case 2030:
+				LiQui_SSQT liQui_ssqt=new LiQui_SSQT();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_ssqt);
+				break;
+			case 3010:
+				LiQui_ZXSZ liQui_zxsz=new LiQui_ZXSZ();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_zxsz);
+				break;
+			case 3031:
+				LiQui_ZXZH liQui_zxzh=new LiQui_ZXZH();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_zxzh);
+				break;
+			case 4040:
+				EntityZX entityZX=new EntityZX();
+				jsonObject= net.sf.json.JSONObject.fromObject(entityZX);
+				break;
+			case 4041:
+				FundingZX fundingZX=new FundingZX();
+				jsonObject= net.sf.json.JSONObject.fromObject(fundingZX);
+				break;
+			case 5050:
+				Limit limit=new Limit();
+				jsonObject= net.sf.json.JSONObject.fromObject(limit);
+				break;
+			case 5051:
+				BeIllegal beIllegal=new BeIllegal();
+				jsonObject= net.sf.json.JSONObject.fromObject(beIllegal);
+				break;
+			case 6060:
 
-		String businessData = targetAddDTO.getBusinessData();
-
-		if (businessData != null) {
-			net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(businessData);
-			//生成任务
-			taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
+				break;
+			case 7070:
+				LiQui_LX liQui_lx=new LiQui_LX();
+				jsonObject= net.sf.json.JSONObject.fromObject(liQui_lx);
+				break;
 		}
+
+		//生成任务
+		taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
+		//添加默认程序数据（表单id、节点顺序、节点名称等）
+		targetAddDTO.setBusinessData(jsonObject.toString());
+		this.baseMapper.updateById(targetAddDTO);
+
 	}
 
 	/**
