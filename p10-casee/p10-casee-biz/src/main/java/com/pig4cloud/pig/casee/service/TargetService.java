@@ -57,7 +57,7 @@ public interface TargetService extends IService<Target> {
 	 * @return
 	 * @throws Exception
 	 */
-	int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception ;
+	int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception;
 
 	/**
 	 * 根据案件类型分页查询立案未送达
