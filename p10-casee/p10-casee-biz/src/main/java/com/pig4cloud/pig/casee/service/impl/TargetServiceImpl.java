@@ -150,10 +150,10 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 
 		// 查询
 		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(targetAddDTO.getProcedureNature(), securityUtilsService.getCacheUser().getOutlesId(), SecurityConstants.FROM);
-		//根据案件类型以及项目受托网点id查询该网点是否配置了对应模板
+		//根据案件类型以及当前网点id查询该网点是否配置了对应模板
 		if (taskNodeTemplate.getData() == null) {
 			//如果当前受托网点没有配置模板直接返回
-			return -1;
+			throw new RuntimeException("当前网点没有配置模板！");
 		}
 		//添加任务数据
 		configurationNodeTemplate(targetAddDTO, taskNodeTemplate.getData().getTemplateId());
