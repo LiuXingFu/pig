@@ -94,5 +94,11 @@ public class CaseeLiquiAddDTO {
 	@ApiModelProperty(value = "债务人集合")
 	private List<Integer> subjectIdList;
 
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
+
 
 }
