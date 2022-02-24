@@ -145,5 +145,17 @@ public class BehaviorController {
 		return R.ok(behaviorService.saveBehavior(behaviorSaveDTO));
 	}
 
+	/**
+	 * 分页查询案件行为
+	 * @param page 分页对象
+	 * @param caseeId 案件id
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询案件行为", notes = "分页查询案件行为")
+	@GetMapping("/queryPageByCaseeId" )
+	public R queryPageByCaseeId(Page page, Integer caseeId) {
+		return R.ok(behaviorService.queryPageByCaseeId(page,caseeId));
+	}
+
 
 }

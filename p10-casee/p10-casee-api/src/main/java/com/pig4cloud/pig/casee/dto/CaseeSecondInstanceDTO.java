@@ -1,10 +1,19 @@
 package com.pig4cloud.pig.casee.dto;
 
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class CaseeLawsuitsDTO extends CaseeLiquiAddDTO {
+public class CaseeSecondInstanceDTO extends CaseeLiquiAddDTO {
+
+	/**
+	 * 父案件id
+	 */
+	@ApiModelProperty(value = "父案件id")
+	private Integer parentId;
 
 	/**
 	 * 类别（0-一审 1-二审 2-首执 3- 执恢）
@@ -17,4 +26,10 @@ public class CaseeLawsuitsDTO extends CaseeLiquiAddDTO {
 	 */
 	@ApiModelProperty(value = "律师名称")
 	private String lawyerName;
+
+	/**
+	 * 主体集合
+	 */
+	@ApiModelProperty(value = "主体集合")
+	private List<Subject> subjectList;
 }

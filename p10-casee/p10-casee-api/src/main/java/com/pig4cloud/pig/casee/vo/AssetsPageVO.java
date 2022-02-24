@@ -45,4 +45,25 @@ public class AssetsPageVO extends Assets {
 	 */
 	@ApiModelProperty(value = "抵押权人")
 	private Integer mortgagee;
+
+	/**
+	 * 省
+	 */
+	@ApiModelProperty(value = "省")
+	private String province;
+	/**
+	 * 市
+	 */
+	@ApiModelProperty(value = "市")
+	private String city;
+	/**
+	 * 区
+	 */
+	@ApiModelProperty(value = "区")
+	private String area;
+	/**
+	 * 信息地址
+	 */
+	@ApiModelProperty(value = "信息地址")
+	private String informationAddress;
 }

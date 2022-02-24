@@ -55,11 +55,18 @@ public interface CaseeLiquiService extends IService<Casee> {
 	Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception;
 
 	/**
-	 * 添加诉讼案件
+	 * 添加一审诉讼案件
 	 * @return
 	 * @throws Exception
 	 */
 	Integer addLawsuitsCasee(CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception;
+
+	/**
+	 * 添加二审诉讼案件
+	 * @return
+	 * @throws Exception
+	 */
+	Integer addSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception;
 
 	/**
 	 * 添加首执案件

@@ -128,6 +128,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
+	@Transactional
 	public Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		saveAssetsReService(caseeLiquiAddDTO.getProjectId(),caseeId);
@@ -135,6 +136,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
+	@Transactional
 	public Integer addLawsuitsCasee(CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception{
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeLawsuitsDTO,caseeLiquiAddDTO);
@@ -150,6 +152,23 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
+	@Transactional
+	public Integer addSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
+		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
+		BeanCopyUtil.copyBean(caseeSecondInstanceDTO,caseeLiquiAddDTO);
+		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
+		// 保存案件代理律师
+		if (Objects.nonNull(caseeSecondInstanceDTO.getLawyerName())) {
+			CaseeLawyerRe caseeLawyerRe = new CaseeLawyerRe();
+			caseeLawyerRe.setActualName(caseeSecondInstanceDTO.getLawyerName());
+			caseeLawyerRe.setCaseeId(caseeId);
+			caseeLawyerReService.save(caseeLawyerRe);
+		}
+		return caseeId;
+	}
+
+	@Override
+	@Transactional
 	public Integer addExecutionCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		// 更新案件类别
@@ -183,6 +202,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
+	@Transactional
 	public Integer addReinstatementCasee(CaseeReinstatementDTO caseeReinstatementDTO) throws Exception{
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeReinstatementDTO,caseeLiquiAddDTO);
@@ -196,7 +216,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		return caseeId;
 	}
 
-
+	@Transactional
 	public void saveAssetsReService(Integer projectId,Integer caseeId){
 		// 查询抵押财产，更新财产关联表
 		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();

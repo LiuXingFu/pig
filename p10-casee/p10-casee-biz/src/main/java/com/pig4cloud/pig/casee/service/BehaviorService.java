@@ -39,4 +39,6 @@ public interface BehaviorService extends IService<Behavior> {
 
 	Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO);
 
+	IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId);
+
 }

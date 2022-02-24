@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.api.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import lombok.Data;
 
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.List;
  * @date 2021-09-17 16:55:57
  */
 @Data
-public class SubjectGetByIdVO{
+public class SubjectGetByIdVO extends Subject {
 
 	/**
 	 * 主体地址信息

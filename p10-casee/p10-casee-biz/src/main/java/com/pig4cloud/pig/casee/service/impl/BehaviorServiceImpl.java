@@ -90,4 +90,9 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 		}
 		return save;
 	}
+
+	@Override
+	public IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId){
+		return this.baseMapper.queryPageByCaseeId(page,caseeId);
+	}
 }

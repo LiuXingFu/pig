@@ -64,6 +64,22 @@
 	</resultMap>
 
 	<resultMap id="SubjectGetByIdVO" type="com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO">
+		<id property="subjectId" column="subject_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="unifiedIdentity" column="unified_identity"/>
+		<result property="natureType" column="nature_type"/>
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="legalPerson" column="legal_person"/>
+		<result property="email" column="email"/>
+		<result property="userId" column="user_id"/>
+		<result property="remark" column="remark"/>
+		<result property="isAuthentication" column="is_authentication"/>
+		<result property="employer" column="employer"></result>
 		<collection property="addressList" ofType="com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO"
 					select="com.pig4cloud.pig.admin.mapper.AddressMapper.getByAddressList" column="subject_id">
 		</collection>

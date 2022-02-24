@@ -85,4 +85,12 @@
 		</if>
 	</select>
 
+	<select id="queryPageByCaseeId" resultType="com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO">
+		select p10_behavior.*,p10_subject.name as subjectPersons from p10_behavior
+		left join p10_subject on p10_subject.subject_id = p10_behavior.subject_id
+		where p10_behavior.del_flag = 0
+		and p10_behavior.casee_id = #{caseeId}
+		ORDER BY p10_behavior.subject_id,p10_behavior.behavior_date,p10_behavior.type,p10_behavior.limit_type desc
+	</select>
+
 </mapper>
