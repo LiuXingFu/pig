@@ -151,17 +151,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			caseeLawyerRe.setCaseeId(caseeId);
 			caseeLawyerReService.save(caseeLawyerRe);
 		}
-		// 更新案件类别
-		CaseeLiqui caseeLiqui = new CaseeLiqui();
-		caseeLiqui.setCaseeId(caseeId);
-		if(Objects.isNull(caseeLawsuitsDTO.getParentId())){
-			// 20201=一审
-			caseeLiqui.setCategory(20201);
-		}else{
-			// 20211=二审
-			caseeLiqui.setCategory(20211);
-		}
-		this.baseMapper.updateById(caseeLiqui);
 		return caseeId;
 	}
 
