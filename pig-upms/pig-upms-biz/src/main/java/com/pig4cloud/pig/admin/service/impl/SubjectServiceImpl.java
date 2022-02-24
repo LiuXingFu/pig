@@ -335,4 +335,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	public List<Subject> queryBySubjectIdList(List<Integer> subjectIdList){
 		return this.baseMapper.selectBatchIds(subjectIdList);
 	}
+
+	@Override
+	public IPage<Subject> queryPageByProjectId(Page page, Integer projectId){
+		return this.baseMapper.selectPageByProjectId(page,projectId);
+	}
+
+	@Override
+	public IPage<Subject> queryPageByCaseeId(Page page, Integer caseeId){
+		return this.baseMapper.selectPageByCaseeId(page,caseeId);
+	}
 }
