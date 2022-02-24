@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -225,6 +227,24 @@ public class SubjectController {
 		return R.ok(subjectService.queryBySubjectIdList(subjectIdList));
 	}
 
-//	public R query
+
+	/**
+	 * 分页查询项目或案件债务人列表
+	 * @param page 分页对象
+	 * @param projectId
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
+	@GetMapping("/queryPageByProjectCasee" )
+	public R queryPageByProjectId(Page page, Integer projectId,Integer caseeId) {
+		IPage<Subject> subjectIPage = null;
+		if(Objects.nonNull(projectId)){
+			subjectIPage = subjectService.queryPageByProjectId(page, projectId);
+		}else if(Objects.nonNull(caseeId)){
+			subjectIPage = subjectService.queryPageByCaseeId(page, caseeId);
+		}
+		return R.ok(subjectIPage);
+	}
+
 
 }

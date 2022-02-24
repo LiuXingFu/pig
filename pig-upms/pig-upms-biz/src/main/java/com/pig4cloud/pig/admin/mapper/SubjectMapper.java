@@ -51,4 +51,8 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectVO selectSubjectById(Integer subjectId);
 
+	IPage<Subject> selectPageByProjectId(Page page, @Param("projectId") Integer projectId);
+
+	IPage<Subject> selectPageByCaseeId(Page page, @Param("caseeId") Integer caseeId);
+
 }
