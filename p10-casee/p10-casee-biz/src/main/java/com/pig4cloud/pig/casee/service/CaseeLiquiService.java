@@ -40,7 +40,7 @@ import java.util.List;
 public interface CaseeLiquiService extends IService<Casee> {
 
 	/**
-	 * 添加基本案件
+	 * 添加基本案件(其它案件)
 	 * @param caseeLiquiAddDTO
 	 * @return
 	 * @throws Exception
