@@ -17,10 +17,6 @@ public class LIQUI_ZXSZ_ZXSZZJ_ZXSZZJ_NODEHandler extends TaskNodeHandler {
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//执行案件终结接口，待创建
 
-		//1.将拼接任务key存入dao
-		//2.将任务数据存入dao
-		//3.将程序id存入dao
-		AuditTargetDTO auditTargetDTO = taskNodeService.getAuditTargetDTO(taskNode);
-		taskNodeService.updateBusinessData(auditTargetDTO);
+
 	}
 }
