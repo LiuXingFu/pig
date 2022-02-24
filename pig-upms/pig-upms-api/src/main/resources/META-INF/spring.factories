@@ -25,4 +25,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.pig4cloud.pig.admin.api.feign.fallback.RemoteUserInstitutionStaffServiceFallbackImpl,\
   com.pig4cloud.pig.admin.api.feign.factory.RemoteUserInstitutionStaffServiceFactory,\
   com.pig4cloud.pig.admin.api.feign.fallback.RemoteSysRoleServiceFallbackImpl,\
-  com.pig4cloud.pig.admin.api.feign.factory.RemoteSysRoleServiceFallbackFactory
+  com.pig4cloud.pig.admin.api.feign.factory.RemoteSysRoleServiceFallbackFactory,\
+    com.pig4cloud.pig.admin.api.feign.fallback.RemoteInsOutlesUserServiceFallbackImpl,\
+  com.pig4cloud.pig.admin.api.feign.factory.RemoteInsOutlesUserServiceFallbackFactory

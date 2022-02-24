@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesUserAddOutlesListDTO;
@@ -143,6 +144,19 @@ public class InsOutlesUserController {
 	@GetMapping("/queryUserList")
 	public R queryUserList(Integer type, Integer insId, Integer outlesId) {
 		return R.ok(insOutlesUserService.queryUserList(type, insId, outlesId));
+	}
+
+	/**
+	 * 通过网点id和类型查询网点负责人
+	 *
+	 * @param type
+	 * @param outlesId
+	 * @return
+	 */
+	@ApiOperation(value = "通过网点id和类型查询网点负责人", notes = "通过网点id和类型查询网点负责人")
+	@GetMapping("/getOutlesPrincipal")
+	public R getOutlesPrincipal(Integer type, Integer outlesId) {
+		return R.ok(insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getType,type).eq(InsOutlesUser::getOutlesId,outlesId)));
 	}
 
 

@@ -21,7 +21,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
+import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
+import com.pig4cloud.pig.admin.api.feign.RemoteInsOutlesUserService;
 import com.pig4cloud.pig.admin.api.feign.RemoteNodeTemplateService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesService;
@@ -74,7 +76,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Autowired
 	private CaseePerformanceService caseePerformanceService;
 	@Autowired
-	private RemoteOutlesService remoteOutlesService;
+	private RemoteInsOutlesUserService remoteInsOutlesUserService;
 
 	@Autowired
 	public NodeTaskHandlerRegister nodeHandlerRegister;
@@ -168,7 +170,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				taskFlowKey = caseeOrTargetTaskFlowDTO.getTaskKey();
 				actReProcdefId = caseeOrTargetTaskFlowDTO.getActReProcdefId();
 				if (taskName.equals("案件或标的审核人")) {
-					list.add(SecurityUtils.getUser().getId());
 					caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
 				}
 				variables.put(taskFlowName, caseeOrTargetTaskFlowDTO);
@@ -540,7 +541,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		this.executionTask(taskFlowDTO, "审核人", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 
 		//设置审核人id为委托人id
-		taskFlowDTO.setAuditorId(taskFlowDTO.getCommissionUserId());
+		taskFlowDTO.getAuditorId().add(taskFlowDTO.getCommissionUserId());
 
 		//完成正在处理流程
 		this.executionTask(taskFlowDTO, "正在处理", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
@@ -742,10 +743,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//如果不委托办理任务则设置审核人id
 		if (taskFlowDTO.getNeedCommission() == 0) {
-			//查询当前登录用户网点信息
-			R<OutlesVO> outlesVO = remoteOutlesService.getById(taskFlowDTO.getOutlesId(), SecurityConstants.FROM);
-			//设置审核人id默认为网点负责人id
-//			taskFlowDTO.setAuditorId(outlesVO.getData().getUserId());
+			//查询当前网点网点负责人
+			R<List<InsOutlesUser>> outlesPrincipal = remoteInsOutlesUserService.getOutlesPrincipal(1, taskFlowDTO.getOutlesId(), SecurityConstants.FROM);
+			for (InsOutlesUser insOutlesUser : outlesPrincipal.getData()) {
+				//设置审核人id默认为网点负责人id
+				taskFlowDTO.getAuditorId().add(insOutlesUser.getUserId());
+			}
 		} else if (taskFlowDTO.getNeedCommission() == 1) {//委托
 			//设置办理人id为委托人id
 			taskFlowDTO.setTransactionId(taskFlowDTO.getCommissionUserId());

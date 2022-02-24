@@ -66,7 +66,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
-	private TaskNodeService taskNodeService;
+	private TargetService targetService;
 	@Autowired
 	private AssetsReService assetsReService;
 	@Autowired
@@ -124,6 +124,11 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectStatus.setChangeTime(caseeLiquiAddDTO.getStartTime());
 		projectStatusService.save(projectStatus);
 
+		//添加任务数据以及程序信息
+		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
+		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
+		targetService.saveTargetAddDTO(targetAddDTO);
 		return caseeLiqui.getCaseeId();
 	}
 

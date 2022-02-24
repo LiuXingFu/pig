@@ -152,11 +152,12 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	@Override
 	@Transactional
 	public int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception {
-
+		targetAddDTO.setCreateOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+		targetAddDTO.setCreateInsId(securityUtilsService.getCacheUser().getInsId());
 		this.save(targetAddDTO);
 
 		// 查询
-		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(targetAddDTO.getProcedureNature(), securityUtilsService.getCacheUser().getOutlesId(), SecurityConstants.FROM);
+		R<TaskNodeTemplate> taskNodeTemplate = remoteOutlesTemplateReService.queryTemplateByTemplateNature(targetAddDTO.getProcedureNature(),targetAddDTO.getCreateOutlesId() , SecurityConstants.FROM);
 		//根据案件类型以及当前网点id查询该网点是否配置了对应模板
 		if (taskNodeTemplate.getData() == null) {
 			//如果当前受托网点没有配置模板直接返回
@@ -181,8 +182,40 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 		taskNodeTemplateDTO.setTargetId(targetAddDTO.getTargetId());
 		taskNodeTemplateDTO.setTemplateId(templateId);
 		taskNodeTemplateDTO.setProjectId(targetAddDTO.getProjectId());
+
+		//根据性质类型，将实体转换成json
+		net.sf.json.JSONObject jsonObject = setTargetAddDTO(targetAddDTO);
+
+		//生成任务
+		taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
+		//添加默认程序数据（表单id、节点顺序、节点名称等）
+		targetAddDTO.setBusinessData(jsonObject.toString());
+		this.baseMapper.updateById(targetAddDTO);
+
+	}
+
+	/**
+	 * 根据案件类型分页查询立案未送达
+	 *
+	 * @param page
+	 * @param targetCaseeProjectPageDTO
+	 * @return
+	 */
+	@Override
+	public IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
+		return this.baseMapper.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 根据性质类型，将实体转换成json
+	 *
+	 * @param targetAddDTO
+	 * @throws Exception
+	 */
+
+	private net.sf.json.JSONObject setTargetAddDTO(TargetAddDTO targetAddDTO) {
 		net.sf.json.JSONObject jsonObject=null;
-		//根据案件类型创建各各程序实体
+
 		switch (targetAddDTO.getProcedureNature()){
 			case 1010:
 				LiQui_SQ liQui_sq=new LiQui_SQ();
@@ -236,85 +269,6 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 				jsonObject= net.sf.json.JSONObject.fromObject(liQui_lx);
 				break;
 		}
-
-		//生成任务
-		taskNodeService.queryNodeTemplateAddTaskNode(taskNodeTemplateDTO, jsonObject);
-		//添加默认程序数据（表单id、节点顺序、节点名称等）
-		targetAddDTO.setBusinessData(jsonObject.toString());
-		this.baseMapper.updateById(targetAddDTO);
-
-	}
-
-	/**
-	 * 根据案件类型分页查询立案未送达
-	 *
-	 * @param page
-	 * @param targetCaseeProjectPageDTO
-	 * @return
-	 */
-	@Override
-	public IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
-		return this.baseMapper.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-	}
-
-	/**
-	 * 根据性质类型，将实体转换成json
-	 *
-	 * @param targetAddDTO
-	 * @throws Exception
-	 */
-
-	private void setTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception {
-		if (Objects.nonNull(targetAddDTO)) {
-			if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10000"))) {
-				targetAddDTO.setTargetName("诉前保全程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiSQ());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10001"))) {
-				targetAddDTO.setTargetName("诉讼保全程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiSSBQ());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10002"))) {
-				targetAddDTO.setTargetName("一审诉讼程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiSSYS());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10003"))) {
-				targetAddDTO.setTargetName("二审诉讼程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiSSES());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10004"))) {
-				targetAddDTO.setTargetName("其它诉讼程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiSSQT());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10005"))) {
-				targetAddDTO.setTargetName("首次执行程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiZXSZ());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("10006"))) {
-				targetAddDTO.setTargetName("执恢程序");
-				String json = JsonUtils.objectToJsonObject(new LiQuiZXZH());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("20002"))) {
-				targetAddDTO.setTargetName("执行实体财产程序");
-				String json = JsonUtils.objectToJsonObject(new EntityZX());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("20003"))) {
-				targetAddDTO.setTargetName("执行资金财产程序");
-				String json = JsonUtils.objectToJsonObject(new FundingZX());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("20004"))) {
-				targetAddDTO.setTargetName("行为限制程序");
-				String json = JsonUtils.objectToJsonObject(new Limit());
-				targetAddDTO.setBusinessData(json);
-			} else if (targetAddDTO.getProcedureNature().equals(Integer.valueOf("20005"))) {
-				targetAddDTO.setTargetName("行为违法程序");
-				String json = JsonUtils.objectToJsonObject(new BeIllegal());
-				targetAddDTO.setBusinessData(json);
-			} else {
-				throw new RuntimeException("程序类型不存在！");
-			}
-		} else {
-			throw new RuntimeException("程序实体参数异常！");
-		}
+		return jsonObject;
 	}
 }

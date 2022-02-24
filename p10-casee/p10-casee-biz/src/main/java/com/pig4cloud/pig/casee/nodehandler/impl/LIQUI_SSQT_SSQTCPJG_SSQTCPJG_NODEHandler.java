@@ -21,11 +21,7 @@ public class LIQUI_SSQT_SSQTCPJG_SSQTCPJG_NODEHandler extends TaskNodeHandler {
 
 		//更改立案录入的诉讼费
 
-		//1.将拼接任务key存入dao
-		//2.将任务数据存入dao
-		//3.将程序id存入dao
-		AuditTargetDTO auditTargetDTO = taskNodeService.getAuditTargetDTO(taskNode);
-		taskNodeService.updateBusinessData(auditTargetDTO);
+
 
 	}
 }

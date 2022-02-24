@@ -18,11 +18,7 @@ public class LIQUI_SQ_SQBQJG_SQBQJG_NODEHandler extends TaskNodeHandler {
 
 		//诉前阶段结案接口为创建----待创建
 
-		//1.将拼接任务key存入dao
-		//2.将任务数据存入dao
-		//3.将程序id存入dao
-		AuditTargetDTO auditTargetDTO = taskNodeService.getAuditTargetDTO(taskNode);
-		taskNodeService.updateBusinessData(auditTargetDTO);
+
 
 	}
 }
