@@ -127,7 +127,7 @@ public class DictController {
 	 */
 	@PutMapping
 	@SysLog("修改字典")
-	@PreAuthorize("@pms.hasPermission('sys_dict_edit')")
+//	@PreAuthorize("@pms.hasPermission('sys_dict_edit')")
 	public R updateById(@Valid @RequestBody SysDict sysDict) {
 		sysDictService.updateDict(sysDict);
 		return R.ok();
