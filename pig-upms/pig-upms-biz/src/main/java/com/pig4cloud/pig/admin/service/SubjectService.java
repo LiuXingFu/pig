@@ -76,8 +76,6 @@ public interface SubjectService extends IService<Subject> {
 
 	IPage<SubjectProjectCaseeVO> queryPageByCaseeId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO);
 
-	IPage<Subject> queryPageByCaseeId(Page page, Integer caseeId);
-
 	int addSubjectOrAddress(AddSubjectOrAddressDTO addSubjectOrAddressDTO);
 
 	SubjectDetailsVO getSubjectDetailBySubjectId(Integer subjectId);
