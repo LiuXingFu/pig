@@ -22,6 +22,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
+import com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO;
 import com.pig4cloud.pig.admin.service.SubjectService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -231,17 +233,17 @@ public class SubjectController {
 	/**
 	 * 分页查询项目或案件债务人列表
 	 * @param page 分页对象
-	 * @param projectId
+	 * @param subjectProjectCaseeDTO
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
 	@GetMapping("/queryPageByProjectCasee" )
-	public R queryPageByProjectId(Page page, Integer projectId,Integer caseeId) {
-		IPage<Subject> subjectIPage = null;
-		if(Objects.nonNull(projectId)){
-			subjectIPage = subjectService.queryPageByProjectId(page, projectId);
-		}else if(Objects.nonNull(caseeId)){
-			subjectIPage = subjectService.queryPageByCaseeId(page, caseeId);
+	public R queryPageByProjectCasee(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO) {
+		IPage<SubjectProjectCaseeVO> subjectIPage = null;
+		if(Objects.nonNull(subjectProjectCaseeDTO.getProjectId())){
+			subjectIPage = subjectService.queryPageByProjectId(page, subjectProjectCaseeDTO);
+		}else if(Objects.nonNull(subjectProjectCaseeDTO.getCaseeId())){
+			subjectIPage = subjectService.queryPageByCaseeId(page, subjectProjectCaseeDTO);
 		}
 		return R.ok(subjectIPage);
 	}

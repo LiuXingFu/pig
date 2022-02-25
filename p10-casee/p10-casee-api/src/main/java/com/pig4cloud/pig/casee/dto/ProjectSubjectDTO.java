@@ -21,8 +21,8 @@ public class ProjectSubjectDTO {
 	private String subjectName;
 
 	/**
-	 * 类型（0-申请人，1-债务人）
+	 * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人）
 	 */
-	@ApiModelProperty(value="类型（0-申请人，1-贷款人，2-担保人）")
+	@ApiModelProperty(value="类型（0-申请人，1-借款人，2-共同借款人，3-担保人）")
 	private List<Integer> typeList;
 }

@@ -22,10 +22,12 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.SubjectDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
+import com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -52,9 +54,9 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectVO selectSubjectById(Integer subjectId);
 
-	IPage<Subject> selectPageByProjectId(Page page, @Param("projectId") Integer projectId);
+	IPage<SubjectProjectCaseeVO> selectPageByProjectId(Page page, @Param("query") SubjectProjectCaseeDTO subjectProjectCaseeDTO);
 
-	IPage<Subject> selectPageByCaseeId(Page page, @Param("caseeId") Integer caseeId);
+	IPage<SubjectProjectCaseeVO> selectPageByCaseeId(Page page, @Param("query") SubjectProjectCaseeDTO subjectProjectCaseeDTO);
 
 	SubjectDetailsVO getSubjectDetailBySubjectId(Integer subjectId);
 

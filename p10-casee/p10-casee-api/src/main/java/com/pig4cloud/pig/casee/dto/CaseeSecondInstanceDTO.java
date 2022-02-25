@@ -26,10 +26,4 @@ public class CaseeSecondInstanceDTO extends CaseeLiquiAddDTO {
 	 */
 	@ApiModelProperty(value = "律师名称")
 	private String lawyerName;
-
-	/**
-	 * 主体集合
-	 */
-	@ApiModelProperty(value = "主体集合")
-	private List<Subject> subjectList;
 }

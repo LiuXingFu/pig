@@ -23,6 +23,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.CaseeSubjectRe;
 import com.pig4cloud.pig.casee.service.CaseeSubjectReService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,8 +78,8 @@ public class CaseeSubjectReController {
 	 */
 	@ApiOperation(value = "通过id查询案件主体关联案件表", notes = "通过id查询案件主体关联案件表")
 	@GetMapping("/getByCaseeId" )
-	public R getByCaseeId(Integer caseeId, Integer type){
-		return R.ok(caseeSubjectReService.getByCaseeId(caseeId, type));
+	public R getByCaseeId(Integer caseeId,@RequestParam(value = "type",required = false) Integer type,@RequestParam(value = "caseePersonnelType",required = false) Integer caseePersonnelType){
+		return R.ok(caseeSubjectReService.getByCaseeId(caseeId, type,caseePersonnelType));
 	}
 
     /**

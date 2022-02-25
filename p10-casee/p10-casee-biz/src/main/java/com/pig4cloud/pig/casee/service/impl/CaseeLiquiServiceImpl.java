@@ -84,21 +84,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		// 保存清收案件
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
 		BeanCopyUtil.copyBean(caseeLiquiAddDTO, caseeLiqui);
-		// 查询被告/被执行人/被上诉人等名称
-		R<List<Subject>> subjectIdList = subjectService.queryBySubjectIdList(caseeLiquiAddDTO.getSubjectIdList(), SecurityConstants.FROM);
-		if (subjectIdList.getData().size() > 0) {
-			String executedName = "";
-			for (Subject subject : subjectIdList.getData()) {
-				if (executedName.equals("")) {
-					executedName = subject.getName();
-				} else {
-					executedName = executedName + "," + subject.getName();
-				}
-			}
-			caseeLiqui.setExecutedName(executedName);
-		}
-		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
-		caseeLiqui.setApplicantName(project.getProposersNames());
 		this.baseMapper.insert(caseeLiqui);
 		// 保存项目案件关联表
 		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
@@ -107,11 +92,22 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectCaseeReLiquiService.save(projectCaseeRe);
 		// 保存案件人员关联
 		List<CaseeSubjectRe> caseeSubjectReList = new ArrayList<>();
-		caseeLiquiAddDTO.getSubjectIdList().stream().forEach(item -> {
+		// 遍历申请人/原告/上诉人/申请执行人等集合
+		caseeLiquiAddDTO.getApplicantList().stream().forEach(item -> {
 			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
 			caseeSubjectRe.setCaseeId(caseeLiqui.getCaseeId());
-			caseeSubjectRe.setSubjectId(item);
-			caseeSubjectRe.setType(1);
+			caseeSubjectRe.setSubjectId(item.getSubjectId());
+			caseeSubjectRe.setType(item.getType());
+			caseeSubjectRe.setCaseePersonnelType(0);
+			caseeSubjectReList.add(caseeSubjectRe);
+		});
+		// 遍历被告/被执行人/被上述人等集合
+		caseeLiquiAddDTO.getExecutedList().stream().forEach(item -> {
+			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+			caseeSubjectRe.setCaseeId(caseeLiqui.getCaseeId());
+			caseeSubjectRe.setSubjectId(item.getSubjectId());
+			caseeSubjectRe.setType(item.getType());
+			caseeSubjectRe.setCaseePersonnelType(1);
 			caseeSubjectReList.add(caseeSubjectRe);
 		});
 		caseeSubjectReService.saveBatch(caseeSubjectReList);

@@ -20,11 +20,10 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
+import com.pig4cloud.pig.admin.service.TaskNodeTemplateService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import com.pig4cloud.pig.admin.service.TaskNodeTemplateService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
-import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "tasknodetemplate", tags = "流程节点模板表管理")
 public class TaskNodeTemplateController {
 
-    private final  TaskNodeTemplateService taskNodeTemplateService;
+    private final TaskNodeTemplateService taskNodeTemplateService;
 
     @Autowired
 	SecurityUtilsService securityUtilsService;

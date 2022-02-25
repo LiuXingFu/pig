@@ -24,6 +24,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.AddSubjectOrAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
+import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.*;
@@ -339,13 +340,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public IPage<Subject> queryPageByProjectId(Page page, Integer projectId){
-		return this.baseMapper.selectPageByProjectId(page,projectId);
+	public IPage<SubjectProjectCaseeVO> queryPageByProjectId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO){
+		return this.baseMapper.selectPageByProjectId(page,subjectProjectCaseeDTO);
 	}
 
 	@Override
-	public IPage<Subject> queryPageByCaseeId(Page page, Integer caseeId){
-		return this.baseMapper.selectPageByCaseeId(page,caseeId);
+	public IPage<SubjectProjectCaseeVO> queryPageByCaseeId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO){
+		return this.baseMapper.selectPageByCaseeId(page,subjectProjectCaseeDTO);
 	}
 
 	/**
