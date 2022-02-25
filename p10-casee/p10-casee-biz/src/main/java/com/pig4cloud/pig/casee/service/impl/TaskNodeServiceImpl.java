@@ -1600,7 +1600,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		//2，得到repositoryService实例
 		RepositoryService repositoryService = processEngine.getRepositoryService();
 		//查询清收任务办理流程部署信息
-		Deployment deployment = repositoryService.createDeploymentQuery().deploymentName("审批任务流程").singleResult();
+		Deployment deployment = repositoryService.createDeploymentQuery().deploymentName("审批流程").singleResult();
 
 		//循环遍历模板内容
 		for (int i = 0; i < taskNodes.size(); i++) {
