@@ -15,62 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.admin.api.vo;
+package com.pig4cloud.pig.admin.service;
 
-import com.pig4cloud.pig.admin.api.dto.AddSubjectOrAddressDTO;
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Institution;
-import lombok.Data;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe;
 
 /**
- * 机构表
+ * 机构主体关联关系
  *
  * @author yuanduo
- * @date 2021-09-02 16:16:06
+ * @date 2022-02-25 00:26:06
  */
-@Data
-public class InstitutionDetailsVO extends Institution {
+public interface InstitutionSubjectReService extends IService<InstitutionSubjectRe> {
 
-	/**
-	 * 地址id
-	 */
-	private Integer addressId;
-	/**
-	 * 省
-	 */
-	private String province;
-	/**
-	 * 市
-	 */
-	private String city;
-	/**
-	 * 区
-	 */
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
-	/**
-	 * 行政区划编号
-	 */
-	private String code;
-
-
-	/**
-	 * 员工集合
-	 */
-	private List<InsOutlesUserListVO> userList;
-
-	/**
-	 * 法院id
-	 */
-	private Integer courtId;
-
-	/**
-	 * 主体
-	 */
-	private SubjectDetailsVO subject;
 }

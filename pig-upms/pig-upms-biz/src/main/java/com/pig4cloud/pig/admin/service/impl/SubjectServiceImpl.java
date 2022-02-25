@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.AddSubjectOrAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
@@ -37,6 +38,7 @@ import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -344,5 +346,39 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public IPage<Subject> queryPageByCaseeId(Page page, Integer caseeId){
 		return this.baseMapper.selectPageByCaseeId(page,caseeId);
+	}
+
+	/**
+	 * 添加主体信息与主体地址
+	 * @param addSubjectOrAddressDTO
+	 * @return
+	 */
+	@Override
+	public int addSubjectOrAddress(AddSubjectOrAddressDTO addSubjectOrAddressDTO) {
+		this.save(addSubjectOrAddressDTO);
+
+		if(Objects.nonNull(addSubjectOrAddressDTO.getInformationAddress()) || Objects.nonNull(addSubjectOrAddressDTO.getCode())) {
+
+			Address address = new Address();
+
+			BeanUtils.copyProperties(addSubjectOrAddressDTO, address);
+
+			address.setUserId(addSubjectOrAddressDTO.getSubjectId());
+			address.setType(1);
+
+			this.addressService.save(address);
+		}
+
+		return addSubjectOrAddressDTO.getSubjectId();
+	}
+
+	@Override
+	public SubjectDetailsVO getSubjectDetailBySubjectId(Integer subjectId) {
+		return this.baseMapper.getSubjectDetailBySubjectId(subjectId);
+	}
+
+	@Override
+	public int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity) {
+		return this.baseMapper.getIsThereASubjectByUnifiedIdentity(unifiedIdentity);
 	}
 }

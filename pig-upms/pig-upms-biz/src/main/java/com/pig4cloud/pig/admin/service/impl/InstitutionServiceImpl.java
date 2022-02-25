@@ -99,6 +99,12 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	@Autowired
 	JurisdictionUtilsService jurisdictionUtilsService;
 
+	@Autowired
+	SubjectService subjectService;
+
+	@Autowired
+	InstitutionSubjectReService institutionSubjectReService;
+
 	/**
 	 * 新增机构
 	 *
@@ -165,7 +171,6 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 					RelationshipAuthenticate relationshipAuthenticate = new RelationshipAuthenticate();
 					relationshipAuthenticate.setAuthenticateId(institution.getInsId());
 					relationshipAuthenticate.setAuthenticateGoalId(institutionDTO.getCourt().getCourtId());
-					relationshipAuthenticate.setAuthenticateGoalType(1100);
 					relationshipAuthenticateService.save(relationshipAuthenticate);
 				} else {
 					throw new Exception("关联法院为空！");
@@ -484,13 +489,14 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	/**
 	 * 查询机构是否有简称
+	 *
 	 * @return
 	 */
 	@Override
 	public boolean getInstitutionAlias() {
 		PigUser pigUser = securityUtilsService.getCacheUser();
 		Institution institution = this.getById(pigUser.getInsId());
-		if(institution.getInsType() == 1100 || institution.getInsType() == 1200){
+		if (institution.getInsType() == 1100 || institution.getInsType() == 1200) {
 			return true;
 		} else {
 			return false;
@@ -499,6 +505,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	/**
 	 * 查询机构名称是否存在
+	 *
 	 * @return
 	 */
 	@Override
@@ -532,31 +539,72 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 
-
-
 	/********************************************************************************************/
 
 	@Override
-	public IPage<InstitutionPageVO> queryPage(Page page, InstitutionPageDTO institutionPageDTO){
-		return this.baseMapper.selectPage(page,institutionPageDTO);
+	public IPage<InstitutionPageVO> queryPage(Page page, InstitutionPageDTO institutionPageDTO) {
+		return this.baseMapper.selectPage(page, institutionPageDTO);
 	}
 
 	@Override
 	@Transactional
-	public int addInstitution(InstitutionAddDTO institutionAddDTO){
+	public int addInstitution(InstitutionAddDTO institutionAddDTO) {
 		LambdaQueryWrapper<Institution> queryWrapper = new LambdaQueryWrapper<>();
-		queryWrapper.eq(Institution::getDelFlag,CommonConstants.STATUS_NORMAL);
-		queryWrapper.eq(Institution::getInsName,institutionAddDTO.getInsName());
+		queryWrapper.eq(Institution::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.eq(Institution::getInsName, institutionAddDTO.getInsName());
 		int save = 0;
 		Institution institution = new Institution();
 
-		BeanUtils.copyProperties(institutionAddDTO,institution);
+		BeanUtils.copyProperties(institutionAddDTO, institution);
 		save = this.baseMapper.insert(institution);
+
+		//如果机构类型为法院，关联法院与机构
+		if (institution.getInsType().equals(Integer.valueOf("1500"))) {
+			if (Objects.nonNull(institutionAddDTO.getCourtId())) {
+				RelationshipAuthenticate relationshipAuthenticate = new RelationshipAuthenticate();
+				relationshipAuthenticate.setAuthenticateId(institution.getInsId());
+				relationshipAuthenticate.setAuthenticateGoalId(institutionAddDTO.getCourtId());
+				relationshipAuthenticateService.save(relationshipAuthenticate);
+			} else {
+				throw new RuntimeException("关联法院为空！");
+			}
+		}
+
+		//如果机构类型为拍辅、清收、律所和银行添加企业信息
+		if (institutionAddDTO.getInsType().equals(Integer.valueOf("1100")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1200")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1300")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1400"))) {
+			SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionAddDTO.getSubject().getUnifiedIdentity());
+			if (Objects.nonNull(subjectVO)) {
+				//主体存在添加机构与主体认证信息
+				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe.setInsId(institution.getInsId());
+				institutionSubjectRe.setInsSubjectReId(subjectVO.getSubjectId());
+				institutionSubjectReService.save(institutionSubjectRe);
+
+				//更新主体认证状态
+				Subject subject = new Subject();
+
+				BeanUtils.copyProperties(subjectVO, subject);
+
+				this.subjectService.updateById(subject);
+
+			} else {
+				//主体不存在创建主体添加机构与主体认证信息
+				int subjectId = this.subjectService.addSubjectOrAddress(institutionAddDTO.getSubject());
+
+				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe.setInsId(institution.getInsId());
+				institutionSubjectRe.setSubjectId(subjectId);
+				institutionSubjectReService.save(institutionSubjectRe);
+
+			}
+		}
+
 		// 判断地址是否为空
-		if(Objects.nonNull(institutionAddDTO.getInformationAddress())){
+		if (Objects.nonNull(institutionAddDTO.getInformationAddress()) || Objects.nonNull(institutionAddDTO.getCode())) {
 			// 添加地址
 			Address address = new Address();
-			BeanUtils.copyProperties(institutionAddDTO,address);
+			BeanUtils.copyProperties(institutionAddDTO, address);
 			address.setDelFlag(CommonConstants.STATUS_NORMAL);
 			// 类型2=机构地址
 			address.setType(2);
@@ -580,15 +628,15 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	@Override
 	@Transactional
-	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO){
+	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO) {
 		int modify = 0;
 		Institution institution = new Institution();
-		BeanUtils.copyProperties(institutionModifyDTO,institution);
+		BeanUtils.copyProperties(institutionModifyDTO, institution);
 		modify = this.baseMapper.updateById(institution);
-		if(Objects.nonNull(institutionModifyDTO.getCode())){
+		if (Objects.nonNull(institutionModifyDTO.getCode())) {
 			// 更新地址
 			Address address = new Address();
-			BeanUtils.copyProperties(institutionModifyDTO,address);
+			BeanUtils.copyProperties(institutionModifyDTO, address);
 			address.setUserId(institution.getInsId());
 			address.setType(2);
 			addressService.saveOrUpdate(address);
@@ -597,29 +645,38 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	@Override
-	public InstitutionDetailsVO queryById(Integer insId){
+	public InstitutionDetailsVO queryById(Integer insId) {
 		InstitutionDetailsVO institutionVO = this.baseMapper.selectDetailsById(insId);
-		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1,insId,0);
+		if (institutionVO.getInsType().equals(Integer.valueOf("1500"))) {
+			RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>().eq(RelationshipAuthenticate::getAuthenticateId, institutionVO.getInsId()));
+			institutionVO.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
+		}
+
+		if (institutionVO.getInsType().equals(Integer.valueOf("1100")) || institutionVO.getInsType().equals(Integer.valueOf("1200")) || institutionVO.getInsType().equals(Integer.valueOf("1300")) || institutionVO.getInsType().equals(Integer.valueOf("1400"))) {
+			InstitutionSubjectRe institutionSubjectRe = this.institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>().eq(InstitutionSubjectRe::getInsId, institutionVO.getInsId()));
+			institutionVO.setSubject(this.subjectService.getSubjectDetailBySubjectId(institutionSubjectRe.getSubjectId()));
+		}
+		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1, insId, 0);
 		institutionVO.setUserList(userList);
 		return institutionVO;
 	}
 
 	@Override
-	public List<Institution> queryByUserIdList(Integer userId){
+	public List<Institution> queryByUserIdList(Integer userId) {
 		return this.baseMapper.selectByUserId(userId);
 	}
 
 	@Override
-	public Institution queryByInsId(Integer insId){
+	public Institution queryByInsId(Integer insId) {
 		return this.baseMapper.selectById(insId);
 	}
 
 	@Override
-	public ReselectInfoVO queryReselectInfo(Integer insId,Integer outlesId){
+	public ReselectInfoVO queryReselectInfo(Integer insId, Integer outlesId) {
 		ReselectInfoVO reselectInfoVO = new ReselectInfoVO();
 		Institution institution = this.baseMapper.selectById(insId);
 		reselectInfoVO.setInstitution(institution);
-		if(Objects.nonNull(outlesId) || outlesId != 0){
+		if (Objects.nonNull(outlesId) || outlesId != 0) {
 			Outles outles = outlesService.queryByOutlesId(outlesId);
 			reselectInfoVO.setOutles(outles);
 		}
@@ -627,13 +684,13 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	@Override
-	public List<OrganizationQueryVO> queryInsSelect(InstitutionSelectDTO insOulesSelectDTO){
+	public List<OrganizationQueryVO> queryInsSelect(InstitutionSelectDTO insOulesSelectDTO) {
 		List<OrganizationQueryVO> organizationQueryVOS = new ArrayList<>();
 		Integer insId = jurisdictionUtilsService.queryByInsId("PLAT_");
 		Integer type = insOulesSelectDTO.getType();
-		if(type == 1){
-			organizationQueryVOS = this.baseMapper.pageCooperateByInsId(insOulesSelectDTO,insId);
-		}else if(type == 2){
+		if (type == 1) {
+			organizationQueryVOS = this.baseMapper.pageCooperateByInsId(insOulesSelectDTO, insId);
+		} else if (type == 2) {
 			organizationQueryVOS = this.baseMapper.querySelectByInsId(insId);
 		}
 		return organizationQueryVOS;

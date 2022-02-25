@@ -18,42 +18,48 @@ package com.pig4cloud.pig.admin.api.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 关联认证表
+ * 机构主体关联关系
  *
  * @author yuanduo
- * @date 2022-01-11 14:48:51
+ * @date 2022-02-25 00:26:06
  */
 @Data
-@TableName("p10_relationship_authenticate")
+@TableName("p10_institution_subject_re")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "关联认证表")
-public class RelationshipAuthenticate  extends Model<RelationshipAuthenticate> {
+@ApiModel(value = "机构主体关联关系")
+public class InstitutionSubjectRe extends BaseEntity {
 
     /**
-     * 关联认证id
+     * 机构主体关联id
      */
     @TableId
-    @ApiModelProperty(value="关联认证id")
-    private Integer id;
+    @ApiModelProperty(value="机构主体关联id")
+    private Integer insSubjectReId;
 
     /**
-     * 认证id
+     * 删除标识（0-正常,1-删除）
      */
-    @ApiModelProperty(value="认证id")
-    private Integer authenticateId;
+    @ApiModelProperty(value="删除标识（0-正常,1-删除）")
+    private String delFlag;
 
     /**
-     * 认证目标id
+     * 机构id
      */
-    @ApiModelProperty(value="认证目标id")
-    private Integer authenticateGoalId;
+    @ApiModelProperty(value="机构id")
+    private Integer insId;
+
+    /**
+     * 主体id
+     */
+    @ApiModelProperty(value="主体id")
+    private Integer subjectId;
 
 
 }

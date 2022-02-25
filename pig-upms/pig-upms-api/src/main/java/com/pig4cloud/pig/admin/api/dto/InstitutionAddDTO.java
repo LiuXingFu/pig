@@ -74,4 +74,14 @@ public class InstitutionAddDTO {
 	 * 负责人集合
 	 */
 	private List<SysUser> userList;
+
+	/**
+	 * 法院id
+	 */
+	private Integer courtId;
+
+	/**
+	 * 主体
+	 */
+	private AddSubjectOrAddressDTO subject;
 }

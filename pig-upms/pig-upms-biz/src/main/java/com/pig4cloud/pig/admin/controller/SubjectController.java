@@ -246,5 +246,25 @@ public class SubjectController {
 		return R.ok(subjectIPage);
 	}
 
+	/**
+	 * 根据id查询主体与主体地址（注意只有一个地址）
+	 * @param subjectId
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
+	@GetMapping("/getSubjectDetailBySubjectId/{subjectId}")
+	public R getSubjectDetailBySubjectId(@PathVariable Integer subjectId){
+		return R.ok(this.subjectService.getSubjectDetailBySubjectId(subjectId));
+	}
 
+	/**
+	 * 根据编码查询机构主体是否存在
+	 * @param unifiedIdentity
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
+	@GetMapping("/getIsThereASubjectByUnifiedIdentity/{unifiedIdentity}")
+	public R getIsThereASubjectByUnifiedIdentity(@PathVariable String unifiedIdentity){
+		return R.ok(this.subjectService.getIsThereASubjectByUnifiedIdentity(unifiedIdentity));
+	}
 }
