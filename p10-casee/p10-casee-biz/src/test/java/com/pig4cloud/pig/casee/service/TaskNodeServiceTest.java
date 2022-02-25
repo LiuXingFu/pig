@@ -120,15 +120,15 @@ public class TaskNodeServiceTest<T> {
 		//3，进行部署
 
 		Deployment deployment = repositoryService.createDeployment()
-				.addClasspathResource("processes/auditor.bpmn") //添加bpmn资源
-				.name("审核人审批流程")
+				.addClasspathResource("processes/taskFlow.bpmn") //添加bpmn资源
+				.name("任务流程")
 				.deploy();
 
 		//4，输出部署的一些信息
 		System.out.println(deployment.getId());
 		System.out.println(deployment.getName());
 
-		Deployment deployment1 = repositoryService.createDeploymentQuery().deploymentName("审核人审批流程").singleResult();
+		Deployment deployment1 = repositoryService.createDeploymentQuery().deploymentName("任务流程").singleResult();
 
 		System.out.println(deployment);
 

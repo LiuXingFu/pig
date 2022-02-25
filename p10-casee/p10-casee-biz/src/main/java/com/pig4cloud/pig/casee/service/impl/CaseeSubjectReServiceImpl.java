@@ -35,7 +35,7 @@ import java.util.List;
 public class CaseeSubjectReServiceImpl extends ServiceImpl<CaseeSubjectReMapper, CaseeSubjectRe> implements CaseeSubjectReService {
 
 	@Override
-	public List<SubjectOptionVO> getByCaseeId(Integer caseeId, Integer type) {
-		return this.baseMapper.getByCaseeId(caseeId, type);
+	public List<SubjectOptionVO> getByCaseeId(Integer caseeId, Integer type,Integer caseePersonnelType) {
+		return this.baseMapper.getByCaseeId(caseeId, type,caseePersonnelType);
 	}
 }

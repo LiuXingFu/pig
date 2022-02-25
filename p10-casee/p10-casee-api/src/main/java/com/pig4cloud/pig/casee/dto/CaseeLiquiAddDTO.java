@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.dto;
 
 import com.alibaba.fastjson.JSON;
 import com.pig4cloud.pig.casee.entity.Casee;
+import com.pig4cloud.pig.casee.entity.CaseeSubjectRe;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -89,10 +90,16 @@ public class CaseeLiquiAddDTO {
 	private String actualName;
 
 	/**
-	 * 债务人集合
+	 * 申请人/原告/上诉人/申请执行人等集合
 	 */
-	@ApiModelProperty(value = "债务人集合")
-	private List<Integer> subjectIdList;
+	@ApiModelProperty(value = "申请人/原告/上诉人/申请执行人等集合")
+	private List<CaseeSubjectReDTO> applicantList;
+
+	/**
+	 * 被告/被执行人/被上诉人等集合
+	 */
+	@ApiModelProperty(value = "被告/被执行人/被上诉人等集合")
+	private List<CaseeSubjectReDTO> executedList;
 
 	/**
 	 * 附件
@@ -100,5 +107,16 @@ public class CaseeLiquiAddDTO {
 	@ApiModelProperty(value="附件")
 	private String appendix;
 
+	/**
+	 * 被告/被执行人/被上诉人等
+	 */
+	@ApiModelProperty(value="被告/被执行人/被上诉人等")
+	private String executedName;
+
+	/**
+	 * 申请人/原告/上诉人/申请执行人等
+	 */
+	@ApiModelProperty(value="申请人/原告/上诉人/申请执行人等")
+	private String applicantName;
 
 }

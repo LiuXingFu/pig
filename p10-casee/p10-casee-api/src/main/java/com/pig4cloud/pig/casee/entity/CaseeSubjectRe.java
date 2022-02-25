@@ -56,10 +56,16 @@ public class CaseeSubjectRe extends BaseEntity {
     private Integer caseeId;
 
     /**
-     * 类型（0-申请人/原告/上述人/申请执行人等，1-被告/被执行人/被上述人等）
+     * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人）
      */
-    @ApiModelProperty(value="类型（0-申请人/原告/上述人/申请执行人等，1-被告/被执行人/被上述人等）")
+    @ApiModelProperty(value="类型（0-申请人，1-借款人，2-共同借款人，3-担保人）")
     private Integer type;
+
+	/**
+	 * 类型（0-申请人/原告/上述人/申请执行人等，1-被告/被执行人/被上述人等）
+	 */
+	@ApiModelProperty(value="类型（0-申请人/原告/上述人/申请执行人等，1-被告/被执行人/被上述人等）")
+	private Integer caseePersonnelType;
 
     /**
      * 删除标识（0-正常,1-删除）

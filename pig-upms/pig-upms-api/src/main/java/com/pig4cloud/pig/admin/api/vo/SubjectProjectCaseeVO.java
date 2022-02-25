@@ -15,27 +15,30 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.admin.api.vo;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.CaseeSubjectRe;
-import com.pig4cloud.pig.casee.vo.SubjectOptionVO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 案件主体关联案件表
+ * 主体
  *
  * @author yy
- * @date 2022-01-10 15:13:16
+ * @date 2021-09-17 16:55:57
  */
-public interface CaseeSubjectReService extends IService<CaseeSubjectRe> {
+@Data
+public class SubjectProjectCaseeVO extends Subject {
 
 	/**
-	 * 根据案件查询相应主体
-	 * @param caseeId
-	 * @param type
-	 * @return
+	 * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人）
 	 */
-	List<SubjectOptionVO> getByCaseeId(Integer caseeId, Integer type,Integer caseePersonnelType);
+	@ApiModelProperty(value="类型（0-申请人，1-借款人，2-共同借款人，3-担保人）")
+	private Integer type;
+
 }

@@ -281,4 +281,12 @@ public class TaskNodeController {
 		return R.ok(this.taskNodeService.queryNodeTaskByCaseeIdAndNodeKey(caseeId, nodeKey));
 	}
 
+
+	@ApiOperation(value = "添加流程定义的部署", notes = "添加流程定义的部署")
+	@SysLog("添加流程定义的部署" )
+	@GetMapping("/addDeployment")
+	public R addDeployment(String bpmn, String name){
+		return R.ok(this.taskNodeService.addDeployment(bpmn, name));
+	}
+
 }
