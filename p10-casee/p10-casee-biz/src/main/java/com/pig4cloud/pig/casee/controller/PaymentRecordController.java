@@ -94,14 +94,15 @@ public class PaymentRecordController {
 	}
 
 	/**
-	 * 查询法院到款记录信息
+	 * 查询法院到款记录以及到款总额
 	 * @param projectId id
 	 * @return R
 	 */
-	@ApiOperation(value = "查询法院到款记录信息", notes = "查询法院到款记录信息")
+	@ApiOperation(value = "查询法院到款记录以及到款总额", notes = "查询法院到款记录以及到款总额")
 	@GetMapping("/getCourtPaymentPage" )
 	public R getCourtPaymentPage(Page page,String projectId) {
 		Page paymentRecordPage = paymentRecordService.page(page, new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getProjectId, projectId).like(PaymentRecord::getFundsType, "%200").eq(PaymentRecord::getPaymentType, 200));
+		//法院到款总额
 		BigDecimal courtPayment=new BigDecimal(0);
 		for (PaymentRecord paymentRecord : (List<PaymentRecord>)paymentRecordPage.getRecords()) {
 			courtPayment=courtPayment.add(paymentRecord.getPaymentAmount());
@@ -110,6 +111,17 @@ public class PaymentRecordController {
 		paymentRecordCourtPaymentVO.setCourtPayment(courtPayment);
 		paymentRecordCourtPaymentVO.setPaymentRecordPage(paymentRecordPage);
 		return R.ok(paymentRecordCourtPaymentVO);
+	}
+
+	/**
+	 * 根据案件id查询法院到款未领款信息
+	 * @param caseeId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据案件id查询法院到款未领款信息", notes = "根据案件id查询法院到款未领款信息")
+	@GetMapping("/getCourtPaymentUnpaid/{caseeId}" )
+	public R getCourtPaymentUnpaid(@PathVariable("caseeId" )Integer caseeId) {
+		return R.ok(paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getCaseeId,caseeId).like(PaymentRecord::getFundsType, "%200").eq(PaymentRecord::getPaymentType, 200).eq(PaymentRecord::getStatus,0)));
 	}
 
     /**

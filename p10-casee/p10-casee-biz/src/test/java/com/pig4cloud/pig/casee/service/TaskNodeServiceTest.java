@@ -4,6 +4,7 @@ import com.pig4cloud.pig.admin.api.appserver.RequestAppService;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesService;
 import com.pig4cloud.pig.casee.dto.CaseeOrTargetTaskFlowDTO;
+import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
 import com.pig4cloud.pig.casee.entity.PfzxTask;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.common.core.util.R;
@@ -52,8 +53,13 @@ public class TaskNodeServiceTest<T> {
 
 	@Test
 	public void test1() {
-
-
+		List<Integer> a=new ArrayList<>();
+		List<Integer> b=new ArrayList<>();
+		b.add(1);
+		b.add(2);
+		b.add(3);
+		a.addAll(b);
+		System.out.println(a);
 
 
 //		LiQuiSSES LiQuiSSES = new LiQuiSSES();
@@ -120,15 +126,15 @@ public class TaskNodeServiceTest<T> {
 		//3，进行部署
 
 		Deployment deployment = repositoryService.createDeployment()
-				.addClasspathResource("processes/taskFlow.bpmn") //添加bpmn资源
-				.name("任务流程")
+				.addClasspathResource("processes/task.bpmn") //添加bpmn资源
+				.name("审批流程")
 				.deploy();
 
 		//4，输出部署的一些信息
 		System.out.println(deployment.getId());
 		System.out.println(deployment.getName());
 
-		Deployment deployment1 = repositoryService.createDeploymentQuery().deploymentName("任务流程").singleResult();
+		Deployment deployment1 = repositoryService.createDeploymentQuery().deploymentName("审批流程").singleResult();
 
 		System.out.println(deployment);
 
@@ -167,18 +173,18 @@ public class TaskNodeServiceTest<T> {
 		//设置assignee,map键对应配置中的变量名
 		// 设置UEL-Value表达式中的值
 		Map<String, Object> variables = new LinkedHashMap<>();
-		CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = new CaseeOrTargetTaskFlowDTO();
-//		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditProposer(86);
-		List list=new ArrayList();
-		list.add(520);
-		list.add(521);
-		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
-		caseeOrTargetTaskFlowDTO.setTaskKey("auditor");
-		variables.put("caseeOrTargetTaskFlowDTO", caseeOrTargetTaskFlowDTO);
-//		TaskFlowDTO taskFlowDTO = new TaskFlowDTO();
-//		taskFlowDTO.setTransactionId(1);
-//		taskFlowDTO.setTaskKey("taskFlow");
-//		variables.put("taskFlowDTO", taskFlowDTO);
+//		CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = new CaseeOrTargetTaskFlowDTO();
+////		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditProposer(86);
+//		List list=new ArrayList();
+//		list.add(520);
+//		list.add(521);
+//		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
+//		caseeOrTargetTaskFlowDTO.setTaskKey("auditor");
+//		variables.put("caseeOrTargetTaskFlowDTO", caseeOrTargetTaskFlowDTO);
+		TaskFlowDTO taskFlowDTO = new TaskFlowDTO();
+		taskFlowDTO.setTransactionId(118);
+		taskFlowDTO.setTaskKey("taskFlow");
+		variables.put("taskFlowDTO", taskFlowDTO);
 
 
 		//1，创建processEngine对象
@@ -186,7 +192,8 @@ public class TaskNodeServiceTest<T> {
 		//2，得到RuntimeService实例
 		RuntimeService runtimeService = processEngine.getRuntimeService();
 		//3，创建流程实例，流程定义的key需要知道流程唯一id：holiday
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(caseeOrTargetTaskFlowDTO.getTaskKey(), "1190_0_0_2", variables);
+//		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(caseeOrTargetTaskFlowDTO.getTaskKey(), "1190_0_0_2", variables);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(taskFlowDTO.getTaskKey(), "1190_0_0_2", variables);
 		//4，输出实例相关信息
 		System.out.println("实例部署id：" + processInstance.getDeploymentId());
 		System.out.println("流程实例id：" + processInstance.getId());
@@ -205,31 +212,31 @@ public class TaskNodeServiceTest<T> {
 		//查询当前用户是否存在任务
 		Map<String, Object> variables = new LinkedHashMap<>();
 
-//		TaskFlowDTO taskFlowDTO = new TaskFlowDTO();
-//
-//		taskFlowDTO.setTaskKey("taskFlow");
-//		taskFlowDTO.setNeedCommission(0);
-////		taskFlowDTO.setTransactionId(86);
-//		taskFlowDTO.setAuditorId(2);
-//		taskFlowDTO.setNeedCommissionedReview(1);
-		CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = new CaseeOrTargetTaskFlowDTO();
-		caseeOrTargetTaskFlowDTO.setTaskKey("auditor");
-		caseeOrTargetTaskFlowDTO.setStatus(2);
 		List list=new ArrayList();
 //		list.add(1314);
-		list.add(555);
-		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
-		variables.put("caseeOrTargetTaskFlowDTO", caseeOrTargetTaskFlowDTO);
+//		list.add(555);
 
-//		Task task = taskService.createTaskQuery().processDefinitionKey(taskFlowDTO.getTaskKey())
-//				.processInstanceId("1095001").taskAssignee("").singleResult();
-		List<Task> caseeOrTargetTaskFlow = taskService.createTaskQuery().processDefinitionKey("1940001")
-				.processInstanceId("1940001").list();
+		TaskFlowDTO taskFlowDTO = new TaskFlowDTO();
+		taskFlowDTO.setTaskKey("taskFlow");
+//		taskFlowDTO.setNeedCommission(0);
+		taskFlowDTO.setNeedCommissionedReview(0);
+//		taskFlowDTO.setTransactionId(86);
+		taskFlowDTO.setAuditorIdList(list);
+		variables.put("taskFlowDTO", taskFlowDTO);
+		Task task = taskService.createTaskQuery().processDefinitionKey(taskFlowDTO.getTaskKey())
+				.processInstanceId("1995001").taskName("正在处理").singleResult();
+
+
+//		CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = new CaseeOrTargetTaskFlowDTO();
+//		caseeOrTargetTaskFlowDTO.setTaskKey("auditor");
+//		caseeOrTargetTaskFlowDTO.setStatus(2);
+//		caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
+//		variables.put("caseeOrTargetTaskFlowDTO", caseeOrTargetTaskFlowDTO);
+//		Task task = taskService.createTaskQuery().processDefinitionKey("caseeOrTargetTaskFlow")
+//				.processInstanceId("1210001").taskAssignee("114").singleResult();
 		//如果有任务，结束
-		if (caseeOrTargetTaskFlow != null&&caseeOrTargetTaskFlow.size()>0) {
-			caseeOrTargetTaskFlow.forEach(task -> {
-				taskService.complete(task.getId(), variables);
-			});
+		if (task != null) {
+			taskService.complete(task.getId(), variables);
 //			taskService.complete(task.getId());
 			System.out.println("任务执行完毕");
 		}

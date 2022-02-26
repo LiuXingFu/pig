@@ -44,11 +44,12 @@
 		LEFT JOIN p10_subject `subject` ON casee_subject_re.subject_id = subject.subject_id
 		WHERE casee_id = #{caseeId}
 		<if test="type!=null">
-			and p10_casee_subject_re.type = #{type}
+			and casee_subject_re.type = #{type}
 		</if>
 		<if test="caseePersonnelType!=null">
-			and p10_casee_subject_re.casee_personnel_type = #{caseePersonnelType}
+			and casee_subject_re.casee_personnel_type = #{caseePersonnelType}
 		</if>
+
 	</select>
 
 </mapper>

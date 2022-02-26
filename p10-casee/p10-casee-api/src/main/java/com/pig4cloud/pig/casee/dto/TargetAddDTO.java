@@ -32,4 +32,9 @@ public class TargetAddDTO extends Target {
 	 */
 	private Integer projectId;
 
+	/**
+	 * 查询模板网点id
+	 */
+	private Integer outlesId;
+
 }

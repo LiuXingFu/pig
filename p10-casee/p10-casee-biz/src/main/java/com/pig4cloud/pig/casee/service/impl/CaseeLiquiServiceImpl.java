@@ -20,16 +20,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
-import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
-import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
-import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
-import com.pig4cloud.pig.admin.api.vo.InstitutionVO;
-import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
@@ -40,10 +32,7 @@ import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
-import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
-import com.pig4cloud.pig.common.core.util.R;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,9 +110,11 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectStatusService.save(projectStatus);
 
 		//添加任务数据以及程序信息
+		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
 		TargetAddDTO targetAddDTO=new TargetAddDTO();
 		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
+		targetAddDTO.setOutlesId(project.getOutlesId());
 		targetService.saveTargetAddDTO(targetAddDTO);
 		return caseeLiqui.getCaseeId();
 	}

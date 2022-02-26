@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,11 +58,18 @@ public class TaskFlowDTO extends TaskNode {
 	 */
 	@ApiModelProperty(value="工作流任务名称")
 	private String taskName;
+
 	/**
 	 * 审核人id(可能存在多个)
 	 */
 	@ApiModelProperty(value="审核人id")
-	private List<Integer> auditorId;
+	private List<Integer> auditorIdList =new ArrayList<>();
+
+	/**
+	 * 当前任务审核人id
+	 */
+	@ApiModelProperty(value="当前任务审核人id")
+	private Integer auditorId;
 
 	/**
 	 * //查询该用户任务id

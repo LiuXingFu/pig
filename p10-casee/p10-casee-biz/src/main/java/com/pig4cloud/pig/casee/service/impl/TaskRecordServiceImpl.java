@@ -131,7 +131,7 @@ public class TaskRecordServiceImpl extends ServiceImpl<TaskRecordMapper, TaskRec
 				//修改审核任务记录数据
 				TaskRecord record = this.getOne(new LambdaQueryWrapper<TaskRecord>().eq(TaskRecord::getNodeId, taskFlowDTO.getNodeId()).eq(TaskRecord::getStatus, 600).eq(TaskRecord::getCanEntrust, 0));
 				if (record!=null){//添加任务记录审核人
-					record.setAuditorId(taskFlowDTO.getAuditorId().get(0));
+					record.setAuditorId(taskFlowDTO.getAuditorIdList().get(0));
 					record.setAuditorInsId(cacheUser.getInsId());
 					record.setAuditorOutlesId(cacheUser.getOutlesId());
 					record.setSubmitInsId(cacheUser.getInsId());
