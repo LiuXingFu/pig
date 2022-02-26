@@ -71,16 +71,28 @@ public class CaseeLiquiController {
 	}
 
 	/**
-	 * 添加诉讼案件
+	 * 添加一审诉讼案件
 	 *
 	 * @param caseeLawsuitsDTO
 	 * @return R
 	 */
-	@ApiOperation(value = "添加诉讼案件", notes = "添加诉讼案件")
-	@SysLog("添加诉讼案件")
+	@ApiOperation(value = "添加一审诉讼案件", notes = "添加一审诉讼案件")
+	@SysLog("添加一审诉讼案件")
 	@PostMapping("/saveLawsuitsCasee")
 	public R saveLawsuitsCasee(@RequestBody CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception {
 		return R.ok(caseeLiquiService.addLawsuitsCasee(caseeLawsuitsDTO));
+	}
+
+	/**
+	 * 添加二审诉讼案件
+	 * @param caseeSecondInstanceDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "添加二审诉讼案件", notes = "添加二审诉讼案件")
+	@SysLog("添加二审诉讼案件")
+	@PostMapping("/saveSecondInstanceCasee")
+	public R saveSecondInstanceCasee(@RequestBody CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception {
+		return R.ok(caseeLiquiService.saveSecondInstanceCasee(caseeSecondInstanceDTO));
 	}
 
 	/**
@@ -117,7 +129,7 @@ public class CaseeLiquiController {
 	 */
 	@ApiOperation(value = "根据项目id、案件类型查询一审或首执案件信息", notes = "根据项目id、案件类型查询一审或首执案件信息")
 	@GetMapping("/getCaseeParentId/{projectId}/{caseeType}")
-	public R getCaseeParentId(@PathVariable("projectId") Integer projectId, Integer caseeType) {
+	public R getCaseeParentId(@PathVariable("projectId") Integer projectId,@PathVariable("caseeType") Integer caseeType) {
 		return R.ok(caseeLiquiService.getCaseeParentId(projectId, caseeType));
 	}
 

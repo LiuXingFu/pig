@@ -46,10 +46,9 @@
 		<if test="type!=null">
 			and p10_casee_subject_re.type = #{type}
 		</if>
-		<if test="type!=null">
+		<if test="caseePersonnelType!=null">
 			and p10_casee_subject_re.casee_personnel_type = #{caseePersonnelType}
 		</if>
-
 	</select>
 
 </mapper>

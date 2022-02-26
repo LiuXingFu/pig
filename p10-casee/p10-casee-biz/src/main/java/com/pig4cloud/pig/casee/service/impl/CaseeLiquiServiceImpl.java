@@ -154,7 +154,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer addSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
+	public Integer saveSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeSecondInstanceDTO,caseeLiquiAddDTO);
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
