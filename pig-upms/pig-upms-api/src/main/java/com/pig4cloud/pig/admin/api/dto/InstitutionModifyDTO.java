@@ -38,6 +38,10 @@ public class InstitutionModifyDTO{
 	 */
 	private String insName;
 	/**
+	 * 机构类型
+	 */
+	private Integer insType;
+	/**
 	 * 传真
 	 */
 	private String insFax;
@@ -73,4 +77,14 @@ public class InstitutionModifyDTO{
 	 * 行政区划编号
 	 */
 	private String code;
+
+	/**
+	 * 法院id
+	 */
+	private Integer courtId;
+
+	/**
+	 * 主体
+	 */
+	private AddSubjectOrAddressDTO subject;
 }

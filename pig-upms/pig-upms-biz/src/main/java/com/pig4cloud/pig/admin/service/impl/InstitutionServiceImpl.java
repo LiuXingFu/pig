@@ -570,34 +570,9 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		}
 
 		//如果机构类型为拍辅、清收、律所和银行添加企业信息
-		if (institutionAddDTO.getInsType().equals(Integer.valueOf("1100")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1200")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1300")) || institutionAddDTO.getInsType().equals(Integer.valueOf("1400"))) {
-			SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionAddDTO.getSubject().getUnifiedIdentity());
-			if (Objects.nonNull(subjectVO)) {
-				//主体存在添加机构与主体认证信息
-				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
-				institutionSubjectRe = new InstitutionSubjectRe();
-				institutionSubjectRe.setInsId(institution.getInsId());
-				institutionSubjectRe.setInsSubjectReId(subjectVO.getSubjectId());
-				institutionSubjectReService.save(institutionSubjectRe);
-
-				//更新主体认证状态
-				Subject subject = new Subject();
-
-				BeanUtils.copyProperties(subjectVO, subject);
-
-				this.subjectService.updateById(subject);
-
-			} else {
-				//主体不存在创建主体添加机构与主体认证信息
-				int subjectId = this.subjectService.addSubjectOrAddress(institutionAddDTO.getSubject());
-
-				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
-				institutionSubjectRe.setInsId(institution.getInsId());
-				institutionSubjectRe.setSubjectId(subjectId);
-				institutionSubjectReService.save(institutionSubjectRe);
-
-			}
-		}
+		InstitutionModifyDTO institutionModifyDTO = new InstitutionModifyDTO();
+		BeanUtils.copyProperties(institutionAddDTO, institutionModifyDTO);
+		setIstitutionSubject(institutionModifyDTO, institution);
 
 		// 判断地址是否为空
 		if (Objects.nonNull(institutionAddDTO.getInformationAddress()) || Objects.nonNull(institutionAddDTO.getCode())) {
@@ -625,6 +600,38 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		return save;
 	}
 
+	private void setIstitutionSubject(InstitutionModifyDTO institutionModifyDTO, Institution institution) {
+		//如果机构类型为拍辅、清收、律所和银行添加企业信息
+		if (institutionModifyDTO.getInsType().equals(Integer.valueOf("1100")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1200")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1300")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1400"))) {
+			SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionModifyDTO.getSubject().getUnifiedIdentity());
+			if (Objects.nonNull(subjectVO)) {
+				//主体存在添加机构与主体认证信息
+				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe.setInsId(institution.getInsId());
+				institutionSubjectRe.setInsSubjectReId(subjectVO.getSubjectId());
+				institutionSubjectReService.save(institutionSubjectRe);
+
+				//更新主体认证状态
+				Subject subject = new Subject();
+
+				BeanUtils.copyProperties(subjectVO, subject);
+
+				this.subjectService.updateById(subject);
+
+			} else {
+				//主体不存在创建主体添加机构与主体认证信息
+				int subjectId = this.subjectService.addSubjectOrAddress(institutionModifyDTO.getSubject());
+
+				InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe.setInsId(institution.getInsId());
+				institutionSubjectRe.setSubjectId(subjectId);
+				institutionSubjectReService.save(institutionSubjectRe);
+
+			}
+		}
+	}
+
 	@Override
 	@Transactional
 	public int modifyInstitutionById(InstitutionModifyDTO institutionModifyDTO) {
@@ -632,7 +639,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		Institution institution = new Institution();
 		BeanUtils.copyProperties(institutionModifyDTO, institution);
 		modify = this.baseMapper.updateById(institution);
-		if (Objects.nonNull(institutionModifyDTO.getCode())) {
+		if (Objects.nonNull(institutionModifyDTO.getInformationAddress()) || Objects.nonNull(institutionModifyDTO.getCode())) {
 			// 更新地址
 			Address address = new Address();
 			BeanUtils.copyProperties(institutionModifyDTO, address);
@@ -640,6 +647,13 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			address.setType(2);
 			addressService.saveOrUpdate(address);
 		}
+
+		if(institutionModifyDTO.getSubject().getSubjectId() == null) {
+
+			//如果机构类型为拍辅、清收、律所和银行添加企业信息
+			setIstitutionSubject(institutionModifyDTO, institution);
+		}
+
 		return modify;
 	}
 
@@ -653,7 +667,9 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 		if (institutionVO.getInsType().equals(Integer.valueOf("1100")) || institutionVO.getInsType().equals(Integer.valueOf("1200")) || institutionVO.getInsType().equals(Integer.valueOf("1300")) || institutionVO.getInsType().equals(Integer.valueOf("1400"))) {
 			InstitutionSubjectRe institutionSubjectRe = this.institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>().eq(InstitutionSubjectRe::getInsId, institutionVO.getInsId()));
-			institutionVO.setSubject(this.subjectService.getSubjectDetailBySubjectId(institutionSubjectRe.getSubjectId()));
+			if(Objects.nonNull(institutionSubjectRe)) {
+				institutionVO.setSubject(this.subjectService.getSubjectDetailBySubjectId(institutionSubjectRe.getSubjectId()));
+			}
 		}
 		List<InsOutlesUserListVO> userList = insOutlesUserService.queryUserList(1, insId, 0);
 		institutionVO.setUserList(userList);
