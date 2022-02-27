@@ -61,4 +61,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	SubjectDetailsVO getSubjectDetailBySubjectId(Integer subjectId);
 
 	int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity);
+
+	Subject getByInsId(@Param("insId") Integer insId);
 }

@@ -282,4 +282,15 @@ public class SubjectController {
 	public R saveOrUpdateBatch(@RequestBody List<Subject> subject) {
 		return R.ok(subjectService.saveOrUpdateBatch(subject));
 	}
+
+	/**
+	 * 通过机构id查询主体
+	 * @param insId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/getByInsId/{insId}" )
+	public R getByInsId(@PathVariable("insId" ) Integer insId) {
+		return R.ok(subjectService.getByInsId(insId));
+	}
 }

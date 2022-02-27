@@ -32,7 +32,9 @@ import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeListVO;
 import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -155,7 +157,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				if(Objects.nonNull(item.getSubjectId())){
 					subjectId = item.getSubjectId();
 				}else{
-					R subject = subjectService.saveOrUpdateById(item,SecurityConstants.FROM);
+					R subject = subjectService.saveOrUpdateById(item, SecurityConstants.FROM);
 					subjectId = Integer.valueOf(subject.getData().toString());
 				}
 				CaseeSubjectReDTO caseeSubjectReDTO = new CaseeSubjectReDTO();

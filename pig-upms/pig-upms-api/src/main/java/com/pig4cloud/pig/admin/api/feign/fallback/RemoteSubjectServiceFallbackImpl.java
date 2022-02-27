@@ -80,4 +80,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("批量新增或修改主体失败");
 		return null;
 	}
+
+	@Override
+	public R<Subject> getByInsId(Integer getByInsId, String from) {
+		log.error("查询主体失败", cause);
+		return null;
+	}
 }

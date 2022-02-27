@@ -99,4 +99,12 @@ public interface RemoteSubjectService {
 	@PostMapping("/subject/saveOrUpdateBatch")
 	R saveOrUpdateBatch(@RequestBody List<Subject> subject, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 * 根据机构id查询债务人信息
+	 * @param insId
+	 * @return
+	 */
+	@GetMapping("/subject/getByInsId/{insId}")
+	R<Subject> getByInsId(@PathVariable("insId") Integer insId, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

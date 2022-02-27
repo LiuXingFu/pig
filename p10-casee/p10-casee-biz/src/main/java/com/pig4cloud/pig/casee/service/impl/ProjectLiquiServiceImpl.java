@@ -164,13 +164,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		// 遍历银行借贷关联表copy到项目主体关联表中
 		subjectBankLoanReList.stream().forEach(item ->{
 			ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
-			BeanCopyUtil.copyBean(item,projectSubjectRe);
+			projectSubjectRe.setSubjectId(item.getSubjectId());
 			projectSubjectRe.setProjectId(projectLiqui.getProjectId());
 			projectSubjectRe.setType(item.getDebtType());
 			projectSubjectRes.add(projectSubjectRe);
 		});
-
-
+		R<Subject> subject = remoteSubjectService.getByInsId(transferRecordBankLoanVO.getInsId(),SecurityConstants.FROM);
+		ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
+		projectSubjectRe.setSubjectId(subject.getData().getSubjectId());
+		projectSubjectRe.setProjectId(projectLiqui.getProjectId());
+		projectSubjectRe.setType(0);
+		projectSubjectRes.add(projectSubjectRe);
 
 
 		// 保存项目主体关联表
