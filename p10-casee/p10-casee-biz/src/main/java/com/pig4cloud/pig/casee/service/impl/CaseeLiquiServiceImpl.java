@@ -157,6 +157,25 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	public Integer saveSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeSecondInstanceDTO,caseeLiquiAddDTO);
+		if(Objects.nonNull(caseeSecondInstanceDTO.getSubjectList())){
+			List<CaseeSubjectReDTO> applicantList = new ArrayList<>();
+			caseeSecondInstanceDTO.getSubjectList().stream().forEach(item->{
+				Integer subjectId = 0;
+				if(Objects.nonNull(item.getSubjectId())){
+					subjectId = item.getSubjectId();
+				}else{
+					R subject = subjectService.saveOrUpdateById(item,SecurityConstants.FROM);
+					subjectId = Integer.valueOf(subject.getData().toString());
+				}
+				CaseeSubjectReDTO caseeSubjectReDTO = new CaseeSubjectReDTO();
+				caseeSubjectReDTO.setSubjectId(subjectId);
+				// 案件人员关系4=案外人
+				caseeSubjectReDTO.setType(4);
+				applicantList.add(caseeSubjectReDTO);
+			});
+			caseeLiquiAddDTO.setApplicantList(applicantList);
+		}
+
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		// 保存案件代理律师
 		if (Objects.nonNull(caseeSecondInstanceDTO.getLawyerName())) {

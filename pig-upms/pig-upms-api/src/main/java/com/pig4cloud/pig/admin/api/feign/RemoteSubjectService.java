@@ -90,4 +90,13 @@ public interface RemoteSubjectService {
 	@GetMapping("/subject/queryByProjectId/{projectId}")
 	R<List<Subject>> queryByProjectId(@PathVariable("projectId") Integer projectId, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 *  批量新增或修改主体
+	 * @param subject
+	 * @param from 内部调用标志
+	 * @return
+	 */
+	@PostMapping("/subject/saveOrUpdateBatch")
+	R saveOrUpdateBatch(@RequestBody List<Subject> subject, @RequestHeader(SecurityConstants.FROM) String from);
+
 }
