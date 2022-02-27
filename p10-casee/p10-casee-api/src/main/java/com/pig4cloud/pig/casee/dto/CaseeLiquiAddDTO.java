@@ -119,4 +119,16 @@ public class CaseeLiquiAddDTO {
 	@ApiModelProperty(value="申请人/原告/上诉人/申请执行人等")
 	private String applicantName;
 
+	/**
+	 * 父案件id
+	 */
+	@ApiModelProperty(value = "父案件id")
+	private Integer parentId;
+
+	/**
+	 * 类别（0-一审 1-二审 2-首执 3- 执恢）
+	 */
+	@ApiModelProperty(value = "类别（0-一审 1-二审 2-首执 3- 执恢）")
+	private Integer category;
+
 }

@@ -157,7 +157,7 @@
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project_subject_re.del_flag = 0
 		and p10_project_subject_re.project_id = #{query.projectId}
-		<if test="query.type.size>0">
+		<if test="query.type != null and query.type.size()>0">
 			and p10_project_subject_re.type in
 			<foreach item="item" index="index" collection="query.type"
 					 open="(" separator="," close=")">
@@ -172,7 +172,7 @@
 		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
 		where p10_casee_subject_re.del_flag = 0
 		and p10_casee_subject_re.casee_id = #{query.caseeId}
-		<if test="query.type.size>0">
+		<if test="query.type != null and query.type.size()>0">
 			and p10_casee_subject_re.type in
 			<foreach item="item" index="index" collection="query.type"
 					 open="(" separator="," close=")">

@@ -74,4 +74,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("根据项目id查询主体失败");
 		return null;
 	}
+
+	@Override
+	public R saveOrUpdateBatch(List<Subject> subject, String from) {
+		log.error("批量新增或修改主体失败");
+		return null;
+	}
 }

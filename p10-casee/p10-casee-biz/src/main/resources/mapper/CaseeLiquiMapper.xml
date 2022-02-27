@@ -120,6 +120,7 @@
 		<if test="query.caseePersonnelType != null">
 			AND p10_casee_subject_re.casee_personnel_type = #{query.caseePersonnelType}
 		</if>
+		ORDER BY p10_casee_subject_re.type asc
 	</select>
 
 	<select id="selectCaseeSubject" resultType="com.pig4cloud.pig.admin.api.entity.Subject">

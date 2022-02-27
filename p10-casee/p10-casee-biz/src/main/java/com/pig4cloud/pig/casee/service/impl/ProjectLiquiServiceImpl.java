@@ -169,6 +169,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			projectSubjectRe.setType(item.getDebtType());
 			projectSubjectRes.add(projectSubjectRe);
 		});
+
+
+
+
 		// 保存项目主体关联表
 		projectSubjectReService.saveBatch(projectSubjectRes);
 

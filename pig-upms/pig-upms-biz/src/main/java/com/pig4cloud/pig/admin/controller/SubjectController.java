@@ -192,7 +192,8 @@ public class SubjectController {
 	@SysLog("新增或修改主体" )
 	@PostMapping("/saveOrUpdateById")
 	public R saveOrUpdateById(@RequestBody Subject subject) {
-		return R.ok(subjectService.saveOrUpdate(subject));
+		subjectService.saveOrUpdate(subject);
+		return R.ok(subject.getSubjectId());
 	}
 
 	/**
@@ -268,5 +269,17 @@ public class SubjectController {
 	@GetMapping("/getIsThereASubjectByUnifiedIdentity/{unifiedIdentity}")
 	public R getIsThereASubjectByUnifiedIdentity(@PathVariable String unifiedIdentity){
 		return R.ok(this.subjectService.getIsThereASubjectByUnifiedIdentity(unifiedIdentity));
+	}
+
+	/**
+	 * 批量新增或修改主体
+	 * @param subject 主体
+	 * @return R
+	 */
+	@ApiOperation(value = "批量新增或修改主体", notes = "批量新增或修改主体")
+	@SysLog("批量新增或修改主体" )
+	@PostMapping("/saveOrUpdateBatch")
+	public R saveOrUpdateBatch(@RequestBody List<Subject> subject) {
+		return R.ok(subjectService.saveOrUpdateBatch(subject));
 	}
 }
