@@ -271,4 +271,16 @@ public class UserController {
 		return R.ok(userService.pageCooperateByUserId(userSelectDTO));
 	}
 
+//	/**
+//	 * 根据特定条件查询法官
+//	 * @param page 分页条件
+//	 * @param user
+//	 * @return
+//	 */
+//	@ApiOperation(value = "根据特定条件查询法官", notes = "根据特定条件查询法官")
+//	@GetMapping("/pageJudge")
+//	public R pageJudge(Page page, SysUser user) {
+//		return R.ok(userService.pageJudge(page, user));
+//	}
+
 }

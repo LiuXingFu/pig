@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InstitutionPageDTO;
 import com.pig4cloud.pig.admin.api.dto.InstitutionSelectDTO;
+import com.pig4cloud.pig.admin.api.dto.ProjectInstitutionSelectDTO;
 import com.pig4cloud.pig.admin.api.dto.OrganizationQueryDTO;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.api.vo.*;
@@ -63,4 +64,7 @@ public interface InstitutionMapper extends BaseMapper<Institution> {
 	List<OrganizationQueryVO> querySelectByInsId(@Param("insId") int insId);
 
 	List<OrganizationQueryVO> pageCooperateByInsId(@Param("query")InstitutionSelectDTO insOulesSelectDTO,@Param("insId") int insId);
+
+	List<OrganizationQueryVO> queryProjectInsSelect(@Param("query") ProjectInstitutionSelectDTO projectInstitutionSelectDTO);
+
 }

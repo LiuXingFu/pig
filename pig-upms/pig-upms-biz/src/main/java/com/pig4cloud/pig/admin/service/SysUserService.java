@@ -123,4 +123,12 @@ public interface SysUserService extends IService<SysUser> {
 	 * @return
 	 */
 	List<OrganizationQueryVO> pageCooperateByUserId(UserSelectDTO userSelectDTO);
+
+//	/**
+//	 * 根据特定条件查询法官
+//	 * @param page 分页条件
+//	 * @param user
+//	 * @return
+//	 */
+//	IPage<SysUser> pageJudge(Page page, SysUser user);
 }

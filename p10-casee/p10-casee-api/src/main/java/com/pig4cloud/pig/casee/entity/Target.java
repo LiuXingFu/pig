@@ -75,6 +75,13 @@ public class Target extends BaseEntity {
 	@ApiModelProperty(value="程序性质（1010:诉前保全案件 2010:诉讼保全案件 2020:一审诉讼案件 2021:二审诉讼案件 2030:其它案件 3010:首次执行案件 3031:执灰案件  4040:实体财产程序 4041:资金财产程序5050:行为限制程序 5051:行为违法程序 6060:拍卖程序 7070:履行程序））")
 	private Integer procedureNature;
 
+
+	/**
+	 * 目标id
+	 */
+	@ApiModelProperty(value="为空案件、存储财产id、行为id")
+	private Integer goalId;
+
 	/**
 	 * 创建网点id
 	 */

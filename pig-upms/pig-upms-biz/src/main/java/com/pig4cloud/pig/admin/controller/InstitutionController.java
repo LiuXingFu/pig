@@ -26,7 +26,6 @@ import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.admin.api.entity.Institution;
 import com.pig4cloud.pig.admin.service.InstitutionService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
-import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -293,5 +292,15 @@ public class InstitutionController {
 		return R.ok(institutionService.queryInsSelect(insOulesSelectDTO));
 	}
 
+	/**
+	 * 根据项目机构id查询项目机构关联机构下拉框
+	 * @param projectInstitutionSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目机构id查询项目机构关联机构下拉框", notes = "根据项目机构id查询项目机构关联机构下拉框")
+	@GetMapping("/queryProjectInsSelect")
+	public R queryProjectInsSelect(ProjectInstitutionSelectDTO projectInstitutionSelectDTO) {
+		return R.ok(this.institutionService.queryProjectInsSelect(projectInstitutionSelectDTO));
+	}
 
 }

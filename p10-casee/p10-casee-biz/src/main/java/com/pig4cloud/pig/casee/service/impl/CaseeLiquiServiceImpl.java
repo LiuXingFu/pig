@@ -270,6 +270,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		CaseeLiquiDetailsVO caseeLiquiDetailsVO = this.baseMapper.queryByCaseeId(caseeId);
 		CaseeOrSubjectDTO caseeOrSubjectDTO = new CaseeOrSubjectDTO();
 		caseeOrSubjectDTO.setCaseeId(caseeId);
+		caseeOrSubjectDTO.setCaseePersonnelType(1);
 		caseeLiquiDetailsVO.setCaseeOrSubjectVOList(this.baseMapper.selectCaseeOrSubject(caseeOrSubjectDTO));
 		caseeLiquiDetailsVO.setCaseeOrAssetsVOList(this.assetsReService.selectCaseeOrAssets(caseeId));
 		return caseeLiquiDetailsVO;

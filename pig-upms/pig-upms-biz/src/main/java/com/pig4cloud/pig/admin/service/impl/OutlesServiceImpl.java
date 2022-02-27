@@ -376,4 +376,14 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	public List<Outles> pageOutlesList(Integer insId, String outlesName, List<Integer> outlesIds) {
 		return this.baseMapper.pageOutlesList(insId, outlesName, outlesIds);
 	}
+
+	/**
+	 * 根据项目机构id和选中机构id查询合作网点
+	 * @param projectOutlesSelectDTO
+	 * @return
+	 */
+	@Override
+	public List<OrganizationQueryVO> queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO) {
+		return this.baseMapper.queryProjectOutlesSelect(projectOutlesSelectDTO);
+	}
 }
