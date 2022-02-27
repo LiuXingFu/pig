@@ -187,7 +187,9 @@
 	</select>
 
 	<select id="getIsThereASubjectByUnifiedIdentity" resultType="int">
-		SELECT count(0) FROM p10_subject WHERE del_flag = 0 AND unified_identity = #{unifiedIdentity}
+		SELECT count(0) FROM p10_institution_subject_re
+		LEFT JOIN  p10_subject ON p10_institution_subject_re.subject_id = p10_subject.subject_id and  p10_subject.del_flag = 0
+		WHERE p10_institution_subject_re.del_flag = 0 AND  p10_subject.unified_identity = #{unifiedIdentity}
 	</select>
 
 </mapper>

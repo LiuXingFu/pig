@@ -264,7 +264,7 @@ public class SubjectController {
 	 * @param unifiedIdentity
 	 * @return
 	 */
-	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
+	@ApiOperation(value = "根据编码查询机构主体是否存在", notes = "根据编码查询机构主体是否存在")
 	@GetMapping("/getIsThereASubjectByUnifiedIdentity/{unifiedIdentity}")
 	public R getIsThereASubjectByUnifiedIdentity(@PathVariable String unifiedIdentity){
 		return R.ok(this.subjectService.getIsThereASubjectByUnifiedIdentity(unifiedIdentity));
