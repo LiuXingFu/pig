@@ -111,6 +111,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public ProcessInstance beginFlow(Object objectDTO, String taskFlowName) {
 		//设置assignee,map键对应配置中的变量名
 		// 设置UEL-Value表达式中的值
@@ -144,6 +145,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public Task executionTask(Object objectDTO, String taskName, String taskFlowName) {
 		//得到ProcessEngine
 		ProcessEngine defaultProcessEngine = ProcessEngines.getDefaultProcessEngine();
@@ -160,17 +162,20 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		List list = new ArrayList<>();
 		try {
-			if (taskFlowName.equals(CaseeOrTargetTaskFlowConstants.TASK_OBJECT)) {
+			if (taskFlowName.equals(CaseeOrTargetTaskFlowConstants.TASK_OBJECT)) {//处理审核流程节点任务
 				TaskFlowDTO taskFlowDTO = objectTransitionEntityUtils.readValueMap(objectDTO, TaskFlowDTO.class);
 				taskFlowKey = taskFlowDTO.getTaskKey();
 				actReProcdefId = taskFlowDTO.getActReProcdefId();
+				if (null!=taskFlowDTO.getAuditorIdList()&&taskFlowDTO.getAuditorIdList().size()>0){
+					list.addAll(taskFlowDTO.getAuditorIdList());
+				}
 				variables.put(taskFlowName, taskFlowDTO);
-			} else if (taskFlowName.equals(CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT)) {//案件或标的任务流对象名称
+			} else if (taskFlowName.equals(CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT)) {//处理案件或标的任务流（暂缓、和解）
 				CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = objectTransitionEntityUtils.readValueMap(objectDTO, CaseeOrTargetTaskFlowDTO.class);
 				taskFlowKey = caseeOrTargetTaskFlowDTO.getTaskKey();
 				actReProcdefId = caseeOrTargetTaskFlowDTO.getActReProcdefId();
-				if (taskName.equals("案件或标的审核人")) {
-					caseeOrTargetTaskFlowDTO.setCaseeOrTargetAuditorList(list);
+				if (null!=caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList()&&caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList().size()>0){
+					list.addAll(caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList());
 				}
 				variables.put(taskFlowName, caseeOrTargetTaskFlowDTO);
 			}
@@ -181,10 +186,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//通过流程定义key和流程实例id查询当前办理人任务信息
 		Task task = null;
-		if (taskName.equals("案件或标的审核人")) {//案件、标的审核任务流，审核人存在多个，完成任务时要根据当前审核人去查询任务
+		if (null!=list&&list.size()>0){//审核人存在多个，完成任务时要根据当前审核人去查询任务
 			task = taskService.createTaskQuery().processDefinitionKey(taskFlowKey)
 					.processInstanceId(actReProcdefId).taskAssignee(list.get(0).toString()).taskName(taskName).singleResult();
-		} else {
+		} else {//根据任务流任务名称以及流程实例查询任务
 			task = taskService.createTaskQuery().processDefinitionKey(taskFlowKey)
 					.processInstanceId(actReProcdefId).taskName(taskName).singleResult();
 		}
@@ -273,6 +278,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId) {
 		//1.根据标的id查询所有任务节点数据
 		List<TaskNodeVO> list = this.baseMapper.getTaskNodeAll(caseeId);
@@ -286,6 +292,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public Integer queryTaskProgress(String targetId) {
 		// 1.根据标的id查询所有进度
 		List<TaskNode> taskNodes = this.baseMapper.selectList(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, targetId).eq(TaskNode::getDelFlag, 0));
@@ -318,6 +325,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * 6 委托中
 	 */
 	@Override
+	@Transactional
 	public TaskReminder judgmentTaskStatus(String taskNodeId, Integer canContinueExecution) {
 
 		// 1.根据id查询任务
@@ -537,11 +545,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//设置任务流唯一key
 		taskFlowDTO.setTaskKey(CaseeOrTargetTaskFlowConstants.TASK_KEY);
+		//当前审核人id
+		taskFlowDTO.getAuditorIdList().add(cacheUser.getId());
 		//1.完成审核人流程
 		this.executionTask(taskFlowDTO, "审核人", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 
 		//设置审核人id为委托人id
-		taskFlowDTO.getAuditorId().add(taskFlowDTO.getCommissionUserId());
+		taskFlowDTO.getAuditorIdList().add(taskFlowDTO.getCommissionUserId());
 
 		//完成正在处理流程
 		this.executionTask(taskFlowDTO, "正在处理", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
@@ -562,6 +572,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public TaskFlowDTO refuseEntrustUpdateTask(TaskFlowDTO taskFlowDTO) {
 		PigUser cacheUser = securityUtilsService.getCacheUser();
 		TaskRecord taskRecord = taskRecordService.getOne(new LambdaQueryWrapper<TaskRecord>().eq(TaskRecord::getNodeId, taskFlowDTO.getNodeId()).eq(TaskRecord::getStatus, 600).eq(TaskRecord::getTrusteeId, cacheUser.getId()));
@@ -597,6 +608,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	public boolean auditNode(TaskFlowDTO taskFlowDTO) {
 		//设置任务流唯一key
 		taskFlowDTO.setTaskKey(CaseeOrTargetTaskFlowConstants.TASK_KEY);
+		//当前审核人id
+		taskFlowDTO.getAuditorIdList().add(securityUtilsService.getCacheUser().getId());
 		//1.完成审核人流程
 		this.executionTask(taskFlowDTO, "审核人", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 
@@ -621,9 +634,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public CaseeOrTargetTaskFlowDTO auditCaseeOrTargetTask(CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO) {
 		//设置任务流唯一key
 		caseeOrTargetTaskFlowDTO.setTaskKey(CaseeOrTargetTaskFlowConstants.CASEEORTARGET_KEY);
+		//当前审核人id
+		caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList().add(securityUtilsService.getCacheUser().getId());
 		//1.完成审核人流程
 		this.executionTask(caseeOrTargetTaskFlowDTO, "案件或标的审核人", CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT);
 
@@ -718,6 +734,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	@Transactional
 	public TaskFlowDTO makeUpEntrustOrSubmit(TaskFlowDTO taskFlowDTO) {
 		//当前登录用户信息
 		PigUser user = SecurityUtils.getUser();
@@ -747,7 +764,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			R<List<InsOutlesUser>> outlesPrincipal = remoteInsOutlesUserService.getOutlesPrincipal(1, taskFlowDTO.getOutlesId(), SecurityConstants.FROM);
 			for (InsOutlesUser insOutlesUser : outlesPrincipal.getData()) {
 				//设置审核人id默认为网点负责人id
-				taskFlowDTO.getAuditorId().add(insOutlesUser.getUserId());
+				taskFlowDTO.getAuditorIdList().add(insOutlesUser.getUserId());
 			}
 		} else if (taskFlowDTO.getNeedCommission() == 1) {//委托
 			//设置办理人id为委托人id
@@ -1016,6 +1033,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * @param targetId
 	 */
 	@Override
+	@Transactional
 	public void setTaskNodeListByTargetId(Integer targetId, List<String> keys) {
 		// 根据key类别查询状态不是未提交与跳过的任务对象集合
 		List<TaskNode> nodeList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, targetId)
@@ -1046,6 +1064,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * @param auditTargetDTO
 	 */
 	@Override
+	@Transactional
 	public void setTaskNodeByTargetId(TaskFlowDTO taskFlowDTO, AuditTargetDTO auditTargetDTO) {
 		//1.根据节点id查询案件绩效考核表
 		CaseePerformance caseePerformance = this.caseePerformanceService.getOne(new LambdaQueryWrapper<CaseePerformance>()

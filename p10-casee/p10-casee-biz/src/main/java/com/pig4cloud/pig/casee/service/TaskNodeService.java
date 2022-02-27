@@ -203,7 +203,7 @@ public interface TaskNodeService extends IService<TaskNode> {
 	boolean auditNode(TaskFlowDTO taskFlowDTO);
 
 	/**
-	 * 审核案件或标的任务信息
+	 * 审核案件或标的任务信息(暂缓、和解)
 	 * @param caseeOrTargetTaskFlowDTO
 	 * @return
 	 */

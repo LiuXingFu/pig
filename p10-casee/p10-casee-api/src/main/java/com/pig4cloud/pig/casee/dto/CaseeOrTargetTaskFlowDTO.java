@@ -21,6 +21,7 @@ import com.pig4cloud.pig.casee.entity.TaskNode;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -55,7 +56,7 @@ public class CaseeOrTargetTaskFlowDTO extends TaskNode {
 	 * 案件或标的审核人id(可能存在多个)
 	 */
 	@ApiModelProperty(value="案件或标的审核人id(可能存在多个)")
-	private List<Integer> caseeOrTargetAuditorList;
+	private List<Integer> caseeOrTargetAuditorList=new ArrayList<>();
 
 	/**
 	 * //查询该用户任务id
