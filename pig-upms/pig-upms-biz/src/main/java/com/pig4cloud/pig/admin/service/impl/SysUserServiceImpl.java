@@ -372,4 +372,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		return this.baseMapper.pageCooperateByUserId(userSelectDTO);
 	}
 
+//	/**
+//	 * 根据特定条件查询法官
+//	 * @param page 分页条件
+//	 * @param user
+//	 * @return
+//	 */
+//	@Override
+//	public IPage<SysUser> pageJudge(Page page, SysUser user) {
+//		return this.baseMapper.pageJudge(page, user);
+//	}
+
 }

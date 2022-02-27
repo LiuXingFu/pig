@@ -78,6 +78,17 @@ public class ExpenseRecordController {
 		return R.ok(expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCostType,expenseRecord.getCostType()).eq(ExpenseRecord::getCaseeNumber,expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getStatus,0)));
 	}
 
+	/**
+	 * 根据项目id、案件id和状态查询费用信息
+	 * @param expenseRecord
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id和状态查询费用信息", notes = "根据项目id、案件id和状态查询费用信息")
+	@GetMapping("/getByPaymentType" )
+	public R getByPaymentType(ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.list(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCaseeId,expenseRecord.getCaseeId()).eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getStatus,0)));
+	}
+
     /**
      * 新增费用产生记录表
      * @param expenseRecord 费用产生记录表

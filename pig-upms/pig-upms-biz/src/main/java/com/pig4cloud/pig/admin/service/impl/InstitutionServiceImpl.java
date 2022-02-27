@@ -18,7 +18,6 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -694,6 +693,15 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			organizationQueryVOS = this.baseMapper.querySelectByInsId(insId);
 		}
 		return organizationQueryVOS;
+	}
+
+	/**
+	 * 根据项目机构id查询项目机构关联机构下拉框
+	 * @param projectInstitutionSelectDTO
+	 * @return
+	 */
+	public List<OrganizationQueryVO> queryProjectInsSelect(ProjectInstitutionSelectDTO projectInstitutionSelectDTO) {
+		return this.baseMapper.queryProjectInsSelect(projectInstitutionSelectDTO);
 	}
 
 }

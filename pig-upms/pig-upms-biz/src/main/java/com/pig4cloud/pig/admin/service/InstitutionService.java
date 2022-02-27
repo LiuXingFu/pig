@@ -144,4 +144,10 @@ public interface InstitutionService extends IService<Institution> {
 	 */
 	List<OrganizationQueryVO> queryInsSelect(InstitutionSelectDTO insOulesSelectDTO);
 
+	/**
+	 * 根据项目机构id查询项目机构关联机构下拉框
+	 * @param projectInstitutionSelectDTO
+	 * @return
+	 */
+	List<OrganizationQueryVO> queryProjectInsSelect(ProjectInstitutionSelectDTO projectInstitutionSelectDTO);
 }

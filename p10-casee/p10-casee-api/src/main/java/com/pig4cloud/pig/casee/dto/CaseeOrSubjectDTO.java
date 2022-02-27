@@ -18,4 +18,9 @@ public class CaseeOrSubjectDTO {
 	 */
 	private Integer caseeId;
 
+	/**
+	 * 类型（0-申请人/原告/上述人/申请执行人等，1-被告/被执行人/被上述人等）
+	 */
+	private Integer caseePersonnelType;
+
 }

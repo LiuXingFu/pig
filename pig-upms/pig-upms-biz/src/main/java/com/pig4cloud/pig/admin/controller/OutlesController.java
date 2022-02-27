@@ -276,4 +276,15 @@ public class OutlesController {
 		return R.ok(outlesService.queryOutlesIdSelect(outlesSelectDTO));
 	}
 
+	/**
+	 * 根据项目机构id和选中机构id查询合作网点
+	 * @param projectOutlesSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目机构id和选中机构id查询合作网点", notes = "根据项目机构id和选中机构id查询合作网点")
+	@GetMapping("/queryProjectOutlesSelect")
+	public R queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO){
+		return R.ok(outlesService.queryProjectOutlesSelect(projectOutlesSelectDTO));
+	}
+
 }

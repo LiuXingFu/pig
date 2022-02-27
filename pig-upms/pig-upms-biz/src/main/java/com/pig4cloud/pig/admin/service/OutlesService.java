@@ -160,4 +160,11 @@ public interface OutlesService extends IService<Outles> {
 	public List<OrganizationQueryVO> queryOutlesIdSelect(OutlesSelectDTO outlesSelectDTO);
 
 	List<Outles> pageOutlesList(Integer insId, String outlesName, List<Integer> outlesIds);
+
+	/**
+	 * 根据项目机构id和选中机构id查询合作网点
+	 * @param projectOutlesSelectDTO
+	 * @return
+	 */
+	List<OrganizationQueryVO> queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO);
 }

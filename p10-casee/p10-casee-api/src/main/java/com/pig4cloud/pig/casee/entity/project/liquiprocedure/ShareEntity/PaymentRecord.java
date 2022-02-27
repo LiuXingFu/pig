@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class PaymentRecord extends CommonalityData implements Serializable {
 
 	/**
-	 * 款项类型(0-本金/利息 1-诉讼费 2-保全费 3-评估费 4-网络询价费 5-定向询价费 6-拍辅费 7-公告费 8-代理费 9-其它费用)
+	 * 款项类型(100-本金/利息 200-保全费 210-一审诉讼费 220-二审诉讼费 230-首次执行费 240-定价费 300-拍辅费 310-代理费 400-其它费用)
 	 */
 	private Integer paymentType;
 
