@@ -86,6 +86,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 			save = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
 		}else {
 			Behavior behavior = new Behavior();
+			BeanCopyUtil.copyBean(behaviorSaveDTO,behavior);
 			save = this.baseMapper.insert(behavior);
 		}
 		return save;

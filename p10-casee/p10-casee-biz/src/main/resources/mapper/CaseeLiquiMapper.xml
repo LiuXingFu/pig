@@ -76,6 +76,12 @@
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_casee.del_flag = 0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
 		<if test="query.caseeNumber != null and query.caseeNumber != ''">
 			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
 				or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
