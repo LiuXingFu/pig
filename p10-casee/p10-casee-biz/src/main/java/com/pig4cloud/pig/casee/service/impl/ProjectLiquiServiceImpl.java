@@ -321,14 +321,24 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		transferRecordDTO.setTransferType(0);
 		transferRecordDTO.setStatus(0);
 
-
 		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
-		Long total = transferRecordPage.getTotal();
-		projectStatisticsVO.setPendingCount(Integer.valueOf(total.toString()));
+		Long pendingCount = transferRecordPage.getTotal();
+		projectStatisticsVO.setPendingCount(Integer.valueOf(pendingCount.toString()));
 
-
+		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
+		IPage<ProjectLiquiPageVO> pageVOIPage = queryNotProcessedPage(page,projectNoProcessedDTO);
+		Long notProcessedCount = pageVOIPage.getTotal();
+		projectStatisticsVO.setNotProcessedCount(Integer.valueOf(notProcessedCount.toString()));
 
 		return projectStatisticsVO;
+	}
+
+	@Override
+	public IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectNotProcessedPage(page,projectNoProcessedDTO,insOutlesDTO);
 	}
 
 

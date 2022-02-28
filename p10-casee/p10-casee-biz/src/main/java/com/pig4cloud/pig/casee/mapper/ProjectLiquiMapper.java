@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
+import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -52,4 +53,6 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	ProjectLiqui getByProjectId(@Param("projectId") Integer projectId);
 
 	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, @Param("subjectId") Integer subjectId);
+
+	IPage<ProjectLiquiPageVO> selectNotProcessedPage(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
 }

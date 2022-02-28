@@ -61,7 +61,7 @@ public class ProjectNoProcessedDTO {
 	 * 债务人
 	 */
 	@ApiModelProperty(value="债务人")
-	private String executedName;
+	private String subjectPersons;
 
 
 
