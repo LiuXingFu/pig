@@ -117,14 +117,14 @@ public class TaskNodeController {
     }
 
 	/**
-	 * 根据案件id查询模板数据
+	 * 根据案件id,程序性质查询模板数据
 	 * @param caseeId 案件id
 	 * @return R
 	 */
-	@ApiOperation(value = "根据案件id查询模板数据", notes = "根据案件id查询模板数据")
-	@GetMapping("/queryNodeTemplateByCaseeId/{caseeId}")
-	public R queryNodeTemplateByCaseeId(@PathVariable("caseeId" )Integer caseeId) {
-		return R.ok(taskNodeService.queryNodeTemplateByCaseeId(caseeId));
+	@ApiOperation(value = "根据案件id,程序性质查询模板数据", notes = "根据案件id,程序性质查询模板数据")
+	@GetMapping("/queryNodeTemplateByCaseeId")
+	public R queryNodeTemplateByCaseeId(Integer caseeId,Integer procedureNature) {
+		return R.ok(taskNodeService.queryNodeTemplateByCaseeId(caseeId,procedureNature));
 	}
 
 	/**
@@ -281,6 +281,18 @@ public class TaskNodeController {
 		return R.ok(this.taskNodeService.queryNodeTaskByCaseeIdAndNodeKey(caseeId, nodeKey));
 	}
 
+	/**
+	 * 根据项目id与节点key查询任务对象
+	 * @param projectId 项目id
+	 * @param nodeKey 节点key
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id与节点key查询任务对象", notes = "根据项目id与节点key查询任务对象")
+	@SysLog("根据项目id与节点key查询任务对象" )
+	@GetMapping("/queryNodeTaskByProjectIdAndNodeKey")
+	public R queryNodeTaskByProjectIdAndNodeKey(Integer projectId, String nodeKey){
+		return R.ok(this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId,projectId).eq(TaskNode::getNodeKey,nodeKey)));
+	}
 
 	@ApiOperation(value = "添加流程定义的部署", notes = "添加流程定义的部署")
 	@SysLog("添加流程定义的部署" )

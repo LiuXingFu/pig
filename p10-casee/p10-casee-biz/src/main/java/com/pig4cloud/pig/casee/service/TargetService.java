@@ -24,6 +24,8 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
+import com.pig4cloud.pig.casee.vo.TaskNodeVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -66,4 +68,11 @@ public interface TargetService extends IService<Target> {
 	 * @return
 	 */
 	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO);
+
+	/**
+	 * 根据案件id,程序性质查询模板数据
+	 * @param caseeId 案件id
+	 * @return R
+	 */
+	List<TaskNodeVO> getTarget(Integer caseeId,Integer procedureNature);
 }

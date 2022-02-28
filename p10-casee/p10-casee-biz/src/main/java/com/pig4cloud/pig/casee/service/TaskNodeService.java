@@ -114,7 +114,7 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @param caseeId 案件id
 	 * @return R
 	 */
-	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId);
+	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId,Integer procedureNature);
 
 	/**
 	 * 根据标的id查询当前主任务进度
