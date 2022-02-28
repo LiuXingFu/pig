@@ -117,6 +117,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
 		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
 		targetService.saveTargetAddDTO(targetAddDTO);
 		return caseeLiqui.getCaseeId();
 	}
@@ -125,7 +126,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Transactional
 	public Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
-		saveAssetsReService(caseeLiquiAddDTO.getProjectId(),caseeId);
+		saveAssetsReService(caseeLiquiAddDTO.getProjectId(),caseeId,caseeLiquiAddDTO.getCaseeType());
 		return caseeId;
 	}
 
@@ -230,7 +231,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Transactional
-	public void saveAssetsReService(Integer projectId,Integer caseeId){
+	public void saveAssetsReService(Integer projectId,Integer caseeId,Integer caseeType){
 		// 查询抵押财产，更新财产关联表
 		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
@@ -238,6 +239,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		queryWrapper.lambda().eq(AssetsRe::getAssetsSource, 1);
 		queryWrapper.lambda().isNull(AssetsRe::getCaseeId);
 		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
+		//添加任务数据以及程序信息
+		Project project = projectLiquiService.getById(projectId);
 		// 遍历保存财产关联
 		if (assetsRes.size() > 0) {
 			List<AssetsRe> assetsReList = new ArrayList<>();
@@ -247,6 +250,18 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				assetsRe.setCaseeId(caseeId);
 				assetsRe.setCreateCaseeId(caseeId);
 				assetsReList.add(assetsRe);
+
+				TargetAddDTO targetAddDTO=new TargetAddDTO();
+				targetAddDTO.setCaseeId(caseeId);
+				targetAddDTO.setProcedureNature(caseeType);
+				targetAddDTO.setOutlesId(project.getOutlesId());
+				targetAddDTO.setProjectId(projectId);
+				try {
+					targetService.saveTargetAddDTO(targetAddDTO);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			});
 			assetsReService.updateBatchById(assetsReList);
 		}

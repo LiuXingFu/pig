@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.dto.TargetPageDTO;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
+import com.pig4cloud.pig.casee.vo.TaskNodeVO;
 import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -55,4 +56,7 @@ public interface TargetMapper extends BaseMapper<Target> {
 	String queryBusinessData(@Param("query") AuditTargetDTO auditTargetDTO);
 
 	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO, Integer insId, Integer outelsId);
+
+	List<TaskNodeVO> getTarget(@Param("caseeId")Integer caseeId, @Param("procedureNature")Integer procedureNature);
+
 }

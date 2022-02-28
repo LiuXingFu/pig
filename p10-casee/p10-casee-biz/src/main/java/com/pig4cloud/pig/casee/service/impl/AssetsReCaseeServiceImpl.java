@@ -20,14 +20,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.mapper.AssetsReCaseeMapper;
 import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
-import com.pig4cloud.pig.casee.service.AssetsReCaseeService;
-import com.pig4cloud.pig.casee.service.AssetsReService;
-import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +48,14 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 
 	@Autowired
 	AssetsService assetsService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private TargetService targetService;
 
 	@Override
 	@Transactional
-	public Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO){
+	public Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception{
 		// 财产不存在保存财产信息及相关联信息
 		if(Objects.isNull(assetsAddDTO.getAssetsId())){
 			Assets assets = new Assets();
@@ -72,6 +76,19 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 		assetsReCasee.setAssetsSource(2);
 		assetsReCasee.setCreateCaseeId(assetsAddDTO.getCaseeId());
 		BeanCopyUtil.copyBean(assetsAddDTO,assetsReCasee);
+
+		//添加任务数据以及程序信息
+		Project project = projectLiquiService.getById(assetsAddDTO.getProjectId());
+		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		if (assetsAddDTO.getType()==20100){//资金财产
+			targetAddDTO.setProcedureNature(4041);
+		}else {//实体财产
+			targetAddDTO.setProcedureNature(4040);
+		}
+		targetAddDTO.setCaseeId(assetsAddDTO.getCaseeId());
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(assetsAddDTO.getProjectId());
+		targetService.saveTargetAddDTO(targetAddDTO);
 		return this.baseMapper.insert(assetsReCasee);
 	}
 
