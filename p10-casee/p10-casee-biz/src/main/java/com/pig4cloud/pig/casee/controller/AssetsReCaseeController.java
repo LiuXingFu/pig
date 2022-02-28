@@ -51,7 +51,7 @@ public class AssetsReCaseeController {
 	@ApiOperation(value = "添加案件财产", notes = "添加案件财产")
 	@SysLog("新增财产关联表" )
 	@PostMapping("/saveAssetsCasee")
-	public R save(@RequestBody AssetsAddDTO assetsAddDTO) {
+	public R save(@RequestBody AssetsAddDTO assetsAddDTO)throws Exception {
 		return R.ok(assetsReCaseeService.saveAssetsCasee(assetsAddDTO));
 	}
 

@@ -35,7 +35,7 @@ public interface AssetsReCaseeService extends IService<AssetsRe> {
 	 * @param assetsAddDTO
 	 * @return
 	 */
-	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO);
+	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception;
 
 
 }

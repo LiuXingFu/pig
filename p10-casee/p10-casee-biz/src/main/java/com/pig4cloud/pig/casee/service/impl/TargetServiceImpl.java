@@ -49,6 +49,7 @@ import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
 import com.pig4cloud.pig.casee.vo.TargetPageVO;
+import com.pig4cloud.pig.casee.vo.TaskNodeVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
@@ -204,6 +205,11 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	@Override
 	public IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
 		return this.baseMapper.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	@Override
+	public List<TaskNodeVO> getTarget(Integer caseeId, Integer procedureNature) {
+		return this.baseMapper.getTarget(caseeId,procedureNature);
 	}
 
 	/**
