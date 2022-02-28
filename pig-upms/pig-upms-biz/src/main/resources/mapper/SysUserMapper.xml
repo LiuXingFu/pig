@@ -188,13 +188,15 @@
 		p10_institution.ins_name,
 		p10_outles.outles_name,
 		p10_ins_outles_user.ins_outles_user_id,
+		p10_ins_outles_user.ins_id,
 		p10_ins_outles_user.position,
+		p10_ins_outles_user.type,
 		p10_ins_outles_user.entry_time
 		from sys_user
 		LEFT JOIN p10_ins_outles_user on p10_ins_outles_user.user_id = sys_user.user_id and p10_ins_outles_user.del_flag = 0
 		LEFT JOIN p10_institution on p10_institution.ins_id = p10_ins_outles_user.ins_id and p10_institution.del_flag = 0
 		LEFT JOIN p10_outles on p10_outles.outles_id = p10_ins_outles_user.outles_id and p10_outles.del_flag = 0
-		where sys_user.del_flag = 0 and p10_ins_outles_user.type = 2
+		where sys_user.del_flag = 0
 		<if test="insId != null and insId != 0">
 			and p10_institution.ins_id = #{insId}
 		</if>
