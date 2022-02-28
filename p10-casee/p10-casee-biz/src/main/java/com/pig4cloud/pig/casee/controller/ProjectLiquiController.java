@@ -149,5 +149,15 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.queryDealt(projectId));
 	}
 
+	/**
+	 * 统计项目待接收处理数量
+	 * @return R
+	 */
+	@ApiOperation(value = "统计项目待接收处理数量", notes = "统计项目待接收处理数量")
+	@GetMapping("/countProject" )
+	public R countProject() {
+		return R.ok(projectLiquiService.countProject());
+	}
+
 
 }

@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
@@ -66,7 +67,7 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	private ExpenseRecordService expenseRecordService;
 
 	@Override
-	public List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
+	public IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
 		if (transferRecordDTO.getHandoverTime()!=null){
 			String andoverTime =transferRecordDTO.getHandoverTime().toString();
 		}

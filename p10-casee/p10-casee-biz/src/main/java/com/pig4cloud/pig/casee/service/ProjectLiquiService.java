@@ -58,4 +58,10 @@ public interface ProjectLiquiService extends IService<Project> {
 	 * @return
 	 */
 	ProjectLiquiDealtVO queryDealt(Integer projectId);
+
+	/*******************************************************/
+	ProjectStatisticsVO countProject();
+
+
+
 }

@@ -311,5 +311,25 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return projectLiquiDealtVO;
 	}
 
+	@Override
+	public ProjectStatisticsVO countProject(){
+		ProjectStatisticsVO projectStatisticsVO = new ProjectStatisticsVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
+		transferRecordDTO.setTransferType(0);
+		transferRecordDTO.setStatus(0);
+
+
+		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
+		Long total = transferRecordPage.getTotal();
+		projectStatisticsVO.setPendingCount(Integer.valueOf(total.toString()));
+
+
+
+		return projectStatisticsVO;
+	}
+
 
 }
