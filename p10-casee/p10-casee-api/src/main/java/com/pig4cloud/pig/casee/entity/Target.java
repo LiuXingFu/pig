@@ -83,6 +83,11 @@ public class Target extends BaseEntity {
 	private Integer goalId;
 
 	/**
+	 * 目标类型 (10001：案件, 20001：财产，30001：行为)
+	 */
+	private Integer goalType;
+
+	/**
 	 * 创建网点id
 	 */
 	@ApiModelProperty(value="创建网点id")

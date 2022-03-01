@@ -121,6 +121,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
 		targetAddDTO.setOutlesId(project.getOutlesId());
 		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+		targetAddDTO.setGoalType(10001);
 		targetService.saveTargetAddDTO(targetAddDTO);
 		return caseeLiqui.getCaseeId();
 	}
@@ -220,6 +221,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
 				targetAddDTO.setOutlesId(project.getOutlesId());
 				targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+				targetAddDTO.setGoalType(10001);
 				try {
 					targetService.saveTargetAddDTO(targetAddDTO);
 				} catch (Exception e) {
@@ -272,6 +274,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				targetAddDTO.setProcedureNature(caseeType);
 				targetAddDTO.setOutlesId(project.getOutlesId());
 				targetAddDTO.setProjectId(projectId);
+				targetAddDTO.setGoalType(10001);
 				try {
 					targetService.saveTargetAddDTO(targetAddDTO);
 				} catch (Exception e) {
