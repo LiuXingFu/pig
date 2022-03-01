@@ -18,14 +18,18 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
 
+import java.util.List;
+
 /**
- * 
+ *
  *
  * @author pig code generator
  * @date 2022-02-13 22:13:19
  */
 public interface ProjectCaseeReService extends IService<ProjectCaseeRe> {
 
+	List<Casee> getCaseeByProjectId(Integer projectId);
 }
