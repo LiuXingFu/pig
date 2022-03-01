@@ -68,9 +68,6 @@ public class CaseeLiquiAddDTO {
 	@ApiModelProperty(value = "案件总金额")
 	private BigDecimal caseeAmount;
 
-	@ApiModelProperty(value = "清收案件详情表")
-	private CaseeLiquiDetail caseeLiquiDetail;
-
 	/**
 	 * 项目id
 	 */
