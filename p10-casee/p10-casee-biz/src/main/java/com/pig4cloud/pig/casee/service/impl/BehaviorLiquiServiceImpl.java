@@ -44,6 +44,7 @@ public class BehaviorLiquiServiceImpl extends ServiceImpl<BehaviorLiquiMapper, B
 			behaviorLiqui.getBehaviorLiquiDetail().setLimitEndTime(limitEndTime);
 		}
 		BeanCopyUtil.copyBean(behaviorLiqui,behavior);
-		return this.baseMapper.insert(behavior);
+		this.baseMapper.insert(behavior);
+		return behavior.getBehaviorId();
 	}
 }

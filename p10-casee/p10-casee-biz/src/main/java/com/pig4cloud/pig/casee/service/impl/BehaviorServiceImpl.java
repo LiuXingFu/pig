@@ -19,20 +19,22 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.BehaviorLiquiDetail;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
 import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
 import com.pig4cloud.pig.casee.service.BehaviorService;
+import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
-import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
-import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +63,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 
 	/**
 	 * 根据主体id分页查询行为数据
+	 *
 	 * @param page
 	 * @param subjectId
 	 * @return
@@ -72,6 +75,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 
 	/**
 	 * 根据行为id查询行为信息、项目信息、案件信息
+	 *
 	 * @param behaviorId
 	 * @return
 	 */
@@ -81,30 +85,34 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	}
 
 	@Override
-	public Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO){
+	public Integer saveBehavior(BehaviorSaveDTO behaviorSaveDTO) {
 		Integer save = 0;
-		if(behaviorSaveDTO.getLimitType()==102){
+		Integer behaviorId = 0;
+		if (behaviorSaveDTO.getLimitType() == 102) {
 			BehaviorLiqui behaviorLiqui = new BehaviorLiqui();
-			BeanCopyUtil.copyBean(behaviorSaveDTO,behaviorLiqui);
+			BeanCopyUtil.copyBean(behaviorSaveDTO, behaviorLiqui);
 			BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
-			BeanCopyUtil.copyBean(behaviorSaveDTO,behaviorLiquiDetail);
+			BeanCopyUtil.copyBean(behaviorSaveDTO, behaviorLiquiDetail);
 			behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
 			save = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
-		}else {
+			behaviorId = behaviorLiqui.getBehaviorId();
+		} else {
 			Behavior behavior = new Behavior();
-			BeanCopyUtil.copyBean(behaviorSaveDTO,behavior);
+			BeanCopyUtil.copyBean(behaviorSaveDTO, behavior);
 			save = this.baseMapper.insert(behavior);
+			behaviorId = behavior.getBehaviorId();
 		}
 		Project project = projectLiquiService.getById(behaviorSaveDTO.getProjectId());
 
 		//添加任务数据以及程序信息
-		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		TargetAddDTO targetAddDTO = new TargetAddDTO();
 		targetAddDTO.setCaseeId(behaviorSaveDTO.getCaseeId());
 		targetAddDTO.setOutlesId(project.getOutlesId());
 		targetAddDTO.setProjectId(behaviorSaveDTO.getProjectId());
-		if (behaviorSaveDTO.getType()==100){
+		targetAddDTO.setGoalId(behaviorId);
+		if (behaviorSaveDTO.getType() == 100) {
 			targetAddDTO.setProcedureNature(5050);
-		}else {
+		} else {
 			targetAddDTO.setProcedureNature(5051);
 		}
 		try {
@@ -116,7 +124,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	}
 
 	@Override
-	public IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId){
-		return this.baseMapper.queryPageByCaseeId(page,caseeId);
+	public IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId) {
+		return this.baseMapper.queryPageByCaseeId(page, caseeId);
 	}
 }

@@ -211,4 +211,17 @@ public class CaseeLiquiController {
 	public R queryAssetsBehavior(Integer caseeId) {
 		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId));
 	}
+
+	/**
+	 * 分页查询财产未添加案件
+	 *
+	 * @param page              分页对象
+	 * @param caseeLiquiPageDTO 案件清收表
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询财产未添加案件", notes = "分页查询财产未添加案件")
+	@GetMapping("/queryAssetNotAddedPage")
+	public R queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
+		return R.ok(caseeLiquiService.queryAssetNotAddedPage(page, caseeLiquiPageDTO));
+	}
 }

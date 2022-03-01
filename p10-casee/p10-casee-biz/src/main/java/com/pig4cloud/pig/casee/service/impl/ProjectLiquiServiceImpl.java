@@ -352,8 +352,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		caseeLiquiPageDTO.setCaseeType(1010);
 		IPage<CaseeLiquiPageVO> caseeLiquiPageVOIPage = caseeLiquiService.queryPage(page,caseeLiquiPageDTO);
 		Long preservationCaseCount = caseeLiquiPageVOIPage.getTotal();
-		preLitigationStageVO.setPreservationCaseCount(Integer.valueOf(preservationCaseCount.toString()));
+		preLitigationStageVO.setPreservationCaseCount(preservationCaseCount);
 
+		caseeLiquiPageDTO.setStatus(1);
+		IPage<CaseeLiquiPageVO> assetNotAddedList = caseeLiquiService.queryAssetNotAddedPage(page,caseeLiquiPageDTO);
+		Long assetNotAddedCount = assetNotAddedList.getTotal();
+		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedCount);
 
 		return preLitigationStageVO;
 	}

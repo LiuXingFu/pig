@@ -120,4 +120,12 @@ public interface CaseeLiquiService extends IService<Casee> {
 
 	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId);
 
+	/**
+	 * 分页查询财产未添加案件
+	 * @param page
+	 * @param caseeLiquiPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiPageVO> queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO);
+
 }

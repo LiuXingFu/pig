@@ -11,7 +11,7 @@ public class PreLitigationStageVO {
 	/**
 	 * 诉前保全案件统计
 	 */
-	private Integer preservationCaseCount;
+	private Long preservationCaseCount;
 
 	/**
 	 * 立案未送达统计
@@ -21,7 +21,7 @@ public class PreLitigationStageVO {
 	/**
 	 * 未添加财产统计
 	 */
-	private Integer assetNotAddedCount;
+	private Long assetNotAddedCount;
 
 	/**
 	 * 查控保全未完成统计

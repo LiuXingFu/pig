@@ -332,4 +332,12 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		return this.baseMapper.selectAssetsBehavior(caseeId);
 	}
 
+	@Override
+	public IPage<CaseeLiquiPageVO> queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectAssetNotAddedPage(page,caseeLiquiPageDTO,insOutlesDTO);
+	}
+
 }
