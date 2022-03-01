@@ -110,9 +110,10 @@
 		</if>
 	</select>
 
-	<select id="getByProjectId" resultType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui">
-		select * from p10_project
-		where project_id = #{projectId}
+	<select id="getByProjectId" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO">
+		select p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as litigation from p10_project
+		left join p10_transfer_record on p10_transfer_record.project_id=p10_project.project_id
+		where p10_transfer_record.project_id = #{projectId}
 	</select>
 
 	<select id="queryPageProjectLiqui" resultMap="queryPageProjectLiquiMap">

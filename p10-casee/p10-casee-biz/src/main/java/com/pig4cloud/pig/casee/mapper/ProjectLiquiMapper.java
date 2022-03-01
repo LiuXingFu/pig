@@ -50,7 +50,7 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	List<ProjectSubjectVO> selectProjectSubject(@Param("query")ProjectSubjectDTO projectSubjectDTO);
 
-	ProjectLiqui getByProjectId(@Param("projectId") Integer projectId);
+	ProjectLiquiDetailsVO getByProjectId(@Param("projectId") Integer projectId);
 
 	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, @Param("subjectId") Integer subjectId);
 
