@@ -19,10 +19,15 @@ public class LiQui_SSYS_SSYSSSDQQR_SSYSSSDQQR extends CommonalityData implements
 	private Date confirmTime;
 
 	/**
-	 * 生效日期
+	 * 被告是否上诉(0-否 1-是 )
+	 */
+	private Integer defendantWhetherAppeal;
+
+	/**
+	 * 应诉时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date takeEffectTime;
+	private Date respondingTime;
 
 	/**
 	 * 备注
@@ -30,13 +35,13 @@ public class LiQui_SSYS_SSYSSSDQQR_SSYSSSDQQR extends CommonalityData implements
 	private String remark;
 
 	/**
-	 * 被告是否上诉(0-否 1-是 )
+	 * 上诉对象(0-被告 1-案外人）
 	 */
-	private Integer defendantWhetherAppeal;
+	private Integer objectOfAppeal;
 
 	/**
-	 * 生效履行期限
+	 * 答辩状
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date effectivePerformanceTime;
+	private String replyShapeFile;
+
 }

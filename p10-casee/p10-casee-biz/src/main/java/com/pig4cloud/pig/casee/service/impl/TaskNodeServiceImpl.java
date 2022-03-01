@@ -283,7 +283,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		if (procedureNature.equals(20100)){//资金财产
 			procedureNature=4041;
 		}else if (procedureNature.equals(20200)){//实体财产
-			procedureNature=4040;
+			procedureNature = 4040;
 		}
 		//1.根据案件id和程序性质查询所有任务节点数据
 		List<TaskNodeVO> list = this.targetService.getTarget(caseeId,procedureNature);

@@ -61,6 +61,12 @@
 		LEFT JOIN p10_project ON p10_behavior.project_id = p10_project.project_id and p10_project.del_flag = 0
 		WHERE p10_behavior.del_flag = 0
 		AND p10_behavior.subject_id = #{subjectId}
+		<if test="insId != null and insId != 0">
+			and p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and p10_project.outles_id = #{outlesId}
+		</if>
 	</select>
 
 	<select id="queryById" resultType="com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee">

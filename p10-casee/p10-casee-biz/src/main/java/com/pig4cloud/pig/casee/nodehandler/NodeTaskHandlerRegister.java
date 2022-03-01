@@ -120,6 +120,7 @@ public class NodeTaskHandlerRegister {
 		//清收任务阶段提交map实现类
 		submitHandlerMap.put("liQui_SQ_SQBQJG_SQBQJG", liqui_sq_sqbqjg_sqbqjg_nodeHandler);
 		submitHandlerMap.put("liQui_SQ_SQAJCA_SQAJCA", liqui_sq_sqajca_sqajca_nodeHandler);
+
 		submitHandlerMap.put("liQui_SSYS_SSYSCPJG_SSYSCPJG", liqui_ssys_ssyscpjg_ssyscpjg_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSJACA_SSYSJACA", liqui_ssys_ssysjaca_ssysjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSBQ_SSBQBQJG_SSBQBQJG", liqui_ssbq_ssbqbqjg_ssbqbqjg_nodeHandler);

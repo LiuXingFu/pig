@@ -70,6 +70,11 @@ public class AssetsOrProjectPageVO {
 	private Integer assetsReId;
 
 	/**
+	 * 案件id
+	 */
+	private Integer caseeId;
+
+	/**
 	 * 是否首冻(0-否 1-是)
 	 */
 	private String whetherFirstFrozen;

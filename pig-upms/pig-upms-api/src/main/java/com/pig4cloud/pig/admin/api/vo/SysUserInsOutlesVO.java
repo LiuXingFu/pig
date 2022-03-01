@@ -31,6 +31,11 @@ import java.time.LocalDateTime;
 public class SysUserInsOutlesVO extends SysUser {
 
 	/**
+	 * 机构id
+	 */
+	private Integer insId;
+
+	/**
 	 * 机构名称
 	 */
 	@ApiModelProperty(value = "机构名称")
@@ -41,6 +46,11 @@ public class SysUserInsOutlesVO extends SysUser {
 	 */
 	@ApiModelProperty(value = "网点名称")
 	private String outlesName;
+
+	/**
+	 * 类型：1-管理员，2-普通员工'
+	 */
+	private Integer type;
 
 	/**
 	 * 机构网点用户id

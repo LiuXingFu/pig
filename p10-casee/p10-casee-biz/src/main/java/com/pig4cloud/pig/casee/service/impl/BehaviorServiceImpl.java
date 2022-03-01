@@ -52,6 +52,12 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
 	BehaviorLiquiService behaviorLiquiService;
+	@Autowired
+	JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private TargetService targetService;
 
 	/**
 	 * 根据主体id分页查询行为数据
@@ -61,7 +67,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	 */
 	@Override
 	public IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId) {
-		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId);
+		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	/**
@@ -88,6 +94,23 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 			Behavior behavior = new Behavior();
 			BeanCopyUtil.copyBean(behaviorSaveDTO,behavior);
 			save = this.baseMapper.insert(behavior);
+		}
+		Project project = projectLiquiService.getById(behaviorSaveDTO.getProjectId());
+
+		//添加任务数据以及程序信息
+		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		targetAddDTO.setCaseeId(behaviorSaveDTO.getCaseeId());
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(behaviorSaveDTO.getProjectId());
+		if (behaviorSaveDTO.getType()==100){
+			targetAddDTO.setProcedureNature(5050);
+		}else {
+			targetAddDTO.setProcedureNature(5051);
+		}
+		try {
+			targetService.saveTargetAddDTO(targetAddDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return save;
 	}
