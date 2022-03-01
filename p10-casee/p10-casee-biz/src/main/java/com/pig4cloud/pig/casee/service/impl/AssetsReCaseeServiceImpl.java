@@ -84,7 +84,7 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 		TargetAddDTO targetAddDTO=new TargetAddDTO();
 		if (assetsAddDTO.getType()==20100){//资金财产
 			targetAddDTO.setProcedureNature(4041);
-		}else {//实体财产
+		}else if (assetsAddDTO.getType()==20200){//实体财产
 			targetAddDTO.setProcedureNature(4040);
 		}
 		targetAddDTO.setCaseeId(assetsAddDTO.getCaseeId());

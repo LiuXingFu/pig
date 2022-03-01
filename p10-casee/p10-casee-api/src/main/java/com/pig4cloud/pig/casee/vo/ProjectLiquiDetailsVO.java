@@ -55,5 +55,6 @@ public class ProjectLiquiDetailsVO extends ProjectLiqui {
 	@ApiModelProperty(value="债务人集合")
 	List<ProjectSubjectVO> projectSubjectVOList;
 
-
+	@ApiModelProperty(value="诉讼情况(0-未诉讼 1-已诉讼)")
+	private Integer litigation;
 }

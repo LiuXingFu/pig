@@ -38,7 +38,7 @@
   </resultMap>
 
 	<select id="getCaseeByProjectId" resultType="com.pig4cloud.pig.casee.entity.Casee">
-		select p10_casee.* from p10_project_casee_re left join p10_casee.casee_id=p10_project_casee_re.casee_id
+		select p10_casee.* from p10_project_casee_re left join p10_casee on p10_casee.casee_id=p10_project_casee_re.casee_id
 		 where p10_project_casee_re.project_id=#{projectId} and p10_casee.casee_type in(3010,3031)
 	</select>
 </mapper>

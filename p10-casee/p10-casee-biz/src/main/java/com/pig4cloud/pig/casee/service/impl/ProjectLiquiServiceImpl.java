@@ -273,8 +273,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public ProjectLiquiDealtVO queryDealt(Integer projectId){
 		ProjectLiquiDealtVO projectLiquiDealtVO = new ProjectLiquiDealtVO();
 		// 查询项目基本详情
-		ProjectLiqui projectLiqui = this.baseMapper.getByProjectId(projectId);
-		projectLiquiDealtVO.setProjectLiqui(projectLiqui);
+		ProjectLiquiDetailsVO projectLiquiDetailsVO = this.baseMapper.getByProjectId(projectId);
+		projectLiquiDealtVO.setProjectLiqui(projectLiquiDetailsVO);
+		projectLiquiDealtVO.setLitigation(projectLiquiDetailsVO.getLitigation());
 
 		// 查询诉前阶段案件信息
 		List<Integer> typeList = new ArrayList<>();
