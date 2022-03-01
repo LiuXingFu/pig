@@ -21,9 +21,14 @@ public class EntityZX_STZX_CCZXDCCD_CCZXDCCD extends CommonalityData implements 
 	private Date dateOfAdjudication;
 
 	/**
+	 * 拍卖结束执行案号
+	 */
+	private String caseeNumber;
+
+	/**
 	 * 抵偿裁定文书
 	 */
-	private List<FileAdder> compensationRulingList;
+	private String completionRulingFile;
 
 	/**
 	 * 备注

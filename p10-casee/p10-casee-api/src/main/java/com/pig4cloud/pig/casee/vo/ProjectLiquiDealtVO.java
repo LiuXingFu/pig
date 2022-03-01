@@ -66,5 +66,8 @@ public class ProjectLiquiDealtVO {
 	 */
 	Boolean addCaseeBtn;
 
-
+	/**
+	 * 诉讼情况
+	 */
+	Integer litigation;
 }
