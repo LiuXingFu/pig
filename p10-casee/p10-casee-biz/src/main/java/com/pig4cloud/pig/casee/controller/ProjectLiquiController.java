@@ -171,4 +171,14 @@ public class ProjectLiquiController {
 	public R queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
 		return R.ok(projectLiquiService.queryNotProcessedPage(page, projectNoProcessedDTO));
 	}
+
+	/**
+	 * 诉前阶段数量统计
+	 * @return R
+	 */
+	@ApiOperation(value = "诉前阶段数量统计", notes = "诉前阶段数量统计")
+	@GetMapping("/countPreLitigationStage" )
+	public R countPreLitigationStage() {
+		return R.ok(projectLiquiService.countPreLitigationStage());
+	}
 }

@@ -2,6 +2,9 @@ package com.pig4cloud.pig.casee.vo;
 
 import lombok.Data;
 
+/**
+ *接收处理
+ */
 @Data
 public class ProjectStatisticsVO {
 
