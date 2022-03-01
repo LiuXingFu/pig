@@ -17,13 +17,16 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
 import com.pig4cloud.pig.casee.mapper.ProjectCaseeReMapper;
 import com.pig4cloud.pig.casee.service.ProjectCaseeReService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
- * 
+ *
  *
  * @author pig code generator
  * @date 2022-02-13 22:13:19
@@ -31,4 +34,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectCaseeReServiceImpl extends ServiceImpl<ProjectCaseeReMapper, ProjectCaseeRe> implements ProjectCaseeReService {
 
+	@Override
+	public List<Casee> getCaseeByProjectId(Integer projectId) {
+		return this.baseMapper.getCaseeByProjectId(projectId);
+	}
 }

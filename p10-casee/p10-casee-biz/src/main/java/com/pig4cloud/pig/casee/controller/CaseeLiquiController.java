@@ -136,18 +136,6 @@ public class CaseeLiquiController {
 	}
 
 	/**
-	 * 根据项目id查询所有执行案件信息
-	 *
-	 * @param projectId id
-	 * @return R
-	 */
-	@ApiOperation(value = "根据项目id查询所有执行案件信息", notes = "根据项目id查询所有执行案件信息")
-	@GetMapping("/getCaseeByParentIdAll/{projectId}")
-	public R getCaseeByParentIdAll(@PathVariable("projectId") Integer projectId) {
-		return R.ok(caseeLiquiService.list(new LambdaQueryWrapper<Casee>().eq(Casee::getParentId,projectId).in(Casee::getCaseeType,3010,3031)));
-	}
-
-	/**
 	 * 案件清收分页查询
 	 *
 	 * @param page              分页对象

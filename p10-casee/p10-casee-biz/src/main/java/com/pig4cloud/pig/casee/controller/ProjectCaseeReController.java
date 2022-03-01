@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 
+ *
  *
  * @author pig code generator
  * @date 2022-02-13 22:13:19
@@ -57,6 +57,16 @@ public class ProjectCaseeReController {
         return R.ok(ProjectCaseeReService.page(page, Wrappers.query(ProjectCaseeRe)));
     }
 
+	/**
+	 * 根据项目id查询所有执行案件信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id查询所有执行案件信息", notes = "根据项目id查询所有执行案件信息")
+	@GetMapping("/{projectId}" )
+	public R getCaseeByProjectId(@PathVariable("projectId" ) Integer projectId) {
+		return R.ok(ProjectCaseeReService.getCaseeByProjectId(projectId));
+	}
 
     /**
      * 通过id查询
