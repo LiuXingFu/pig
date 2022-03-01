@@ -110,6 +110,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 		targetAddDTO.setOutlesId(project.getOutlesId());
 		targetAddDTO.setProjectId(behaviorSaveDTO.getProjectId());
 		targetAddDTO.setGoalId(behaviorId);
+		targetAddDTO.setGoalType(30001);
 		if (behaviorSaveDTO.getType() == 100) {
 			targetAddDTO.setProcedureNature(5050);
 		} else {

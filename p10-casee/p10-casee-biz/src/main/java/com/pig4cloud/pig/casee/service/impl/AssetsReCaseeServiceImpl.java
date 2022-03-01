@@ -56,11 +56,13 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 	@Override
 	@Transactional
 	public Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception{
+		Integer assetsId = assetsAddDTO.getAssetsId();
 		// 财产不存在保存财产信息及相关联信息
-		if(Objects.isNull(assetsAddDTO.getAssetsId())){
+		if(Objects.isNull(assetsId)){
 			Assets assets = new Assets();
 			BeanCopyUtil.copyBean(assetsAddDTO,assets);
 			assetsService.save(assets);
+			assetsId = assets.getAssetsId();
 			assetsAddDTO.setAssetsId(assets.getAssetsId());
 			// 保存财产地址信息
 			if(Objects.nonNull(assetsAddDTO.getCode())){
@@ -88,6 +90,8 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 		targetAddDTO.setCaseeId(assetsAddDTO.getCaseeId());
 		targetAddDTO.setOutlesId(project.getOutlesId());
 		targetAddDTO.setProjectId(assetsAddDTO.getProjectId());
+		targetAddDTO.setGoalType(20001);
+		targetAddDTO.setGoalId(assetsId);
 		targetService.saveTargetAddDTO(targetAddDTO);
 		return this.baseMapper.insert(assetsReCasee);
 	}
