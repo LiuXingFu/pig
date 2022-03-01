@@ -48,4 +48,10 @@ public class CaseeLiquiPageDTO {
 	 */
 	@ApiModelProperty(value="办理人名称")
 	private String actualName;
+
+	/**
+	 * 案件状态(0-待立案 1-在办 2- 撤案 3-结案 4-终结 5-实际执结)
+	 */
+	@ApiModelProperty(value="案件状态(0-待立案 1-在办 2- 撤案 3-结案 4-终结 5-实际执结) ")
+	private Integer status;
 }

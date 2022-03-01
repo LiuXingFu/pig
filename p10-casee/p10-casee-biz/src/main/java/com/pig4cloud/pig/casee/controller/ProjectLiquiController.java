@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
+import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -149,5 +150,25 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.queryDealt(projectId));
 	}
 
+	/**
+	 * 统计项目待接收处理数量
+	 * @return R
+	 */
+	@ApiOperation(value = "统计项目待接收处理数量", notes = "统计项目待接收处理数量")
+	@GetMapping("/countProject" )
+	public R countProject() {
+		return R.ok(projectLiquiService.countProject());
+	}
 
+	/**
+	 * 接收未处理分页查询
+	 * @param page 分页对象
+	 * @param projectNoProcessedDTO 项目清收表
+	 * @return
+	 */
+	@ApiOperation(value = "接收未处理分页查询", notes = "接收未处理分页查询")
+	@GetMapping("/queryNotProcessedPage" )
+	public R queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
+		return R.ok(projectLiquiService.queryNotProcessedPage(page, projectNoProcessedDTO));
+	}
 }

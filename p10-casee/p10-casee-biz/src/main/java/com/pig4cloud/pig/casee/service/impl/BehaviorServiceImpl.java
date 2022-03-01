@@ -33,7 +33,6 @@ import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
-import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +54,10 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	BehaviorLiquiService behaviorLiquiService;
 	@Autowired
 	JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private TargetService targetService;
 
 	/**
 	 * 根据主体id分页查询行为数据
@@ -89,7 +92,25 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 			save = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
 		}else {
 			Behavior behavior = new Behavior();
+			BeanCopyUtil.copyBean(behaviorSaveDTO,behavior);
 			save = this.baseMapper.insert(behavior);
+		}
+		Project project = projectLiquiService.getById(behaviorSaveDTO.getProjectId());
+
+		//添加任务数据以及程序信息
+		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		targetAddDTO.setCaseeId(behaviorSaveDTO.getCaseeId());
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(behaviorSaveDTO.getProjectId());
+		if (behaviorSaveDTO.getType()==100){
+			targetAddDTO.setProcedureNature(5050);
+		}else {
+			targetAddDTO.setProcedureNature(5051);
+		}
+		try {
+			targetService.saveTargetAddDTO(targetAddDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return save;
 	}

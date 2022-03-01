@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 public interface TransferRecordLiquiService extends IService<TransferRecord> {
 
-	List<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO);
+	IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO);
 
 	List<TransferRecordLiqui> getBankLoanIdTransferRecord(Integer sourceId);
 
