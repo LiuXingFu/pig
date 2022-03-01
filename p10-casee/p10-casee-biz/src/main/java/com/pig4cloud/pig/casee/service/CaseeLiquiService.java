@@ -24,10 +24,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.CaseeListVO;
-import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
+import com.pig4cloud.pig.casee.vo.*;
 
 import java.util.List;
 
@@ -118,6 +115,12 @@ public interface CaseeLiquiService extends IService<Casee> {
 
 	List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO);
 
+	/**
+	 * 查询债务人信息及财产和行为集合
+	 * @param caseeId
+	 * @param caseePersonnelType
+	 * @return
+	 */
 	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId,Integer caseePersonnelType);
 
 	/**
@@ -127,5 +130,13 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	IPage<CaseeLiquiPageVO> queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO);
+
+	/**
+	 * 分页查询案件流程图接口
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
 }

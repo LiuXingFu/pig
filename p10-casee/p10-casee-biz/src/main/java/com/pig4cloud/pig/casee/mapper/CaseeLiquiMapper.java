@@ -57,4 +57,6 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	IPage<CaseeLiquiPageVO> selectAssetNotAddedPage(Page page, @Param("query")CaseeLiquiPageDTO caseeLiquiPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<CaseeLiquiFlowChartPageVO> selectFlowChartPage(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 }

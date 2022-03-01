@@ -181,4 +181,34 @@ public class ProjectLiquiController {
 	public R countPreLitigationStage() {
 		return R.ok(projectLiquiService.countPreLitigationStage());
 	}
+
+	/**
+	 * 诉讼阶段数量统计
+	 * @return R
+	 */
+	@ApiOperation(value = "诉讼阶段数量统计", notes = "诉讼阶段数量统计")
+	@GetMapping("/countlitigation" )
+	public R countlitigation() {
+		return R.ok(projectLiquiService.countlitigation());
+	}
+
+	/**
+	 * 履行阶段数量统计
+	 * @return R
+	 */
+	@ApiOperation(value = "履行阶段数量统计", notes = "履行阶段数量统计")
+	@GetMapping("/countFulfill" )
+	public R countFulfill() {
+		return R.ok(projectLiquiService.countFulfill());
+	}
+
+	/**
+	 * 执行阶段数量统计
+	 * @return R
+	 */
+	@ApiOperation(value = "执行阶段数量统计", notes = "执行阶段数量统计")
+	@GetMapping("/countImplement" )
+	public R countImplement() {
+		return R.ok(projectLiquiService.countImplement());
+	}
 }

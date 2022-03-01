@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
+import com.pig4cloud.pig.casee.vo.count.*;
 
 import java.util.List;
 
@@ -57,12 +58,22 @@ public interface ProjectLiquiService extends IService<Project> {
 	ProjectLiquiDealtVO queryDealt(Integer projectId);
 
 	/*******************************************************/
-	ProjectStatisticsVO countProject();
-
-	PreLitigationStageVO countPreLitigationStage();
-
+	// 接收未处理分页查询
 	IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
 
+	// 项目接收处理统计接口
+	CountProjectStatisticsVO countProject();
 
+	// 诉前阶段统计接口
+	CountPreLitigationStageVO countPreLitigationStage();
+
+	// 诉讼阶段统计接口
+	CountLitigationVO countlitigation();
+
+	// 履行阶段统计接口
+	CountFulfillVO countFulfill();
+
+	// 执行阶段统计接口
+	CountImplementVO countImplement();
 
 }
