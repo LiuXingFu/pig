@@ -311,28 +311,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public ProjectStatisticsVO countProject(){
-		ProjectStatisticsVO projectStatisticsVO = new ProjectStatisticsVO();
-		Page page = new Page();
-		page.setCurrent(1);
-		page.setSize(10);
-		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
-		transferRecordDTO.setTransferType(0);
-		transferRecordDTO.setStatus(0);
-
-		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
-		Long pendingCount = transferRecordPage.getTotal();
-		projectStatisticsVO.setPendingCount(Integer.valueOf(pendingCount.toString()));
-
-		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
-		IPage<ProjectLiquiPageVO> pageVOIPage = queryNotProcessedPage(page,projectNoProcessedDTO);
-		Long notProcessedCount = pageVOIPage.getTotal();
-		projectStatisticsVO.setNotProcessedCount(Integer.valueOf(notProcessedCount.toString()));
-
-		return projectStatisticsVO;
-	}
-
-	@Override
 	public IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
@@ -342,22 +320,47 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 
 	@Override
+	public ProjectStatisticsVO countProject(){
+		ProjectStatisticsVO projectStatisticsVO = new ProjectStatisticsVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
+		transferRecordDTO.setTransferType(0);
+		transferRecordDTO.setStatus(0);
+
+		//**********待接收统计********************************
+		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
+		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
+
+		//**********接收未处理统计********************************
+		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
+		IPage<ProjectLiquiPageVO> pageVOIPage = queryNotProcessedPage(page,projectNoProcessedDTO);
+		projectStatisticsVO.setNotProcessedCount(pageVOIPage.getTotal());
+
+		return projectStatisticsVO;
+	}
+
+	@Override
 	public PreLitigationStageVO countPreLitigationStage(){
 		PreLitigationStageVO preLitigationStageVO = new PreLitigationStageVO();
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
 
+		//**********诉前保全案件统计********************************
 		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
 		caseeLiquiPageDTO.setCaseeType(1010);
 		IPage<CaseeLiquiPageVO> caseeLiquiPageVOIPage = caseeLiquiService.queryPage(page,caseeLiquiPageDTO);
-		Long preservationCaseCount = caseeLiquiPageVOIPage.getTotal();
-		preLitigationStageVO.setPreservationCaseCount(preservationCaseCount);
+		preLitigationStageVO.setPreservationCaseCount(caseeLiquiPageVOIPage.getTotal());
 
+
+		//**********未添加财产统计********************************
 		caseeLiquiPageDTO.setStatus(1);
 		IPage<CaseeLiquiPageVO> assetNotAddedList = caseeLiquiService.queryAssetNotAddedPage(page,caseeLiquiPageDTO);
-		Long assetNotAddedCount = assetNotAddedList.getTotal();
-		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedCount);
+		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedList.getTotal());
+
+
 
 		return preLitigationStageVO;
 	}

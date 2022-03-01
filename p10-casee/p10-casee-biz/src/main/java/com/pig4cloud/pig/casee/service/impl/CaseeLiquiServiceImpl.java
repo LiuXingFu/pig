@@ -333,8 +333,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId){
-		return this.baseMapper.selectAssetsBehavior(caseeId);
+	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId,Integer caseePersonnelType){
+		return this.baseMapper.selectAssetsBehavior(caseeId,caseePersonnelType);
 	}
 
 	@Override

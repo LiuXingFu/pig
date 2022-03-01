@@ -16,7 +16,7 @@ public class PreLitigationStageVO {
 	/**
 	 * 立案未送达统计
 	 */
-	private Integer startCaseeDeliveredCount;
+	private Long startCaseeDeliveredCount;
 
 	/**
 	 * 未添加财产统计
@@ -26,16 +26,16 @@ public class PreLitigationStageVO {
 	/**
 	 * 查控保全未完成统计
 	 */
-	private Integer seizedUndoneCount;
+	private Long seizedUndoneCount;
 
 	/**
 	 * 保全完成未结案统计
 	 */
-	private Integer notClosedCount;
+	private Long notClosedCount;
 
 	/**
 	 * 结案未送达统计
 	 */
-	private Integer CloseCaseeDeliveredCount;
+	private Long CloseCaseeDeliveredCount;
 
 }

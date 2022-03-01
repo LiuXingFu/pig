@@ -118,7 +118,7 @@ public interface CaseeLiquiService extends IService<Casee> {
 
 	List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO);
 
-	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId);
+	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId,Integer caseePersonnelType);
 
 	/**
 	 * 分页查询财产未添加案件

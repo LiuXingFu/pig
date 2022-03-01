@@ -160,6 +160,9 @@
 		left join p10_subject on p10_casee_subject_re.subject_id = p10_subject.subject_id
 		where p10_casee_subject_re.del_flag = 0
 		and p10_casee_subject_re.casee_id = #{caseeId}
+		<if test="caseePersonnelType != null and caseePersonnelType != ''">
+			and p10_casee_subject_re.casee_personnel_type = #{caseePersonnelType}
+		</if>
 	</select>
 
 	<select id="selectAssetNotAddedPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">

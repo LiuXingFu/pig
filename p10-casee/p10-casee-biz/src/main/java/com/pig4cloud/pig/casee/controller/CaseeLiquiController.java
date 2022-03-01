@@ -208,8 +208,8 @@ public class CaseeLiquiController {
 	 */
 	@ApiOperation(value = "查询债务人信息及财产和行为集合", notes = "查询债务人信息及财产和行为集合")
 	@GetMapping("/queryAssetsBehavior")
-	public R queryAssetsBehavior(Integer caseeId) {
-		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId));
+	public R queryAssetsBehavior(Integer caseeId,@RequestParam(value = "caseePersonnelType",required = false)Integer caseePersonnelType) {
+		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId,caseePersonnelType));
 	}
 
 	/**
