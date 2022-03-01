@@ -29,12 +29,12 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	/**
 	 * 拍辅机构名称
 	 */
-	private String insName;
+	private String insId;
 
 	/**
 	 * 拍辅网点名称
 	 */
-	private String outlesName;
+	private String outlesId;
 
 	/**
 	 * 拍辅办理人名称

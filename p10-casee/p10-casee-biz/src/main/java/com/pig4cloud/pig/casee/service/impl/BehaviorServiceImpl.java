@@ -22,12 +22,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.BehaviorLiquiDetail;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
 import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
 import com.pig4cloud.pig.casee.service.BehaviorService;
+import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -52,6 +56,10 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
 	BehaviorLiquiService behaviorLiquiService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private TargetService targetService;
 
 	/**
 	 * 根据主体id分页查询行为数据
@@ -88,6 +96,23 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 			Behavior behavior = new Behavior();
 			BeanCopyUtil.copyBean(behaviorSaveDTO,behavior);
 			save = this.baseMapper.insert(behavior);
+		}
+		Project project = projectLiquiService.getById(behaviorSaveDTO.getProjectId());
+
+		//添加任务数据以及程序信息
+		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		targetAddDTO.setCaseeId(behaviorSaveDTO.getCaseeId());
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(behaviorSaveDTO.getProjectId());
+		if (behaviorSaveDTO.getType()==100){
+			targetAddDTO.setProcedureNature(5050);
+		}else {
+			targetAddDTO.setProcedureNature(5051);
+		}
+		try {
+			targetService.saveTargetAddDTO(targetAddDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return save;
 	}

@@ -202,6 +202,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
 		// 遍历修改财产案件关联
 		if (assetsRes.size() > 0) {
+			Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
 			List<AssetsRe> assetsReList = new ArrayList<>();
 			assetsRes.stream().forEach(item -> {
 				AssetsRe assetsRe = new AssetsRe();
@@ -212,6 +213,18 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 					assetsRe.setCreateCaseeId(caseeId);
 				}
 				assetsReList.add(assetsRe);
+
+				//添加任务数据以及程序信息
+				TargetAddDTO targetAddDTO=new TargetAddDTO();
+				targetAddDTO.setCaseeId(caseeId);
+				targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
+				targetAddDTO.setOutlesId(project.getOutlesId());
+				targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+				try {
+					targetService.saveTargetAddDTO(targetAddDTO);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			});
 			assetsReService.updateBatchById(assetsReList);
 		}
@@ -242,7 +255,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		queryWrapper.lambda().eq(AssetsRe::getAssetsSource, 1);
 		queryWrapper.lambda().isNull(AssetsRe::getCaseeId);
 		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
-		//添加任务数据以及程序信息
+
 		Project project = projectLiquiService.getById(projectId);
 		// 遍历保存财产关联
 		if (assetsRes.size() > 0) {
@@ -253,7 +266,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				assetsRe.setCaseeId(caseeId);
 				assetsRe.setCreateCaseeId(caseeId);
 				assetsReList.add(assetsRe);
-
+				//添加任务数据以及程序信息
 				TargetAddDTO targetAddDTO=new TargetAddDTO();
 				targetAddDTO.setCaseeId(caseeId);
 				targetAddDTO.setProcedureNature(caseeType);

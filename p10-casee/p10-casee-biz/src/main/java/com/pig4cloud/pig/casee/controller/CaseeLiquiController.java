@@ -17,8 +17,10 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -131,6 +133,18 @@ public class CaseeLiquiController {
 	@GetMapping("/getCaseeParentId/{projectId}/{caseeType}")
 	public R getCaseeParentId(@PathVariable("projectId") Integer projectId,@PathVariable("caseeType") Integer caseeType) {
 		return R.ok(caseeLiquiService.getCaseeParentId(projectId, caseeType));
+	}
+
+	/**
+	 * 根据项目id查询所有执行案件信息
+	 *
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id查询所有执行案件信息", notes = "根据项目id查询所有执行案件信息")
+	@GetMapping("/getCaseeByParentIdAll/{projectId}")
+	public R getCaseeByParentIdAll(@PathVariable("projectId") Integer projectId) {
+		return R.ok(caseeLiquiService.list(new LambdaQueryWrapper<Casee>().eq(Casee::getParentId,projectId).in(Casee::getCaseeType,3010,3031)));
 	}
 
 	/**
