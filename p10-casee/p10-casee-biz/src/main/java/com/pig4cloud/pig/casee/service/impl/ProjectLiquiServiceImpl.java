@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.admin.api.feign.RemoteInstitutionService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
@@ -339,6 +338,24 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectNotProcessedPage(page,projectNoProcessedDTO,insOutlesDTO);
+	}
+
+
+	@Override
+	public PreLitigationStageVO countPreLitigationStage(){
+		PreLitigationStageVO preLitigationStageVO = new PreLitigationStageVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
+		caseeLiquiPageDTO.setCaseeType(1010);
+		IPage<CaseeLiquiPageVO> caseeLiquiPageVOIPage = caseeLiquiService.queryPage(page,caseeLiquiPageDTO);
+		Long preservationCaseCount = caseeLiquiPageVOIPage.getTotal();
+		preLitigationStageVO.setPreservationCaseCount(Integer.valueOf(preservationCaseCount.toString()));
+
+
+		return preLitigationStageVO;
 	}
 
 

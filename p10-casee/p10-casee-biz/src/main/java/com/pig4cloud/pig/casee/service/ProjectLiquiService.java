@@ -59,6 +59,8 @@ public interface ProjectLiquiService extends IService<Project> {
 	/*******************************************************/
 	ProjectStatisticsVO countProject();
 
+	PreLitigationStageVO countPreLitigationStage();
+
 	IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
 
 
