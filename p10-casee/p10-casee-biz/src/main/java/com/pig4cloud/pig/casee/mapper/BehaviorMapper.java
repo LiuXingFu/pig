@@ -40,7 +40,7 @@ public interface BehaviorMapper extends BaseMapper<Behavior> {
 
 	List<BehaviorOrCaseeVO> getBehaviorByProjectId(Integer projectId);
 
-	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, @Param("subjectId") Integer subjectId);
+	IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, @Param("subjectId") Integer subjectId, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	BehaviorOrProjectOrCasee queryById(Integer behaviorId);
 

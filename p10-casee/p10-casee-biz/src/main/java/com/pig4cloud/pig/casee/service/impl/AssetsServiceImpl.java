@@ -125,7 +125,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 	@Override
 	public IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
-		return this.baseMapper.getPageDebtorAssets(page, assetsOrProjectPageDTO);
+		return this.baseMapper.getPageDebtorAssets(page, assetsOrProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	private void writeExcel(HttpServletResponse response, List<ExportXlsAssetsOrProjectVO> list, String fileName, String sheetName, Class<ExportXlsAssetsOrProjectVO> clazz) throws Exception {

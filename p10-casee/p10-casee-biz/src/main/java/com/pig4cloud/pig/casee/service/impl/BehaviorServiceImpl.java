@@ -33,6 +33,7 @@ import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,8 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
 	BehaviorLiquiService behaviorLiquiService;
+	@Autowired
+	JurisdictionUtilsService jurisdictionUtilsService;
 
 	/**
 	 * 根据主体id分页查询行为数据
@@ -61,7 +64,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	 */
 	@Override
 	public IPage<BehaviorOrProjectPageVO> queryPageBehaviorOrProject(Page page, Integer subjectId) {
-		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId);
+		return this.baseMapper.queryPageBehaviorOrProject(page, subjectId, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	/**
