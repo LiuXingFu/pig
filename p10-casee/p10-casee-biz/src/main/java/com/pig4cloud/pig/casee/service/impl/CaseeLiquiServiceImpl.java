@@ -350,4 +350,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		return this.baseMapper.selectFlowChartPage(page,caseeLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
+	@Override
+	public CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId){
+		return this.baseMapper.queryByCaseeId(caseeId);
+	}
 }

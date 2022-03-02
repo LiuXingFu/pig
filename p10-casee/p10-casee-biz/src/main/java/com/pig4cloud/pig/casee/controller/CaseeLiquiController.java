@@ -225,4 +225,16 @@ public class CaseeLiquiController {
 	public R queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		return R.ok(caseeLiquiService.queryFlowChartPage(page, caseeLiquiFlowChartPageDTO));
 	}
+
+	/**
+	 * 根据案件id查询案件详情
+	 *
+	 * @param caseeId
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件id查询案件详情", notes = "根据案件id查询案件详情")
+	@GetMapping("/queryByCaseeIdDetails/{caseeId}")
+	public R queryByCaseeIdDetails(@PathVariable("caseeId") Integer caseeId) {
+		return R.ok(this.caseeLiquiService.queryByCaseeIdDetails(caseeId));
+	}
 }

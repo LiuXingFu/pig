@@ -139,4 +139,11 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
+	/**
+	 * 根据案件id查询案件详情
+	 * @param caseeId
+	 * @return
+	 */
+	CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId);
+
 }
