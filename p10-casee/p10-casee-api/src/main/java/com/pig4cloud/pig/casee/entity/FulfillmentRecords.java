@@ -72,25 +72,25 @@ public class FulfillmentRecords extends BaseEntity {
     /**
      * 履行时间
      */
-    @ApiModelProperty(value="履行时间")
+    @ApiModelProperty(value="待履行时间")
     private LocalDate fulfillmentTime;
 
     /**
      * 履行金额
      */
-    @ApiModelProperty(value="履行金额")
+    @ApiModelProperty(value="待履行金额")
     private BigDecimal fulfillmentAmount;
 
     /**
      * 履行人
      */
-    @ApiModelProperty(value="履行人")
+    @ApiModelProperty(value="待履行人")
     private Integer subjectId;
 
 	/**
 	 * 履行人名称
 	 */
-	@ApiModelProperty(value="履行人名称")
+	@ApiModelProperty(value="待履行人名称")
 	private String subjectName;
 
 

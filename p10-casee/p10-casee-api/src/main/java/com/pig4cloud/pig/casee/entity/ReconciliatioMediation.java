@@ -94,9 +94,9 @@ public class ReconciliatioMediation extends BaseEntity {
     private String appendixFile;
 
     /**
-     * 履行人
+     * 待履行人
      */
-    @ApiModelProperty(value="履行人")
+    @ApiModelProperty(value="待履行人")
     private String subjectName;
 
     /**
@@ -106,15 +106,27 @@ public class ReconciliatioMediation extends BaseEntity {
     private String placeOfSigning;
 
     /**
-     * 和解金额
+     * 金额
      */
-    @ApiModelProperty(value="和解金额")
+    @ApiModelProperty(value="金额")
     private BigDecimal amount;
+
+	/**
+	 * 是否有调解文书(0-无 1-有)
+	 */
+	@ApiModelProperty(value="是否有调解文书(0-无 1-有)")
+	private Integer isMediation;
+
+	/**
+	 * 调解诉讼案号
+	 */
+	@ApiModelProperty(value="调解诉讼案号")
+	private String mediationCaseNumber;
 
     /**
      * 状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行)
      */
-    @ApiModelProperty(value="状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行)")
+    @ApiModelProperty(value="状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行 4-履行完成)")
     private Integer status;
 
     /**

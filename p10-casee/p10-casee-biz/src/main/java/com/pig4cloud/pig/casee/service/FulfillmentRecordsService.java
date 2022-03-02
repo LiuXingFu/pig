@@ -19,6 +19,9 @@ package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
+import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
+
+import java.util.List;
 
 /**
  * 待履行记录表
@@ -27,5 +30,7 @@ import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
  * @date 2022-03-01 20:36:31
  */
 public interface FulfillmentRecordsService extends IService<FulfillmentRecords> {
+
+	List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId);
 
 }

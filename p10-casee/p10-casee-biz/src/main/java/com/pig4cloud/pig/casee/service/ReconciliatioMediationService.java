@@ -17,9 +17,12 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
 
 /**
  * 和解/调解表
@@ -28,5 +31,9 @@ import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
  * @date 2022-03-01 20:36:17
  */
 public interface ReconciliatioMediationService extends IService<ReconciliatioMediation> {
+	IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, ReconciliatioMediationDTO reconciliatioMediationDTO);
+
+	ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId);
+
 	boolean saveReconciliatioMediation(ReconciliatioMediationDTO reconciliatioMediationDTO);
 }

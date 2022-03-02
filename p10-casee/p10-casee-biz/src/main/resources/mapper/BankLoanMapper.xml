@@ -80,7 +80,6 @@
 		<result property="remark" column="remark"/>
 		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
-
 		</collection>
 		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.getAssetsBankLoanRe" column="bank_loan_id">

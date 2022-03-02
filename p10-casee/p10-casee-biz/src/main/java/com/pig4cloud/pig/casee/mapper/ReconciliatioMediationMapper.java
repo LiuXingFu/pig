@@ -18,8 +18,13 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 和解/调解表
@@ -29,5 +34,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ReconciliatioMediationMapper extends BaseMapper<ReconciliatioMediation> {
+	IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, @Param("query") ReconciliatioMediationDTO reconciliatioMediationDTO);
 
+	ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId);
 }

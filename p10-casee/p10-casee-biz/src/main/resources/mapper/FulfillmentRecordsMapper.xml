@@ -39,4 +39,9 @@
 	<result property="subjectName" column="subject_name"/>
 	<result property="status" column="status"/>
   </resultMap>
+	<select id="getByReconciliatioMediationId" resultType="com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO">
+		select * from p10_fulfillment_records
+		left join p10_payment_record on p10_payment_record.payment_record_id=p10_fulfillment_records.payment_record_id
+		where p10_fulfillment_records.reconciliatio_mediation_id=#{reconciliatioMediationId}
+	</select>
 </mapper>

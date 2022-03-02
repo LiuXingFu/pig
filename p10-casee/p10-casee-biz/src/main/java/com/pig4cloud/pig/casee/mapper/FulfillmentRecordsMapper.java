@@ -19,7 +19,10 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
+import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 待履行记录表
@@ -29,5 +32,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface FulfillmentRecordsMapper extends BaseMapper<FulfillmentRecords> {
+	List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId);
 
 }
