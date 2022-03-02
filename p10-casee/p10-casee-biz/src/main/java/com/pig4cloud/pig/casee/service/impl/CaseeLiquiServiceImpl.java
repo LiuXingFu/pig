@@ -152,7 +152,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	public Integer saveSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeSecondInstanceDTO,caseeLiquiAddDTO);
-		if(Objects.nonNull(caseeSecondInstanceDTO.getSubjectList())){
+		if(caseeSecondInstanceDTO.getSubjectList().size()>0){
 			List<CaseeSubjectReDTO> applicantList = new ArrayList<>();
 			caseeSecondInstanceDTO.getSubjectList().stream().forEach(item->{
 				Integer subjectId = 0;
