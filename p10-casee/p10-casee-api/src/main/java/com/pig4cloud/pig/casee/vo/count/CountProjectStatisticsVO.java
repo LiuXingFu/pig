@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.vo.count;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  *接收处理
  */
 @Data
-public class ProjectStatisticsVO {
+public class CountProjectStatisticsVO {
 
 	/**
 	 * 待接收统计

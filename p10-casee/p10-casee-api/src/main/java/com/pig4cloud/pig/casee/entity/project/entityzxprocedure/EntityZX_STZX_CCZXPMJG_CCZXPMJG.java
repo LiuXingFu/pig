@@ -31,7 +31,7 @@ public class EntityZX_STZX_CCZXPMJG_CCZXPMJG extends CommonalityData implements 
 	/**
 	 * 参拍人数
 	 */
-	private Integer NumberOfParticipants;
+	private Integer numberOfParticipants;
 
 	/**
 	 * 买受人

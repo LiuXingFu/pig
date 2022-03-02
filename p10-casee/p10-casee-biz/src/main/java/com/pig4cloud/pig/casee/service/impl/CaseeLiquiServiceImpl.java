@@ -27,10 +27,7 @@ import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.CaseeListVO;
-import com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO;
+import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -343,6 +340,14 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectAssetNotAddedPage(page,caseeLiquiPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<CaseeLiquiFlowChartPageVO> queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectFlowChartPage(page,caseeLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
 }

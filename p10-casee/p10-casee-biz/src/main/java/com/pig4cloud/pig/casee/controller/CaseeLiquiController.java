@@ -212,4 +212,17 @@ public class CaseeLiquiController {
 	public R queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
 		return R.ok(caseeLiquiService.queryAssetNotAddedPage(page, caseeLiquiPageDTO));
 	}
+
+	/**
+	 * 分页查询案件流程图接口
+	 *
+	 * @param page              分页对象
+	 * @param caseeLiquiFlowChartPageDTO 案件清收表
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询案件流程图接口", notes = "分页查询案件流程图接口")
+	@GetMapping("/queryFlowChartPage")
+	public R queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(caseeLiquiService.queryFlowChartPage(page, caseeLiquiFlowChartPageDTO));
+	}
 }

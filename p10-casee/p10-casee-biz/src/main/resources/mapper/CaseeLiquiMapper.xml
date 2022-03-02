@@ -166,10 +166,12 @@
 	</select>
 
 	<select id="selectAssetNotAddedPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
-		select p10_project.company_code,p10_casee.* from p10_casee
+		select p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_casee.del_flag = 0
 		and p10_assets_re.casee_id is null
 		<if test="login.insId != null and login.insId > 0">
@@ -200,5 +202,58 @@
 		</if>
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
+
+	<select id="selectFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.*,task_node.node_id,p10_project.project_id,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join (select * from (
+							select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
+							where p10_task_node.`status` = 0
+							and p10_task_node.node_attributes = 400
+							ORDER BY p10_task_node.sort asc
+						)task_node
+						GROUP BY task_node.target_id
+					) task_node on task_node.target_id = p10_target.target_id
+		where p10_casee.del_flag = 0
+		<if test="query.goalType != null and query.goalType != ''">
+			and p10_target.goal_type = #{query.goalType}
+		</if>
+		<if test="query.nodeKey != null and query.nodeKey != ''">
+			and task_node.node_key = #{query.nodeKey}
+		</if>
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_casee.executed_name like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.actualName != null and query.actualName != ''">
+			and p10_project_casee_re.actual_name like concat('%', #{query.actualName}, '%')
+		</if>
+		<if test="query.caseeType != null and query.caseeType != ''">
+			and p10_casee.casee_type = #{query.caseeType}
+		</if>
+		<if test="query.status != null and query.status != ''">
+			and p10_casee.status = #{query.status}
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		ORDER BY p10_casee.status asc,p10_casee.start_time desc
+	</select>
+
+
 
 </mapper>

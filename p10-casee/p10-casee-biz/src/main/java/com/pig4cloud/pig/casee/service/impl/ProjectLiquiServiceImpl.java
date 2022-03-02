@@ -35,6 +35,7 @@ import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
+import com.pig4cloud.pig.casee.vo.count.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.R;
@@ -321,8 +322,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 
 	@Override
-	public ProjectStatisticsVO countProject(){
-		ProjectStatisticsVO projectStatisticsVO = new ProjectStatisticsVO();
+	public CountProjectStatisticsVO countProject(){
+		CountProjectStatisticsVO projectStatisticsVO = new CountProjectStatisticsVO();
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
@@ -334,7 +335,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
 		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
 
-		//**********接收未处理统计********************************
+
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
 		IPage<ProjectLiquiPageVO> pageVOIPage = queryNotProcessedPage(page,projectNoProcessedDTO);
 		projectStatisticsVO.setNotProcessedCount(pageVOIPage.getTotal());
@@ -342,28 +343,195 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return projectStatisticsVO;
 	}
 
+	public Long queryCaseNodePage(String nodeKey,Integer caseeType){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setGoalType(10001);
+		caseeLiquiFlowChartPageDTO.setStatus(1);
+
+		caseeLiquiFlowChartPageDTO.setNodeKey(nodeKey);
+		caseeLiquiFlowChartPageDTO.setCaseeType(caseeType);
+		IPage<CaseeLiquiFlowChartPageVO> caseeLiquiFlowChartPageVOIPage = caseeLiquiService.queryFlowChartPage(page,caseeLiquiFlowChartPageDTO);
+		return caseeLiquiFlowChartPageVOIPage.getTotal();
+	}
+
+	public Long queryCaseeCount(Integer caseeType){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
+		caseeLiquiPageDTO.setCaseeType(caseeType);
+		caseeLiquiPageDTO.setStatus(1);
+		IPage<CaseeLiquiPageVO> caseeLiquiPageVOIPage = caseeLiquiService.queryPage(page,caseeLiquiPageDTO);
+		return caseeLiquiPageVOIPage.getTotal();
+	}
+
 	@Override
-	public PreLitigationStageVO countPreLitigationStage(){
-		PreLitigationStageVO preLitigationStageVO = new PreLitigationStageVO();
+	public CountPreLitigationStageVO countPreLitigationStage(){
+		CountPreLitigationStageVO preLitigationStageVO = new CountPreLitigationStageVO();
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
 
 		//**********诉前保全案件统计********************************
-		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
-		caseeLiquiPageDTO.setCaseeType(1010);
-		IPage<CaseeLiquiPageVO> caseeLiquiPageVOIPage = caseeLiquiService.queryPage(page,caseeLiquiPageDTO);
-		preLitigationStageVO.setPreservationCaseCount(caseeLiquiPageVOIPage.getTotal());
+		preLitigationStageVO.setPreservationCaseCount(queryCaseeCount(1010));
 
 
 		//**********未添加财产统计********************************
+		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
+		caseeLiquiPageDTO.setCaseeType(1010);
 		caseeLiquiPageDTO.setStatus(1);
 		IPage<CaseeLiquiPageVO> assetNotAddedList = caseeLiquiService.queryAssetNotAddedPage(page,caseeLiquiPageDTO);
 		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedList.getTotal());
 
+		//**********立案未送达统计********************************
+		preLitigationStageVO.setStartCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQLASDQK_SQLASDQK",1010));
+
+		//**********结案未送达统计********************************
+		preLitigationStageVO.setSeizedUndoneCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
+
 
 
 		return preLitigationStageVO;
+	}
+
+	@Override
+	public CountLitigationVO countlitigation(){
+		CountLitigationVO countLitigationVO = new CountLitigationVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********一审案件统计********************************
+		countLitigationVO.setLitigationFirstInstance(queryCaseeCount(2020));
+
+		//**********保全案件统计********************************
+		countLitigationVO.setLitigationHold(queryCaseeCount(2010));
+
+		//**********二审案件统计********************************
+		countLitigationVO.setLitigationSecondInstance(queryCaseeCount(2021));
+
+		//**********其它案件统计********************************
+		countLitigationVO.setLitigationOthers(queryCaseeCount(2030));
+
+
+		//***********一审节点统计Start*************************************************
+
+		//**********立案未送达统计********************************
+		countLitigationVO.setLitigationFirstInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSYS_SSYSLASDQK_SSYSLASDQK",2020));
+
+		//**********送达未庭审********************************
+		countLitigationVO.setLitigationFirstInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSYS_SSYSTSXX_SSYSTSXX",2020));
+
+		//**********庭审未判决********************************
+		countLitigationVO.setLitigationFirstInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSYS_SSYSCPJG_SSYSCPJG",2020));
+
+		//**********裁判文书未送达********************************
+		countLitigationVO.setLitigationFirstInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK",2020));
+
+		//**********上诉确认********************************
+		countLitigationVO.setLitigationFirstInstanceAppealConfirmation(queryCaseNodePage("liQui_SSYS_SSYSYGSSQK_SSYSYGSSQK",2020));
+
+		//**********上诉到期未处理********************************
+		countLitigationVO.setLitigationFirstInstanceAppealExpired(queryCaseNodePage("liQui_SSYS_SSYSSSDQQR_SSYSSSDQQR",2020));
+
+		//***********一审节点统计end*************************************************
+
+		//***********保全节点统计Start*************************************************
+
+		//**********未添加财产统计********************************
+		CaseeLiquiPageDTO caseeLiquiPageDTO = new CaseeLiquiPageDTO();
+		caseeLiquiPageDTO.setCaseeType(2010);
+		caseeLiquiPageDTO.setStatus(1);
+		IPage<CaseeLiquiPageVO> litigationHoldServiceNotAddProperty = caseeLiquiService.queryAssetNotAddedPage(page,caseeLiquiPageDTO);
+		countLitigationVO.setLitigationHoldServiceNotAddProperty(litigationHoldServiceNotAddProperty.getTotal());
+
+		//**********立案未送达统计********************************
+		countLitigationVO.setLitigationHoldStandCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQLASDQK_SSBQLASDQK",2010));
+
+		//**********结案未送达统计********************************
+		countLitigationVO.setLitigationHoldKnotCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQBQJGSDQK_SSBQBQJGSDQK",2010));
+
+		//***********保全节点统计end*************************************************
+
+
+		//***********二审节点统计Start*************************************************
+
+		//**********立案未送达统计********************************
+		countLitigationVO.setLitigationSecondInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSES_SSESLASDQK_SSESLASDQK",2021));
+
+		//**********送达未庭审********************************
+		countLitigationVO.setLitigationSecondInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSES_SSESTSXX_SSESTSXX",2021));
+
+		//**********庭审未判决********************************
+		countLitigationVO.setLitigationSecondInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSES_SSESCPJG_SSESCPJG",2021));
+
+		//**********裁判文书未送达********************************
+		countLitigationVO.setLitigationSecondInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK",2021));
+
+		//***********二审节点统计end*************************************************
+
+
+		//***********其它案件节点统计Start*************************************************
+
+		//**********立案未送达统计********************************
+		countLitigationVO.setLitigationOthersStandCaseUndelivered(queryCaseNodePage("liQui_SSQT_SSQTLASDQK_SSQTLASDQK",2030));
+
+		//**********送达未庭审********************************
+		countLitigationVO.setLitigationOthersServiceNotCourtTrial(queryCaseNodePage("liQui_SSQT_SSQTTSXX_SSQTTSXX",2030));
+
+		//**********庭审未判决********************************
+		countLitigationVO.setLitigationOthersCourtTrialNotJudgment(queryCaseNodePage("liQui_SSQT_SSQTCPJG_SSQTCPJG",2030));
+
+		//**********裁判文书未送达********************************
+		countLitigationVO.setLitigationOthersJudgmentNotService(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK",2030));
+
+		//***********其它案件节点统计end*************************************************
+
+		return countLitigationVO;
+	}
+
+	@Override
+	public CountFulfillVO countFulfill(){
+		CountFulfillVO countFulfillVO = new CountFulfillVO();
+
+		return countFulfillVO;
+	}
+
+	@Override
+	public CountImplementVO countImplement(){
+		CountImplementVO countImplementVO = new CountImplementVO();
+
+		//**********首执案件统计********************************
+		countImplementVO.setChiefExecutive(queryCaseeCount(3010));
+
+		//**********执恢案件统计********************************
+		countImplementVO.setReinstate(queryCaseeCount(3031));
+
+		//***********首执案件节点统计Start*************************************************
+
+		//**********首执立案未送达********************************
+		countImplementVO.setChiefExecutiveStandCaseUndelivered(queryCaseNodePage("liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK",3010));
+
+
+		//***********首执案件节点统计end*************************************************
+
+
+		//***********首执案件节点统计Start*************************************************
+
+		//**********执恢立案未送达********************************
+		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK",3031));
+
+
+
+		//***********首执案件节点统计end*************************************************
+
+
+		return countImplementVO;
 	}
 
 
