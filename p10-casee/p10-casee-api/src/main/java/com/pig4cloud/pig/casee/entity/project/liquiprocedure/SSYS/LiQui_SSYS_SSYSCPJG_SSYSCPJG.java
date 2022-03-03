@@ -43,6 +43,12 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	private String remark;
 
 	/**
+	 * 裁判结果生效日期
+	 */
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	private Date effectiveDate;
+
+	/**
 	 * 上诉期限
 	 */
 	private Integer appealDeadline;

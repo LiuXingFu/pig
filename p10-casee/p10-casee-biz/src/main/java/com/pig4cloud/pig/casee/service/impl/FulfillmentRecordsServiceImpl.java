@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.mapper.FulfillmentRecordsMapper;
@@ -37,5 +39,10 @@ public class FulfillmentRecordsServiceImpl extends ServiceImpl<FulfillmentRecord
 	@Override
 	public List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId) {
 		return this.baseMapper.getByReconciliatioMediationId(reconciliatioMediationId);
+	}
+
+	@Override
+	public IPage<FulfillmentRecordsVO> getFulfillmentRecordsPage(Page page, Integer reconciliatioMediationId) {
+		return this.baseMapper.getFulfillmentRecordsPage(page,reconciliatioMediationId);
 	}
 }

@@ -14,37 +14,19 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
+
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * 待履行记录表
- *
- * @author Mjh
- * @date 2022-03-01 20:36:31
- */
+
 @Data
-public class FulfillmentRecordsVO extends FulfillmentRecords {
-
+public class FulfillmentRecordsDetail{
 	/**
-	 * 回款时间
+	 * 推迟履行时间
 	 */
-	private LocalDate paymentDate;
-
-	/**
-	 * 回款金额
-	 */
-	private BigDecimal paymentAmount;
-
-	/**
-	 * 还款人名称
-	 */
-	private String repayerName;
-
+	private LocalDate deferPerformance;
 
 }
