@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,6 +32,7 @@ import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -356,6 +358,37 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId) {
 		return this.baseMapper.queryByCaseeId(caseeId);
+	}
+
+	@Override
+	public void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO) {
+		JSONObject formData = JSONObject.parseObject(saveCaseeLiQuiDTO.getFormData());
+		List<KeyValue> listParams = new ArrayList<KeyValue>();
+
+		for (String o : formData.keySet()) {
+			listParams.add(new KeyValue(o, formData.get(o)));
+		}
+
+		String caseeDetail = this.baseMapper.queryCaseeDetail(saveCaseeLiQuiDTO);
+
+		if (caseeDetail == null) {
+			Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
+			if (Objects.nonNull(casee.getCaseeDetail())) {
+				JSONObject caseeDetailJson = JSONObject.parseObject(casee.getCaseeDetail());
+				BeanCopyUtil.mergeJSONObject(caseeDetailJson, formData);
+				CaseeLiqui needUpdate = new CaseeLiqui();
+				needUpdate.setCaseeId(casee.getCaseeId());
+				needUpdate.setCaseeDetail(caseeDetailJson.toJSONString());
+				this.updateById(needUpdate);
+			} else {
+				CaseeLiqui needSave = new CaseeLiqui();
+				needSave.setCaseeId(casee.getCaseeId());
+				needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
+				this.updateById(needSave);
+			}
+		} else {
+			this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO, listParams);
+		}
 	}
 
 	@Override

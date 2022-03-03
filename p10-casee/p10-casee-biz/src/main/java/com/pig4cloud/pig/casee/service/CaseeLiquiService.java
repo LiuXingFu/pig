@@ -151,4 +151,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	void litigationCaseeClose();
 
+	/**
+	 * 保存案件详情
+	 * @param saveCaseeLiQuiDTO
+	 */
+	void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO);
 }
