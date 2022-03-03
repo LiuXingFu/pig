@@ -44,7 +44,7 @@ public class LiQui_SSES_SSESCPJG_SSESCPJG extends CommonalityData implements Ser
 	private String remark;
 
 	/**
-	 * 生效日期
+	 * 裁判结果生效日期
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date effectiveDate;

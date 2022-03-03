@@ -361,4 +361,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 	void updateTargetProcessJson(Integer process,Integer finalProcess,String nodeKey,Integer targetId);
 
 	void setNodeTaskMakeUpProcess(TaskNode taskNode);
+
+	/**
+	 *
+	 * @param taskNode
+	 */
+	void setTaskDataSubmission(TaskNode taskNode);
 }

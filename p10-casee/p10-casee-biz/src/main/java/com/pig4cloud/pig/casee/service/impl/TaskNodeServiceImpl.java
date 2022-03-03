@@ -1540,6 +1540,26 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		}
 	}
 
+	@Override
+	public void setTaskDataSubmission(TaskNode taskNode) {
+		if(taskNode.getNeedAudit() == 0) {
+			Target target = this.targetService.getById(taskNode);
+			//更新程序表json
+			AuditTargetDTO auditTargetDTO = this.getAuditTargetDTO(taskNode);
+
+			this.updateBusinessData(auditTargetDTO);
+			if(target.getGoalType().equals(Integer.valueOf("10001"))) {
+//				this.
+			} else if (target.getGoalType().equals(Integer.valueOf("20001"))) {
+
+			} else if(target.getGoalType().equals(Integer.valueOf("30001"))) {
+
+			} else {
+				new RuntimeException("程序目标类型异常！");
+			}
+		}
+	}
+
 	public void updateTwoTargetProcessJson(TaskNode taskNode, TaskNode twoLevelParentTaskNode) {
 		TaskNode twoLeveTaskNode = new TaskNode();
 

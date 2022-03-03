@@ -21,4 +21,5 @@ public class LIQUIGENERALLY_NODEHandler extends TaskNodeHandler {
 	public void handlerTaskSubmit(TaskNode taskNode) {
 
 	}
+
 }

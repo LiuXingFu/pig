@@ -97,9 +97,6 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler beillegal_xwwf_xwwfxzcx_xwwfxzcx_nodeHandler;
 
-	@Autowired
-	LIQUI_SSYS_SSYSCPJG_SSYSCPJG_NODEHandle liqui_ssys_ssyscpjg_ssyscpjg_nodeHandle;
-
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
 
@@ -139,7 +136,6 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_ZXZH_ZXZHZJ_ZXZHZJ", liqui_zxzh_zxzhzj_zxzhzj_nodeHandler);
 		submitHandlerMap.put("liQui_ZXZH_ZXZHSJZJ_ZXZHSJZJ", liqui_zxzh_zxzhsjzj_zxzhsjzj_nodeHandler);
 		submitHandlerMap.put("liQui_ZXZH_ZXZHJACA_ZXZHJACA", liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler);
-		submitHandlerMap.put("liQui_SSYS_SSYSCPJG_SSYSCPJG", liqui_ssys_ssyscpjg_ssyscpjg_nodeHandle);
 
 
 		//财产程序任务提交map实体类
