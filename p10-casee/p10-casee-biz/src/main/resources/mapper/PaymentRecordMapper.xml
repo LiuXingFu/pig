@@ -64,4 +64,18 @@
 			and p10_payment_record.payment_date =#{query.paymentDate}
 		</if>
 	</select>
+
+	<select id="sumCourtPayment" resultType="java.math.BigDecimal">
+		select SUM(payment_amount) from p10_payment_record
+		where del_flag = 0
+		<if test="query.paymentType != null">
+			and payment_type = #{query.paymentType}
+		</if>
+		<if test="query.status != null">
+			and status = #{query.status}
+		</if>
+		<if test="query.projectId != null">
+			and project_id = #{query.projectId}
+		</if>
+	</select>
 </mapper>

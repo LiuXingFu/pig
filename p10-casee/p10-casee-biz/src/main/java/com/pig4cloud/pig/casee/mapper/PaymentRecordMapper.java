@@ -26,6 +26,8 @@ import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
+
 /**
  * 回款详细记录表
  *
@@ -36,5 +38,7 @@ import org.apache.ibatis.annotations.Param;
 public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
 	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecord paymentRecord, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
 
 }

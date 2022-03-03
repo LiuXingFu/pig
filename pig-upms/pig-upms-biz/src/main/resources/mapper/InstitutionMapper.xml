@@ -322,7 +322,7 @@
 	</select>
 
 	<select id="pageCooperateByInsId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
-		select p10_institution.ins_id as id,p10_institution.ins_name as name from p10_institution
+		select DISTINCT p10_institution.ins_id as id,p10_institution.ins_name as name from p10_institution
 		LEFT JOIN p10_institution_associate on p10_institution_associate.ins_associate_id = p10_institution.ins_id and
 		p10_institution_associate.associate_status = 100
 		where p10_institution.del_flag = 0
@@ -340,7 +340,7 @@
 
 	<select id="queryProjectInsSelect" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
 		SELECT
-		p10_institution.ins_id AS id,
+		DISTINCT p10_institution.ins_id AS id,
 		p10_institution.ins_name AS NAME
 		FROM
 		p10_institution
@@ -351,7 +351,7 @@
 		<if test="query.projectInsId != null and query.projectInsId != 0">
 			and p10_institution_associate.ins_id = #{query.insId}
 		</if>
-		<if test="query.insName != null">
+		<if test="query.insName != null and query.insName != ''">
 			and p10_institution.ins_name like concat('%', #{query.projectInsId}, '%')
 		</if>
 		<if test="query.insType != null">

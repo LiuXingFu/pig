@@ -282,7 +282,7 @@
 	</select>
 
 	<select id="querySelectByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
-		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
+		select DISTINCT p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
 		where p10_outles.del_flag = 0
 		<if test="loginOutlesId != null and loginOutlesId != 0">
 			and p10_outles.outles_id = #{loginOutlesId}
@@ -297,7 +297,7 @@
 	</select>
 
 	<select id="pageCooperateByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
-		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
+		select DISTINCT p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
 		LEFT JOIN p10_associate_outles_re on p10_associate_outles_re.outles_id = p10_outles.outles_id
 		<if test="loginInsId != null and loginInsId != 0">
 			and p10_associate_outles_re.ins_associate_id =#{loginInsId}
@@ -331,7 +331,7 @@
 	</select>
 
 	<select id="queryProjectOutlesSelect" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
-		select p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
+		select DISTINCT p10_outles.outles_id as id,p10_outles.outles_name as name from p10_outles
 		LEFT JOIN p10_associate_outles_re on p10_associate_outles_re.outles_id = p10_outles.outles_id
 		<if test="query.projectInsId != null and query.projectInsId != 0">
 			and p10_associate_outles_re.ins_associate_id = #{query.projectInsId}

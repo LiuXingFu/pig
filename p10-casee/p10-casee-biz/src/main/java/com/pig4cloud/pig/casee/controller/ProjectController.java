@@ -17,8 +17,10 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.Project;
@@ -118,6 +120,21 @@ public class ProjectController {
 	@GetMapping("/getProjectAmountBySubjectId/{subjectId}")
 	public R getProjectAmountBySubjectId(@PathVariable("subjectId") Integer subjectId){
     	return R.ok(projectService.getProjectAmountBySubjectId(subjectId));
+	}
+
+	/**
+	 * 验证公司业务案号
+	 *
+	 * @return
+	 */
+	@ApiOperation(value = "验证公司业务案号", notes = "验证公司业务案号")
+	@SysLog("验证公司业务案号" )
+	@GetMapping("/verifyCompanyCode/{companyCode}")
+	public R verifyCompanyCode(@PathVariable("companyCode")String companyCode) {
+		QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Project::getCompanyCode,companyCode);
+		queryWrapper.lambda().eq(Project::getDelFlag, CommonConstants.STATUS_NORMAL);
+		return R.ok(projectService.getOne(queryWrapper));
 	}
 
 }

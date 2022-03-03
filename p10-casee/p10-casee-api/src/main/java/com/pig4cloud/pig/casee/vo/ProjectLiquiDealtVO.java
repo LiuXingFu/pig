@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -70,4 +71,9 @@ public class ProjectLiquiDealtVO {
 	 * 诉讼情况
 	 */
 	Integer litigation;
+
+	/**
+	 * 法院到款总额
+	 */
+	BigDecimal sumCourtPayment;
 }

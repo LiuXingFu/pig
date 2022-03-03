@@ -28,6 +28,8 @@ import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 
 /**
  * 回款详细记录表
@@ -46,5 +48,10 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.getPaymentRecordPage(page,paymentRecord,insOutlesDTO);
+	}
+
+	@Override
+	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord){
+		return this.baseMapper.sumCourtPayment(paymentRecord);
 	}
 }

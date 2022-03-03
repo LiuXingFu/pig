@@ -23,6 +23,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 
+import java.math.BigDecimal;
+
 /**
  * 回款详细记录表
  *
@@ -32,4 +34,6 @@ import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord);
+
+	BigDecimal sumCourtPayment(PaymentRecord paymentRecord);
 }

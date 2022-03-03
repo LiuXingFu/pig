@@ -101,6 +101,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 
+	@Autowired
+	private PaymentRecordService paymentRecordService;
+
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -308,6 +311,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			addCaseeBtn = true;
 		}
 		projectLiquiDealtVO.setAddCaseeBtn(addCaseeBtn);
+
+		PaymentRecord paymentRecord = new PaymentRecord();
+		paymentRecord.setProjectId(projectId);
+		paymentRecord.setStatus(0);
+		paymentRecord.setPaymentType(200);
+		BigDecimal sumCourtPayment = paymentRecordService.sumCourtPayment(paymentRecord);
+		projectLiquiDealtVO.setSumCourtPayment(sumCourtPayment);
 
 		return projectLiquiDealtVO;
 	}
