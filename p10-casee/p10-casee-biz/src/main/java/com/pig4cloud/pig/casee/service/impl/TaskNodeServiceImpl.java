@@ -166,7 +166,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				TaskFlowDTO taskFlowDTO = objectTransitionEntityUtils.readValueMap(objectDTO, TaskFlowDTO.class);
 				taskFlowKey = taskFlowDTO.getTaskKey();
 				actReProcdefId = taskFlowDTO.getActReProcdefId();
-				if (null!=taskFlowDTO.getAuditorIdList()&&taskFlowDTO.getAuditorIdList().size()>0){
+				if (null != taskFlowDTO.getAuditorIdList() && taskFlowDTO.getAuditorIdList().size() > 0) {
 					list.addAll(taskFlowDTO.getAuditorIdList());
 				}
 				variables.put(taskFlowName, taskFlowDTO);
@@ -174,7 +174,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO = objectTransitionEntityUtils.readValueMap(objectDTO, CaseeOrTargetTaskFlowDTO.class);
 				taskFlowKey = caseeOrTargetTaskFlowDTO.getTaskKey();
 				actReProcdefId = caseeOrTargetTaskFlowDTO.getActReProcdefId();
-				if (null!=caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList()&&caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList().size()>0){
+				if (null != caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList() && caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList().size() > 0) {
 					list.addAll(caseeOrTargetTaskFlowDTO.getCaseeOrTargetAuditorList());
 				}
 				variables.put(taskFlowName, caseeOrTargetTaskFlowDTO);
@@ -186,7 +186,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//通过流程定义key和流程实例id查询当前办理人任务信息
 		Task task = null;
-		if (null!=list&&list.size()>0){//审核人存在多个，完成任务时要根据当前审核人去查询任务
+		if (null != list && list.size() > 0) {//审核人存在多个，完成任务时要根据当前审核人去查询任务
 			task = taskService.createTaskQuery().processDefinitionKey(taskFlowKey)
 					.processInstanceId(actReProcdefId).taskAssignee(list.get(0).toString()).taskName(taskName).singleResult();
 		} else {//根据任务流任务名称以及流程实例查询任务
@@ -279,18 +279,19 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	@Transactional
-	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId,Integer procedureNature) {
-		if (procedureNature.equals(20100)){//资金财产
-			procedureNature=4041;
-		}else if (procedureNature.equals(20200)){//实体财产
-			procedureNature=4040;
-		}if (procedureNature.equals(200)){//行为违法
-			procedureNature=5051;
-		}else if (procedureNature.equals(100)){//行为限制
-			procedureNature=5050;
+	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature) {
+		if (procedureNature.equals(20100)) {//资金财产
+			procedureNature = 4041;
+		} else if (procedureNature.equals(20200)) {//实体财产
+			procedureNature = 4040;
+		}
+		if (procedureNature.equals(200)) {//行为违法
+			procedureNature = 5051;
+		} else if (procedureNature.equals(100)) {//行为限制
+			procedureNature = 5050;
 		}
 		//1.根据案件id和程序性质查询所有任务节点数据
-		List<TaskNodeVO> list = this.targetService.getTarget(caseeId,procedureNature);
+		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature);
 		//2.任务节点对象集合
 		List<TaskNodeVO> voList = new ArrayList<>();
 		//3.将节点对象集合转换树形结构工具类
@@ -434,7 +435,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		if (Objects.nonNull(nodeList) && nodeList.size() > 0) {
 			TaskNode threeLevelParentTaskNode = queryParentTaskNode(nodeList.get(0), 3);
 			taskReminder.setHint(2);
-			taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请确保从【" + threeLevelParentTaskNode.getNodeName()+ "-" + nodeList.get(0).getNodeName() + "】开始的步骤下的子任务全部完成。");
+			taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请确保从【" + threeLevelParentTaskNode.getNodeName() + "-" + nodeList.get(0).getNodeName() + "】开始的步骤下的子任务全部完成。");
 		}
 		return taskReminder;
 	}
@@ -512,7 +513,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
 
 			//添加任务记录数据
-			taskRecordService.addTaskRecord(taskFlowDTO,CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 		return taskFlowDTO.getNodeId();
 	}
@@ -524,12 +525,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		taskFlowDTO.setTrusteeType(0);
 
 		//如果拒绝委托办理任务则把这条任务重新委托回去
-		if (taskFlowDTO.getTrusteeStatus()!=null&&taskFlowDTO.getTrusteeStatus()==1){
+		if (taskFlowDTO.getTrusteeStatus() != null && taskFlowDTO.getTrusteeStatus() == 1) {
 			//拒绝委托任务时修改任务信息
 			this.refuseEntrustUpdateTask(taskFlowDTO);
-		}else {
+		} else {
 			//添加任务记录数据
-			taskRecordService.addTaskRecord(taskFlowDTO,CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 
 		//提交委托办理任务生成任务流并保存任务数据
@@ -544,12 +545,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		PigUser cacheUser = securityUtilsService.getCacheUser();
 
 		//如果拒绝委托审核任务则把这条审核任务重新委托回去
-		if (taskFlowDTO.getTrusteeStatus()!=null&&taskFlowDTO.getTrusteeStatus()==1) {
+		if (taskFlowDTO.getTrusteeStatus() != null && taskFlowDTO.getTrusteeStatus() == 1) {
 			//拒绝委托任务时修改任务信息
 			this.refuseEntrustUpdateTask(taskFlowDTO);
-		}else {
+		} else {
 			//添加任务记录
-			taskRecordService.addTaskRecord(taskFlowDTO,CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 
 		//设置任务流唯一key
@@ -566,8 +567,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		this.executionTask(taskFlowDTO, "正在处理", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 
 		//查询任务记录状态为未审核的
-		List<TaskRecord> taskRecordList = taskRecordService.list(new LambdaQueryWrapper<TaskRecord>().eq(TaskRecord::getNodeId, taskFlowDTO.getNodeId()).eq(TaskRecord::getStatus, 101).eq(TaskRecord::getCanEntrust,1));
-		if (taskRecordList.size()>0){
+		List<TaskRecord> taskRecordList = taskRecordService.list(new LambdaQueryWrapper<TaskRecord>().eq(TaskRecord::getNodeId, taskFlowDTO.getNodeId()).eq(TaskRecord::getStatus, 101).eq(TaskRecord::getCanEntrust, 1));
+		if (taskRecordList.size() > 0) {
 			for (TaskRecord taskRecord : taskRecordList) {
 				taskRecord.setAuditorId(cacheUser.getId());
 				taskRecord.setAuditorOutlesId(cacheUser.getOutlesId());
@@ -596,7 +597,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			taskRecordService.updateById(taskRecord);
 
 			//如果委托类型为办理任务，修改审核任务记录数据状态为拒绝委托
-			if (taskFlowDTO.getTrusteeType()==0){
+			if (taskFlowDTO.getTrusteeType() == 0) {
 				TaskRecord record = taskRecordService.getOne(new LambdaQueryWrapper<TaskRecord>().eq(TaskRecord::getNodeId, taskFlowDTO.getNodeId()).eq(TaskRecord::getStatus, 600).eq(TaskRecord::getCanEntrust, 0));
 				if (record != null) {
 					record.setTrusteeStatus(1);
@@ -632,7 +633,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//3.处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeAudit(taskFlowDTO);
 
-			taskRecordService.addTaskRecord(taskFlowDTO,CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 
 			//4.更改审核状态与相关信息
 			boolean updateById = this.updateById(taskFlowDTO);
@@ -656,7 +657,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		this.updateById(caseeOrTargetTaskFlowDTO);
 
 		//添加任务记录
-		taskRecordService.addTaskRecord(caseeOrTargetTaskFlowDTO,CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT);
+		taskRecordService.addTaskRecord(caseeOrTargetTaskFlowDTO, CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT);
 
 		return caseeOrTargetTaskFlowDTO;
 	}
@@ -708,7 +709,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Override
 	public void updateBusinessData(AuditTargetDTO auditTargetDTO) {
 		targetService.updateBusinessData(auditTargetDTO);
-
 	}
 
 	/**
@@ -727,8 +727,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			nodeHandlerRegister.onTaskNodeMakeUp(taskFlowDTO);
 
 			PigUser cacheUser = securityUtilsService.getCacheUser();
-			TaskRecord taskRecord=new TaskRecord();
-			BeanCopyUtil.copyBean(taskFlowDTO,taskRecord);
+			TaskRecord taskRecord = new TaskRecord();
+			BeanCopyUtil.copyBean(taskFlowDTO, taskRecord);
 			taskRecord.setCreateBy(null);
 			taskRecord.setCreateTime(null);
 			taskRecord.setUpdateTime(null);
@@ -1484,7 +1484,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * 根据案件id与节点key查询任务对象
 	 *
 	 * @param caseeId 案件id
-	 * @param nodeKey  节点key
+	 * @param nodeKey 节点key
 	 * @return
 	 */
 	@Override
@@ -1542,20 +1542,16 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	public void setTaskDataSubmission(TaskNode taskNode) {
-		if(taskNode.getNeedAudit() == 0) {
+		if (taskNode.getNeedAudit() == 0) {
 			Target target = this.targetService.getById(taskNode);
 			//更新程序表json
 			AuditTargetDTO auditTargetDTO = this.getAuditTargetDTO(taskNode);
 
 			this.updateBusinessData(auditTargetDTO);
-			if(target.getGoalType().equals(Integer.valueOf("10001"))) {
-//				this.
-			} else if (target.getGoalType().equals(Integer.valueOf("20001"))) {
+			if (target.getGoalType().equals(Integer.valueOf("20001"))) {
 
-			} else if(target.getGoalType().equals(Integer.valueOf("30001"))) {
+			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
-			} else {
-				new RuntimeException("程序目标类型异常！");
 			}
 		}
 	}

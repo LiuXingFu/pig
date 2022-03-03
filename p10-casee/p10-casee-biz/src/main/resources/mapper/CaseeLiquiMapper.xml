@@ -254,6 +254,17 @@
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
+	<select id="queryCaseeDetail" resultType="java.lang.String">
+		select JSON_EXTRACT(casee_detail, #{query.key}) as jsonValue
+		from p10_casee where casee_id = #{query.caseeId}
+	</select>
 
+	<update id="updateCaseeDetail">
+		update p10_casee SET
+		<foreach collection="listParams" item="params" separator=",">
+			casee_detail = JSON_SET(casee_detail, #{params.key}, #{params.value})
+		</foreach>
+		where casee_id=#{query.caseeId};
+	</update>
 
 </mapper>

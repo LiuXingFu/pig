@@ -4,9 +4,11 @@ import com.pig4cloud.pig.admin.api.appserver.RequestAppService;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesService;
 import com.pig4cloud.pig.casee.dto.CaseeOrTargetTaskFlowDTO;
+import com.pig4cloud.pig.casee.dto.SaveCaseeLiQuiDTO;
 import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
 import com.pig4cloud.pig.casee.entity.PfzxTask;
 import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
@@ -33,6 +35,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @SpringBootTest
@@ -50,6 +57,67 @@ public class TaskNodeServiceTest<T> {
 
 	@Autowired
 	RemoteAuthUtilsService remoteAuthUtilsService;
+
+	@Autowired
+	CaseeLiquiService caseeLiquiService;
+
+
+	@Test
+	public void mapTest() {
+
+
+		/**
+		 *
+		 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		 HashMap<String, Object> map = new HashMap<>();
+
+		 map.put("finalReceiptTime", simpleDateFormat.format(date));
+
+		 String jsonObject = JsonUtils.objectToJsonObject(map);
+
+		 SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
+
+		 saveCaseeLiQuiDTO.setKey("$.finalReceiptTime");
+
+		 saveCaseeLiQuiDTO.setFormData(jsonObject);
+
+		 saveCaseeLiQuiDTO.setCaseeId(taskNode.getCaseeId());
+
+		 this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
+		 */
+
+		HashMap<String, Object> map = new HashMap<>();
+
+		SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
+
+		map.put("time", sm.format(new Date()));
+
+		String jsonObject = JsonUtils.objectToJsonObject(map);
+
+		SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
+
+		saveCaseeLiQuiDTO.setKey("$.time");
+
+		saveCaseeLiQuiDTO.setFormData(jsonObject);
+
+		saveCaseeLiQuiDTO.setCaseeId(437);
+
+		this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
+
+		System.out.println(jsonObject);
+	}
+
+	@Test
+	public void  timeTest() throws ParseException {
+		String DateStr1 = "2011-10-1 10:20:16";
+		String DateStr2 = "2011-10-07 15:50:35";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date dateTime1 = dateFormat.parse(DateStr1);
+		Date dateTime2 = dateFormat.parse(DateStr2);
+		int i = dateTime2.compareTo(dateTime1);
+		System.out.println(i);
+	}
 
 	@Test
 	public void test1() {

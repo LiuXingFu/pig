@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -31,6 +32,7 @@ import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +115,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 		//添加任务数据以及程序信息
 		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
-		TargetAddDTO targetAddDTO=new TargetAddDTO();
+		TargetAddDTO targetAddDTO = new TargetAddDTO();
 		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
 		targetAddDTO.setOutlesId(project.getOutlesId());
@@ -125,17 +127,17 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
+	public Integer addPreservationCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
-		saveAssetsReService(caseeLiquiAddDTO.getProjectId(),caseeId,caseeLiquiAddDTO.getCaseeType());
+		saveAssetsReService(caseeLiquiAddDTO.getProjectId(), caseeId, caseeLiquiAddDTO.getCaseeType());
 		return caseeId;
 	}
 
 	@Override
 	@Transactional
-	public Integer addLawsuitsCasee(CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception{
+	public Integer addLawsuitsCasee(CaseeLawsuitsDTO caseeLawsuitsDTO) throws Exception {
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
-		BeanCopyUtil.copyBean(caseeLawsuitsDTO,caseeLiquiAddDTO);
+		BeanCopyUtil.copyBean(caseeLawsuitsDTO, caseeLiquiAddDTO);
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		// 保存案件代理律师
 		if (Objects.nonNull(caseeLawsuitsDTO.getLawyerName())) {
@@ -149,16 +151,16 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer saveSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception{
+	public Integer saveSecondInstanceCasee(CaseeSecondInstanceDTO caseeSecondInstanceDTO) throws Exception {
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
-		BeanCopyUtil.copyBean(caseeSecondInstanceDTO,caseeLiquiAddDTO);
-		if(caseeSecondInstanceDTO.getSubjectList().size()>0){
+		BeanCopyUtil.copyBean(caseeSecondInstanceDTO, caseeLiquiAddDTO);
+		if (caseeSecondInstanceDTO.getSubjectList().size() > 0) {
 			List<CaseeSubjectReDTO> applicantList = new ArrayList<>();
-			caseeSecondInstanceDTO.getSubjectList().stream().forEach(item->{
+			caseeSecondInstanceDTO.getSubjectList().stream().forEach(item -> {
 				Integer subjectId = 0;
-				if(Objects.nonNull(item.getSubjectId())){
+				if (Objects.nonNull(item.getSubjectId())) {
 					subjectId = item.getSubjectId();
-				}else{
+				} else {
 					R subject = subjectService.saveOrUpdateById(item, SecurityConstants.FROM);
 					subjectId = Integer.valueOf(subject.getData().toString());
 				}
@@ -184,7 +186,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer addExecutionCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception{
+	public Integer addExecutionCasee(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		// 更新案件类别
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
@@ -207,13 +209,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				assetsRe.setAssetsReId(item.getAssetsReId());
 				assetsRe.setCaseeId(caseeId);
 				// 假如没有创建案件id，将首执案件id保存
-				if(Objects.isNull(item.getCreateCaseeId())){
+				if (Objects.isNull(item.getCreateCaseeId())) {
 					assetsRe.setCreateCaseeId(caseeId);
 				}
 				assetsReList.add(assetsRe);
 
 				//添加任务数据以及程序信息
-				TargetAddDTO targetAddDTO=new TargetAddDTO();
+				TargetAddDTO targetAddDTO = new TargetAddDTO();
 				targetAddDTO.setCaseeId(caseeId);
 				targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
 				targetAddDTO.setOutlesId(project.getOutlesId());
@@ -233,9 +235,9 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer addReinstatementCasee(CaseeReinstatementDTO caseeReinstatementDTO) throws Exception{
+	public Integer addReinstatementCasee(CaseeReinstatementDTO caseeReinstatementDTO) throws Exception {
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
-		BeanCopyUtil.copyBean(caseeReinstatementDTO,caseeLiquiAddDTO);
+		BeanCopyUtil.copyBean(caseeReinstatementDTO, caseeLiquiAddDTO);
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
 		// 更新案件类别
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
@@ -247,7 +249,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Transactional
-	public void saveAssetsReService(Integer projectId,Integer caseeId,Integer caseeType){
+	public void saveAssetsReService(Integer projectId, Integer caseeId, Integer caseeType) {
 		// 查询抵押财产，更新财产关联表
 		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
@@ -267,7 +269,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				assetsRe.setCreateCaseeId(caseeId);
 				assetsReList.add(assetsRe);
 				//添加任务数据以及程序信息
-				TargetAddDTO targetAddDTO=new TargetAddDTO();
+				TargetAddDTO targetAddDTO = new TargetAddDTO();
 				targetAddDTO.setCaseeId(caseeId);
 				targetAddDTO.setProcedureNature(caseeType);
 				targetAddDTO.setOutlesId(project.getOutlesId());
@@ -296,20 +298,21 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public CaseeLiqui queryByStatusList(Integer projectId,List<Integer> statusList){
-		return this.baseMapper.selectByStatusList(projectId,statusList);
+	public CaseeLiqui queryByStatusList(Integer projectId, List<Integer> statusList) {
+		return this.baseMapper.selectByStatusList(projectId, statusList);
 	}
 
 	@Override
-	public IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO){
+	public IPage<CaseeLiquiPageVO> queryPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectPage(page,caseeLiquiPageDTO,insOutlesDTO);
+		return this.baseMapper.selectPage(page, caseeLiquiPageDTO, insOutlesDTO);
 	}
 
 	/**
 	 * 根据案件id查询案件信息
+	 *
 	 * @param caseeId
 	 * @return
 	 */
@@ -325,33 +328,64 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO){
+	public List<Subject> queryCaseeSubjectList(CaseeSubjectDTO caseeSubjectDTO) {
 		return this.baseMapper.selectCaseeSubject(caseeSubjectDTO);
 	}
 
 	@Override
-	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId,Integer caseePersonnelType){
-		return this.baseMapper.selectAssetsBehavior(caseeId,caseePersonnelType);
+	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer caseeId, Integer caseePersonnelType) {
+		return this.baseMapper.selectAssetsBehavior(caseeId, caseePersonnelType);
 	}
 
 	@Override
-	public IPage<CaseeLiquiPageVO> queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO){
+	public IPage<CaseeLiquiPageVO> queryAssetNotAddedPage(Page page, CaseeLiquiPageDTO caseeLiquiPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectAssetNotAddedPage(page,caseeLiquiPageDTO,insOutlesDTO);
+		return this.baseMapper.selectAssetNotAddedPage(page, caseeLiquiPageDTO, insOutlesDTO);
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryFlowChartPage(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectFlowChartPage(page,caseeLiquiFlowChartPageDTO,insOutlesDTO);
+		return this.baseMapper.selectFlowChartPage(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
 	}
 
 	@Override
-	public CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId){
+	public CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId) {
 		return this.baseMapper.queryByCaseeId(caseeId);
+	}
+
+	@Override
+	public void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO) {
+		JSONObject formData = JSONObject.parseObject(saveCaseeLiQuiDTO.getFormData());
+		List<KeyValue> listParams = new ArrayList<KeyValue>();
+
+		for (String o : formData.keySet()) {
+			listParams.add(new KeyValue(o, formData.get(o)));
+		}
+
+		String caseeDetail = this.baseMapper.queryCaseeDetail(saveCaseeLiQuiDTO);
+
+		if (caseeDetail == null) {
+			Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
+			if (Objects.nonNull(casee.getCaseeDetail())) {
+				JSONObject caseeDetailJson = JSONObject.parseObject(casee.getCaseeDetail());
+				BeanCopyUtil.mergeJSONObject(caseeDetailJson, formData);
+				CaseeLiqui needUpdate = new CaseeLiqui();
+				needUpdate.setCaseeId(casee.getCaseeId());
+				needUpdate.setCaseeDetail(caseeDetailJson.toJSONString());
+				this.updateById(needUpdate);
+			} else {
+				CaseeLiqui needSave = new CaseeLiqui();
+				needSave.setCaseeId(casee.getCaseeId());
+				needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
+				this.updateById(needSave);
+			}
+		} else {
+			this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO, listParams);
+		}
 	}
 }

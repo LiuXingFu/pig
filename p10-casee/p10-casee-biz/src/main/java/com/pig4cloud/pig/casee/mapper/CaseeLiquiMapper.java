@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.*;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -59,4 +60,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	IPage<CaseeLiquiFlowChartPageVO> selectFlowChartPage(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	String queryCaseeDetail(@Param("query") SaveCaseeLiQuiDTO saveCaseeLiQuiDTO);
+
+	void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO, List<KeyValue> listParams);
 }
