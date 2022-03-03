@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.common.core.util.R;
@@ -70,7 +71,6 @@ public class AssetsReController {
         return R.ok(assetsReService.getById(assetsReId));
     }
 
-
 	/**
 	 * 通过项目id查询财产信息
 	 * @param projectId id
@@ -120,5 +120,6 @@ public class AssetsReController {
     public R removeById(@PathVariable Integer assetsReId) {
         return R.ok(assetsReService.removeById(assetsReId));
     }
+
 
 }

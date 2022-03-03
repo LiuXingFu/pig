@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
@@ -155,6 +156,21 @@ public class BehaviorController {
 	@GetMapping("/queryPageByCaseeId" )
 	public R queryPageByCaseeId(Page page, Integer caseeId) {
 		return R.ok(behaviorService.queryPageByCaseeId(page,caseeId));
+	}
+
+	/**
+	 * 通过项目id和行为id查询案件id
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id和行为id查询案件id", notes = "通过项目id和行为id查询案件id")
+	@GetMapping("/getBehaviorIdCaseeId" )
+	public R getCaseeId(Integer projectId,Integer behaviorId) {
+		QueryWrapper<Behavior> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Behavior::getDelFlag,0);
+		queryWrapper.lambda().eq(Behavior::getBehaviorId,behaviorId);
+		queryWrapper.lambda().eq(Behavior::getProjectId,projectId);
+		return R.ok(behaviorService.getOne(queryWrapper));
 	}
 
 

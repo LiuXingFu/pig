@@ -57,6 +57,8 @@ public interface ProjectLiquiService extends IService<Project> {
 	 */
 	ProjectLiquiDealtVO queryDealt(Integer projectId);
 
+	List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer projectId,Integer caseePersonnelType);
+
 	/*******************************************************/
 	// 接收未处理分页查询
 	IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);

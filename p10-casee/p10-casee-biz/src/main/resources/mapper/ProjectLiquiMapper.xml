@@ -147,4 +147,27 @@
 		ORDER BY p10_project.take_time desc
 	</select>
 
+	<resultMap id="retultAssetsBehavior" type="com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO">
+		<id property="subjectId" column="subject_id"/>
+		<result property="name" column="name"/>
+		<result property="projectId" column="project_id"/>
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO" column="{subjectId=subject_id,projectId=project_id}"
+					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
+		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior" column="{subjectId=subject_id,projectId=project_id}"
+					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
+	</resultMap>
+
+	<select id="selectAssetsBehavior" resultMap="retultAssetsBehavior">
+		select DISTINCT p10_subject.*,p10_project.project_id from p10_project
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
+		left join p10_casee_subject_re on p10_casee_subject_re.casee_id = p10_casee.casee_id
+		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
+		where p10_project.del_flag = 0
+		and p10_project.project_id = #{projectId}
+		<if test="caseePersonnelType != null and caseePersonnelType != ''">
+			and p10_casee_subject_re.casee_personnel_type = #{caseePersonnelType}
+		</if>
+	</select>
+
 </mapper>

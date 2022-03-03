@@ -323,6 +323,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
+	public List<SubjectAssetsBehaviorListVO> queryAssetsBehavior(Integer projectId,Integer caseePersonnelType){
+		return this.baseMapper.selectAssetsBehavior(projectId,caseePersonnelType);
+	}
+
+	@Override
 	public IPage<ProjectLiquiPageVO> queryNotProcessedPage(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));

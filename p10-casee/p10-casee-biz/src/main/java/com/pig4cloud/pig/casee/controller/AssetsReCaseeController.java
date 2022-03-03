@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.service.AssetsReCaseeService;
@@ -53,6 +54,22 @@ public class AssetsReCaseeController {
 	@PostMapping("/saveAssetsCasee")
 	public R save(@RequestBody AssetsAddDTO assetsAddDTO)throws Exception {
 		return R.ok(assetsReCaseeService.saveAssetsCasee(assetsAddDTO));
+	}
+
+
+	/**
+	 * 通过项目id和财产id查询案件id
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id和财产id查询案件id", notes = "通过项目id和财产id查询案件id")
+	@GetMapping("/getCaseeId" )
+	public R getCaseeId(Integer projectId,Integer assetsId) {
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getDelFlag,0);
+		queryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
+		queryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
+		return R.ok(assetsReCaseeService.getOne(queryWrapper));
 	}
 
 

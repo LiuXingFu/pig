@@ -26,10 +26,7 @@ import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO;
-import com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO;
-import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
+import com.pig4cloud.pig.casee.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -55,4 +52,6 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, @Param("subjectId") Integer subjectId);
 
 	IPage<ProjectLiquiPageVO> selectNotProcessedPage(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
+
+	List<SubjectAssetsBehaviorListVO> selectAssetsBehavior(@Param("projectId") Integer projectId,@Param("caseePersonnelType") Integer caseePersonnelType);
 }

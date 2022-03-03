@@ -51,6 +51,12 @@ public class SubjectAssetsBehaviorListVO {
 	private Integer caseeId;
 
 	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value = "项目id")
+	private Integer projectId;
+
+	/**
 	 *	财产集合
 	 */
 	@ApiModelProperty(value = "财产集合")

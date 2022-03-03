@@ -151,6 +151,17 @@ public class ProjectLiquiController {
 	}
 
 	/**
+	 * 查询项目下执行案件债务人行为和财产集合
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "查询项目下执行案件债务人行为和财产集合", notes = "查询项目下执行案件债务人行为和财产集合")
+	@GetMapping("/queryAssetsBehavior" )
+	public R queryAssetsBehavior(Integer projectId,Integer caseePersonnelType) {
+		return R.ok(projectLiquiService.queryAssetsBehavior(projectId,caseePersonnelType));
+	}
+
+	/**
 	 * 统计项目待接收处理数量
 	 * @return R
 	 */
