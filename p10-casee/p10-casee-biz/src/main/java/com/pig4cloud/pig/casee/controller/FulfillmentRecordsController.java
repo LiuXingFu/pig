@@ -52,9 +52,20 @@ public class FulfillmentRecordsController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R getFulfillmentRecordsPage(Page page, FulfillmentRecords fulfillmentRecords) {
-        return R.ok(fulfillmentRecordsService.page(page, Wrappers.query(fulfillmentRecords)));
+		return R.ok(fulfillmentRecordsService.page(page, Wrappers.query(fulfillmentRecords)));
     }
 
+	/**
+	 * 分页查询
+	 * @param page 分页对象
+	 * @param reconciliatioMediationId 和解/调解id
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/getFulfillmentRecordsPage" )
+	public R getFulfillmentRecordsPage(Page page, Integer reconciliatioMediationId) {
+		return R.ok(fulfillmentRecordsService.getFulfillmentRecordsPage(page, reconciliatioMediationId));
+	}
 
     /**
      * 通过id查询待履行记录表

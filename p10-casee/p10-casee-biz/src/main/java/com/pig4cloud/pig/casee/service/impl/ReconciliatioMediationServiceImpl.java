@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
@@ -23,10 +25,13 @@ import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
 import com.pig4cloud.pig.casee.mapper.ReconciliatioMediationMapper;
 import com.pig4cloud.pig.casee.service.FulfillmentRecordsService;
 import com.pig4cloud.pig.casee.service.ReconciliatioMediationService;
+import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
+import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 /**
  * 和解/调解表
@@ -38,6 +43,34 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReconciliatioMediationServiceImpl extends ServiceImpl<ReconciliatioMediationMapper, ReconciliatioMediation> implements ReconciliatioMediationService {
 	@Autowired
 	private FulfillmentRecordsService fulfillmentRecordsService;
+
+	@Override
+	public IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, ReconciliatioMediationDTO reconciliatioMediationDTO) {
+		IPage<ReconciliatioMediationVO> reconciliatioMediationPage = this.baseMapper.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
+		for (ReconciliatioMediationVO reconciliatioMediationVO : reconciliatioMediationPage.getRecords()) {
+			for (FulfillmentRecordsVO fulfillmentRecordsVO : reconciliatioMediationVO.getFulfillmentRecordsList()) {
+				if (fulfillmentRecordsVO.getPaymentAmount()!=null){
+					reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount().subtract(fulfillmentRecordsVO.getPaymentAmount()));
+				}else {
+					reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount());
+				}
+			}
+		}
+		return reconciliatioMediationPage;
+	}
+
+	@Override
+	public ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId) {
+		ReconciliatioMediationVO reconciliatioMediationVO = this.baseMapper.getByReconciliatioMediationId(reconciliatioMediationId);
+		for (FulfillmentRecordsVO fulfillmentRecordsVO : reconciliatioMediationVO.getFulfillmentRecordsList()) {
+			if (fulfillmentRecordsVO.getPaymentAmount()!=null){
+				reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount().subtract(fulfillmentRecordsVO.getPaymentAmount()));
+			}else {
+				reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount());
+			}
+		}
+		return reconciliatioMediationVO;
+	}
 
 	@Override
 	@Transactional

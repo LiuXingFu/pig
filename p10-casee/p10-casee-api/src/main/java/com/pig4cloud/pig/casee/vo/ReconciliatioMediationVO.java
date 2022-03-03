@@ -14,9 +14,8 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
+package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
 import lombok.Data;
 
@@ -30,15 +29,19 @@ import java.util.List;
  * @date 2022-03-01 20:36:17
  */
 @Data
-public class ReconciliatioMediationDTO extends ReconciliatioMediation {
-
-	/**
-	 * 待履行记录信息
-	 */
-	private List<FulfillmentRecords> fulfillmentRecordsList;
-
+public class ReconciliatioMediationVO extends ReconciliatioMediation {
 	/**
 	 * 公司业务案号
 	 */
 	private String companyCode;
+
+	/**
+	 * 待履行记录
+	 */
+	private List<FulfillmentRecordsVO> fulfillmentRecordsList;
+
+	/**
+	 * 剩余待履行金额
+	 */
+	private BigDecimal balance;
 }

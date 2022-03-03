@@ -16,11 +16,16 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.mapper.FulfillmentRecordsMapper;
 import com.pig4cloud.pig.casee.service.FulfillmentRecordsService;
+import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 待履行记录表
@@ -31,4 +36,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class FulfillmentRecordsServiceImpl extends ServiceImpl<FulfillmentRecordsMapper, FulfillmentRecords> implements FulfillmentRecordsService {
 
+	@Override
+	public List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId) {
+		return this.baseMapper.getByReconciliatioMediationId(reconciliatioMediationId);
+	}
+
+	@Override
+	public IPage<FulfillmentRecordsVO> getFulfillmentRecordsPage(Page page, Integer reconciliatioMediationId) {
+		return this.baseMapper.getFulfillmentRecordsPage(page,reconciliatioMediationId);
+	}
 }
