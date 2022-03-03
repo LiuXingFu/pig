@@ -146,4 +146,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	CaseeLiquiDetailsVO queryByCaseeIdDetails(Integer caseeId);
 
+	/**
+	 * 诉讼案件自动结案
+	 */
+	void litigationCaseeClose();
+
 }

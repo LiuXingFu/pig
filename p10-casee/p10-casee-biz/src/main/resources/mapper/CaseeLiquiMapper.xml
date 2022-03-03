@@ -254,6 +254,18 @@
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
+	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiJudgmentTakesEffectVO">
+		select p10_casee.*,JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") effectiveDate from p10_casee
+		left join p10_target on p10_target.casee_id=p10_casee.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_casee.del_flag = 0
+		and p10_casee.casee_type in (2020,2021,2030)
+		and p10_casee.status = 1
+		and p10_target.goal_type = 10001
+		and p10_task_node.form_data is not null
+		and p10_task_node.node_key like "%ZZSDQK"
+		and JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") is not null
+	</select>
 
 
 </mapper>

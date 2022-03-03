@@ -237,4 +237,5 @@ public class CaseeLiquiController {
 	public R queryByCaseeIdDetails(@PathVariable("caseeId") Integer caseeId) {
 		return R.ok(this.caseeLiquiService.queryByCaseeIdDetails(caseeId));
 	}
+
 }
