@@ -238,4 +238,16 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryByCaseeIdDetails(caseeId));
 	}
 
+	/**
+	 * 分页查询上诉到期未确认列表
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询上诉到期未确认列表", notes = "分页查询上诉到期未确认列表")
+	@GetMapping("/queryLitigationFirstInstanceAppealExpired")
+	public R queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryLitigationFirstInstanceAppealExpired(page,caseeLiquiFlowChartPageDTO));
+	}
+
 }

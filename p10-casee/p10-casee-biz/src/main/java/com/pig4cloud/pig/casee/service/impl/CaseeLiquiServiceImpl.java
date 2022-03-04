@@ -72,6 +72,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private ProjectStatusService projectStatusService;
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	private DeadlineConfigureService deadlineConfigureService;
 
 	@Override
 	@Transactional
@@ -382,5 +384,18 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		});
 		// 批量更新案件状态=结案
 		this.updateBatchById(caseeLiquis);
+	}
+
+	@Override
+	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+		QueryWrapper<DeadlineConfigure> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(DeadlineConfigure::getDelFlag,0);
+		queryWrapper.lambda().eq(DeadlineConfigure::getPeriodConfigureKey,"ssq");
+		DeadlineConfigure deadlineConfigure = deadlineConfigureService.getOne(queryWrapper);
+
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectLitigationFirstInstanceAppealExpired(page, caseeLiquiFlowChartPageDTO, insOutlesDTO,deadlineConfigure.getDeadlineNum());
 	}
 }

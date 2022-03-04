@@ -150,4 +150,13 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 诉讼案件自动结案
 	 */
 	void litigationCaseeClose();
+
+	/**
+	 * 分页查询上诉到期未确认列表
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
 }

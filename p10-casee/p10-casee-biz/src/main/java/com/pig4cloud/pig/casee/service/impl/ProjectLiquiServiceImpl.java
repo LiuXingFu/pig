@@ -409,8 +409,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********结案未送达统计********************************
 		preLitigationStageVO.setSeizedUndoneCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
 
-
-
 		return preLitigationStageVO;
 	}
 
@@ -452,7 +450,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countLitigationVO.setLitigationFirstInstanceAppealConfirmation(queryCaseNodePage("liQui_SSYS_SSYSYGSSQK_SSYSYGSSQK",2020));
 
 		//**********上诉到期未处理********************************
-		countLitigationVO.setLitigationFirstInstanceAppealExpired(queryCaseNodePage("liQui_SSYS_SSYSSSDQQR_SSYSSSDQQR",2020));
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageVO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageVO.setStatus(1);
+		IPage<CaseeLiquiFlowChartPageVO> caseeLiquiFlowChartPageVOIPage = caseeLiquiService.queryLitigationFirstInstanceAppealExpired(page,caseeLiquiFlowChartPageVO);
+
+		countLitigationVO.setLitigationFirstInstanceAppealExpired(caseeLiquiFlowChartPageVOIPage.getTotal());
 
 		//***********一审节点统计end*************************************************
 

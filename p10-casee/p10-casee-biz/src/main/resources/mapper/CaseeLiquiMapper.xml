@@ -23,8 +23,35 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper">
 
+	<resultMap id="caseeMap" type="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">
+		<id property="caseeId" column="casee_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="caseeNumber" column="casee_number"/>
+		<result property="caseeType" column="casee_type"/>
+		<result property="status" column="status"/>
+		<result property="startTime" column="start_time"/>
+		<result property="closeTime" column="close_time"/>
+		<result property="remark" column="remark"/>
+		<result property="judicialExpenses" column="judicial_expenses"/>
+		<result property="parentId" column="parent_id"/>
+		<result property="category" column="category"/>
+		<result property="courtId" column="court_id"/>
+		<result property="judgeOutlesId" column="judge_outles_id"/>
+		<result property="judgeId" column="judge_id"/>
+		<result property="judgeName" column="judge_name"/>
+		<result property="caseeAmount" column="casee_amount"/>
+		<result property="executedName" column="executed_name"/>
+		<result property="applicantName" column="applicant_name"/>
+		<result property="caseeDetail" column="casee_detail"/>
+	</resultMap>
+
 	<select id="selectByIdList" resultType="com.pig4cloud.pig.casee.vo.CaseeListVO">
-		select p10_casee.*,p10_court.court_name as courtName,p10_casee_lawyer_re.actual_name as lawyerName,p10_project_casee_re.actual_name as actualName from p10_casee
+		select p10_casee.*,p10_court.court_name as courtName,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_project_casee_re.actual_name as actualName from p10_casee
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
@@ -70,7 +97,8 @@
 	</select>
 
 	<select id="selectPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
-		select p10_project.company_code,p10_project.project_id,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		select p10_project.company_code,p10_project.project_id,p10_casee.*,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
@@ -84,7 +112,7 @@
 		</if>
 		<if test="query.caseeNumber != null and query.caseeNumber != ''">
 			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
-				or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
 		</if>
 		<if test="query.executedName != null and query.executedName != ''">
 			and p10_casee.executed_name like concat('%', #{query.executedName}, '%')
@@ -148,9 +176,11 @@
 		<id property="subjectId" column="subject_id"/>
 		<result property="name" column="name"/>
 		<result property="caseeId" column="casee_id"/>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO" column="{subjectId=subject_id,caseeId=casee_id}"
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO"
+					column="{subjectId=subject_id,caseeId=casee_id}"
 					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
-		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior" column="{subjectId=subject_id,caseeId=casee_id}"
+		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior"
+					column="{subjectId=subject_id,caseeId=casee_id}"
 					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
 	</resultMap>
 
@@ -165,7 +195,8 @@
 	</select>
 
 	<select id="selectAssetNotAddedPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
-		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
@@ -202,20 +233,22 @@
 	</select>
 
 	<select id="selectFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.*,task_node.node_id,p10_project.project_id,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		select
+		p10_project.company_code,p10_casee.*,task_node.node_id,p10_project.project_id,p10_casee_lawyer_re.actual_name as
+		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_target on p10_target.casee_id = p10_casee.casee_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		left join (select * from (
-							select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
-							where p10_task_node.`status` = 0
-							and p10_task_node.node_attributes = 400
-							ORDER BY p10_task_node.sort asc
-						)task_node
-						GROUP BY task_node.target_id
-					) task_node on task_node.target_id = p10_target.target_id
+		select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
+		where p10_task_node.`status` = 0
+		and p10_task_node.node_attributes = 400
+		ORDER BY p10_task_node.sort asc
+		)task_node
+		GROUP BY task_node.target_id
+		) task_node on task_node.target_id = p10_target.target_id
 		where p10_casee.del_flag = 0
 		<if test="query.goalType != null and query.goalType != ''">
 			and p10_target.goal_type = #{query.goalType}
@@ -264,14 +297,45 @@
 		and JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") is not null
 	</select>
 
-<!--	<update id="updateCaseClosed">-->
-<!--		update p10_casee set close_time = #{casee.closeTime}, status = #{casee.status} where casee_id = #{casee.caseeId}-->
-<!--	</update>-->
-
-<!--	<update id="updateByCaseeLiquiList" parameterType="java.util.List">-->
-<!--		<foreach collection="caseeLiquiList" item="item"  index="index" separator=";">-->
-<!--			update p10_casee set close_time = #{item.closeTime}, status = #{item.status} WHERE casee_id = #{item.caseeId}-->
-<!--		</foreach>-->
-<!--	</update>-->
+	<select id="selectLitigationFirstInstanceAppealExpired" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.*,p10_project.project_id,p10_casee_lawyer_re.actual_name as lawyerName,
+			p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_target.target_id
+		from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		where p10_casee.del_flag = 0
+		and p10_target.goal_type = 10001
+		and JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime") is not null
+		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL #{day} DAY),'%Y-%m-%d')>=DATE_FORMAT(NOW(),'%Y-%m-%d')
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_casee.executed_name like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.actualName != null and query.actualName != ''">
+			and p10_project_casee_re.actual_name like concat('%', #{query.actualName}, '%')
+		</if>
+		<if test="query.caseeType != null and query.caseeType != ''">
+			and p10_casee.casee_type = #{query.caseeType}
+		</if>
+		<if test="query.status != null and query.status != ''">
+			and p10_casee.status = #{query.status}
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
 
 </mapper>
