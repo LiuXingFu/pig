@@ -34,16 +34,13 @@ import com.pig4cloud.pig.admin.service.SubjectService;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.feign.RemoteBankLoanService;
-import com.pig4cloud.pig.casee.feign.RemoteProjectService;
 import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
-import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -67,9 +64,6 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	@Autowired
 	private RemoteBankLoanService remoteBankLoanService;
-
-	@Autowired
-	private RemoteProjectService remoteProjectService;
 
 	@Override
 	public boolean saveBatchSubject(List<Subject> subjectList){
@@ -199,11 +193,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 * @return
 	 */
 	@Override
-	public IPage<SubjectPageVO> pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
-//		IPage<SubjectPageVO> subjectPageVOIPage = this.baseMapper.pageSubject(page, subjectPageDTO);
-//		subjectPageVOIPage.getRecords().forEach(subjectPageVO -> {
-//			subjectPageVO.setAmountInvolved(remoteProjectService.getProjectAmountBySubjectId(subjectPageVO.getSubjectId(), SecurityConstants.FROM).getData());
-//		});
+	public IPage<Subject> pageSubject(Page page, SubjectPageDTO subjectPageDTO) {
 		return this.baseMapper.pageSubject(page, subjectPageDTO);
 	}
 

@@ -66,7 +66,7 @@ public interface SubjectService extends IService<Subject> {
 
 	SubjectGetByIdVO getBySubjectId(Integer subjectId);
 
-	IPage<SubjectPageVO> pageSubject(Page page, SubjectPageDTO subjectPageDTO);
+	IPage<Subject> pageSubject(Page page, SubjectPageDTO subjectPageDTO);
 
 	List<Subject> queryBySubjectIdList(List<Integer> subjectIdList);
 

@@ -26,14 +26,11 @@ import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.SubjectDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
-import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 主体
@@ -48,9 +45,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
 	SubjectGetByIdVO getBySubjectId(Integer subjectId);
 
-	IPage<SubjectPageVO> pageSubject(Page page, @Param("query") SubjectPageDTO subjectPageDTO);
-
-	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
+	IPage<Subject> pageSubject(Page page, @Param("query") SubjectPageDTO subjectPageDTO);
 
 	SubjectVO selectSubjectById(Integer subjectId);
 

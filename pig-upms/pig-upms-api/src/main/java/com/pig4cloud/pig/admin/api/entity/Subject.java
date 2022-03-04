@@ -115,5 +115,16 @@ public class Subject extends BaseEntity {
 	@ApiModelProperty(value = "工作单位")
 	private String employer;
 
+	/**
+	 * 性别（1-男，2-女）默认值0-不详
+	 */
+	@ApiModelProperty(value = "性别（1-男，2-女）默认值0-不详")
+	private Integer gender;
+
+	/**
+	 * 民族
+	 */
+	@ApiModelProperty(value = "民族")
+	private String ethnic;
 
 }

@@ -22,9 +22,4 @@ public class SubjectPageVO extends Subject {
 	 */
 	private BigDecimal amountInvolved;
 
-	/**
-	 * 主体地址信息
-	 */
-	private List<AddressVO> addressList;
-
 }
