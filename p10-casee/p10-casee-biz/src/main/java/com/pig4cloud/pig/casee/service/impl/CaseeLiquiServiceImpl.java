@@ -368,19 +368,15 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		for (String o : formData.keySet()) {
 			listParams.add(new KeyValue(o, formData.get(o)));
 		}
+		Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
 
-		String caseeDetail = this.baseMapper.queryCaseeDetail(saveCaseeLiQuiDTO);
-
-		if (caseeDetail == null) {
-			Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
-			if (Objects.nonNull(casee.getCaseeDetail())) {
-				this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO.getCaseeId(), listParams);
-			} else {
-				CaseeLiqui needSave = new CaseeLiqui();
-				needSave.setCaseeId(casee.getCaseeId());
-				needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
-				this.updateById(needSave);
-			}
+		if (Objects.nonNull(casee.getCaseeDetail())) {
+			this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO.getCaseeId(), listParams);
+		} else {
+			CaseeLiqui needSave = new CaseeLiqui();
+			needSave.setCaseeId(casee.getCaseeId());
+			needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
+			this.updateById(needSave);
 		}
 	}
 
@@ -390,7 +386,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		List<CaseeLiquiJudgmentTakesEffectVO> judgmentTakesEffectVO = this.baseMapper.selectJudgmentTakesEffect();
 		Collection<Casee> caseeLiquis = new ArrayList<>();
 		// 遍历在办案件生效日期
-		judgmentTakesEffectVO.stream().forEach(item->{
+		judgmentTakesEffectVO.stream().forEach(item -> {
 			// 去掉json格式的双引号
 			String data = item.getEffectiveDate().replace("\"", "");
 			// 转时间类型
@@ -398,7 +394,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			// 获取当前时间
 			LocalDate nowNew = LocalDate.now();
 			// 比较裁判结果生效日期，小于或等于当前时间
-			if(nowNew.isAfter(startDate) || nowNew.equals(startDate)){
+			if (nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
 				Casee casee = new Casee();
 				casee.setCaseeId(item.getCaseeId());
 				casee.setStatus(3);

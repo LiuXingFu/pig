@@ -55,24 +55,24 @@ public class LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler extends TaskNo
 					}
 				}
 			}
-
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-			HashMap<String, Object> map = new HashMap<>();
-
-			map.put("finalReceiptTime", simpleDateFormat.format(date));
-
-			String jsonObject = JsonUtils.objectToJsonObject(map);
-
-			SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
-
-			saveCaseeLiQuiDTO.setKey("$.finalReceiptTime");
-
-			saveCaseeLiQuiDTO.setFormData(jsonObject);
-
-			saveCaseeLiQuiDTO.setCaseeId(taskNode.getCaseeId());
-
-			this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
+//
+//			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//			HashMap<String, Object> map = new HashMap<>();
+//
+//			map.put("finalReceiptTime", simpleDateFormat.format(date));
+//
+//			String jsonObject = JsonUtils.objectToJsonObject(map);
+//
+//			SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
+//
+//			saveCaseeLiQuiDTO.setKey("$.finalReceiptTime");
+//
+//			saveCaseeLiQuiDTO.setFormData(jsonObject);
+//
+//			saveCaseeLiQuiDTO.setCaseeId(taskNode.getCaseeId());
+//
+//			this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
 		}
 
 	}
