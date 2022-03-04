@@ -264,7 +264,6 @@
 		<if test="query.outlesName != null">
 			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
 		</if>
-		ORDER BY p10_outles.create_time DESC
 	</select>
 
 	<select id="selectDetailsById" resultType="com.pig4cloud.pig.admin.api.vo.OutlesDetailsVO">
@@ -327,7 +326,6 @@
 				#{item}
 			</foreach>
 		</if>
-		ORDER BY create_time DESC
 	</select>
 
 	<select id="queryProjectOutlesSelect" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">

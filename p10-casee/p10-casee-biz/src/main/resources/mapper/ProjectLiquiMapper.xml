@@ -81,7 +81,6 @@
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_project.status asc,p10_project.take_time desc
 	</select>
 
 	<select id="selectByProjectId" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO">
@@ -144,7 +143,6 @@
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_project.take_time desc
 	</select>
 
 	<resultMap id="retultAssetsBehavior" type="com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO">

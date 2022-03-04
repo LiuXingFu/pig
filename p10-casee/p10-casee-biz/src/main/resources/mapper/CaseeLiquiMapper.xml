@@ -102,7 +102,6 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="queryByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO">
@@ -200,7 +199,6 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="selectFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
@@ -251,7 +249,6 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="queryCaseeDetail" resultType="java.lang.String">

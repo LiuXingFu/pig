@@ -163,7 +163,6 @@
 				#{item}
 			</foreach>
 		</if>
-		order by p10_project_subject_re.type
 	</select>
 
 	<select id="selectPageByCaseeId" resultType="com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO">
@@ -178,7 +177,6 @@
 				#{item}
 			</foreach>
 		</if>
-		order by p10_casee_subject_re.type
 	</select>
 
 	<select id="getSubjectDetailBySubjectId" resultType="com.pig4cloud.pig.admin.api.vo.SubjectDetailsVO">

@@ -169,7 +169,6 @@
 				and `user`.username LIKE CONCAT('%',#{query.username},'%')
 			</if>
 		</where>
-		ORDER BY `user`.create_time DESC
 	</select>
 
 <!--	<select id="queryUserListByPhone" resultType="com.pig4cloud.pig.admin.api.vo.UserOptionVO">-->
