@@ -96,4 +96,9 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 		return this.baseMapper.insert(assetsReCasee);
 	}
 
+	@Override
+	public AssetsReCasee getAssetsCasee(AssetsRe assetsRe) {
+		return this.baseMapper.getAssetsCasee(assetsRe);
+	}
+
 }

@@ -37,5 +37,7 @@ public interface AssetsReCaseeService extends IService<AssetsRe> {
 	 */
 	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception;
 
+	AssetsReCasee getAssetsCasee(AssetsRe assetsRe);
+
 
 }

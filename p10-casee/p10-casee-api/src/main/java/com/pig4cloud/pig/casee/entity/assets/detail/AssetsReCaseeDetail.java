@@ -23,6 +23,27 @@ public class AssetsReCaseeDetail {
 	private AssetsFreeze assetsFreeze;
 
 	/**
+	 * 资金财产冻结送达情况
+	 */
+	@ApiModelProperty(value = "资金财产冻结送达情况")
+	private AssetsFreezeServedSituation assetsFreezeServedSituation;
+
+	/**
+	 * 资金财产划扣
+	 */
+	@ApiModelProperty(value = "资金财产划扣")
+	private AssetsSnap assetsSnap;
+
+	/**
+	 * 资金财产划扣送达情况
+	 */
+	@ApiModelProperty(value = "资金财产划扣送达情况")
+	private AssetsSnapServedSituation assetsSnapServedSituation;
+
+
+
+
+	/**
 	 * 实体资产查封实体
 	 */
 	@ApiModelProperty(value = "实体资产查封实体")
@@ -32,7 +53,13 @@ public class AssetsReCaseeDetail {
 	 * 实体资产查封财产送达情况
 	 */
 	@ApiModelProperty(value = "实体资产查封财产送达情况")
-	private AssetsSeizureTransferServedSituation assetsSeizureTransferServedSituation;
+	private AssetsSeizureServedSituation assetsSeizureServedSituation;
+
+	/**
+	 * 实体资产商请移送实体类
+	 */
+	@ApiModelProperty(value = "实体资产商请移送实体类")
+	private AssetsPleaseTransfer assetsPleaseTransfer;
 
 	/**
 	 * 资产处置移交
@@ -41,9 +68,9 @@ public class AssetsReCaseeDetail {
 	private AssetsDispositionTransfer assetsDispositionTransfer;
 
 	/**
-	 * 实体资产商请移交送达情况
+	 * 实体资产资产处置移交送达情况
 	 */
-	@ApiModelProperty(value = "实体资产商请移交送达情况")
+	@ApiModelProperty(value = "实体资产资产处置移交送达情况")
 	private AssetsDispositionTransferServedSituation assetsDispositionTransferServedSituation;
 
 	/**
@@ -76,21 +103,37 @@ public class AssetsReCaseeDetail {
 	 *  实体财产拍卖结果送达情况
 	 */
 	@ApiModelProperty(value = "实体财产拍卖结果送达情况")
-	private AssetsAuctionResultsTransferServedSituation assetsAuctionResultsTransferServedSituation;
-//	/**
-//	 *  实体财产拍卖结果送达情况
-//	 */
-//	@ApiModelProperty(value = "实体财产拍卖结果送达情况")
-//	private AssetsAuctionResultsTransferServedSituation assetsAuctionResultsTransferServedSituation;
-//	/**
-//	 *  实体财产拍卖结果送达情况
-//	 */
-//	@ApiModelProperty(value = "实体财产拍卖结果送达情况")
-//	private AssetsAuctionResultsTransferServedSituation assetsAuctionResultsTransferServedSituation;
-//	/**
-//	 *  实体财产拍卖结果送达情况
-//	 */
-//	@ApiModelProperty(value = "实体财产拍卖结果送达情况")
-//	private AssetsAuctionResultsTransferServedSituation assetsAuctionResultsTransferServedSituation;
+	private AssetsAuctionResultsServedSituation assetsAuctionResultsServedSituation;
+	/**
+	 *  实体财产到款实体类
+	 */
+	@ApiModelProperty(value = "实体财产到款实体类")
+	private AssetsPayment assetsPayment;
+	/**
+	 *  实体财产资产抵偿
+	 */
+	@ApiModelProperty(value = "实体财产资产抵偿")
+	private AssetsAssetCompensate assetsAssetCompensate;
+	/**
+	 *  实体财产成交裁定
+	 */
+	@ApiModelProperty(value = "实体财产成交裁定")
+	private AssetsCompletionRuling assetsCompletionRuling;
+
+	/**
+	 *  实体财产抵偿裁定
+	 */
+	@ApiModelProperty(value = "实体财产抵偿裁定")
+	private AssetsCompensationAward assetsCompensationAward;
+	/**
+	 *  实体财产抵偿裁定送达情况
+	 */
+	@ApiModelProperty(value = "实体财产抵偿裁定送达情况")
+	private AssetsCompensationAwardServedSituation assetsCompensationAwardServedSituation;
+	/**
+	 *  实体财产腾退成功
+	 */
+	@ApiModelProperty(value = "实体财产腾退成功")
+	private AssetsEvacuateSuccessfully assetsEvacuateSuccessfully;
 
 }
