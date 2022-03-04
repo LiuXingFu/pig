@@ -11,6 +11,7 @@ import org.springframework.util.ClassUtils;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -86,16 +87,18 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 	 */
 	private Integer getUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Object principal = authentication.getPrincipal();
-		if (Optional.ofNullable(principal).isPresent()) {
-			try {
-				Method getIdMethod = principal.getClass().getDeclaredMethod("getId");
-				Object userId = getIdMethod.invoke(principal);
-				if(userId instanceof Integer){
-					return (Integer) userId;
+		if(Objects.nonNull(authentication)){
+			Object principal = authentication.getPrincipal();
+			if (Optional.ofNullable(principal).isPresent()) {
+				try {
+					Method getIdMethod = principal.getClass().getDeclaredMethod("getId");
+					Object userId = getIdMethod.invoke(principal);
+					if(userId instanceof Integer){
+						return (Integer) userId;
+					}
+				} catch (Exception e) {
+					return null;
 				}
-			} catch (Exception e) {
-				return null;
 			}
 		}
 		return null;
@@ -108,16 +111,18 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 	 */
 	private Integer getUserInsId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Object principal = authentication.getPrincipal();
-		if (Optional.ofNullable(principal).isPresent()) {
-			try {
-				Method getInsIdMethod = principal.getClass().getDeclaredMethod("getInsId");
-				Object insId = getInsIdMethod.invoke(principal);
-				if(insId instanceof Integer){
-					return (Integer) insId;
+		if(Objects.nonNull(authentication)) {
+			Object principal = authentication.getPrincipal();
+			if (Optional.ofNullable(principal).isPresent()) {
+				try {
+					Method getInsIdMethod = principal.getClass().getDeclaredMethod("getInsId");
+					Object insId = getInsIdMethod.invoke(principal);
+					if (insId instanceof Integer) {
+						return (Integer) insId;
+					}
+				} catch (Exception e) {
+					return null;
 				}
-			} catch (Exception e) {
-				return null;
 			}
 		}
 		return null;
