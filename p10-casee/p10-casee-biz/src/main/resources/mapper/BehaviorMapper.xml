@@ -99,4 +99,17 @@
 		ORDER BY p10_behavior.subject_id,p10_behavior.behavior_date,p10_behavior.type,p10_behavior.limit_type desc
 	</select>
 
+	<select id="queryBehaviorDetail" resultType="java.lang.String">
+		select JSON_EXTRACT(behavior_detail, #{query.key}) as jsonValue
+		from p10_behavior where del_flag = 0 and behavior_id = #{query.behaviorId}
+	</select>
+
+	<update id="updateBehaviorDetail">
+		update p10_behavior SET
+		<foreach collection="listParams" item="params" separator=",">
+			behavior_detail = JSON_SET(behavior_detail, #{params.key}, #{params.value})
+		</foreach>
+		where del_flag = 0 and behavior_id = #{assetsId}
+	</update>
+
 </mapper>

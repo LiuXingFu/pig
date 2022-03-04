@@ -88,6 +88,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private TargetMapper targetMapper;
 	@Autowired
 	private TaskRecordService taskRecordService;
+	@Autowired
+	private AssetsReService assetsReService;
+	@Autowired
+	private BehaviorService behaviorService;
 
 	private int sum = 0;
 
@@ -1549,9 +1553,20 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 			this.updateBusinessData(auditTargetDTO);
 			if (target.getGoalType().equals(Integer.valueOf("20001"))) {
-
+				String key = "$."+taskNode.getNodeKey();
+				SaveAssetsDTO saveAssetsDTO = new SaveAssetsDTO();
+				saveAssetsDTO.setAssetsId(target.getGoalId());
+				saveAssetsDTO.setCaseeId(target.getCaseeId());
+				saveAssetsDTO.setKey(key);
+				saveAssetsDTO.setFormData(taskNode.getFormData());
+				this.assetsReService.updateAssetsReDetail(saveAssetsDTO);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
-
+				String key = "$."+taskNode.getNodeKey();
+				SaveBehaviorDTO saveBehaviorDTO = new SaveBehaviorDTO();
+				saveBehaviorDTO.setBehaviorId(target.getGoalId());
+				saveBehaviorDTO.setFormData(taskNode.getFormData());
+				saveBehaviorDTO.setKey(key);
+				this.behaviorService.updateBehaviorDetail(saveBehaviorDTO);
 			}
 		}
 	}

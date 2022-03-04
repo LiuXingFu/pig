@@ -16,14 +16,17 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
+import com.pig4cloud.pig.casee.dto.SaveBehaviorDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.BehaviorLiquiDetail;
 import com.pig4cloud.pig.casee.mapper.BehaviorMapper;
@@ -34,10 +37,12 @@ import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -127,5 +132,43 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	@Override
 	public IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId) {
 		return this.baseMapper.queryPageByCaseeId(page, caseeId);
+	}
+
+	@Override
+	public void updateBehaviorDetail(SaveBehaviorDTO saveBehaviorDTO) {
+		JSONObject formData = JSONObject.parseObject(saveBehaviorDTO.getFormData());
+		List<KeyValue> listParams = new ArrayList<KeyValue>();
+
+		for (String o : formData.keySet()) {
+			listParams.add(new KeyValue(saveBehaviorDTO.getKey() + "." + o, formData.get(o)));
+		}
+
+		String businessData = this.baseMapper.queryBehaviorDetail(saveBehaviorDTO);
+
+		if (businessData == null) {
+			String[] pathVec = saveBehaviorDTO.getKey().substring(2).split("\\.");
+			Behavior behavior = this.getById(saveBehaviorDTO.getBehaviorId());
+			JSONObject bussDataJson = JSONObject.parseObject(behavior.getBehaviorDetail());
+
+			int index = pathVec.length;
+			do {
+				index--;
+				String varName = pathVec[index];
+				JSONObject tmpJson = new JSONObject();
+				tmpJson.put(varName, formData);
+				formData = tmpJson;
+				if (index <= 0) {
+					break;
+				}
+			} while (true);
+
+			BeanCopyUtil.mergeJSONObject(bussDataJson, formData);
+			Behavior needUpdate = new Behavior();
+			needUpdate.setBehaviorId(behavior.getTargetId());
+			needUpdate.setBehaviorDetail(bussDataJson.toJSONString());
+			this.updateById(needUpdate);
+		} else {
+			this.baseMapper.updateBehaviorDetail(saveBehaviorDTO.getBehaviorId(), listParams);
+		}
 	}
 }

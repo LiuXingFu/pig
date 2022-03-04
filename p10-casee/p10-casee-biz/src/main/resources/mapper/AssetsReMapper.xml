@@ -65,4 +65,17 @@
 			p10_assets_re.del_flag = 0
 			AND p10_assets_re.casee_id = #{caseeId}
 	</select>
+
+	<select id="queryAssetsReDetail" resultType="java.lang.String">
+		select JSON_EXTRACT(assets_re_detail, #{query.key}) as jsonValue
+		from p10_assets_re where del_flag = 0 and assets_id = #{query.assetsId} and casee_id = #{query.caseeId}
+	</select>
+
+	<update id="updateAssetsReDetail">
+		update p10_assets_re SET
+		<foreach collection="listParams" item="params" separator=",">
+			assets_re_detail = JSON_SET(assets_re_detail, #{params.key}, #{params.value})
+		</foreach>
+		where del_flag = 0 and casee_id = #{caseeId} and assets_id = #{assetsId}
+	</update>
 </mapper>

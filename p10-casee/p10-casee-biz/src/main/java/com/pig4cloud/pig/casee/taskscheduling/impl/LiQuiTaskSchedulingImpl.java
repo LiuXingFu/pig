@@ -1,5 +1,7 @@
 package com.pig4cloud.pig.casee.taskscheduling.impl;
 
+import com.pig4cloud.pig.casee.service.CaseeLiquiService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,5 +14,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class LiQuiTaskSchedulingImpl {
+
+	@Autowired
+	CaseeLiquiService caseeLiquiService;
+
+	/**
+	 * 诉讼案件自动结案
+	 */
+	public void litigationCaseeClose() {
+		caseeLiquiService.litigationCaseeClose();
+	}
 
 }

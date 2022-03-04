@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 
@@ -35,4 +36,6 @@ public interface AssetsReService extends IService<AssetsRe> {
 	AssetsDTO getProjectIdByAssets(Integer projectId);
 
 	List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId);
+
+	void updateAssetsReDetail(SaveAssetsDTO saveAssetsDTO);
 }

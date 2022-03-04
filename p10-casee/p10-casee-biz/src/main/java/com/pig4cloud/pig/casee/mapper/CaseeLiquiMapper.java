@@ -62,7 +62,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	String queryCaseeDetail(@Param("query") SaveCaseeLiQuiDTO saveCaseeLiQuiDTO);
 
-	void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO, List<KeyValue> listParams);
+	void updateCaseeDetail(@Param("caseeId") Integer caseeId, @Param("listParams") List<KeyValue> listParams);
 	/**
 	 * 查询在办一审、二审、其它案件裁判结果生效日期
 	 * @return

@@ -16,14 +16,21 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
 import com.pig4cloud.pig.casee.service.AssetsReService;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,5 +51,44 @@ public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> i
 	@Override
 	public List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId) {
 		return this.baseMapper.selectCaseeOrAssets(caseeId);
+	}
+
+	@Override
+	public void updateAssetsReDetail(SaveAssetsDTO saveAssetsDTO) {
+		JSONObject formData = JSONObject.parseObject(saveAssetsDTO.getFormData());
+		List<KeyValue> listParams = new ArrayList<KeyValue>();
+
+		for (String o : formData.keySet()) {
+			listParams.add(new KeyValue(saveAssetsDTO.getKey() + "." + o, formData.get(o)));
+		}
+
+		String businessData = this.baseMapper.queryAssetsReDetail(saveAssetsDTO);
+
+		if (businessData == null) {
+			String[] pathVec = saveAssetsDTO.getKey().substring(2).split("\\.");
+			AssetsRe assetsRe = this.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getDelFlag, 0).eq(AssetsRe::getAssetsId, saveAssetsDTO.getAssetsId()).eq(AssetsRe::getCaseeId, saveAssetsDTO.getCaseeId()));
+			JSONObject bussDataJson = JSONObject.parseObject(assetsRe.getAssetsReDetail());
+
+			int index = pathVec.length;
+			do {
+				index--;
+				String varName = pathVec[index];
+				JSONObject tmpJson = new JSONObject();
+				tmpJson.put(varName, formData);
+				formData = tmpJson;
+				if (index <= 0) {
+					break;
+				}
+			} while (true);
+
+			BeanCopyUtil.mergeJSONObject(bussDataJson, formData);
+			AssetsRe needUpdate = new AssetsRe();
+			needUpdate.setAssetsReId(assetsRe.getAssetsReId());
+			needUpdate.setAssetsReDetail(bussDataJson.toJSONString());
+			this.updateById(needUpdate);
+		} else {
+			this.baseMapper.updateAssetsReDetail(saveAssetsDTO.getAssetsId(), saveAssetsDTO.getCaseeId(), listParams);
+		}
+
 	}
 }
