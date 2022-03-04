@@ -102,13 +102,16 @@
 		p10_assets_re.assets_re_id,
 		p10_assets_re.assets_source,
 		p10_assets_re.casee_id,
+		p10_casee.casee_number,
 		json_extract( p10_assets_re.assets_re_detail,
 		'$.entityZX_STZX.entityZX_STZX_CCZXCF.entityZX_STZX_CCZXCF_CCZXCF.sealUpCondition' ) AS sealUpCondition,
 		json_extract( p10_assets_re.assets_re_detail,
-		'$.fundingZX_ZJZX.fundingZX_ZJZX_ZJZXDJ.fundingZX_ZJZX_ZJZXDJ_ZJZXDJ.whetherFirstFrozen' ) AS whetherFirstFrozen
+		'$.fundingZX_ZJZX.fundingZX_ZJZX_ZJZXDJ.fundingZX_ZJZX_ZJZXDJ_ZJZXDJ.whetherFirstFrozen' ) AS whetherFirstFrozen,
+		json_extract(p10_assets_re.assets_re_detail, "$.mortgagee") as mortgagee
 		FROM
 		p10_project
 		LEFT JOIN p10_assets_re ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
+		LEFT JOIN p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE
 		p10_assets.del_flag = 0
