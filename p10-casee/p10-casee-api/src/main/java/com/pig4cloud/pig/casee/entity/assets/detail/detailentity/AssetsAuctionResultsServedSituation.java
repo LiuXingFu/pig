@@ -14,5 +14,5 @@ import java.io.Serializable;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsAuctionResultsTransferServedSituation extends Delivery implements Serializable {
+public class AssetsAuctionResultsServedSituation extends Delivery implements Serializable {
 }

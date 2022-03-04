@@ -20,8 +20,10 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -34,4 +36,5 @@ import java.util.List;
 @Mapper
 public interface AssetsReCaseeMapper extends BaseMapper<AssetsRe> {
 
+	AssetsReCasee getAssetsCasee(@Param("query") AssetsRe assetsRe);
 }

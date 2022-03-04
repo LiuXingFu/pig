@@ -9,24 +9,30 @@ import java.util.Date;
 
 /**
  * @PACKAGE_NAME: com.pig4cloud.pig.casee.entity.assets.detail.detailentity
- * @ClassNAME: 实体资产资产处置移交
+ * @ClassNAME: 资金财产划扣
  * @Author: yd
  * @DATE: 2022/3/4
- * @TIME: 14:25
+ * @TIME: 21:14
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsDispositionTransfer extends CommonalityData implements Serializable {
-	/**
-	 * 拍卖申请书
-	 */
-	private String auctionApplicationFile;
+public class AssetsSnap extends CommonalityData implements Serializable {
 
 	/**
-	 * 申请提交时间
+	 * 划扣时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date applicationSubmissionTime;
+	private Date deductionTime;
+
+	/**
+	 * 划扣金额
+	 */
+	private Integer deductionAmount;
+
+	/**
+	 * 附件
+	 */
+	private String appendixFile;
 
 	/**
 	 * 备注
