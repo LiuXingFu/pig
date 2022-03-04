@@ -20,10 +20,12 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.SaveBehaviorDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
+import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +49,8 @@ public interface BehaviorMapper extends BaseMapper<Behavior> {
 	List<Behavior> selectBySubjectId(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("subjectId") Integer subjectId);
 
 	IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, @Param("caseeId") Integer caseeId);
+
+	String queryBehaviorDetail(SaveBehaviorDTO saveBehaviorDTO);
+
+	void updateBehaviorDetail(Integer behaviorId, List<KeyValue> listParams);
 }

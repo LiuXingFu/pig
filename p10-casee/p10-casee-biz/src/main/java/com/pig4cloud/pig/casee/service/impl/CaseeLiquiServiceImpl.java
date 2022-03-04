@@ -374,20 +374,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		if (caseeDetail == null) {
 			Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
 			if (Objects.nonNull(casee.getCaseeDetail())) {
-				JSONObject caseeDetailJson = JSONObject.parseObject(casee.getCaseeDetail());
-				BeanCopyUtil.mergeJSONObject(caseeDetailJson, formData);
-				CaseeLiqui needUpdate = new CaseeLiqui();
-				needUpdate.setCaseeId(casee.getCaseeId());
-				needUpdate.setCaseeDetail(caseeDetailJson.toJSONString());
-				this.updateById(needUpdate);
+				this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO.getCaseeId(), listParams);
 			} else {
 				CaseeLiqui needSave = new CaseeLiqui();
 				needSave.setCaseeId(casee.getCaseeId());
 				needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
 				this.updateById(needSave);
 			}
-		} else {
-			this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO, listParams);
 		}
 	}
 
