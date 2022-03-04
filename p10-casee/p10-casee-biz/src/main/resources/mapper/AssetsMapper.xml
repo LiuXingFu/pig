@@ -164,6 +164,7 @@
 		</if>
 		<if test="subjectId!=null and subjectId!=''">
 			and p10_assets_re.subject_id = #{subjectId}
+			and p10_assets_re.casee_id is not null
 		</if>
 	</select>
 

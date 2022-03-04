@@ -89,6 +89,7 @@
 		</if>
 		<if test="subjectId!=null and subjectId!=''">
 			and subject_id = #{subjectId}
+			and casee_id is not null
 		</if>
 	</select>
 
