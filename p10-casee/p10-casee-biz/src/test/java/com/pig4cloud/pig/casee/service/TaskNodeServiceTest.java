@@ -8,6 +8,10 @@ import com.pig4cloud.pig.casee.dto.SaveCaseeLiQuiDTO;
 import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
 import com.pig4cloud.pig.casee.entity.PfzxTask;
 import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESJACASDQK_SSESJACASDQK;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESTSXX_SSESTSXX;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.activiti.bpmn.model.BpmnModel;
@@ -39,6 +43,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -61,6 +66,22 @@ public class TaskNodeServiceTest<T> {
 	@Autowired
 	CaseeLiquiService caseeLiquiService;
 
+	@Test
+	public void nodeTaskTest() {
+
+
+		String formDate = "{\"clerk\": \"张记员\", \"formId\": 66, \"remark\": \"萧亚轩\", \"caseeId\": 431, \"nodeName\": \"庭审信息(二审)\", \"targetId\": 564, \"tribunal\": \"郴州中级人名法院\", \"nodeOrder\": 2, \"projectId\": \"464\", \"turnUpTime\": \"2022-03-02\", \"assistantJudge\": \"王助理\", \"presidingJudge\": \"李判长\", \"courtSessionTime\": \"2022-03-02\", \"otherPanelMembersList\": [{\"name\": \"宁陪判\", \"$index\": 0, \"_index\": \"\", \"$cellEdit\": true, \"collegiateCourtType\": \"1\"}]}";
+
+		LiQui_SSES_SSESTSXX_SSESTSXX liQui_sses_ssestsxx_ssestsxx = JsonUtils.jsonToPojo(formDate, LiQui_SSES_SSESTSXX_SSESTSXX.class);
+
+		System.out.println("liQui_sses_ssestsxx_ssestsxx----------------"+liQui_sses_ssestsxx_ssestsxx);
+
+		LiQui_SSES_SSESJACASDQK_SSESJACASDQK liQui_sses_ssesjacasdqk_ssesjacasdqk = JsonUtils.jsonToPojo(formDate, LiQui_SSES_SSESJACASDQK_SSESJACASDQK.class);
+
+		System.out.println("liQui_sses_ssesjacasdqk_ssesjacasdqk----------------"+liQui_sses_ssesjacasdqk_ssesjacasdqk);
+
+
+	}
 
 	@Test
 	public void mapTest() {
@@ -87,29 +108,41 @@ public class TaskNodeServiceTest<T> {
 		 this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
 		 */
 
-		HashMap<String, Object> map = new HashMap<>();
+//		HashMap<String, Object> map = new HashMap<>();
 
 		SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd");
 
-		map.put("time", sm.format(new Date()));
+//		map.put("time", sm.format(new Date()));
 
-		String jsonObject = JsonUtils.objectToJsonObject(map);
+//		String jsonObject = JsonUtils.objectToJsonObject(map);
 
-		SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
+//		SaveCaseeLiQuiDTO saveCaseeLiQuiDTO = new SaveCaseeLiQuiDTO();
+//
+//		saveCaseeLiQuiDTO.setKey("$.time");
+//
+//		saveCaseeLiQuiDTO.setFormData(jsonObject);
 
-		saveCaseeLiQuiDTO.setKey("$.time");
+//		saveCaseeLiQuiDTO.setCaseeId(437);
 
-		saveCaseeLiQuiDTO.setFormData(jsonObject);
+//		this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
 
-		saveCaseeLiQuiDTO.setCaseeId(437);
 
-		this.caseeLiquiService.updateCaseeDetail(saveCaseeLiQuiDTO);
+		CaseeLiqui caseeLiqui = new CaseeLiqui();
 
-		System.out.println(jsonObject);
+		CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
+
+		caseeLiquiDetail.setFinalReceiptTime(new Date("2022-3-4").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+		caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
+		caseeLiqui.setCaseeId(424);
+
+		caseeLiquiService.updateById(caseeLiqui);
+
+//		System.out.println(jsonObject);
 	}
 
 	@Test
-	public void  timeTest() throws ParseException {
+	public void timeTest() throws ParseException {
 		String DateStr1 = "2011-10-1 10:20:16";
 		String DateStr2 = "2011-10-07 15:50:35";
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -121,8 +154,8 @@ public class TaskNodeServiceTest<T> {
 
 	@Test
 	public void test1() {
-		List<Integer> a=new ArrayList<>();
-		List<Integer> b=new ArrayList<>();
+		List<Integer> a = new ArrayList<>();
+		List<Integer> b = new ArrayList<>();
 		b.add(1);
 		b.add(2);
 		b.add(3);
@@ -212,7 +245,7 @@ public class TaskNodeServiceTest<T> {
 	 * 推送消息测试
 	 */
 	@Test
-	public void test9(){
+	public void test9() {
 //		for (int i = 0; i < 2; i++) {
 //			R r = requestAppService.pushAppMessage("eabb390c45d49dae0a255b5dadf16c2a", "雪中悍刀行", "《雪中悍刀行》是由宋晓飞执导，张若昀、李庚希、胡军领衔主演，高伟光特别出演，张天爱特邀主演，刘端端、邱心志、田小洁、王天辰、李纯、丁笑滢、董颜、廖慧佳、孙雅丽、孟子义等联合主演的玄幻励志剧。");
 //			System.out.println(r);
@@ -280,7 +313,7 @@ public class TaskNodeServiceTest<T> {
 		//查询当前用户是否存在任务
 		Map<String, Object> variables = new LinkedHashMap<>();
 
-		List list=new ArrayList();
+		List list = new ArrayList();
 //		list.add(1314);
 //		list.add(555);
 
@@ -358,10 +391,10 @@ public class TaskNodeServiceTest<T> {
 		//2，得到TaskService对象
 		TaskService taskService = processEngine.getTaskService();
 		//3，根据流程定义的key，负责人assignee来实现当前用户的任务列表查询
-		String name="审核人";
+		String name = "审核人";
 		List<Task> list = taskService.createTaskQuery()
 				.taskAssignee("87")
-				.taskNameLike("%"+name)
+				.taskNameLike("%" + name)
 				.list();
 		//4，任务列表的展示
 		for (Task task : list) {

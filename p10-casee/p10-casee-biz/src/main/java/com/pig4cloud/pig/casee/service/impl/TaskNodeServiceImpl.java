@@ -29,10 +29,15 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesService;
 import com.pig4cloud.pig.admin.api.vo.OutlesVO;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
 import com.pig4cloud.pig.casee.mapper.TaskNodeMapper;
 import com.pig4cloud.pig.casee.nodehandler.NodeTaskHandlerRegister;
@@ -60,6 +65,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -92,6 +98,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private AssetsReService assetsReService;
 	@Autowired
 	private BehaviorService behaviorService;
+	@Autowired
+	CaseeLiquiService caseeLiquiService;
 
 	private int sum = 0;
 
@@ -1544,6 +1552,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		}
 	}
 
+	/**
+	 * 任务数据提交 保存程序、财产和行为
+	 * @param taskNode
+	 */
 	@Override
 	public void setTaskDataSubmission(TaskNode taskNode) {
 		if (taskNode.getNeedAudit() == 0) {
@@ -1553,21 +1565,114 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 			this.updateBusinessData(auditTargetDTO);
 			if (target.getGoalType().equals(Integer.valueOf("20001"))) {
-				String key = "$."+taskNode.getNodeKey();
-				SaveAssetsDTO saveAssetsDTO = new SaveAssetsDTO();
-				saveAssetsDTO.setAssetsId(target.getGoalId());
-				saveAssetsDTO.setCaseeId(target.getCaseeId());
-				saveAssetsDTO.setKey(key);
-				saveAssetsDTO.setFormData(taskNode.getFormData());
-				this.assetsReService.updateAssetsReDetail(saveAssetsDTO);
+//				String key = "$."+taskNode.getNodeKey();
+//				SaveAssetsDTO saveAssetsDTO = new SaveAssetsDTO();
+//				saveAssetsDTO.setAssetsId(target.getGoalId());
+//				saveAssetsDTO.setCaseeId(target.getCaseeId());
+//				saveAssetsDTO.setKey(key);
+//				saveAssetsDTO.setFormData(taskNode.getFormData());
+//				this.assetsReService.updateAssetsReDetail(saveAssetsDTO);
+				if(auditTargetDTO.getProcedureNature().equals(Integer.valueOf("4040"))) {
+					AssetsReCasee assetsReCasee = new AssetsReCasee();
+					if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
+
+
+						/**
+						 *
+						 *
+						 * 			CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
+						 *
+						 * 			caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+						 *
+						 * 			caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
+						 * 			caseeLiqui.setCaseeId(taskNode.getCaseeId());
+						 *
+						 * 			caseeLiquiService.updateById(caseeLiqui);
+						 */
+
+						AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+
+//						assetsReCaseeDetail.set
+
+//						assetsReCasee.setAssetsReCaseeDetail();
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK")){
+
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS")){
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJSDQK_CCZXZCCZYJSDQK")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXXK_CCZXXK")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXJGYJ_CCZXJGYJ")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK")) {
+
+					} else if(taskNode.getNodeKey().equals("entityZX_STZX_CCZXTTCG_CCZXTTCG")) {
+
+					}
+				} else {
+
+				}
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
-				String key = "$."+taskNode.getNodeKey();
-				SaveBehaviorDTO saveBehaviorDTO = new SaveBehaviorDTO();
-				saveBehaviorDTO.setBehaviorId(target.getGoalId());
-				saveBehaviorDTO.setFormData(taskNode.getFormData());
-				saveBehaviorDTO.setKey(key);
-				this.behaviorService.updateBehaviorDetail(saveBehaviorDTO);
+//				String key = "$."+taskNode.getNodeKey();
+//				SaveBehaviorDTO saveBehaviorDTO = new SaveBehaviorDTO();
+//				saveBehaviorDTO.setBehaviorId(target.getGoalId());
+//				saveBehaviorDTO.setFormData(taskNode.getFormData());
+//				saveBehaviorDTO.setKey(key);
+//				this.behaviorService.updateBehaviorDetail(saveBehaviorDTO);
 			}
+		}
+	}
+
+	/**
+	 * 更新最终送达时间
+	 * @param taskNode
+	 * @param receiptRecordList
+	 */
+	public void updateFinalReceiptTime(TaskNode taskNode, List<ReceiptRecord> receiptRecordList) {
+		if (taskNode.getNeedAudit() == 0) {
+
+			Date date = new Date();
+
+			for (int i = 0; i < receiptRecordList.size(); i++) {
+				if(i == 0){
+					date = receiptRecordList.get(i).getFinalReceiptTime();
+				} else {
+					if (receiptRecordList.get(i).getFinalReceiptTime().compareTo(date) > 0){
+						date = receiptRecordList.get(i).getFinalReceiptTime();
+					}
+				}
+			}
+
+			CaseeLiqui caseeLiqui = new CaseeLiqui();
+
+			CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
+
+			caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+			caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
+			caseeLiqui.setCaseeId(taskNode.getCaseeId());
+
+			caseeLiquiService.updateById(caseeLiqui);
 		}
 	}
 

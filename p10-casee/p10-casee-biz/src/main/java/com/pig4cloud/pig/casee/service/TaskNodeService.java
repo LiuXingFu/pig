@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 
 import com.pig4cloud.pig.casee.entity.TaskReminder;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
 import net.sf.json.JSONObject;
@@ -367,4 +368,11 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @param taskNode
 	 */
 	void setTaskDataSubmission(TaskNode taskNode);
+
+	/**
+	 * 更新最终送达时间
+	 * @param taskNode
+	 * @param receiptRecordList
+	 */
+	void updateFinalReceiptTime(TaskNode taskNode, List<ReceiptRecord> receiptRecordList);
 }

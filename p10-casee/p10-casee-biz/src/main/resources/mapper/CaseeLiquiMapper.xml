@@ -254,11 +254,6 @@
 		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
-	<select id="queryCaseeDetail" resultType="java.lang.String">
-		select JSON_EXTRACT(casee_detail, #{query.key}) as jsonValue
-		from p10_casee where casee_id = #{query.caseeId}
-	</select>
-
 	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiJudgmentTakesEffectVO">
 		select p10_casee.*,JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") effectiveDate from p10_casee
 		left join p10_target on p10_target.casee_id=p10_casee.casee_id
@@ -272,12 +267,14 @@
 		and JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") is not null
 	</select>
 
-	<update id="updateCaseeDetail">
-		update p10_casee SET
-		<foreach collection="listParams" item="params" separator=",">
-			casee_detail = JSON_SET(casee_detail, #{params.key}, #{params.value})
-		</foreach>
-		where casee_id=#{caseeId}
-	</update>
+<!--	<update id="updateCaseClosed">-->
+<!--		update p10_casee set close_time = #{casee.closeTime}, status = #{casee.status} where casee_id = #{casee.caseeId}-->
+<!--	</update>-->
+
+<!--	<update id="updateByCaseeLiquiList" parameterType="java.util.List">-->
+<!--		<foreach collection="caseeLiquiList" item="item"  index="index" separator=";">-->
+<!--			update p10_casee set close_time = #{item.closeTime}, status = #{item.status} WHERE casee_id = #{item.caseeId}-->
+<!--		</foreach>-->
+<!--	</update>-->
 
 </mapper>

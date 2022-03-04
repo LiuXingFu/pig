@@ -60,13 +60,11 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	IPage<CaseeLiquiFlowChartPageVO> selectFlowChartPage(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
-	String queryCaseeDetail(@Param("query") SaveCaseeLiQuiDTO saveCaseeLiQuiDTO);
-
-	void updateCaseeDetail(@Param("caseeId") Integer caseeId, @Param("listParams") List<KeyValue> listParams);
 	/**
 	 * 查询在办一审、二审、其它案件裁判结果生效日期
 	 * @return
 	 */
 	List<CaseeLiquiJudgmentTakesEffectVO> selectJudgmentTakesEffect();
 
+//	void updateByCaseeLiquiList(@Param("caseeLiquiList") List<CaseeLiqui> caseeLiquiList);
 }

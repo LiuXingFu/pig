@@ -361,26 +361,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public void updateCaseeDetail(SaveCaseeLiQuiDTO saveCaseeLiQuiDTO) {
-		JSONObject formData = JSONObject.parseObject(saveCaseeLiQuiDTO.getFormData());
-		List<KeyValue> listParams = new ArrayList<KeyValue>();
-
-		for (String o : formData.keySet()) {
-			listParams.add(new KeyValue(o, formData.get(o)));
-		}
-		Casee casee = this.getById(saveCaseeLiQuiDTO.getCaseeId());
-
-		if (Objects.nonNull(casee.getCaseeDetail())) {
-			this.baseMapper.updateCaseeDetail(saveCaseeLiQuiDTO.getCaseeId(), listParams);
-		} else {
-			CaseeLiqui needSave = new CaseeLiqui();
-			needSave.setCaseeId(casee.getCaseeId());
-			needSave.setCaseeDetail(saveCaseeLiQuiDTO.getFormData());
-			this.updateById(needSave);
-		}
-	}
-
-	@Override
 	public void litigationCaseeClose() {
 		// 查询一审、二审、其它案件判决结果生效日期
 		List<CaseeLiquiJudgmentTakesEffectVO> judgmentTakesEffectVO = this.baseMapper.selectJudgmentTakesEffect();
@@ -394,12 +374,14 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			// 获取当前时间
 			LocalDate nowNew = LocalDate.now();
 			// 比较裁判结果生效日期，小于或等于当前时间
-			if (nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
-				Casee casee = new Casee();
-				casee.setCaseeId(item.getCaseeId());
-				casee.setStatus(3);
-				casee.setCloseTime(startDate);
-				caseeLiquis.add(casee);
+			if(nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
+				if (nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
+					Casee casee = new Casee();
+					casee.setCaseeId(item.getCaseeId());
+					casee.setStatus(3);
+					casee.setCloseTime(startDate);
+					caseeLiquis.add(casee);
+				}
 			}
 		});
 		// 批量更新案件状态=结案
