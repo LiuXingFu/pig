@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.vo;
 import com.alibaba.fastjson.JSON;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXCF_CCZXCF;
 import com.pig4cloud.pig.casee.entity.project.fundingzxprocedure.FundingZX_ZJZX_ZJZXDJ_ZJZXDJ;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
@@ -83,5 +84,11 @@ public class AssetsOrProjectPageVO {
 	 * 查封情况(0-首封 1-轮候)
 	 */
 	private String sealUpCondition;
+
+	/**
+	 * 抵押权人
+	 */
+	@ApiModelProperty(value = "抵押权人")
+	private Integer mortgagee;
 
 }
