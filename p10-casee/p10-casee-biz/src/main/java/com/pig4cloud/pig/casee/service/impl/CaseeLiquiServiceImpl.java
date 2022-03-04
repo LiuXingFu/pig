@@ -367,21 +367,17 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		Collection<Casee> caseeLiquis = new ArrayList<>();
 		// 遍历在办案件生效日期
 		judgmentTakesEffectVO.stream().forEach(item -> {
-			// 去掉json格式的双引号
-			String data = item.getEffectiveDate().replace("\"", "");
 			// 转时间类型
-			LocalDate startDate = LocalDate.parse(data, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			LocalDate effectiveDate =  item.getEffectiveDate();
 			// 获取当前时间
 			LocalDate nowNew = LocalDate.now();
 			// 比较裁判结果生效日期，小于或等于当前时间
-			if(nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
-				if (nowNew.isAfter(startDate) || nowNew.equals(startDate)) {
-					Casee casee = new Casee();
-					casee.setCaseeId(item.getCaseeId());
-					casee.setStatus(3);
-					casee.setCloseTime(startDate);
-					caseeLiquis.add(casee);
-				}
+			if (nowNew.isAfter(effectiveDate) || nowNew.equals(effectiveDate)) {
+				Casee casee = new Casee();
+				casee.setCaseeId(item.getCaseeId());
+				casee.setStatus(3);
+				casee.setCloseTime(effectiveDate);
+				caseeLiquis.add(casee);
 			}
 		});
 		// 批量更新案件状态=结案

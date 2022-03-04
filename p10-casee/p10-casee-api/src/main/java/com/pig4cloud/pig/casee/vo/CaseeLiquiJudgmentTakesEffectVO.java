@@ -13,7 +13,7 @@ public class CaseeLiquiJudgmentTakesEffectVO extends CaseeLiqui {
 	 * 裁判生效日期
 	 */
 	@ApiModelProperty(value="裁判生效日期")
-	private String effectiveDate;
+	private LocalDate effectiveDate;
 
 
 }

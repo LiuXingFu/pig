@@ -64,6 +64,12 @@ public class Behavior extends BaseEntity {
     @ApiModelProperty(value="债务人id")
     private Integer subjectId;
 
+	/**
+	 * 被执行人名称
+	 */
+	@ApiModelProperty(value="被执行人名称")
+	private String executedName;
+
     /**
      * 案件id
      */

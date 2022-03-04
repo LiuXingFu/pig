@@ -39,7 +39,6 @@
 		<result property="assetsReDetail" column="assets_re_detail"/>
 		<result property="remark" column="remark"/>
 		<result property="assetsSource" column="assets_source"/>
-
 	</resultMap>
 
 	<select id="getProjectIdByAssets" resultType="com.pig4cloud.pig.casee.dto.AssetsDTO">

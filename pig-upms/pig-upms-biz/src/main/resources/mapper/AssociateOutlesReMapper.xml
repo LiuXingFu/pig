@@ -39,7 +39,6 @@
 		LEFT JOIN p10_outles outles ON outles.outles_id = associate_outles.outles_id
 		LEFT JOIN p10_institution institution ON institution.ins_id = associate_outles.ins_associate_id
 		WHERE associate_outles.ins_id = #{query.insId} and associate_outles.ins_associate_id = #{query.insAssociateId}
-		ORDER BY associate_outles.authorization_time DESC
 	</select>
 
 </mapper>

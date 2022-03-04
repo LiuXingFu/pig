@@ -53,7 +53,7 @@
 
 	<select id="selectPageLiqui" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO">
 		select p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as handoverAmount,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as litigation,p10_bank_loan.mortgage_situation from p10_project
-		left join p10_transfer_record on p10_transfer_record.source_id = p10_project.project_id and p10_transfer_record.del_flag = 0 and p10_transfer_record.transfer_type = 0 and p10_transfer_record.status = 1
+		left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id and p10_transfer_record.del_flag = 0 and p10_transfer_record.transfer_type = 0 and p10_transfer_record.status = 1
 		left join p10_bank_loan on p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and p10_transfer_record.transfer_type = 0
 		where p10_project.del_flag = 0 and p10_project.project_type = 100
 		<if test="query.status != null and query.status >= 0">
@@ -81,7 +81,6 @@
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_project.status asc,p10_project.take_time desc
 	</select>
 
 	<select id="selectByProjectId" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO">
@@ -144,7 +143,6 @@
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_project.take_time desc
 	</select>
 
 	<resultMap id="retultAssetsBehavior" type="com.pig4cloud.pig.casee.vo.SubjectAssetsBehaviorListVO">

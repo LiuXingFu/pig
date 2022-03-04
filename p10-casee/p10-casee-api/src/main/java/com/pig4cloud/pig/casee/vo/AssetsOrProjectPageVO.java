@@ -76,6 +76,11 @@ public class AssetsOrProjectPageVO {
 	private Integer caseeId;
 
 	/**
+	 * 案号
+	 */
+	private String caseeNumber;
+
+	/**
 	 * 是否首冻(0-否 1-是)
 	 */
 	private String whetherFirstFrozen;

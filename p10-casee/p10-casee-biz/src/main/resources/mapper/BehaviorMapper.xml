@@ -54,7 +54,8 @@
 		p10_project.company_code,
 		p10_project.status,
 		p10_project.subject_persons,
-		p10_casee.casee_number
+		p10_casee.casee_number,
+		p10_casee.casee_id
 		FROM
 		p10_behavior
 		LEFT JOIN p10_casee ON p10_behavior.casee_id = p10_casee.casee_id and p10_casee.del_flag = 0
@@ -88,6 +89,7 @@
 		</if>
 		<if test="subjectId!=null and subjectId!=''">
 			and subject_id = #{subjectId}
+			and casee_id is not null
 		</if>
 	</select>
 
@@ -96,7 +98,6 @@
 		left join p10_subject on p10_subject.subject_id = p10_behavior.subject_id
 		where p10_behavior.del_flag = 0
 		and p10_behavior.casee_id = #{caseeId}
-		ORDER BY p10_behavior.subject_id,p10_behavior.behavior_date,p10_behavior.type,p10_behavior.limit_type desc
 	</select>
 
 	<select id="queryBehaviorDetail" resultType="java.lang.String">

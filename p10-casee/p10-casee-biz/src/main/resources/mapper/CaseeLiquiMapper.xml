@@ -102,7 +102,6 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="queryByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO">
@@ -200,7 +199,6 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="selectFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
@@ -251,11 +249,10 @@
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
-		ORDER BY p10_casee.status asc,p10_casee.start_time desc
 	</select>
 
 	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiJudgmentTakesEffectVO">
-		select p10_casee.*,JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") effectiveDate from p10_casee
+		select p10_casee.*,substring(JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate"),2,10) effectiveDate from p10_casee
 		left join p10_target on p10_target.casee_id=p10_casee.casee_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_casee.del_flag = 0
