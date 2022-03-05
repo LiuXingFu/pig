@@ -222,4 +222,34 @@ public class ProjectLiquiController {
 	public R countImplement() {
 		return R.ok(projectLiquiService.countImplement());
 	}
+
+	/**
+	 * 统计债务人统计接口
+	 * @return R
+	 */
+	@ApiOperation(value = "统计债务人统计接口", notes = "统计债务人统计接口")
+	@GetMapping("/countDebtor" )
+	public R countDebtor() {
+		return R.ok(projectLiquiService.countDebtor());
+	}
+
+	/**
+	 * 财产查控统计接口
+	 * @return R
+	 */
+	@ApiOperation(value = "财产查控统计接口", notes = "财产查控统计接口")
+	@GetMapping("/countPropertySearch" )
+	public R countPropertySearch() {
+		return R.ok(projectLiquiService.countPropertySearch());
+	}
+
+	/**
+	 * 可处置财产统计接口
+	 * @return R
+	 */
+	@ApiOperation(value = "可处置财产统计接口", notes = "可处置财产统计接口")
+	@GetMapping("/countAuctionProperty" )
+	public R countAuctionProperty() {
+		return R.ok(projectLiquiService.countAuctionProperty());
+	}
 }

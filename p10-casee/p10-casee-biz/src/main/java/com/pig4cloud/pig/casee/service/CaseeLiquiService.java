@@ -187,4 +187,12 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
+	/**
+	 * 分页查询执行案件债务人未添加行为
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
 }

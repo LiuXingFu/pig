@@ -78,4 +78,15 @@ public interface ProjectLiquiService extends IService<Project> {
 	// 执行阶段统计接口
 	CountImplementVO countImplement();
 
+	// 统计债务人统计接口
+	CountDebtorVO countDebtor();
+
+	// 财产查控统计接口
+	CountPropertySearchVO countPropertySearch();
+
+	// 可处置财产统计接口
+	CountAuctionPropertyVO countAuctionProperty();
+
+
+
 }

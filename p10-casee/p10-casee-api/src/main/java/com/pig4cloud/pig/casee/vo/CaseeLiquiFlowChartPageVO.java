@@ -69,4 +69,15 @@ public class CaseeLiquiFlowChartPageVO extends CaseeLiqui {
 	@ApiModelProperty(value="项目总金额")
 	private BigDecimal projectAmount;
 
+	/**
+	 * 主体名称
+	 */
+	@ApiModelProperty(value="主体名称")
+	private String subjectName;
+
+	/**
+	 * 主体id
+	 */
+	@ApiModelProperty(value="主体id")
+	private String subjectId;
 }
