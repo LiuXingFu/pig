@@ -16,8 +16,7 @@ public class LIQUI_SQ_SQAJCA_SQAJCA_NODEHandler extends TaskNodeHandler {
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//诉前阶段撤案接口
-
-
+		taskNodeService.setTaskDataSubmission(taskNode);
 
 	}
 }

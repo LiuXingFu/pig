@@ -15,7 +15,7 @@ public class LIQUI_ZXSZ_ZXSZSJZJ_ZXSZSJZJ_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-
+		taskNodeService.setTaskDataSubmission(taskNode);
 
 
 	}

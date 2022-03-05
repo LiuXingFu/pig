@@ -17,6 +17,7 @@ public class LIQUI_SSES_SSESCPJG_SSESCPJG_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
 
 		LiQui_SSES_SSESCPJG_SSESCPJG liQui_SSES_SSESCPJG_SSESCPJG = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSES_SSESCPJG_SSESCPJG.class);
 

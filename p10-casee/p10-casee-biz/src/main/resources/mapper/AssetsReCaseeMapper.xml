@@ -28,7 +28,7 @@
 		<if test="query.assetsReId != null and query.assetsReId != 0">
 			and assets_re_id = #{query.assetsReId}
 		</if>
-		<if test="query.assetsId != null and query.assetId != 0">
+		<if test="query.assetsId != null and query.assetsId != 0">
 			and assets_id = #{query.assetsId}
 		</if>
 		<if test="query.targetId != null and query.targetId != 0">

@@ -15,10 +15,15 @@ import org.springframework.stereotype.Component;
 public class LIQUI_SSYS_SSYSCPJG_SSYSCPJG_NODEHandler extends TaskNodeHandler {
 
 	@Autowired
+	TaskNodeService taskNodeService;
+
+	@Autowired
 	CaseeService caseeService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+
 		LiQui_SSYS_SSYSCPJG_SSYSCPJG liQui_ssys_ssyscpjg_ssyscpjg = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSYS_SSYSCPJG_SSYSCPJG.class);
 		Casee casee=new Casee();
 		casee.setCaseeId(taskNode.getCaseeId());

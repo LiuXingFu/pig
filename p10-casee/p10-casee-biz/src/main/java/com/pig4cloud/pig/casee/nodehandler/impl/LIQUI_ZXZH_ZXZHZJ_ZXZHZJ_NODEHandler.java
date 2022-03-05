@@ -16,7 +16,7 @@ public class LIQUI_ZXZH_ZXZHZJ_ZXZHZJ_NODEHandler extends TaskNodeHandler {
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//执恢案件终结接口，待创建
-
+		taskNodeService.setTaskDataSubmission(taskNode);
 
 	}
 }

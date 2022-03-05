@@ -15,9 +15,8 @@ public class LIQUI_SQ_SQBQJG_SQBQJG_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-
 		//诉前阶段结案接口为创建----待创建
-
+		taskNodeService.setTaskDataSubmission(taskNode);
 
 
 	}

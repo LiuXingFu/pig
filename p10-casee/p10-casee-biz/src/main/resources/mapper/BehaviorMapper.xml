@@ -120,11 +120,7 @@
 		<if test="query.targetId != null and query.targetId != 0">
 			and target_id = #{query.targetId}
 		</if>
-		<if test="query.beginDate != null and query.endDate != null">
-			AND behavior_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
-			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
-		</if>
-		<if test="query.type != null and query.type != 1">
+		<if test="query.type != null and query.type != -1">
 			and 'type' = #{query.type}
 		</if>
 		<if test="query.limitType != null and query.limitType != 0">

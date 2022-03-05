@@ -30,12 +30,18 @@ public class LiQui_ZXZH_ZXZHFYDK_ZXZHFYDK extends CommonalityData implements Ser
 	private BigDecimal arrivalTotalAmount;
 
 	/**
-	 * 备注
+	 * 执行案号
 	 */
-	private String remark;
+	private String caseeNumber;
 
 	/**
 	 * 附件
 	 */
 	private String appendixFile;
+
+	/**
+	 * 备注
+	 */
+	private String remark;
+
 }
