@@ -30,7 +30,6 @@ public class AssetsReCaseeDetail {
 
 
 
-
 	/**
 	 * 实体资产查封实体
 	 */
