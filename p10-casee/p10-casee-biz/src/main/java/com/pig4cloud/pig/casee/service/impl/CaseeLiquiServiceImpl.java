@@ -90,8 +90,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			statusName = "案件结案";
 		}else if(status==4){
 			statusName = "案件终结";
-		}else if(status==5){
-			statusName = "案件实际执结";
 		}
 		projectStatus.setStatusName(statusName);
 		projectStatus.setType(2);
