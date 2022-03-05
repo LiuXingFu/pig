@@ -43,4 +43,16 @@ public class CaseeLiquiFlowChartPageVO extends CaseeLiqui {
 	@ApiModelProperty(value="节点id")
 	private String nodeId;
 
+	/**
+	 * 项目机构id
+	 */
+	@ApiModelProperty(value="项目机构id")
+	private Integer insId;
+
+	/**
+	 * 项目网点id
+	 */
+	@ApiModelProperty(value="项目网点id")
+	private Integer outlesId;
+
 }
