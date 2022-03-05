@@ -302,21 +302,5 @@ public class TaskNodeController {
 		return R.ok(this.taskNodeService.addDeployment(bpmn, name));
 	}
 
-	/**
-	 * 根据程序id和节点key查询节点id
-	 * @param targetId 程序id
-	 * @return
-	 */
-	@ApiOperation(value = "根据程序id和节点key查询节点id", notes = "根据程序id和节点key查询节点id")
-	@SysLog("根据程序id和节点key查询节点id" )
-	@GetMapping("/queryNodeId")
-	public R queryNodeId(Integer targetId,String nodeKey){
-		QueryWrapper<TaskNode> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(TaskNode::getTargetId,targetId);
-		queryWrapper.lambda().eq(TaskNode::getNodeKey,nodeKey);
-		queryWrapper.lambda().isNull(TaskNode::getFormData);
-		TaskNode taskNode = this.taskNodeService.getOne(queryWrapper);
-		return R.ok(taskNode.getNodeId());
-	}
 
 }
