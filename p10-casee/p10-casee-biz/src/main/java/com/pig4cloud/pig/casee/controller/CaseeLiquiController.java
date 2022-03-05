@@ -298,4 +298,16 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryPaymentCompleted(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询执行案件债务人未添加行为
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询执行案件债务人未添加行为", notes = "分页查询执行案件债务人未添加行为")
+	@GetMapping("/queryNotAddBehavior")
+	public R queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO));
+	}
+
 }

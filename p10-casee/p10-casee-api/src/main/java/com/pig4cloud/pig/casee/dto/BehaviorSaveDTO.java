@@ -90,5 +90,11 @@ public class BehaviorSaveDTO{
 	@ApiModelProperty(value="限制期限")
 	private Integer restrictedPeriod;
 
+	/**
+	 * 被执行人名称
+	 */
+	@ApiModelProperty(value="被执行人名称")
+	private String executedName;
+
 
 }

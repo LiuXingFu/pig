@@ -567,5 +567,49 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return countImplementVO;
 	}
 
+	@Override
+	public CountDebtorVO countDebtor(){
+		CountDebtorVO countDebtorVO = new CountDebtorVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********行为未限制********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		IPage<CaseeLiquiFlowChartPageVO> notAddBehavior = caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO);
+		countDebtorVO.setBehaviorNotLimit(notAddBehavior.getTotal());
+
+		//**********限制未送达********************************
+//		countDebtorVO.setLimitNotService();
+
+		//**********行为违法未提交********************************
+//		countDebtorVO.setActIllegalNotSubmitted();
+
+		//**********制裁申请未实施********************************
+//		countDebtorVO.setSanctionApplyNotImplemented();
+
+		//**********已结清限制未撤销********************************
+//		countDebtorVO.setAlreadySettleLimitNotRevoked();
+
+		//**********未添加财产********************************
+//		countDebtorVO.setNotAddProperty();
+
+		return countDebtorVO;
+	}
+
+	@Override
+	public CountPropertySearchVO countPropertySearch(){
+		CountPropertySearchVO countPropertySearchVO = new CountPropertySearchVO();
+
+		return countPropertySearchVO;
+	}
+
+	@Override
+	public CountAuctionPropertyVO countAuctionProperty(){
+		CountAuctionPropertyVO countAuctionPropertyVO = new CountAuctionPropertyVO();
+
+		return countAuctionPropertyVO;
+	}
+
 
 }
