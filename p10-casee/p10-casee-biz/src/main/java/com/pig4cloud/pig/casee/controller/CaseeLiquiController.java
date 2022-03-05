@@ -250,4 +250,40 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryLitigationFirstInstanceAppealExpired(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询执恢案件待立案列表
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询执恢案件待立案列表", notes = "分页查询执恢案件待立案列表")
+	@GetMapping("/queryAddReinstatementCase")
+	public R queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryAddReinstatementCase(page,caseeLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 修改案件状态
+	 * @param caseeModifyDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改案件状态", notes = "修改案件状态")
+	@SysLog("修改案件状态" )
+	@PutMapping("/modifyCaseeStatusById")
+	public R modifyCaseeStatusById(@RequestBody CaseeModifyDTO caseeModifyDTO) {
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeModifyDTO));
+	}
+
+	/**
+	 * 法院到款未领款
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "法院到款未领款", notes = "法院到款未领款")
+	@GetMapping("/queryCourtPayment")
+	public R queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO));
+	}
+
 }

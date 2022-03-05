@@ -33,7 +33,7 @@ public class CountImplementVO {
 	private Long reinstate;
 
 	/**
-	 * 恢复执行待立案******************
+	 * 恢复执行待立案
 	 */
 	private Long reinstateResumeExecutionTreatFileACase;
 
@@ -48,7 +48,7 @@ public class CountImplementVO {
 	private Long reinstateExecuteRestoreServiceUnchecked;
 
 	/**
-	 * 到款未拨付*********************
+	 * 到款未拨付
 	 */
 	private Long paymentNotPaid;
 

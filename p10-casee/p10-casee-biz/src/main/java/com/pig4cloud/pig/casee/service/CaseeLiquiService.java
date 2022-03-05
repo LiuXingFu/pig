@@ -104,6 +104,12 @@ public interface CaseeLiquiService extends IService<Casee> {
 	CaseeLiqui queryByStatusList(Integer projectId,List<Integer> statusList);
 
 	/**
+	 * 更新案件状态
+	 * @return
+	 */
+	Integer modifyCaseeStatusById(CaseeModifyDTO caseeModifyDTO);
+
+	/**
 	 * 分页查询清收案件
 	 * @param page
 	 * @param caseeLiquiPageDTO
@@ -158,5 +164,19 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
+	/**
+	 * 分页查询执恢案件待立案列表
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
+	/**
+	 * 法院到款未领款
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
 }
