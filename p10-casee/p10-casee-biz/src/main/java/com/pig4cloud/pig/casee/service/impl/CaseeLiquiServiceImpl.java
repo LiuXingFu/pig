@@ -72,6 +72,37 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
+	public Integer modifyCaseeStatusById(CaseeModifyDTO caseeModifyDTO){
+		Integer modify = 0;
+		CaseeLiqui caseeLiqui = new CaseeLiqui();
+		BeanCopyUtil.copyBean(caseeModifyDTO,caseeLiqui);
+		modify = this.baseMapper.updateById(caseeLiqui);
+
+		// 保存案件状态变更记录
+		ProjectStatus projectStatus = new ProjectStatus();
+		projectStatus.setType(2);
+		projectStatus.setSourceId(caseeLiqui.getCaseeId());
+		Integer status = caseeModifyDTO.getStatus();
+		String statusName = null;
+		if(status==2){
+			statusName = "案件撤案";
+		}else if(status==3){
+			statusName = "案件结案";
+		}else if(status==4){
+			statusName = "案件终结";
+		}else if(status==5){
+			statusName = "案件实际执结";
+		}
+		projectStatus.setStatusName(statusName);
+		projectStatus.setType(2);
+		projectStatus.setSourceId(caseeLiqui.getCaseeId());
+		projectStatus.setChangeTime(caseeModifyDTO.getCloseTime());
+		projectStatusService.save(projectStatus);
+		return modify;
+	}
+
+	@Override
+	@Transactional
 	public Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		// 保存清收案件
 		CaseeLiqui caseeLiqui = new CaseeLiqui();
@@ -392,5 +423,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectLitigationFirstInstanceAppealExpired(page, caseeLiquiFlowChartPageDTO, insOutlesDTO,deadlineConfigure.getDeadlineNum());
+	}
+
+	@Override
+	public IPage<CaseeLiquiFlowChartPageVO> queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectAddReinstatementCase(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
 	}
 }

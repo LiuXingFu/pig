@@ -33,7 +33,7 @@ public class CountImplementVO {
 	private Long reinstate;
 
 	/**
-	 * 恢复执行待立案******************
+	 * 恢复执行待立案
 	 */
 	private Long reinstateResumeExecutionTreatFileACase;
 

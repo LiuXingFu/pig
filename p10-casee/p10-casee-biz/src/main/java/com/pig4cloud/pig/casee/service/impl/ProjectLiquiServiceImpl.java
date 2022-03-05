@@ -449,7 +449,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********上诉确认********************************
 		countLitigationVO.setLitigationFirstInstanceAppealConfirmation(queryCaseNodePage("liQui_SSYS_SSYSYGSSQK_SSYSYGSSQK",2020));
 
-		//**********上诉到期未处理********************************
+		//**********上诉到期未确认********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageVO = new CaseeLiquiFlowChartPageDTO();
 		caseeLiquiFlowChartPageVO.setStatus(1);
 		caseeLiquiFlowChartPageVO.setNodeKey("liQui_SSYS_SSYSSSDQQR_SSYSSSDQQR");
@@ -523,6 +523,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountImplementVO countImplement(){
 		CountImplementVO countImplementVO = new CountImplementVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
 
 		//**********首执案件统计********************************
 		countImplementVO.setChiefExecutive(queryCaseeCount(3010));
@@ -539,14 +542,21 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//***********首执案件节点统计end*************************************************
 
 
-		//***********首执案件节点统计Start*************************************************
+		//***********执恢案件节点统计Start*************************************************
+
+
+		//**********恢复执行待立案********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		IPage<CaseeLiquiFlowChartPageVO> caseeLiquiFlowChartPageVOIPage = caseeLiquiService.queryAddReinstatementCase(page,caseeLiquiFlowChartPageDTO);
+		countImplementVO.setReinstateResumeExecutionTreatFileACase(caseeLiquiFlowChartPageVOIPage.getTotal());
 
 		//**********执恢立案未送达********************************
 		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK",3031));
 
 
 
-		//***********首执案件节点统计end*************************************************
+
+		//***********执恢案件节点统计end*************************************************
 
 
 		return countImplementVO;

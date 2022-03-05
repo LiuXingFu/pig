@@ -67,4 +67,6 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	List<CaseeLiquiJudgmentTakesEffectVO> selectJudgmentTakesEffect();
 
 	IPage<CaseeLiquiFlowChartPageVO> selectLitigationFirstInstanceAppealExpired(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO,@Param("day")Integer day);
+
+	IPage<CaseeLiquiFlowChartPageVO> selectAddReinstatementCase(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }
