@@ -53,7 +53,7 @@ public class CountImplementVO {
 	private Long paymentNotPaid;
 
 	/**
-	 * 结清未实际执结**********************
+	 * 结清未实际执结
 	 */
 	private Long settleNotActualExecution;
 

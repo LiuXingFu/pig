@@ -172,11 +172,19 @@ public interface CaseeLiquiService extends IService<Casee> {
 	IPage<CaseeLiquiFlowChartPageVO> queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
 	/**
-	 * 法院到款未领款
+	 * 分页查询法院到款未领款
 	 * @param page
 	 * @param caseeLiquiFlowChartPageDTO
 	 * @return
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
+	/**
+	 * 分页查询款项结清未实际执结
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
 }

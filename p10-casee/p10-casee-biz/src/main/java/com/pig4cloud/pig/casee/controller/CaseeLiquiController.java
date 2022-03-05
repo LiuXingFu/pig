@@ -286,4 +286,16 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询款项结清未实际执结
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询款项结清未实际执结", notes = "分页查询款项结清未实际执结")
+	@GetMapping("/queryPaymentCompleted")
+	public R queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryPaymentCompleted(page,caseeLiquiFlowChartPageDTO));
+	}
+
 }

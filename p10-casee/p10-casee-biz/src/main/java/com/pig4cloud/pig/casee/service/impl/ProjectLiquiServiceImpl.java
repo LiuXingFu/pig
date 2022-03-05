@@ -557,6 +557,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<CaseeLiquiFlowChartPageVO> courtPayment = caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO);
 		countImplementVO.setPaymentNotPaid(courtPayment.getTotal());
 
+		//**********结清未实际执结********************************
+		IPage<CaseeLiquiFlowChartPageVO> paymentCompleted = caseeLiquiService.queryPaymentCompleted(page,caseeLiquiFlowChartPageDTO);
+		countImplementVO.setSettleNotActualExecution(paymentCompleted.getTotal());
 
 		//***********执恢案件节点统计end*************************************************
 
