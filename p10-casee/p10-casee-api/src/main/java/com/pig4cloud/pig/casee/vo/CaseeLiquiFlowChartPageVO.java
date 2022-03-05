@@ -4,6 +4,8 @@ import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class CaseeLiquiFlowChartPageVO extends CaseeLiqui {
 
@@ -54,5 +56,11 @@ public class CaseeLiquiFlowChartPageVO extends CaseeLiqui {
 	 */
 	@ApiModelProperty(value="项目网点id")
 	private Integer outlesId;
+
+	/**
+	 * 法院到款
+	 */
+	@ApiModelProperty(value="法院到款")
+	private BigDecimal courtSum;
 
 }

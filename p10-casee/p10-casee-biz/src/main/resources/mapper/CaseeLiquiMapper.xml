@@ -386,4 +386,45 @@
 		</if>
 	</select>
 
+
+	<select id="selectCourtPayment" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
+		select * from (
+			select p10_project.project_id,p10_project.company_code,casee.*,p10_project_casee_re.actual_name as userName ,
+					p10_court.court_name,SUM(p10_payment_record.payment_amount) courtSum
+			from p10_project
+			left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+			left join (select * from p10_casee
+				where p10_casee.casee_type in (3010,3031)
+				ORDER BY p10_casee.start_time desc) casee on casee.casee_id = p10_project_casee_re.casee_id
+			left join p10_court on p10_court.court_id = casee.court_id
+			left join p10_payment_record on p10_payment_record.project_id = p10_project.project_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_payment_record.payment_type = 200
+			and p10_payment_record.status = 0
+			GROUP BY p10_project.project_id
+		)countList
+		where countList.courtSum != 0
+		<if test="login.insId != null and login.insId > 0">
+			and countList.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and countList.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (countList.company_code like concat('%', #{query.caseeNumber}, '%')
+			or countList.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and countList.executed_name like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.actualName != null and query.actualName != ''">
+			and countList.actual_name like concat('%', #{query.actualName}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND countList.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
+
 </mapper>

@@ -48,7 +48,7 @@ public class CountImplementVO {
 	private Long reinstateExecuteRestoreServiceUnchecked;
 
 	/**
-	 * 到款未拨付*********************
+	 * 到款未拨付
 	 */
 	private Long paymentNotPaid;
 

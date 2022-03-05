@@ -553,7 +553,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********执恢立案未送达********************************
 		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK",3031));
 
-
+		//**********到款未拨付********************************
+		IPage<CaseeLiquiFlowChartPageVO> courtPayment = caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO);
+		countImplementVO.setPaymentNotPaid(courtPayment.getTotal());
 
 
 		//***********执恢案件节点统计end*************************************************

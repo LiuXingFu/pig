@@ -274,6 +274,16 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeModifyDTO));
 	}
 
-
+	/**
+	 * 法院到款未领款
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "法院到款未领款", notes = "法院到款未领款")
+	@GetMapping("/queryCourtPayment")
+	public R queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO));
+	}
 
 }
