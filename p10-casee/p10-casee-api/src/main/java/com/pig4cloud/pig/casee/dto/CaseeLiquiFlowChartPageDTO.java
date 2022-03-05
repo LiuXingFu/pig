@@ -56,10 +56,4 @@ public class CaseeLiquiFlowChartPageDTO {
 	 */
 	@ApiModelProperty(value="节点KEY")
 	private String nodeKey;
-
-	/**
-	 * 程序目标类型 (10001：案件, 20001：财产，30001：行为)
-	 */
-	@ApiModelProperty(value="程序目标类型 (10001：案件, 20001：财产，30001：行为)")
-	private Integer goalType;
 }

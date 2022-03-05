@@ -251,9 +251,7 @@
 		) task_node on task_node.target_id = p10_target.target_id
 		where p10_casee.del_flag = 0
 		and p10_project.`status` = 1000
-		<if test="query.goalType != null and query.goalType != ''">
-			and p10_target.goal_type = #{query.goalType}
-		</if>
+		and p10_target.goal_type = 10001
 		<if test="query.nodeKey != null and query.nodeKey != ''">
 			and task_node.node_key = #{query.nodeKey}
 		</if>

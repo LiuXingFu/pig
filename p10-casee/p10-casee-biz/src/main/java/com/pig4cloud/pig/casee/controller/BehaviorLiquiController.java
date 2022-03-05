@@ -15,15 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.BehaviorLiquiDebtorPageDTO;
-import com.pig4cloud.pig.casee.entity.Behavior;
-import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
+import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
+import com.pig4cloud.pig.common.core.util.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * 行为表
@@ -31,15 +33,24 @@ import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
  * @author yuanduo
  * @date 2022-02-14 15:51:27
  */
-public interface BehaviorLiquiService extends IService<Behavior> {
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/behaviorLiqui" )
+@Api(value = "behaviorLiqui", tags = "行为清收管理")
+public class BehaviorLiquiController {
 
-	Integer saveBehaviorLiqui(BehaviorLiqui behaviorLiqui);
+    private final BehaviorLiquiService behaviorLiquiService;
 
 	/**
 	 * 分页查询债务人程序节点列表
-	 * @param page
+	 *
 	 * @param behaviorLiquiDebtorPageDTO
 	 * @return
 	 */
-	IPage<CaseeLiquiDebtorPageVO> queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
+	@ApiOperation(value = "分页查询债务人程序节点列表", notes = "分页查询债务人程序节点列表")
+	@GetMapping("/queryDebtorPage")
+	public R queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
+		return R.ok(this.behaviorLiquiService.queryDebtorPage(page,behaviorLiquiDebtorPageDTO));
+	}
+
 }

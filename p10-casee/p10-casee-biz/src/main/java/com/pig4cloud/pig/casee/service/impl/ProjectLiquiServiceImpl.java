@@ -364,7 +364,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setSize(10);
 
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
-		caseeLiquiFlowChartPageDTO.setGoalType(10001);
 		caseeLiquiFlowChartPageDTO.setStatus(1);
 
 		caseeLiquiFlowChartPageDTO.setNodeKey(nodeKey);

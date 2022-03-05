@@ -23,5 +23,44 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.BehaviorLiquiMapper">
 
+	<select id="selectDebtorPage" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_behavior.*,task_node.node_id from p10_behavior
+		left join p10_project on p10_project.project_id = p10_behavior.project_id
+		left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
+		left join p10_subject on p10_subject.subject_id = p10_behavior.subject_id
+		left join p10_target on p10_target.goal_id = p10_behavior.behavior_id
+		left join (select * from (
+				select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
+				where p10_task_node.`status` = 0
+				and p10_task_node.node_attributes = 400
+				ORDER BY p10_task_node.sort asc
+				)task_node
+				GROUP BY task_node.target_id
+				) task_node on task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 1000
+		and p10_behavior.behavior_status = 1
+		and p10_target.goal_type = 30001
+		<if test="query.nodeKey != null and query.nodeKey != ''">
+			and task_node.node_key = #{query.nodeKey}
+		</if>
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_casee.executed_name like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_behavior.behavior_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
 
 </mapper>

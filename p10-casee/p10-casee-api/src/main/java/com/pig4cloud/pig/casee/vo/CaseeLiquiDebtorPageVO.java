@@ -1,7 +1,6 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
