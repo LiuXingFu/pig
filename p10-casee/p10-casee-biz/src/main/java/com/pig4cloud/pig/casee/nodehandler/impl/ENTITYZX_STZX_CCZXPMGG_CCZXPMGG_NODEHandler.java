@@ -17,9 +17,9 @@ public class ENTITYZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+
 		EntityZX_STZX_CCZXPMJG_CCZXPMJG entityZX_stzx_cczxpmjg_cczxpmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXPMJG_CCZXPMJG.class);
-
-
 
 	}
 }

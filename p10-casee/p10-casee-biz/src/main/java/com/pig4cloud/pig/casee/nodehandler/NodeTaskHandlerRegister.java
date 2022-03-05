@@ -141,7 +141,6 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_ZXZH_ZXZHJACA_ZXZHJACA", liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 
-
 		//财产程序任务提交map实体类
 		submitHandlerMap.put("entityZX_STZX_CCZXPMGG_CCZXPMGG", entityzx_stzx_cczxpmgg_cczxpmgg_nodeHandler);
 

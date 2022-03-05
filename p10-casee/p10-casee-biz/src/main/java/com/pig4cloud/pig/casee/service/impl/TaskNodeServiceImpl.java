@@ -294,7 +294,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	@Transactional
-	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature,Integer id) {
+	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature, Integer id) {
 		if (procedureNature.equals(20100)) {//资金财产
 			procedureNature = 4041;
 		} else if (procedureNature.equals(20200)) {//实体财产
@@ -306,7 +306,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			procedureNature = 5050;
 		}
 		//1.根据案件id和程序性质查询所有任务节点数据
-		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature,id);
+		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature, id);
 		//2.任务节点对象集合
 		List<TaskNodeVO> voList = new ArrayList<>();
 		//3.将节点对象集合转换树形结构工具类
@@ -1577,11 +1577,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				AssetsReCasee assetsReCasee = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 
+				AssetsReCaseeDetail assetsReCaseeDetail = assetsReCasee.getAssetsReCaseeDetail();
+				if (Objects.isNull(assetsReCaseeDetail)) {
+					assetsReCaseeDetail = new AssetsReCaseeDetail();
+				}
 
 				if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
 					//资金资产冻结实体
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsFreeze assetsFreeze = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreeze.class);
 
 					assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
@@ -1590,28 +1592,20 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
 					//资金财产冻结送达情况
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsFreezeServedSituation assetsFreezeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreezeServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsFreezeServedSituation(assetsFreezeServedSituation);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
 				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
 					//资金财产划扣
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
 
 					assetsReCaseeDetail.setAssetsSnap(assetsSnap);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
 				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHKSDQK_ZJZXZJHKSDQK")) {
 					//资金财产划扣送达情况
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsSnapServedSituation assetsSnapServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnapServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsSnapServedSituation(assetsSnapServedSituation);
@@ -1620,8 +1614,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
 					//实体财产查封
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
 
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
@@ -1630,9 +1622,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产查封送达
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK")) {
-
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsSeizureServedSituation assetsSeizureServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizureServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsSeizureServedSituation(assetsSeizureServedSituation);
@@ -1640,8 +1629,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 					//实体财产商品移送
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsPleaseTransfer assetsPleaseTransfer = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPleaseTransfer.class);
 
 					assetsReCaseeDetail.setAssetsPleaseTransfer(assetsPleaseTransfer);
@@ -1650,8 +1637,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产资产处置移交
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsDispositionTransfer assetsDispositionTransfer = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsDispositionTransfer.class);
 
 					assetsReCaseeDetail.setAssetsDispositionTransfer(assetsDispositionTransfer);
@@ -1660,8 +1645,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体资产资产处置移交送达情况
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJSDQK_CCZXZCCZYJSDQK")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsDispositionTransferServedSituation assetsDispositionTransferServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsDispositionTransferServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsDispositionTransferServedSituation(assetsDispositionTransferServedSituation);
@@ -1670,8 +1653,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体资产现勘
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXXK_CCZXXK")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsExploration assetsExploration = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsExploration.class);
 
 					assetsReCaseeDetail.setAssetsExploration(assetsExploration);
@@ -1680,8 +1661,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产不动产现勘入户
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsRealEstateExplorationHome assetsRealEstateExplorationHome = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsRealEstateExplorationHome.class);
 
 					assetsReCaseeDetail.setAssetsRealEstateExplorationHome(assetsRealEstateExplorationHome);
@@ -1690,8 +1669,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产价格依据
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXJGYJ_CCZXJGYJ")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsPriceBasis assetsPriceBasis = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPriceBasis.class);
 
 					assetsReCaseeDetail.setAssetsPriceBasis(assetsPriceBasis);
@@ -1700,8 +1677,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产拍卖公告
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsAuctionAnnouncement assetsAuctionAnnouncement = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionAnnouncement.class);
 
 					assetsReCaseeDetail.setAssetsAuctionAnnouncement(assetsAuctionAnnouncement);
@@ -1710,8 +1685,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产拍卖结果
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsAuctionResults assetsAuctionResults = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionResults.class);
 
 					assetsReCaseeDetail.setAssetsAuctionResults(assetsAuctionResults);
@@ -1720,8 +1693,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产拍卖结果送达情况
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsAuctionResultsServedSituation assetsAuctionResultsServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionResultsServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsAuctionResultsServedSituation(assetsAuctionResultsServedSituation);
@@ -1730,8 +1701,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
 
 					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
@@ -1740,8 +1709,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产资产抵偿
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
 
 					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
@@ -1750,8 +1717,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产成交裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
 
 					assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
@@ -1760,8 +1725,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产抵偿裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAward.class);
 
 					assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
@@ -1770,8 +1733,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产抵偿裁定送达情况
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsCompensationAwardServedSituation assetsCompensationAwardServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAwardServedSituation.class);
 
 					assetsReCaseeDetail.setAssetsCompensationAwardServedSituation(assetsCompensationAwardServedSituation);
@@ -1780,8 +1741,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//实体财产腾退成功
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXTTCG_CCZXTTCG")) {
-					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-
 					AssetsEvacuateSuccessfully assetsEvacuateSuccessfully = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsEvacuateSuccessfully.class);
 
 					assetsReCaseeDetail.setAssetsEvacuateSuccessfully(assetsEvacuateSuccessfully);
@@ -1801,9 +1760,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				BehaviorLiqui behaviorLiqui = this.BehaviorLiquiService.getBehaviorLiqui(behavior);
 
+				BehaviorLiquiDetail behaviorLiquiDetail = behaviorLiqui.getBehaviorLiquiDetail();
+				if (Objects.isNull(behaviorLiquiDetail)) {
+					behaviorLiquiDetail = new BehaviorLiquiDetail();
+				}
+
 				if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFSDQK_XWWFSDQK")) {
 					//行为违法送达情况
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorIllegalServedSituation behaviorIllegalServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalServedSituation.class);
 
@@ -1813,7 +1776,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFXZCX_XWWFXZCX")) {
 					//行为违法限制撤销
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorIllegalRevoke behaviorIllegalRevoke = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalRevoke.class);
 
@@ -1823,7 +1785,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFXZCXSDQK_XWWFXZCXSDQK")) {
 					//行为违法限制撤销送达情况
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorIllegalRevokeServedSituation behaviorIllegalRevokeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalRevokeServedSituation.class);
 
@@ -1833,7 +1794,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_SSXWWF_SSXWWF")) {
 					//行为违法实施行为违法
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorIllegalCommittingAnIllegalAct behaviorIllegalCommittingAnIllegalAct = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalCommittingAnIllegalAct.class);
 
@@ -1843,7 +1803,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_SSXWWFSDQK_SSXWWFSDQK")) {
 					//行为违法实施行为违法送达情况
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorIllegalCommittingAnIllegalActServedSituation behaviorIllegalCommittingAnIllegalActServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalCommittingAnIllegalActServedSituation.class);
 
@@ -1853,8 +1812,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZSDQK_XWXZSDQK")) {
 
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
-
 					BehaviorRestrictionsServedSituation behaviorRestrictionsServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsServedSituation.class);
 
 					behaviorLiquiDetail.setBehaviorRestrictionsServedSituation(behaviorRestrictionsServedSituation);
@@ -1863,8 +1820,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZXZCX_XWXZXZCX")) {
 
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
-
 					BehaviorRestrictionsRevoke behaviorRestrictionsRevoke = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsRevoke.class);
 
 					behaviorLiquiDetail.setBehaviorRestrictionsRevoke(behaviorRestrictionsRevoke);
@@ -1872,7 +1827,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
 
 				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZXZCXSDQK_XWXZXZCXSDQK")) {
-					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 
 					BehaviorRestrictionsRevokeServedSituation behaviorRestrictionsRevokeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsRevokeServedSituation.class);
 

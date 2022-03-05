@@ -37,6 +37,11 @@ public interface AssetsReCaseeService extends IService<AssetsRe> {
 	 */
 	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception;
 
+	/**
+	 * 根据条件查询案件财产表数据
+	 * @param assetsRe
+	 * @return
+	 */
 	AssetsReCasee getAssetsReCasee(AssetsRe assetsRe);
 
 
