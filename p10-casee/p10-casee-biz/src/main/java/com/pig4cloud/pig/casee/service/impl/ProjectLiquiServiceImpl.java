@@ -136,7 +136,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//添加费用产生记录
 		ExpenseRecord expenseRecord=new ExpenseRecord();
 		expenseRecord.setProjectId(projectLiqui.getProjectId());
-		expenseRecord.setCostType(0);
+		expenseRecord.setCostType(30001);
 		expenseRecord.setCostIncurredTime(projectLiqui.getTakeTime());
 		expenseRecord.setCostAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount());
 		expenseRecord.setStatus(0);

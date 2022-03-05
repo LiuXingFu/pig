@@ -100,17 +100,39 @@
 		and p10_behavior.casee_id = #{caseeId}
 	</select>
 
-	<select id="queryBehaviorDetail" resultType="java.lang.String">
-		select JSON_EXTRACT(behavior_detail, #{query.key}) as jsonValue
-		from p10_behavior where del_flag = 0 and behavior_id = #{query.behaviorId}
+	<select id="getBehaviorLiqui" resultType="com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui">
+		SELECT * FROM p10_behavior WHERE del_flag = 0
+		<if test="query.behaviorId != null and query.behaviorId != 0">
+			and behavior_id = #{query.behaviorId}
+		</if>
+		<if test="query.projectId != null and query.projectId != 0">
+			and project_id = #{query.projectId}
+		</if>
+		<if test="query.caseeId != null and query.caseeId != 0">
+			and casee_id = #{query.caseeId}
+		</if>
+		<if test="query.subjectId != null and query.subjectId != 0">
+			and subject_id = #{query.subjectId}
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and executed_namelike like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.targetId != null and query.targetId != 0">
+			and target_id = #{query.targetId}
+		</if>
+		<if test="query.beginDate != null and query.endDate != null">
+			AND behavior_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		<if test="query.type != null and query.type != 1">
+			and 'type' = #{query.type}
+		</if>
+		<if test="query.limitType != null and query.limitType != 0">
+			and limit_type = #{query.limitType}
+		</if>
+		<if test="query.behaviorStatus != null and query.behaviorStatus != 0">
+			and behavior_status = #{query.behaviorStatus}
+		</if>
 	</select>
-
-	<update id="updateBehaviorDetail">
-		update p10_behavior SET
-		<foreach collection="listParams" item="params" separator=",">
-			behavior_detail = JSON_SET(behavior_detail, #{params.key}, #{params.value})
-		</foreach>
-		where del_flag = 0 and behavior_id = #{assetsId}
-	</update>
 
 </mapper>

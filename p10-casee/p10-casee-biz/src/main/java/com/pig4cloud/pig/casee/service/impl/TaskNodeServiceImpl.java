@@ -30,8 +30,11 @@ import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.assets.detail.detailentity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.BehaviorLiquiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.*;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
@@ -291,7 +294,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	@Transactional
-	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature) {
+	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature,Integer id) {
 		if (procedureNature.equals(20100)) {//资金财产
 			procedureNature = 4041;
 		} else if (procedureNature.equals(20200)) {//实体财产
@@ -303,7 +306,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			procedureNature = 5050;
 		}
 		//1.根据案件id和程序性质查询所有任务节点数据
-		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature);
+		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature,id);
 		//2.任务节点对象集合
 		List<TaskNodeVO> voList = new ArrayList<>();
 		//3.将节点对象集合转换树形结构工具类
@@ -1572,7 +1575,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				assetsRe.setAssetsId(target.getGoalId());
 				assetsRe.setCaseeId(target.getCaseeId());
 
-				AssetsReCasee assetsReCasee = this.assetsReCaseeService.getAssetsCasee(assetsRe);
+				AssetsReCasee assetsReCasee = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 
 
 				if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
@@ -1786,11 +1789,102 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
 				} else {
-					new RuntimeException("没有对应的财产实体类型！");
+					new RuntimeException("没有对应的财产实体类型，财产详情录入异常！");
 				}
+
 				this.assetsReCaseeService.updateById(assetsReCasee);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
+				Behavior behavior = new Behavior();
+				behavior.setBehaviorId(target.getGoalId());
+				behavior.setCaseeId(target.getCaseeId());
+
+				BehaviorLiqui behaviorLiqui = this.BehaviorLiquiService.getBehaviorLiqui(behavior);
+
+				if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFSDQK_XWWFSDQK")) {
+					//行为违法送达情况
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorIllegalServedSituation behaviorIllegalServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalServedSituation.class);
+
+					behaviorLiquiDetail.setBehaviorIllegalServedSituation(behaviorIllegalServedSituation);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFXZCX_XWWFXZCX")) {
+					//行为违法限制撤销
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorIllegalRevoke behaviorIllegalRevoke = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalRevoke.class);
+
+					behaviorLiquiDetail.setBehaviorIllegalRevoke(behaviorIllegalRevoke);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_XWWFXZCXSDQK_XWWFXZCXSDQK")) {
+					//行为违法限制撤销送达情况
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorIllegalRevokeServedSituation behaviorIllegalRevokeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalRevokeServedSituation.class);
+
+					behaviorLiquiDetail.setBehaviorIllegalRevokeServedSituation(behaviorIllegalRevokeServedSituation);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_SSXWWF_SSXWWF")) {
+					//行为违法实施行为违法
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorIllegalCommittingAnIllegalAct behaviorIllegalCommittingAnIllegalAct = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalCommittingAnIllegalAct.class);
+
+					behaviorLiquiDetail.setBehaviorIllegalCommittingAnIllegalAct(behaviorIllegalCommittingAnIllegalAct);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("beIllegal_XWWF_SSXWWFSDQK_SSXWWFSDQK")) {
+					//行为违法实施行为违法送达情况
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorIllegalCommittingAnIllegalActServedSituation behaviorIllegalCommittingAnIllegalActServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorIllegalCommittingAnIllegalActServedSituation.class);
+
+					behaviorLiquiDetail.setBehaviorIllegalCommittingAnIllegalActServedSituation(behaviorIllegalCommittingAnIllegalActServedSituation);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZSDQK_XWXZSDQK")) {
+
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorRestrictionsServedSituation behaviorRestrictionsServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsServedSituation.class);
+
+					behaviorLiquiDetail.setBehaviorRestrictionsServedSituation(behaviorRestrictionsServedSituation);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZXZCX_XWXZXZCX")) {
+
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorRestrictionsRevoke behaviorRestrictionsRevoke = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsRevoke.class);
+
+					behaviorLiquiDetail.setBehaviorRestrictionsRevoke(behaviorRestrictionsRevoke);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else if (taskNode.getNodeKey().equals("limit_XWXZ_XWXZXZCXSDQK_XWXZXZCXSDQK")) {
+					BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
+
+					BehaviorRestrictionsRevokeServedSituation behaviorRestrictionsRevokeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), BehaviorRestrictionsRevokeServedSituation.class);
+
+					behaviorLiquiDetail.setBehaviorRestrictionsRevokeServedSituation(behaviorRestrictionsRevokeServedSituation);
+
+					behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
+
+				} else {
+					new RuntimeException("没有对应的行为实体类型，行为详情录入异常！");
+				}
+
+				this.BehaviorLiquiService.updateById(behaviorLiqui);
 			}
 		}
 	}

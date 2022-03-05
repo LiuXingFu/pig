@@ -67,28 +67,28 @@ public class FulfillmentRecords extends BaseEntity {
      * 期数
      */
     @ApiModelProperty(value="期数")
-    private Integer period;
+    private String period;
 
     /**
-     * 履行时间
+     * 待履行时间
      */
     @ApiModelProperty(value="待履行时间")
     private LocalDate fulfillmentTime;
 
     /**
-     * 履行金额
+     * 待履行金额
      */
     @ApiModelProperty(value="待履行金额")
     private BigDecimal fulfillmentAmount;
 
     /**
-     * 履行人
+     * 待履行人
      */
     @ApiModelProperty(value="待履行人")
     private Integer subjectId;
 
 	/**
-	 * 履行人名称
+	 * 待履行人名称
 	 */
 	@ApiModelProperty(value="待履行人名称")
 	private String subjectName;
@@ -105,4 +105,16 @@ public class FulfillmentRecords extends BaseEntity {
 	 */
 	@ApiModelProperty(value="明细")
 	private String details;
+
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendixFile;
+
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value="备注")
+	private String remark;
 }

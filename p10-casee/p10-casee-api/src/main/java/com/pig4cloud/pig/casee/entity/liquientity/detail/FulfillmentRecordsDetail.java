@@ -17,13 +17,14 @@
 package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
 
+import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 
 @Data
-public class FulfillmentRecordsDetail{
+public class FulfillmentRecordsDetail extends FulfillmentRecords {
 	/**
 	 * 推迟履行时间
 	 */

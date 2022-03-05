@@ -19,7 +19,7 @@ public class LIQUIGENERALLY_NODEHandler extends TaskNodeHandler {
 	 */
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-
+		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 
 }

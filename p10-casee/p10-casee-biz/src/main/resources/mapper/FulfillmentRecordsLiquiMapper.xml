@@ -21,9 +21,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.FulfillmentRecordsMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.FulfillmentRecordsLiquiMapper">
 
-  <resultMap id="fulfillmentRecordsMap" type="com.pig4cloud.pig.casee.entity.FulfillmentRecords">
+  <resultMap id="fulfillmentRecordsMap" type="com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui">
     <id property="fulfillmentRecordId" column="fulfillment_record_id"/>
     <result property="createBy" column="create_by"/>
     <result property="createTime" column="create_time"/>
@@ -41,5 +41,16 @@
     <result property="appendixFile" column="appendix_file"/>
     <result property="remark" column="remark"/>
   </resultMap>
+	<select id="getByReconciliatioMediationId" resultType="com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO">
+		select * from p10_fulfillment_records
+		left join p10_payment_record on p10_payment_record.payment_record_id=p10_fulfillment_records.payment_record_id
+		where p10_fulfillment_records.reconciliatio_mediation_id=#{reconciliatioMediationId}
+	</select>
+
+	<select id="getFulfillmentRecordsPage" resultType="com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO">
+		select p10_fulfillment_records.*,p10_payment_record.*,substring(json_extract(p10_fulfillment_records.details,'$.deferPerformance'),2,10) as deferPerformance, p10_payment_record.subject_name as repayerName from p10_fulfillment_records
+		left join p10_payment_record on p10_payment_record.payment_record_id=p10_fulfillment_records.payment_record_id
+		where p10_fulfillment_records.reconciliatio_mediation_id=#{reconciliatioMediationId}
+	</select>
 
 </mapper>

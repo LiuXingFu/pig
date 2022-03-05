@@ -14,14 +14,16 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.liquientity;
+package com.pig4cloud.pig.casee.dto;
 
-
-import com.alibaba.fastjson.JSON;
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
+import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.FulfillmentRecordsDetail;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 待履行记录表
@@ -30,23 +32,56 @@ import lombok.Data;
  * @date 2022-03-01 20:36:31
  */
 @Data
-public class FulfillmentRecordsLiqui extends FulfillmentRecords {
-	@ApiModelProperty(value="待履行记录详情")
-	private FulfillmentRecordsDetail fulfillmentRecordsDetail;
+public class FulfillmentRecordsDTO extends FulfillmentRecordsLiqui {
 
-	public void setFulfillmentRecordsDetail(FulfillmentRecordsDetail fulfillmentRecordsDetail) {
-		this.fulfillmentRecordsDetail = fulfillmentRecordsDetail;
-		this.setDetails(JSON.toJSONString(fulfillmentRecordsDetail));
-	}
+	/**
+	 * 项目id
+	 */
+	private Integer projectId;
 
-	public void initDetails(){
-		fulfillmentRecordsDetail = JSON.parseObject(this.getDetails(), FulfillmentRecordsDetail.class );
-	}
+	/**
+	 * 案件id
+	 */
+	private Integer caseeId;
 
-	public FulfillmentRecordsDetail getFulfillmentRecordsDetail() {
-		if(fulfillmentRecordsDetail==null && this.getDetails()!=null){
-			fulfillmentRecordsDetail = JSON.parseObject(this.getDetails(), FulfillmentRecordsDetail.class );
-		}
-		return fulfillmentRecordsDetail;
-	}
+	/**
+	 * 公司业务案号
+	 */
+	private String companyCode;
+
+	/**
+	 * 案件案号
+	 */
+	private String caseeNumber;
+
+	/**
+	 * 回款类型(100-法院领款 200-法院到款 300-履行到申请人)
+	 */
+	private Integer paymentType;
+
+	/**
+	 * 回款时间
+	 */
+	private LocalDate paymentDate;
+
+	/**
+	 * 回款金额
+	 */
+	private BigDecimal paymentAmount;
+
+	/**
+	 * 还款人名称
+	 */
+	private String subjectName;
+
+	/**
+	 * 分配款项记录
+	 */
+	List<PaymentRecord> paymentRecordList;
+
+	/**
+	 * 推迟履行日期
+	 */
+	private LocalDate deferPerformance;
+
 }

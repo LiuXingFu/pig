@@ -72,7 +72,8 @@ public interface TargetService extends IService<Target> {
 	/**
 	 * 根据案件id,程序性质查询模板数据
 	 * @param caseeId 案件id
+	 * @param id 财产或程序id
 	 * @return R
 	 */
-	List<TaskNodeVO> getTarget(Integer caseeId,Integer procedureNature);
+	List<TaskNodeVO> getTarget(Integer caseeId,Integer procedureNature,Integer id);
 }

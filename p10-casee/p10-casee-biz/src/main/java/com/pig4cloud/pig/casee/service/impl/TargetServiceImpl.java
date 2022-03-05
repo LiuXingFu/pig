@@ -208,8 +208,8 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	}
 
 	@Override
-	public List<TaskNodeVO> getTarget(Integer caseeId, Integer procedureNature) {
-		return this.baseMapper.getTarget(caseeId,procedureNature);
+	public List<TaskNodeVO> getTarget(Integer caseeId, Integer procedureNature,Integer id) {
+		return this.baseMapper.getTarget(caseeId,procedureNature,id);
 	}
 
 	/**

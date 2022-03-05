@@ -36,5 +36,5 @@ import java.util.List;
 @Mapper
 public interface AssetsReCaseeMapper extends BaseMapper<AssetsRe> {
 
-	AssetsReCasee getAssetsCasee(@Param("query") AssetsRe assetsRe);
+	AssetsReCasee getAssetsReCasee(@Param("query") AssetsRe assetsRe);
 }

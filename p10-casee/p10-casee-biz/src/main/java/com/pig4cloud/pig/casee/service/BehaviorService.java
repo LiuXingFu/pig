@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.BehaviorSaveDTO;
 import com.pig4cloud.pig.casee.dto.SaveBehaviorDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
+import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 
@@ -42,5 +43,5 @@ public interface BehaviorService extends IService<Behavior> {
 
 	IPage<BehaviorOrProjectPageVO> queryPageByCaseeId(Page page, Integer caseeId);
 
-	void updateBehaviorDetail(SaveBehaviorDTO saveBehaviorDTO);
+	BehaviorLiqui getBehaviorLiqui(Behavior behavior);
 }

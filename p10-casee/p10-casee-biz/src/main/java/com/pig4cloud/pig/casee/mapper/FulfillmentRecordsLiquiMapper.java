@@ -34,5 +34,8 @@ import java.util.List;
  * @date 2022-03-01 20:36:31
  */
 @Mapper
-public interface FulfillmentRecordsMapper extends BaseMapper<FulfillmentRecords> {
+public interface FulfillmentRecordsLiquiMapper extends BaseMapper<FulfillmentRecords> {
+	List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId);
+
+	IPage<FulfillmentRecordsVO> getFulfillmentRecordsPage(Page page, @Param("reconciliatioMediationId") Integer reconciliatioMediationId);
 }

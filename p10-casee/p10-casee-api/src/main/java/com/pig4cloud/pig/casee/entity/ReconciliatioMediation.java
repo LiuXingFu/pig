@@ -58,9 +58,9 @@ public class ReconciliatioMediation extends BaseEntity {
     private Integer projectId;
 
     /**
-     * 案件id
+     * 调解诉讼案号id
      */
-    @ApiModelProperty(value="案件id")
+    @ApiModelProperty(value="调解诉讼案号id")
     private Integer caseeId;
 
     /**
@@ -84,7 +84,7 @@ public class ReconciliatioMediation extends BaseEntity {
     /**
      * 和解方式(0-分期 1-不分期)
      */
-    @ApiModelProperty(value="和解方式(0-分期 1-不分期)")
+    @ApiModelProperty(value="和解方式(0-不分期 1-分期)")
     private Integer reconciliationWay;
 
     /**
@@ -116,12 +116,6 @@ public class ReconciliatioMediation extends BaseEntity {
 	 */
 	@ApiModelProperty(value="是否有调解文书(0-无 1-有)")
 	private Integer isMediation;
-
-	/**
-	 * 调解诉讼案号
-	 */
-	@ApiModelProperty(value="调解诉讼案号")
-	private String mediationCaseNumber;
 
     /**
      * 状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行)
