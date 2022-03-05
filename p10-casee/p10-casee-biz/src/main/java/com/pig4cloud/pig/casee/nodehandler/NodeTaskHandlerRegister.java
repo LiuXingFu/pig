@@ -92,13 +92,12 @@ public class NodeTaskHandlerRegister {
 	LIQUI_ZXZH_ZXZHJACA_ZXZHJACA_NODEHandler liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler;
 
 	@Autowired
-	ENTITYZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler entityzx_stzx_cczxpmgg_cczxpmgg_nodeHandler;
-
-	@Autowired
 	BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler beillegal_xwwf_xwwfxzcx_xwwfxzcx_nodeHandler;
 
 	@Autowired
 	LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler;
+
+	ENTITYZX_STZX_CCZXPMJG_CCZXPMJG entityzx_stzx_cczxpmjg_cczxpmjg;
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -142,7 +141,7 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 
 		//财产程序任务提交map实体类
-		submitHandlerMap.put("entityZX_STZX_CCZXPMGG_CCZXPMGG", entityzx_stzx_cczxpmgg_cczxpmgg_nodeHandler);
+		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg);
 
 //		// 任务节点审核map实现类
 //		auditHandlerMap.put("paiFu_JGRZ_SFYJ_YJJG", paifu_jgrz_sfyj_yjjg_nodeHandler);
@@ -168,8 +167,8 @@ public class NodeTaskHandlerRegister {
 
 		TaskNodeHandler taskNodeHandler = null;
 
-		if (taskNode.getNodeKey().contains("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
-			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMGG_CCZXPMGG");
+		if (taskNode.getNodeKey().contains("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
+			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMJG_CCZXPMJG");
 		} else {
 			taskNodeHandler = submitHandlerMap.get(taskNode.getNodeKey());
 		}

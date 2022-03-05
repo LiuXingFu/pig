@@ -1590,13 +1590,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
-				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
-					//资金财产冻结送达情况
-					AssetsFreezeServedSituation assetsFreezeServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreezeServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsFreezeServedSituation(assetsFreezeServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
 					//资金财产划扣
 					AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
@@ -1604,14 +1597,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSnap(assetsSnap);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHKSDQK_ZJZXZJHKSDQK")) {
-					//资金财产划扣送达情况
-					AssetsSnapServedSituation assetsSnapServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnapServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsSnapServedSituation(assetsSnapServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
 					//实体财产查封
 					AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
@@ -1619,86 +1604,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产查封送达
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK")) {
-					AssetsSeizureServedSituation assetsSeizureServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizureServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsSeizureServedSituation(assetsSeizureServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-					//实体财产商品移送
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS")) {
-					AssetsPleaseTransfer assetsPleaseTransfer = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPleaseTransfer.class);
-
-					assetsReCaseeDetail.setAssetsPleaseTransfer(assetsPleaseTransfer);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产资产处置移交
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")) {
-					AssetsDispositionTransfer assetsDispositionTransfer = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsDispositionTransfer.class);
-
-					assetsReCaseeDetail.setAssetsDispositionTransfer(assetsDispositionTransfer);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体资产资产处置移交送达情况
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJSDQK_CCZXZCCZYJSDQK")) {
-					AssetsDispositionTransferServedSituation assetsDispositionTransferServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsDispositionTransferServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsDispositionTransferServedSituation(assetsDispositionTransferServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体资产现勘
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXXK_CCZXXK")) {
-					AssetsExploration assetsExploration = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsExploration.class);
-
-					assetsReCaseeDetail.setAssetsExploration(assetsExploration);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产不动产现勘入户
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH")) {
-					AssetsRealEstateExplorationHome assetsRealEstateExplorationHome = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsRealEstateExplorationHome.class);
-
-					assetsReCaseeDetail.setAssetsRealEstateExplorationHome(assetsRealEstateExplorationHome);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产价格依据
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXJGYJ_CCZXJGYJ")) {
-					AssetsPriceBasis assetsPriceBasis = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPriceBasis.class);
-
-					assetsReCaseeDetail.setAssetsPriceBasis(assetsPriceBasis);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产拍卖公告
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
-					AssetsAuctionAnnouncement assetsAuctionAnnouncement = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionAnnouncement.class);
-
-					assetsReCaseeDetail.setAssetsAuctionAnnouncement(assetsAuctionAnnouncement);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产拍卖结果
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
-					AssetsAuctionResults assetsAuctionResults = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionResults.class);
-
-					assetsReCaseeDetail.setAssetsAuctionResults(assetsAuctionResults);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产拍卖结果送达情况
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK")) {
-					AssetsAuctionResultsServedSituation assetsAuctionResultsServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAuctionResultsServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsAuctionResultsServedSituation(assetsAuctionResultsServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
 					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
@@ -1706,15 +1611,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产资产抵偿
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
-					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
-
-					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
 					//实体财产成交裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
 					AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
@@ -1730,27 +1626,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产抵偿裁定送达情况
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK")) {
-					AssetsCompensationAwardServedSituation assetsCompensationAwardServedSituation = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAwardServedSituation.class);
-
-					assetsReCaseeDetail.setAssetsCompensationAwardServedSituation(assetsCompensationAwardServedSituation);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产腾退成功
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXTTCG_CCZXTTCG")) {
-					AssetsEvacuateSuccessfully assetsEvacuateSuccessfully = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsEvacuateSuccessfully.class);
-
-					assetsReCaseeDetail.setAssetsEvacuateSuccessfully(assetsEvacuateSuccessfully);
-
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-				} else {
-					new RuntimeException("没有对应的财产实体类型，财产详情录入异常！");
 				}
-
 				this.assetsReCaseeService.updateById(assetsReCasee);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 

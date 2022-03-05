@@ -17,8 +17,9 @@ public class BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler extends TaskNodeHandle
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		BeIllegal_XWWF_XWWFXZCX_XWWFXZCX beIllegal_xwwf_xwwfxzcx_xwwfxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), BeIllegal_XWWF_XWWFXZCX_XWWFXZCX.class);
+		taskNodeService.setTaskDataSubmission(taskNode);
 
+		BeIllegal_XWWF_XWWFXZCX_XWWFXZCX beIllegal_xwwf_xwwfxzcx_xwwfxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), BeIllegal_XWWF_XWWFXZCX_XWWFXZCX.class);
 
 	}
 }
