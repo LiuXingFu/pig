@@ -39,7 +39,6 @@
 		<result property="appendixFile" column="appendix_file"/>
 		<result property="subjectName" column="subject_name"/>
 		<result property="isMediation" column="is_mediation"/>
-		<result property="mediationCaseNumber" column="mediation_case_number"/>
 		<result property="placeOfSigning" column="place_of_signing"/>
 		<result property="amount" column="amount"/>
 		<result property="status" column="status"/>
@@ -63,7 +62,6 @@
 		<result property="appendixFile" column="appendix_file"/>
 		<result property="subjectName" column="subject_name"/>
 		<result property="isMediation" column="is_mediation"/>
-		<result property="mediationCaseNumber" column="mediation_case_number"/>
 		<result property="placeOfSigning" column="place_of_signing"/>
 		<result property="amount" column="amount"/>
 		<result property="status" column="status"/>
@@ -71,14 +69,15 @@
 		<result property="remark" column="remark"/>
 
 		<collection property="fulfillmentRecordsList" ofType="com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO"
-					select="com.pig4cloud.pig.casee.mapper.FulfillmentRecordsMapper.getByReconciliatioMediationId"
+					select="com.pig4cloud.pig.casee.mapper.FulfillmentRecordsLiquiMapper.getByReconciliatioMediationId"
 					column="reconciliatio_mediation_id">
 		</collection>
 	</resultMap>
 
 	<select id="getReconciliatioMediationPage" resultMap="ReconciliatioMediationVO">
-		SELECT p10_reconciliatio_mediation.*,p10_project.company_code as companyCode FROM `p10_reconciliatio_mediation`
+		SELECT p10_reconciliatio_mediation.*,p10_project.company_code as companyCode,p10_casee.casee_number as caseeNumber FROM `p10_reconciliatio_mediation`
 		LEFT JOIN p10_project on p10_project.project_id=p10_reconciliatio_mediation.project_id
+		LEFT JOIN p10_casee on p10_casee.casee_id=p10_reconciliatio_mediation.casee_id
 		WHERE p10_reconciliatio_mediation.del_flag=0
 		<if test="query.companyCode != null and query.companyCode != ''">
 			and p10_project.company_code = #{query.companyCode}

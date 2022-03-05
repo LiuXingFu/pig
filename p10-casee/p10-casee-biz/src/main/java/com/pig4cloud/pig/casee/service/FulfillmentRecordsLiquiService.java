@@ -15,15 +15,14 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.mapper;
+package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.FulfillmentRecordsDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,6 +32,11 @@ import java.util.List;
  * @author Mjh
  * @date 2022-03-01 20:36:31
  */
-@Mapper
-public interface FulfillmentRecordsMapper extends BaseMapper<FulfillmentRecords> {
+public interface FulfillmentRecordsLiquiService extends IService<FulfillmentRecords> {
+
+	List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId);
+
+	IPage<FulfillmentRecordsVO> getFulfillmentRecordsPage(Page page, Integer reconciliatioMediationId);
+
+	boolean saveFulfillmentRecords(FulfillmentRecordsDTO fulfillmentRecordsDTO);
 }

@@ -36,6 +36,11 @@ public class ReconciliatioMediationVO extends ReconciliatioMediation {
 	private String companyCode;
 
 	/**
+	 * 案件案号
+	 */
+	private String caseeNumber;
+
+	/**
 	 * 待履行记录
 	 */
 	private List<FulfillmentRecordsVO> fulfillmentRecordsList;

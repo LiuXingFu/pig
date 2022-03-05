@@ -291,7 +291,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	@Transactional
-	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature) {
+	public List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer caseeId, Integer procedureNature,Integer id) {
 		if (procedureNature.equals(20100)) {//资金财产
 			procedureNature = 4041;
 		} else if (procedureNature.equals(20200)) {//实体财产
@@ -303,7 +303,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			procedureNature = 5050;
 		}
 		//1.根据案件id和程序性质查询所有任务节点数据
-		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature);
+		List<TaskNodeVO> list = this.targetService.getTarget(caseeId, procedureNature,id);
 		//2.任务节点对象集合
 		List<TaskNodeVO> voList = new ArrayList<>();
 		//3.将节点对象集合转换树形结构工具类

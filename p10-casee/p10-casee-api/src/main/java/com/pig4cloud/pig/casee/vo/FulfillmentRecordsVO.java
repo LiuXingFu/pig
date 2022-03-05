@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
+import com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ import java.time.LocalDate;
  * @date 2022-03-01 20:36:31
  */
 @Data
-public class FulfillmentRecordsVO extends FulfillmentRecords {
+public class FulfillmentRecordsVO extends FulfillmentRecordsLiqui {
 
 	/**
 	 * 回款时间
@@ -46,5 +47,9 @@ public class FulfillmentRecordsVO extends FulfillmentRecords {
 	 */
 	private String repayerName;
 
+	/**
+	 * 推迟履行日期
+	 */
+	private String deferPerformance;
 
 }
