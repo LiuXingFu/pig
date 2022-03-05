@@ -126,7 +126,7 @@
 		<if test="query.status != null and query.status != ''">
 			and p10_casee.status = #{query.status}
 		</if>
-		<if test="query.beginDate != null and query.endDate != null  ">
+		<if test="query.beginDate != null and query.endDate != null">
 			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>

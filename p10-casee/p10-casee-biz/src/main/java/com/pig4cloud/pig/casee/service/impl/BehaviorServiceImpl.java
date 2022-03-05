@@ -135,40 +135,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 	}
 
 	@Override
-	public void updateBehaviorDetail(SaveBehaviorDTO saveBehaviorDTO) {
-		JSONObject formData = JSONObject.parseObject(saveBehaviorDTO.getFormData());
-		List<KeyValue> listParams = new ArrayList<KeyValue>();
-
-		for (String o : formData.keySet()) {
-			listParams.add(new KeyValue(saveBehaviorDTO.getKey() + "." + o, formData.get(o)));
-		}
-
-		String businessData = this.baseMapper.queryBehaviorDetail(saveBehaviorDTO);
-
-		if (businessData == null) {
-			String[] pathVec = saveBehaviorDTO.getKey().substring(2).split("\\.");
-			Behavior behavior = this.getById(saveBehaviorDTO.getBehaviorId());
-			JSONObject bussDataJson = JSONObject.parseObject(behavior.getBehaviorDetail());
-
-			int index = pathVec.length;
-			do {
-				index--;
-				String varName = pathVec[index];
-				JSONObject tmpJson = new JSONObject();
-				tmpJson.put(varName, formData);
-				formData = tmpJson;
-				if (index <= 0) {
-					break;
-				}
-			} while (true);
-
-			BeanCopyUtil.mergeJSONObject(bussDataJson, formData);
-			Behavior needUpdate = new Behavior();
-			needUpdate.setBehaviorId(behavior.getTargetId());
-			needUpdate.setBehaviorDetail(bussDataJson.toJSONString());
-			this.updateById(needUpdate);
-		} else {
-			this.baseMapper.updateBehaviorDetail(saveBehaviorDTO.getBehaviorId(), listParams);
-		}
+	public BehaviorLiqui getBehaviorLiqui(Behavior behavior) {
+		return this.baseMapper.getBehaviorLiqui(behavior);
 	}
 }
