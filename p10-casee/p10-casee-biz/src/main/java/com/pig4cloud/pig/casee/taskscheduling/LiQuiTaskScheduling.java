@@ -34,7 +34,7 @@ public class LiQuiTaskScheduling {
 
 		try {
 			//诉讼案件自动结案
-//			liQuiTaskScheduling.litigationCaseeClose();
+			liQuiTaskScheduling.litigationCaseeClose();
 			XxlJobHelper.handleSuccess(); // v2.3.0 设置任务结果
 		} catch (Exception e) {
 			XxlJobHelper.handleFail(); // v2.3.0 设置任务结果
