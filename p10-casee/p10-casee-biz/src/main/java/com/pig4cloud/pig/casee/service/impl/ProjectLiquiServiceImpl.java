@@ -245,11 +245,24 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		ProjectLiqui projectLiqui = new ProjectLiqui();
 		projectLiqui.setProjectId(projectModifyStatusDTO.getProjectId());
 		projectLiqui.setStatus(projectModifyStatusDTO.getStatus());
+		String projectName = null;
+
+		if (projectModifyStatusDTO.getStatus().equals(1000)){
+			projectName="项目在办";
+		}else if (projectModifyStatusDTO.getStatus().equals(2000)){
+			projectName="项目暂缓";
+		}else if (projectModifyStatusDTO.getStatus().equals(3000)){
+			projectName="项目和解";
+		}else if (projectModifyStatusDTO.getStatus().equals(4000)){
+			projectName="项目退出";
+		}
 
 		// 保存项目状态变更记录表
 		ProjectStatus projectStatus = new ProjectStatus();
 		projectStatus.setType(1);
 		projectStatus.setSourceId(projectModifyStatusDTO.getProjectId());
+		projectStatus.setStatusName(projectName);
+
 		// 获取操作人用户名称
 		R<UserVO> userVOR = userService.getUserById(securityUtilsService.getCacheUser().getId(),SecurityConstants.FROM);
 		projectStatus.setUserName(userVOR.getData().getActualName());

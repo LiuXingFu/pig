@@ -6,6 +6,8 @@ import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.Payment
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +20,12 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK extends CommonalityData implements
 	 * 划扣时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date deductionTime;
+	private LocalDate deductionTime;
 
 	/**
 	 * 划扣金额
 	 */
-	private Integer deductionAmount;
+	private BigDecimal deductionAmount;
 
 	/**
 	 * 附件

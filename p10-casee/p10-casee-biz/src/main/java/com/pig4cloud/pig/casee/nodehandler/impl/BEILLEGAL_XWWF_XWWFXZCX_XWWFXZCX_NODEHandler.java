@@ -21,7 +21,7 @@ public class BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler extends TaskNodeHandle
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
-
+		//行为违法限制撤销
 		BeIllegal_XWWF_XWWFXZCX_XWWFXZCX beIllegal_xwwf_xwwfxzcx_xwwfxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), BeIllegal_XWWF_XWWFXZCX_XWWFXZCX.class);
 		BehaviorLiqui behaviorLiqui=new BehaviorLiqui();
 		behaviorLiqui.setBehaviorId(beIllegal_xwwf_xwwfxzcx_xwwfxzcx.getBehaviorId());

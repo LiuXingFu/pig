@@ -20,6 +20,7 @@ public class limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler extends TaskNodeHandler {
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
+		//行为限制限制撤销
 		Limit_XWXZ_XWXZXZCX_XWXZXZCX limit_xwxz_xwxzxzcx_xwxzxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), Limit_XWXZ_XWXZXZCX_XWXZXZCX.class);
 		BehaviorLiqui behaviorLiqui=new BehaviorLiqui();
 		behaviorLiqui.setBehaviorId(limit_xwxz_xwxzxzcx_xwxzxzcx.getBehaviorId());

@@ -107,8 +107,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 更新案件状态
 	 * @return
 	 */
-	Integer modifyCaseeStatusById(CaseeModifyDTO caseeModifyDTO);
+	Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO);
 
+	Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO);
 	/**
 	 * 分页查询清收案件
 	 * @param page
