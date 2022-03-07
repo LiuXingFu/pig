@@ -23,28 +23,30 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.PaymentRecordMapper">
 
-  <resultMap id="paymentRecordMap" type="com.pig4cloud.pig.casee.entity.PaymentRecord">
-    <id property="paymentRecordId" column="payment_record_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="createBy" column="create_by"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="projectId" column="project_id"/>
-    <result property="paymentType" column="payment_type"/>
-    <result property="fundsType" column="funds_type"/>
-    <result property="paymentDate" column="payment_date"/>
-    <result property="fatherId" column="father_id"/>
-    <result property="paymentAmount" column="payment_amount"/>
-    <result property="caseeId" column="casee_id"/>
-    <result property="companyCode" column="company_code"/>
-	<result property="caseeNumber" column="casee_number"/>
-	<result property="subjectName" column="subject_name"/>
-	<result property="status" column="status"/>
-  </resultMap>
+	<resultMap id="paymentRecordMap" type="com.pig4cloud.pig.casee.entity.PaymentRecord">
+		<id property="paymentRecordId" column="payment_record_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="projectId" column="project_id"/>
+		<result property="paymentType" column="payment_type"/>
+		<result property="fundsType" column="funds_type"/>
+		<result property="paymentDate" column="payment_date"/>
+		<result property="fatherId" column="father_id"/>
+		<result property="paymentAmount" column="payment_amount"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="companyCode" column="company_code"/>
+		<result property="caseeNumber" column="casee_number"/>
+		<result property="subjectName" column="subject_name"/>
+		<result property="status" column="status"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
 
 	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
-		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from p10_payment_record
+		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from
+		p10_payment_record
 		left join p10_project on p10_project.project_id=p10_payment_record.project_id
 		where
 		p10_payment_record.del_flag=0 and ISNULL(p10_payment_record.father_id)
@@ -77,5 +79,27 @@
 		<if test="query.projectId != null">
 			and project_id = #{query.projectId}
 		</if>
+	</select>
+
+	<select id="getCourtPaymentPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO">
+		SELECT
+			p10_payment_record.*,
+			lumpSum.courtPayment as courtPayment
+		FROM
+			p10_payment_record,
+			(
+			SELECT
+				sum(payment_amount) as courtPayment
+			FROM
+				p10_payment_record
+			WHERE
+				p10_payment_record.project_id = #{projectId}
+				AND p10_payment_record.funds_type LIKE concat( '%', 200, '%' )
+				AND p10_payment_record.payment_type = 200
+			) lumpSum
+		WHERE
+			p10_payment_record.project_id = #{projectId}
+			AND p10_payment_record.funds_type LIKE concat( '%', 200, '%' )
+			AND p10_payment_record.payment_type = 200
 	</select>
 </mapper>

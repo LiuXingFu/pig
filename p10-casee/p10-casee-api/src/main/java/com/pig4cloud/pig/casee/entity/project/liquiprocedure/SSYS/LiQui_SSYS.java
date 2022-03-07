@@ -50,14 +50,4 @@ public class LiQui_SSYS extends CommonalityData implements Serializable {
 	 * 诉讼阶段一审上诉到期确认
 	 */
 	LiQui_SSYS_SSYSSSDQQR liQui_SSYS_SSYSSSDQQR = new LiQui_SSYS_SSYSSSDQQR();
-
-	/**
-	 * 诉讼阶段一审结案/撤案
-	 */
-	LiQui_SSYS_SSYSJACA liQui_SSYS_SSYSJACA = new LiQui_SSYS_SSYSJACA();
-
-	/**
-	 * 诉讼阶段一审结案/撤案送达情况
-	 */
-	LiQui_SSYS_SSYSJACASDQK liQui_SSYS_SSYSJACASDQK = new LiQui_SSYS_SSYSJACASDQK();
 }

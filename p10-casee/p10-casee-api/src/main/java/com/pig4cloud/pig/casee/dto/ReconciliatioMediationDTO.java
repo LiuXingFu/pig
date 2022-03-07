@@ -17,7 +17,7 @@
 package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
-import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
 import lombok.Data;
 
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2022-03-01 20:36:17
  */
 @Data
-public class ReconciliatioMediationDTO extends ReconciliatioMediation {
+public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
 
 	/**
 	 * 待履行记录信息

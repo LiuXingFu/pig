@@ -26,14 +26,4 @@ public class LiQui_SSBQ extends CommonalityData implements Serializable {
 	 */
 	LiQui_SSBQ_SSBQBQJGSDQK liQui_SSBQ_SSBQBQJGSDQK = new LiQui_SSBQ_SSBQBQJGSDQK();
 
-	/**
-	 * 诉讼阶段保全撤案
-	 */
-	LiQui_SSBQ_SSBQCA liQui_SSBQ_SSBQCA = new LiQui_SSBQ_SSBQCA();
-
-	/**
-	 * 诉讼阶段保全撤案送达情况
-	 */
-	LiQui_SSBQ_SSBQCASDQK liQui_SSBQ_SSBQCASDQK = new LiQui_SSBQ_SSBQCASDQK();
-
 }

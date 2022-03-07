@@ -17,10 +17,11 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
-import com.pig4cloud.pig.casee.service.ReconciliatioMediationService;
+import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
+import com.pig4cloud.pig.casee.service.ReconciliatioMediationLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -37,22 +38,22 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reconciliatiomediation" )
-@Api(value = "reconciliatiomediation", tags = "和解/调解表管理")
-public class ReconciliatioMediationController {
+@RequestMapping("/reconciliatiomediationLiqui" )
+@Api(value = "reconciliatiomediationLiqui", tags = "和解/调解表管理")
+public class ReconciliatioMediationLiquiController {
 
-    private final ReconciliatioMediationService reconciliatioMediationService;
+    private final ReconciliatioMediationLiquiService reconciliatioMediationService;
 
     /**
      * 分页查询
      * @param page 分页对象
-     * @param reconciliatioMediation 和解/调解表
+     * @param reconciliatioMediationDTO 和解/调解表
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    public R getReconciliatioMediationPage(Page page, ReconciliatioMediation reconciliatioMediation) {
-        return R.ok(reconciliatioMediationService.page(page, Wrappers.query(reconciliatioMediation)));
+    public R getReconciliatioMediationPage(Page page, ReconciliatioMediationDTO reconciliatioMediationDTO) {
+        return R.ok(reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO));
     }
 
 
@@ -67,6 +68,16 @@ public class ReconciliatioMediationController {
         return R.ok(reconciliatioMediationService.getById(reconciliatioMediationId));
     }
 
+	/**
+	 * 通过id查询和解/调解表
+	 * @param reconciliatioMediationId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/getByReconciliatioMediationId/{reconciliatioMediationId}")
+	public R getByReconciliatioMediationId(@PathVariable("reconciliatioMediationId" ) Integer reconciliatioMediationId) {
+		return R.ok(reconciliatioMediationService.getByReconciliatioMediationId(reconciliatioMediationId));
+	}
 
     /**
      * 新增和解/调解表
@@ -79,6 +90,30 @@ public class ReconciliatioMediationController {
     public R save(@RequestBody ReconciliatioMediation reconciliatioMediation) {
         return R.ok(reconciliatioMediationService.save(reconciliatioMediation));
     }
+
+	/**
+	 * 新增和解/调解待履行记录信息
+	 * @param reconciliatioMediationDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "新增和解/调解待履行记录信息", notes = "新增和解/调解待履行记录信息")
+	@SysLog("新增和解/调解待履行记录信息" )
+	@PostMapping("/saveReconciliatioMediation")
+	public R saveReconciliatioMediation(@RequestBody ReconciliatioMediationDTO reconciliatioMediationDTO) {
+		return R.ok(reconciliatioMediationService.saveReconciliatioMediation(reconciliatioMediationDTO));
+	}
+
+	/**
+	 * 和解/调解作废
+	 * @param reconciliatioMediation 和解/调解作废
+	 * @return R
+	 */
+	@ApiOperation(value = "和解/调解作废", notes = "和解/调解作废")
+	@SysLog("和解/调解作废" )
+	@PutMapping("/cancellation")
+	public R cancellation(@RequestBody ReconciliatioMediationLiqui reconciliatioMediation) {
+		return R.ok(reconciliatioMediationService.cancellation(reconciliatioMediation));
+	}
 
 
     /**

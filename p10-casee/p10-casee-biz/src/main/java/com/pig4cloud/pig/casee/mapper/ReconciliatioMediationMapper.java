@@ -34,7 +34,5 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface ReconciliatioMediationMapper extends BaseMapper<ReconciliatioMediation> {
-	IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, @Param("query") ReconciliatioMediationDTO reconciliatioMediationDTO);
 
-	ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId);
 }

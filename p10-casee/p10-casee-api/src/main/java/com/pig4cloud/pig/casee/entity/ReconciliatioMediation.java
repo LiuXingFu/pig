@@ -118,9 +118,9 @@ public class ReconciliatioMediation extends BaseEntity {
 	private Integer isMediation;
 
     /**
-     * 状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行)
+     * 状态(0-待履行  1-不能履行 2-履行完成 3-作废)
      */
-    @ApiModelProperty(value="状态(0-待履行 1-正常履行 2-不能履行 3-推迟履行 4-履行完成)")
+    @ApiModelProperty(value="状态(0-待履行  1-不能履行 2-履行完成 3-作废)")
     private Integer status;
 
     /**

@@ -14,11 +14,9 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import lombok.Data;
 
 /**
  * 和解/调解表
@@ -26,6 +24,7 @@ import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
  * @author Mjh
  * @date 2022-03-01 20:36:17
  */
-public interface ReconciliatioMediationService extends IService<ReconciliatioMediation> {
+@Data
+public class ReconciliatioMediationLiquiDetail{
 
 }
