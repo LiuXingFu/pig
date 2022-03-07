@@ -70,10 +70,4 @@ public class AssetsReLiquiFlowChartPageVO extends AssetsReCasee {
 	@ApiModelProperty(value="财产账号/编号")
 	private String accountNumber;
 
-	/**
-	 * 抵押权人
-	 */
-	@ApiModelProperty(value = "抵押权人")
-	private Integer mortgagee;
-
 }

@@ -110,4 +110,12 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.selectAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryBusinessTransfer(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectBusinessTransfer(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
 }

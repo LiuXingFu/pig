@@ -84,5 +84,15 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 有抵押权轮封未商请移送
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "有抵押权轮封未商请移送", notes = "有抵押权轮封未商请移送")
+	@GetMapping("/queryBusinessTransfer" )
+	public R queryBusinessTransfer(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO));
+	}
 
 }

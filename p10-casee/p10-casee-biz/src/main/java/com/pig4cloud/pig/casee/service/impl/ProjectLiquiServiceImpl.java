@@ -655,6 +655,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountPropertySearchVO countPropertySearch(){
 		CountPropertySearchVO countPropertySearchVO = new CountPropertySearchVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********应查控财产未查控********************************
+		countPropertySearchVO.setShouldCheckControlUnchecked(queryAssetsNotSeizeAndFreeze(null,null));
+
+		//**********有抵押轮封未商移********************************
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
 		return countPropertySearchVO;
 	}
