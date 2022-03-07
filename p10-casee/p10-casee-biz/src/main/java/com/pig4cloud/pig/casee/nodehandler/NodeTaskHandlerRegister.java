@@ -97,7 +97,13 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler;
 
+	@Autowired
 	ENTITYZX_STZX_CCZXPMJG_CCZXPMJG entityzx_stzx_cczxpmjg_cczxpmjg;
+
+	@Autowired
+	limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler;
+
+
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -139,6 +145,7 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_ZXZH_ZXZHSJZJ_ZXZHSJZJ", liqui_zxzh_zxzhsjzj_zxzhsjzj_nodeHandler);
 		submitHandlerMap.put("liQui_ZXZH_ZXZHJACA_ZXZHJACA", liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
+		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
 
 		//财产程序任务提交map实体类
 		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg);

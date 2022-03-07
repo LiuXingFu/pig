@@ -20,28 +20,21 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
+import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
-
 /**
- * 回款详细记录表
+ * 和解/调解表
  *
  * @author Mjh
- * @date 2022-02-17 17:52:51
+ * @date 2022-03-01 20:36:17
  */
 @Mapper
-public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
+public interface ReconciliatioMediationLiquiMapper extends BaseMapper<ReconciliatioMediation> {
+	IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, @Param("query") ReconciliatioMediationDTO reconciliatioMediationDTO);
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecord paymentRecord, @Param("login") InsOutlesDTO insOutlesDTO);
-
-	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
-
-	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, @Param("projectId")String projectId);
-
+	ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId);
 }

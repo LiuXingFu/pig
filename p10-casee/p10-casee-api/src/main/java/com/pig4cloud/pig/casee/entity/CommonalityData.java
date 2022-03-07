@@ -29,4 +29,14 @@ public class CommonalityData {
 	 */
 	private Integer process;
 
+	/**
+	 * 财产id
+	 */
+	private Integer assetsId;
+
+	/**
+	 * 行为id
+	 */
+	private Integer behaviorId;
+
 }

@@ -2,7 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
-import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal_XWWF_XWWFXZCX_XWWFXZCX;
+import com.pig4cloud.pig.casee.entity.project.limitprocedure.Limit_XWXZ_XWXZXZCX_XWXZXZCX;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler extends TaskNodeHandler {
-
+public class limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler extends TaskNodeHandler {
 	@Autowired
 	TaskNodeService taskNodeService;
 	@Autowired
@@ -21,10 +20,9 @@ public class BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler extends TaskNodeHandle
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
-
-		BeIllegal_XWWF_XWWFXZCX_XWWFXZCX beIllegal_xwwf_xwwfxzcx_xwwfxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), BeIllegal_XWWF_XWWFXZCX_XWWFXZCX.class);
+		Limit_XWXZ_XWXZXZCX_XWXZXZCX limit_xwxz_xwxzxzcx_xwxzxzcx = JsonUtils.jsonToPojo(taskNode.getFormData(), Limit_XWXZ_XWXZXZCX_XWXZXZCX.class);
 		BehaviorLiqui behaviorLiqui=new BehaviorLiqui();
-		behaviorLiqui.setBehaviorId(beIllegal_xwwf_xwwfxzcx_xwwfxzcx.getBehaviorId());
+		behaviorLiqui.setBehaviorId(limit_xwxz_xwxzxzcx_xwxzxzcx.getBehaviorId());
 		behaviorLiqui.setBehaviorStatus(2);
 		//修改行为状态
 		behaviorLiquiService.updateById(behaviorLiqui);

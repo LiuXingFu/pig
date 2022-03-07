@@ -116,4 +116,10 @@ public class PaymentRecord extends BaseEntity {
 	 */
 	@ApiModelProperty(value="状态(0-未领款 1-已领款)")
 	private Integer status;
+
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value="备注")
+	private String remark;
 }

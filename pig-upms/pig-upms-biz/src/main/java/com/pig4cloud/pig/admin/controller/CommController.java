@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.admin.controller;
 
-import com.alibaba.nacos.shaded.com.google.gson.Gson;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.PutObjectResult;
@@ -28,6 +27,7 @@ import com.aliyuncs.auth.sts.AssumeRoleResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
+import com.pig4cloud.pig.admin.api.dto.UpdataData;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import io.swagger.annotations.Api;
@@ -39,7 +39,6 @@ import com.pig4cloud.pig.admin.api.config.AliyunConfigProperties;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
@@ -85,8 +84,38 @@ public class CommController {
 		 } finally {
 			 ossClient.shutdown();
 		 }
+	}
 
+	/**
+	 * 上传文件
+	 * 文件名采用uuid,避免原始文件名中带"-"符号导致下载的时候解析出现异常
+	 *
+	 * @param file 资源
+	 * @return R(bucketName, filename)
+	 **/
+	@PostMapping("/pub/formUpload")
+	public R formUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
 
+		String ossendpoint = aliyunConfigProperties.getOssendpoint();
+		String accessKeyId = aliyunConfigProperties.getAccessKeyId();
+		String accessKeySecret = aliyunConfigProperties.getAccessKeySecret();
+
+		OSS ossClient = new OSSClientBuilder().build(ossendpoint, accessKeyId, accessKeySecret);
+		PutObjectResult result = null;
+		try {
+			String fileName = "upload/"+System.currentTimeMillis()+"-"+file.getOriginalFilename();
+			ossClient.putObject(CommonConstants.BUCKET_NAME, fileName, file.getInputStream());
+			String url = "https://"+CommonConstants.BUCKET_NAME+"."+ossendpoint+"/"+fileName;
+			UpdataData updataData=new UpdataData();
+			updataData.setName(fileName);
+			updataData.setUrl(url);
+			return R.ok(updataData);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return R.failed("文件上传异常");
+		} finally {
+			ossClient.shutdown();
+		}
 	}
 
 	/**

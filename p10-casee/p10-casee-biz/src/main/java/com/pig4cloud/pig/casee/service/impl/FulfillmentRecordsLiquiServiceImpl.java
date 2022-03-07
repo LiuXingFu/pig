@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.FulfillmentRecordsDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
 import com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
@@ -29,6 +30,7 @@ import com.pig4cloud.pig.casee.mapper.FulfillmentRecordsLiquiMapper;
 import com.pig4cloud.pig.casee.service.FulfillmentRecordsLiquiService;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.ReconciliatioMediationService;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,9 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 
 	@Autowired
 	ProjectLiquiService projectLiquiService;
+
+	@Autowired
+	private ReconciliatioMediationService reconciliatioMediationService;
 
 
 
@@ -85,8 +90,8 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 
 			for (PaymentRecord record : fulfillmentRecordsDTO.getPaymentRecordList()) {
 				record.setFatherId(paymentRecord.getPaymentRecordId());
-				record.setFundsType(record.getPaymentType());
-				record.setPaymentType(null);
+				record.setPaymentType(300);
+				record.setPaymentDate(paymentRecord.getPaymentDate());
 
 			}
 			//添加回款记录明细
@@ -100,8 +105,11 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 			//修改项目回款金额
 			projectLiquiService.updateById(projectLiqui);
 		}else if (fulfillmentRecordsDTO.getStatus()==2){//不能履行
-
-
+			FulfillmentRecords queryFulfillmentRecords = this.getById(fulfillmentRecordsDTO.getFulfillmentRecordId());
+			ReconciliatioMediation reconciliatioMediation=new ReconciliatioMediation();
+			reconciliatioMediation.setReconciliatioMediationId(queryFulfillmentRecords.getReconciliatioMediationId());
+			reconciliatioMediation.setStatus(1);
+			reconciliatioMediationService.updateById(reconciliatioMediation);
 		}if (fulfillmentRecordsDTO.getStatus()==3){//推迟履行
 			FulfillmentRecords queryFulfillmentRecords = this.getById(fulfillmentRecordsDTO.getFulfillmentRecordId());
 			//新增一条推迟待履行记录信息
