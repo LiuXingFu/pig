@@ -87,7 +87,7 @@ public class ExpenseRecordController {
 	@GetMapping("/getByPaymentType" )
 	public R getByPaymentType(ExpenseRecord expenseRecord) {
 		if (expenseRecord.getCaseeId()!=null){
-			return R.ok(expenseRecordService.list(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCaseeId,expenseRecord.getCaseeId()).eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getStatus,0)));
+			return R.ok(expenseRecordService.list(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).or().eq(ExpenseRecord::getCaseeId,expenseRecord.getCaseeId()).eq(ExpenseRecord::getStatus,0)));
 		}else {
 			return R.ok(expenseRecordService.list(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getStatus,0)));
 		}

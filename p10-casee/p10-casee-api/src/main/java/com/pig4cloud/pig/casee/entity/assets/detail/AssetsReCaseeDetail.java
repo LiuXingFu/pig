@@ -19,7 +19,7 @@ public class AssetsReCaseeDetail {
 	/**
 	 * 资金资产冻结实体
 	 */
-	@ApiModelProperty(value = "资金资产冻结实体")
+	@ApiModelProperty(value = "资金资产冻结")
 	private AssetsFreeze assetsFreeze;
 
 	/**
@@ -28,18 +28,16 @@ public class AssetsReCaseeDetail {
 	@ApiModelProperty(value = "资金财产划扣")
 	private AssetsSnap assetsSnap;
 
-
-
 	/**
 	 * 实体资产查封实体
 	 */
-	@ApiModelProperty(value = "实体资产查封实体")
+	@ApiModelProperty(value = "实体资产查封")
 	private AssetsSeizure assetsSeizure;
 
 	/**
 	 *  实体财产到款实体类
 	 */
-	@ApiModelProperty(value = "实体财产到款实体类")
+	@ApiModelProperty(value = "实体财产到款")
 	private AssetsPayment assetsPayment;
 	/**
 	 *  实体财产成交裁定

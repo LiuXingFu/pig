@@ -72,31 +72,41 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer modifyCaseeStatusById(CaseeModifyDTO caseeModifyDTO){
+	public Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO){
 		Integer modify = 0;
-		CaseeLiqui caseeLiqui = new CaseeLiqui();
-		BeanCopyUtil.copyBean(caseeModifyDTO,caseeLiqui);
-		modify = this.baseMapper.updateById(caseeLiqui);
+		modify = this.baseMapper.updateById(caseeLiquiDTO);
 
 		// 保存案件状态变更记录
 		ProjectStatus projectStatus = new ProjectStatus();
 		projectStatus.setType(2);
-		projectStatus.setSourceId(caseeLiqui.getCaseeId());
-		Integer status = caseeModifyDTO.getStatus();
+		projectStatus.setSourceId(caseeLiquiDTO.getCaseeId());
+		Integer status = caseeLiquiDTO.getStatus();
 		String statusName = null;
 		if(status==2){
 			statusName = "案件撤案";
+			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
 		}else if(status==3){
 			statusName = "案件结案";
+			projectStatus.setChangeTime(caseeLiquiDTO.getCloseTime());
 		}else if(status==4){
 			statusName = "案件终结";
+			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getEnd().getEndDate());
 		}
 		projectStatus.setStatusName(statusName);
 		projectStatus.setType(2);
-		projectStatus.setSourceId(caseeLiqui.getCaseeId());
-		projectStatus.setChangeTime(caseeModifyDTO.getCloseTime());
+		projectStatus.setSourceId(caseeLiquiDTO.getCaseeId());
 		projectStatusService.save(projectStatus);
 		return modify;
+	}
+
+	@Override
+	public Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO) {
+		ProjectModifyStatusDTO projectModifyStatusDTO=new ProjectModifyStatusDTO();
+		projectModifyStatusDTO.setStatus(4000);
+		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
+		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getActualExecution().getClosingDate());
+		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
+		return this.modifyCaseeStatusById(caseeLiquiDTO);
 	}
 
 	@Override
@@ -418,15 +428,15 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public void caseeModify(Integer caseeId, Integer status) {
 		//修改案件状态
-		CaseeModifyDTO caseeModifyDTO = new CaseeModifyDTO();
+		CaseeLiquiDTO caseeLiquiDTO = new CaseeLiquiDTO();
 
-		caseeModifyDTO.setCaseeId(caseeId);
+		caseeLiquiDTO.setCaseeId(caseeId);
 
-		caseeModifyDTO.setStatus(status);
+		caseeLiquiDTO.setStatus(status);
 
-		caseeModifyDTO.setCloseTime(LocalDate.now());
+		caseeLiquiDTO.setCloseTime(LocalDate.now());
 
-		this.modifyCaseeStatusById(caseeModifyDTO);
+		this.modifyCaseeStatusById(caseeLiquiDTO);
 	}
 
 	@Override
@@ -472,5 +482,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectNotAddBehavior(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
+	}
+
+	@Override
+	public 	IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.caseeSubjectNotAddAssets(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
 	}
 }

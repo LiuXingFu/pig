@@ -39,4 +39,10 @@ public class BehaviorLiquiDebtorPageDTO {
 	 */
 	@ApiModelProperty(value="节点KEY")
 	private String nodeKey;
+
+	/**
+	 * 行为类型(100-行为限制 200-行为违法)
+	 */
+	@ApiModelProperty(value="行为类型(100-行为限制 200-行为违法)")
+	private Integer type;
 }

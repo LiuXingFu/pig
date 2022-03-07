@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -264,14 +265,26 @@ public class CaseeLiquiController {
 
 	/**
 	 * 修改案件状态
-	 * @param caseeModifyDTO
+	 * @param caseeLiquiDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "修改案件状态", notes = "修改案件状态")
 	@SysLog("修改案件状态" )
-	@PutMapping("/modifyCaseeStatusById")
-	public R modifyCaseeStatusById(@RequestBody CaseeModifyDTO caseeModifyDTO) {
-		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeModifyDTO));
+	@PostMapping("/modifyCaseeStatusById")
+	public R modifyCaseeStatusById(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiDTO));
+	}
+
+	/**
+	 * 案件实际执结
+	 * @param caseeLiquiDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "案件实际执结", notes = "案件实际执结")
+	@SysLog("案件实际执结" )
+	@PostMapping("/actualExecution")
+	public R actualExecution(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
+		return R.ok(this.caseeLiquiService.actualExecution(caseeLiquiDTO));
 	}
 
 	/**
@@ -310,4 +323,15 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询案件债务人未添加财产
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询案件债务人未添加财产", notes = "分页查询案件债务人未添加财产")
+	@GetMapping("/caseeSubjectNotAddAssets")
+	public R caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.caseeSubjectNotAddAssets(page,caseeLiquiFlowChartPageDTO));
+	}
 }

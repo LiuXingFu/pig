@@ -65,4 +65,12 @@ public class BehaviorLiquiServiceImpl extends ServiceImpl<BehaviorLiquiMapper, B
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectDebtorPage(page,behaviorLiquiDebtorPageDTO,insOutlesDTO);
 	}
+
+	@Override
+	public IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.behaviorPaymentCompleted(page,behaviorLiquiDebtorPageDTO,insOutlesDTO);
+	}
 }

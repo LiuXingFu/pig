@@ -107,8 +107,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 更新案件状态
 	 * @return
 	 */
-	Integer modifyCaseeStatusById(CaseeModifyDTO caseeModifyDTO);
+	Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO);
 
+	Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO);
 	/**
 	 * 分页查询清收案件
 	 * @param page
@@ -201,5 +202,13 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
+
+	/**
+	 * 案件债务人未添加财产
+	 * @param page
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
 }

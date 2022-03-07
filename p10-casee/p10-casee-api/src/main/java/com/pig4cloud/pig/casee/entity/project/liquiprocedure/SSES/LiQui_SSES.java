@@ -31,14 +31,4 @@ public class LiQui_SSES extends CommonalityData implements Serializable {
 	 */
 	LiQui_SSES_SSESCPWSZZSDQK liQui_SSES_SSESCPWSZZSDQK = new LiQui_SSES_SSESCPWSZZSDQK();
 
-	/**
-	 * 诉讼阶段二审结案/撤案
-	 */
-	LiQui_SSES_SSESJACA liQui_SSES_SSESJACA = new LiQui_SSES_SSESJACA();
-
-	/**
-	 * 诉讼阶段二审结案/撤案送达情况
-	 */
-	LiQui_SSES_SSESJACASDQK liQui_SSES_SSESJACASDQK = new LiQui_SSES_SSESJACASDQK();
-
 }

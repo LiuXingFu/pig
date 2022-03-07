@@ -42,4 +42,6 @@ import java.util.List;
 public interface BehaviorLiquiMapper extends BaseMapper<Behavior> {
 
 	IPage<CaseeLiquiDebtorPageVO> selectDebtorPage(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }

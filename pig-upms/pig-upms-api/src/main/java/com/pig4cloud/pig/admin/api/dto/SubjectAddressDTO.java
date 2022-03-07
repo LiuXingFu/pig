@@ -92,9 +92,19 @@ public class SubjectAddressDTO {
 	private String employer;
 
 	/**
-	 * 债务类型(1-贷款人 2-担保人)
+	 * 债务类型(1-借款人，2-共同借款人，3-担保人)
 	 */
 	private Integer debtType;
+
+	/**
+	 * 性别（1-男，2-女）默认值0-不详
+	 */
+	private Integer gender;
+
+	/**
+	 * 民族
+	 */
+	private String ethnic;
 
 	//债务人联系地址
 	List<Address> addressList;

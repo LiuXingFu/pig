@@ -10,7 +10,6 @@ import com.pig4cloud.pig.casee.entity.PfzxTask;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
-import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESJACASDQK_SSESJACASDQK;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESTSXX_SSESTSXX;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
@@ -76,9 +75,9 @@ public class TaskNodeServiceTest<T> {
 
 		System.out.println("liQui_sses_ssestsxx_ssestsxx----------------"+liQui_sses_ssestsxx_ssestsxx);
 
-		LiQui_SSES_SSESJACASDQK_SSESJACASDQK liQui_sses_ssesjacasdqk_ssesjacasdqk = JsonUtils.jsonToPojo(formDate, LiQui_SSES_SSESJACASDQK_SSESJACASDQK.class);
-
-		System.out.println("liQui_sses_ssesjacasdqk_ssesjacasdqk----------------"+liQui_sses_ssesjacasdqk_ssesjacasdqk);
+//		LiQui_SSES_SSESJACASDQK_SSESJACASDQk liQui_sses_ssesjacasdqk_ssesjacasdqk = JsonUtils.jsonToPojo(formDate, LiQui_SSES_SSESJACASDQK_SSESJACASDQK.class);
+//
+//		System.out.println("liQui_sses_ssesjacasdqk_ssesjacasdqk----------------"+liQui_sses_ssesjacasdqk_ssesjacasdqk);
 
 
 	}

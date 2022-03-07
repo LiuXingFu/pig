@@ -20,11 +20,6 @@ public class CountDebtorVO {
 	private Long limitNotService;
 
 	/**
-	 * 行为违法未提交
-	 */
-	private Long actIllegalNotSubmitted;
-
-	/**
 	 * 制裁申请未实施
 	 */
 	private Long sanctionApplyNotImplemented;

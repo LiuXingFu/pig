@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
+import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,10 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord){
 		return this.baseMapper.sumCourtPayment(paymentRecord);
+	}
+
+	@Override
+	public IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId) {
+		return this.baseMapper.getCourtPaymentPage(page,projectId);
 	}
 }

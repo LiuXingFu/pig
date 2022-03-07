@@ -44,52 +44,19 @@ public class NodeTaskHandlerRegister {
 	LIQUI_SQ_SQBQJG_SQBQJG_NODEHandler liqui_sq_sqbqjg_sqbqjg_nodeHandler;
 
 	@Autowired
-	LIQUI_SQ_SQAJCA_SQAJCA_NODEHandler liqui_sq_sqajca_sqajca_nodeHandler;
-
-	@Autowired
 	LIQUI_SSYS_SSYSCPJG_SSYSCPJG_NODEHandler liqui_ssys_ssyscpjg_ssyscpjg_nodeHandler;
-
-	@Autowired
-	LIQUI_SSYS_SSYSJACA_SSYSJACA_NODEHandler liqui_ssys_ssysjaca_ssysjaca_nodeHandler;
 
 	@Autowired
 	LIQUI_SSBQ_SSBQBQJG_SSBQBQJG_NODEHandler liqui_ssbq_ssbqbqjg_ssbqbqjg_nodeHandler;
 
 	@Autowired
-	LIQUI_SSBQ_SSBQCA_SSBQCA_NODEHandler liqui_ssbq_ssbqca_ssbqca_nodeHandler;
-
-	@Autowired
 	LIQUI_SSES_SSESCPJG_SSESCPJG_NODEHandler liqui_sses_ssescpjg_ssescpjg_nodeHandler;
-
-	@Autowired
-	LIQUI_SSES_SSESJACA_SSESJACA_NODEHandler liqui_sses_ssesjaca_ssesjaca_nodeHandler;
 
 	@Autowired
 	LIQUI_SSQT_SSQTCPJG_SSQTCPJG_NODEHandler liqui_ssqt_ssqtcpjg_ssqtcpjg_nodeHandler;
 
 	@Autowired
-	LIQUI_SSQT_SSQTJACA_SSQTJACA_NODEHandler liqui_ssqt_ssqtjaca_ssqtjaca_nodeHandler;
-
-	@Autowired
 	LIQUI_LX_LXSCZXLA_LXSCZXLA_NODEHandler liqui_lx_lxsczxla_lxsczxla_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXSZ_ZXSZZJ_ZXSZZJ_NODEHandler liqui_zxsz_zxszzj_zxszzj_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXSZ_ZXSZSJZJ_ZXSZSJZJ_NODEHandler liqui_zxsz_zxszsjzj_zxszsjzj_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXSZ_ZXSZJACA_ZXSZJACA_NODEHandler liqui_zxsz_zxszjaca_zxszjaca_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXZH_ZXZHZJ_ZXZHZJ_NODEHandler liqui_zxzh_zxzhzj_zxzhzj_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXZH_ZXZHSJZJ_ZXZHSJZJ_NODEHandler liqui_zxzh_zxzhsjzj_zxzhsjzj_nodeHandler;
-
-	@Autowired
-	LIQUI_ZXZH_ZXZHJACA_ZXZHJACA_NODEHandler liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler;
 
 	@Autowired
 	BEILLEGAL_XWWF_XWWFXZCX_XWWFXZCX_NODEHandler beillegal_xwwf_xwwfxzcx_xwwfxzcx_nodeHandler;
@@ -97,7 +64,13 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler;
 
+	@Autowired
 	ENTITYZX_STZX_CCZXPMJG_CCZXPMJG entityzx_stzx_cczxpmjg_cczxpmjg;
+
+	@Autowired
+	limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler;
+
+
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -121,24 +94,13 @@ public class NodeTaskHandlerRegister {
 
 		//清收任务阶段提交map实现类
 		submitHandlerMap.put("liQui_SQ_SQBQJG_SQBQJG", liqui_sq_sqbqjg_sqbqjg_nodeHandler);
-		submitHandlerMap.put("liQui_SQ_SQAJCA_SQAJCA", liqui_sq_sqajca_sqajca_nodeHandler);
-
 		submitHandlerMap.put("liQui_SSYS_SSYSCPJG_SSYSCPJG", liqui_ssys_ssyscpjg_ssyscpjg_nodeHandler);
-		submitHandlerMap.put("liQui_SSYS_SSYSJACA_SSYSJACA", liqui_ssys_ssysjaca_ssysjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSBQ_SSBQBQJG_SSBQBQJG", liqui_ssbq_ssbqbqjg_ssbqbqjg_nodeHandler);
-		submitHandlerMap.put("liQui_SSBQ_SSBQCA_SSBQCA", liqui_ssbq_ssbqca_ssbqca_nodeHandler);
 		submitHandlerMap.put("liQui_SSES_SSESCPJG_SSESCPJG", liqui_sses_ssescpjg_ssescpjg_nodeHandler);
-		submitHandlerMap.put("liQui_SSES_SSESJACA_SSESJACA", liqui_sses_ssesjaca_ssesjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSQT_SSQTCPJG_SSQTCPJG", liqui_ssqt_ssqtcpjg_ssqtcpjg_nodeHandler);
-		submitHandlerMap.put("liQui_SSQT_SSQTJACA_SSQTJACA", liqui_ssqt_ssqtjaca_ssqtjaca_nodeHandler);
 		submitHandlerMap.put("liQui_LX_LXSCZXLA_LXSCZXLA", liqui_lx_lxsczxla_lxsczxla_nodeHandler);
-		submitHandlerMap.put("liQui_ZXSZ_ZXSZZJ_ZXSZZJ", liqui_zxsz_zxszzj_zxszzj_nodeHandler);
-		submitHandlerMap.put("liQui_ZXSZ_ZXSZSJZJ_ZXSZSJZJ", liqui_zxsz_zxszsjzj_zxszsjzj_nodeHandler);
-		submitHandlerMap.put("liQui_ZXSZ_ZXSZJACA_ZXSZJACA", liqui_zxsz_zxszjaca_zxszjaca_nodeHandler);
-		submitHandlerMap.put("liQui_ZXZH_ZXZHZJ_ZXZHZJ", liqui_zxzh_zxzhzj_zxzhzj_nodeHandler);
-		submitHandlerMap.put("liQui_ZXZH_ZXZHSJZJ_ZXZHSJZJ", liqui_zxzh_zxzhsjzj_zxzhsjzj_nodeHandler);
-		submitHandlerMap.put("liQui_ZXZH_ZXZHJACA_ZXZHJACA", liqui_zxzh_zxzhjaca_zxzhjaca_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
+		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
 
 		//财产程序任务提交map实体类
 		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg);

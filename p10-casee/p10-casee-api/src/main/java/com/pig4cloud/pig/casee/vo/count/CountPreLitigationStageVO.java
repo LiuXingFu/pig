@@ -36,6 +36,6 @@ public class CountPreLitigationStageVO {
 	/**
 	 * 结案未送达统计
 	 */
-	private Long CloseCaseeDeliveredCount;
+	private Long closeCaseeDeliveredCount;
 
 }

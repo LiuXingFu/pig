@@ -21,16 +21,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
-import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 
 /**
@@ -101,16 +97,7 @@ public class PaymentRecordController {
 	@ApiOperation(value = "查询法院到款记录以及到款总额", notes = "查询法院到款记录以及到款总额")
 	@GetMapping("/getCourtPaymentPage" )
 	public R getCourtPaymentPage(Page page,String projectId) {
-		Page paymentRecordPage = paymentRecordService.page(page, new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getProjectId, projectId).like(PaymentRecord::getFundsType, "%200").eq(PaymentRecord::getPaymentType, 200));
-		//法院到款总额
-		BigDecimal courtPayment=new BigDecimal(0);
-		for (PaymentRecord paymentRecord : (List<PaymentRecord>)paymentRecordPage.getRecords()) {
-			courtPayment=courtPayment.add(paymentRecord.getPaymentAmount());
-		}
-		PaymentRecordCourtPaymentVO paymentRecordCourtPaymentVO=new PaymentRecordCourtPaymentVO();
-		paymentRecordCourtPaymentVO.setCourtPayment(courtPayment);
-		paymentRecordCourtPaymentVO.setPaymentRecordPage(paymentRecordPage);
-		return R.ok(paymentRecordCourtPaymentVO);
+		return R.ok(paymentRecordService.getCourtPaymentPage(page, projectId));
 	}
 
 	/**

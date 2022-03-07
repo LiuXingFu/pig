@@ -16,25 +16,24 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
-import com.pig4cloud.pig.casee.dto.TargetAddDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
-import com.pig4cloud.pig.casee.mapper.AssetsReCaseeMapper;
-import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
+import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -44,7 +43,7 @@ import java.util.Objects;
  * @date 2022-01-19 15:19:24
  */
 @Service
-public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, AssetsRe> implements AssetsReCaseeService {
+public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReLiquiMapper, AssetsRe> implements AssetsReLiquiService {
 
 	@Autowired
 	AssetsService assetsService;
@@ -52,6 +51,8 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private TargetService targetService;
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	@Transactional
@@ -99,6 +100,22 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, A
 	@Override
 	public AssetsReCasee getAssetsReCasee(AssetsRe assetsRe) {
 		return this.baseMapper.getAssetsReCasee(assetsRe);
+	}
+
+	@Override
+	public IPage<AssetsReLiquiFlowChartPageVO> queryAssetsNotSeizeAndFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryBusinessTransfer(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectBusinessTransfer(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
 }

@@ -1,13 +1,8 @@
 package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.CaseeSubjectRe;
-import com.pig4cloud.pig.casee.entity.detail.CaseeOtherDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class CaseeModifyDTO {
