@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @DAY_NAME_SHORT: 周五
  */
 @Component
-public class LIQUI_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK extends TaskNodeHandler {
+public class LIQUI_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK_NODEHandler extends TaskNodeHandler {
 
 	@Autowired
 	TaskNodeService taskNodeService;
@@ -30,10 +30,13 @@ public class LIQUI_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK extends TaskNodeHandler {
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
 
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
-		LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK liQui_sses_ssescpwszzsdqk_ssescpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK.class);
-
-		taskNodeService.updateFinalReceiptTime(taskNode, liQui_sses_ssescpwszzsdqk_ssescpwszzsdqk.getReceiptRecordList());
+		//如果任务为不审核更新最终送达时间
+		if (taskNode.getNeedAudit().equals(Integer.valueOf("0"))) {
+			LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK liQui_sses_ssescpwszzsdqk_ssescpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK.class);
+			taskNodeService.updateFinalReceiptTime(taskNode, liQui_sses_ssescpwszzsdqk_ssescpwszzsdqk.getReceiptRecordList());
+		}
 	}
 }

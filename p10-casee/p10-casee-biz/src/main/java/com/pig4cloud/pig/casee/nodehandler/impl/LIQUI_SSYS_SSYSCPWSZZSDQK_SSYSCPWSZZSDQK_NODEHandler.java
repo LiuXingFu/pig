@@ -38,11 +38,13 @@ public class LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler extends TaskNo
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
-		LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK.class);
-
-		taskNodeService.updateFinalReceiptTime(taskNode, liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk.getReceiptRecordList());
-
+		//如果任务为不审核更新最终送达时间
+		if (taskNode.getNeedAudit().equals(Integer.valueOf("0"))) {
+			LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK.class);
+			taskNodeService.updateFinalReceiptTime(taskNode, liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk.getReceiptRecordList());
+		}
 	}
 }

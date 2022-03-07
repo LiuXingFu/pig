@@ -1567,6 +1567,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//更新程序表json
 			AuditTargetDTO auditTargetDTO = this.getAuditTargetDTO(taskNode);
 
+
 			this.updateBusinessData(auditTargetDTO);
 			//判断如果财产或行为将他们存入json字段中
 			if (target.getGoalType().equals(Integer.valueOf("20001"))) {
@@ -1726,31 +1727,29 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * @param receiptRecordList
 	 */
 	public void updateFinalReceiptTime(TaskNode taskNode, List<ReceiptRecord> receiptRecordList) {
-		if (taskNode.getNeedAudit() == 0) {
 
-			Date date = new Date();
+		Date date = new Date();
 
-			for (int i = 0; i < receiptRecordList.size(); i++) {
-				if (i == 0) {
+		for (int i = 0; i < receiptRecordList.size(); i++) {
+			if (i == 0) {
+				date = receiptRecordList.get(i).getFinalReceiptTime();
+			} else {
+				if (receiptRecordList.get(i).getFinalReceiptTime().compareTo(date) > 0) {
 					date = receiptRecordList.get(i).getFinalReceiptTime();
-				} else {
-					if (receiptRecordList.get(i).getFinalReceiptTime().compareTo(date) > 0) {
-						date = receiptRecordList.get(i).getFinalReceiptTime();
-					}
 				}
 			}
-
-			CaseeLiqui caseeLiqui = new CaseeLiqui();
-
-			CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
-
-			caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-
-			caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
-			caseeLiqui.setCaseeId(taskNode.getCaseeId());
-
-			caseeLiquiService.updateById(caseeLiqui);
 		}
+
+		CaseeLiqui caseeLiqui = new CaseeLiqui();
+
+		CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
+
+		caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+		caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
+		caseeLiqui.setCaseeId(taskNode.getCaseeId());
+
+		caseeLiquiService.updateById(caseeLiqui);
 	}
 
 	public void updateTwoTargetProcessJson(TaskNode taskNode, TaskNode twoLevelParentTaskNode) {

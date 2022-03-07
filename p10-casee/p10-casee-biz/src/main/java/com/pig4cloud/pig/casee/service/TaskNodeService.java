@@ -364,13 +364,14 @@ public interface TaskNodeService extends IService<TaskNode> {
 	void setNodeTaskMakeUpProcess(TaskNode taskNode);
 
 	/**
-	 * 任务数据提交
+	 * 任务数据提交 保存程序、财产和行为
 	 * @param taskNode
 	 */
 	void setTaskDataSubmission(TaskNode taskNode);
 
 	/**
 	 * 更新最终送达时间
+	 *
 	 * @param taskNode
 	 * @param receiptRecordList
 	 */

@@ -410,6 +410,25 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		this.updateBatchById(caseeLiquis);
 	}
 
+	/**
+	 * 更改案件状态为撤案、结案与终极
+	 * @param caseeId
+	 * @param status
+	 */
+	@Override
+	public void caseeModify(Integer caseeId, Integer status) {
+		//修改案件状态
+		CaseeModifyDTO caseeModifyDTO = new CaseeModifyDTO();
+
+		caseeModifyDTO.setCaseeId(caseeId);
+
+		caseeModifyDTO.setStatus(status);
+
+		caseeModifyDTO.setCloseTime(LocalDate.now());
+
+		this.modifyCaseeStatusById(caseeModifyDTO);
+	}
+
 	@Override
 	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
 		QueryWrapper<DeadlineConfigure> queryWrapper = new QueryWrapper<>();
