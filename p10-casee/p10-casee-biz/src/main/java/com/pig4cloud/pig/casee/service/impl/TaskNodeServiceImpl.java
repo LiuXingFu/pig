@@ -98,7 +98,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Autowired
 	private AssetsService assetsService;
 	@Autowired
-	private AssetsReCaseeService assetsReCaseeService;
+	private AssetsReLiquiService assetsReCaseeService;
 	@Autowired
 	private BehaviorService BehaviorLiquiService;
 	@Autowired

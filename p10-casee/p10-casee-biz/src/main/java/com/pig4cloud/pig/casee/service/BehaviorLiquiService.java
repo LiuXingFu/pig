@@ -42,4 +42,12 @@ public interface BehaviorLiquiService extends IService<Behavior> {
 	 * @return
 	 */
 	IPage<CaseeLiquiDebtorPageVO> queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
+
+	/**
+	 * 已结清限制未撤销
+	 * @param page
+	 * @param behaviorLiquiDebtorPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
 }

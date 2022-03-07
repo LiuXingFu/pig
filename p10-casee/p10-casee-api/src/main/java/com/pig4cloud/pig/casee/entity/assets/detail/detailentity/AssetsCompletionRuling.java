@@ -21,7 +21,7 @@ public class AssetsCompletionRuling extends CommonalityData implements Serializa
 	/**
 	 * 裁定日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date dateOfAdjudication;
 
 	/**

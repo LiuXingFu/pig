@@ -15,13 +15,13 @@ public class AssetsFreeze extends CommonalityData implements Serializable {
 	/**
 	 * 冻结时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date freezeTime;
 
 	/**
 	 * 冻结到期日
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date freezeExpirationDate;
 
 	/**

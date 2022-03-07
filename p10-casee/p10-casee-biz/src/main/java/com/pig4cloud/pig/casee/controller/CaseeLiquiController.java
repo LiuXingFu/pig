@@ -310,4 +310,15 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询案件债务人未添加财产
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询案件债务人未添加财产", notes = "分页查询案件债务人未添加财产")
+	@GetMapping("/caseeSubjectNotAddAssets")
+	public R caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.caseeSubjectNotAddAssets(page,caseeLiquiFlowChartPageDTO));
+	}
 }

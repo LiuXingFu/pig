@@ -17,10 +17,14 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
+import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 
 /**
  * 财产关联表
@@ -28,7 +32,7 @@ import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
  * @author ligt
  * @date 2022-01-19 15:19:24
  */
-public interface AssetsReCaseeService extends IService<AssetsRe> {
+public interface AssetsReLiquiService extends IService<AssetsRe> {
 
 	/**
 	 * 添加案件财产
@@ -43,6 +47,14 @@ public interface AssetsReCaseeService extends IService<AssetsRe> {
 	 * @return
 	 */
 	AssetsReCasee getAssetsReCasee(AssetsRe assetsRe);
+
+	/**
+	 * 分页查询案件财产查封冻结情况
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryAssetsNotSeizeAndFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
 
 }

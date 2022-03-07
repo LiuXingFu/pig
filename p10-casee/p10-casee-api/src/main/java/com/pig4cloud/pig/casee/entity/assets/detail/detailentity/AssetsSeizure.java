@@ -16,13 +16,13 @@ public class AssetsSeizure extends CommonalityData implements Serializable {
 	/**
 	 * 查封日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date sealUpTime;
 
 	/**
 	 * 查封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date seizureExpiryDate;
 
 	/**
@@ -38,7 +38,7 @@ public class AssetsSeizure extends CommonalityData implements Serializable {
 	/**
 	 * 首封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date firstCoverDueDate;
 
 	/**
