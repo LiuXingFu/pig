@@ -252,4 +252,25 @@ public class ProjectLiquiController {
 	public R countAuctionProperty() {
 		return R.ok(projectLiquiService.countAuctionProperty());
 	}
+
+	/**
+	 * 首页项目、事项统计接口
+	 * @return
+	 */
+	@ApiOperation(value = "首页项目、事项统计接口", notes = "首页项目、事项统计接口")
+	@GetMapping("/countProjectMatters" )
+	public R countProjectMatters() {
+		return R.ok(projectLiquiService.countProjectMatters());
+	}
+
+	/**
+	 * 今年比较去年相关数量如：项目、回款额、案件数和财产数
+	 * @return
+	 */
+	@ApiOperation(value = "今年比较去年相关数量如：项目、回款额、案件数和财产数", notes = "今年比较去年相关数量如：项目、回款额、案件数和财产数")
+	@GetMapping("/countCompareQuantity" )
+	public R countCompareQuantity() {
+		return R.ok(projectLiquiService.countCompareQuantity());
+	}
+
 }

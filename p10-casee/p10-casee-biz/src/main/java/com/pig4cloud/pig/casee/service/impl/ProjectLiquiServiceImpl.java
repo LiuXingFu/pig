@@ -339,15 +339,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountProjectStatisticsVO countProject(){
 		CountProjectStatisticsVO projectStatisticsVO = new CountProjectStatisticsVO();
+
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
-		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
-		transferRecordDTO.setTransferType(0);
-		transferRecordDTO.setStatus(0);
 
 		//**********待接收统计********************************
-		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
+		IPage<TransferRecordBankLoanVO> transferRecordPage = this.getTransferRecordPage(page);
 		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
 
 
@@ -356,6 +354,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectStatisticsVO.setNotProcessedCount(pageVOIPage.getTotal());
 
 		return projectStatisticsVO;
+	}
+
+	/**
+	 * 查询待接收分页集合数据
+	 * @param page
+	 * @return
+	 */
+	private IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page) {
+		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
+		transferRecordDTO.setTransferType(0);
+		transferRecordDTO.setStatus(0);
+
+		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
+		return transferRecordPage;
 	}
 
 	public Long queryCaseNodePage(String nodeKey,Integer caseeType){
@@ -608,6 +620,57 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		CountAuctionPropertyVO countAuctionPropertyVO = new CountAuctionPropertyVO();
 
 		return countAuctionPropertyVO;
+	}
+
+	/**
+	 * 首页项目、事项统计接口
+	 * @return
+	 */
+	@Override
+	public CountProjectMattersVO countProjectMatters() {
+		CountProjectMattersVO countProjectMattersVO = new CountProjectMattersVO();
+
+		Page page = new Page();
+		page.setSize(1);
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//查询项目待接收
+		IPage<TransferRecordBankLoanVO> transferRecordPage = getTransferRecordPage(page);
+
+		countProjectMattersVO.setPendingCount(transferRecordPage.getTotal());
+
+		//查询项目在办
+		ProjectLiquiPageDTO projectInProgress = new ProjectLiquiPageDTO();
+
+		projectInProgress.setStatus(1000);
+
+		IPage<ProjectLiquiPageVO> projectInProgressIPage = this.queryPageLiqui(page, projectInProgress);
+
+		 countProjectMattersVO.setProjectInProgressCount(projectInProgressIPage.getTotal());
+
+		 //查询项目暂缓
+
+		ProjectLiquiPageDTO projectSuspend = new ProjectLiquiPageDTO();
+
+		projectSuspend.setStatus(2000);
+
+		IPage<ProjectLiquiPageVO> projectSuspendIPage = this.queryPageLiqui(page, projectSuspend);
+
+		countProjectMattersVO.setProjectSuspendCount(projectSuspendIPage.getTotal());
+
+		return countProjectMattersVO;
+	}
+
+	@Override
+	public CountCompareQuantityVO countCompareQuantity() {
+		CountCompareQuantityVO countCompareQuantityVO = new CountCompareQuantityVO();
+
+		countCompareQuantityVO.setCompareTheNumberOfItemsCount(this.baseMapper.queryCompareTheNumberOfItemsCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+
+		countCompareQuantityVO.setCompareMoneyBackAmountCount(this.baseMapper.queryCompareMoneyBackAmountCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+
+		return null;
 	}
 
 

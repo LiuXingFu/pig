@@ -54,4 +54,8 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	IPage<ProjectLiquiPageVO> selectNotProcessedPage(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
 
 	List<SubjectAssetsBehaviorListVO> selectAssetsBehavior(@Param("projectId") Integer projectId,@Param("caseePersonnelType") Integer caseePersonnelType);
+
+	Long queryCompareTheNumberOfItemsCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	Long queryCompareMoneyBackAmountCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

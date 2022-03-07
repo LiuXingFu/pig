@@ -87,6 +87,9 @@ public interface ProjectLiquiService extends IService<Project> {
 	// 可处置财产统计接口
 	CountAuctionPropertyVO countAuctionProperty();
 
+	//首页项目、事项统计接口
+	CountProjectMattersVO countProjectMatters();
 
-
+	//年比较去年相关数量如：项目、回款额、案件数和财产数
+	CountCompareQuantityVO countCompareQuantity();
 }

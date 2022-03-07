@@ -24,7 +24,7 @@
 <mapper namespace="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper">
 
 	<resultMap id="queryPageProjectLiquiMap" type="com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO">
-		<id  property="projectId" column="project_id"></id>
+		<id property="projectId" column="project_id"></id>
 		<result property="createTime" column="create_time"/>
 		<result property="createBy" column="create_by"/>
 		<result property="updateTime" column="update_time"/>
@@ -46,15 +46,20 @@
 		<result property="subjectPersons" column="subject_persons"></result>
 		<result property="projectDetail" column="project_detail"></result>
 		<result property="describes" column="describes"></result>
-		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO" select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.getBehaviorByProjectId" column="project_id">
+		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO"
+					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.getBehaviorByProjectId" column="project_id">
 
 		</collection>
 	</resultMap>
 
 	<select id="selectPageLiqui" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO">
-		select p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as handoverAmount,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as litigation,p10_bank_loan.mortgage_situation from p10_project
-		left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id and p10_transfer_record.del_flag = 0 and p10_transfer_record.transfer_type = 0 and p10_transfer_record.status = 1
-		left join p10_bank_loan on p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and p10_transfer_record.transfer_type = 0
+		select p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as
+		handoverAmount,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as
+		litigation,p10_bank_loan.mortgage_situation from p10_project
+		left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id and
+		p10_transfer_record.del_flag = 0 and p10_transfer_record.transfer_type = 0 and p10_transfer_record.status = 1
+		left join p10_bank_loan on p10_bank_loan.bank_loan_id = p10_transfer_record.source_id and
+		p10_transfer_record.transfer_type = 0
 		where p10_project.del_flag = 0 and p10_project.project_type = 100
 		<if test="query.status != null and query.status >= 0">
 			and p10_project.status = #{query.status}
@@ -66,16 +71,16 @@
 			and p10_project.outles_id = #{login.outlesId}
 		</if>
 		<if test="query.proposersNames != null and query.proposersNames != ''">
-			and  p10_project.proposers_names like concat('%', #{query.proposersNames}, '%')
+			and p10_project.proposers_names like concat('%', #{query.proposersNames}, '%')
 		</if>
 		<if test="query.subjectPersons != null and query.subjectPersons != ''">
-			and  p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
+			and p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
 		</if>
 		<if test="query.userNickName != null and query.userNickName != ''">
-			and  p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
+			and p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
 		</if>
 		<if test="query.companyCode != null and query.companyCode != ''">
-			and  p10_project.company_code like concat('%', #{query.companyCode}, '%')
+			and p10_project.company_code like concat('%', #{query.companyCode}, '%')
 		</if>
 		<if test="query.beginDate != null and query.endDate != null  ">
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
@@ -131,13 +136,13 @@
 			and p10_project.outles_id = #{login.outlesId}
 		</if>
 		<if test="query.subjectPersons != null and query.subjectPersons != ''">
-			and  p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
+			and p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
 		</if>
 		<if test="query.userNickName != null and query.userNickName != ''">
-			and  p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
+			and p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
 		</if>
 		<if test="query.companyCode != null and query.companyCode != ''">
-			and  p10_project.company_code like concat('%', #{query.companyCode}, '%')
+			and p10_project.company_code like concat('%', #{query.companyCode}, '%')
 		</if>
 		<if test="query.beginDate != null and query.endDate != null  ">
 			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
@@ -149,9 +154,11 @@
 		<id property="subjectId" column="subject_id"/>
 		<result property="name" column="name"/>
 		<result property="projectId" column="project_id"/>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO" column="{subjectId=subject_id,projectId=project_id}"
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO"
+					column="{subjectId=subject_id,projectId=project_id}"
 					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
-		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior" column="{subjectId=subject_id,projectId=project_id}"
+		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior"
+					column="{subjectId=subject_id,projectId=project_id}"
 					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
 	</resultMap>
 
@@ -166,6 +173,51 @@
 		<if test="caseePersonnelType != null and caseePersonnelType != ''">
 			and p10_casee_subject_re.casee_personnel_type = #{caseePersonnelType}
 		</if>
+	</select>
+
+	<select id="queryCompareTheNumberOfItemsCount" resultType="java.lang.Long">
+		SELECT
+			(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
+		FROM
+			p10_project
+		WHERE
+			del_flag = 0
+			and ( YEAR ( take_time )= YEAR ( NOW()) OR YEAR ( take_time )= YEAR ( NOW())- 1 )
+			<if test="insId != null and insId != 0">
+				and ins_id = #{insId}
+			</if>
+			<if test="outlesId != null and outlesId != 0">
+				and outles_id = #{outlesId}
+			</if>
+	</select>
+
+	<select id="queryCompareMoneyBackAmountCount">
+		SELECT (
+		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS thisYear
+ 		FROM
+ 		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and p10_project.del_flag = 0
+ 		WHERE
+ 		p10_payment_record.del_flag = 0
+		<if test="insId != null and insId != 0">
+			and p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and p10_project.outles_id = #{outlesId}
+		</if>
+ 		and YEAR ( p10_payment_record.payment_date )= YEAR (NOW()))
+		-
+ 		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS lastYear
+		FROM
+		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and p10_project.del_flag = 0
+		WHERE
+		p10_payment_record.del_flag = 0
+		<if test="insId != null and insId != 0">
+			and p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and p10_project.outles_id = #{outlesId}
+		</if>
+		and YEAR ( p10_payment_record.payment_date )= YEAR (NOW())- 1 ))
 	</select>
 
 </mapper>
