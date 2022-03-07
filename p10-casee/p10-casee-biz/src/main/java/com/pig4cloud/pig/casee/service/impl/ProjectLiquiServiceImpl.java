@@ -84,7 +84,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private SecurityUtilsService securityUtilsService;
 
 	@Autowired
-	private AssetsReCaseeService assetsReCaseeService;
+	private AssetsReLiquiService assetsReCaseeService;
 
 	@Autowired
 	private AssetsBankLoanReMapper assetsBankLoanReMapper;

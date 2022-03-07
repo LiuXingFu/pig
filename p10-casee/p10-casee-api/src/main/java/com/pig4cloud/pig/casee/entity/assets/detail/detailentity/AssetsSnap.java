@@ -21,7 +21,7 @@ public class AssetsSnap extends CommonalityData implements Serializable {
 	/**
 	 * 划扣时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date deductionTime;
 
 	/**

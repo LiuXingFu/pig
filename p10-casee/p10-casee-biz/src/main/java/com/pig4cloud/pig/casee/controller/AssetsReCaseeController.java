@@ -18,15 +18,16 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
+import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.service.AssetsReCaseeService;
+import com.pig4cloud.pig.casee.service.AssetsReLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "assetsReCasee", tags = "财产关联表管理")
 public class AssetsReCaseeController {
 
-    private final AssetsReCaseeService assetsReCaseeService;
+    private final AssetsReLiquiService assetsReCaseeService;
 
 	/**
 	 * 添加案件财产
@@ -70,6 +71,17 @@ public class AssetsReCaseeController {
 		queryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
 		queryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
 		return R.ok(assetsReCaseeService.getOne(queryWrapper));
+	}
+
+	/**
+	 * 分页查询案件财产查封冻结情况
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "分页查询案件财产查封冻结情况", notes = "分页查询案件财产查封冻结情况")
+	@GetMapping("/queryAssetsNotSeizeAndFreeze" )
+	public R queryAssetsNotSeizeAndFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReCaseeService.queryAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO));
 	}
 
 

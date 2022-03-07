@@ -20,7 +20,7 @@ public class AssetsCompensationAward extends CommonalityData implements Serializ
 	/**
 	 * 裁定日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date dateOfAdjudication;
 
 	/**
