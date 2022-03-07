@@ -21,7 +21,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReCaseeMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper">
 
 	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReCasee">
 		SELECT * FROM p10_assets_re WHERE del_flag = 0
@@ -54,26 +54,39 @@
 		</if>
 	</select>
 
-	<select id="selectAssetsNotSeizeAndFreeze" resultType="com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO">
-		select * from p10_assets_re
+	<select id="selectAssetsNotSeizeAndFreeze" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,json_extract(p10_assets_re.assets_re_detail, "$.mortgagee") as
+		mortgagee  from p10_assets_re
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		left join p10_task_node node on node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_casee.`status` = 1
-		and p10_assets.type = #{query.type}
-		and p10_casee.casee_type in
-			<foreach item="item" index="index" collection="caseeTypeList"
-					 open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		<if test="query.type==20100">
-			and json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_attributes = 400
+		and node.node_key like "%SDQK"
+		and node.form_data is not null
+		and (p10_task_node.node_key = "entityZX_STZX_CCZXCF_CCZXCF" or p10_task_node.node_key = "fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")
+		<if test="query.caseeType != null and query.caseeType != ''">
+			and p10_casee.casee_type = #{query.caseeType}
 		</if>
-		<if test="query.type==20200">
-			and json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure' ) is null
+		<if test="query.type!=null and query.type != ''">
+			and p10_assets.type = #{query.type}
+			<if test="query.type==20100">
+				and json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null
+			</if>
+			<if test="query.type==20200">
+				and json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure' ) is null
+			</if>
+		</if>
+		<if test="query.type==null">
+			and (json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null
+				or json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure' ) is null)
 		</if>
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
@@ -86,7 +99,7 @@
 			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
 		</if>
 		<if test="query.executedName != null and query.executedName != ''">
-			and p10_subject.name like concat('%', #{query.executedName}, '%')
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
 		</if>
 		<if test="query.assetsName != null and query.assetsName != ''">
 			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')

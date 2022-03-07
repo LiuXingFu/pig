@@ -39,11 +39,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/assetsReCasee" )
-@Api(value = "assetsReCasee", tags = "财产关联表管理")
-public class AssetsReCaseeController {
+@RequestMapping("/assetsReLiqui" )
+@Api(value = "assetsReLiqui", tags = "财产关联表管理")
+public class AssetsReLiquiController {
 
-    private final AssetsReLiquiService assetsReCaseeService;
+    private final AssetsReLiquiService assetsReLiquiService;
 
 	/**
 	 * 添加案件财产
@@ -54,7 +54,7 @@ public class AssetsReCaseeController {
 	@SysLog("新增财产关联表" )
 	@PostMapping("/saveAssetsCasee")
 	public R save(@RequestBody AssetsAddDTO assetsAddDTO)throws Exception {
-		return R.ok(assetsReCaseeService.saveAssetsCasee(assetsAddDTO));
+		return R.ok(assetsReLiquiService.saveAssetsCasee(assetsAddDTO));
 	}
 
 
@@ -70,7 +70,7 @@ public class AssetsReCaseeController {
 		queryWrapper.lambda().eq(AssetsRe::getDelFlag,0);
 		queryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
 		queryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
-		return R.ok(assetsReCaseeService.getOne(queryWrapper));
+		return R.ok(assetsReLiquiService.getOne(queryWrapper));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class AssetsReCaseeController {
 	@ApiOperation(value = "分页查询案件财产查封冻结情况", notes = "分页查询案件财产查封冻结情况")
 	@GetMapping("/queryAssetsNotSeizeAndFreeze" )
 	public R queryAssetsNotSeizeAndFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
-		return R.ok(assetsReCaseeService.queryAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO));
+		return R.ok(assetsReLiquiService.queryAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO));
 	}
 
 

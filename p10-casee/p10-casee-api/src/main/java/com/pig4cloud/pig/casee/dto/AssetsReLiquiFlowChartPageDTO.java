@@ -3,8 +3,6 @@ package com.pig4cloud.pig.casee.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
 public class AssetsReLiquiFlowChartPageDTO {
@@ -13,7 +11,7 @@ public class AssetsReLiquiFlowChartPageDTO {
 	 * 案件类型(1010:诉前保全案件，2010:诉讼保全案件，2020:一审诉讼案件,，2021:二审诉讼案件，2030:其它案件，3010:首次执行案件，3031:执恢案件)
 	 */
 	@ApiModelProperty(value="案件类型(1010:诉前保全案件，2010:诉讼保全案件，2020:一审诉讼案件,，2021:二审诉讼案件，2030:其它案件，3010:首次执行案件，3031:执恢案件)")
-	private List<Integer> caseeTypeList;
+	private Integer caseeType;
 
 	/**
 	 * 公司业务案号/案件案号

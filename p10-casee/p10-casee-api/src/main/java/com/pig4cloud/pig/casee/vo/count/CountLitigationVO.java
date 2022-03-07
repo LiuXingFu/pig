@@ -63,7 +63,7 @@ public class CountLitigationVO {
 	private Long litigationHoldServiceNotAddProperty;
 
 	/**
-	 * 查控保全未完成**********************
+	 * 查控保全未完成
 	 */
 	private Long litigationHoldCheckControlPreservationUndone;
 

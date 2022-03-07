@@ -39,7 +39,7 @@ import java.util.List;
  * @date 2022-01-19 15:19:24
  */
 @Mapper
-public interface AssetsReCaseeMapper extends BaseMapper<AssetsRe> {
+public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	AssetsReCasee getAssetsReCasee(@Param("query") AssetsRe assetsRe);
 

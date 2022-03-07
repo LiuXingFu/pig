@@ -21,7 +21,7 @@ public class CountImplementVO {
 	private Long chiefExecutiveStandCaseUndelivered;
 
 	/**
-	 * 首执送达未查控***********************
+	 * 首执送达未查控
 	 */
 	private Long chiefExecutiveHeadExecuteServiceNotCheckControl;
 
@@ -43,7 +43,7 @@ public class CountImplementVO {
 	private Long reinstateStandCaseUndelivered;
 
 	/**
-	 * 执恢送达未查控*************************
+	 * 执恢送达未查控
 	 */
 	private Long reinstateExecuteRestoreServiceUnchecked;
 

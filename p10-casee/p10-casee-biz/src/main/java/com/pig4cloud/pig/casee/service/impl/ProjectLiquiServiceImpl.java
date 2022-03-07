@@ -84,7 +84,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private SecurityUtilsService securityUtilsService;
 
 	@Autowired
-	private AssetsReLiquiService assetsReCaseeService;
+	private AssetsReLiquiService assetsReLiquiService;
 
 	@Autowired
 	private AssetsBankLoanReMapper assetsBankLoanReMapper;
@@ -202,7 +202,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				assetsReCaseeDetail.setMortgagee(0);
 				assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 				assetsReCaseeList.add(assetsReCasee);
-				assetsReCaseeService.save(assetsReCasee);
+				assetsReLiquiService.save(assetsReCasee);
 			});
 		}
 
@@ -405,11 +405,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<CaseeLiquiPageVO> assetNotAddedList = caseeLiquiService.queryAssetNotAddedPage(page,caseeLiquiPageDTO);
 		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedList.getTotal());
 
+		//**********查控保全未完成统计********************************
+		preLitigationStageVO.setSeizedUndoneCount(queryAssetsNotSeizeAndFreeze(1010,20200));
+
 		//**********立案未送达统计********************************
 		preLitigationStageVO.setStartCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQLASDQK_SQLASDQK",1010));
 
 		//**********结案未送达统计********************************
-		preLitigationStageVO.setSeizedUndoneCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
+		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
 
 		return preLitigationStageVO;
 	}
@@ -476,6 +479,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********结案未送达统计********************************
 		countLitigationVO.setLitigationHoldKnotCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQBQJGSDQK_SSBQBQJGSDQK",2010));
 
+		//**********诉讼保全未完成统计********************************
+		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryAssetsNotSeizeAndFreeze(2010,20200));
+
 		//***********保全节点统计end*************************************************
 
 
@@ -540,6 +546,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********首执立案未送达********************************
 		countImplementVO.setChiefExecutiveStandCaseUndelivered(queryCaseNodePage("liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK",3010));
 
+		//**********首执送达未查控********************************
+		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryAssetsNotSeizeAndFreeze(3010,null));
+
 
 		//***********首执案件节点统计end*************************************************
 
@@ -554,6 +563,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********执恢立案未送达********************************
 		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK",3031));
+
+		//**********执恢送达未查控********************************
+		countImplementVO.setReinstateExecuteRestoreServiceUnchecked(queryAssetsNotSeizeAndFreeze(3031,null));
 
 		//**********到款未拨付********************************
 		IPage<CaseeLiquiFlowChartPageVO> courtPayment = caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO);
@@ -582,6 +594,18 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return caseeLiquiDebtorPageVOIPage.getTotal();
 	}
 
+	public Long queryAssetsNotSeizeAndFreeze(Integer caseeType,Integer type){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+		assetsReLiquiFlowChartPageDTO.setCaseeType(caseeType);
+		assetsReLiquiFlowChartPageDTO.setType(type);
+		IPage<AssetsReLiquiFlowChartPageVO> assetsReLiquiFlowChartPageVOIPage = assetsReLiquiService.queryAssetsNotSeizeAndFreeze(page,assetsReLiquiFlowChartPageDTO);
+		return assetsReLiquiFlowChartPageVOIPage.getTotal();
+	}
+
 
 	@Override
 	public CountDebtorVO countDebtor(){
@@ -598,11 +622,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********限制未送达********************************
 		countDebtorVO.setLimitNotService(queryBehaviorNodePage("limit_XWXZ_XWXZSDQK_XWXZSDQK",100));
-
-		//**********行为违法未提交********************************
-		caseeLiquiFlowChartPageDTO.setType(100);
-		IPage<CaseeLiquiFlowChartPageVO> actIllegalNotSubmitted = caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO);
-		countDebtorVO.setActIllegalNotSubmitted(actIllegalNotSubmitted.getTotal());
 
 		//**********制裁申请未实施********************************
 		countDebtorVO.setSanctionApplyNotImplemented(queryBehaviorNodePage("beIllegal_XWWF_SSXWWF_SSXWWF",200));

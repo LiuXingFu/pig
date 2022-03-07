@@ -25,7 +25,7 @@ import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
-import com.pig4cloud.pig.casee.mapper.AssetsReCaseeMapper;
+import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -43,7 +43,7 @@ import java.util.Objects;
  * @date 2022-01-19 15:19:24
  */
 @Service
-public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReCaseeMapper, AssetsRe> implements AssetsReLiquiService {
+public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReLiquiMapper, AssetsRe> implements AssetsReLiquiService {
 
 	@Autowired
 	AssetsService assetsService;
