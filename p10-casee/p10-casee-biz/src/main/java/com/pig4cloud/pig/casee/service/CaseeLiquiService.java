@@ -158,6 +158,13 @@ public interface CaseeLiquiService extends IService<Casee> {
 	void litigationCaseeClose();
 
 	/**
+	 * 更改案件状态为撤案、结案与终极
+	 * @param caseeId
+	 * @param status
+	 */
+	void caseeModify(Integer caseeId, Integer status);
+
+	/**
 	 * 分页查询上诉到期未确认列表
 	 * @param page
 	 * @param caseeLiquiFlowChartPageDTO
