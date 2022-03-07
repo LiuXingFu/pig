@@ -56,5 +56,13 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 */
 	IPage<AssetsReLiquiFlowChartPageVO> queryAssetsNotSeizeAndFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
+	/**
+	 * 有抵押权轮封未商请移送
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryBusinessTransfer(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
 
 }
