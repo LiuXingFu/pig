@@ -104,6 +104,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private PaymentRecordService paymentRecordService;
 
+	@Autowired
+	private BehaviorLiquiService behaviorLiquiService;
+
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -566,6 +569,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return countImplementVO;
 	}
 
+	public Long queryBehaviorNodePage(String nodeKey,Integer type){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		BehaviorLiquiDebtorPageDTO caseeLiquiFlowChartPageDTO = new BehaviorLiquiDebtorPageDTO();
+
+		caseeLiquiFlowChartPageDTO.setNodeKey(nodeKey);
+		caseeLiquiFlowChartPageDTO.setType(type);
+		IPage<CaseeLiquiDebtorPageVO> caseeLiquiDebtorPageVOIPage = behaviorLiquiService.queryDebtorPage(page,caseeLiquiFlowChartPageDTO);
+		return caseeLiquiDebtorPageVOIPage.getTotal();
+	}
+
+
 	@Override
 	public CountDebtorVO countDebtor(){
 		CountDebtorVO countDebtorVO = new CountDebtorVO();
@@ -575,17 +592,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********行为未限制********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setType(200);
 		IPage<CaseeLiquiFlowChartPageVO> notAddBehavior = caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO);
 		countDebtorVO.setBehaviorNotLimit(notAddBehavior.getTotal());
 
 		//**********限制未送达********************************
-//		countDebtorVO.setLimitNotService();
+		countDebtorVO.setLimitNotService(queryBehaviorNodePage("limit_XWXZ_XWXZSDQK_XWXZSDQK",100));
 
 		//**********行为违法未提交********************************
-//		countDebtorVO.setActIllegalNotSubmitted();
+		caseeLiquiFlowChartPageDTO.setType(100);
+		IPage<CaseeLiquiFlowChartPageVO> actIllegalNotSubmitted = caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO);
+		countDebtorVO.setActIllegalNotSubmitted(actIllegalNotSubmitted.getTotal());
 
 		//**********制裁申请未实施********************************
-//		countDebtorVO.setSanctionApplyNotImplemented();
+		countDebtorVO.setSanctionApplyNotImplemented(queryBehaviorNodePage("beIllegal_XWWF_SSXWWF_SSXWWF",200));
 
 		//**********已结清限制未撤销********************************
 //		countDebtorVO.setAlreadySettleLimitNotRevoked();

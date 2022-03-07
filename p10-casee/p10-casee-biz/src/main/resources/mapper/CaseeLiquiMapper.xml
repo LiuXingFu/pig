@@ -252,6 +252,7 @@
 		where p10_casee.del_flag = 0
 		and p10_project.`status` = 1000
 		and p10_target.goal_type = 10001
+		and task_node.node_id is not null
 		<if test="query.nodeKey != null and query.nodeKey != ''">
 			and task_node.node_key = #{query.nodeKey}
 		</if>
@@ -467,14 +468,12 @@
 	</select>
 
 	<select id="selectNotAddBehavior" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_subject.subject_id,p10_subject.name as subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as
-		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
-		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		select p10_subject.subject_id,p10_subject.name as subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee_subject_re
+		left join p10_casee on p10_casee_subject_re.casee_id = p10_casee.casee_id
+		left join p10_behavior on p10_behavior.subject_id = p10_casee_subject_re.subject_id and p10_behavior.casee_id = p10_casee.casee_id and p10_behavior.type != #{query.type}
+		left join p10_project_casee_re on p10_project_casee_re.casee_id =  p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
-		left join p10_behavior on p10_behavior.casee_id = p10_casee.casee_id
-		left join p10_casee_subject_re on p10_casee_subject_re.casee_id = p10_casee.casee_id
 		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
-		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_project.del_flag = 0
 		and p10_project.status = 1000
