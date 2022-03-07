@@ -53,4 +53,16 @@ public class BehaviorLiquiController {
 		return R.ok(this.behaviorLiquiService.queryDebtorPage(page,behaviorLiquiDebtorPageDTO));
 	}
 
+	/**
+	 * 已结清限制未撤销
+	 *
+	 * @param behaviorLiquiDebtorPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "结清未撤销", notes = "结清未撤销")
+	@GetMapping("/behaviorPaymentCompleted")
+	public R behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
+		return R.ok(this.behaviorLiquiService.queryDebtorPage(page,behaviorLiquiDebtorPageDTO));
+	}
+
 }

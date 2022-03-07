@@ -608,10 +608,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countDebtorVO.setSanctionApplyNotImplemented(queryBehaviorNodePage("beIllegal_XWWF_SSXWWF_SSXWWF",200));
 
 		//**********已结清限制未撤销********************************
-//		countDebtorVO.setAlreadySettleLimitNotRevoked();
+		BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO = new BehaviorLiquiDebtorPageDTO();
+		IPage<CaseeLiquiDebtorPageVO> alreadySettleLimitNotRevoked = behaviorLiquiService.behaviorPaymentCompleted(page,behaviorLiquiDebtorPageDTO);
+		countDebtorVO.setAlreadySettleLimitNotRevoked(alreadySettleLimitNotRevoked.getTotal());
 
 		//**********未添加财产********************************
-//		countDebtorVO.setNotAddProperty();
+		caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		IPage<CaseeLiquiFlowChartPageVO> notAddProperty = caseeLiquiService.caseeSubjectNotAddAssets(page,caseeLiquiFlowChartPageDTO);
+		countDebtorVO.setNotAddProperty(notAddProperty.getTotal());
 
 		return countDebtorVO;
 	}
