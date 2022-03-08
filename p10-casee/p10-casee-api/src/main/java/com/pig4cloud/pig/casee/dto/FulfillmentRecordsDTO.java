@@ -75,6 +75,11 @@ public class FulfillmentRecordsDTO extends FulfillmentRecordsLiqui {
 	private String subjectName;
 
 	/**
+	 * 还款人
+	 */
+	private Integer subjectId;
+
+	/**
 	 * 分配款项记录
 	 */
 	List<PaymentRecord> paymentRecordList;

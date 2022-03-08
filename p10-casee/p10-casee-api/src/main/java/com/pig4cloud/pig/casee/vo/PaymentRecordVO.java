@@ -35,6 +35,14 @@ public class PaymentRecordVO extends PaymentRecord {
 	 */
 	private BigDecimal projectAmount;
 
+	/**
+	 * 主体id
+	 */
+	private Integer subjectId;
 
+	/**
+	 * 主体名称
+	 */
+	private String name;
 
 }

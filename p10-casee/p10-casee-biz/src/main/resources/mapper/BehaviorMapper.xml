@@ -33,7 +33,6 @@
 		<result property="projectId" column="project_id"/>
 		<result property="subjectId" column="subject_id"/>
 		<result property="caseeId" column="casee_id"/>
-		<result property="targetId" column="target_id"/>
 		<result property="type" column="type"/>
 		<result property="behaviorDate" column="behavior_date"/>
 		<result property="limitType" column="limit_type"/>

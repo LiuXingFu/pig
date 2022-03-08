@@ -77,12 +77,6 @@ public class Behavior extends BaseEntity {
     private Integer caseeId;
 
     /**
-     * 程序id
-     */
-    @ApiModelProperty(value="程序id")
-    private Integer targetId;
-
-    /**
      * 行为类型(100-行为限制 200-行为违法)
      */
     @ApiModelProperty(value="行为类型(100-行为限制 200-行为违法)")

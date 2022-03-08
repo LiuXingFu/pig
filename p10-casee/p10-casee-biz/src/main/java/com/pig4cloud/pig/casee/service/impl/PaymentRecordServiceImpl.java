@@ -20,9 +20,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
+import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -30,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -42,6 +46,8 @@ import java.math.BigDecimal;
 public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, PaymentRecord> implements PaymentRecordService {
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
@@ -59,5 +65,37 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId) {
 		return this.baseMapper.getCourtPaymentPage(page,projectId);
+	}
+
+	@Override
+	public List<PaymentRecordVO> getCourtPaymentUnpaid(Integer projectId) {
+		return this.baseMapper.getCourtPaymentUnpaid(projectId);
+	}
+
+	@Override
+	public boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO) {
+		this.save(paymentRecordDTO);
+		PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+		paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
+		paymentRecordSubjectRe.setSubjectId(paymentRecordDTO.getSubjectId());
+		return this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+	}
+
+	@Override
+	public boolean collection(PaymentRecordDTO paymentRecordDTO) {
+		this.save(paymentRecordDTO);
+		List<Integer> subjectIdList = paymentRecordDTO.getSubjectIdList();
+		for (Integer integer : subjectIdList) {
+			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
+			paymentRecordSubjectRe.setSubjectId(integer);
+			this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+		}
+		for (PaymentRecord paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
+			paymentRecord.setFatherId(paymentRecordDTO.getPaymentRecordId());
+			paymentRecord.setPaymentDate(paymentRecordDTO.getPaymentDate());
+			paymentRecord.setPaymentType(paymentRecordDTO.getPaymentType());
+		}
+		return this.saveBatch(paymentRecordDTO.getPaymentRecordList());
 	}
 }

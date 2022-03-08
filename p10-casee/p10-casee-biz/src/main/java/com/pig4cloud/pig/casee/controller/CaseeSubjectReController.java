@@ -82,6 +82,18 @@ public class CaseeSubjectReController {
 		return R.ok(caseeSubjectReService.getByCaseeId(caseeId, type,caseePersonnelType));
 	}
 
+	/**
+	 * 通过项目id查询所有执行案件主体信息
+	 * @param projectId
+	 * @Param type
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询所有执行案件主体信息", notes = "通过项目id查询所有执行案件主体信息")
+	@GetMapping("/getByProjectId/{projectId}" )
+	public R getByProjectId(@PathVariable("projectId" )Integer projectId){
+		return R.ok(caseeSubjectReService.getByProjectId(projectId));
+	}
+
     /**
      * 新增案件主体关联案件表
      * @param caseeSubjectRe 案件主体关联案件表

@@ -35,4 +35,6 @@ import java.util.List;
 public interface CaseeSubjectReMapper extends BaseMapper<CaseeSubjectRe> {
 
 	List<SubjectOptionVO> getByCaseeId(@Param("caseeId") Integer caseeId, @Param("type") Integer type,@Param("caseePersonnelType")Integer caseePersonnelType);
+
+	List<SubjectOptionVO> getByProjectId(@Param("projectId") Integer projectId);
 }

@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -101,14 +102,27 @@ public class PaymentRecordController {
 	}
 
 	/**
-	 * 根据案件id查询法院到款未领款信息
-	 * @param caseeId id
+	 * 根据项目id查询法院到款未领款信息
+	 * @param projectId id
 	 * @return R
 	 */
-	@ApiOperation(value = "根据案件id查询法院到款未领款信息", notes = "根据案件id查询法院到款未领款信息")
-	@GetMapping("/getCourtPaymentUnpaid/{caseeId}" )
-	public R getCourtPaymentUnpaid(@PathVariable("caseeId" )Integer caseeId) {
-		return R.ok(paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getCaseeId,caseeId).like(PaymentRecord::getFundsType, "%200").eq(PaymentRecord::getPaymentType, 200).eq(PaymentRecord::getStatus,0)));
+	@ApiOperation(value = "根据项目id查询法院到款未领款信息", notes = "根据项目id查询法院到款未领款信息")
+	@GetMapping("/getCourtPaymentUnpaid/{projectId}" )
+	public R getCourtPaymentUnpaid(@PathVariable("projectId" )Integer projectId) {
+		return R.ok(paymentRecordService.getCourtPaymentUnpaid(projectId));
+	}
+
+
+	/**
+	 * 领款
+	 * @param paymentRecordDTO 领款
+	 * @return R
+	 */
+	@ApiOperation(value = "领款", notes = "领款")
+	@SysLog("领款" )
+	@PostMapping("/collection")
+	public R collection(@RequestBody PaymentRecordDTO paymentRecordDTO) {
+		return R.ok(paymentRecordService.collection(paymentRecordDTO));
 	}
 
     /**
@@ -122,6 +136,18 @@ public class PaymentRecordController {
     public R save(@RequestBody PaymentRecord paymentRecord) {
         return R.ok(paymentRecordService.save(paymentRecord));
     }
+
+	/**
+	 * 新增回款详细记录及关联主体信息
+	 * @param paymentRecordDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "新增回款详细记录及关联主体信息", notes = "新增回款详细记录及关联主体信息")
+	@SysLog("新增回款详细记录及关联主体信息" )
+	@PostMapping("/savePaymentRecord")
+	public R savePaymentRecord(@RequestBody PaymentRecordDTO paymentRecordDTO) {
+		return R.ok(paymentRecordService.savePaymentRecord(paymentRecordDTO));
+	}
 
     /**
      * 修改回款详细记录表

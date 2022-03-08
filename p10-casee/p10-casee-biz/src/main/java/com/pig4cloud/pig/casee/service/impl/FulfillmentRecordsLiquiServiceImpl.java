@@ -22,15 +22,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.FulfillmentRecordsDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
 import com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.FulfillmentRecordsLiquiMapper;
-import com.pig4cloud.pig.casee.service.FulfillmentRecordsLiquiService;
-import com.pig4cloud.pig.casee.service.PaymentRecordService;
-import com.pig4cloud.pig.casee.service.ProjectLiquiService;
-import com.pig4cloud.pig.casee.service.ReconciliatioMediationService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +47,16 @@ import java.util.List;
 @Service
 public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentRecordsLiquiMapper, FulfillmentRecords> implements FulfillmentRecordsLiquiService {
 	@Autowired
-	PaymentRecordService paymentRecordService;
+	private PaymentRecordService paymentRecordService;
 
 	@Autowired
-	ProjectLiquiService projectLiquiService;
+	private ProjectLiquiService projectLiquiService;
 
 	@Autowired
 	private ReconciliatioMediationService reconciliatioMediationService;
+
+	@Autowired
+	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 
 
 
@@ -85,6 +86,11 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 			paymentRecord.setPaymentAmount(fulfillmentRecords.getFulfillmentAmount());
 			//添加回款记录
 			paymentRecordService.save(paymentRecord);
+
+			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setSubjectId(fulfillmentRecordsDTO.getSubjectId());
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 
 			fulfillmentRecords.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 
