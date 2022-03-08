@@ -573,6 +573,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********履行未到期统计********************************
 		ReconciliatioMediationDTO reconciliatioMediationDTO = new ReconciliatioMediationDTO();
+		reconciliatioMediationDTO.setStatus(0);
 		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
 		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
 
@@ -710,6 +711,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********有抵押轮封未商移********************************
 		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
+
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> propertyToBeAuctionedNotHandedOver = assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
 
 		return countPropertySearchVO;
 	}

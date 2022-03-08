@@ -106,4 +106,15 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 待拍财产
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "待拍财产", notes = "待拍财产")
+	@GetMapping("/queryPropertyToBeAuctioned" )
+	public R queryPropertyToBeAuctioned(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO));
+	}
+
 }
