@@ -334,4 +334,17 @@ public class CaseeLiquiController {
 	public R caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		return R.ok(this.caseeLiquiService.caseeSubjectNotAddAssets(page,caseeLiquiFlowChartPageDTO));
 	}
+
+	/**
+	 * 财产保全完成未结案
+	 *
+	 * @param caseeLiquiFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "财产保全完成未结案", notes = "财产保全完成未结案")
+	@GetMapping("/queryPropertyPreservationCompleted")
+	public R queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+		return R.ok(this.caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO));
+	}
+
 }

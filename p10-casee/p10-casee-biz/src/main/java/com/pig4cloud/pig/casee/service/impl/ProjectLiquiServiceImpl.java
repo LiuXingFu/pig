@@ -441,6 +441,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********结案未送达统计********************************
 		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
 
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(1010);
+		IPage<CaseeLiquiFlowChartPageVO> notClosedCount = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		preLitigationStageVO.setNotClosedCount(notClosedCount.getTotal());
+
+
 		return preLitigationStageVO;
 	}
 
@@ -508,6 +515,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********诉讼保全未完成统计********************************
 		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryAssetsNotSeizeAndFreeze(2010,20200));
+
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(2010);
+		IPage<CaseeLiquiFlowChartPageVO> litigationHoldPreservationCompleteNotKnotCase = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		countLitigationVO.setLitigationHoldPreservationCompleteNotKnotCase(litigationHoldPreservationCompleteNotKnotCase.getTotal());
 
 		//***********保全节点统计end*************************************************
 
