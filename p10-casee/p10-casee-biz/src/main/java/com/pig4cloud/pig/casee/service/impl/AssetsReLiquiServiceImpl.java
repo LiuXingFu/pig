@@ -134,4 +134,12 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.selectPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyFlowChartPage(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
 }

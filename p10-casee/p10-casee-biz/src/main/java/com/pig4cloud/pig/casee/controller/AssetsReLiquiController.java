@@ -117,4 +117,14 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询可处置财产程序节点统计列表
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "分页查询可处置财产程序节点统计列表", notes = "分页查询可处置财产程序节点统计列表")
+	@GetMapping("/queryPropertyFlowChartPage" )
+	public R queryPropertyFlowChartPage(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO));
+	}
 }

@@ -51,4 +51,6 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyToBeAuctioned(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyFlowChartPage(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 }

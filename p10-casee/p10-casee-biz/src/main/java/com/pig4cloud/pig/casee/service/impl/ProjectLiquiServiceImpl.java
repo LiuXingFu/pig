@@ -719,9 +719,65 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return countPropertySearchVO;
 	}
 
+	public Long queryPropertyFlowChartPage(String nodeKey,List<Integer> assetsTypeList){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+		assetsReLiquiFlowChartPageDTO.setNodeKey(nodeKey);
+		assetsReLiquiFlowChartPageDTO.setAssetsTypeList(assetsTypeList);
+		IPage<AssetsReLiquiFlowChartPageVO> assetsReLiquiFlowChartPageVOIPage = assetsReLiquiService.queryPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO);
+		return assetsReLiquiFlowChartPageVOIPage.getTotal();
+	}
+
 	@Override
 	public CountAuctionPropertyVO countAuctionProperty(){
 		CountAuctionPropertyVO countAuctionPropertyVO = new CountAuctionPropertyVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+
+		//**********动产未现勘********************************
+		countAuctionPropertyVO.setChattelNotAvailable(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK",null));
+
+		//**********不动产未现勘********************************
+		countAuctionPropertyVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK",null));
+
+		//**********不动产现勘未入户********************************
+		List<Integer> assetsTypeList = new ArrayList<>();
+		assetsTypeList.add(20201);
+		assetsTypeList.add(20204);
+		countAuctionPropertyVO.setRealEstateSurveyNotRegistered(queryPropertyFlowChartPage("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH",assetsTypeList));
+
+		//**********拍卖价格依据未出具********************************
+		countAuctionPropertyVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("entityZX_STZX_CCZXJGYJ_CCZXJGYJ",null));
+
+		//**********有依据未上拍********************************
+		countAuctionPropertyVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********公告期未拍卖********************************
+//		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖到期无结果********************************
+//		countAuctionPropertyVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖成交未处理********************************
+//		countAuctionPropertyVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖异常未撤销********************************
+//		countAuctionPropertyVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********到款/抵偿未裁定********************************
+//		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+		//**********裁定未送达********************************
+		countAuctionPropertyVO.setRulingNotService(queryPropertyFlowChartPage("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK",null));
+
+		//**********送达未腾退********************************
+		countAuctionPropertyVO.setDeliveredButNotVacated(queryPropertyFlowChartPage("entityZX_STZX_CCZXTTCG_CCZXTTCG",null));
+
 
 		return countAuctionPropertyVO;
 	}
