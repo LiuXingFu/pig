@@ -55,4 +55,19 @@
 
 	</select>
 
+	<select id="getByProjectId" resultType="com.pig4cloud.pig.casee.vo.SubjectOptionVO">
+		SELECT
+		DISTINCT
+		subject.*
+		FROM
+		p10_project_casee_re
+		LEFT JOIN p10_casee ON p10_casee.casee_id = p10_project_casee_re.casee_id
+		LEFT JOIN p10_casee_subject_re ON p10_casee_subject_re.casee_id = p10_casee.casee_id
+		LEFT JOIN p10_subject `subject` ON p10_casee_subject_re.subject_id = subject.subject_id
+		WHERE
+		p10_project_casee_re.project_id = #{projectId}
+		and p10_casee.casee_type like ('%30%')
+		and p10_casee_subject_re.casee_personnel_type=1
+	</select>
+
 </mapper>

@@ -32,9 +32,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_payment_record_subject_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "回款记录关联主体信息表")
-public class PaymentRecordSubjectRe extends BaseEntity {
+public class PaymentRecordSubjectRe {
 
     /**
      * 回款记录关联主体信息

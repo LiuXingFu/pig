@@ -14,20 +14,11 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -36,15 +27,21 @@ import java.util.List;
  * @author Mjh
  * @date 2022-02-17 17:52:51
  */
-@Mapper
-public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
+@Data
+public class PaymentRecordDTO extends PaymentRecord {
+	/**
+	 * 分配款项记录
+	 */
+	List<PaymentRecord> paymentRecordList;
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecord paymentRecord, @Param("login") InsOutlesDTO insOutlesDTO);
+	/**
+	 * 主体id
+	 */
+	private Integer subjectId;
 
-	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
-
-	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, @Param("projectId")String projectId);
-
-	List<PaymentRecordVO> getCourtPaymentUnpaid(Integer projectId);
-
+	/**
+	 * 主体id
+	 */
+	private List<Integer> subjectIdList;
 }
+

@@ -122,4 +122,11 @@ public class PaymentRecord extends BaseEntity {
 	 */
 	@ApiModelProperty(value="备注")
 	private String remark;
+
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendixFile;
+
 }
