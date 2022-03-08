@@ -107,6 +107,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private BehaviorLiquiService behaviorLiquiService;
 
+	@Autowired
+	private ReconciliatioMediationLiquiService reconciliatioMediationService;
+
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -355,16 +358,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountProjectStatisticsVO countProject(){
 		CountProjectStatisticsVO projectStatisticsVO = new CountProjectStatisticsVO();
+
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
-		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
-		transferRecordDTO.setTransferType(0);
-		transferRecordDTO.setStatus(0);
 
 		//**********待接收统计********************************
-		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
-		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
+		projectStatisticsVO.setPendingCount(getTransferRecordPage());
 
 
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
@@ -372,6 +372,23 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectStatisticsVO.setNotProcessedCount(pageVOIPage.getTotal());
 
 		return projectStatisticsVO;
+	}
+
+	/**
+	 * 查询待接收分页集合数据
+	 * @return
+	 */
+	private Long getTransferRecordPage() {
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
+		transferRecordDTO.setTransferType(0);
+		transferRecordDTO.setStatus(0);
+
+		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
+		return transferRecordPage.getTotal();
 	}
 
 	public Long queryCaseNodePage(String nodeKey,Integer caseeType){
@@ -426,6 +443,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********结案未送达统计********************************
 		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
+
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(1010);
+		IPage<CaseeLiquiFlowChartPageVO> notClosedCount = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		preLitigationStageVO.setNotClosedCount(notClosedCount.getTotal());
+
 
 		return preLitigationStageVO;
 	}
@@ -495,6 +519,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********诉讼保全未完成统计********************************
 		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryAssetsNotSeizeAndFreeze(2010,20200));
 
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(2010);
+		IPage<CaseeLiquiFlowChartPageVO> litigationHoldPreservationCompleteNotKnotCase = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		countLitigationVO.setLitigationHoldPreservationCompleteNotKnotCase(litigationHoldPreservationCompleteNotKnotCase.getTotal());
+
 		//***********保全节点统计end*************************************************
 
 
@@ -537,6 +567,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountFulfillVO countFulfill(){
 		CountFulfillVO countFulfillVO = new CountFulfillVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********履行未到期统计********************************
+		ReconciliatioMediationDTO reconciliatioMediationDTO = new ReconciliatioMediationDTO();
+		reconciliatioMediationDTO.setStatus(0);
+		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
+		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
+
+
 
 		return countFulfillVO;
 	}
@@ -667,6 +708,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
+
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> propertyToBeAuctionedNotHandedOver = assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
+
 		return countPropertySearchVO;
 	}
 
@@ -675,6 +724,55 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		CountAuctionPropertyVO countAuctionPropertyVO = new CountAuctionPropertyVO();
 
 		return countAuctionPropertyVO;
+	}
+
+	/**
+	 * 首页项目、事项统计接口
+	 * @return
+	 */
+	@Override
+	public CountProjectMattersVO countProjectMatters() {
+		CountProjectMattersVO countProjectMattersVO = new CountProjectMattersVO();
+
+		Page page = new Page();
+		page.setSize(1);
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//查询项目待接收
+		countProjectMattersVO.setPendingCount(getTransferRecordPage());
+
+		//查询项目在办
+		ProjectLiquiPageDTO projectInProgress = new ProjectLiquiPageDTO();
+
+		projectInProgress.setStatus(1000);
+
+		IPage<ProjectLiquiPageVO> projectInProgressIPage = this.queryPageLiqui(page, projectInProgress);
+
+		 countProjectMattersVO.setProjectInProgressCount(projectInProgressIPage.getTotal());
+
+		 //查询项目暂缓
+
+		ProjectLiquiPageDTO projectSuspend = new ProjectLiquiPageDTO();
+
+		projectSuspend.setStatus(2000);
+
+		IPage<ProjectLiquiPageVO> projectSuspendIPage = this.queryPageLiqui(page, projectSuspend);
+
+		countProjectMattersVO.setProjectSuspendCount(projectSuspendIPage.getTotal());
+
+		return countProjectMattersVO;
+	}
+
+	@Override
+	public CountCompareQuantityVO countCompareQuantity() {
+		CountCompareQuantityVO countCompareQuantityVO = new CountCompareQuantityVO();
+
+		countCompareQuantityVO.setCompareTheNumberOfItemsCount(this.baseMapper.queryCompareTheNumberOfItemsCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+
+		countCompareQuantityVO.setCompareMoneyBackAmountCount(this.baseMapper.queryCompareMoneyBackAmountCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+
+		return null;
 	}
 
 

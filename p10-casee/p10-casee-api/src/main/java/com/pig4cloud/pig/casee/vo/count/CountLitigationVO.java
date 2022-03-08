@@ -68,7 +68,7 @@ public class CountLitigationVO {
 	private Long litigationHoldCheckControlPreservationUndone;
 
 	/**
-	 * 保全完成未结案*****************
+	 * 保全完成未结案
 	 */
 	private Long litigationHoldPreservationCompleteNotKnotCase;
 

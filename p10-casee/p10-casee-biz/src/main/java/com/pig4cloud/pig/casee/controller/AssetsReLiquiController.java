@@ -95,4 +95,26 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 首冻资金未划扣
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "首冻资金未划扣", notes = "首冻资金未划扣")
+	@GetMapping("/queryFundDeduction" )
+	public R queryFundDeduction(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 待拍财产
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "待拍财产", notes = "待拍财产")
+	@GetMapping("/queryPropertyToBeAuctioned" )
+	public R queryPropertyToBeAuctioned(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO));
+	}
+
 }
