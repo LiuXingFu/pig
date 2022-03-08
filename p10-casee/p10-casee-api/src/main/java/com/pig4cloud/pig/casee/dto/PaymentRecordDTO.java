@@ -14,12 +14,12 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 回款详细记录表
@@ -28,12 +28,11 @@ import java.math.BigDecimal;
  * @date 2022-02-17 17:52:51
  */
 @Data
-public class PaymentRecordVO extends PaymentRecord {
-
+public class PaymentRecordDTO extends PaymentRecord {
 	/**
-	 * 项目金额
+	 * 分配款项记录
 	 */
-	private BigDecimal projectAmount;
+	List<PaymentRecord> paymentRecordList;
 
 	/**
 	 * 主体id
@@ -41,8 +40,8 @@ public class PaymentRecordVO extends PaymentRecord {
 	private Integer subjectId;
 
 	/**
-	 * 主体名称
+	 * 主体id
 	 */
-	private String name;
-
+	private List<Integer> subjectIdList;
 }
+

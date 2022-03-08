@@ -3,6 +3,8 @@ package com.pig4cloud.pig.casee.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 
 @Data
 public class AssetsReLiquiFlowChartPageDTO {
@@ -42,4 +44,10 @@ public class AssetsReLiquiFlowChartPageDTO {
 	 */
 	@ApiModelProperty(value="财产类型（20100-资金财产 20200-实体财产）")
 	private Integer type;
+
+	/**
+	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
+	 */
+	@ApiModelProperty(value="财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））")
+	private List<Integer> assetsTypeList;
 }

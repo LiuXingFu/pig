@@ -42,6 +42,7 @@
 		<result property="subjectName" column="subject_name"/>
 		<result property="status" column="status"/>
 		<result property="remark" column="remark"/>
+		<result property="appendixFile" column="appendix_file"/>
 	</resultMap>
 
 	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
@@ -101,6 +102,17 @@
 			p10_payment_record.project_id = #{projectId}
 			AND p10_payment_record.funds_type LIKE concat( '%', 200, '%' )
 			AND p10_payment_record.payment_type = 200
+	</select>
+
+	<select id="getCourtPaymentUnpaid" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+		select p10_payment_record.*,p10_payment_record.subject_name as name, p10_subject.subject_id as subjectId from p10_payment_record
+		left join p10_payment_record_subject_re on p10_payment_record_subject_re.payment_record_id=p10_payment_record.payment_record_id
+		left join p10_subject on p10_subject.subject_id=p10_payment_record_subject_re.subject_id
+		where p10_payment_record.del_flag = 0
+		and p10_payment_record.project_id=#{projectId}
+		and p10_payment_record.funds_type like concat( '%', 200, '%' )
+		and p10_payment_record.payment_type = 200
+		and p10_payment_record.status = 0
 	</select>
 
 	<select id="queryCompareMoneyBackAmountCount" resultType="java.math.BigDecimal">

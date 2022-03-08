@@ -46,6 +46,8 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
 	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, @Param("projectId")String projectId);
 
+	List<PaymentRecordVO> getCourtPaymentUnpaid(Integer projectId);
+
 	BigDecimal queryCompareMoneyBackAmountCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);

@@ -95,4 +95,36 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 首冻资金未划扣
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "首冻资金未划扣", notes = "首冻资金未划扣")
+	@GetMapping("/queryFundDeduction" )
+	public R queryFundDeduction(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 待拍财产
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "待拍财产", notes = "待拍财产")
+	@GetMapping("/queryPropertyToBeAuctioned" )
+	public R queryPropertyToBeAuctioned(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 分页查询可处置财产程序节点统计列表
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "分页查询可处置财产程序节点统计列表", notes = "分页查询可处置财产程序节点统计列表")
+	@GetMapping("/queryPropertyFlowChartPage" )
+	public R queryPropertyFlowChartPage(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO));
+	}
 }

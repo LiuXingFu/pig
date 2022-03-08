@@ -107,6 +107,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private BehaviorLiquiService behaviorLiquiService;
 
+	@Autowired
+	private ReconciliatioMediationLiquiService reconciliatioMediationService;
+
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -361,8 +364,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setSize(10);
 
 		//**********待接收统计********************************
-		IPage<TransferRecordBankLoanVO> transferRecordPage = this.getTransferRecordPage(page);
-		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
+		projectStatisticsVO.setPendingCount(getTransferRecordPage());
 
 
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
@@ -374,16 +376,19 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 查询待接收分页集合数据
-	 * @param page
 	 * @return
 	 */
-	private IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page) {
+	private Long getTransferRecordPage() {
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
 		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
 		transferRecordDTO.setTransferType(0);
 		transferRecordDTO.setStatus(0);
 
 		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
-		return transferRecordPage;
+		return transferRecordPage.getTotal();
 	}
 
 	public Long queryCaseNodePage(String nodeKey,Integer caseeType){
@@ -438,6 +443,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********结案未送达统计********************************
 		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK",1010));
+
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(1010);
+		IPage<CaseeLiquiFlowChartPageVO> notClosedCount = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		preLitigationStageVO.setNotClosedCount(notClosedCount.getTotal());
+
 
 		return preLitigationStageVO;
 	}
@@ -507,6 +519,12 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********诉讼保全未完成统计********************************
 		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryAssetsNotSeizeAndFreeze(2010,20200));
 
+		//**********保全完成未结案统计********************************
+		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
+		caseeLiquiFlowChartPageDTO.setCaseeType(2010);
+		IPage<CaseeLiquiFlowChartPageVO> litigationHoldPreservationCompleteNotKnotCase = caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO);
+		countLitigationVO.setLitigationHoldPreservationCompleteNotKnotCase(litigationHoldPreservationCompleteNotKnotCase.getTotal());
+
 		//***********保全节点统计end*************************************************
 
 
@@ -549,6 +567,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountFulfillVO countFulfill(){
 		CountFulfillVO countFulfillVO = new CountFulfillVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********履行未到期统计********************************
+		ReconciliatioMediationDTO reconciliatioMediationDTO = new ReconciliatioMediationDTO();
+		reconciliatioMediationDTO.setStatus(0);
+		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
+		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
+
+
 
 		return countFulfillVO;
 	}
@@ -679,12 +708,76 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
+
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> propertyToBeAuctionedNotHandedOver = assetsReLiquiService.queryPropertyToBeAuctioned(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
+
 		return countPropertySearchVO;
+	}
+
+	public Long queryPropertyFlowChartPage(String nodeKey,List<Integer> assetsTypeList){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+		assetsReLiquiFlowChartPageDTO.setNodeKey(nodeKey);
+		assetsReLiquiFlowChartPageDTO.setAssetsTypeList(assetsTypeList);
+		IPage<AssetsReLiquiFlowChartPageVO> assetsReLiquiFlowChartPageVOIPage = assetsReLiquiService.queryPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO);
+		return assetsReLiquiFlowChartPageVOIPage.getTotal();
 	}
 
 	@Override
 	public CountAuctionPropertyVO countAuctionProperty(){
 		CountAuctionPropertyVO countAuctionPropertyVO = new CountAuctionPropertyVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+
+		//**********动产未现勘********************************
+		countAuctionPropertyVO.setChattelNotAvailable(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK",null));
+
+		//**********不动产未现勘********************************
+		countAuctionPropertyVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK",null));
+
+		//**********不动产现勘未入户********************************
+		List<Integer> assetsTypeList = new ArrayList<>();
+		assetsTypeList.add(20201);
+		assetsTypeList.add(20204);
+		countAuctionPropertyVO.setRealEstateSurveyNotRegistered(queryPropertyFlowChartPage("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH",assetsTypeList));
+
+		//**********拍卖价格依据未出具********************************
+		countAuctionPropertyVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("entityZX_STZX_CCZXJGYJ_CCZXJGYJ",null));
+
+		//**********有依据未上拍********************************
+		countAuctionPropertyVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********公告期未拍卖********************************
+//		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖到期无结果********************************
+//		countAuctionPropertyVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖成交未处理********************************
+//		countAuctionPropertyVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********拍卖异常未撤销********************************
+//		countAuctionPropertyVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+//		//**********到款/抵偿未裁定********************************
+//		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+
+		//**********裁定未送达********************************
+		countAuctionPropertyVO.setRulingNotService(queryPropertyFlowChartPage("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK",null));
+
+		//**********送达未腾退********************************
+		countAuctionPropertyVO.setDeliveredButNotVacated(queryPropertyFlowChartPage("entityZX_STZX_CCZXTTCG_CCZXTTCG",null));
+
 
 		return countAuctionPropertyVO;
 	}
@@ -704,9 +797,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setSize(10);
 
 		//查询项目待接收
-		IPage<TransferRecordBankLoanVO> transferRecordPage = getTransferRecordPage(page);
-
-		countProjectMattersVO.setPendingCount(transferRecordPage.getTotal());
+		countProjectMattersVO.setPendingCount(getTransferRecordPage());
 
 		//查询项目在办
 		ProjectLiquiPageDTO projectInProgress = new ProjectLiquiPageDTO();

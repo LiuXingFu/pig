@@ -289,7 +289,7 @@
 		left join p10_target on p10_target.casee_id=p10_casee.casee_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_casee.del_flag = 0
-		and p10_casee.casee_type in (2020,2021,2030)
+		and p10_casee.casee_type in (2020,2021)
 		and p10_casee.status = 1
 		and p10_target.goal_type = 10001
 		and p10_task_node.form_data is not null
@@ -526,6 +526,51 @@
 		<if test="query.caseeNumber != null and query.caseeNumber != ''">
 			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
 			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_subject.name like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
+
+	<select id="selectPropertyPreservationCompleted" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
+		select DISTINCT p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id from p10_casee
+		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id and p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join (
+			select p10_assets_re.* from p10_assets_re
+			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+			where p10_assets_re.casee_id is not null
+			and if(p10_assets.type=20100,json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null,json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure') is null)
+			GROUP BY p10_assets_re.casee_id
+			)assets on assets.casee_id = p10_casee.casee_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_casee.`status` = 1
+		and assets.assets_id is null
+		and p10_target.goal_type = 10001
+		and p10_task_node.node_attributes = 400
+		and if(casee_type = 1010,p10_task_node.node_key="liQui_SQ_SQBQJG_SQBQJG",p10_task_node.node_key="liQui_SSBQ_SSBQBQJG_SSBQBQJG")
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.caseeType != null and query.caseeType != ''">
+			and p10_casee.casee_type = #{query.caseeType}
 		</if>
 		<if test="query.executedName != null and query.executedName != ''">
 			and p10_subject.name like concat('%', #{query.executedName}, '%')

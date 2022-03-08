@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
@@ -42,6 +43,11 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId);
 
+	List<PaymentRecordVO> getCourtPaymentUnpaid(Integer projectId);
+
+	boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO);
+
+	boolean collection(PaymentRecordDTO paymentRecordDTO);
 	/**
 	 * 较去年回款额
 	 * @return

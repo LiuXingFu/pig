@@ -38,4 +38,9 @@ public class CaseeSubjectReServiceImpl extends ServiceImpl<CaseeSubjectReMapper,
 	public List<SubjectOptionVO> getByCaseeId(Integer caseeId, Integer type,Integer caseePersonnelType) {
 		return this.baseMapper.getByCaseeId(caseeId, type,caseePersonnelType);
 	}
+
+	@Override
+	public List<SubjectOptionVO> getByProjectId(Integer projectId) {
+		return this.baseMapper.getByProjectId(projectId);
+	}
 }

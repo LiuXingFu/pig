@@ -78,5 +78,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<CaseeLiquiFlowChartPageVO> selectPropertyPreservationCompleted(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 	Long queryCompareTheNumberOfCasesCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }
