@@ -28,12 +28,14 @@ import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -116,6 +118,29 @@ public class AssetsReCaseeServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectBusinessTransfer(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public Long queryComparePropertyNumbersCount() {
+		return this.baseMapper.queryComparePropertyNumbersCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 财产分类统计集合
+	 * @return
+	 */
+	@Override
+	public List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList() {
+		return this.baseMapper.queryPropertyCategoryTotalList(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 财产总数量
+	 * @return
+	 */
+	@Override
+	public Long queryTotalProperty() {
+		return this.baseMapper.queryTotalProperty(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 }

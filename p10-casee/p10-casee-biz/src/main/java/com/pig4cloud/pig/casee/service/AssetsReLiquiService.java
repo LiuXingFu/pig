@@ -25,6 +25,9 @@ import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
+
+import java.util.List;
 
 /**
  * 财产关联表
@@ -65,4 +68,21 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	IPage<AssetsReLiquiFlowChartPageVO> queryBusinessTransfer(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
 
+	/**
+	 * 较去年财产数
+	 * @return
+	 */
+	Long queryComparePropertyNumbersCount();
+
+	/**
+	 * 财产分类统计集合
+	 * @return
+	 */
+	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList();
+
+	/**
+	 * 财产总数量
+	 * @return
+	 */
+	Long queryTotalProperty();
 }

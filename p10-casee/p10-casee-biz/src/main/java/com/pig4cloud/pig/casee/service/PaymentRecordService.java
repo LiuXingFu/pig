@@ -21,10 +21,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 回款详细记录表
@@ -40,4 +42,21 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId);
 
+	/**
+	 * 较去年回款额
+	 * @return
+	 */
+	BigDecimal queryCompareMoneyBackAmountCount();
+
+	/**
+	 * 本月回款额月排名
+	 * @return
+	 */
+	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList();
+
+	/**
+	 * 本月总回款额
+	 * @return
+	 */
+	BigDecimal getTotalRepayments();
 }

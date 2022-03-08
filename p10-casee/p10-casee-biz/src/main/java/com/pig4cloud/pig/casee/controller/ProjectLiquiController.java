@@ -273,4 +273,14 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.countCompareQuantity());
 	}
 
+	/**
+	 * 查询本月回款额排名
+	 * @return
+	 */
+	@ApiOperation(value = "查询本月回款额排名", notes = "查询本月回款额排名")
+	@GetMapping("/countMoneyBackMonthlyRank" )
+	public  R countMoneyBackMonthlyRank() {
+		return R.ok(projectLiquiService.countMoneyBackMonthlyRank());
+	}
+
 }

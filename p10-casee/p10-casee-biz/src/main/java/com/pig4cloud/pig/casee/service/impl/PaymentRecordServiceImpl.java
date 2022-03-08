@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
+import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -59,5 +61,32 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId) {
 		return this.baseMapper.getCourtPaymentPage(page,projectId);
+	}
+
+	/**
+	 * 查询较去年回款额
+	 * @return
+	 */
+	@Override
+	public BigDecimal queryCompareMoneyBackAmountCount() {
+		return this.baseMapper.queryCompareMoneyBackAmountCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 本月回款额月排名
+	 * @return
+	 */
+	@Override
+	public List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList() {
+		return this.baseMapper.queryMoneyBackMonthlyRankList(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 本月总回款额
+	 * @return
+	 */
+	@Override
+	public BigDecimal getTotalRepayments() {
+		return this.baseMapper.getTotalRepayments();
 	}
 }

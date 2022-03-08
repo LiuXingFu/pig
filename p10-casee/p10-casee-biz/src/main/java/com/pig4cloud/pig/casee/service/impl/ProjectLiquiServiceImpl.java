@@ -697,6 +697,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public CountProjectMattersVO countProjectMatters() {
 		CountProjectMattersVO countProjectMattersVO = new CountProjectMattersVO();
 
+		//设置分页条数
 		Page page = new Page();
 		page.setSize(1);
 		page.setCurrent(1);
@@ -726,19 +727,57 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		countProjectMattersVO.setProjectSuspendCount(projectSuspendIPage.getTotal());
 
+		//却查询提醒事项
+
 		return countProjectMattersVO;
 	}
 
+	/**
+	 * 年比较去年相关数量如：项目、回款额、案件数和财产数
+	 * @return
+	 */
 	@Override
 	public CountCompareQuantityVO countCompareQuantity() {
 		CountCompareQuantityVO countCompareQuantityVO = new CountCompareQuantityVO();
 
+		//查询较去年项目数
 		countCompareQuantityVO.setCompareTheNumberOfItemsCount(this.baseMapper.queryCompareTheNumberOfItemsCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
 
-		countCompareQuantityVO.setCompareMoneyBackAmountCount(this.baseMapper.queryCompareMoneyBackAmountCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+		//查询较去年回款额
+		countCompareQuantityVO.setCompareMoneyBackAmountCount(this.paymentRecordService.queryCompareMoneyBackAmountCount());
 
-		return null;
+		//查询较去年案件数
+		countCompareQuantityVO.setCompareTheNumberOfCasesCount(this.caseeLiquiService.queryCompareTheNumberOfCasesCount());
+
+		//查询较去年财产数
+		countCompareQuantityVO.setComparePropertyNumbersCount(this.assetsReLiquiService.queryComparePropertyNumbersCount());
+
+		return countCompareQuantityVO;
 	}
+
+	/**
+	 * 本月回款额月排名、回款总额、财产类型数量与财产总数量
+	 * @return
+	 */
+	@Override
+	public CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank() {
+		CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRankVO = new CountMoneyBackMonthlyRankVO();
+
+		//本月回款额月排名
+		countMoneyBackMonthlyRankVO.setMoneyBackMonthlyRankList(this.paymentRecordService.queryMoneyBackMonthlyRankList());
+
+		//本月总回款额
+		countMoneyBackMonthlyRankVO.setTotalRepayments(this.paymentRecordService.getTotalRepayments());
+
+		//财产分类统计集合
+		countMoneyBackMonthlyRankVO.setPropertyCategoryTotalList(this.assetsReLiquiService.queryPropertyCategoryTotalList());
+
+		//财产总数量
+		countMoneyBackMonthlyRankVO.setTotalProperty(this.assetsReLiquiService.queryTotalProperty());
+
+		return countMoneyBackMonthlyRankVO;
+	}
+
 
 
 }

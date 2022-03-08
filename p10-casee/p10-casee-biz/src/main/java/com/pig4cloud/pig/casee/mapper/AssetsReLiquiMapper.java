@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +48,9 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectBusinessTransfer(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	Long queryComparePropertyNumbersCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	Long queryTotalProperty(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

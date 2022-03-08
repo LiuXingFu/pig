@@ -56,6 +56,4 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	List<SubjectAssetsBehaviorListVO> selectAssetsBehavior(@Param("projectId") Integer projectId,@Param("caseePersonnelType") Integer caseePersonnelType);
 
 	Long queryCompareTheNumberOfItemsCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
-
-	Long queryCompareMoneyBackAmountCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

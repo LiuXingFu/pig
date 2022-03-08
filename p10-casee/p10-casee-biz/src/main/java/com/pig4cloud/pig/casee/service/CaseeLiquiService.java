@@ -211,4 +211,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
+	/**
+	 * 较去年案件数
+	 * @return
+	 */
+	Long queryCompareTheNumberOfCasesCount();
 }

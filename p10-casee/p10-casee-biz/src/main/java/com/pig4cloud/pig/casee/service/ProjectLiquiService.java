@@ -92,4 +92,6 @@ public interface ProjectLiquiService extends IService<Project> {
 
 	//年比较去年相关数量如：项目、回款额、案件数和财产数
 	CountCompareQuantityVO countCompareQuantity();
+
+	CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank();
 }
