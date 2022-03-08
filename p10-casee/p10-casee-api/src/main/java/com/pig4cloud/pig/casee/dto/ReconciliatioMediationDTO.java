@@ -18,8 +18,10 @@ package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -40,4 +42,16 @@ public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
 	 * 公司业务案号
 	 */
 	private String companyCode;
+
+	/**
+	 * 开始时间
+	 */
+	@ApiModelProperty(value="开始时间")
+	private LocalDate beginDate;
+
+	/**
+	 * 结束时间
+	 */
+	@ApiModelProperty(value="结束时间")
+	private LocalDate endDate;
 }

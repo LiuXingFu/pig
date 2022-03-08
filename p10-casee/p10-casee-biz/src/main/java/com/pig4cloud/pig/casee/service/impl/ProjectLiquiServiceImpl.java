@@ -107,6 +107,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private BehaviorLiquiService behaviorLiquiService;
 
+	@Autowired
+	private ReconciliatioMediationLiquiService reconciliatioMediationService;
+
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -564,6 +567,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountFulfillVO countFulfill(){
 		CountFulfillVO countFulfillVO = new CountFulfillVO();
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		//**********履行未到期统计********************************
+		ReconciliatioMediationDTO reconciliatioMediationDTO = new ReconciliatioMediationDTO();
+		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
+		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
+
+
 
 		return countFulfillVO;
 	}
