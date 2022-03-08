@@ -361,8 +361,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setSize(10);
 
 		//**********待接收统计********************************
-		IPage<TransferRecordBankLoanVO> transferRecordPage = this.getTransferRecordPage(page);
-		projectStatisticsVO.setPendingCount(transferRecordPage.getTotal());
+		projectStatisticsVO.setPendingCount(getTransferRecordPage());
 
 
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
@@ -374,16 +373,19 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 查询待接收分页集合数据
-	 * @param page
 	 * @return
 	 */
-	private IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page) {
+	private Long getTransferRecordPage() {
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
 		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
 		transferRecordDTO.setTransferType(0);
 		transferRecordDTO.setStatus(0);
 
 		IPage<TransferRecordBankLoanVO> transferRecordPage = transferRecordLiquiService.getTransferRecordPage(page,transferRecordDTO);
-		return transferRecordPage;
+		return transferRecordPage.getTotal();
 	}
 
 	public Long queryCaseNodePage(String nodeKey,Integer caseeType){
@@ -679,6 +681,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page,assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
+		//**********有抵押轮封未商移********************************
+		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
+
 		return countPropertySearchVO;
 	}
 
@@ -703,9 +709,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setSize(10);
 
 		//查询项目待接收
-		IPage<TransferRecordBankLoanVO> transferRecordPage = getTransferRecordPage(page);
-
-		countProjectMattersVO.setPendingCount(transferRecordPage.getTotal());
+		countProjectMattersVO.setPendingCount(getTransferRecordPage());
 
 		//查询项目在办
 		ProjectLiquiPageDTO projectInProgress = new ProjectLiquiPageDTO();
