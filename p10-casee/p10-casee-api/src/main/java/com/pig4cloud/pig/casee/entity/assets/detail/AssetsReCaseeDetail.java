@@ -4,6 +4,9 @@ import com.pig4cloud.pig.casee.entity.assets.detail.detailentity.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 /**
  * 项目案件财产关联详情
  */
@@ -15,6 +18,18 @@ public class AssetsReCaseeDetail {
 	 */
 	@ApiModelProperty(value = "抵押权人")
 	private Integer mortgagee;
+
+	/**
+	 * 抵押时间
+	 */
+	@ApiModelProperty(value = "抵押时间")
+	private LocalDate mortgageTime;
+
+	/**
+	 * 抵押金额
+	 */
+	@ApiModelProperty(value = "抵押金额")
+	private BigDecimal mortgageAmount;
 
 	/**
 	 * 资金资产冻结实体

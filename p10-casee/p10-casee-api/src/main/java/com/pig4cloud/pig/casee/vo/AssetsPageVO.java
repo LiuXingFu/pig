@@ -66,4 +66,10 @@ public class AssetsPageVO extends Assets {
 	 */
 	@ApiModelProperty(value = "信息地址")
 	private String informationAddress;
+
+	/**
+	 * 案件财产关联id
+	 */
+	@ApiModelProperty(value = "案件财产关联id")
+	private Integer assetsReId;
 }

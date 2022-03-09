@@ -312,7 +312,7 @@
 		and p10_target.goal_type = 10001
 		and JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime") is not null
 		and p10_task_node.form_data is null
-		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL #{day} DAY),'%Y-%m-%d') <![CDATA[<=]]>DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL #{day} DAY),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -596,6 +596,14 @@
 		<if test="outlesId != null and outlesId != 0">
 			AND p10_project.outles_id = #{outlesId}
 		</if>
+	</select>
+
+	<select id="selectCaseeDetails" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
+		select p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name from p10_casee
+		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_casee.del_flag = 0
+		and p10_casee.casee_id = #{caseeId}
 	</select>
 
 </mapper>

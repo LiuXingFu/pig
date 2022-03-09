@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Data
 public class AssetsReLiquiFlowChartPageVO extends AssetsReCasee {
@@ -69,5 +70,11 @@ public class AssetsReLiquiFlowChartPageVO extends AssetsReCasee {
 	 */
 	@ApiModelProperty(value="财产账号/编号")
 	private String accountNumber;
+
+	/**
+	 * 开拍时间
+	 */
+	@ApiModelProperty(value="开拍时间")
+	private LocalDate auctionStartDate;
 
 }

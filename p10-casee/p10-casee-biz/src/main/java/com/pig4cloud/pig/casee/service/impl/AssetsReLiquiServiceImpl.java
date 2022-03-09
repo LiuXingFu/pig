@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -165,6 +166,19 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Override
 	public Long queryTotalProperty() {
 		return this.baseMapper.queryTotalProperty(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public AssetsReLiquiDetailsVO getAssetsReDetails(Integer assetsReId){
+		return this.baseMapper.selectAssetsReDetails(assetsReId);
 	}
 
 }
