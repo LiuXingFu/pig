@@ -207,6 +207,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				assetsReCasee.setAssetsSource(1);
 				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
 				assetsReCaseeDetail.setMortgagee(0);
+				assetsReCaseeDetail.setMortgageTime(item.getMortgageTime());
+				assetsReCaseeDetail.setMortgageAmount(item.getMortgageAmount());
 				assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
 				assetsReCaseeList.add(assetsReCasee);
 				assetsReLiquiService.save(assetsReCasee);
@@ -761,8 +763,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********有依据未上拍********************************
 		countAuctionPropertyVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG", null));
 
-//		//**********公告期未拍卖********************************
-//		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********公告期未拍卖********************************
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
 //		//**********拍卖到期无结果********************************
 //		countAuctionPropertyVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));

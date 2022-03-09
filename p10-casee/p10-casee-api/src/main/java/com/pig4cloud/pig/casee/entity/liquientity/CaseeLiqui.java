@@ -9,9 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@TableName("p10_casee")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "案件表")
+@Data
 public class CaseeLiqui extends Casee {
 
 	@ApiModelProperty(value="清收案件详情表")

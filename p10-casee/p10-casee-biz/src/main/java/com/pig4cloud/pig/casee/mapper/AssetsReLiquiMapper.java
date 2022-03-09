@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
@@ -59,4 +60,8 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	Long queryTotalProperty(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionAnnouncementPeriod(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	AssetsReLiquiDetailsVO selectAssetsReDetails(@Param("assetsReId") Integer assetsReId);
 }

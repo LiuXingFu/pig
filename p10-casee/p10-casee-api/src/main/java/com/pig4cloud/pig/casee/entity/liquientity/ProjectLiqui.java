@@ -22,6 +22,7 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -31,9 +32,7 @@ import lombok.EqualsAndHashCode;
  * @date 2022-01-10 15:05:49
  */
 
-@TableName("p10_project")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "清收项目表")
+@Data
 public class ProjectLiqui extends Project {
 
 	@ApiModelProperty(value="清收项目详情表")

@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 
@@ -105,8 +106,12 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList();
 
 	/**
-	 * 财产总数量
+	 * 财产拍卖公告期
 	 * @return
 	 */
 	Long queryTotalProperty();
+
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	AssetsReLiquiDetailsVO getAssetsReDetails(Integer assetsReId);
 }

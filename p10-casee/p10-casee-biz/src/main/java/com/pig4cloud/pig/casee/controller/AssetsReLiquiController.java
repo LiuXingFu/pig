@@ -127,4 +127,26 @@ public class AssetsReLiquiController {
 	public R queryPropertyFlowChartPage(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
 		return R.ok(assetsReLiquiService.queryPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO));
 	}
+
+	/**
+	 * 财产拍卖公告期
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "财产拍卖公告期", notes = "财产拍卖公告期")
+	@GetMapping("/queryPropertyAuctionAnnouncementPeriod" )
+	public R queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 查询案件财产详情
+	 * @param assetsReId
+	 * @return R
+	 */
+	@ApiOperation(value = "财产拍卖公告期", notes = "财产拍卖公告期")
+	@GetMapping("/getAssetsReDetails" )
+	public R getAssetsReDetails(Integer assetsReId) {
+		return R.ok(assetsReLiquiService.getAssetsReDetails(assetsReId));
+	}
 }
