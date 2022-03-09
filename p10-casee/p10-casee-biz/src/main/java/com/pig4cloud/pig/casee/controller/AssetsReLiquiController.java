@@ -149,4 +149,48 @@ public class AssetsReLiquiController {
 	public R getAssetsReDetails(Integer assetsReId) {
 		return R.ok(assetsReLiquiService.getAssetsReDetails(assetsReId));
 	}
+
+	/**
+	 * 到款/抵偿未裁定
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "到款/抵偿未裁定", notes = "到款/抵偿未裁定")
+	@GetMapping("/queryDispositionRuling" )
+	public R queryDispositionRuling(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryDispositionRuling(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 拍卖到期无结果
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "拍卖到期无结果", notes = "拍卖到期无结果")
+	@GetMapping("/queryPropertyAuctionDue" )
+	public R queryPropertyAuctionDue(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyAuctionDue(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 拍卖成功未处理
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "拍卖成功未处理", notes = "拍卖成功未处理")
+	@GetMapping("/queryPropertyAuctionSuccess" )
+	public R queryPropertyAuctionSuccess(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
+	 * 拍卖不成功未处理
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "拍卖不成功未处理", notes = "拍卖不成功未处理")
+	@GetMapping("/queryPropertyAuctionFailed" )
+	public R queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO));
+	}
 }

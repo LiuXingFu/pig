@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.vo;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import io.swagger.annotations.ApiModelProperty;
@@ -76,5 +77,22 @@ public class AssetsReLiquiFlowChartPageVO extends AssetsReCasee {
 	 */
 	@ApiModelProperty(value="开拍时间")
 	private LocalDate auctionStartDate;
+
+	/**
+	 * 拍卖公告阶段(0-一拍 1-二拍 2-变卖)
+	 */
+	private Integer auctionAnnouncementStage;
+
+	/**
+	 * 拍卖结束日期
+	 */
+	@JSONField(format="yyyy-MM-dd")
+	private LocalDate auctionEndDate;
+
+	/**
+	 * 节点名称
+	 */
+	@ApiModelProperty(value="节点名称")
+	private String nodeName;
 
 }

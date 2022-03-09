@@ -768,17 +768,24 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
-//		//**********拍卖到期无结果********************************
-//		countAuctionPropertyVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖到期无结果********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExpiresWithoutResults = assetsReLiquiService.queryPropertyAuctionDue(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionExpiresWithoutResults(auctionExpiresWithoutResults.getTotal());
 
-//		//**********拍卖成交未处理********************************
-//		countAuctionPropertyVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖成交未处理********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionTransactionNotProcessed(auctionTransactionNotProcessed.getTotal());
+
+		//**********拍卖不成交未处理********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionFailedNotProcessed = assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionTransactionFailedNotProcessed(auctionTransactionFailedNotProcessed.getTotal());
 
 //		//**********拍卖异常未撤销********************************
 //		countAuctionPropertyVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
 
-//		//**********到款/抵偿未裁定********************************
-//		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********到款/抵偿未裁定********************************
+		IPage<AssetsReLiquiFlowChartPageVO> arrivalCompensationNotAdjudicated = assetsReLiquiService.queryDispositionRuling(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(arrivalCompensationNotAdjudicated.getTotal());
 
 		//**********裁定未送达********************************
 		countAuctionPropertyVO.setRulingNotService(queryPropertyFlowChartPage("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK", null));
