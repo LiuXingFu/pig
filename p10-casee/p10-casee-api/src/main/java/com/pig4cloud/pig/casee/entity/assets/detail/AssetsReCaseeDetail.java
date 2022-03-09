@@ -39,6 +39,13 @@ public class AssetsReCaseeDetail {
 	 */
 	@ApiModelProperty(value = "实体财产到款")
 	private AssetsPayment assetsPayment;
+
+	/**
+	 * 资产抵偿
+	 */
+	@ApiModelProperty(value = "资产抵偿")
+	private AssetsAssetCompensate assetsAssetCompensate;
+
 	/**
 	 *  实体财产成交裁定
 	 */

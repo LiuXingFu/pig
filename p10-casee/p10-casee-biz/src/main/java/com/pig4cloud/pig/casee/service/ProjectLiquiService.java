@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
@@ -94,4 +95,6 @@ public interface ProjectLiquiService extends IService<Project> {
 	CountCompareQuantityVO countCompareQuantity();
 
 	CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank();
+
+	CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO);
 }
