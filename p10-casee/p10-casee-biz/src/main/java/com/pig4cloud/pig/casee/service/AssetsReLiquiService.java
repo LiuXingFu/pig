@@ -119,6 +119,11 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 */
 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
+	/**
+	 * 获取案件财产详情，及项目案件财产详情
+	 * @param assetsReId
+	 * @return
+	 */
 	AssetsReLiquiDetailsVO getAssetsReDetails(Integer assetsReId);
 
 	/**

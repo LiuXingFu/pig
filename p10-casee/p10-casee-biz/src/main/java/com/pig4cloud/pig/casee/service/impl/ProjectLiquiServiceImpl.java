@@ -566,6 +566,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********裁判文书未送达********************************
 		countLitigationVO.setLitigationOthersJudgmentNotService(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030));
 
+		//**********送达未生效********************************
+//		countLitigationVO.setLitigationOthersServiceNotActive(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030));
+
 		//***********其它案件节点统计end*************************************************
 
 		return countLitigationVO;
@@ -583,6 +586,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		reconciliatioMediationDTO.setStatus(0);
 		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
 		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
+
+		//**********达成履行协议未处理********************************
+//		countFulfillVO.setFulfillReachFulfillProtocolNotProcessed();
+
+		//**********首次执行待立案********************************
+		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
+		IPage<ProjectLiquiPageVO> fulfillFirstExecutionPending = this.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO);
+		countFulfillVO.setFulfillFirstExecutionPending(fulfillFirstExecutionPending.getTotal());
 
 
 		return countFulfillVO;
@@ -714,13 +725,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
-		//**********有抵押轮封未商移********************************
+		//**********首冻资金未划扣********************************
 		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
 
-		//**********有抵押轮封未商移********************************
+		//**********待拍财产未移交********************************
 		IPage<AssetsReLiquiFlowChartPageVO> propertyToBeAuctionedNotHandedOver = assetsReLiquiService.queryPropertyToBeAuctioned(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
+
+		//**********处理未到款********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setHandleNotPayment(auctionTransactionNotProcessed.getTotal());
 
 		return countPropertySearchVO;
 	}
@@ -912,6 +927,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 //		this.baseMapper.getprojectMap()
 
 		return null;
+	}
+
+	@Override
+	public 	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectFulfillFirstExecutionPending(page, projectNoProcessedDTO, insOutlesDTO);
 	}
 
 

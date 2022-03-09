@@ -137,7 +137,7 @@ public class CountLitigationVO {
 	private Long litigationOthersJudgmentNotService;
 
 	/**
-	 * 送达未生效********************************
+	 * 送达未生效
 	 */
 	private Long litigationOthersServiceNotActive;
 

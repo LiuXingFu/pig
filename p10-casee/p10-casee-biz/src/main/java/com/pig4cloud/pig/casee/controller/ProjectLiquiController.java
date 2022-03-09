@@ -296,4 +296,15 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.countPolylineLineChart(countPolylineLineChartDTO));
 	}
 
+	/**
+	 * 履行阶段首执待立案
+	 * @param projectNoProcessedDTO
+	 * @return
+	 */
+	@ApiOperation(value = "履行阶段首执待立案", notes = "履行阶段首执待立案")
+	@GetMapping("/queryFulfillFirstExecutionPending" )
+	public R queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
+		return R.ok(projectLiquiService.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO));
+	}
+
 }
