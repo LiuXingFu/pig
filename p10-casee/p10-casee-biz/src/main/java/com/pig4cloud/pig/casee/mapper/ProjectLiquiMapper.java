@@ -60,5 +60,7 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	ProjectLiqui selectProjectDetails(@Param("projectId") Integer projectId);
 
+	IPage<ProjectLiquiPageVO> selectFulfillFirstExecutionPending(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
+
 	Map<String, Long> getProjectMap(@Param("polylineActive") Integer polylineActive,@Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

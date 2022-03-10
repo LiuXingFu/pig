@@ -210,6 +210,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 */
 	CaseeOrTargetTaskFlowDTO auditCaseeOrTargetTask(CaseeOrTargetTaskFlowDTO caseeOrTargetTaskFlowDTO);
 
+	/**
+	 * 拍卖撤案显示判断
+	 */
+	boolean revoke(TaskNode taskNode);
 
 	/**
 	 * 消息代办 我的代办/委托列表

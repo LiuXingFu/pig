@@ -17,7 +17,7 @@ public class FulfillmentRecord extends CommonalityData implements Serializable {
 	/**
 	 * 履行时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date fulfillTime;
 
 	/**

@@ -15,13 +15,13 @@ public class EntityZX_STZX_CCZXCF_CCZXCF extends CommonalityData implements Seri
 	/**
 	 * 查封日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date sealUpTime;
 
 	/**
 	 * 查封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date seizureExpiryDate;
 
 	/**
@@ -37,7 +37,7 @@ public class EntityZX_STZX_CCZXCF_CCZXCF extends CommonalityData implements Seri
 	/**
 	 * 首封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date firstCoverDueDate;
 
 	/**

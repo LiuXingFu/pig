@@ -49,4 +49,9 @@ public class ReconciliatioMediationVO extends ReconciliatioMediation {
 	 * 剩余待履行金额
 	 */
 	private BigDecimal balance;
+
+	/**
+	 * 履行总金额
+	 */
+	private BigDecimal totalFulfillmentAmount;
 }

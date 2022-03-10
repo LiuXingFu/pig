@@ -39,6 +39,7 @@ import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
 import com.pig4cloud.pig.casee.mapper.TaskNodeMapper;
@@ -66,6 +67,8 @@ import org.springframework.transaction.annotation.Transactional;
 import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -675,6 +678,31 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		taskRecordService.addTaskRecord(caseeOrTargetTaskFlowDTO, CaseeOrTargetTaskFlowConstants.CASEEORTARGET_OBJECT);
 
 		return caseeOrTargetTaskFlowDTO;
+	}
+
+	@Override
+	public boolean revoke(TaskNode taskNode) {
+		List<TaskNode> taskNodeList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG"));
+		if (taskNodeList.size()>0){
+			TaskNode taskNodePmgg = taskNodeList.get(taskNodeList.size() - 1);
+			if (taskNodePmgg.getFormData()==null){
+				return false;
+			}
+
+			EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
+
+			if (entityZX_stzx_cczxpmgg_cczxpmgg.getRevoke()==1){
+				return false;
+			}
+
+			Date announcementReleaseTime = entityZX_stzx_cczxpmgg_cczxpmgg.getAnnouncementReleaseTime();
+			Date auctionStartDate = entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionEndDate();
+			Date nowTime = new Date();
+
+			return DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
+
+		}
+		return false;
 	}
 
 	@Override

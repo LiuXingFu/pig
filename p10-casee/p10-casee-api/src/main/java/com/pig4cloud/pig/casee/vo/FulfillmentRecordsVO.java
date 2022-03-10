@@ -52,4 +52,9 @@ public class FulfillmentRecordsVO extends FulfillmentRecordsLiqui {
 	 */
 	private String deferPerformance;
 
+	/**
+	 * 总履行金额
+	 */
+	private BigDecimal totalFulfillmentAmount;
+
 }

@@ -564,6 +564,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********裁判文书未送达********************************
 		countLitigationVO.setLitigationOthersJudgmentNotService(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030));
 
+		//**********送达未生效********************************
+//		countLitigationVO.setLitigationOthersServiceNotActive(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030));
+
 		//***********其它案件节点统计end*************************************************
 
 		return countLitigationVO;
@@ -581,6 +584,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		reconciliatioMediationDTO.setStatus(0);
 		IPage<ReconciliatioMediationVO> fulfillFulfillNotExpired = reconciliatioMediationService.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
 		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
+
+		//**********达成履行协议未处理********************************
+		countFulfillVO.setFulfillReachFulfillProtocolNotProcessed(fulfillFulfillNotExpired.getTotal());
+
+		//**********首次执行待立案********************************
+		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
+		IPage<ProjectLiquiPageVO> fulfillFirstExecutionPending = this.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO);
+		countFulfillVO.setFulfillFirstExecutionPending(fulfillFirstExecutionPending.getTotal());
 
 
 		return countFulfillVO;
@@ -607,12 +618,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********首执送达未查控********************************
 		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryAssetsNotSeizeAndFreeze(3010, null));
 
-
 		//***********首执案件节点统计end*************************************************
 
 
 		//***********执恢案件节点统计Start*************************************************
-
 
 		//**********恢复执行待立案********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
@@ -712,13 +721,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 
-		//**********有抵押轮封未商移********************************
+		//**********首冻资金未划扣********************************
 		IPage<AssetsReLiquiFlowChartPageVO> firstFrozenFundsNotDebited = assetsReLiquiService.queryFundDeduction(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setFirstFrozenFundsNotDebited(firstFrozenFundsNotDebited.getTotal());
 
-		//**********有抵押轮封未商移********************************
+		//**********待拍财产未移交********************************
 		IPage<AssetsReLiquiFlowChartPageVO> propertyToBeAuctionedNotHandedOver = assetsReLiquiService.queryPropertyToBeAuctioned(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
+
+		//**********处理未到款********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setHandleNotPayment(auctionTransactionNotProcessed.getTotal());
 
 		return countPropertySearchVO;
 	}
@@ -766,17 +779,25 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
-//		//**********拍卖到期无结果********************************
-//		countAuctionPropertyVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖到期无结果********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExpiresWithoutResults = assetsReLiquiService.queryPropertyAuctionDue(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionExpiresWithoutResults(auctionExpiresWithoutResults.getTotal());
 
-//		//**********拍卖成交未处理********************************
-//		countAuctionPropertyVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖成交未处理********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionTransactionNotProcessed(auctionTransactionNotProcessed.getTotal());
 
-//		//**********拍卖异常未撤销********************************
-//		countAuctionPropertyVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖不成交未处理********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionFailedNotProcessed = assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionTransactionFailedNotProcessed(auctionTransactionFailedNotProcessed.getTotal());
 
-//		//**********到款/抵偿未裁定********************************
-//		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖异常未撤销********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExceptionNotCancelled = assetsReLiquiService.queryPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionExceptionNotCancelled(auctionExceptionNotCancelled.getTotal());
+
+		//**********到款/抵偿未裁定********************************
+		IPage<AssetsReLiquiFlowChartPageVO> arrivalCompensationNotAdjudicated = assetsReLiquiService.queryDispositionRuling(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(arrivalCompensationNotAdjudicated.getTotal());
 
 		//**********裁定未送达********************************
 		countAuctionPropertyVO.setRulingNotService(queryPropertyFlowChartPage("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK", null));
@@ -964,6 +985,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countPolylineLineChartVO.setProjectList(projectList);
 
 		countPolylineLineChartVO.setCaseeList(caseeList);
+	}
+
+	@Override
+	public 	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectFulfillFirstExecutionPending(page, projectNoProcessedDTO, insOutlesDTO);
 	}
 
 

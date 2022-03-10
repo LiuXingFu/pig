@@ -50,6 +50,11 @@ public class CountAuctionPropertyVO {
 	private Long auctionTransactionNotProcessed;
 
 	/**
+	 * 拍卖不成交未处理
+	 */
+	private Long auctionTransactionFailedNotProcessed;
+
+	/**
 	 * 拍卖异常未撤销
 	 */
 	private Long auctionExceptionNotCancelled;

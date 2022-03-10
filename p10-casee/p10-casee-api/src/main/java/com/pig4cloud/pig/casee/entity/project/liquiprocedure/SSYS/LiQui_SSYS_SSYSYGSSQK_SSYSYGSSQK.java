@@ -16,7 +16,7 @@ public class LiQui_SSYS_SSYSYGSSQK_SSYSYGSSQK extends CommonalityData implements
 	/**
 	 * 确认日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date confirmTime;
 
 	/**

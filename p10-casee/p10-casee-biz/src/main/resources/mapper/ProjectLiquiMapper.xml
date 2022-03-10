@@ -197,6 +197,60 @@
 		and project_id = #{projectId}
 	</select>
 
+	<select id="selectFulfillFirstExecutionPending" resultType="com.pig4cloud.pig.casee.vo.ProjectLiquiPageVO">
+		select DISTINCT p10_project.*,json_extract(p10_transfer_record.transfer_detail,'$.litigation') as litigation from (
+			select p10_project.* from p10_project
+			left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+			left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
+			left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id and p10_casee.casee_type = 3010
+			left join (select p10_casee.casee_id from p10_casee
+					left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+					where p10_casee.del_flag = 0
+					and p10_casee.casee_type in (2020,2021)
+					and p10_casee.`status` = 3
+					GROUP BY p10_project_casee_re.project_id
+				)casee on casee.casee_id = p10_project_casee_re.casee_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_casee.casee_id is null
+			and casee.casee_id is not null
+			and json_extract( p10_transfer_record.transfer_detail, '$.litigation' ) = 0
+			union
+			select p10_project.* from p10_project
+			left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+			left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
+			left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id and p10_casee.casee_type = 3010
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_casee.casee_id is null
+			and json_extract( p10_transfer_record.transfer_detail, '$.litigation' ) = 1
+			union
+			select p10_project.* from p10_project
+			left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+			left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id and p10_casee.casee_type = 3010
+			left join (select reconciliatio_mediation_id,project_id,max(reconciliatio_mediation_data),status from p10_reconciliatio_mediation
+					GROUP BY project_id
+				)p10_reconciliatio_mediation on p10_reconciliatio_mediation.project_id = p10_project.project_id and p10_reconciliatio_mediation.`status` = 3
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_reconciliatio_mediation.reconciliatio_mediation_id is not null
+			and p10_casee.casee_id is null
+			)p10_project
+		left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.subjectPersons != null and query.subjectPersons != ''">
+			and p10_project.subject_persons like concat('%', #{query.subjectPersons}, '%')
+		</if>
+		<if test="query.companyCode != null and query.companyCode != ''">
+			and p10_project.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+	</select>
+
 	<select id="getProjectMap" resultType="java.util.LinkedHashMap">
 		select
 		<if test="polylineActive != null and polylineActive == 0">

@@ -18,7 +18,7 @@ public class EntityZX_STZX_CCZXCJCD_CCZXCJCD extends CommonalityData implements 
 	/**
 	 * 裁定日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date dateOfAdjudication;
 
 	/**

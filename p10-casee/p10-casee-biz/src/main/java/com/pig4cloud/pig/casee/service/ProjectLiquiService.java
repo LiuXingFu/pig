@@ -97,4 +97,12 @@ public interface ProjectLiquiService extends IService<Project> {
 	CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank();
 
 	CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO);
+
+	/**
+	 * 履行阶段首执待立案
+	 * @param page
+	 * @param projectNoProcessedDTO
+	 * @return
+	 */
+	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
 }

@@ -15,7 +15,7 @@ public class BeIllegal_XWWF_XWWFXZCX_XWWFXZCX extends CommonalityData implements
 	/**
 	 * 撤销日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date revokeTime;
 
 	/**

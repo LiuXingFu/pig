@@ -30,11 +30,6 @@ public class CountPropertySearchVO {
 	private Long propertyToBeAuctionedNotHandedOver;
 
 	/**
-	 * 其他财产查控未处理
-	 */
-	private Long otherPropertyCheckControlNotProcessed;
-
-	/**
 	 * 处理未到款
 	 */
 	private Long handleNotPayment;

@@ -378,6 +378,7 @@
 		and p10_task_node.node_attributes = 400
 		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
 		and substring(json_extract( p10_assets_re.assets_re_detail, '$.auctionStartDate' ),2,10) &lt; DATE_FORMAT(now(), '%Y-%m-%d')
+		and json_extract( p10_assets_re.assets_re_detail, '$.revoke' ) = 0
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -412,5 +413,220 @@
 		select * from p10_assets_re
 		where del_flag = 0
 		and assets_re_id = #{assetsReId}
+	</select>
+
+	<select id="selectDispositionRuling" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_casee.casee_type in (3010,3031)
+		and p10_casee.`status` = 1
+		and p10_target.goal_type = 20001
+		and (json_extract( p10_assets_re.assets_re_detail, '$.assetsPayment' ) is not null or json_extract( p10_assets_re.assets_re_detail, '$.assetsAssetCompensate' ) is not null)
+		and (json_extract( p10_assets_re.assets_re_detail, '$.assetsCompletionRuling' ) is null or json_extract( p10_assets_re.assets_re_detail, '$.assetsCompensationAward' ) is null)
+		and p10_task_node.node_attributes = 400
+		and if(json_extract( p10_assets_re.assets_re_detail, '$.assetsPayment' ) is not null,p10_task_node.node_key = "entityZX_STZX_CCZXCJCD_CCZXCJCD",p10_task_node.node_key = "entityZX_STZX_CCZXDCCD_CCZXDCCD")
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="selectPropertyAuctionDue" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,task_node.node_id,
+		substring(json_extract( p10_task_node.form_data, '$.auctionAnnouncementStage' ),2,1) as auctionAnnouncementStage,substring(json_extract( p10_task_node.form_data, '$.auctionEndDate' ),2,10) as auctionEndDate
+		from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join (select p10_task_node.target_id,p10_task_node.node_id from p10_task_node
+				where p10_task_node.node_attributes = 400
+				and p10_task_node.node_key = "entityZX_STZX_CCZXPMJG_CCZXPMJG"
+				and p10_task_node.form_data is null
+				) task_node on task_node.target_id = p10_target.target_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_casee.casee_type in (3010,3031)
+		and p10_target.goal_type = 20001
+		and task_node.target_id is not null
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+		and substring(json_extract( p10_task_node.form_data, '$.auctionEndDate' ),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+		and json_extract( p10_task_node.form_data, '$.revoke' ) = 0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="selectPropertyAuctionSuccess" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,task_node.node_id,task_node.node_name
+		from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join (select p10_task_node.target_id,p10_task_node.node_id,p10_task_node.form_data,p10_task_node.node_name from p10_task_node
+				where p10_task_node.node_attributes = 400
+				and (p10_task_node.node_key = "entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK" or p10_task_node.node_key = "entityZX_STZX_CCZXDK_CCZXDK")
+				and p10_task_node.form_data is null
+				GROUP BY p10_task_node.target_id
+				) task_node on task_node.target_id = p10_target.target_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_casee.casee_type in (3010,3031)
+		and p10_target.goal_type = 20001
+		and task_node.target_id is not null
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMJG_CCZXPMJG"
+		and json_extract( p10_task_node.form_data, '$.auctionResults' ) = 0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="selectPropertyAuctionFailed" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,task_node.node_id
+		from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join (select p10_task_node.target_id,p10_task_node.node_id,p10_task_node.form_data,p10_task_node.node_name from p10_task_node
+		where p10_task_node.node_attributes = 400
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+		and p10_task_node.form_data is null
+		GROUP BY p10_task_node.target_id
+		) task_node on task_node.target_id = p10_target.target_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_casee.casee_type in (3010,3031)
+		and p10_target.goal_type = 20001
+		and task_node.target_id is not null
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMJG_CCZXPMJG"
+		and json_extract( p10_task_node.form_data, '$.auctionResults' ) = 1
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="selectPropertyAuctionAbnormal" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select * from (
+		select p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_casee
+		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 1000
+		and p10_casee.del_flag = 0
+		and p10_casee.casee_type in (3010,3031)
+		and p10_casee.`status` in (2,3)
+		and p10_assets.type = 20200
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_attributes = 400
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+		and substring(json_extract( p10_task_node.form_data, '$.auctionEndDate' ),2,10) >= DATE_FORMAT(p10_casee.close_time, '%Y-%m-%d')
+		and json_extract( p10_task_node.form_data, '$.revoke' ) = 0
+		UNION
+		select p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 3000
+		and p10_assets_re.casee_id is not null
+		and p10_casee.casee_type in (3010,3031)
+		and p10_assets.type = 20200
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_attributes = 400
+		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+		and substring(json_extract( p10_task_node.form_data, '$.auctionEndDate' ),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+		and json_extract( p10_task_node.form_data, '$.revoke' ) = 0
+		)p10_assets_re
+		<if test="login.insId != null and login.insId > 0">
+			and p10_assets_re.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_assets_re.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_assets_re.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_assets_re.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets_re.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets_re.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
 	</select>
 </mapper>

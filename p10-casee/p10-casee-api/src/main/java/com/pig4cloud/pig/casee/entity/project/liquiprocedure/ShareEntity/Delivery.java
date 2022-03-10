@@ -16,7 +16,7 @@ public class Delivery extends CommonalityData implements Serializable {
 	/**
 	 * 送达日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date deliveryTime;
 
 	/**

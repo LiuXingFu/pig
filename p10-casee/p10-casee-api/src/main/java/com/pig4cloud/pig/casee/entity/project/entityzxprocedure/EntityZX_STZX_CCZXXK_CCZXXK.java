@@ -18,7 +18,7 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	/**
 	 * 现勘日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date explorationTime;
 
 	/**

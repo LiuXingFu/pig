@@ -14,43 +14,20 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
-import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+package com.pig4cloud.pig.casee.mapper;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.ReconciliatioMediationSubjectRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 和解/调解表
+ * 和解/调解主体关联表
  *
  * @author Mjh
- * @date 2022-03-01 20:36:17
+ * @date 2022-03-09 19:48:49
  */
-@Data
-public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
-
-	/**
-	 * 待履行记录信息
-	 */
-	private List<FulfillmentRecords> fulfillmentRecordsList;
-
-	/**
-	 * 公司业务案号
-	 */
-	private String companyCode;
-
-	/**
-	 * 债务人id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 债务人名称
-	 */
-	private String name;
+@Mapper
+public interface ReconciliatioMediationSubjectReMapper extends BaseMapper<ReconciliatioMediationSubjectRe> {
 
 }

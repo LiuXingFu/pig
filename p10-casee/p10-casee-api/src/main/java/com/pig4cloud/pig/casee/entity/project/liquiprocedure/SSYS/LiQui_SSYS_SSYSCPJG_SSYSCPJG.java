@@ -19,7 +19,7 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	/**
 	 * 裁判/调解日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date refereeMediationTime;
 
 	/**

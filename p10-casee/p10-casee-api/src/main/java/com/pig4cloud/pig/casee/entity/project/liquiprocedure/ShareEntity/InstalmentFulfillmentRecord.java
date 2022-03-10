@@ -22,7 +22,7 @@ public class InstalmentFulfillmentRecord extends CommonalityData implements Seri
 	/**
 	 * 分期履行时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date installmentTime;
 
 	/**

@@ -24,11 +24,13 @@ import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
 import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.entity.ReconciliatioMediationSubjectRe;
 import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
 import com.pig4cloud.pig.casee.mapper.ReconciliatioMediationLiquiMapper;
 import com.pig4cloud.pig.casee.service.FulfillmentRecordsLiquiService;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.service.ReconciliatioMediationLiquiService;
+import com.pig4cloud.pig.casee.service.ReconciliatioMediationSubjectReService;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,35 +52,17 @@ public class ReconciliatioMediationLiquiServiceImpl extends ServiceImpl<Reconcil
 	private FulfillmentRecordsLiquiService fulfillmentRecordsService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private ReconciliatioMediationSubjectReService reconciliatioMediationSubjectReService;
 
 	@Override
 	public IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, ReconciliatioMediationDTO reconciliatioMediationDTO) {
-		IPage<ReconciliatioMediationVO> reconciliatioMediationPage = this.baseMapper.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
-		for (ReconciliatioMediationVO reconciliatioMediationVO : reconciliatioMediationPage.getRecords()) {
-			for (FulfillmentRecordsVO fulfillmentRecordsVO : reconciliatioMediationVO.getFulfillmentRecordsList()) {
-				if (fulfillmentRecordsVO.getPaymentAmount()!=null){
-					reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount().subtract(fulfillmentRecordsVO.getPaymentAmount()));
-				}else {
-					reconciliatioMediationVO.setBalance(reconciliatioMediationVO.getAmount());
-				}
-			}
-		}
-		return reconciliatioMediationPage;
+		return this.baseMapper.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
 	}
 
 	@Override
 	public ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId) {
-		ReconciliatioMediationVO reconciliatioMediationVO = this.baseMapper.getByReconciliatioMediationId(reconciliatioMediationId);
-		BigDecimal amount = reconciliatioMediationVO.getAmount();
-		for (FulfillmentRecordsVO fulfillmentRecordsVO : reconciliatioMediationVO.getFulfillmentRecordsList()) {
-			if (fulfillmentRecordsVO.getPaymentAmount()!=null){
-				amount=amount.subtract(fulfillmentRecordsVO.getPaymentAmount());
-			}else {
-				amount=reconciliatioMediationVO.getAmount();
-			}
-			reconciliatioMediationVO.setBalance(amount);
-		}
-		return reconciliatioMediationVO;
+		return this.baseMapper.getByReconciliatioMediationId(reconciliatioMediationId);
 	}
 
 	@Override
@@ -93,6 +77,14 @@ public class ReconciliatioMediationLiquiServiceImpl extends ServiceImpl<Reconcil
 		projectModifyStatusDTO.setStatus(3000);
 		projectModifyStatusDTO.setStatusName("和解");
 		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
+
+		//添加和解/调解债务人关联信息
+		for (Integer integer : reconciliatioMediationDTO.getSubjectIdList()) {
+			ReconciliatioMediationSubjectRe reconciliatioMediationSubjectRe=new ReconciliatioMediationSubjectRe();
+			reconciliatioMediationSubjectRe.setSubjectId(integer);
+			reconciliatioMediationSubjectRe.setReconciliatioMediationId(reconciliatioMediationDTO.getReconciliatioMediationId());
+			reconciliatioMediationSubjectReService.save(reconciliatioMediationSubjectRe);
+		}
 
 		for (FulfillmentRecords fulfillmentRecords : reconciliatioMediationDTO.getFulfillmentRecordsList()) {
 			fulfillmentRecords.setReconciliatioMediationId(reconciliatioMediationDTO.getReconciliatioMediationId());

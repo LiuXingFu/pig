@@ -16,7 +16,7 @@ public class LiQui_LX_LXDC_LXDC extends CommonalityData implements Serializable 
 	/**
 	 * 督促日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date urgeTime;
 
 	/**

@@ -16,7 +16,7 @@ public class EntityZX_STZX_CCZXSQYS_CCZXSQYS extends CommonalityData implements 
 	/**
 	 * 商请移送日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date pleaseTransferDate;
 
 	/**
