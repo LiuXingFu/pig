@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
+import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -111,5 +112,32 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 		//添加分配款项信息
 		return this.saveBatch(paymentRecordDTO.getPaymentRecordList());
+	}
+
+	/**
+	 * 查询较去年回款额
+	 * @return
+	 */
+	@Override
+	public BigDecimal queryCompareMoneyBackAmountCount() {
+		return this.baseMapper.queryCompareMoneyBackAmountCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 本月回款额月排名
+	 * @return
+	 */
+	@Override
+	public List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList() {
+		return this.baseMapper.queryMoneyBackMonthlyRankList(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 本月总回款额
+	 * @return
+	 */
+	@Override
+	public BigDecimal getTotalRepayments() {
+		return this.baseMapper.getTotalRepayments();
 	}
 }

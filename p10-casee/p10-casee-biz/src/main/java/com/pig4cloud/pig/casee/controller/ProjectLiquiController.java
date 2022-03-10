@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
@@ -31,6 +32,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -271,6 +273,38 @@ public class ProjectLiquiController {
 	@GetMapping("/countCompareQuantity" )
 	public R countCompareQuantity() {
 		return R.ok(projectLiquiService.countCompareQuantity());
+	}
+
+	/**
+	 * 查询本月回款额排名
+	 * @return
+	 */
+	@ApiOperation(value = "查询本月回款额排名", notes = "查询本月回款额排名")
+	@GetMapping("/countMoneyBackMonthlyRank" )
+	public  R countMoneyBackMonthlyRank() {
+		return R.ok(projectLiquiService.countMoneyBackMonthlyRank());
+	}
+
+	/**
+	 * 查询项目案件折线图
+	 * @param countPolylineLineChartDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询项目案件折线图", notes = "查询项目案件折线图")
+	@GetMapping("/countPolylineLineChart" )
+	public R countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO) {
+		return R.ok(projectLiquiService.countPolylineLineChart(countPolylineLineChartDTO));
+	}
+
+	/**
+	 * 履行阶段首执待立案
+	 * @param projectNoProcessedDTO
+	 * @return
+	 */
+	@ApiOperation(value = "履行阶段首执待立案", notes = "履行阶段首执待立案")
+	@GetMapping("/queryFulfillFirstExecutionPending" )
+	public R queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
+		return R.ok(projectLiquiService.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO));
 	}
 
 }

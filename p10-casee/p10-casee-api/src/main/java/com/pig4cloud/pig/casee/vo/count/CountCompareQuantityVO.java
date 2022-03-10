@@ -2,6 +2,8 @@ package com.pig4cloud.pig.casee.vo.count;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class CountCompareQuantityVO {
 
@@ -13,7 +15,7 @@ public class CountCompareQuantityVO {
 	/**
 	 * 较去年回款额
 	 */
-	private Long compareMoneyBackAmountCount;
+	private BigDecimal compareMoneyBackAmountCount;
 
 	/**
 	 * 较去年案件数量

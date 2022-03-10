@@ -11,6 +11,7 @@ import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESTSXX_SSESTSXX;
+import com.pig4cloud.pig.common.core.util.GetMonthDifference;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.activiti.bpmn.model.BpmnModel;
@@ -64,6 +65,55 @@ public class TaskNodeServiceTest<T> {
 
 	@Autowired
 	CaseeLiquiService caseeLiquiService;
+
+	@Test
+	public void  isDate() throws ParseException {
+
+//		Calendar c1 = Calendar.getInstance();
+//		Calendar c2 = Calendar.getInstance();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+//
+//		Date stat = sdf.parse("2021");
+//
+//		Date edn = sdf.parse("2022");
+//
+//		c1.setTime(stat);
+//
+//		c2.setTime(edn);
+//
+//
+////		System.out.println(c2.get(Calendar.YEAR));
+//
+////		System.out.println(c1.get(Calendar.YEAR));
+//
+//		int month = (c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR)) * 12;
+//
+//		List<String> stringList = new ArrayList<>();
+//
+//		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM");
+//		Date time = c1.getTime();
+//		System.out.println(sdf2.format(time));
+
+
+//		for (int i = 1; i <= month; i++) {
+//			c1.add(Calendar.DAY_OF_MONTH, i);
+//			Date time = c1.getTime();
+//			System.out.println(sdf2.format(time));
+//		}
+
+
+		String y1 = "2021-01";// 开始时间
+		String y2 = "2021-12";// 结束时间
+
+		List<String> monthDifference = GetMonthDifference.getMonthDifference(y1, y2);
+
+		monthDifference.forEach(s -> {
+			System.out.println(s);
+		});
+
+
+	}
 
 	@Test
 	public void nodeTaskTest() {

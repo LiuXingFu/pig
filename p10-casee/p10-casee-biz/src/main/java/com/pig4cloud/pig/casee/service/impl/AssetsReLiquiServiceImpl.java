@@ -27,13 +27,16 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -140,6 +143,82 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPropertyFlowChartPage(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public Long queryComparePropertyNumbersCount() {
+		return this.baseMapper.queryComparePropertyNumbersCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 财产分类统计集合
+	 * @return
+	 */
+	@Override
+	public List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList() {
+		return this.baseMapper.queryPropertyCategoryTotalList(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 财产总数量
+	 * @return
+	 */
+	@Override
+	public Long queryTotalProperty() {
+		return this.baseMapper.queryTotalProperty(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	@Override
+	public	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public AssetsReLiquiDetailsVO getAssetsReDetails(Integer assetsReId){
+		return this.baseMapper.selectAssetsReDetails(assetsReId);
+	}
+
+	@Override
+	public IPage<AssetsReLiquiFlowChartPageVO> queryDispositionRuling(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectDispositionRuling(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionDue(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionDue(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionSuccess(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
 }

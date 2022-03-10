@@ -1640,6 +1640,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
 
 					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					//资产抵偿
+				}else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
+					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
+
+					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
+
+					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
 					//实体财产成交裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
 					AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);

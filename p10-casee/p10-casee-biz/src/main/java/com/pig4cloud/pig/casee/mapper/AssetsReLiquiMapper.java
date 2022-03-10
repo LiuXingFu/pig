@@ -25,8 +25,10 @@ import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -52,5 +54,25 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyToBeAuctioned(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyFlowChartPage(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	Long queryComparePropertyNumbersCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	Long queryTotalProperty(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionAnnouncementPeriod(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	AssetsReLiquiDetailsVO selectAssetsReDetails(@Param("assetsReId") Integer assetsReId);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectDispositionRuling(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionDue(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionSuccess(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionFailed(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionAbnormal(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 }

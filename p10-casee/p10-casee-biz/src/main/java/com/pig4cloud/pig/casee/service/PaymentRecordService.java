@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 
@@ -47,4 +48,21 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO);
 
 	boolean collection(PaymentRecordDTO paymentRecordDTO);
+	/**
+	 * 较去年回款额
+	 * @return
+	 */
+	BigDecimal queryCompareMoneyBackAmountCount();
+
+	/**
+	 * 本月回款额月排名
+	 * @return
+	 */
+	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList();
+
+	/**
+	 * 本月总回款额
+	 * @return
+	 */
+	BigDecimal getTotalRepayments();
 }

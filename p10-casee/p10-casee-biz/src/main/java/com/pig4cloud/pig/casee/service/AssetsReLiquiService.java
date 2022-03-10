@@ -24,7 +24,11 @@ import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
+
+import java.util.List;
 
 /**
  * 财产关联表
@@ -89,4 +93,77 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyFlowChartPage(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
 
+	/**
+	 * 较去年财产数
+	 * @return
+	 */
+	Long queryComparePropertyNumbersCount();
+
+	/**
+	 * 财产分类统计集合
+	 * @return
+	 */
+	List<PropertyCategoryTotalVO> queryPropertyCategoryTotalList();
+
+	/**
+	 * 财产总数量
+	 * @return
+	 */
+	Long queryTotalProperty();
+
+	/**
+	 *财产拍卖公告期
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAnnouncementPeriod(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
+	 * 获取案件财产详情，及项目案件财产详情
+	 * @param assetsReId
+	 * @return
+	 */
+	AssetsReLiquiDetailsVO getAssetsReDetails(Integer assetsReId);
+
+	/**
+	 * 到款/抵偿未裁定
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryDispositionRuling(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
+	 * 拍卖到期无结果
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionDue(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
+	 * 拍卖成功未处理
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionSuccess(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
+	 * 拍卖不成功未处理
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+
+	/**
+	 * 拍卖异常未撤销
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 }

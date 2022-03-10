@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
@@ -92,4 +93,16 @@ public interface ProjectLiquiService extends IService<Project> {
 
 	//年比较去年相关数量如：项目、回款额、案件数和财产数
 	CountCompareQuantityVO countCompareQuantity();
+
+	CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank();
+
+	CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO);
+
+	/**
+	 * 履行阶段首执待立案
+	 * @param page
+	 * @param projectNoProcessedDTO
+	 * @return
+	 */
+	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
 }

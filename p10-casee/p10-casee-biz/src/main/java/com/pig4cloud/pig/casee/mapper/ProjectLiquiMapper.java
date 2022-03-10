@@ -57,5 +57,7 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	Long queryCompareTheNumberOfItemsCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
-	Long queryCompareMoneyBackAmountCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+	ProjectLiqui selectProjectDetails(@Param("projectId") Integer projectId);
+
+	IPage<ProjectLiquiPageVO> selectFulfillFirstExecutionPending(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
 }

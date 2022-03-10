@@ -219,4 +219,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 */
 	IPage<CaseeLiquiFlowChartPageVO> queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO);
 
+	/**
+	 * 较去年案件数
+	 * @return
+	 */
+	Long queryCompareTheNumberOfCasesCount();
 }

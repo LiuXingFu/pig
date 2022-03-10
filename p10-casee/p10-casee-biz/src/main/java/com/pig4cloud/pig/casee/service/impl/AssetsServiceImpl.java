@@ -158,4 +158,6 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 		return 0;
 	}
+
+
 }

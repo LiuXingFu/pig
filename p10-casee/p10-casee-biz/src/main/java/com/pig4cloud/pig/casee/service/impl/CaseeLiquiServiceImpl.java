@@ -499,4 +499,9 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPropertyPreservationCompleted(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
 	}
+
+	@Override
+	public Long queryCompareTheNumberOfCasesCount() {
+		return this.baseMapper.queryCompareTheNumberOfCasesCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
 }
