@@ -193,4 +193,15 @@ public class AssetsReLiquiController {
 	public R queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
 		return R.ok(assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO));
 	}
+
+	/**
+	 * 拍卖异常未撤销
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "拍卖异常未撤销", notes = "拍卖异常未撤销")
+	@GetMapping("/queryPropertyAuctionAbnormal" )
+	public R queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO));
+	}
 }

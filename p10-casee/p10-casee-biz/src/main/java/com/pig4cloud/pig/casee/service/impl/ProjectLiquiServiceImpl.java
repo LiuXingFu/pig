@@ -588,7 +588,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countFulfillVO.setFulfillFulfillNotExpired(fulfillFulfillNotExpired.getTotal());
 
 		//**********达成履行协议未处理********************************
-//		countFulfillVO.setFulfillReachFulfillProtocolNotProcessed();
+		countFulfillVO.setFulfillReachFulfillProtocolNotProcessed(fulfillFulfillNotExpired.getTotal());
 
 		//**********首次执行待立案********************************
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
@@ -620,12 +620,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//**********首执送达未查控********************************
 		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryAssetsNotSeizeAndFreeze(3010, null));
 
-
 		//***********首执案件节点统计end*************************************************
 
 
 		//***********执恢案件节点统计Start*************************************************
-
 
 		//**********恢复执行待立案********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
@@ -795,8 +793,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionFailedNotProcessed = assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAuctionTransactionFailedNotProcessed(auctionTransactionFailedNotProcessed.getTotal());
 
-//		//**********拍卖异常未撤销********************************
-//		countAuctionPropertyVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG",null));
+		//**********拍卖异常未撤销********************************
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExceptionNotCancelled = assetsReLiquiService.queryPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setAuctionExceptionNotCancelled(auctionExceptionNotCancelled.getTotal());
 
 		//**********到款/抵偿未裁定********************************
 		IPage<AssetsReLiquiFlowChartPageVO> arrivalCompensationNotAdjudicated = assetsReLiquiService.queryDispositionRuling(page,assetsReLiquiFlowChartPageDTO);

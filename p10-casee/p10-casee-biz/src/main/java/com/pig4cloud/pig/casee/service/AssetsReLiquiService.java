@@ -157,4 +157,13 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+
+	/**
+	 * 拍卖异常未撤销
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 }

@@ -213,4 +213,12 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.selectPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
+	@Override
+	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
 }
