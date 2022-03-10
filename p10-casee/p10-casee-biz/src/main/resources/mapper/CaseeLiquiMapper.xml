@@ -297,9 +297,11 @@
 		and JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") is not null
 	</select>
 
-	<select id="selectLitigationFirstInstanceAppealExpired" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.*,p10_project.project_id,p10_casee_lawyer_re.actual_name as lawyerName,
-			p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id
+	<select id="selectLitigationFirstInstanceAppealExpired"
+			resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.*,p10_project.project_id,p10_casee_lawyer_re.actual_name as
+		lawyerName,
+		p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id
 		from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
@@ -312,7 +314,8 @@
 		and p10_target.goal_type = 10001
 		and JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime") is not null
 		and p10_task_node.form_data is null
-		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL #{day} DAY),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL
+		#{day} DAY),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -346,21 +349,22 @@
 
 	<select id="selectAddReinstatementCase" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
 		select * from (
-			select * from (
-				select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_project_casee_re.actual_name as userName ,
-					p10_project.ins_id,p10_project.outles_id,p10_court.court_name
-				from p10_project
-				left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
-				left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
-				left join p10_court on p10_court.court_id = p10_casee.court_id
-				where p10_project.del_flag = 0
-				and p10_project.`status` = 1000
-				and p10_casee.casee_type in (3010,3031)
-				order by p10_project.project_id,p10_casee.start_time desc
-				<!-- 先排序后分组需要加上limit才有效 -->
-				limit 999999999999
-			)casee
-			GROUP BY casee.project_id
+		select * from (
+		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_project_casee_re.actual_name as userName
+		,
+		p10_project.ins_id,p10_project.outles_id,p10_court.court_name
+		from p10_project
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 1000
+		and p10_casee.casee_type in (3010,3031)
+		order by p10_project.project_id,p10_casee.start_time desc
+		<!-- 先排序后分组需要加上limit才有效 -->
+		limit 999999999999
+		)casee
+		GROUP BY casee.project_id
 		)casee
 		where casee.status = 4
 		<if test="login.insId != null and login.insId > 0">
@@ -388,20 +392,20 @@
 
 	<select id="selectCourtPayment" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
 		select * from (
-			select p10_project.project_id,p10_project.company_code,casee.*,p10_project_casee_re.actual_name as userName ,
-					p10_court.court_name,SUM(p10_payment_record.payment_amount) courtSum
-			from p10_project
-			left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
-			left join (select * from p10_casee
-				where p10_casee.casee_type in (3010,3031)
-				ORDER BY p10_casee.start_time desc) casee on casee.casee_id = p10_project_casee_re.casee_id
-			left join p10_court on p10_court.court_id = casee.court_id
-			left join p10_payment_record on p10_payment_record.project_id = p10_project.project_id
-			where p10_project.del_flag = 0
-			and p10_project.`status` = 1000
-			and p10_payment_record.payment_type = 200
-			and p10_payment_record.status = 0
-			GROUP BY p10_project.project_id
+		select p10_project.project_id,p10_project.company_code,casee.*,p10_project_casee_re.actual_name as userName ,
+		p10_court.court_name,SUM(p10_payment_record.payment_amount) courtSum
+		from p10_project
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join (select * from p10_casee
+		where p10_casee.casee_type in (3010,3031)
+		ORDER BY p10_casee.start_time desc) casee on casee.casee_id = p10_project_casee_re.casee_id
+		left join p10_court on p10_court.court_id = casee.court_id
+		left join p10_payment_record on p10_payment_record.project_id = p10_project.project_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 1000
+		and p10_payment_record.payment_type = 200
+		and p10_payment_record.status = 0
+		GROUP BY p10_project.project_id
 		)countList
 		where countList.courtSum != 0
 		<if test="login.insId != null and login.insId > 0">
@@ -428,21 +432,24 @@
 
 	<select id="selectPaymentCompleted" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
 		select * from (
-			select * from (
-				select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_project_casee_re.actual_name as userName ,
-					p10_project.ins_id,p10_project.outles_id,p10_court.court_name,json_extract(p10_project.project_detail,'$.projectAmount') projectAmount
-				from p10_project
-				left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
-				left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
-				left join p10_court on p10_court.court_id = p10_casee.court_id
-				where p10_project.del_flag = 0
-				and p10_project.`status` = 1000
-				and p10_casee.casee_type in (3010,3031)
-				and json_extract(p10_project.project_detail,'$.projectAmount') = json_extract(p10_project.project_detail,'$.repaymentAmount')
-				order by p10_project.project_id,p10_casee.start_time desc
-				limit 999999999999
-			)casee
-			GROUP BY casee.project_id
+		select * from (
+		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_project_casee_re.actual_name as userName
+		,
+		p10_project.ins_id,p10_project.outles_id,p10_court.court_name,json_extract(p10_project.project_detail,'$.projectAmount')
+		projectAmount
+		from p10_project
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_project.del_flag = 0
+		and p10_project.`status` = 1000
+		and p10_casee.casee_type in (3010,3031)
+		and json_extract(p10_project.project_detail,'$.projectAmount') =
+		json_extract(p10_project.project_detail,'$.repaymentAmount')
+		order by p10_project.project_id,p10_casee.start_time desc
+		limit 999999999999
+		)casee
+		GROUP BY casee.project_id
 		)casee
 		where casee.status not in (2,3)
 		<if test="login.insId != null and login.insId > 0">
@@ -468,10 +475,13 @@
 	</select>
 
 	<select id="selectNotAddBehavior" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_subject.subject_id,p10_subject.name as subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee_subject_re
+		select p10_subject.subject_id,p10_subject.name as
+		subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name
+		as userName from p10_casee_subject_re
 		left join p10_casee on p10_casee_subject_re.casee_id = p10_casee.casee_id
-		left join p10_behavior on p10_behavior.subject_id = p10_casee_subject_re.subject_id and p10_behavior.casee_id = p10_casee.casee_id
-		left join p10_project_casee_re on p10_project_casee_re.casee_id =  p10_casee.casee_id
+		left join p10_behavior on p10_behavior.subject_id = p10_casee_subject_re.subject_id and p10_behavior.casee_id =
+		p10_casee.casee_id
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
@@ -504,8 +514,11 @@
 	</select>
 
 	<select id="caseeSubjectNotAddAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_subject.subject_id,p10_subject.name as subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee_subject_re
-		left join p10_assets_re on p10_assets_re.casee_id = p10_casee_subject_re.casee_id and p10_assets_re.subject_id = p10_casee_subject_re.subject_id
+		select p10_subject.subject_id,p10_subject.name as
+		subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name
+		as userName from p10_casee_subject_re
+		left join p10_assets_re on p10_assets_re.casee_id = p10_casee_subject_re.casee_id and p10_assets_re.subject_id =
+		p10_casee_subject_re.subject_id
 		left join p10_casee on p10_casee.casee_id = p10_casee_subject_re.casee_id
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
@@ -537,20 +550,24 @@
 	</select>
 
 	<select id="selectPropertyPreservationCompleted" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select DISTINCT p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id from p10_casee
+		select DISTINCT
+		p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name
+		as userName,p10_task_node.node_id from p10_casee
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		left join p10_target on p10_target.casee_id = p10_casee.casee_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id and p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id and
+		p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join (
-			select p10_assets_re.* from p10_assets_re
-			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-			where p10_assets_re.casee_id is not null
-			and if(p10_assets.type=20100,json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null,json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure') is null)
-			GROUP BY p10_assets_re.casee_id
-			)assets on assets.casee_id = p10_casee.casee_id
+		select p10_assets_re.* from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		where p10_assets_re.casee_id is not null
+		and if(p10_assets.type=20100,json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is
+		null,json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure') is null)
+		GROUP BY p10_assets_re.casee_id
+		)assets on assets.casee_id = p10_casee.casee_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
@@ -558,7 +575,8 @@
 		and assets.assets_id is null
 		and p10_target.goal_type = 10001
 		and p10_task_node.node_attributes = 400
-		and if(casee_type = 1010,p10_task_node.node_key="liQui_SQ_SQBQJG_SQBQJG",p10_task_node.node_key="liQui_SSBQ_SSBQBQJG_SSBQBQJG")
+		and if(casee_type =
+		1010,p10_task_node.node_key="liQui_SQ_SQBQJG_SQBQJG",p10_task_node.node_key="liQui_SSBQ_SSBQBQJG_SSBQBQJG")
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -586,7 +604,8 @@
 		(sum(YEAR ( p10_casee.start_time )= YEAR (NOW())) - sum( ( YEAR ( p10_casee.start_time )= YEAR ( NOW())- 1 ) ))
 		FROM
 		p10_casee
-		LEFT JOIN p10_project_casee_re ON p10_casee.casee_id = p10_project_casee_re.casee_id and p10_project_casee_re.del_flag = 0
+		LEFT JOIN p10_project_casee_re ON p10_casee.casee_id = p10_project_casee_re.casee_id and
+		p10_project_casee_re.del_flag = 0
 		LEFT JOIN p10_project ON p10_project_casee_re.project_id = p10_project.project_id and p10_project.del_flag = 0
 		WHERE p10_casee.del_flag = 0
 		AND (YEAR ( p10_casee.start_time )= YEAR (NOW()) OR YEAR ( p10_casee.start_time )= YEAR (NOW())- 1)
@@ -604,6 +623,62 @@
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_casee.del_flag = 0
 		and p10_casee.casee_id = #{caseeId}
+	</select>
+
+	<select id="getCaseeMap" resultType="java.util.LinkedHashMap">
+		SELECT
+		<if test="polylineActive != null and polylineActive == 0">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( YEAR ( start_time ) = #{params}) as #{params}
+			</foreach>
+		</if>
+		<if test="polylineActive != null and polylineActive == 1">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( DATE_FORMAT(start_time , '%Y-%m' ) = #{params}) as #{params}
+			</foreach>
+		</if>
+		FROM p10_casee
+	</select>
+
+	<select id="getCaseeLiqui" resultType="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">
+		SELECT * FROM p10_casee
+		WHERE del_flag = 0
+		<if test="query.caseeId != null and query.caseeId != 0">
+			and casee_id = #{query.caseeId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and casee_number = #{query.caseeNumber}
+		</if>
+		<if test="query.caseeType != null and query.caseeType != 0">
+			and casee_type = #{query.caseeType}
+		</if>
+		<if test="query.status != null and query.status != 0">
+			and status = #{query.status}
+		</if>
+		<if test="query.judicialExpenses != null">
+			and judicial_expenses = #{query.judicialExpenses}
+		</if>
+		<if test="query.parentId != null and query.parentId != 0">
+			and parent_id = #{parentId}
+		</if>
+		<if test="query.category != null and query.category != 0">
+			and category = #{query.category}
+		</if>
+		<if test="query.courtId != null and query.courtId != 0">
+			and court_id = #{query.courtId}
+		</if>
+		<if test="query.judgeOutlesId != null and query.judgeOutlesId != 0">
+			and judge_outles_id = #{query.judgeOutlesId}
+		</if>
+		<if test="query.judgeId != null and query.judgeId != 0">
+			and judge_id = #{query.judgeId}
+		</if>
+		<if test="query.judgeName != null and query.judgeName">
+			and judge_name = #{query.judgeName}
+		</if>
+		<if test="query.caseeAmount != null">
+			and casee_amount = #{query.caseeAmount}
+		</if>
 	</select>
 
 </mapper>

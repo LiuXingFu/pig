@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 案件表
@@ -224,4 +225,18 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	Long queryCompareTheNumberOfCasesCount();
+
+	/**
+	 * 根据日期集合查询案件数量
+	 * @param differenceList
+	 * @return
+	 */
+	Map<String, Long> getCaseeMap(Integer polylineActive, List<String> differenceList);
+
+	/**
+	 * 根据特定条件查询案件与案件详情
+	 * @param casee
+	 * @return
+	 */
+	CaseeLiqui getCaseeLiqui(Casee casee);
 }

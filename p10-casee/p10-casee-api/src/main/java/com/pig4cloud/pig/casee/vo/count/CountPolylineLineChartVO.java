@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.vo.count;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,13 +17,18 @@ import java.util.Map;
 public class CountPolylineLineChartVO {
 
 	/**
+	 * 时间线
+	 */
+	private List<String> timelineList;
+
+	/**
 	 * 项目Map
 	 */
-	private Map<String, Long> projectMap;
+	private List<Long> projectList;
 
 	/**
 	 * 案件Map
 	 */
-	private Map<String, Long> caseeMap;
+	private List<Long> caseeList;
 
 }

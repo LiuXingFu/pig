@@ -3,15 +3,13 @@ package com.pig4cloud.pig.casee.service;
 import com.pig4cloud.pig.admin.api.appserver.RequestAppService;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesService;
-import com.pig4cloud.pig.casee.dto.CaseeOrTargetTaskFlowDTO;
-import com.pig4cloud.pig.casee.dto.SaveCaseeLiQuiDTO;
 import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
 import com.pig4cloud.pig.casee.entity.PfzxTask;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESTSXX_SSESTSXX;
-import com.pig4cloud.pig.common.core.util.GetMonthDifference;
+import com.pig4cloud.pig.common.core.util.GetDifference;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.activiti.bpmn.model.BpmnModel;
@@ -42,9 +40,7 @@ import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @SpringBootTest
@@ -87,7 +83,19 @@ public class TaskNodeServiceTest<T> {
 //
 ////		System.out.println(c1.get(Calendar.YEAR));
 //
-//		int month = (c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR)) * 12;
+//		int year = c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR);
+//
+//
+//		c1.add(Calendar.YEAR, 1);
+//
+//
+//		Date time = c1.getTime();
+//
+//		String format = sdf.format(time);
+//
+//		System.out.println(format);
+
+//		System.out.println(year);
 //
 //		List<String> stringList = new ArrayList<>();
 //
@@ -102,11 +110,13 @@ public class TaskNodeServiceTest<T> {
 //			System.out.println(sdf2.format(time));
 //		}
 
+//		getTimeOriginalList
 
-		String y1 = "2021-01";// 开始时间
-		String y2 = "2021-12";// 结束时间
 
-		List<String> monthDifference = GetMonthDifference.getMonthDifference(y1, y2);
+		String y1 = "2020";// 开始时间
+		String y2 = "2021";// 结束时间
+
+		List<String> monthDifference = GetDifference.getYearDifference(y1, y2);
 
 		monthDifference.forEach(s -> {
 			System.out.println(s);

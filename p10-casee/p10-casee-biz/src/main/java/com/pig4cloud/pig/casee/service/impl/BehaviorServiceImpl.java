@@ -99,8 +99,7 @@ public class BehaviorServiceImpl extends ServiceImpl<BehaviorMapper, Behavior> i
 			BehaviorLiquiDetail behaviorLiquiDetail = new BehaviorLiquiDetail();
 			BeanCopyUtil.copyBean(behaviorSaveDTO, behaviorLiquiDetail);
 			behaviorLiqui.setBehaviorLiquiDetail(behaviorLiquiDetail);
-			save = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
-			behaviorId = behaviorLiqui.getBehaviorId();
+			behaviorId = behaviorLiquiService.saveBehaviorLiqui(behaviorLiqui);
 		} else {
 			Behavior behavior = new Behavior();
 			BeanCopyUtil.copyBean(behaviorSaveDTO, behavior);

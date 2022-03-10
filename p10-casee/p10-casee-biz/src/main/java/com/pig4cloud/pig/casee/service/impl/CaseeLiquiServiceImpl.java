@@ -504,4 +504,24 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	public Long queryCompareTheNumberOfCasesCount() {
 		return this.baseMapper.queryCompareTheNumberOfCasesCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
+
+	/**
+	 * 根据日期集合查询案件数量
+	 * @param differenceList
+	 * @return
+	 */
+	@Override
+	public Map<String, Long> getCaseeMap(Integer polylineActive, List<String> differenceList) {
+		return this.baseMapper.getCaseeMap(polylineActive, differenceList, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	/**
+	 * 根据特定条件查询案件与案件详情
+	 * @param casee
+	 * @return
+	 */
+	@Override
+	public CaseeLiqui getCaseeLiqui(Casee casee) {
+		return this.baseMapper.getCaseeLiqui(casee);
+	}
 }

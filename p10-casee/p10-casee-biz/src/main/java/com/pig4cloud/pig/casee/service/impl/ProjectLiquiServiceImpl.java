@@ -39,6 +39,7 @@ import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.casee.vo.count.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.GetDifference;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
@@ -49,10 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 清收项目表
@@ -778,7 +776,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********公告期未拍卖********************************
 		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
-		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
 		//**********拍卖到期无结果********************************
@@ -904,28 +902,89 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO) {
 
+		CountPolylineLineChartVO countPolylineLineChartVO = new CountPolylineLineChartVO();
+
 		if (countPolylineLineChartDTO.getPolylineActive().equals(Integer.valueOf("0"))) {
-
-			if (countPolylineLineChartDTO.getPolylineYearStar().equals(countPolylineLineChartDTO.getPolylineYearEnd())) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-				String format = sdf.format(new Date());
-
-
-//				String polylineYearStar = countPolylineLineChartDTO.getPolylineYearStar();
-//				polylineYearStar += "-01";
-//				countPolylineLineChartDTO.setPolylineYearStar(polylineYearStar);
-//				polylineYearStar += "";
+			List<String> yearDifference;
+			if(Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd())) {
+				if (countPolylineLineChartDTO.getPolylineYearStar().equals(countPolylineLineChartDTO.getPolylineYearEnd())) {
+					yearDifference = new ArrayList<>();
+					yearDifference.add(countPolylineLineChartDTO.getPolylineYearStar());
+				} else {
+					yearDifference = GetDifference.getYearDifference(countPolylineLineChartDTO.getPolylineYearStar(), countPolylineLineChartDTO.getPolylineYearEnd());
+				}
 			} else {
-
+				Calendar c1 = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+				Date date = new Date();
+				String polylineYearEnd = sdf.format(date);
+				c1.setTime(date);
+				c1.add(Calendar.YEAR, -9);
+				Date time = c1.getTime();
+				String polylineYearStar = sdf.format(time);
+				yearDifference = GetDifference.getYearDifference(polylineYearStar, polylineYearEnd);
 			}
 
-		} else {
+			setCountPolylineLineChartVO(countPolylineLineChartDTO, countPolylineLineChartVO, yearDifference);
 
+		} else {
+			List<String> monthDifference;
+			if(Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd())) {
+				if (countPolylineLineChartDTO.getPolylineMonthStar().equals(countPolylineLineChartDTO.getPolylineMonthEnd())) {
+					monthDifference = new ArrayList<>();
+					monthDifference.add(countPolylineLineChartDTO.getPolylineMonthStar());
+				} else {
+					monthDifference = GetDifference.getMonthDifference(countPolylineLineChartDTO.getPolylineMonthStar(), countPolylineLineChartDTO.getPolylineMonthEnd());
+				}
+			} else {
+				Calendar c1 = Calendar.getInstance();
+				Date now = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+				String polylineYearEnd = sdf.format(now);
+				c1.setTime(now);
+				c1.add(Calendar.MONTH, -11);
+				Date time = c1.getTime();
+				String polylineYearStar = sdf.format(time);
+				monthDifference = GetDifference.getMonthDifference(polylineYearStar, polylineYearEnd);
+			}
+
+			setCountPolylineLineChartVO(countPolylineLineChartDTO, countPolylineLineChartVO, monthDifference);
 		}
 
-//		this.baseMapper.getprojectMap()
+		return countPolylineLineChartVO;
+	}
 
-		return null;
+	/**
+	 * 根据日期集合查询项目与案件数量
+	 * @param countPolylineLineChartDTO
+	 * @param countPolylineLineChartVO
+	 * @param monthDifference
+	 */
+	private void setCountPolylineLineChartVO(CountPolylineLineChartDTO countPolylineLineChartDTO, CountPolylineLineChartVO countPolylineLineChartVO, List<String> monthDifference) {
+		Map<String, Long> projectMap = this.baseMapper.getProjectMap(countPolylineLineChartDTO.getPolylineActive(), monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+
+		Map<String, Long> caseeMap = this.caseeLiquiService.getCaseeMap(countPolylineLineChartDTO.getPolylineActive(), monthDifference);
+
+		List<String> timelineList = new ArrayList<>();
+
+		List<Long> projectList = new ArrayList<>();
+
+		List<Long> caseeList = new ArrayList<>();
+
+		for (String key : projectMap.keySet()) {
+			timelineList.add(key);
+			projectList.add(projectMap.get(key));
+		}
+
+		for (String key : caseeMap.keySet()) {
+			caseeList.add(caseeMap.get(key));
+		}
+
+		countPolylineLineChartVO.setTimelineList(timelineList);
+
+		countPolylineLineChartVO.setProjectList(projectList);
+
+		countPolylineLineChartVO.setCaseeList(caseeList);
 	}
 
 	@Override

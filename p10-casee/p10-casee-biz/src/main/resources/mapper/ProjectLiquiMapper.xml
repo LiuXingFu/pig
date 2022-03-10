@@ -177,18 +177,18 @@
 
 	<select id="queryCompareTheNumberOfItemsCount" resultType="java.lang.Long">
 		SELECT
-			(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
+		(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
 		FROM
-			p10_project
+		p10_project
 		WHERE
-			del_flag = 0
-			and ( YEAR ( take_time )= YEAR ( NOW()) OR YEAR ( take_time )= YEAR ( NOW())- 1 )
-			<if test="insId != null and insId != 0">
-				and ins_id = #{insId}
-			</if>
-			<if test="outlesId != null and outlesId != 0">
-				and outles_id = #{outlesId}
-			</if>
+		del_flag = 0
+		and ( YEAR ( take_time )= YEAR ( NOW()) OR YEAR ( take_time )= YEAR ( NOW())- 1 )
+		<if test="insId != null and insId != 0">
+			and ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and outles_id = #{outlesId}
+		</if>
 	</select>
 
 	<select id="selectProjectDetails" resultType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui">
@@ -214,6 +214,7 @@
 			and p10_project.`status` = 1000
 			and p10_casee.casee_id is null
 			and casee.casee_id is not null
+			and if(p10_casee.casee_type = 2020, json_extract( p10_casee.casee_detail, '$.firstTrialRefereeResult.refereeType' ) != 2, json_extract( p10_casee.casee_detail, '$.secondTrialRefereeResult.refereeType' ) != 2)
 			and json_extract( p10_transfer_record.transfer_detail, '$.litigation' ) = 0
 			union
 			select p10_project.* from p10_project
@@ -248,6 +249,29 @@
 		</if>
 		<if test="query.companyCode != null and query.companyCode != ''">
 			and p10_project.company_code like concat('%', #{query.companyCode}, '%')
+		</if>
+	</select>
+
+	<select id="getProjectMap" resultType="java.util.LinkedHashMap">
+		select
+		<if test="polylineActive != null and polylineActive == 0">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( YEAR ( take_time ) =#{params}) as #{params}
+			</foreach>
+		</if>
+		<if test="polylineActive != null and polylineActive == 1">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}) as #{params}
+			</foreach>
+		</if>
+		FROM p10_project
+		WHERE
+		del_flag = 0
+		<if test="insId != null and insId != 0">
+			and p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and p10_project.outles_id = #{outlesId}
 		</if>
 	</select>
 
