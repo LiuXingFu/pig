@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -36,6 +37,8 @@ import java.util.List;
 @Mapper
 public interface FulfillmentRecordsLiquiMapper extends BaseMapper<FulfillmentRecords> {
 	List<FulfillmentRecordsVO> getByReconciliatioMediationId(Integer reconciliatioMediationId);
+
+	BigDecimal getTotalFulfillmentAmount(Integer reconciliatioMediationId);
 
 	IPage<FulfillmentRecordsVO> getFulfillmentRecordsPage(Page page, @Param("reconciliatioMediationId") Integer reconciliatioMediationId);
 }

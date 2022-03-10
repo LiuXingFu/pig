@@ -14,43 +14,44 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
+package com.pig4cloud.pig.casee.entity;
 
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
-import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.time.LocalDate;
-import java.util.List;
+import lombok.EqualsAndHashCode;
 
 /**
- * 和解/调解表
+ * 和解/调解主体关联表
  *
  * @author Mjh
- * @date 2022-03-01 20:36:17
+ * @date 2022-03-09 19:48:49
  */
 @Data
-public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
+@TableName("p10_reconciliatio_mediation_subject_re")
+@ApiModel(value = "和解/调解主体关联表")
+public class ReconciliatioMediationSubjectRe {
 
-	/**
-	 * 待履行记录信息
-	 */
-	private List<FulfillmentRecords> fulfillmentRecordsList;
+    /**
+     * 和解/调解主体关联id
+     */
+    @TableId
+    @ApiModelProperty(value="和解/调解主体关联id")
+    private Integer reconciliatioMediationSubjectId;
 
-	/**
-	 * 公司业务案号
-	 */
-	private String companyCode;
+    /**
+     * 和解/调解id
+     */
+    @ApiModelProperty(value="和解/调解id")
+    private Integer reconciliatioMediationId;
 
-	/**
-	 * 债务人id
-	 */
-	private List<Integer> subjectIdList;
+    /**
+     * 主体id
+     */
+    @ApiModelProperty(value="主体id")
+    private Integer subjectId;
 
-	/**
-	 * 债务人名称
-	 */
-	private String name;
 
 }

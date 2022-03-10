@@ -74,7 +74,6 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 	@Override
 	@Transactional
 	public boolean saveFulfillmentRecords(FulfillmentRecordsDTO fulfillmentRecordsDTO) {
-		//查询当前待履行记录
 		FulfillmentRecordsLiqui fulfillmentRecords=new FulfillmentRecordsLiqui();
 		BeanUtils.copyProperties(fulfillmentRecordsDTO,fulfillmentRecords);
 		if (fulfillmentRecordsDTO.getStatus()==1){

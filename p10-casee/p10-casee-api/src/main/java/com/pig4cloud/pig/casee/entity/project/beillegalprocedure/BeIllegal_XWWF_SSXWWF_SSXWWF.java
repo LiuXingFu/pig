@@ -16,7 +16,7 @@ public class BeIllegal_XWWF_SSXWWF_SSXWWF extends CommonalityData implements Ser
 	/**
 	 * 限制日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date limitTime;
 
 	/**

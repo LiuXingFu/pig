@@ -99,6 +99,12 @@ public class ReconciliatioMediation extends BaseEntity {
     @ApiModelProperty(value="待履行人")
     private String subjectName;
 
+	/**
+	 * 债务人名称
+	 */
+	@ApiModelProperty(value="债务人名称")
+	private String name;
+
     /**
      * 签订地点
      */

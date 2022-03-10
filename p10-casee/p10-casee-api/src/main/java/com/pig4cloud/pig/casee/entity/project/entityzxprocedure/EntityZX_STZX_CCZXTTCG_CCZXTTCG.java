@@ -16,7 +16,7 @@ public class EntityZX_STZX_CCZXTTCG_CCZXTTCG extends CommonalityData implements 
 	/**
 	 * 腾退日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date vacateDate;
 
 	/**

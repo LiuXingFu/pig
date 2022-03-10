@@ -15,7 +15,7 @@ public class Limit_XWXZ_XWXZXZCX_XWXZXZCX extends CommonalityData implements Ser
 	/**
 	 * 撤销日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date revokeTime;
 
 	/**

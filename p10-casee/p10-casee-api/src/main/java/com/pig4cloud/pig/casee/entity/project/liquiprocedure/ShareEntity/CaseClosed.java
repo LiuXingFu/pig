@@ -16,7 +16,7 @@ public class CaseClosed extends CommonalityData implements Serializable {
 	/**
 	 * 结案日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date caseClosedTime;
 
 

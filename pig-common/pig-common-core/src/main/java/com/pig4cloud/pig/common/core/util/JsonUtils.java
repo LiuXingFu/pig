@@ -49,9 +49,7 @@ public class JsonUtils {
 	public static String objectToJsonObject(Object data) {
 		try {
 //			String string = MAPPER.writeValueAsString(data);
-			net.sf.json.JSONObject jsonObject = net.sf.json.JSONObject.fromObject(data);
-
-			return JSONObject.toJSONString(jsonObject);
+			return JSONObject.toJSONString(data);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

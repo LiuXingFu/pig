@@ -83,8 +83,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	@Override
 	public boolean collection(PaymentRecordDTO paymentRecordDTO) {
+		//添加领款信息
 		this.save(paymentRecordDTO);
+
 		List<Integer> subjectIdList = paymentRecordDTO.getSubjectIdList();
+		//添加回款记录与主体关联信息
 		for (Integer integer : subjectIdList) {
 			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
@@ -96,6 +99,17 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			paymentRecord.setPaymentDate(paymentRecordDTO.getPaymentDate());
 			paymentRecord.setPaymentType(paymentRecordDTO.getPaymentType());
 		}
+
+		//修改到款记录状态
+		List<PaymentRecord> courtPayment = paymentRecordDTO.getCourtPayment();
+		if (courtPayment.size()>0){
+			for (PaymentRecord paymentRecord : courtPayment) {
+				paymentRecord.setStatus(1);
+			}
+			this.updateBatchById(courtPayment);
+		}
+
+		//添加分配款项信息
 		return this.saveBatch(paymentRecordDTO.getPaymentRecordList());
 	}
 }

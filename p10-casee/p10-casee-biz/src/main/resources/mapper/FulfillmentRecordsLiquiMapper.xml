@@ -47,6 +47,17 @@
 		where p10_fulfillment_records.reconciliatio_mediation_id=#{reconciliatioMediationId}
 	</select>
 
+	<select id="getTotalFulfillmentAmount" resultType="java.math.BigDecimal">
+		SELECT
+		SUM( p10_payment_record.payment_amount ) AS totalFulfillmentAmount
+		FROM
+		p10_fulfillment_records
+		LEFT JOIN p10_payment_record ON p10_payment_record.payment_record_id = p10_fulfillment_records.payment_record_id
+		WHERE
+		p10_fulfillment_records.reconciliatio_mediation_id =#{reconciliatioMediationId}
+		AND p10_fulfillment_records.`status` = 1
+	</select>
+
 	<select id="getFulfillmentRecordsPage" resultType="com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO">
 		select p10_fulfillment_records.*,p10_payment_record.*,substring(json_extract(p10_fulfillment_records.details,'$.deferPerformance'),2,10) as deferPerformance, p10_payment_record.subject_name as repayerName from p10_fulfillment_records
 		left join p10_payment_record on p10_payment_record.payment_record_id=p10_fulfillment_records.payment_record_id

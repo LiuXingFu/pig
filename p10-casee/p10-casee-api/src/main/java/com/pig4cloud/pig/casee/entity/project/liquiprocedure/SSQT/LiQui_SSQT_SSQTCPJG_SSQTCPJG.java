@@ -19,7 +19,7 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 裁判/调解日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date refereeMediationTime;
 
 	/**
@@ -45,7 +45,7 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 生效日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date effectiveDate;
 
 	/**

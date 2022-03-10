@@ -20,7 +20,7 @@ public class EntityZX_STZX_CCZXPMJG_CCZXPMJG extends CommonalityData implements 
 	/**
 	 * 成交日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date closingDate;
 
 	/**

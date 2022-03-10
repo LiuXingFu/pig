@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.LX;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.FulfillmentRecord;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.InstalmentFulfillmentRecord;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class LiQui_LX_LXZXHJXY_LXZXHJXY {
 	/**
 	 * 和解时间
 	 */
+	@JSONField(format="yyyy-MM-dd")
 	private Date settlementTime;
 
 	/**

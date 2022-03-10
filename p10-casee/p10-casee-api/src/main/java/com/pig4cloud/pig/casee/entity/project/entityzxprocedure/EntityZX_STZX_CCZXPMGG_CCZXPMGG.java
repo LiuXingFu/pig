@@ -19,6 +19,27 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	private Integer auctionAnnouncementStage;
 
 	/**
+	 * 拍卖撤销(0-未撤销 1-撤销)
+	 */
+	private Integer revoke=0;
+
+	/**
+	 * 撤销日期
+	 */
+	@JSONField(format="yyyy-MM-dd")
+	private Date revocationDate;
+
+	/**
+	 * 撤销附件
+	 */
+	private String revocationFile;
+
+	/**
+	 * 撤销备注
+	 */
+	private String revocationRemark;
+
+	/**
 	 * 公告发布时间
 	 */
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")

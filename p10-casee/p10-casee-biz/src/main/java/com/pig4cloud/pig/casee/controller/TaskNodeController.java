@@ -34,6 +34,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 流程节点表
  *
@@ -80,6 +82,43 @@ public class TaskNodeController {
     public R getById(@PathVariable("nodeId" ) String nodeId) {
         return R.ok(taskNodeService.getById(nodeId));
     }
+
+	/**
+	 * 拍卖撤案显示判断
+	 * @param taskNode
+	 * @return R
+	 */
+	@ApiOperation(value = "查询当前拍卖公告环节信息", notes = "查询当前拍卖公告环节信息")
+	@GetMapping("/revoke" )
+	public R revoke(TaskNode taskNode) {
+		return R.ok(taskNodeService.revoke(taskNode));
+	}
+
+	/**
+	 * 查询当前拍卖公告节点
+	 * @param taskNode
+	 * @return R
+	 */
+	@ApiOperation(value = "查询当前拍卖公告节点", notes = "查询当前拍卖公告节点")
+	@GetMapping("/queryAuctionAnnouncement" )
+	public R queryAuctionAnnouncement(TaskNode taskNode) {
+		List<TaskNode> taskNodeList = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG"));
+		if (taskNodeList.size()>0){
+			return R.ok(taskNodeList.get(taskNodeList.size() - 1));
+		}
+		return R.ok(null);
+	}
+
+	/**
+	 * 添加拍卖撤案
+	 * @param taskNode
+	 * @return R
+	 */
+	@ApiOperation(value = "添加拍卖撤案", notes = "添加拍卖撤案")
+	@PostMapping("/addRevoke" )
+	public R addRevoke(TaskNode taskNode) {
+		return R.ok(taskNodeService.updateById(taskNode));
+	}
 
     /**
      * 新增流程节点表

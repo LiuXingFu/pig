@@ -17,7 +17,7 @@ public class LiQui_SSYS_SSYSYGSS_SSYSYGSS extends CommonalityData implements Ser
 	/**
 	 * 原告上诉时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date plaintiffsAppealTime;
 
 	/**

@@ -15,7 +15,7 @@ public class LiQui_SSBQ_SSBQBQJG_SSBQBQJG extends CommonalityData implements Ser
 	/**
 	 * 结案日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date caseClosedTime;
 
 	/**

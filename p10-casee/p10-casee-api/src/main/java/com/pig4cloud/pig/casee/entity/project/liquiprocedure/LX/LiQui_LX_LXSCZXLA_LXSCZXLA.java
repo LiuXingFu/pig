@@ -17,7 +17,7 @@ public class LiQui_LX_LXSCZXLA_LXSCZXLA extends CommonalityData implements Seria
 	/**
 	 * 立案时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date filingTime;
 
 	/**

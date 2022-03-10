@@ -30,7 +30,7 @@ public class ReceiptRecord extends CommonalityData implements Serializable {
 	/**
 	 * 最终签收日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date finalReceiptTime;
 
 	/**

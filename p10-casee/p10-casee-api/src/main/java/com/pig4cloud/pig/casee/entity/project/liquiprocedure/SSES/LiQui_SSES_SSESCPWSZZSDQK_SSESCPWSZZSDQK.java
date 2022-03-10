@@ -23,7 +23,7 @@ public class LiQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK extends CommonalityData im
 	/**
 	 * 裁判结果生效日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date effectiveDate;
 
 	/**
