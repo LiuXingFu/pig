@@ -1,8 +1,6 @@
 package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
-import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.ActualExecution;
-import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.End;
-import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.WithdrawTheCase;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,7 +9,7 @@ import java.time.LocalDate;
 public class CaseeLiquiDetail {
 
 	/**
-	 * 一审、二审案件最终送达时间
+	 * 一审、二审和其他案件最终送达时间
 	 */
 	private LocalDate finalReceiptTime;
 
@@ -29,4 +27,19 @@ public class CaseeLiquiDetail {
 	 * 案件撤案
 	 */
 	private WithdrawTheCase withdrawTheCase;
+
+	/**
+	 * 一审裁判结果
+	 */
+	private FirstTrialRefereeResult firstTrialRefereeResult;
+
+	/**
+	 * 二审裁判结果
+	 */
+	private SecondTrialRefereeResult secondTrialRefereeResult;
+
+	/**
+	 * 其他裁判结果
+	 */
+	private OtherRefereeResult otherRefereeResult;
 }

@@ -31,6 +31,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 清收项目表
@@ -58,4 +59,6 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	Long queryCompareTheNumberOfItemsCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	ProjectLiqui selectProjectDetails(@Param("projectId") Integer projectId);
+
+	Map<String, Long> getProjectMap(@Param("polylineActive") Integer polylineActive,@Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

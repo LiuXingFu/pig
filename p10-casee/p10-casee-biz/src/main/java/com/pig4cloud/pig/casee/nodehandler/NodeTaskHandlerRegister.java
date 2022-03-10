@@ -65,6 +65,9 @@ public class NodeTaskHandlerRegister {
 	LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler;
 
 	@Autowired
+	LIQUI_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK_NODEHandler liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler;
+
+	@Autowired
 	ENTITYZX_STZX_CCZXPMJG_CCZXPMJG entityzx_stzx_cczxpmjg_cczxpmjg;
 
 	@Autowired
@@ -100,6 +103,7 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_SSQT_SSQTCPJG_SSQTCPJG", liqui_ssqt_ssqtcpjg_ssqtcpjg_nodeHandler);
 		submitHandlerMap.put("liQui_LX_LXSCZXLA_LXSCZXLA", liqui_lx_lxsczxla_lxsczxla_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
+		submitHandlerMap.put("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
 
 		//财产程序任务提交map实体类
@@ -152,8 +156,8 @@ public class NodeTaskHandlerRegister {
 
 		TaskNodeHandler taskNodeHandler = null;
 
-		if (taskFlowDTO.getNodeKey().contains("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
-			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMGG_CCZXPMGG");
+		if (taskFlowDTO.getNodeKey().contains("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
+			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMJG_CCZXPMJG");
 		} else {
 			taskNodeHandler = submitHandlerMap.get(taskFlowDTO.getNodeKey());
 		}
@@ -175,8 +179,8 @@ public class NodeTaskHandlerRegister {
 
 		TaskNodeHandler taskNodeHandler = null;
 
-		if (taskNode.getNodeKey().contains("entityZX_STZX_CCZXPMGG_CCZXPMGG")) {
-			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMGG_CCZXPMGG");
+		if (taskNode.getNodeKey().contains("entityZX_STZX_CCZXPMJG_CCZXPMJG")) {
+			taskNodeHandler = submitHandlerMap.get("entityZX_STZX_CCZXPMJG_CCZXPMJG");
 		} else {
 			taskNodeHandler = submitHandlerMap.get(taskNode.getNodeKey());
 		}

@@ -177,24 +177,47 @@
 
 	<select id="queryCompareTheNumberOfItemsCount" resultType="java.lang.Long">
 		SELECT
-			(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
+		(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
 		FROM
-			p10_project
+		p10_project
 		WHERE
-			del_flag = 0
-			and ( YEAR ( take_time )= YEAR ( NOW()) OR YEAR ( take_time )= YEAR ( NOW())- 1 )
-			<if test="insId != null and insId != 0">
-				and ins_id = #{insId}
-			</if>
-			<if test="outlesId != null and outlesId != 0">
-				and outles_id = #{outlesId}
-			</if>
+		del_flag = 0
+		and ( YEAR ( take_time )= YEAR ( NOW()) OR YEAR ( take_time )= YEAR ( NOW())- 1 )
+		<if test="insId != null and insId != 0">
+			and ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and outles_id = #{outlesId}
+		</if>
 	</select>
 
 	<select id="selectProjectDetails" resultType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui">
 		select * from p10_project
 		where del_flag = 0
 		and project_id = #{projectId}
+	</select>
+
+	<select id="getProjectMap" resultType="java.util.LinkedHashMap">
+		select
+		<if test="polylineActive != null and polylineActive == 0">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( YEAR ( take_time ) =#{params}) as #{params}
+			</foreach>
+		</if>
+		<if test="polylineActive != null and polylineActive == 1">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}) as #{params}
+			</foreach>
+		</if>
+		FROM p10_project
+		WHERE
+		del_flag = 0
+		<if test="insId != null and insId != 0">
+			and p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			and p10_project.outles_id = #{outlesId}
+		</if>
 	</select>
 
 </mapper>

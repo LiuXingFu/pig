@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.common.core.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,7 +15,7 @@ import java.util.List;
  * @TIME: 14:42
  * @DAY_NAME_SHORT: 周三
  */
-public class GetMonthDifference {
+public class GetDifference {
 
 	public static List<String> getMonthDifference(String y1, String y2) {
 
@@ -86,5 +87,29 @@ public class GetMonthDifference {
 		return list;
 	}
 
+	public static List<String> getYearDifference(String y1, String y2) {
+
+		List<String> list = new ArrayList<String>();
+		try {
+			Date startDate = new SimpleDateFormat("yyyy").parse(y1);
+			Date endDate = new SimpleDateFormat("yyyy").parse(y2);
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDate);
+			// 获取开始年份
+			int startYear = calendar.get(Calendar.YEAR);
+			// 获取结束年份
+			calendar.setTime(endDate);
+			int endYear = calendar.get(Calendar.YEAR);
+
+			for (int i = startYear; i <= endYear; i++) {
+				list.add(String.valueOf(i));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 }

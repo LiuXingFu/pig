@@ -30,6 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 案件表
@@ -83,4 +84,8 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	Long queryCompareTheNumberOfCasesCount(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	CaseeLiquiPageVO selectCaseeDetails(@Param("caseeId") Integer caseeId);
+
+	Map<String, Long> getCaseeMap(@Param("polylineActive") Integer polylineActive, @Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	CaseeLiqui getCaseeLiqui(@Param("query") Casee casee);
 }

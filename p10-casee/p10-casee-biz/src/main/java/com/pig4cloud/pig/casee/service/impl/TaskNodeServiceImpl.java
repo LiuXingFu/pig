@@ -1748,14 +1748,20 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 		}
 
-		CaseeLiqui caseeLiqui = new CaseeLiqui();
 
-		CaseeLiquiDetail caseeLiquiDetail = new CaseeLiquiDetail();
+		//查询案件与案件详情
+		Casee queryCasee = new Casee();
+		queryCasee.setCaseeId(taskNode.getCaseeId());
+		CaseeLiqui caseeLiqui = caseeLiquiService.getCaseeLiqui(queryCasee);
+		CaseeLiquiDetail caseeLiquiDetail = caseeLiqui.getCaseeLiquiDetail();
+		//案件详情为空创建
+		if (Objects.isNull(caseeLiquiDetail)) {
+			caseeLiquiDetail = new CaseeLiquiDetail();
+		}
 
 		caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 		caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
-		caseeLiqui.setCaseeId(taskNode.getCaseeId());
 
 		caseeLiquiService.updateById(caseeLiqui);
 	}
