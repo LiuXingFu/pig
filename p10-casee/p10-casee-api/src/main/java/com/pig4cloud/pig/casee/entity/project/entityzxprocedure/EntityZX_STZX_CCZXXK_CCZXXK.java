@@ -1,13 +1,12 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.pig4cloud.pig.admin.api.entity.FileAdder;
+
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+
 
 /**
  * 财产执行现勘
@@ -18,8 +17,7 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	/**
 	 * 现勘日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date explorationTime;
+	private LocalDate explorationTime;
 
 	/**
 	 * 现勘经办人(0-否 1-是 2-自动履行到申请人)
@@ -40,6 +38,16 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	 * 拍辅办理人名称
 	 */
 	private String nickName;
+
+	/**
+	 * 产权证号
+	 */
+	private String ownershipCertificates;
+
+	/**
+	 * 建成日期
+	 */
+	private LocalDate builtDate;
 
 	/**
 	 * 是否毛坯房(0-否 1-是)
@@ -104,6 +112,96 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	 * 户型
 	 */
 	private String houseType;
+
+	/**
+	 * 车牌号
+	 */
+	private String numberPlate;
+
+	/**
+	 * 车辆出产日期
+	 */
+	private LocalDate productionDate;
+
+	/**
+	 * 初次登记日期
+	 */
+	private LocalDate registrationDate;
+
+	/**
+	 * 发动机号
+	 */
+	private String engineNumber;
+
+	/**
+	 * 品牌车型
+	 */
+	private String brandModel;
+
+	/**
+	 * 行车里程
+	 */
+	private Double mileage;
+
+	/**
+	 * 土地证号
+	 */
+	private String landCertificateNumber;
+
+	/**
+	 * 土地面积
+	 */
+	private Double landArea;
+
+	/**
+	 * 使用期限
+	 */
+	private Integer periodOfUse;
+
+	/**
+	 * 土地性质(0-商业 1-住宅 2-工业 3-综合)
+	 */
+	private Integer landNature;
+
+	/**
+	 * 社会信用代码
+	 */
+	private String socialCreditCode;
+
+	/**
+	 * 企业名称
+	 */
+	private String companyName;
+
+	/**
+	 * 法定代表人
+	 */
+	private String legalRepresentative;
+
+	/**
+	 * 成立日期
+	 */
+	private LocalDate dateOfEstablishment;
+
+	/**
+	 * 注册资本
+	 */
+	private Double registeredCapital;
+
+	/**
+	 * 注册地址
+	 */
+	private String registeredAddress;
+
+	/**
+	 * 资产编号
+	 */
+	private String assetNumber;
+
+	/**
+	 * 资产数量
+	 */
+	private Integer numberOfAssets;
 
 	/**
 	 * 图片
