@@ -214,6 +214,7 @@
 			and p10_project.`status` = 1000
 			and p10_casee.casee_id is null
 			and casee.casee_id is not null
+			and if(p10_casee.casee_type = 2020, json_extract( p10_casee.casee_detail, '$.firstTrialRefereeResult.refereeType' ) != 2, json_extract( p10_casee.casee_detail, '$.secondTrialRefereeResult.refereeType' ) != 2)
 			and json_extract( p10_transfer_record.transfer_detail, '$.litigation' ) = 0
 			union
 			select p10_project.* from p10_project
