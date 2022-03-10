@@ -275,4 +275,140 @@
 		</if>
 	</select>
 
+	<select id="selectStatisticsReminder" resultType="com.pig4cloud.pig.casee.vo.count.ExpirationReminderVO">
+		select * from (
+			<!-- 拘留到期 -->
+			select 1 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_behavior.behavior_id as businessId,p10_behavior.executed_name as executedName,substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.limitEndTime"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.limitEndTime"),2,10)) as remainingDays from p10_behavior
+			left join p10_project on p10_project.project_id = p10_behavior.project_id
+			left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_behavior.behavior_status = 1
+			and p10_behavior.type = 100
+			and DATE_SUB(substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.limitEndTime"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "jldq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.limitEndTime"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 行为限制到期 -->
+			select 2 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_behavior.behavior_id as businessId,p10_behavior.executed_name as executedName,substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10)) as remainingDays from p10_behavior
+			left join p10_project on p10_project.project_id = p10_behavior.project_id
+			left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_behavior.behavior_status = 1
+			and p10_behavior.type = 200
+			and DATE_SUB(substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "xwxzdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 上诉期结束 -->
+			select 5 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,null as businessId,p10_casee.executed_name as executedName,substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10)) as remainingDays from p10_casee
+			left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+			left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_casee.casee_type = 2020
+			and p10_casee.`status` = 1
+			and DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "ssqjs" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 履行到期 -->
+			select 6 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_reconciliatio_mediation.reconciliatio_mediation_id as businessId,p10_fulfillment_records.subject_name as executedName,DATE_FORMAT(p10_fulfillment_records.fulfillment_time,'%Y-%m-%d') as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),DATE_FORMAT(p10_fulfillment_records.fulfillment_time,'%Y-%m-%d')) as remainingDays from p10_reconciliatio_mediation
+			left join p10_project on p10_project.project_id = p10_reconciliatio_mediation.project_id
+			left join p10_casee on p10_casee.casee_id = p10_reconciliatio_mediation.casee_id
+			left join p10_fulfillment_records on p10_fulfillment_records.reconciliatio_mediation_id = p10_reconciliatio_mediation.reconciliatio_mediation_id
+			where p10_reconciliatio_mediation.del_flag = 0
+			and p10_reconciliatio_mediation.`status` = 0
+			and p10_fulfillment_records.`status` = 0
+			and DATE_SUB(DATE_FORMAT(p10_fulfillment_records.fulfillment_time,'%Y-%m-%d'), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "lxdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and DATE_FORMAT(p10_fulfillment_records.fulfillment_time,'%Y-%m-%d') >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 裁判结果生效 -->
+			select 7 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,null as businessId,p10_casee.executed_name as executedName,substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10)) as remainingDays from p10_casee
+			left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+			left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_casee.casee_type in (2020,2021,2030)
+			and p10_casee.`status` = 1
+			and DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "cpjgsx" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 实体财产查封到期 -->
+			select 8 as reminderType,p10_assets.assets_name as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_assets_re.assets_re_id as businessId,p10_assets_re.subject_name as executedName,substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsSeizure.seizureExpiryDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsSeizure.seizureExpiryDate"),2,10)) as remainingDays from p10_assets_re
+			left join p10_project on p10_project.project_id = p10_assets_re.project_id
+			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_assets_re.casee_id is not null
+			and p10_assets.type = 20200
+			and DATE_SUB(substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsSeizure.seizureExpiryDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "stcccfdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsSeizure.seizureExpiryDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 资金财产冻结到期 -->
+			select 9 as reminderType,p10_assets.assets_name as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_assets_re.assets_re_id as businessId,p10_assets_re.subject_name as executedName,substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsFreeze.freezeExpirationDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsFreeze.freezeExpirationDate"),2,10)) as remainingDays from p10_assets_re
+			left join p10_project on p10_project.project_id = p10_assets_re.project_id
+			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_assets_re.casee_id is not null
+			and p10_assets.type = 20100
+			and DATE_SUB(substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsFreeze.freezeExpirationDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "zjccdjdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_assets_re.assets_re_detail, "$.assetsFreeze.freezeExpirationDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 公告期到期 -->
+			select 10 as reminderType,p10_assets.assets_name as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_assets_re.assets_re_id as businessId,p10_assets_re.subject_name as executedName,substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionStartDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionStartDate"),2,10)) as remainingDays from p10_assets_re
+			left join p10_project on p10_project.project_id = p10_assets_re.project_id
+			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+			left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+			left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_assets_re.casee_id is not null
+			and p10_assets.type = 20200
+			and p10_target.goal_type = 20001
+			and p10_task_node.node_attributes = 400
+			and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+			and DATE_SUB(substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionStartDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "ggqdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionStartDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 拍卖结束 -->
+			select 11 as reminderType,p10_assets.assets_name as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,p10_assets_re.assets_re_id as businessId,p10_assets_re.subject_name as executedName,substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionEndDate"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionEndDate"),2,10)) as remainingDays from p10_assets_re
+			left join p10_project on p10_project.project_id = p10_assets_re.project_id
+			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+			left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+			left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+			where p10_project.del_flag = 0
+			and p10_project.`status` = 1000
+			and p10_assets_re.casee_id is not null
+			and p10_assets.type = 20200
+			and p10_target.goal_type = 20001
+			and p10_task_node.node_attributes = 400
+			and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
+			and DATE_SUB(substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionEndDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "pmjs" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and substring(JSON_EXTRACT(p10_task_node.form_data, "$.auctionEndDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+		)statisticsReminder
+		<where>
+			<if test="login.insId != null and login.insId > 0">
+				and statisticsReminder.ins_id = #{login.insId}
+			</if>
+			<if test="login.outlesId != null and login.outlesId > 0">
+				and statisticsReminder.outles_id = #{login.outlesId}
+			</if>
+			<if test="query.companyCode != null and query.companyCode != ''">
+				and statisticsReminder.company_code like concat('%', #{query.companyCode}, '%')
+			</if>
+			<if test="query.executedName != null and query.executedName != ''">
+				and statisticsReminder.executedName like concat('%', #{query.executedName}, '%')
+			</if>
+			<if test="query.beginDate != null and query.endDate != null  ">
+				AND statisticsReminder.expireDate BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+				DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+			</if>
+		</where>
+		ORDER BY statisticsReminder.expireDate asc
+	</select>
+
 </mapper>
