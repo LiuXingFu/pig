@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal_XWWF_SSXWWF_SSXWWF;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,45 +18,6 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周六
  */
 @Data
-public class BehaviorIllegalCommittingAnIllegalAct extends CommonalityData implements Serializable {
-	/**
-	 * 限制日期
-	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date limitTime;
+public class BehaviorIllegalCommittingAnIllegalAct extends BeIllegal_XWWF_SSXWWF_SSXWWF {
 
-	/**
-	 * 案号
-	 */
-	private String caseNumber;
-
-	/**
-	 * 制裁行为类型(0-拘留 1-罚款 2-移送侦查机关)
-	 */
-	private Integer sanctionsType;
-
-	/**
-	 * 拘留天数
-	 */
-	private Integer daysOfDetention;
-
-	/**
-	 * 拘留结束日期
-	 */
-	private String detentionEndDate;
-
-	/**
-	 * 费用金额
-	 */
-	private BigDecimal expenses;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
-
-	/**
-	 * 附件
-	 */
-	private String appendixFile;
 }

@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
+import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
@@ -305,6 +306,17 @@ public class ProjectLiquiController {
 	@GetMapping("/queryFulfillFirstExecutionPending" )
 	public R queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
 		return R.ok(projectLiquiService.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO));
+	}
+
+	/**
+	 * 提醒事项
+	 * @param expirationReminderDTO
+	 * @return
+	 */
+	@ApiOperation(value = "提醒事项", notes = "提醒事项")
+	@GetMapping("/queryStatisticsReminder" )
+	public R queryStatisticsReminder(Page page, ExpirationReminderDTO expirationReminderDTO) {
+		return R.ok(projectLiquiService.queryStatisticsReminder(page,expirationReminderDTO));
 	}
 
 }

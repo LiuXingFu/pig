@@ -24,9 +24,11 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
+import com.pig4cloud.pig.casee.vo.count.ExpirationReminderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -63,4 +65,6 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 	IPage<ProjectLiquiPageVO> selectFulfillFirstExecutionPending(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
 
 	Map<String, Long> getProjectMap(@Param("polylineActive") Integer polylineActive,@Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	IPage<ExpirationReminderVO> selectStatisticsReminder(Page page, @Param("query") ExpirationReminderDTO expirationReminderDTO, @Param("login")InsOutlesDTO insOutlesDTO);
 }

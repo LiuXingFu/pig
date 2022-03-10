@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import com.pig4cloud.pig.casee.entity.project.limitprocedure.Limit_XWXZ_XWXZXZCX_XWXZXZCX;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,32 +17,7 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周六
  */
 @Data
-public class BehaviorRestrictionsRevoke extends CommonalityData implements Serializable {
+public class BehaviorRestrictionsRevoke extends Limit_XWXZ_XWXZXZCX_XWXZXZCX {
 
-	/**
-	 * 撤销日期
-	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date revokeTime;
-
-	/**
-	 * 撤销原因
-	 */
-	private String reasonForRevocation;
-
-	/**
-	 * 撤销依据
-	 */
-	private String groundsForRevocation;
-
-	/**
-	 * 附件
-	 */
-	private String appendixFile;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
 
 }

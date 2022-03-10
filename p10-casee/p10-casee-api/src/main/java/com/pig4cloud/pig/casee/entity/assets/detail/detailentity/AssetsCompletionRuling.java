@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.entity.assets.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXCJCD_CCZXCJCD;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,27 +17,5 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsCompletionRuling extends CommonalityData implements Serializable {
-
-	/**
-	 * 裁定日期
-	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date dateOfAdjudication;
-
-	/**
-	 * 拍卖结束执行案号
-	 */
-	private String caseeNumber;
-
-	/**
-	 * 成交裁定文书
-	 */
-	private String completionRulingFile;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
-
+public class AssetsCompletionRuling extends EntityZX_STZX_CCZXCJCD_CCZXCJCD {
 }

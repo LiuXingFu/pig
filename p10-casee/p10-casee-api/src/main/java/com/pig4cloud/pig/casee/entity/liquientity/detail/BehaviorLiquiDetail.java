@@ -19,11 +19,6 @@ public class BehaviorLiquiDetail {
 	private LocalDate limitEndTime;
 
 	/**
-	 * 行为违法实体
-	 */
-	private BehaviorIllegal behaviorIllegal;
-
-	/**
 	 * 行为违法送达情况
 	 */
 	private BehaviorIllegalServedSituation behaviorIllegalServedSituation;
@@ -47,11 +42,6 @@ public class BehaviorLiquiDetail {
 	 * 行为违法实施行为违法送达情况
 	 */
 	private BehaviorIllegalCommittingAnIllegalActServedSituation behaviorIllegalCommittingAnIllegalActServedSituation;
-
-	/**
-	 * 行为限制实体
-	 */
-	private BehaviorRestrictions behaviorRestrictions;
 
 	/**
 	 * 行为限制送达情况
