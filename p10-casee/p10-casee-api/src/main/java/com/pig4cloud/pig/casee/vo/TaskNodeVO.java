@@ -54,4 +54,9 @@ public class TaskNodeVO extends TaskNode {
 	 */
 	private Integer isRequired;
 
+	/**
+	 * 拍卖撤案按钮显示状态
+	 */
+	private Boolean revokeSign=false;
+
 }

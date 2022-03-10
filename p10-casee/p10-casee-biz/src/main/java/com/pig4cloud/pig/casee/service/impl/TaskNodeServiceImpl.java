@@ -681,28 +681,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public boolean revoke(TaskNode taskNode) {
-		List<TaskNode> taskNodeList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG"));
-		if (taskNodeList.size()>0){
-			TaskNode taskNodePmgg = taskNodeList.get(taskNodeList.size() - 1);
+	public TaskNodeVO revoke(TaskNode taskNode) {
+		TaskNode taskNodePmgg = this.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG").orderByDesc(TaskNode::getCreateTime).last("limit 1"));
+		TaskNodeVO taskNodeVO=new TaskNodeVO();
+		if (taskNodePmgg!=null){
 			if (taskNodePmgg.getFormData()==null){
-				return false;
+				return taskNodeVO;
 			}
 
 			EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
 
 			if (entityZX_stzx_cczxpmgg_cczxpmgg.getRevoke()==1){
-				return false;
+				return taskNodeVO;
 			}
-
 			Date announcementReleaseTime = entityZX_stzx_cczxpmgg_cczxpmgg.getAnnouncementReleaseTime();
 			Date auctionStartDate = entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionEndDate();
 			Date nowTime = new Date();
-
-			return DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
-
+			boolean effectiveDate = DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
+			taskNodeVO.setRevokeSign(effectiveDate);
+			taskNodeVO.setNodeId(taskNodePmgg.getNodeId());
+			return taskNodeVO;
 		}
-		return false;
+		return taskNodeVO;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -39,6 +41,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG extends TaskNodeHandler {
 				auctionAnnouncement.setActReProcdefId(null);
 				auctionAnnouncement.setTrusteeStatus(null);
 				auctionAnnouncement.setTrusteeType(null);
+				auctionAnnouncement.setCreateTime(LocalDateTime.now());
 				//拿到拍卖公告id最后一位数+1
 				Integer nodeId = Integer.valueOf(taskNodePmgg.getNodeId().substring(taskNodePmgg.getNodeId().lastIndexOf("_") + 1, taskNodePmgg.getNodeId().length()))+1;
 				StringBuilder stringBuilderPmgg=new StringBuilder(taskNodePmgg.getNodeId());
@@ -56,6 +59,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG extends TaskNodeHandler {
 			auctionResults.setActReProcdefId(null);
 			auctionResults.setTrusteeStatus(null);
 			auctionResults.setTrusteeType(null);
+			auctionResults.setCreateTime(LocalDateTime.now());
 			//拿到拍卖结果id最后一位数+1
 			Integer auctionResultsId = Integer.valueOf(auctionResults.getNodeId().substring(auctionResults.getNodeId().lastIndexOf("_") + 1, auctionResults.getNodeId().length()))+1;
 			StringBuilder stringBuilderPmjg=new StringBuilder(auctionResults.getNodeId());
