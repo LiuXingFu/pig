@@ -339,7 +339,7 @@
 				on p10_payment_record.project_id = p10_project.project_id
 				)p10_project
 			)p10_project
-			where DATE_SUB(p10_project.endTime, INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "sssxdq" limit 1) day) <= DATE_FORMAT(now(),'%Y-%m-%d')
+			where DATE_SUB(p10_project.endTime, INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "sssxdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
 			and p10_project.endTime >= DATE_FORMAT(now(), '%Y-%m-%d')
 			UNION
 			<!-- 上诉期结束 -->
