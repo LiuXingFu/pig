@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.vo.count;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class CountMoneyBackMonthlyRankVO {
 	/**
 	 * 回款额排名集合
 	 */
-	private List<MoneyBackMonthlyRank> moneyBackMonthlyRankList;
+	private IPage<MoneyBackMonthlyRank> moneyBackMonthlyRankList;
 
 	/**
 	 * 回款总额

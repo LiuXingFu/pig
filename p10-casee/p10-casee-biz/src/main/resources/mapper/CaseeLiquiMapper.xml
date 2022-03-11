@@ -601,7 +601,7 @@
 
 	<select id="queryCompareTheNumberOfCasesCount" resultType="java.lang.Long">
 		SELECT
-		(sum(YEAR ( p10_casee.start_time )= YEAR (NOW())) - sum( ( YEAR ( p10_casee.start_time )= YEAR ( NOW())- 1 ) ))
+		IFNULL((sum(YEAR ( p10_casee.start_time )= YEAR (NOW())) - sum( ( YEAR ( p10_casee.start_time )= YEAR ( NOW())- 1 ) )), 0)
 		FROM
 		p10_casee
 		LEFT JOIN p10_project_casee_re ON p10_casee.casee_id = p10_project_casee_re.casee_id and
@@ -629,15 +629,25 @@
 		SELECT
 		<if test="polylineActive != null and polylineActive == 0">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( YEAR ( start_time ) = #{params}) as #{params}
+				IFNULL( sum( YEAR ( start_time ) = #{params}), 0) as #{params}
 			</foreach>
 		</if>
 		<if test="polylineActive != null and polylineActive == 1">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( DATE_FORMAT(start_time , '%Y-%m' ) = #{params}) as #{params}
+				IFNULL( sum( DATE_FORMAT(start_time , '%Y-%m' ) = #{params}) , 0) as #{params}
 			</foreach>
 		</if>
 		FROM p10_casee
+		LEFT JOIN p10_project_casee_re ON p10_casee.casee_id = p10_project_casee_re.casee_id and
+		p10_project_casee_re.del_flag = 0
+		LEFT JOIN p10_project ON p10_project_casee_re.project_id = p10_project.project_id and p10_project.del_flag = 0
+		WHERE p10_casee.del_flag = 0
+		<if test="insId != null and insId != 0">
+			AND p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			AND p10_project.outles_id = #{outlesId}
+		</if>
 	</select>
 
 	<select id="getCaseeLiqui" resultType="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">

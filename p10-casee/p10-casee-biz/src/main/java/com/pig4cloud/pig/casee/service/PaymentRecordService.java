@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
@@ -59,7 +60,7 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * 本月回款额月排名
 	 * @return
 	 */
-	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList();
+	IPage<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList(Page page, CountMoneyBackMonthlyRankDTO countMoneyBackMonthlyRankDTO);
 
 	/**
 	 * 本月总回款额

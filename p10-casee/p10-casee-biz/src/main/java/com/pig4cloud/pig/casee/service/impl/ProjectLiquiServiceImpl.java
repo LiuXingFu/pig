@@ -26,6 +26,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
+import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -886,8 +887,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank() {
 		CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRankVO = new CountMoneyBackMonthlyRankVO();
 
+		Page page = new Page();
+		page.setSize(1);
+		page.setCurrent(1);
+		page.setSize(10);
+
 		//本月回款额月排名
-		countMoneyBackMonthlyRankVO.setMoneyBackMonthlyRankList(this.paymentRecordService.queryMoneyBackMonthlyRankList());
+		countMoneyBackMonthlyRankVO.setMoneyBackMonthlyRankList(this.paymentRecordService.queryMoneyBackMonthlyRankList(page, new CountMoneyBackMonthlyRankDTO()));
 
 		//本月总回款额
 		countMoneyBackMonthlyRankVO.setTotalRepayments(this.paymentRecordService.getTotalRepayments());

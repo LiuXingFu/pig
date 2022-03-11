@@ -161,17 +161,24 @@
 		AND sys_user.del_flag = 0
 		WHERE
 		p10_payment_record.del_flag = 0
-		AND DATE_FORMAT( p10_payment_record.payment_date, '%Y%m' ) = DATE_FORMAT( CURDATE(), '%Y%m' )
+		<if test="query.beginDate == null and query.endDate == null">
+			AND DATE_FORMAT( p10_payment_record.payment_date, '%Y%m' ) = DATE_FORMAT( CURDATE(), '%Y%m' )
+		</if>
 		<if test="insId != null and insId != 0">
 			AND p10_project.ins_id = #{insId}
 		</if>
 		<if test="outlesId != null and outlesId != 0">
 			AND p10_project.outles_id = #{outlesId}
 		</if>
+		<if test="query.managerName != null and query.managerName != ''">
+			AND sys_user.actual_name like concat('%', #{query.managerName}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null">
+			AND p10_payment_record.payment_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') AND DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
 		AND p10_payment_record.father_id IS NOT NULL
 		GROUP BY p10_payment_record.create_by
 		ORDER BY repaymentAmount DESC
-		LIMIT 10
 	</select>
 
 	<select id="getTotalRepayments" resultType="java.math.BigDecimal">
@@ -197,12 +204,12 @@
 		SELECT
 		<if test="polylineColumnActive != null and polylineColumnActive == 0">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum(CASE YEAR (p10_payment_record.payment_date) WHEN #{params} THEN p10_payment_record.payment_amount ELSE 0 END) AS #{params}
+				IFNULL( sum(CASE YEAR (p10_payment_record.payment_date) WHEN #{params} THEN p10_payment_record.payment_amount ELSE 0 END), 0) AS #{params}
 			</foreach>
 		</if>
 		<if test="polylineColumnActive != null and polylineColumnActive == 1">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( CASE DATE_FORMAT( p10_payment_record.payment_date, '%Y-%m' ) WHEN  #{params} THEN p10_payment_record.payment_amount ELSE 0 END ) AS #{params}
+				IFNULL( sum( CASE DATE_FORMAT( p10_payment_record.payment_date, '%Y-%m' ) WHEN  #{params} THEN p10_payment_record.payment_amount ELSE 0 END ), 0) AS #{params}
 			</foreach>
 		</if>
 		FROM

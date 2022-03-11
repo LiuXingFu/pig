@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -172,5 +173,17 @@ public class PaymentRecordController {
     public R removeById(@PathVariable Integer paymentRecordId) {
         return R.ok(paymentRecordService.removeById(paymentRecordId));
     }
+
+	/**
+	 * 查询回款额排名
+	 * @param page
+	 * @param countMoneyBackMonthlyRankDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id查询法院到款未领款信息", notes = "根据项目id查询法院到款未领款信息")
+	@GetMapping("/queryMoneyBackMonthlyRankList")
+    public R queryMoneyBackMonthlyRankList(Page page,  CountMoneyBackMonthlyRankDTO countMoneyBackMonthlyRankDTO) {
+    	return R.ok(paymentRecordService.queryMoneyBackMonthlyRankList(page, countMoneyBackMonthlyRankDTO));
+	}
 
 }

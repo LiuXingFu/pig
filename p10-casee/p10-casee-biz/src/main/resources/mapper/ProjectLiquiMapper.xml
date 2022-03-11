@@ -177,7 +177,7 @@
 
 	<select id="queryCompareTheNumberOfItemsCount" resultType="java.lang.Long">
 		SELECT
-		(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
+		IFNULL((sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) ), 0)
 		FROM
 		p10_project
 		WHERE
@@ -256,12 +256,12 @@
 		select
 		<if test="polylineActive != null and polylineActive == 0">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( YEAR ( take_time ) =#{params}) as #{params}
+				IFNULL(sum( YEAR ( take_time ) =#{params}), 0) as #{params}
 			</foreach>
 		</if>
 		<if test="polylineActive != null and polylineActive == 1">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}) as #{params}
+				IFNULL(sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}), 0) as #{params}
 			</foreach>
 		</if>
 		FROM p10_project
