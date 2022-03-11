@@ -890,14 +890,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank() {
 		CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRankVO = new CountMoneyBackMonthlyRankVO();
 
-		Page page = new Page();
-		page.setSize(1);
-		page.setCurrent(1);
-		page.setSize(10);
-
-		//本月回款额月排名
-		countMoneyBackMonthlyRankVO.setMoneyBackMonthlyRankList(this.paymentRecordService.queryMoneyBackMonthlyRankList(page, new CountMoneyBackMonthlyRankDTO()));
-
 		//本月总回款额
 		countMoneyBackMonthlyRankVO.setTotalRepayments(this.paymentRecordService.getTotalRepayments());
 
