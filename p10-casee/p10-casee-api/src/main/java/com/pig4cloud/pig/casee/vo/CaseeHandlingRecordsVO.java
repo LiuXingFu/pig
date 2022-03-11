@@ -16,47 +16,20 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.casee.entity.TaskNode;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * 流程节点表
+ * 案件办理记录表
  *
- * @author xiaojun
- * @date 2021-09-07 17:01:38
+ * @author Mjh
+ * @date 2022-03-10 18:05:58
  */
 @Data
-@TableName("p10_task_node")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "流程节点表")
-public class TaskNodeVO extends TaskNode {
+public class CaseeHandlingRecordsVO extends CaseeHandlingRecords {
 
-	/**
-	 * 子节点
-	 */
-	@ApiModelProperty(value="子节点")
-	private List<TaskNodeVO> children=new ArrayList<>();
-
-	/**
-	 * 是否委托 0-未委托 1-委托
-	 */
-	private Integer isNodeEntrust;
-
-	/**
-	 * 是否必填 0-不必填 1-必填
-	 */
-	private Integer isRequired;
-
-	/**
-	 * 拍卖撤案按钮显示状态
-	 */
-	private Boolean revokeSign=false;
-
+    /**
+     * 办理人
+     */
+    private String name;
 }

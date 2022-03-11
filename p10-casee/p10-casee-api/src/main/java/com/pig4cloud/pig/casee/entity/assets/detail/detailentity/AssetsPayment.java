@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.entity.assets.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXDK_CCZXDK;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,32 +17,6 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsPayment extends CommonalityData implements Serializable {
-
-	/**
-	 * 到款金额
-	 */
-	private Double amountReceived;
-
-	/**
-	 * 最终到款时间
-	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date finalPaymentDate;
-
-	/**
-	 * 最终付款人
-	 */
-	private String finalPayer;
-
-	/**
-	 * 附件
-	 */
-	private String appendixFile;
-
-	/**
-	 * 备注
-	 */
-	private String remark;
+public class AssetsPayment extends EntityZX_STZX_CCZXDK_CCZXDK {
 
 }

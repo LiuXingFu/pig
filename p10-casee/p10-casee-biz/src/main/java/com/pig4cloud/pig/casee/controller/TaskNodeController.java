@@ -102,22 +102,7 @@ public class TaskNodeController {
 	@ApiOperation(value = "查询当前拍卖公告节点", notes = "查询当前拍卖公告节点")
 	@GetMapping("/queryAuctionAnnouncement" )
 	public R queryAuctionAnnouncement(TaskNode taskNode) {
-		List<TaskNode> taskNodeList = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG"));
-		if (taskNodeList.size()>0){
-			return R.ok(taskNodeList.get(taskNodeList.size() - 1));
-		}
-		return R.ok(null);
-	}
-
-	/**
-	 * 添加拍卖撤案
-	 * @param taskNode
-	 * @return R
-	 */
-	@ApiOperation(value = "添加拍卖撤案", notes = "添加拍卖撤案")
-	@PostMapping("/addRevoke" )
-	public R addRevoke(TaskNode taskNode) {
-		return R.ok(taskNodeService.updateById(taskNode));
+		return R.ok(taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG").orderByDesc(TaskNode::getCreateTime).last("limit 1")));
 	}
 
     /**

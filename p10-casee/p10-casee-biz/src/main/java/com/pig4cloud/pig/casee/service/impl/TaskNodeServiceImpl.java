@@ -54,6 +54,7 @@ import com.pig4cloud.pig.common.core.util.*;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +106,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Autowired
 	private BehaviorService BehaviorLiquiService;
 	@Autowired
-	CaseeLiquiService caseeLiquiService;
+	private CaseeLiquiService caseeLiquiService;
+	@Autowired
+	private CaseeHandlingRecordsService caseeHandlingRecordsService;
+
 
 	private int sum = 0;
 
@@ -530,8 +534,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
 
+			//添加案件任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
+
 			//添加任务记录数据
-			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+//			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 		return taskFlowDTO.getNodeId();
 	}
@@ -681,28 +690,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public boolean revoke(TaskNode taskNode) {
-		List<TaskNode> taskNodeList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG"));
-		if (taskNodeList.size()>0){
-			TaskNode taskNodePmgg = taskNodeList.get(taskNodeList.size() - 1);
+	public TaskNodeVO revoke(TaskNode taskNode) {
+		TaskNode taskNodePmgg = this.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG").orderByDesc(TaskNode::getCreateTime).last("limit 1"));
+		TaskNodeVO taskNodeVO=new TaskNodeVO();
+		if (taskNodePmgg!=null){
 			if (taskNodePmgg.getFormData()==null){
-				return false;
+				return taskNodeVO;
 			}
 
 			EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
 
 			if (entityZX_stzx_cczxpmgg_cczxpmgg.getRevoke()==1){
-				return false;
+				return taskNodeVO;
 			}
-
 			Date announcementReleaseTime = entityZX_stzx_cczxpmgg_cczxpmgg.getAnnouncementReleaseTime();
 			Date auctionStartDate = entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionEndDate();
 			Date nowTime = new Date();
-
-			return DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
-
+			boolean effectiveDate = DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
+			taskNodeVO.setRevokeSign(effectiveDate);
+			taskNodeVO.setNodeId(taskNodePmgg.getNodeId());
+			return taskNodeVO;
 		}
-		return false;
+		return taskNodeVO;
 	}
 
 	@Override

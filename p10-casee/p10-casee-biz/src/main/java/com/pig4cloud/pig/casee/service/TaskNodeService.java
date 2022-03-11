@@ -213,7 +213,7 @@ public interface TaskNodeService extends IService<TaskNode> {
 	/**
 	 * 拍卖撤案显示判断
 	 */
-	boolean revoke(TaskNode taskNode);
+	TaskNodeVO revoke(TaskNode taskNode);
 
 	/**
 	 * 消息代办 我的代办/委托列表

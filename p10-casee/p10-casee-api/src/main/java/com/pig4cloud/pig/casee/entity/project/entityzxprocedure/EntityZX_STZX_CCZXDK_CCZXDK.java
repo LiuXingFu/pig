@@ -22,7 +22,7 @@ public class EntityZX_STZX_CCZXDK_CCZXDK extends CommonalityData implements Seri
 	/**
 	 * 最终到款时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JSONField(format="yyyy-MM-dd")
 	private Date finalPaymentDate;
 
 	/**
