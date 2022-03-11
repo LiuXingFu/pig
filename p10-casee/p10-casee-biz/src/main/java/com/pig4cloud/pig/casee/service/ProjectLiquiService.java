@@ -96,8 +96,14 @@ public interface ProjectLiquiService extends IService<Project> {
 	//年比较去年相关数量如：项目、回款额、案件数和财产数
 	CountCompareQuantityVO countCompareQuantity();
 
+	//本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合
 	CountMoneyBackMonthlyRankVO countMoneyBackMonthlyRank();
 
+	/**
+	 * 查询项目案件折线图
+	 * @param countPolylineLineChartDTO
+	 * @return
+	 */
 	CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO);
 
 	/**
@@ -108,6 +114,11 @@ public interface ProjectLiquiService extends IService<Project> {
 	 */
 	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
 
+	/**
+	 * 回款额折线柱状图
+	 * @param countLineChartColumnarChartDTO
+	 * @return
+	 */
 	CountLineChartColumnarChartVO countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO);
 
 
