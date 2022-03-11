@@ -849,7 +849,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		countProjectMattersVO.setProjectSuspendCount(projectSuspendIPage.getTotal());
 
+		IPage<ExpirationReminderVO> expirationReminderVOIPage = this.queryStatisticsReminder(page, new ExpirationReminderDTO());
+
 		//却查询提醒事项
+		countProjectMattersVO.setRemindMatterCount(expirationReminderVOIPage.getTotal());
 
 		return countProjectMattersVO;
 	}
@@ -879,7 +882,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	/**
-	 * 本月回款额月排名、回款总额、财产类型数量与财产总数量
+	 * 本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合
 	 *
 	 * @return
 	 */
@@ -907,20 +910,31 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return countMoneyBackMonthlyRankVO;
 	}
 
+	/**
+	 * 查询项目案件折线图
+	 * @param countPolylineLineChartDTO
+	 * @return
+	 */
 	@Override
 	public CountPolylineLineChartVO countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO) {
 
 		CountPolylineLineChartVO countPolylineLineChartVO = new CountPolylineLineChartVO();
 
+		//判断折线年月份类型 0年 1月
 		if (countPolylineLineChartDTO.getPolylineActive().equals(Integer.valueOf("0"))) {
+			//创建查询日期集合
 			List<String> yearDifference;
+			//起始年份与结束年份不为空
 			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && !countPolylineLineChartDTO.getPolylineYearStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineYearEnd()) && !countPolylineLineChartDTO.getPolylineYearEnd().equals(""))) {
+//				起始年份与结束年份相等 取起始年份存入时间集合
 				if (countPolylineLineChartDTO.getPolylineYearStar().equals(countPolylineLineChartDTO.getPolylineYearEnd())) {
 					yearDifference = new ArrayList<>();
 					yearDifference.add(countPolylineLineChartDTO.getPolylineYearStar());
+					//起始年份与结束年份不相等 将间隔年份全部查出
 				} else {
 					yearDifference = GetDifference.getYearDifference(countPolylineLineChartDTO.getPolylineYearStar(), countPolylineLineChartDTO.getPolylineYearEnd());
 				}
+			//起始年份与结束年份为空 查询当前年份-9年的全部年份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -932,18 +946,23 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				String polylineYearStar = sdf.format(time);
 				yearDifference = GetDifference.getYearDifference(polylineYearStar, polylineYearEnd);
 			}
-
+			//查询相应数据并处理查询数据
 			setCountPolylineLineChartVO(countPolylineLineChartDTO.getPolylineActive(), countPolylineLineChartVO, yearDifference);
 
 		} else {
+			//创建查询日期集合
 			List<String> monthDifference;
+			//起始月份与结束月份不为空
 			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && !countPolylineLineChartDTO.getPolylineMonthStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd()) && !countPolylineLineChartDTO.getPolylineMonthEnd().equals(""))) {
+				//起始月份与结束月份相等 取起始月份存入时间集合
 				if (countPolylineLineChartDTO.getPolylineMonthStar().equals(countPolylineLineChartDTO.getPolylineMonthEnd())) {
 					monthDifference = new ArrayList<>();
 					monthDifference.add(countPolylineLineChartDTO.getPolylineMonthStar());
+				//起始月份与结束月份不相等 将间隔月份全部查出
 				} else {
 					monthDifference = GetDifference.getMonthDifference(countPolylineLineChartDTO.getPolylineMonthStar(), countPolylineLineChartDTO.getPolylineMonthEnd());
 				}
+			//起始月份与结束月份为空 查询当前月份-11的全部月份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				Date now = new Date();
@@ -956,6 +975,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				monthDifference = GetDifference.getMonthDifference(polylineMonthStar, polylineMonthEnd);
 			}
 
+			//查询相应数据并处理查询数据
 			setCountPolylineLineChartVO(countPolylineLineChartDTO.getPolylineActive(), countPolylineLineChartVO, monthDifference);
 		}
 
@@ -969,8 +989,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	 * @param monthDifference
 	 */
 	private void setCountPolylineLineChartVO(Integer polylineActive, CountPolylineLineChartVO countPolylineLineChartVO, List<String> monthDifference) {
+		//根据日期集合查询项目
 		Map<String, Long> projectMap = this.baseMapper.getProjectMap(polylineActive, monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 
+		//根据日期集合查询案件
 		Map<String, Long> caseeMap = this.caseeLiquiService.getCaseeMap(polylineActive, monthDifference);
 
 		List<String> timelineList = new ArrayList<>();
@@ -979,6 +1001,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		List<Long> caseeList = new ArrayList<>();
 
+		//循环将数据存入VO相对应的List中
 		for (String key : projectMap.keySet()) {
 			timelineList.add(key);
 			projectList.add(projectMap.get(key));
@@ -1003,19 +1026,30 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return this.baseMapper.selectFulfillFirstExecutionPending(page, projectNoProcessedDTO, insOutlesDTO);
 	}
 
+	/**
+	 * 回款额折线柱状图
+	 * @param countLineChartColumnarChartDTO
+	 * @return
+	 */
 	@Override
 	public CountLineChartColumnarChartVO countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO) {
 		CountLineChartColumnarChartVO countLineChartColumnarChartVO = new CountLineChartColumnarChartVO();
 
+		//判断折线年月份类型 0年 1月
 		if (countLineChartColumnarChartDTO.getPolylineColumnActive().equals(Integer.valueOf("0"))) {
+			//创建查询日期集合
 			List<String> yearDifference;
+			//起始年份与结束年份不为空
 			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearStar()) && !countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnYearEnd().equals(""))) {
+				//起始年份与结束年份相等 取起始年份存入时间集合
 				if (countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals(countLineChartColumnarChartDTO.getPolylineColumnYearEnd())) {
 					yearDifference = new ArrayList<>();
 					yearDifference.add(countLineChartColumnarChartDTO.getPolylineColumnYearStar());
+					//起始月份与结束月份不相等 将间隔月份全部查出
 				} else {
 					yearDifference = GetDifference.getYearDifference(countLineChartColumnarChartDTO.getPolylineColumnYearStar(), countLineChartColumnarChartDTO.getPolylineColumnYearEnd());
 				}
+				//起始年份与结束年份为空 查询当前年份-9年的全部年份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -1028,17 +1062,23 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				yearDifference = GetDifference.getYearDifference(polylineColumnYearStar, polylineColumnYearEnd);
 			}
 
+			//查询相应数据并处理查询数据
 			setCountLineChartColumnarChartVO(countLineChartColumnarChartDTO.getPolylineColumnActive(), countLineChartColumnarChartVO, yearDifference);
 
 		} else {
+			//创建查询日期集合
 			List<String> monthDifference;
+			//起始月份与结束月份不为空
 			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthStar()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthEnd().equals(""))) {
+				//起始月份与结束月份相等 取起始月份存入时间集合
 				if (countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd())) {
 					monthDifference = new ArrayList<>();
 					monthDifference.add(countLineChartColumnarChartDTO.getPolylineColumnMonthStar());
+					//起始月份与结束月份不相等 将间隔月份全部查出
 				} else {
 					monthDifference = GetDifference.getMonthDifference(countLineChartColumnarChartDTO.getPolylineColumnMonthStar(), countLineChartColumnarChartDTO.getPolylineColumnMonthEnd());
 				}
+				//起始月份与结束月份为空 查询当前月份-11的全部月份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				Date now = new Date();
@@ -1051,6 +1091,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				monthDifference = GetDifference.getMonthDifference(polylineColumnMonthStar, polylineColumnMonthEnd);
 			}
 
+			//查询相应数据并处理查询数据
 			setCountLineChartColumnarChartVO(countLineChartColumnarChartDTO.getPolylineColumnActive(), countLineChartColumnarChartVO, monthDifference);
 		}
 
@@ -1068,8 +1109,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		List<BigDecimal> moneyBackAmountLit = new ArrayList<>();
 
+		//查询回款
 		Map<String, BigDecimal> paymentRecordMap = this.paymentRecordService.getPaymentRecordMap(polylineColumnActive, difference);
 
+		//循环将数据存入VO相对应的List中
 		for (String key : paymentRecordMap.keySet()) {
 			lineColumnarTimelineList.add(key);
 			moneyBackAmountLit.add(paymentRecordMap.get(key));

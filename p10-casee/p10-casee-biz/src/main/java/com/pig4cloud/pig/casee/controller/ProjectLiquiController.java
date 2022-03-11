@@ -278,10 +278,10 @@ public class ProjectLiquiController {
 	}
 
 	/**
-	 * 查询本月回款额排名
+	 * 本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合
 	 * @return
 	 */
-	@ApiOperation(value = "查询本月回款额排名", notes = "查询本月回款额排名")
+	@ApiOperation(value = "本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合", notes = "本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合")
 	@GetMapping("/countMoneyBackMonthlyRank" )
 	public  R countMoneyBackMonthlyRank() {
 		return R.ok(projectLiquiService.countMoneyBackMonthlyRank());
