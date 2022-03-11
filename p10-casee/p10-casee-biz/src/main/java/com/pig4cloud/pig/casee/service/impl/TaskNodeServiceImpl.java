@@ -54,6 +54,7 @@ import com.pig4cloud.pig.common.core.util.*;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +106,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Autowired
 	private BehaviorService BehaviorLiquiService;
 	@Autowired
-	CaseeLiquiService caseeLiquiService;
+	private CaseeLiquiService caseeLiquiService;
+	@Autowired
+	private CaseeHandlingRecordsService caseeHandlingRecordsService;
+
 
 	private int sum = 0;
 
@@ -530,8 +534,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
 
+			//添加案件任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
+
 			//添加任务记录数据
-			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+//			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 		return taskFlowDTO.getNodeId();
 	}

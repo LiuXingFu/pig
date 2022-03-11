@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.CaseeHandlingRecordsMapper">
+
+  <resultMap id="caseHandlingRecordsMap" type="com.pig4cloud.pig.casee.entity.CaseeHandlingRecords">
+    <id property="caseeHandlingRecordsId" column="case_handling_records_id"/>
+    <result property="createTime" column="create_time"/>
+    <result property="createBy" column="create_by"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="delFlag" column="del_flag"/>
+	<result property="nodeId" column="node_id"/>
+	<result property="nodeName" column="node_name"/>
+	<result property="submissionStatus" column="submission_status"/>
+    <result property="projectId" column="project_id"/>
+    <result property="caseeId" column="casee_id"/>
+    <result property="targetId" column="target_id"/>
+    <result property="formData" column="form_data"/>
+  </resultMap>
+
+	<select id="queryCaseeHandlingRecords" resultType="com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO">
+		select p10_casee_handling_records.*,sys_user.actual_name as name from p10_casee_handling_records
+		left join sys_user on sys_user.user_id=p10_casee_handling_records.create_by
+		where
+		p10_casee_handling_records.project_id=#{caseeHandlingRecords.projectId} and p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId} and p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
+	</select>
+</mapper>

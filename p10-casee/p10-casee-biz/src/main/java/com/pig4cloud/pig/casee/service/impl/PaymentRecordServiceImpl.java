@@ -23,9 +23,12 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
+import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
+import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
@@ -35,6 +38,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -49,6 +53,8 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
@@ -87,6 +93,12 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		//添加领款信息
 		this.save(paymentRecordDTO);
 
+		//修改项目回款总金额
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(paymentRecordDTO.getProjectId());
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(paymentRecordDTO.getPaymentAmount()));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		projectLiquiService.updateById(projectLiqui);
+
 		List<Integer> subjectIdList = paymentRecordDTO.getSubjectIdList();
 		//添加回款记录与主体关联信息
 		for (Integer integer : subjectIdList) {
@@ -103,7 +115,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 		//修改到款记录状态
 		List<PaymentRecord> courtPayment = paymentRecordDTO.getCourtPayment();
-		if (courtPayment.size()>0){
+		if (courtPayment!=null&&courtPayment.size()>0){
 			for (PaymentRecord paymentRecord : courtPayment) {
 				paymentRecord.setStatus(1);
 			}
@@ -139,5 +151,16 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public BigDecimal getTotalRepayments() {
 		return this.baseMapper.getTotalRepayments();
+	}
+
+	/**
+	 * 根据时间集合查询回款额
+	 * @param polylineColumnActive
+	 * @param difference
+	 * @return
+	 */
+	@Override
+	public Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference) {
+		return this.baseMapper.getPaymentRecordMap(polylineColumnActive, difference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 }

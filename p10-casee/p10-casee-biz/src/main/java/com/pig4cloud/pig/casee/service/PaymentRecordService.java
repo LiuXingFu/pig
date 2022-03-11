@@ -28,6 +28,7 @@ import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 回款详细记录表
@@ -65,4 +66,12 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @return
 	 */
 	BigDecimal getTotalRepayments();
+
+	/**
+	 * 根据时间集合查询回款额
+	 * @param polylineColumnActive
+	 * @param difference
+	 * @return
+	 */
+	Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference);
 }

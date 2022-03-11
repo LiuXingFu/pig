@@ -103,10 +103,8 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 			paymentRecordService.saveBatch(fulfillmentRecordsDTO.getPaymentRecordList());
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(fulfillmentRecordsDTO.getProjectId());
-			BigDecimal add = projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(fulfillmentRecordsDTO.getFulfillmentAmount());
-			ProjectLiQuiDetail projectLiQuiDetail = projectLiqui.getProjectLiQuiDetail();
-			projectLiQuiDetail.setRepaymentAmount(new BigDecimal(add.toString()));
-			projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+			projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(fulfillmentRecordsDTO.getFulfillmentAmount()));
+			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
 			//修改项目回款金额
 			projectLiquiService.updateById(projectLiqui);
 		}else if (fulfillmentRecordsDTO.getStatus()==2){//不能履行

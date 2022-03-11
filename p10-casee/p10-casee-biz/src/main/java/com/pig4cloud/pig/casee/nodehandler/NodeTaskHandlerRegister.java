@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.nodehandler;
 
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.nodehandler.impl.*;
@@ -73,6 +74,12 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler;
 
+	@Autowired
+	LiQui_SSQT_SSQTCPJGSX_SSQTCPJGSX_NODEHandler liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler;
+
+	@Autowired
+	FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler fundingZX_zjzx_zjzxzjhk_zjzxzjhk_nodeHandler;
+
 
 
 	// 任务节点提交节点map
@@ -105,9 +112,12 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
+		submitHandlerMap.put("liQui_SSQT_SSQTCPJGSX_SSQTCPJGSX",liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler);
 
 		//财产程序任务提交map实体类
 		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg);
+		submitHandlerMap.put("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK", fundingZX_zjzx_zjzxzjhk_zjzxzjhk_nodeHandler);
+
 
 //		// 任务节点审核map实现类
 //		auditHandlerMap.put("paiFu_JGRZ_SFYJ_YJJG", paifu_jgrz_sfyj_yjjg_nodeHandler);

@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.Project;
@@ -106,6 +107,9 @@ public interface ProjectLiquiService extends IService<Project> {
 	 * @return
 	 */
 	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO);
+
+	CountLineChartColumnarChartVO countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO);
+
 
 	/**
 	 * 提醒事项

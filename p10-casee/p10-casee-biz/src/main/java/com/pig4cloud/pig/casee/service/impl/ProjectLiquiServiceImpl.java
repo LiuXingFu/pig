@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -907,7 +908,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		if (countPolylineLineChartDTO.getPolylineActive().equals(Integer.valueOf("0"))) {
 			List<String> yearDifference;
-			if(Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd())) {
+			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && !countPolylineLineChartDTO.getPolylineYearStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineYearEnd()) && !countPolylineLineChartDTO.getPolylineYearEnd().equals(""))) {
 				if (countPolylineLineChartDTO.getPolylineYearStar().equals(countPolylineLineChartDTO.getPolylineYearEnd())) {
 					yearDifference = new ArrayList<>();
 					yearDifference.add(countPolylineLineChartDTO.getPolylineYearStar());
@@ -926,11 +927,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				yearDifference = GetDifference.getYearDifference(polylineYearStar, polylineYearEnd);
 			}
 
-			setCountPolylineLineChartVO(countPolylineLineChartDTO, countPolylineLineChartVO, yearDifference);
+			setCountPolylineLineChartVO(countPolylineLineChartDTO.getPolylineActive(), countPolylineLineChartVO, yearDifference);
 
 		} else {
 			List<String> monthDifference;
-			if(Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd())) {
+			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && !countPolylineLineChartDTO.getPolylineMonthStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd()) && !countPolylineLineChartDTO.getPolylineMonthEnd().equals(""))) {
 				if (countPolylineLineChartDTO.getPolylineMonthStar().equals(countPolylineLineChartDTO.getPolylineMonthEnd())) {
 					monthDifference = new ArrayList<>();
 					monthDifference.add(countPolylineLineChartDTO.getPolylineMonthStar());
@@ -941,15 +942,15 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				Calendar c1 = Calendar.getInstance();
 				Date now = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-				String polylineYearEnd = sdf.format(now);
+				String polylineMonthEnd = sdf.format(now);
 				c1.setTime(now);
 				c1.add(Calendar.MONTH, -11);
 				Date time = c1.getTime();
-				String polylineYearStar = sdf.format(time);
-				monthDifference = GetDifference.getMonthDifference(polylineYearStar, polylineYearEnd);
+				String polylineMonthStar = sdf.format(time);
+				monthDifference = GetDifference.getMonthDifference(polylineMonthStar, polylineMonthEnd);
 			}
 
-			setCountPolylineLineChartVO(countPolylineLineChartDTO, countPolylineLineChartVO, monthDifference);
+			setCountPolylineLineChartVO(countPolylineLineChartDTO.getPolylineActive(), countPolylineLineChartVO, monthDifference);
 		}
 
 		return countPolylineLineChartVO;
@@ -957,14 +958,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 根据日期集合查询项目与案件数量
-	 * @param countPolylineLineChartDTO
+	 * @param polylineActive
 	 * @param countPolylineLineChartVO
 	 * @param monthDifference
 	 */
-	private void setCountPolylineLineChartVO(CountPolylineLineChartDTO countPolylineLineChartDTO, CountPolylineLineChartVO countPolylineLineChartVO, List<String> monthDifference) {
-		Map<String, Long> projectMap = this.baseMapper.getProjectMap(countPolylineLineChartDTO.getPolylineActive(), monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	private void setCountPolylineLineChartVO(Integer polylineActive, CountPolylineLineChartVO countPolylineLineChartVO, List<String> monthDifference) {
+		Map<String, Long> projectMap = this.baseMapper.getProjectMap(polylineActive, monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 
-		Map<String, Long> caseeMap = this.caseeLiquiService.getCaseeMap(countPolylineLineChartDTO.getPolylineActive(), monthDifference);
+		Map<String, Long> caseeMap = this.caseeLiquiService.getCaseeMap(polylineActive, monthDifference);
 
 		List<String> timelineList = new ArrayList<>();
 
@@ -994,6 +995,83 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectFulfillFirstExecutionPending(page, projectNoProcessedDTO, insOutlesDTO);
+	}
+
+	@Override
+	public CountLineChartColumnarChartVO countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO) {
+		CountLineChartColumnarChartVO countLineChartColumnarChartVO = new CountLineChartColumnarChartVO();
+
+		if (countLineChartColumnarChartDTO.getPolylineColumnActive().equals(Integer.valueOf("0"))) {
+			List<String> yearDifference;
+			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearStar()) && !countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnYearEnd().equals(""))) {
+				if (countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals(countLineChartColumnarChartDTO.getPolylineColumnYearEnd())) {
+					yearDifference = new ArrayList<>();
+					yearDifference.add(countLineChartColumnarChartDTO.getPolylineColumnYearStar());
+				} else {
+					yearDifference = GetDifference.getYearDifference(countLineChartColumnarChartDTO.getPolylineColumnYearStar(), countLineChartColumnarChartDTO.getPolylineColumnYearEnd());
+				}
+			} else {
+				Calendar c1 = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+				Date date = new Date();
+				String polylineColumnYearEnd = sdf.format(date);
+				c1.setTime(date);
+				c1.add(Calendar.YEAR, -9);
+				Date time = c1.getTime();
+				String polylineColumnYearStar = sdf.format(time);
+				yearDifference = GetDifference.getYearDifference(polylineColumnYearStar, polylineColumnYearEnd);
+			}
+
+			setCountLineChartColumnarChartVO(countLineChartColumnarChartDTO.getPolylineColumnActive(), countLineChartColumnarChartVO, yearDifference);
+
+		} else {
+			List<String> monthDifference;
+			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthStar()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthEnd().equals(""))) {
+				if (countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd())) {
+					monthDifference = new ArrayList<>();
+					monthDifference.add(countLineChartColumnarChartDTO.getPolylineColumnMonthStar());
+				} else {
+					monthDifference = GetDifference.getMonthDifference(countLineChartColumnarChartDTO.getPolylineColumnMonthStar(), countLineChartColumnarChartDTO.getPolylineColumnMonthEnd());
+				}
+			} else {
+				Calendar c1 = Calendar.getInstance();
+				Date now = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+				String polylineColumnMonthEnd = sdf.format(now);
+				c1.setTime(now);
+				c1.add(Calendar.MONTH, -11);
+				Date time = c1.getTime();
+				String polylineColumnMonthStar = sdf.format(time);
+				monthDifference = GetDifference.getMonthDifference(polylineColumnMonthStar, polylineColumnMonthEnd);
+			}
+
+			setCountLineChartColumnarChartVO(countLineChartColumnarChartDTO.getPolylineColumnActive(), countLineChartColumnarChartVO, monthDifference);
+		}
+
+		return countLineChartColumnarChartVO;
+	}
+
+	/**
+	 * 根据日期集合查询回款额
+	 * @param polylineColumnActive
+	 * @param countLineChartColumnarChartVO
+	 * @param difference
+	 */
+	private void setCountLineChartColumnarChartVO(Integer polylineColumnActive, CountLineChartColumnarChartVO countLineChartColumnarChartVO, List<String> difference) {
+		List<String> lineColumnarTimelineList = new ArrayList<>();
+
+		List<BigDecimal> moneyBackAmountLit = new ArrayList<>();
+
+		Map<String, BigDecimal> paymentRecordMap = this.paymentRecordService.getPaymentRecordMap(polylineColumnActive, difference);
+
+		for (String key : paymentRecordMap.keySet()) {
+			lineColumnarTimelineList.add(key);
+			moneyBackAmountLit.add(paymentRecordMap.get(key));
+		}
+
+		countLineChartColumnarChartVO.setLineColumnarTimelineList(lineColumnarTimelineList);
+
+		countLineChartColumnarChartVO.setMoneyBackAmountLit(moneyBackAmountLit);
 	}
 
 	@Override
