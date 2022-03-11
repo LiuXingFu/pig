@@ -35,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -139,5 +140,16 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public BigDecimal getTotalRepayments() {
 		return this.baseMapper.getTotalRepayments();
+	}
+
+	/**
+	 * 根据时间集合查询回款额
+	 * @param polylineColumnActive
+	 * @param difference
+	 * @return
+	 */
+	@Override
+	public Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference) {
+		return this.baseMapper.getPaymentRecordMap(polylineColumnActive, difference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 }

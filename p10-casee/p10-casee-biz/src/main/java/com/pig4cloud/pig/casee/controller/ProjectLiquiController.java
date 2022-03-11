@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -294,6 +295,17 @@ public class ProjectLiquiController {
 	@GetMapping("/countPolylineLineChart" )
 	public R countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO) {
 		return R.ok(projectLiquiService.countPolylineLineChart(countPolylineLineChartDTO));
+	}
+
+	/**
+	 * 回款额折线柱状图
+	 * @param countLineChartColumnarChartDTO
+	 * @return
+	 */
+	@ApiOperation(value = "回款额折线柱状图", notes = "回款额折线柱状图")
+	@GetMapping("/countLineChartColumnarChart" )
+	public R countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO) {
+		return R.ok(projectLiquiService.countLineChartColumnarChart(countLineChartColumnarChartDTO));
 	}
 
 	/**

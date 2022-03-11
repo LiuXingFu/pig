@@ -30,6 +30,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 回款详细记录表
@@ -53,4 +54,6 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList(@Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	BigDecimal getTotalRepayments();
+
+	Map<String, BigDecimal> getPaymentRecordMap(@Param("polylineColumnActive") Integer polylineColumnActive, @Param("differenceList") List<String> difference, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 }

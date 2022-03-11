@@ -117,22 +117,11 @@
 
 	<select id="queryCompareMoneyBackAmountCount" resultType="java.math.BigDecimal">
 		SELECT (
-		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS thisYear
+		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS
+		thisYear
 		FROM
-		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and p10_project.del_flag = 0
-		WHERE
-		p10_payment_record.del_flag = 0
-		<if test="insId != null and insId != 0">
-			and p10_project.ins_id = #{insId}
-		</if>
-		<if test="outlesId != null and outlesId != 0">
-			and p10_project.outles_id = #{outlesId}
-		</if>
-		and YEAR ( p10_payment_record.payment_date )= YEAR (NOW()))
-		-
-		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS lastYear
-		FROM
-		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and p10_project.del_flag = 0
+		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and
+		p10_project.del_flag = 0
 		WHERE
 		p10_payment_record.del_flag = 0
 		<if test="insId != null and insId != 0">
@@ -141,13 +130,30 @@
 		<if test="outlesId != null and outlesId != 0">
 			AND p10_project.outles_id = #{outlesId}
 		</if>
+		AND p10_payment_record.father_id IS NOT NULL
+		AND YEAR ( p10_payment_record.payment_date )= YEAR (NOW()))
+		-
+		(SELECT IF(sum( p10_payment_record.payment_amount ) IS NULL,0,sum( p10_payment_record.payment_amount )) AS
+		lastYear
+		FROM
+		p10_payment_record LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id and
+		p10_project.del_flag = 0
+		WHERE
+		p10_payment_record.del_flag = 0
+		<if test="insId != null and insId != 0">
+			AND p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			AND p10_project.outles_id = #{outlesId}
+		</if>
+		AND p10_payment_record.father_id IS NOT NULL
 		AND YEAR ( p10_payment_record.payment_date )= YEAR (NOW())- 1 ))
 	</select>
 
 	<select id="queryMoneyBackMonthlyRankList" resultType="com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank">
 		SELECT
-			sys_user.actual_name,
-			sum( payment_amount ) repaymentAmount
+		sys_user.actual_name,
+		sum( payment_amount ) repaymentAmount
 		FROM
 		p10_payment_record
 		LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id AND p10_project.del_flag = 0
@@ -162,6 +168,7 @@
 		<if test="outlesId != null and outlesId != 0">
 			AND p10_project.outles_id = #{outlesId}
 		</if>
+		AND p10_payment_record.father_id IS NOT NULL
 		GROUP BY p10_payment_record.create_by
 		ORDER BY repaymentAmount DESC
 		LIMIT 10
@@ -169,7 +176,7 @@
 
 	<select id="getTotalRepayments" resultType="java.math.BigDecimal">
 		SELECT
-			sum( payment_amount )
+		sum( payment_amount )
 		FROM
 		p10_payment_record
 		LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id
@@ -183,5 +190,33 @@
 		<if test="outlesId != null and outlesId != 0">
 			AND p10_project.outles_id = #{outlesId}
 		</if>
+		AND p10_payment_record.father_id IS NOT NULL
+	</select>
+
+	<select id="getPaymentRecordMap" resultType="java.util.LinkedHashMap">
+		SELECT
+		<if test="polylineColumnActive != null and polylineColumnActive == 0">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum(CASE YEAR (p10_payment_record.payment_date) WHEN #{params} THEN p10_payment_record.payment_amount ELSE 0 END) AS #{params}
+			</foreach>
+		</if>
+		<if test="polylineColumnActive != null and polylineColumnActive == 1">
+			<foreach collection="differenceList" item="params" separator=",">
+				sum( CASE DATE_FORMAT( p10_payment_record.payment_date, '%Y-%m' ) WHEN  #{params} THEN p10_payment_record.payment_amount ELSE 0 END ) AS #{params}
+			</foreach>
+		</if>
+		FROM
+		p10_payment_record
+		LEFT JOIN p10_project ON p10_payment_record.project_id = p10_project.project_id
+		AND p10_project.del_flag = 0
+		WHERE
+		p10_payment_record.del_flag = 0
+		<if test="insId != null and insId != 0">
+			AND p10_project.ins_id = #{insId}
+		</if>
+		<if test="outlesId != null and outlesId != 0">
+			AND p10_project.outles_id = #{outlesId}
+		</if>
+		AND p10_payment_record.father_id IS NOT NULL
 	</select>
 </mapper>
