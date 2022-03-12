@@ -79,7 +79,7 @@
 		<if test="query.subjectId != null">
 			and p10_assets_re.subject_id = #{query.subjectId}
 		</if>
-
+		order by p10_assets.assets_id
 	</select>
 
 	<select id="queryById" resultType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO">
