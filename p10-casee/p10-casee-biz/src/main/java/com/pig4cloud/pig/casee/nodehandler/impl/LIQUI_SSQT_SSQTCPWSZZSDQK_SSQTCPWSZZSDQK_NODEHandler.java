@@ -30,7 +30,7 @@ public class LIQUI_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK_NODEHandler extends TaskNo
 		//如果任务为不审核更新最终送达时间
 		if (taskNode.getNeedAudit().equals(Integer.valueOf("0"))) {
 			LiQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK liQui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK.class);
-			taskNodeService.updateFinalReceiptTime(taskNode, liQui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk.getReceiptRecordList());
+			taskNodeService.updateFinalReceiptTimeOrEffectiveDate(taskNode, liQui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk.getReceiptRecordList(), null);
 		}
 	}
 }

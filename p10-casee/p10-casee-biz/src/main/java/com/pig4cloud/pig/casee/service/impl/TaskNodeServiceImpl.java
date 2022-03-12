@@ -1771,7 +1771,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 * @param taskNode
 	 * @param receiptRecordList
 	 */
-	public void updateFinalReceiptTime(TaskNode taskNode, List<ReceiptRecord> receiptRecordList) {
+	public void updateFinalReceiptTimeOrEffectiveDate(TaskNode taskNode, List<ReceiptRecord> receiptRecordList, Date effectiveDate) {
 
 		Date date = new Date();
 
@@ -1791,12 +1791,19 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		queryCasee.setCaseeId(taskNode.getCaseeId());
 		CaseeLiqui caseeLiqui = caseeLiquiService.getCaseeLiqui(queryCasee);
 		CaseeLiquiDetail caseeLiquiDetail = caseeLiqui.getCaseeLiquiDetail();
+
 		//案件详情为空创建
 		if (Objects.isNull(caseeLiquiDetail)) {
 			caseeLiquiDetail = new CaseeLiquiDetail();
 		}
 
+		//最终送达时间
 		caseeLiquiDetail.setFinalReceiptTime(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+		//裁判结果生效日期
+		if(Objects.nonNull(effectiveDate)) {
+			caseeLiquiDetail.setEffectiveDate(effectiveDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+		}
 
 		caseeLiqui.setCaseeLiquiDetail(caseeLiquiDetail);
 
