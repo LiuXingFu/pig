@@ -12,6 +12,12 @@ import java.util.List;
  */
 @Data
 public class SubjectInformationVO extends Subject {
+
+	/**
+	 * 主体关联银行借贷表id
+	 */
+	private Integer subjectBankLoanId;
+
 	/**
 	 * 债务类型(1-贷款人 2-担保人)
 	 */
