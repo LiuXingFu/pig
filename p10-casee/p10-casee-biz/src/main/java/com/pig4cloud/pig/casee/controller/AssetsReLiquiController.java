@@ -204,4 +204,16 @@ public class AssetsReLiquiController {
 	public R queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
 		return R.ok(assetsReLiquiService.queryPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO));
 	}
+
+	/**
+	 * 查询项目抵押财产
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "查询项目抵押财产", notes = "查询项目抵押财产")
+	@GetMapping("/queryAssetsReAddress/{projectId}" )
+	public R queryAssetsReAddress(@PathVariable("projectId")Integer projectId) {
+		return R.ok(assetsReLiquiService.queryAssetsReAddress(projectId));
+	}
+
 }

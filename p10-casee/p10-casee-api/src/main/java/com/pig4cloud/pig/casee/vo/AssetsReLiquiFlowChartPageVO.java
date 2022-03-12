@@ -1,16 +1,14 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class AssetsReLiquiFlowChartPageVO extends AssetsReCasee {
+public class AssetsReLiquiFlowChartPageVO extends AssetsReLiqui {
 
 	/**
 	 * 公司业务案号
