@@ -57,6 +57,18 @@ public class AssociateOutlesReController {
     }
 
 	/**
+	 * 分页查询合作网点
+	 * @param page
+	 * @param associateOutlesRe
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询合作网点", notes = "分页查询合作网点")
+	@GetMapping("/queryCooperateOutlesPage" )
+    public R queryCooperateOutlesPage(Page page, AssociateOutlesRe associateOutlesRe) {
+    	return R.ok(associateOutlesReService.queryCooperateOutlesPage(page, associateOutlesRe));
+	}
+
+	/**
 	 * 根据associateID查询授权列表
 	 * @param insAssociateId 合作机构id
 	 * @param  outlesName 网点名称

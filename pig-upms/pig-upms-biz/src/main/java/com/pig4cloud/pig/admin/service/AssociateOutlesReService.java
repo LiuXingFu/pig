@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.AssociateOutlesReDTO;
 import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.AssociateOutlesRePageVO;
 import com.pig4cloud.pig.admin.api.vo.AssociateOutlesReVO;
 
 import java.util.List;
@@ -64,4 +65,6 @@ public interface AssociateOutlesReService extends IService<AssociateOutlesRe> {
 	 * @return R
 	 */
 	boolean dismissById(Integer associateOutlesId);
+
+	IPage<AssociateOutlesRePageVO> queryCooperateOutlesPage(Page page, AssociateOutlesRe associateOutlesRe);
 }

@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.api.dto.AssociateOutlesReDTO;
 import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
 import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.vo.AssociateOutlesRePageVO;
 import com.pig4cloud.pig.admin.mapper.AssociateOutlesReMapper;
 import com.pig4cloud.pig.admin.service.AssociateOutlesReService;
 import com.pig4cloud.pig.admin.service.InstitutionAssociateService;
@@ -128,4 +129,12 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 	public boolean dismissById(Integer associateOutlesId) {
 		return this.removeById(associateOutlesId);
 	}
+
+	@Override
+	public IPage<AssociateOutlesRePageVO> queryCooperateOutlesPage(Page page, AssociateOutlesRe associateOutlesRe) {
+		associateOutlesRe.setInsId(securityUtilsService.getCacheUser().getInsId());
+		return this.baseMapper.queryCooperateOutlesPage(page, associateOutlesRe);
+	}
+
+
 }
