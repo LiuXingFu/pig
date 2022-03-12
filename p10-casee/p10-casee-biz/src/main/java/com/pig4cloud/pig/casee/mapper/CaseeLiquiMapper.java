@@ -65,9 +65,9 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	 * 查询在办一审、二审、其它案件裁判结果生效日期
 	 * @return
 	 */
-	List<CaseeLiquiJudgmentTakesEffectVO> selectJudgmentTakesEffect();
+	List<Casee> selectJudgmentTakesEffect();
 
-	IPage<CaseeLiquiFlowChartPageVO> selectLitigationFirstInstanceAppealExpired(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO,@Param("day")Integer day);
+	IPage<CaseeLiquiFlowChartPageVO> selectLitigationFirstInstanceAppealExpired(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	IPage<CaseeLiquiFlowChartPageVO> selectAddReinstatementCase(Page page, @Param("query")CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 

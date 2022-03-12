@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
@@ -28,6 +29,7 @@ import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 回款详细记录表
@@ -58,11 +60,19 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * 本月回款额月排名
 	 * @return
 	 */
-	List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList();
+	IPage<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList(Page page, CountMoneyBackMonthlyRankDTO countMoneyBackMonthlyRankDTO);
 
 	/**
 	 * 本月总回款额
 	 * @return
 	 */
 	BigDecimal getTotalRepayments();
+
+	/**
+	 * 根据时间集合查询回款额
+	 * @param polylineColumnActive
+	 * @param difference
+	 * @return
+	 */
+	Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference);
 }

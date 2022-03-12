@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 import com.pig4cloud.pig.casee.entity.Project;
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -163,8 +165,8 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	 * @return
 	 */
 	@Override
-	public List<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList() {
-		return this.baseMapper.queryMoneyBackMonthlyRankList(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	public IPage<MoneyBackMonthlyRank> queryMoneyBackMonthlyRankList(Page page, CountMoneyBackMonthlyRankDTO countMoneyBackMonthlyRankDTO) {
+		return this.baseMapper.queryMoneyBackMonthlyRankList(page, countMoneyBackMonthlyRankDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	/**
@@ -174,5 +176,16 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public BigDecimal getTotalRepayments() {
 		return this.baseMapper.getTotalRepayments();
+	}
+
+	/**
+	 * 根据时间集合查询回款额
+	 * @param polylineColumnActive
+	 * @param difference
+	 * @return
+	 */
+	@Override
+	public Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference) {
+		return this.baseMapper.getPaymentRecordMap(polylineColumnActive, difference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 }

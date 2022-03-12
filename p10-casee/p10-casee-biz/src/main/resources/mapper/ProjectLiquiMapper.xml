@@ -177,7 +177,7 @@
 
 	<select id="queryCompareTheNumberOfItemsCount" resultType="java.lang.Long">
 		SELECT
-		(sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) )
+		IFNULL((sum( YEAR ( take_time )= YEAR (NOW())) - sum( ( YEAR ( take_time )= YEAR ( NOW())- 1 ) ) ), 0)
 		FROM
 		p10_project
 		WHERE
@@ -256,12 +256,12 @@
 		select
 		<if test="polylineActive != null and polylineActive == 0">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( YEAR ( take_time ) =#{params}) as #{params}
+				IFNULL(sum( YEAR ( take_time ) =#{params}), 0) as #{params}
 			</foreach>
 		</if>
 		<if test="polylineActive != null and polylineActive == 1">
 			<foreach collection="differenceList" item="params" separator=",">
-				sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}) as #{params}
+				IFNULL(sum( DATE_FORMAT(take_time , '%Y-%m' ) =#{params}), 0) as #{params}
 			</foreach>
 		</if>
 		FROM p10_project
@@ -298,6 +298,49 @@
 			and p10_behavior.type = 200
 			and DATE_SUB(substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10), INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "xwxzdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
 			and substring(JSON_EXTRACT(p10_behavior.behavior_detail, "$.behaviorIllegalCommittingAnIllegalAct.detentionEndDate"),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			select 3 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,null as casee_id,null as casee_number,null as businessId,null as executedName,p10_project.endTime as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),p10_project.endTime) as remainingDays from (
+				select p10_project.*,DATE_ADD(p10_project.startDate ,INTERVAL (select deadline_num from p10_deadline_configure where del_flag = 0 and period_configure_key = "sssxdq" limit 1) year) endTime
+				from (
+					select p10_project.*,if(p10_payment_record.payment_date is null,p10_project.startingTime,if(p10_project.startingTime>=p10_payment_record.payment_date,p10_project.startingTime,p10_payment_record.payment_date)) startDate from(
+					select p10_project.*,DATE_FORMAT(if(p10_project_urge.urge_time is null,substring(json_extract( p10_transfer_record.transfer_detail, '$.startingTime' ),2,10),p10_project_urge.urge_time), '%Y-%m-%d') startingTime from p10_project
+					left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
+					left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+					left join p10_casee on p10_project_casee_re.casee_id = p10_casee.casee_id and p10_casee.casee_type in (2020,2021,3031,3031)
+					left join (select project_id,max(urge_time) urge_time from p10_project_urge where del_flag = 0 and urge_according = 100 GROUP BY project_id )p10_project_urge on p10_project_urge.project_id = p10_project.project_id
+					where p10_project.del_flag = 0
+					and p10_project.`status` = 1000
+					and p10_casee.casee_id is null
+					and json_extract( p10_transfer_record.transfer_detail, '$.litigation' )=0
+				) p10_project
+				left join (select project_id,DATE_FORMAT(max(payment_date), '%Y-%m-%d') payment_date from p10_payment_record where del_flag = 0 and payment_type != 200 GROUP BY project_id limit 1) p10_payment_record
+				on p10_payment_record.project_id = p10_project.project_id
+				)p10_project
+			)p10_project
+			where DATE_SUB(p10_project.endTime, INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "sssxdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and p10_project.endTime >= DATE_FORMAT(now(), '%Y-%m-%d')
+			UNION
+			<!-- 执行时效到期 -->
+			select 4 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,null as casee_id,null as casee_number,null as businessId,null as executedName,p10_project.endTime as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),p10_project.endTime) as remainingDays from (
+			select p10_project.*,DATE_ADD(p10_project.startDate ,INTERVAL (select deadline_num from p10_deadline_configure where del_flag = 0 and period_configure_key = "sssxdq" limit 1) year) endTime
+			from (
+				select p10_project.*,if(p10_payment_record.payment_date is null,p10_project.startingTime,if(p10_project.startingTime>=p10_payment_record.payment_date,p10_project.startingTime,p10_payment_record.payment_date)) startDate from(
+					select p10_project.*,DATE_FORMAT(if(p10_project_urge.urge_time is null,substring(json_extract( p10_transfer_record.transfer_detail, '$.startingTime' ),2,10),p10_project_urge.urge_time), '%Y-%m-%d') startingTime from p10_project
+					left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
+					left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+					left join p10_casee on p10_project_casee_re.casee_id = p10_casee.casee_id and p10_casee.casee_type in (3031,3031)
+					left join (select project_id,max(urge_time) urge_time from p10_project_urge where del_flag = 0 and urge_according = 200 GROUP BY project_id )p10_project_urge on p10_project_urge.project_id = p10_project.project_id
+					where p10_project.del_flag = 0
+					and p10_project.`status` = 1000
+					and p10_casee.casee_id is null
+					and json_extract( p10_transfer_record.transfer_detail, '$.litigation' )=1
+					) p10_project
+				left join (select project_id,DATE_FORMAT(max(payment_date), '%Y-%m-%d') payment_date from p10_payment_record where del_flag = 0 and payment_type != 200 GROUP BY project_id limit 1) p10_payment_record
+				on p10_payment_record.project_id = p10_project.project_id
+				)p10_project
+			)p10_project
+			where DATE_SUB(p10_project.endTime, INTERVAL (select reminder_days from p10_deadline_configure WHERE del_flag = 0 and period_configure_key = "zxsxdq" limit 1) day) &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+			and p10_project.endTime >= DATE_FORMAT(now(), '%Y-%m-%d')
 			UNION
 			<!-- 上诉期结束 -->
 			select 5 as reminderType,null as businessName,p10_project.project_id,p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_id,p10_casee.casee_number,null as businessId,p10_casee.executed_name as executedName,substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10) as expireDate,timestampdiff(day,DATE_FORMAT(now(), '%Y-%m-%d'),substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10)) as remainingDays from p10_casee

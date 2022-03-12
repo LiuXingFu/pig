@@ -316,8 +316,8 @@
 
 	<select id="queryComparePropertyNumbersCount" resultType="java.lang.Long">
 		SELECT
-		(sum( YEAR ( p10_assets_re.create_time )= YEAR (NOW())) - sum( ( YEAR ( p10_assets_re.create_time )= YEAR (
-		NOW())- 1 ) ) )
+		IFNULL((sum( YEAR ( p10_assets_re.create_time )= YEAR (NOW())) - sum( ( YEAR ( p10_assets_re.create_time )= YEAR (
+		NOW())- 1 ) ) ), 0)
 		FROM
 		p10_assets_re
 		LEFT JOIN p10_project ON p10_assets_re.project_id = p10_project.project_id AND p10_assets_re.del_flag = 0

@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.Project;
@@ -277,10 +278,10 @@ public class ProjectLiquiController {
 	}
 
 	/**
-	 * 查询本月回款额排名
+	 * 本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合
 	 * @return
 	 */
-	@ApiOperation(value = "查询本月回款额排名", notes = "查询本月回款额排名")
+	@ApiOperation(value = "本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合", notes = "本月回款额月排名、回款总额、财产类型数量、财产总数量和提醒事项集合")
 	@GetMapping("/countMoneyBackMonthlyRank" )
 	public  R countMoneyBackMonthlyRank() {
 		return R.ok(projectLiquiService.countMoneyBackMonthlyRank());
@@ -295,6 +296,17 @@ public class ProjectLiquiController {
 	@GetMapping("/countPolylineLineChart" )
 	public R countPolylineLineChart(CountPolylineLineChartDTO countPolylineLineChartDTO) {
 		return R.ok(projectLiquiService.countPolylineLineChart(countPolylineLineChartDTO));
+	}
+
+	/**
+	 * 回款额折线柱状图
+	 * @param countLineChartColumnarChartDTO
+	 * @return
+	 */
+	@ApiOperation(value = "回款额折线柱状图", notes = "回款额折线柱状图")
+	@GetMapping("/countLineChartColumnarChart" )
+	public R countLineChartColumnarChart(CountLineChartColumnarChartDTO countLineChartColumnarChartDTO) {
+		return R.ok(projectLiquiService.countLineChartColumnarChart(countLineChartColumnarChartDTO));
 	}
 
 	/**
