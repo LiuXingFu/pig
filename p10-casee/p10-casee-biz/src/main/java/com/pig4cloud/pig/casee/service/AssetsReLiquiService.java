@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -52,6 +53,16 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	AssetsReLiqui getAssetsReCasee(AssetsRe assetsRe);
+
+
+	/**
+	 * 根据项目id、案件id、财产id、查询财产关联债务人数据
+	 * @param projectId
+	 * @param caseeId
+	 * @param assetsId
+	 * @return
+	 */
+	List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId);
 
 	/**
 	 * 分页查询案件财产查封冻结情况

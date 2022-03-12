@@ -82,6 +82,16 @@
 		</if>
 	</select>
 
+	<select id="paymentSumAmount" resultType="java.math.BigDecimal">
+		select if(SUM(payment_amount)=null,0,SUM(payment_amount)) from p10_payment_record
+		where del_flag = 0
+			and funds_type = #{fundsType}
+			and project_id = #{projectId}
+			<if test="caseeId != null">
+				and casee_id = #{caseeId}
+			</if>
+	</select>
+
 	<select id="getCourtPaymentPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO">
 		SELECT
 			p10_payment_record.*,

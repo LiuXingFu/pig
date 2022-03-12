@@ -29,7 +29,7 @@ public class MybatisPlusMetaObjectHandler implements MetaObjectHandler {
 
 		fillValIfNullByName("createTime", now, metaObject, false);
 		fillValIfNullByName("updateTime", now, metaObject, false);
-		fillValIfNullByName("createBy", getUserId(), metaObject, false);
+		fillValIfNullByName("createBy", getUserId(), metaObject, true);
 		fillValIfNullByName("insId", getUserInsId(), metaObject, false);
 		fillValIfNullByName("updateBy", getUserId(), metaObject, false);
 		fillValIfNullByName("updateInsId", getUserInsId(), metaObject, false);

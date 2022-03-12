@@ -20,13 +20,16 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
+import com.pig4cloud.pig.casee.service.ExpenseRecordService;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
@@ -56,6 +59,8 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
@@ -92,7 +97,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public boolean collection(PaymentRecordDTO paymentRecordDTO) {
 		//添加领款信息
-		this.save(paymentRecordDTO);
+		boolean save = this.save(paymentRecordDTO);
 
 		//修改项目回款总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(paymentRecordDTO.getProjectId());
@@ -108,10 +113,30 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			paymentRecordSubjectRe.setSubjectId(integer);
 			this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 		}
-		for (PaymentRecord paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
+
+		for (PaymentRecordAddDTO paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
 			paymentRecord.setFatherId(paymentRecordDTO.getPaymentRecordId());
 			paymentRecord.setPaymentDate(paymentRecordDTO.getPaymentDate());
 			paymentRecord.setPaymentType(paymentRecordDTO.getPaymentType());
+			paymentRecord.setSubjectName(paymentRecordDTO.getSubjectName());
+			//添加分配款项信息
+			this.save(paymentRecord);
+
+			//添加分配款项明细与主体关联信息
+			for (Integer integer : subjectIdList) {
+				PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+				paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordSubjectRe.setSubjectId(integer);
+				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+			}
+
+			//修改明细记录状态
+			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());
+			if (expenseRecord.getCostAmount()==paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount())){
+				expenseRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
+				expenseRecord.setStatus(1);
+				expenseRecordService.updateById(expenseRecord);
+			}
 		}
 
 		//修改到款记录状态
@@ -123,8 +148,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			this.updateBatchById(courtPayment);
 		}
 
-		//添加分配款项信息
-		return this.saveBatch(paymentRecordDTO.getPaymentRecordList());
+		return save;
 	}
 
 	/**

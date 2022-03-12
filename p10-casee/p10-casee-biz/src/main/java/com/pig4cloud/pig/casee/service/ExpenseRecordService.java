@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 
 import java.util.List;
@@ -37,4 +38,6 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
    boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord);
 
    boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord);
+
+   List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 }

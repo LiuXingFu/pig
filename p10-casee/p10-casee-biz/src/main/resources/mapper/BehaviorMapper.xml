@@ -51,10 +51,11 @@
 		p10_behavior.*,
 		p10_project.project_id,
 		p10_project.company_code,
-		p10_project.status,
+		p10_project.status AS projectStatus,
 		p10_project.subject_persons,
 		p10_casee.casee_number,
-		p10_casee.casee_id
+		p10_casee.casee_id,
+		p10_casee.status AS caseeStatus
 		FROM
 		p10_behavior
 		LEFT JOIN p10_casee ON p10_behavior.casee_id = p10_casee.casee_id and p10_casee.del_flag = 0
@@ -116,9 +117,6 @@
 		</if>
 		<if test="query.executedName != null and query.executedName != ''">
 			and executed_namelike like concat('%', #{query.executedName}, '%')
-		</if>
-		<if test="query.targetId != null and query.targetId != 0">
-			and target_id = #{query.targetId}
 		</if>
 		<if test="query.type != null and query.type != -1">
 			and 'type' = #{query.type}

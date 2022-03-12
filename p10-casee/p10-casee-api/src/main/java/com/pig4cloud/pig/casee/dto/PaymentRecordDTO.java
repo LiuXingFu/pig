@@ -32,7 +32,7 @@ public class PaymentRecordDTO extends PaymentRecord {
 	/**
 	 * 分配款项记录
 	 */
-	List<PaymentRecord> paymentRecordList;
+	List<PaymentRecordAddDTO> paymentRecordList;
 
 	/**
 	 * 主体id

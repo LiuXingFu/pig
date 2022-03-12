@@ -14,27 +14,31 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.admin.mapper;
+import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import lombok.Data;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
-import com.pig4cloud.pig.admin.api.vo.AssociateOutlesRePageVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import java.math.BigDecimal;
 
 /**
- * 机构关联网点表
+ * 回款详细记录表
  *
- * @author yuanduo
- * @date 2021-09-03 11:09:36
+ * @author Mjh
+ * @date 2022-02-17 17:52:51
  */
-@Mapper
-public interface AssociateOutlesReMapper extends BaseMapper<AssociateOutlesRe> {
+@Data
+public class PaymentRecordAddDTO extends PaymentRecord {
 
-	IPage<AssociateOutlesRe> pageAssociateOutles(Page page, @Param("query") AssociateOutlesRe associateOutlesRe);
+	/**
+	 * 费用记录id
+	 */
+	private Integer expenseRecordId;
 
-	IPage<AssociateOutlesRePageVO> queryCooperateOutlesPage(Page page, @Param("query") AssociateOutlesRe associateOutlesRe);
+	/**
+	 * 费用记录回款总额
+	 */
+	private BigDecimal paymentSumAmount;
+
+
 }

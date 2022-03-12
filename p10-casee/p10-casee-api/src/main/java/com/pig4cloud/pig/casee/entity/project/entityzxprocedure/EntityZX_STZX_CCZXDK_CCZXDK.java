@@ -1,13 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
-import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.PaymentRecord;
 import lombok.Data;
-
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 财产执行到款
@@ -17,18 +14,22 @@ public class EntityZX_STZX_CCZXDK_CCZXDK extends CommonalityData implements Seri
 	/**
 	 * 到款金额
 	 */
-	private Double amountReceived;
+	private BigDecimal amountReceived;
 
 	/**
 	 * 最终到款时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date finalPaymentDate;
+	private LocalDate finalPaymentDate;
 
 	/**
 	 * 最终付款人
 	 */
 	private String finalPayer;
+
+	/**
+	 * 拍辅费用
+	 */
+	private BigDecimal auxiliaryFee;
 
 	/**
 	 * 附件

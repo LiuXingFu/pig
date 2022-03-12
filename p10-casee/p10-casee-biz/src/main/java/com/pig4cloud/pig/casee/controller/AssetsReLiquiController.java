@@ -74,6 +74,17 @@ public class AssetsReLiquiController {
 	}
 
 	/**
+	 * 通过项目id、案件id、财产id查询财产债务人信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id、案件id、财产id查询财产债务人信息", notes = "通过项目id、案件id、财产id查询财产债务人信息")
+	@GetMapping("/queryAssetsSubject" )
+	public R queryAssetsSubject(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(assetsReLiquiService.queryAssetsSubject(projectId,caseeId,assetsId));
+	}
+
+	/**
 	 * 分页查询案件财产查封冻结情况
 	 * @param assetsReLiquiFlowChartPageDTO
 	 * @return R

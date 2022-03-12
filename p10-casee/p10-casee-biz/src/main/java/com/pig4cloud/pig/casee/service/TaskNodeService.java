@@ -35,6 +35,7 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -379,5 +380,5 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @param taskNode
 	 * @param receiptRecordList
 	 */
-	void updateFinalReceiptTime(TaskNode taskNode, List<ReceiptRecord> receiptRecordList);
+	void updateFinalReceiptTimeOrEffectiveDate(TaskNode taskNode, List<ReceiptRecord> receiptRecordList, Date effectiveDate);
 }

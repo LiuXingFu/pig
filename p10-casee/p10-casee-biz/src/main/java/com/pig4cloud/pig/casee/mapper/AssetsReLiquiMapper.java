@@ -20,6 +20,8 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -43,6 +45,8 @@ import java.util.List;
 public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	AssetsReLiqui getAssetsReCasee(@Param("query") AssetsRe assetsRe);
+
+	List<Subject> queryAssetsSubject(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectAssetsNotSeizeAndFreeze(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 

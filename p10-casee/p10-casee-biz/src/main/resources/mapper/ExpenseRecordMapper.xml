@@ -23,27 +23,56 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper">
 
-  <resultMap id="expenseRecordMap" type="com.pig4cloud.pig.casee.entity.ExpenseRecord">
-    <id property="expenseRecordId" column="expense_record_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="createBy" column="create_by"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="projectId" column="project_id"/>
-    <result property="costType" column="cost_type"/>
-    <result property="costIncurredTime" column="cost_incurred_time"/>
-    <result property="costAmount" column="cost_amount"/>
-    <result property="status" column="status"/>
-    <result property="caseeId" column="casee_id"/>
-	<result property="companyCode" column="company_code"/>
-	<result property="caseeNumber" column="casee_number"/>
-	<result property="subjectName" column="subject_name"/>
-  </resultMap>
+	<resultMap id="expenseRecordMap" type="com.pig4cloud.pig.casee.entity.ExpenseRecord">
+		<id property="expenseRecordId" column="expense_record_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="projectId" column="project_id"/>
+		<result property="costType" column="cost_type"/>
+		<result property="costIncurredTime" column="cost_incurred_time"/>
+		<result property="costAmount" column="cost_amount"/>
+		<result property="status" column="status"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="companyCode" column="company_code"/>
+		<result property="caseeNumber" column="casee_number"/>
+		<result property="subjectName" column="subject_name"/>
+	</resultMap>
+
+	<resultMap id="expenseRecordMapVO" type="com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO" extends="expenseRecordMap">
+		<result property="fundsType" column="fundsType"/>
+		<collection property="paymentSumAmount" ofType="java.math.BigDecimal" column="{caseeId=casee_id,projectId=project_id,fundsType=fundsType}"
+					select="com.pig4cloud.pig.casee.mapper.PaymentRecordMapper.paymentSumAmount">
+
+		</collection>
+	</resultMap>
 
 	<select id="getExpenseRecordPage" resultType="com.pig4cloud.pig.casee.vo.ExpenseRecordVO">
 		select p10_expense_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from p10_expense_record
 		left join p10_project on p10_project.project_id=p10_expense_record.project_id
 		where p10_expense_record.del_flag=0 and p10_expense_record.project_id=#{query.projectId}
 	</select>
+
+	<select id="getByPaymentType" resultMap="expenseRecordMapVO">
+		select
+		p10_expense_record.cost_amount as paymentAmount,
+		p10_expense_record.cost_type as fundsType,
+		p10_expense_record.cost_incurred_time,
+		p10_expense_record.project_id,
+		p10_expense_record.casee_id,
+		p10_expense_record.casee_number,
+		p10_expense_record.company_code,
+		p10_expense_record.subject_name,
+		p10_expense_record.expense_record_id
+		from p10_expense_record
+		where p10_expense_record.del_flag=0
+		and p10_expense_record.project_id=#{query.projectId}
+		and p10_expense_record.status=0
+		<if test="query.caseeId != null">
+			and p10_expense_record.casee_id = #{query.caseeId}
+		</if>
+	</select>
+
 </mapper>

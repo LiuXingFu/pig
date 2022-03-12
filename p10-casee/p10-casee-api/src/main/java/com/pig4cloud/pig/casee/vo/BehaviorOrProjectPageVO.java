@@ -26,7 +26,7 @@ public class BehaviorOrProjectPageVO extends Behavior {
 	/**
 	 * 项目状态
 	 */
-	private String status;
+	private Integer projectStatus;
 
 	/**
 	 * 债务人
@@ -37,5 +37,10 @@ public class BehaviorOrProjectPageVO extends Behavior {
 	 * 执行案号
 	 */
 	private String caseeNumber;
+
+	/**
+	 * 案件状态
+	 */
+	private Integer caseeStatus;
 
 }
