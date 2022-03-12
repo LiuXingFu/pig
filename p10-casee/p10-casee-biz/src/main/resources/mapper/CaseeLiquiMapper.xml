@@ -284,24 +284,17 @@
 		</if>
 	</select>
 
-	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiJudgmentTakesEffectVO">
-		select p10_casee.*,substring(JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate"),2,10) effectiveDate from p10_casee
-		left join p10_target on p10_target.casee_id=p10_casee.casee_id
-		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-		where p10_casee.del_flag = 0
+	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.entity.Casee">
+		select p10_casee.casee_id,substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10) close_time,3 as status from p10_casee
+		where del_flag = 0
+		and status = 1
 		and p10_casee.casee_type in (2020,2021)
-		and p10_casee.status = 1
-		and p10_target.goal_type = 10001
-		and p10_task_node.form_data is not null
-		and p10_task_node.node_key like "%ZZSDQK"
-		and JSON_EXTRACT(p10_task_node.form_data, "$.effectiveDate") is not null
+		and DATE_FORMAT(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
 	</select>
 
 	<select id="selectLitigationFirstInstanceAppealExpired"
 			resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.*,p10_project.project_id,p10_casee_lawyer_re.actual_name as
-		lawyerName,
-		p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id
+		select p10_project.company_code,p10_casee.*,p10_project.project_id,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_task_node.node_id
 		from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
@@ -314,8 +307,7 @@
 		and p10_target.goal_type = 10001
 		and JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime") is not null
 		and p10_task_node.form_data is null
-		and DATE_FORMAT(DATE_SUB(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL
-		#{day} DAY),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
+		and DATE_FORMAT(DATE_ADD(substring(JSON_EXTRACT(p10_casee.casee_detail, "$.finalReceiptTime"),2,10),INTERVAL JSON_EXTRACT(p10_casee.casee_detail, "$.firstTrialRefereeResult.appealDeadline") DAY),'%Y-%m-%d') &lt;= DATE_FORMAT(NOW(),'%Y-%m-%d')
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>

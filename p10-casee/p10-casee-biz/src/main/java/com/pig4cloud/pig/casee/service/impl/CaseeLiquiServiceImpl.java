@@ -398,26 +398,11 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	public void litigationCaseeClose() {
-		// 查询一审、二审、其它案件判决结果生效日期
-		List<CaseeLiquiJudgmentTakesEffectVO> judgmentTakesEffectVO = this.baseMapper.selectJudgmentTakesEffect();
-		Collection<Casee> caseeLiquis = new ArrayList<>();
-		// 遍历在办案件生效日期
-		judgmentTakesEffectVO.stream().forEach(item -> {
-			// 转时间类型
-			LocalDate effectiveDate =  item.getEffectiveDate();
-			// 获取当前时间
-			LocalDate nowNew = LocalDate.now();
-			// 比较裁判结果生效日期，小于或等于当前时间
-			if (nowNew.isAfter(effectiveDate) || nowNew.equals(effectiveDate)) {
-				Casee casee = new Casee();
-				casee.setCaseeId(item.getCaseeId());
-				casee.setStatus(3);
-				casee.setCloseTime(effectiveDate);
-				caseeLiquis.add(casee);
-			}
-		});
+		// 查询一审、二审案件判决结果生效日期
+		List<Casee> caseeList = this.baseMapper.selectJudgmentTakesEffect();
+
 		// 批量更新案件状态=结案
-		this.updateBatchById(caseeLiquis);
+		this.updateBatchById(caseeList);
 	}
 
 	/**
@@ -441,15 +426,10 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
-		QueryWrapper<DeadlineConfigure> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(DeadlineConfigure::getDelFlag,0);
-		queryWrapper.lambda().eq(DeadlineConfigure::getPeriodConfigureKey,"ssq");
-		DeadlineConfigure deadlineConfigure = deadlineConfigureService.getOne(queryWrapper);
-
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectLitigationFirstInstanceAppealExpired(page, caseeLiquiFlowChartPageDTO, insOutlesDTO,deadlineConfigure.getDeadlineNum());
+		return this.baseMapper.selectLitigationFirstInstanceAppealExpired(page, caseeLiquiFlowChartPageDTO, insOutlesDTO);
 	}
 
 	@Override
