@@ -116,9 +116,6 @@
 		<if test="query.executedName != null and query.executedName != ''">
 			and executed_namelike like concat('%', #{query.executedName}, '%')
 		</if>
-		<if test="query.targetId != null and query.targetId != 0">
-			and target_id = #{query.targetId}
-		</if>
 		<if test="query.type != null and query.type != -1">
 			and 'type' = #{query.type}
 		</if>

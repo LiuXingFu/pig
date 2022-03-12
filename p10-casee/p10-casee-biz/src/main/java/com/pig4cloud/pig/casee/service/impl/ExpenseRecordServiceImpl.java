@@ -30,6 +30,7 @@ import com.pig4cloud.pig.casee.service.ExpenseRecordService;
 import com.pig4cloud.pig.casee.service.ExpenseRecordSubjectReService;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
 import com.pig4cloud.pig.casee.service.ProjectSubjectReService;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,5 +113,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		}
 		//修改费用产生信息
 		return this.updateById(expenseRecord);
+	}
+
+	@Override
+	public List<ExpenseRecordDistributeVO> getByPaymentType(ExpenseRecord expenseRecord) {
+		return this.baseMapper.getByPaymentType(expenseRecord);
 	}
 }
