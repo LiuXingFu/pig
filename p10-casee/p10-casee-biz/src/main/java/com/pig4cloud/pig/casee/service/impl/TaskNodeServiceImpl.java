@@ -70,6 +70,8 @@ import net.sf.json.JSONObject;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -537,6 +539,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//添加案件任务办理记录
 			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
 			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
 			caseeHandlingRecordsService.save(caseeHandlingRecords);
 
 			//添加任务记录数据

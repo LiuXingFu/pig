@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -103,6 +104,12 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Override
 	public AssetsReCasee getAssetsReCasee(AssetsRe assetsRe) {
 		return this.baseMapper.getAssetsReCasee(assetsRe);
+	}
+
+
+	@Override
+	public List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
+		return this.baseMapper.queryAssetsSubject(projectId,caseeId,assetsId);
 	}
 
 	@Override

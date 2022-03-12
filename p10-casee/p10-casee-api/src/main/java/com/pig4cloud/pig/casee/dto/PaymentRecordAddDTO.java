@@ -19,7 +19,7 @@ package com.pig4cloud.pig.casee.dto;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import lombok.Data;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
  * 回款详细记录表
@@ -28,26 +28,17 @@ import java.util.List;
  * @date 2022-02-17 17:52:51
  */
 @Data
-public class PaymentRecordDTO extends PaymentRecord {
-	/**
-	 * 分配款项记录
-	 */
-	List<PaymentRecordAddDTO> paymentRecordList;
+public class PaymentRecordAddDTO extends PaymentRecord {
 
 	/**
-	 * 主体id
+	 * 费用记录id
 	 */
-	private Integer subjectId;
+	private Integer expenseRecordId;
 
 	/**
-	 * 主体id
+	 * 费用记录回款总额
 	 */
-	private List<Integer> subjectIdList;
+	private BigDecimal paymentSumAmount;
 
-	/**
-	 * 到款记录
-	 */
-	private List<PaymentRecord> courtPayment;
 
 }
-

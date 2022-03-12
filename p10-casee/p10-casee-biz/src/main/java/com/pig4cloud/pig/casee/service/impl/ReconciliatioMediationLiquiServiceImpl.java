@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
 import com.pig4cloud.pig.casee.dto.ReconciliatioMediationDTO;
 import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
@@ -33,6 +34,8 @@ import com.pig4cloud.pig.casee.service.ReconciliatioMediationLiquiService;
 import com.pig4cloud.pig.casee.service.ReconciliatioMediationSubjectReService;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
 import com.pig4cloud.pig.casee.vo.ReconciliatioMediationVO;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,10 +57,15 @@ public class ReconciliatioMediationLiquiServiceImpl extends ServiceImpl<Reconcil
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private ReconciliatioMediationSubjectReService reconciliatioMediationSubjectReService;
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, ReconciliatioMediationDTO reconciliatioMediationDTO) {
-		return this.baseMapper.getReconciliatioMediationPage(page, reconciliatioMediationDTO);
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.getReconciliatioMediationPage(page, reconciliatioMediationDTO,insOutlesDTO);
 	}
 
 	@Override
