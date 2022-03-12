@@ -68,6 +68,9 @@ public class NodeTaskHandlerRegister {
 	LIQUI_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK_NODEHandler liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler;
 
 	@Autowired
+	LIQUI_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK_NODEHandler liqui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk_nodeHandler;
+
+	@Autowired
 	ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler entityzx_stzx_cczxpmjg_cczxpmjg_nodeHandler;
 
 	@Autowired
@@ -116,6 +119,7 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_LX_LXSCZXLA_LXSCZXLA", liqui_lx_lxsczxla_lxsczxla_nodeHandler);
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler);
+		submitHandlerMap.put("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", liqui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
 		submitHandlerMap.put("liQui_SSQT_SSQTCPJGSX_SSQTCPJGSX",liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler);
 

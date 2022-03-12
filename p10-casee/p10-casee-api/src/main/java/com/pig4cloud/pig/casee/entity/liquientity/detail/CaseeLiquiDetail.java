@@ -1,9 +1,11 @@
 package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class CaseeLiquiDetail {
@@ -12,6 +14,11 @@ public class CaseeLiquiDetail {
 	 * 一审、二审和其他案件最终送达时间
 	 */
 	private LocalDate finalReceiptTime;
+
+	/**
+	 * 裁判结果生效日期
+	 */
+	private LocalDate effectiveDate;
 
 	/**
 	 * 案件终结
