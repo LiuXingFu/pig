@@ -78,6 +78,11 @@
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
+	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReCasee">
+		select p10_assets_re.* from p10_assets_re
+		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
+	</select>
+
 	<select id="selectAssetsNotSeizeAndFreeze" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
 		select
 		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id

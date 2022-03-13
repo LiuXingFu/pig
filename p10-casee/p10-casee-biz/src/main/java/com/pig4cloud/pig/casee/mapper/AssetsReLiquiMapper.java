@@ -46,6 +46,8 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	AssetsReCasee getAssetsReCasee(@Param("query") AssetsRe assetsRe);
 
+	AssetsReCasee queryAssetsMortgage(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
+
 	List<Subject> queryAssetsSubject(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectAssetsNotSeizeAndFreeze(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);

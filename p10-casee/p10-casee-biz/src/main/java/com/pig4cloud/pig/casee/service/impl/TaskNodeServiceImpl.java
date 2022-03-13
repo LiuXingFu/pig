@@ -319,7 +319,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		//2.任务节点对象集合
 		List<TaskNodeVO> voList = new ArrayList<>();
 		//3.将节点对象集合转换树形结构工具类
-		FindNodeTemplateChildrenUtils.getGrandParentChildren(list, voList, null);
+		FindNodeTemplateChildrenUtils.getGrandParentChildren(list, voList, null,procedureNature);
 		//4.将没有子节点的数据设置为null
 		FindNodeTemplateChildrenUtils.setChildrenAsNull(voList);
 		return voList;

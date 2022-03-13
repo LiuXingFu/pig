@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
@@ -62,6 +63,15 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId);
+
+	/**
+	 * 通过项目id、案件id、财产id查询财产抵押权信息
+	 * @param projectId
+	 * @param caseeId
+	 * @param assetsId
+	 * @return
+	 */
+	AssetsReCasee queryAssetsMortgage(Integer projectId, Integer caseeId, Integer assetsId);
 
 	/**
 	 * 分页查询案件财产查封冻结情况
