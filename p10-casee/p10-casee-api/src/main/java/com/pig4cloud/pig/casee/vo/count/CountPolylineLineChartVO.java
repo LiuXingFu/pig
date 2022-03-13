@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.vo.count;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +25,11 @@ public class CountPolylineLineChartVO {
 	/**
 	 * 项目Map
 	 */
-	private List<Long> projectList;
+	private List<BigDecimal> projectList;
 
 	/**
 	 * 案件Map
 	 */
-	private List<Long> caseeList;
+	private List<BigDecimal> caseeList;
 
 }
