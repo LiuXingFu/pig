@@ -140,7 +140,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			if (subjectNames.equals("")){
 				subjectNames=subject.getName();
 			}else {
-				subjectNames=subjectNames+","+subject.getName();
+				if (!subjectNames.contains(subject.getName())){
+					subjectNames=subjectNames+","+subject.getName();
+				}
 			}
 			List<Address> addressList = subjectAddressDTO.getAddressList();
 			for (Address address : addressList) {
