@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
+import com.pig4cloud.pig.admin.api.vo.AssociateOutlesRePageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,6 @@ import org.apache.ibatis.annotations.Param;
 public interface AssociateOutlesReMapper extends BaseMapper<AssociateOutlesRe> {
 
 	IPage<AssociateOutlesRe> pageAssociateOutles(Page page, @Param("query") AssociateOutlesRe associateOutlesRe);
+
+	IPage<AssociateOutlesRePageVO> queryCooperateOutlesPage(Page page, @Param("query") AssociateOutlesRe associateOutlesRe);
 }

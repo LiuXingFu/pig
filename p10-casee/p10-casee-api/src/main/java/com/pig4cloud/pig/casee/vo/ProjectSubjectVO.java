@@ -1,8 +1,11 @@
 package com.pig4cloud.pig.casee.vo;
 
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class ProjectSubjectVO extends Subject {

@@ -14,9 +14,9 @@ import java.time.LocalDate;
 public class AssetsReCaseeDetail {
 
 	/**
-	 * 抵押权人
+	 *   0: 申请人,1: 案外人,2: 无抵押权人
 	 */
-	@ApiModelProperty(value = "抵押权人")
+	@ApiModelProperty(value = "0: 申请人,1: 案外人,2: 无抵押权人")
 	private Integer mortgagee;
 
 	/**

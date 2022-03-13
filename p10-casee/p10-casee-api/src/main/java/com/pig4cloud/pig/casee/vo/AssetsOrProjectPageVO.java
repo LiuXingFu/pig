@@ -53,7 +53,7 @@ public class AssetsOrProjectPageVO {
 	/**
 	 * 项目状态
 	 */
-	private Integer status;
+	private Integer projectStatus;
 
 	/**
 	 * 债务人
@@ -79,6 +79,11 @@ public class AssetsOrProjectPageVO {
 	 * 案号
 	 */
 	private String caseeNumber;
+
+	/**
+	 * 案件状态
+	 */
+	private Integer caseeStatus;
 
 	/**
 	 * 是否首冻(0-否 1-是)

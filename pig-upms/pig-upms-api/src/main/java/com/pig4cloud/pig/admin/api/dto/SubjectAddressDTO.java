@@ -97,6 +97,11 @@ public class SubjectAddressDTO {
 	private Integer debtType;
 
 	/**
+	 * 主体关联银行借贷表id
+	 */
+	private Integer subjectBankLoanId;
+
+	/**
 	 * 性别（1-男，2-女）默认值0-不详
 	 */
 	private Integer gender;

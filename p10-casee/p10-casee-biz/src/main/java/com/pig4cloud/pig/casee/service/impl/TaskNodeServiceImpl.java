@@ -27,7 +27,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteInsOutlesUserService;
 import com.pig4cloud.pig.admin.api.feign.RemoteNodeTemplateService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.assets.detail.detailentity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
@@ -1616,9 +1616,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				assetsRe.setAssetsId(target.getGoalId());
 				assetsRe.setCaseeId(target.getCaseeId());
 
-				AssetsReCasee assetsReCasee = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
+				AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 
-				AssetsReCaseeDetail assetsReCaseeDetail = assetsReCasee.getAssetsReCaseeDetail();
+				AssetsReCaseeDetail assetsReCaseeDetail = assetsReLiqui.getAssetsReCaseeDetail();
 				if (Objects.isNull(assetsReCaseeDetail)) {
 					assetsReCaseeDetail = new AssetsReCaseeDetail();
 				}
@@ -1629,7 +1629,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
 				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
 					//资金财产划扣
@@ -1637,28 +1637,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReCaseeDetail.setAssetsSnap(assetsSnap);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
 					//实体财产查封
 					AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
 
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
 					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
 
 					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 					//资产抵偿
 				}else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
 					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
 
 					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
 					//实体财产成交裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
@@ -1666,7 +1666,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
 					//实体财产抵偿裁定
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
@@ -1674,9 +1674,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
 
-					assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 				}
-				this.assetsReCaseeService.updateById(assetsReCasee);
+				this.assetsReCaseeService.updateById(assetsReLiqui);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
 				Behavior behavior = new Behavior();

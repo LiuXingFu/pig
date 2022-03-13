@@ -54,11 +54,13 @@
 		p10_assets.`owner`,
 		p10_project.project_id,
 		p10_project.company_code,
-		p10_project.`status`,
+		p10_project.`status` AS projectStatus,
 		p10_project.subject_persons,
 		p10_assets_re.assets_re_id,
 		p10_assets_re.assets_source,
 		p10_assets_re.casee_id,
+		p10_casee.casee_number,
+		p10_casee.status AS caseeStatus,
 		json_extract( p10_assets_re.assets_re_detail,
 		'$.assetsSeizure.sealUpCondition' ) AS sealUpCondition,
 		json_extract( p10_assets_re.assets_re_detail,
@@ -66,8 +68,9 @@
 		json_extract(p10_assets_re.assets_re_detail, "$.mortgagee") as mortgagee
 		FROM
 		p10_assets_re
-		INNER JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
-		INNER JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
+		LEFT JOIN  p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
+		LEFT JOIN p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		LEFT JOIN  p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE
 		p10_project.del_flag = 0
 		<if test="insId != null and insId != 0">
@@ -97,13 +100,14 @@
 		p10_assets.`owner`,
 		p10_project.project_id,
 		p10_project.company_code,
-		p10_project.`status`,
+		p10_project.`status` AS projectStatus,
 		p10_project.subject_persons,
 		p10_assets_re.assets_re_id,
 		p10_assets_re.assets_re_id,
 		p10_assets_re.assets_source,
 		p10_assets_re.casee_id,
 		p10_casee.casee_number,
+		p10_casee.status AS caseeStatus,
 		json_extract( p10_assets_re.assets_re_detail,
 		'$.assetsSeizure.sealUpCondition' ) AS sealUpCondition,
 		json_extract( p10_assets_re.assets_re_detail,

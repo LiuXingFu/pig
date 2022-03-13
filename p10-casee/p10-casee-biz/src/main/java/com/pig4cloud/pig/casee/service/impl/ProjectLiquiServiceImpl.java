@@ -26,11 +26,10 @@ import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
 import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
-import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.*;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -51,7 +50,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -198,21 +196,21 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		if (transferRecordBankLoanVO.getMortgageSituation() == 0) {
 			// 查询银行借贷抵押财产
 			List<AssetsInformationVO> assetsInformationVOS = assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
-			List<AssetsReCasee> assetsReCaseeList = new ArrayList<>();
+			List<AssetsReLiqui> assetsReLiquiList = new ArrayList<>();
 			assetsInformationVOS.stream().forEach(item -> {
-				AssetsReCasee assetsReCasee = new AssetsReCasee();
-				assetsReCasee.setAssetsId(item.getAssetsId());
-				assetsReCasee.setSubjectId(item.getSubjectId());
-				assetsReCasee.setProjectId(projectLiqui.getProjectId());
+				AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
+				assetsReLiqui.setAssetsId(item.getAssetsId());
+				assetsReLiqui.setSubjectId(item.getSubjectId());
+				assetsReLiqui.setProjectId(projectLiqui.getProjectId());
 				// 案件来源1=抵押财产
-				assetsReCasee.setAssetsSource(1);
+				assetsReLiqui.setAssetsSource(1);
 				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
 				assetsReCaseeDetail.setMortgagee(0);
 				assetsReCaseeDetail.setMortgageTime(item.getMortgageTime());
 				assetsReCaseeDetail.setMortgageAmount(item.getMortgageAmount());
-				assetsReCasee.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				assetsReCaseeList.add(assetsReCasee);
-				assetsReLiquiService.save(assetsReCasee);
+				assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+				assetsReLiquiList.add(assetsReLiqui);
+				assetsReLiquiService.save(assetsReLiqui);
 			});
 		}
 

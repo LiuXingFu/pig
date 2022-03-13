@@ -84,15 +84,6 @@
 		</if>
 	</select>
 
-	<select id="getProjectAmountBySubjectId" resultType="java.math.BigDecimal">
-		select IFNULL(SUM(json_extract(p10_project.project_detail, "$.projectAmount" )),0) from p10_project_subject_re
-		left join p10_project on p10_project.project_id = p10_project_subject_re.project_id
-		where p10_project.del_flag = 0
-		and p10_project.status !=4000
-		AND p10_project_subject_re.type != 0
-		and p10_project_subject_re.subject_id = #{subjectId}
-	</select>
-
 	<select id="selectSubjectById" resultMap="SubjectVO">
 		SELECT * FROM p10_subject WHERE del_flag = 0 AND subject_id = #{subjectId}
 	</select>
