@@ -23,7 +23,7 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper">
 
-	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.AssetsReLiqui">
+	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
 		<id property="assetsId" column="assets_id"/>
 		<result property="createTime" column="create_time"/>
 		<result property="createBy" column="create_by"/>
@@ -41,7 +41,7 @@
 		<result property="assetsSource" column="assets_source"/>
 	</resultMap>
 
-	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReCasee">
+	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
 		SELECT * FROM p10_assets_re WHERE del_flag = 0
 		<if test="query.assetsReId != null and query.assetsReId != 0">
 			and assets_re_id = #{query.assetsReId}
@@ -75,6 +75,11 @@
 	<select id="queryAssetsSubject" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
 		select p10_subject.* from p10_assets_re
 		left join p10_subject on p10_subject.subject_id=p10_assets_re.subject_id
+		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
+	</select>
+
+	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
+		select p10_assets_re.* from p10_assets_re
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
@@ -634,5 +639,13 @@
 		<if test="query.assetsName != null and query.assetsName != ''">
 			and p10_assets_re.assets_name like concat('%', #{query.assetsName}, '%')
 		</if>
+	</select>
+
+	<select id="selectAssetsReAddress" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiMortgageVO">
+		select p10_assets_re.*,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id = p10_assets_re.assets_id and p10_address.type = 4
+		where p10_assets_re.project_id = #{projectId}
+		and p10_assets_re.assets_source = 1
 	</select>
 </mapper>

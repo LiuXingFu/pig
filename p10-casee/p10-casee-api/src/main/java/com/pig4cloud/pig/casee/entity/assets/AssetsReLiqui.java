@@ -15,7 +15,7 @@ import lombok.Data;
  * @date 2022-01-11 10:29:44
  */
 @Data
-public class AssetsReCasee extends AssetsRe {
+public class AssetsReLiqui extends AssetsRe {
 
 	@ApiModelProperty(value="项目案件关联财产详情")
 	private AssetsReCaseeDetail assetsReCaseeDetail;

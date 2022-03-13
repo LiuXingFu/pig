@@ -72,7 +72,7 @@ public class EntityZX_STZX extends CommonalityData implements Serializable {
 	EntityZX_STZX_CCZXDK entityZX_STZX_CCZXDK = new EntityZX_STZX_CCZXDK();
 
 	/**
-	 * 财产执行资产抵债
+	 * 财产执行资产抵偿
 	 */
 	EntityZX_STZX_CCZXZCDC entityZX_STZX_CCZXZCDC = new EntityZX_STZX_CCZXZCDC();
 

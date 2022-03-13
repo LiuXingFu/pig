@@ -1,13 +1,12 @@
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class AssetsReLiquiDetailsVO extends AssetsReCasee {
+public class AssetsReLiquiDetailsVO extends AssetsReLiqui {
 
 	/**
 	 * 项目详情

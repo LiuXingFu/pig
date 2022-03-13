@@ -25,11 +25,12 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.Project;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiMortgageVO;
 import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -78,11 +79,11 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 				BeanCopyUtil.copyBean(assetsAddDTO,address);
 			}
 		}
-		AssetsReCasee assetsReCasee = new AssetsReCasee();
+		AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
 		// 财产来源2=案件
-		assetsReCasee.setAssetsSource(2);
-		assetsReCasee.setCreateCaseeId(assetsAddDTO.getCaseeId());
-		BeanCopyUtil.copyBean(assetsAddDTO,assetsReCasee);
+		assetsReLiqui.setAssetsSource(2);
+		assetsReLiqui.setCreateCaseeId(assetsAddDTO.getCaseeId());
+		BeanCopyUtil.copyBean(assetsAddDTO, assetsReLiqui);
 
 		//添加任务数据以及程序信息
 		Project project = projectLiquiService.getById(assetsAddDTO.getProjectId());
@@ -98,11 +99,11 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		targetAddDTO.setGoalType(20001);
 		targetAddDTO.setGoalId(assetsId);
 		targetService.saveTargetAddDTO(targetAddDTO);
-		return this.baseMapper.insert(assetsReCasee);
+		return this.baseMapper.insert(assetsReLiqui);
 	}
 
 	@Override
-	public AssetsReCasee getAssetsReCasee(AssetsRe assetsRe) {
+	public AssetsReLiqui getAssetsReCasee(AssetsRe assetsRe) {
 		return this.baseMapper.getAssetsReCasee(assetsRe);
 	}
 
@@ -110,6 +111,11 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Override
 	public List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
 		return this.baseMapper.queryAssetsSubject(projectId,caseeId,assetsId);
+	}
+
+	@Override
+	public AssetsReLiqui queryAssetsMortgage(Integer projectId, Integer caseeId, Integer assetsId) {
+		return this.baseMapper.queryAssetsMortgage(projectId,caseeId,assetsId);
 	}
 
 	@Override
@@ -226,6 +232,11 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public 	List<AssetsReLiquiMortgageVO> queryAssetsReAddress(Integer projectId){
+		return this.baseMapper.selectAssetsReAddress(projectId);
 	}
 
 }

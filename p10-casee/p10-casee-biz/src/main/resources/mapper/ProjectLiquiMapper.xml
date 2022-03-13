@@ -23,32 +23,34 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper">
 
-	<resultMap id="queryPageProjectLiquiMap" type="com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO">
-		<id property="projectId" column="project_id"></id>
-		<result property="createTime" column="create_time"/>
+	<resultMap id="projectMap" type="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui">
+		<id property="projectId" column="project_id"/>
 		<result property="createBy" column="create_by"/>
-		<result property="updateTime" column="update_time"/>
+		<result property="createTime" column="create_time"/>
 		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
 		<result property="delFlag" column="del_flag"/>
-		<result property="projectType" column="project_type"></result>
-		<result property="companyCode" column="company_code"></result>
-		<result property="status" column="status"></result>
-		<result property="insId" column="ins_id"></result>
-		<result property="outlesId" column="outles_id"></result>
-		<result property="userId" column="user_id"></result>
-		<result property="userNickName" column="user_nick_name"></result>
-		<result property="takeTime" column="take_time"></result>
-		<result property="closeTime" column="close_time"></result>
-		<result property="year" column="year"></result>
-		<result property="alias" column="alias"></result>
-		<result property="word" column="word"></result>
-		<result property="proposersNames" column="proposers_names"></result>
-		<result property="subjectPersons" column="subject_persons"></result>
-		<result property="projectDetail" column="project_detail"></result>
-		<result property="describes" column="describes"></result>
+		<result property="projectType" column="project_type"/>
+		<result property="companyCode" column="company_code"/>
+		<result property="status" column="status"/>
+		<result property="insId" column="ins_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="userNickName" column="user_nick_name"/>
+		<result property="takeTime" column="take_time"/>
+		<result property="closeTime" column="close_time"/>
+		<result property="year" column="year"/>
+		<result property="alias" column="alias"/>
+		<result property="word" column="word"/>
+		<result property="proposersNames" column="proposers_names"/>
+		<result property="subjectPersons" column="subject_persons"/>
+		<result property="projectDetail" column="project_detail"/>
+		<result property="describes" column="describes"/>
+	</resultMap>
+
+	<resultMap id="queryPageProjectLiquiMap" type="com.pig4cloud.pig.casee.vo.ProjectLiquiOrBehaviorPageVO" extends="projectMap">
 		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO"
 					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.getBehaviorByProjectId" column="project_id">
-
 		</collection>
 	</resultMap>
 

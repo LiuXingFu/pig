@@ -1,13 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.pig4cloud.pig.admin.api.entity.FileAdder;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
-
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * 财产执行价格依据
@@ -18,8 +15,7 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ extends CommonalityData implements 
 	/**
 	 * 定价日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date pricingDate;
+	private LocalDate pricingDate;
 
 	/**
 	 * 定价方式(0-议价 1-网络询价 2-询价 3-评估)
@@ -29,12 +25,12 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ extends CommonalityData implements 
 	/**
 	 * 定价费用
 	 */
-	private Double pricingFee;
+	private BigDecimal pricingFee;
 
 	/**
 	 * 定价价格
 	 */
-	private Double listPrice;
+	private BigDecimal listPrice;
 
 	/**
 	 * 附件

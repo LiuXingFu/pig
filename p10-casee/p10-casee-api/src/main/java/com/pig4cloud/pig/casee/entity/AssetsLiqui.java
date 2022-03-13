@@ -54,8 +54,8 @@ public class AssetsLiqui extends Assets {
 	@ApiModelProperty(value="身份证唯一标识")
 	private String unifiedIdentity;
 
-	@ApiModelProperty(value="财产关联表(新增传值用)")
-	private AssetsReLiqui assetsRe;
+//	@ApiModelProperty(value="财产关联表(新增传值用)")
+//	private AssetsReLiqui assetsRe;
 
 	public void setAssetsLiquiDetail(AssetsLiquiDetail AssetsLiquiDetail) {
 		this.assetsLiquiDetail = AssetsLiquiDetail;
