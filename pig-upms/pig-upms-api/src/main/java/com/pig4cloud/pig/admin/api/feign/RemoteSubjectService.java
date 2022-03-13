@@ -16,6 +16,9 @@
 
 package com.pig4cloud.pig.admin.api.feign;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteSubjectServiceFallbackFactory;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -106,5 +109,14 @@ public interface RemoteSubjectService {
 	 */
 	@GetMapping("/subject/getByInsId/{insId}")
 	R<Subject> getByInsId(@PathVariable("insId") Integer insId, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 *	根据特定条件分页查询债务人
+	 * @param page
+	 * @param subjectPageDTO
+	 * @return
+	 */
+	@GetMapping("/subject/pageSubject")
+	R pageSubject(@RequestParam(value = "page" )Page page,@RequestParam(value = "subjectPageDTO" ) SubjectPageDTO subjectPageDTO, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

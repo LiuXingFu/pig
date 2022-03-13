@@ -16,6 +16,8 @@
 
 package com.pig4cloud.pig.admin.api.feign.fallback;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
@@ -84,6 +86,12 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	@Override
 	public R<Subject> getByInsId(Integer getByInsId, String from) {
 		log.error("查询主体失败", cause);
+		return null;
+	}
+
+	@Override
+	public R pageSubject(Page page, SubjectPageDTO subjectPageDTO, String from) {
+		log.error("根据特定条件分页查询债务人失败", cause);
 		return null;
 	}
 }

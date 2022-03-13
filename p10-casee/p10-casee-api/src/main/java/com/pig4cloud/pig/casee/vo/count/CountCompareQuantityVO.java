@@ -27,4 +27,9 @@ public class CountCompareQuantityVO {
 	 */
 	private Long comparePropertyNumbersCount;
 
+	/**
+	 * 较去年和解数
+	 */
+	private Long compareReconciliationCount;
+
 }

@@ -20,6 +20,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
@@ -593,7 +596,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//**********首次执行待立案********************************
 		ProjectNoProcessedDTO projectNoProcessedDTO = new ProjectNoProcessedDTO();
-		IPage<ProjectLiquiPageVO> fulfillFirstExecutionPending = this.queryFulfillFirstExecutionPending(page,projectNoProcessedDTO);
+		IPage<ProjectLiquiPageVO> fulfillFirstExecutionPending = this.queryFulfillFirstExecutionPending(page, projectNoProcessedDTO);
 		countFulfillVO.setFulfillFirstExecutionPending(fulfillFirstExecutionPending.getTotal());
 
 
@@ -733,7 +736,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countPropertySearchVO.setPropertyToBeAuctionedNotHandedOver(propertyToBeAuctionedNotHandedOver.getTotal());
 
 		//**********处理未到款********************************
-		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHandleNotPayment(auctionTransactionNotProcessed.getTotal());
 
 		return countPropertySearchVO;
@@ -783,23 +786,23 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
 		//**********拍卖到期无结果********************************
-		IPage<AssetsReLiquiFlowChartPageVO> auctionExpiresWithoutResults = assetsReLiquiService.queryPropertyAuctionDue(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExpiresWithoutResults = assetsReLiquiService.queryPropertyAuctionDue(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAuctionExpiresWithoutResults(auctionExpiresWithoutResults.getTotal());
 
 		//**********拍卖成交未处理********************************
-		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionNotProcessed = assetsReLiquiService.queryPropertyAuctionSuccess(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAuctionTransactionNotProcessed(auctionTransactionNotProcessed.getTotal());
 
 		//**********拍卖不成交未处理********************************
-		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionFailedNotProcessed = assetsReLiquiService.queryPropertyAuctionFailed(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> auctionTransactionFailedNotProcessed = assetsReLiquiService.queryPropertyAuctionFailed(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAuctionTransactionFailedNotProcessed(auctionTransactionFailedNotProcessed.getTotal());
 
 		//**********拍卖异常未撤销********************************
-		IPage<AssetsReLiquiFlowChartPageVO> auctionExceptionNotCancelled = assetsReLiquiService.queryPropertyAuctionAbnormal(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> auctionExceptionNotCancelled = assetsReLiquiService.queryPropertyAuctionAbnormal(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAuctionExceptionNotCancelled(auctionExceptionNotCancelled.getTotal());
 
 		//**********到款/抵偿未裁定********************************
-		IPage<AssetsReLiquiFlowChartPageVO> arrivalCompensationNotAdjudicated = assetsReLiquiService.queryDispositionRuling(page,assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> arrivalCompensationNotAdjudicated = assetsReLiquiService.queryDispositionRuling(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(arrivalCompensationNotAdjudicated.getTotal());
 
 		//**********裁定未送达********************************
@@ -854,6 +857,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//却查询提醒事项
 		countProjectMattersVO.setRemindMatterCount(expirationReminderVOIPage.getTotal());
 
+		R r = remoteSubjectService.pageSubject(page, new SubjectPageDTO(), SecurityConstants.FROM);
+
+		ObjectMapper mapper = new ObjectMapper();
+		//对象转map
+		try {
+			Map<String, Object> map = mapper.readValue(mapper.writeValueAsString(r.getData()), Map.class);
+			countProjectMattersVO.setDebtorCount(Long.valueOf(String.valueOf(map.get("total"))));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
 		return countProjectMattersVO;
 	}
 
@@ -877,6 +891,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		//查询较去年财产数
 		countCompareQuantityVO.setComparePropertyNumbersCount(this.assetsReLiquiService.queryComparePropertyNumbersCount());
+
+		//查询较去年和解数
+		countCompareQuantityVO.setCompareReconciliationCount(this.reconciliatioMediationService.queryCompareReconciliationCount());
 
 		return countCompareQuantityVO;
 	}
@@ -904,6 +921,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 查询项目案件折线图
+	 *
 	 * @param countPolylineLineChartDTO
 	 * @return
 	 */
@@ -917,7 +935,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			//创建查询日期集合
 			List<String> yearDifference;
 			//起始年份与结束年份不为空
-			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && !countPolylineLineChartDTO.getPolylineYearStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineYearEnd()) && !countPolylineLineChartDTO.getPolylineYearEnd().equals(""))) {
+			if ((Objects.nonNull(countPolylineLineChartDTO.getPolylineYearStar()) && !countPolylineLineChartDTO.getPolylineYearStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineYearEnd()) && !countPolylineLineChartDTO.getPolylineYearEnd().equals(""))) {
 //				起始年份与结束年份相等 取起始年份存入时间集合
 				if (countPolylineLineChartDTO.getPolylineYearStar().equals(countPolylineLineChartDTO.getPolylineYearEnd())) {
 					yearDifference = new ArrayList<>();
@@ -926,7 +944,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				} else {
 					yearDifference = GetDifference.getYearDifference(countPolylineLineChartDTO.getPolylineYearStar(), countPolylineLineChartDTO.getPolylineYearEnd());
 				}
-			//起始年份与结束年份为空 查询当前年份-9年的全部年份
+				//起始年份与结束年份为空 查询当前年份-9年的全部年份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
@@ -945,16 +963,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			//创建查询日期集合
 			List<String> monthDifference;
 			//起始月份与结束月份不为空
-			if((Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && !countPolylineLineChartDTO.getPolylineMonthStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd()) && !countPolylineLineChartDTO.getPolylineMonthEnd().equals(""))) {
+			if ((Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthStar()) && !countPolylineLineChartDTO.getPolylineMonthStar().equals("")) && (Objects.nonNull(countPolylineLineChartDTO.getPolylineMonthEnd()) && !countPolylineLineChartDTO.getPolylineMonthEnd().equals(""))) {
 				//起始月份与结束月份相等 取起始月份存入时间集合
 				if (countPolylineLineChartDTO.getPolylineMonthStar().equals(countPolylineLineChartDTO.getPolylineMonthEnd())) {
 					monthDifference = new ArrayList<>();
 					monthDifference.add(countPolylineLineChartDTO.getPolylineMonthStar());
-				//起始月份与结束月份不相等 将间隔月份全部查出
+					//起始月份与结束月份不相等 将间隔月份全部查出
 				} else {
 					monthDifference = GetDifference.getMonthDifference(countPolylineLineChartDTO.getPolylineMonthStar(), countPolylineLineChartDTO.getPolylineMonthEnd());
 				}
-			//起始月份与结束月份为空 查询当前月份-11的全部月份
+				//起始月份与结束月份为空 查询当前月份-11的全部月份
 			} else {
 				Calendar c1 = Calendar.getInstance();
 				Date now = new Date();
@@ -976,6 +994,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 根据日期集合查询项目与案件数量
+	 *
 	 * @param polylineActive
 	 * @param countPolylineLineChartVO
 	 * @param monthDifference
@@ -1011,7 +1030,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public 	IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO){
+	public IPage<ProjectLiquiPageVO> queryFulfillFirstExecutionPending(Page page, ProjectNoProcessedDTO projectNoProcessedDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -1020,6 +1039,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 回款额折线柱状图
+	 *
 	 * @param countLineChartColumnarChartDTO
 	 * @return
 	 */
@@ -1032,7 +1052,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			//创建查询日期集合
 			List<String> yearDifference;
 			//起始年份与结束年份不为空
-			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearStar()) && !countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnYearEnd().equals(""))) {
+			if ((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearStar()) && !countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnYearEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnYearEnd().equals(""))) {
 				//起始年份与结束年份相等 取起始年份存入时间集合
 				if (countLineChartColumnarChartDTO.getPolylineColumnYearStar().equals(countLineChartColumnarChartDTO.getPolylineColumnYearEnd())) {
 					yearDifference = new ArrayList<>();
@@ -1061,7 +1081,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			//创建查询日期集合
 			List<String> monthDifference;
 			//起始月份与结束月份不为空
-			if((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthStar()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthEnd().equals(""))) {
+			if ((Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthStar()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals("")) && (Objects.nonNull(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd()) && !countLineChartColumnarChartDTO.getPolylineColumnMonthEnd().equals(""))) {
 				//起始月份与结束月份相等 取起始月份存入时间集合
 				if (countLineChartColumnarChartDTO.getPolylineColumnMonthStar().equals(countLineChartColumnarChartDTO.getPolylineColumnMonthEnd())) {
 					monthDifference = new ArrayList<>();
@@ -1092,6 +1112,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	/**
 	 * 根据日期集合查询回款额
+	 *
 	 * @param polylineColumnActive
 	 * @param countLineChartColumnarChartVO
 	 * @param difference
@@ -1116,7 +1137,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public 	IPage<ExpirationReminderVO> queryStatisticsReminder(Page page, ExpirationReminderDTO expirationReminderDTO){
+	public IPage<ExpirationReminderVO> queryStatisticsReminder(Page page, ExpirationReminderDTO expirationReminderDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));

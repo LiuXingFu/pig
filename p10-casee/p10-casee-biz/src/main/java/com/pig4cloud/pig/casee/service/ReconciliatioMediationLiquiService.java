@@ -39,4 +39,11 @@ public interface ReconciliatioMediationLiquiService extends IService<Reconciliat
 	boolean saveReconciliatioMediation(ReconciliatioMediationDTO reconciliatioMediationDTO);
 
 	boolean cancellation(ReconciliatioMediationLiqui reconciliatioMediation);
+
+	/**
+	 * 查询较去年和解数
+	 * @return
+	 */
+	Long queryCompareReconciliationCount();
+
 }

@@ -26,8 +26,8 @@ public class CountProjectMattersVO {
 	private Long remindMatterCount;
 
 	/**
-	 * 待办事项
+	 * 债务人
 	 */
-	private Long upcomingMatterCount;
+	private Long debtorCount;
 
 }

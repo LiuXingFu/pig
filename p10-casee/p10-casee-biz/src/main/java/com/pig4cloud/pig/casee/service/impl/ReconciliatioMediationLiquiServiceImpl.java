@@ -119,4 +119,16 @@ public class ReconciliatioMediationLiquiServiceImpl extends ServiceImpl<Reconcil
 
 		return this.updateById(reconciliatioMediation);
 	}
+
+	/**
+	 * 查询较去年和解数
+	 * @return
+	 */
+	@Override
+	public Long queryCompareReconciliationCount() {
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryCompareReconciliationCount(insOutlesDTO);
+	}
 }

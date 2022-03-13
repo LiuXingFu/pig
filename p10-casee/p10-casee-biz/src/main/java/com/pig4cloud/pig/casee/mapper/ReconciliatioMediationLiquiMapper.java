@@ -38,4 +38,6 @@ public interface ReconciliatioMediationLiquiMapper extends BaseMapper<Reconcilia
 	IPage<ReconciliatioMediationVO> getReconciliatioMediationPage(Page page, @Param("query") ReconciliatioMediationDTO reconciliatioMediationDTO,@Param("login") InsOutlesDTO insOutlesDTO);
 
 	ReconciliatioMediationVO getByReconciliatioMediationId(Integer reconciliatioMediationId);
+
+	Long queryCompareReconciliationCount(@Param("login") InsOutlesDTO insOutlesDTO);
 }
