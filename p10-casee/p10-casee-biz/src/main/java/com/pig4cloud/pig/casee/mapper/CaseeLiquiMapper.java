@@ -29,6 +29,7 @@ import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	CaseeLiquiPageVO selectCaseeDetails(@Param("caseeId") Integer caseeId);
 
-	Map<String, Long> getCaseeMap(@Param("polylineActive") Integer polylineActive, @Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+	Map<String, BigDecimal> getCaseeMap(@Param("polylineActive") Integer polylineActive, @Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	CaseeLiqui getCaseeLiqui(@Param("query") Casee casee);
 }

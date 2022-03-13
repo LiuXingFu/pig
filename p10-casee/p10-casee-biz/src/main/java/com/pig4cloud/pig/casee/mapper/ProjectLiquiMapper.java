@@ -32,6 +32,7 @@ import com.pig4cloud.pig.casee.vo.count.ExpirationReminderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public interface ProjectLiquiMapper extends BaseMapper<Project> {
 
 	IPage<ProjectLiquiPageVO> selectFulfillFirstExecutionPending(Page page,@Param("query") ProjectNoProcessedDTO projectNoProcessedDTO,@Param("login")InsOutlesDTO insOutlesDTO);
 
-	Map<String, Long> getProjectMap(@Param("polylineActive") Integer polylineActive,@Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+	Map<String, BigDecimal> getProjectMap(@Param("polylineActive") Integer polylineActive, @Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	IPage<ExpirationReminderVO> selectStatisticsReminder(Page page, @Param("query") ExpirationReminderDTO expirationReminderDTO, @Param("login")InsOutlesDTO insOutlesDTO);
 }

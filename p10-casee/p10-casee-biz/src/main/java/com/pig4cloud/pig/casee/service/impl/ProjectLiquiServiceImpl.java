@@ -999,16 +999,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	 */
 	private void setCountPolylineLineChartVO(Integer polylineActive, CountPolylineLineChartVO countPolylineLineChartVO, List<String> monthDifference) {
 		//根据日期集合查询项目
-		Map<String, Long> projectMap = this.baseMapper.getProjectMap(polylineActive, monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		Map<String, BigDecimal> projectMap = this.baseMapper.getProjectMap(polylineActive, monthDifference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 
 		//根据日期集合查询案件
-		Map<String, Long> caseeMap = this.caseeLiquiService.getCaseeMap(polylineActive, monthDifference);
+		Map<String, BigDecimal> caseeMap = this.caseeLiquiService.getCaseeMap(polylineActive, monthDifference);
 
 		List<String> timelineList = new ArrayList<>();
 
-		List<Long> projectList = new ArrayList<>();
+		List<BigDecimal> projectList = new ArrayList<>();
 
-		List<Long> caseeList = new ArrayList<>();
+		List<BigDecimal> caseeList = new ArrayList<>();
 
 		//循环将数据存入VO相对应的List中
 		for (String key : projectMap.keySet()) {
@@ -1019,6 +1019,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		for (String key : caseeMap.keySet()) {
 			caseeList.add(caseeMap.get(key));
 		}
+
+
 
 		countPolylineLineChartVO.setTimelineList(timelineList);
 

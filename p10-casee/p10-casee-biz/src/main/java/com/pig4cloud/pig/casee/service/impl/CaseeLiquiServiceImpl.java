@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -491,7 +492,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	 * @return
 	 */
 	@Override
-	public Map<String, Long> getCaseeMap(Integer polylineActive, List<String> differenceList) {
+	public Map<String, BigDecimal> getCaseeMap(Integer polylineActive, List<String> differenceList) {
 		return this.baseMapper.getCaseeMap(polylineActive, differenceList, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 

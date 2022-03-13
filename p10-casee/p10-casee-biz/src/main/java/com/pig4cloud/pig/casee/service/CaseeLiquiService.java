@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -231,7 +232,7 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @param differenceList
 	 * @return
 	 */
-	Map<String, Long> getCaseeMap(Integer polylineActive, List<String> differenceList);
+	Map<String, BigDecimal> getCaseeMap(Integer polylineActive, List<String> differenceList);
 
 	/**
 	 * 根据特定条件查询案件与案件详情
