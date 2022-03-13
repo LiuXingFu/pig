@@ -78,7 +78,7 @@
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
-	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReCasee">
+	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
 		select p10_assets_re.* from p10_assets_re
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>

@@ -46,7 +46,7 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	AssetsReLiqui getAssetsReCasee(@Param("query") AssetsRe assetsRe);
 
-	AssetsReCasee queryAssetsMortgage(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
+	AssetsReLiqui queryAssetsMortgage(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
 
 	List<Subject> queryAssetsSubject(@Param("projectId")Integer projectId, @Param("caseeId")Integer caseeId, @Param("assetsId")Integer assetsId);
 

@@ -114,7 +114,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
-	public AssetsReCasee queryAssetsMortgage(Integer projectId, Integer caseeId, Integer assetsId) {
+	public AssetsReLiqui queryAssetsMortgage(Integer projectId, Integer caseeId, Integer assetsId) {
 		return this.baseMapper.queryAssetsMortgage(projectId,caseeId,assetsId);
 	}
 
