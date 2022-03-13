@@ -3,7 +3,7 @@ package com.pig4cloud.pig.casee.utils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReCasee;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.*;
 import com.pig4cloud.pig.casee.service.AssetsReLiquiService;
 import com.pig4cloud.pig.casee.service.TargetService;
@@ -99,8 +99,8 @@ public class FindNodeTemplateChildrenUtils {
 
 			if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS")||taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")){//商情移送、资产处置移交
 				Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getTargetId, taskNodeVO.getTargetId()).eq(Target::getGoalType, 20001));
-				AssetsReCasee assetsReCasees = assetsReLiquiService.queryAssetsMortgage(taskNodeVO.getProjectId(), taskNodeVO.getCaseeId(), target.getGoalId());
-				Integer mortgagee = assetsReCasees.getAssetsReCaseeDetail().getMortgagee();
+				AssetsReLiqui assetsReLiqui = assetsReLiquiService.queryAssetsMortgage(taskNodeVO.getProjectId(), taskNodeVO.getCaseeId(), target.getGoalId());
+				Integer mortgagee = assetsReLiqui.getAssetsReCaseeDetail().getMortgagee();
 				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXCF_CCZXCF").eq(TaskNode::getProjectId,taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId,taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId,taskNodeVO.getTargetId()));
 				EntityZX_STZX_CCZXCF_CCZXCF entityZX_stzx_cczxcf_cczxcf = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXCF_CCZXCF.class);
 
