@@ -623,22 +623,24 @@
 		and substring(json_extract( p10_task_node.form_data, '$.auctionEndDate' ),2,10) >= DATE_FORMAT(now(), '%Y-%m-%d')
 		and json_extract( p10_task_node.form_data, '$.revoke' ) = 0
 		)p10_assets_re
-		<if test="login.insId != null and login.insId > 0">
-			and p10_assets_re.ins_id = #{login.insId}
-		</if>
-		<if test="login.outlesId != null and login.outlesId > 0">
-			and p10_assets_re.outles_id = #{login.outlesId}
-		</if>
-		<if test="query.caseeNumber != null and query.caseeNumber != ''">
-			and (p10_assets_re.company_code like concat('%', #{query.caseeNumber}, '%')
-			or p10_assets_re.casee_number like concat('%', #{query.caseeNumber}, '%'))
-		</if>
-		<if test="query.executedName != null and query.executedName != ''">
-			and p10_assets_re.owner like concat('%', #{query.executedName}, '%')
-		</if>
-		<if test="query.assetsName != null and query.assetsName != ''">
-			and p10_assets_re.assets_name like concat('%', #{query.assetsName}, '%')
-		</if>
+		<where>
+			<if test="login.insId != null and login.insId > 0">
+				and p10_assets_re.ins_id = #{login.insId}
+			</if>
+			<if test="login.outlesId != null and login.outlesId > 0">
+				and p10_assets_re.outles_id = #{login.outlesId}
+			</if>
+			<if test="query.caseeNumber != null and query.caseeNumber != ''">
+				and (p10_assets_re.company_code like concat('%', #{query.caseeNumber}, '%')
+				or p10_assets_re.casee_number like concat('%', #{query.caseeNumber}, '%'))
+			</if>
+			<if test="query.executedName != null and query.executedName != ''">
+				and p10_assets_re.owner like concat('%', #{query.executedName}, '%')
+			</if>
+			<if test="query.assetsName != null and query.assetsName != ''">
+				and p10_assets_re.assets_name like concat('%', #{query.assetsName}, '%')
+			</if>
+		</where>
 	</select>
 
 	<select id="selectAssetsReAddress" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiMortgageVO">
