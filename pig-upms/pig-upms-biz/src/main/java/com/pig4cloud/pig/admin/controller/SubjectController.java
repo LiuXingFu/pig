@@ -110,6 +110,17 @@ public class SubjectController {
 		return R.ok(subjectService.listByIds(subjectIds));
 	}
 
+	/**
+	 * 通过银行借贷id查询主体信息
+	 * @param bankLoanId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过银行借贷id查询主体信息", notes = "通过银行借贷id查询主体信息")
+	@GetMapping("getSubjectByBankLoanId/{bankLoanId}" )
+	public R getSubjectByBankLoanId(@PathVariable("bankLoanId" ) Integer bankLoanId) {
+		return R.ok(subjectService.getSubjectByBankLoanId(bankLoanId));
+	}
+
     /**
      * 新增主体
      * @param subject 主体

@@ -379,4 +379,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	public Subject getByInsId(Integer insId){
 		return this.baseMapper.getByInsId(insId);
 	}
+
+	@Override
+	public List<Subject> getSubjectByBankLoanId(Integer bankLoanId) {
+		return this.baseMapper.getSubjectByBankLoanId(bankLoanId);
+	}
 }
