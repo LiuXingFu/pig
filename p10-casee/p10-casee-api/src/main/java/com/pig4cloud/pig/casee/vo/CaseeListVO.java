@@ -40,17 +40,22 @@ public class CaseeListVO extends Casee {
 	/**
 	 * 法院名称
 	 */
-	String courtName;
+	private String courtName;
 
 	/**
 	 * 律师名称
 	 */
-	String lawyerName;
+	private String lawyerName;
 
 	/**
 	 * 办理人名称
 	 */
-	String actualName;
+	private String actualName;
+
+	/**
+	 * 程序id
+	 */
+	private Integer targetId;
 
 
 }
