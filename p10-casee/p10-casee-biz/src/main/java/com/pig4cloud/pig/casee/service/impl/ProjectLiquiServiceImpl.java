@@ -241,6 +241,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 		ProjectSubjectDTO projectSubjectDTO = new ProjectSubjectDTO();
 		projectSubjectDTO.setProjectId(projectId);
+		List<Integer> typeList = new ArrayList<>();
+		typeList.add(1);
+		typeList.add(2);
+		typeList.add(3);
+		projectSubjectDTO.setTypeList(typeList);
 		// 债务人列表
 		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectSubjectDTO);
 		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
