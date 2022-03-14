@@ -239,9 +239,10 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
 		queryWrapper.lambda().eq(AssetsRe::getProjectId, caseeLiquiAddDTO.getProjectId());
 		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
+		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
+
 		// 遍历修改财产案件关联
 		if (assetsRes.size() > 0) {
-			Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
 			List<AssetsRe> assetsReList = new ArrayList<>();
 			assetsRes.stream().forEach(item -> {
 				AssetsRe assetsRe = new AssetsRe();
@@ -253,10 +254,10 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				}
 				assetsReList.add(assetsRe);
 
-				//添加任务数据以及程序信息
+				//添加财产程序
 				TargetAddDTO targetAddDTO = new TargetAddDTO();
 				targetAddDTO.setCaseeId(caseeId);
-				targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
+				targetAddDTO.setProcedureNature(4040);
 				targetAddDTO.setOutlesId(project.getOutlesId());
 				targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
 				targetAddDTO.setGoalId(item.getAssetsId());
@@ -269,6 +270,19 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			});
 			assetsReService.updateBatchById(assetsReList);
 		}
+		//添加首执案件程序
+		TargetAddDTO targetAddDTO = new TargetAddDTO();
+		targetAddDTO.setCaseeId(caseeId);
+		targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+		targetAddDTO.setGoalType(10001);
+		try {
+			targetService.saveTargetAddDTO(targetAddDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return caseeId;
 	}
 

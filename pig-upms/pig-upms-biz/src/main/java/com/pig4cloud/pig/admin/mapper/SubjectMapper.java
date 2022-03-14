@@ -31,6 +31,8 @@ import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 
 /**
  * 主体
@@ -58,4 +60,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity);
 
 	Subject getByInsId(@Param("insId") Integer insId);
+
+	List<Subject> getSubjectByBankLoanId(Integer bankLoanId);
 }

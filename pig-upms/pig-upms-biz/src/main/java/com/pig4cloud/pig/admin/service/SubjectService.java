@@ -83,4 +83,6 @@ public interface SubjectService extends IService<Subject> {
 	int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity);
 
 	Subject getByInsId(Integer insId);
+
+	List<Subject> getSubjectByBankLoanId(Integer bankLoanId);
 }
