@@ -156,8 +156,8 @@
 		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
 		where p10_casee_subject_re.del_flag = 0
 		and p10_casee_subject_re.casee_id = #{query.caseeId}
-		<if test="query.type != null and query.type != ''">
-			and p10_casee_subject_re.type = #{query.type}
+		<if test="query.caseePersonnelType != null and query.caseePersonnelType != ''">
+			and p10_casee_subject_re.casee_personnel_type = #{query.caseePersonnelType}
 		</if>
 		<if test="query.subjectName != null and query.subjectName != ''">
 			and p10_subject.name like concat('%', #{query.subjectName}, '%')
