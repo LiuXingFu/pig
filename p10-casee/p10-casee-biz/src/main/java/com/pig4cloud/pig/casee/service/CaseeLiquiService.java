@@ -100,10 +100,10 @@ public interface CaseeLiquiService extends IService<Casee> {
 	/**
 	 * 根据项目id、案件状态集合查询案件信息
 	 * @param projectId
-	 * @param statusList
+	 * @param status
 	 * @return
 	 */
-	CaseeLiqui queryByStatusList(Integer projectId,List<Integer> statusList);
+	CaseeLiqui queryByStatusList(Integer projectId,Integer status);
 
 	/**
 	 * 更新案件状态

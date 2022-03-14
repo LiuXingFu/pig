@@ -46,7 +46,7 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 
 	CaseeLiqui getCaseeParentId(@Param("projectId") Integer projectId,@Param("caseeType")Integer caseeType);
 
-	CaseeLiqui selectByStatusList(@Param("projectId") Integer projectId,@Param("statusList")List<Integer> statusList);
+	CaseeLiqui selectByStatusList(@Param("projectId") Integer projectId,@Param("status")Integer status);
 
 	IPage<CaseeLiquiPageVO> selectPage(Page page, @Param("query")CaseeLiquiPageDTO caseeLiquiPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 

@@ -83,16 +83,8 @@
 		select p10_casee.* from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		where p10_casee.del_flag = 0
-		<if test="projectId!=null and projectId!=''">
-			and p10_project_casee_re.project_id = #{projectId}
-		</if>
-		<if test="statusList.size>0">
-			and p10_casee.status in
-			<foreach item="item" index="index" collection="statusList"
-					 open="(" separator="," close=")">
-				#{item}
-			</foreach>
-		</if>
+		and p10_project_casee_re.project_id = #{projectId}
+		and (p10_casee.status = #{status} or (p10_casee.casee_type in(3010,3031) and p10_casee.status = 3))
 		LIMIT 1
 	</select>
 

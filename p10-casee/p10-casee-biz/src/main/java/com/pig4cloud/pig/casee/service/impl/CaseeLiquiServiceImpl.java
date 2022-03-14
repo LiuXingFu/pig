@@ -351,8 +351,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public CaseeLiqui queryByStatusList(Integer projectId, List<Integer> statusList) {
-		return this.baseMapper.selectByStatusList(projectId, statusList);
+	public CaseeLiqui queryByStatusList(Integer projectId,Integer status) {
+		return this.baseMapper.selectByStatusList(projectId, status);
 	}
 
 	@Override
