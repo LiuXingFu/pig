@@ -288,6 +288,18 @@ public class CaseeLiquiController {
 	}
 
 	/**
+	 * 案件撤案
+	 * @param caseeLiquiDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "案件撤案", notes = "案件撤案")
+	@SysLog("案件撤案" )
+	@PostMapping("/caseWithdrawn")
+	public R caseWithdrawn(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
+		return R.ok(this.caseeLiquiService.caseWithdrawn(caseeLiquiDTO));
+	}
+
+	/**
 	 * 法院到款未领款
 	 *
 	 * @param caseeLiquiFlowChartPageDTO

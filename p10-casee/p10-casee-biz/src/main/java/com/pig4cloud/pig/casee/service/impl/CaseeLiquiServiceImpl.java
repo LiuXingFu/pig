@@ -68,8 +68,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private ProjectStatusService projectStatusService;
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
-	@Autowired
-	private DeadlineConfigureService deadlineConfigureService;
 
 	@Override
 	@Transactional
@@ -106,6 +104,16 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectModifyStatusDTO.setStatus(4000);
 		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
 		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getActualExecution().getClosingDate());
+		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
+		return this.modifyCaseeStatusById(caseeLiquiDTO);
+	}
+
+	@Override
+	public 	Integer caseWithdrawn(CaseeLiquiDTO caseeLiquiDTO){
+		ProjectModifyStatusDTO projectModifyStatusDTO=new ProjectModifyStatusDTO();
+		projectModifyStatusDTO.setStatus(4000);
+		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
+		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
 		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
 		return this.modifyCaseeStatusById(caseeLiquiDTO);
 	}

@@ -112,6 +112,8 @@ public interface CaseeLiquiService extends IService<Casee> {
 	Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO);
 
 	Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO);
+
+	Integer caseWithdrawn(CaseeLiquiDTO caseeLiquiDTO);
 	/**
 	 * 分页查询清收案件
 	 * @param page
