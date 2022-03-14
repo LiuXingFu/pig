@@ -335,10 +335,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiquiDealtVO.setExecuteList(executeList);
 
 		Boolean addCaseeBtn = false;
-		List<Integer> statusList = new ArrayList<>();
-		statusList.add(0);
-		statusList.add(1);
-		CaseeLiqui caseeLiqui = caseeLiquiService.queryByStatusList(projectId, statusList);
+		CaseeLiqui caseeLiqui = caseeLiquiService.queryByStatusList(projectId, 1);
 		if (Objects.isNull(caseeLiqui)) {
 			addCaseeBtn = true;
 		}
