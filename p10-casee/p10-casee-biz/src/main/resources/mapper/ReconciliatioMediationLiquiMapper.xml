@@ -96,7 +96,7 @@
 		<if test="query.reconciliatioMediationData != null">
 			AND p10_reconciliatio_mediation.reconciliatio_mediation_data=#{query.reconciliatioMediationData}
 		</if>
-		<if test="query.status != null">
+		<if test="query.status != null and query.status!=-1">
 			AND p10_reconciliatio_mediation.status=#{query.status}
 		</if>
 	</select>

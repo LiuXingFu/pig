@@ -20,13 +20,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.FulfillmentRecordsDTO;
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
-import com.pig4cloud.pig.casee.entity.ReconciliatioMediation;
+import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.FulfillmentRecordsLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.FulfillmentRecordsLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.FulfillmentRecordsVO;
@@ -35,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -48,6 +44,8 @@ import java.util.List;
 public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentRecordsLiquiMapper, FulfillmentRecords> implements FulfillmentRecordsLiquiService {
 	@Autowired
 	private PaymentRecordService paymentRecordService;
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
 
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
@@ -92,15 +90,28 @@ public class FulfillmentRecordsLiquiServiceImpl extends ServiceImpl<FulfillmentR
 			paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 
 			fulfillmentRecords.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			for (PaymentRecordAddDTO paymentRecordDTO : fulfillmentRecordsDTO.getPaymentRecordList()) {
+				paymentRecordDTO.setFatherId(paymentRecord.getPaymentRecordId());
+				paymentRecordDTO.setPaymentType(300);
+				paymentRecordDTO.setPaymentDate(paymentRecord.getPaymentDate());
+				paymentRecordDTO.setSubjectName(paymentRecordDTO.getSubjectName());
 
-			for (PaymentRecord record : fulfillmentRecordsDTO.getPaymentRecordList()) {
-				record.setFatherId(paymentRecord.getPaymentRecordId());
-				record.setPaymentType(300);
-				record.setPaymentDate(paymentRecord.getPaymentDate());
+				//添加分配款项信息
+				paymentRecordService.save(paymentRecordDTO);
 
+				//添加分配款项与主体关联信息
+				paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordSubjectRe.setSubjectId(fulfillmentRecordsDTO.getSubjectId());
+				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+
+				//修改明细记录状态
+				ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecordDTO.getExpenseRecordId());
+				if (expenseRecord.getCostAmount()==paymentRecord.getPaymentAmount().add(paymentRecordDTO.getPaymentSumAmount())){
+					expenseRecord.setExpenseRecordId(paymentRecordDTO.getExpenseRecordId());
+					expenseRecord.setStatus(1);
+					expenseRecordService.updateById(expenseRecord);
+				}
 			}
-			//添加回款记录明细
-			paymentRecordService.saveBatch(fulfillmentRecordsDTO.getPaymentRecordList());
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(fulfillmentRecordsDTO.getProjectId());
 			projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(fulfillmentRecordsDTO.getFulfillmentAmount()));

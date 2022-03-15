@@ -238,4 +238,16 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryAssetsReAddress(projectId));
 	}
 
+	/**
+	 * 查询案件财产查封冻结未完成
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "查询案件财产查封冻结未完成", notes = "查询案件财产查封冻结未完成")
+	@GetMapping("/queryCaseeAssetsNotFreeze" )
+	public R queryCaseeAssetsNotFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryCaseeAssetsNotFreeze(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+
 }
