@@ -383,6 +383,7 @@
 		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
 		left join (select * from p10_casee
 		where p10_casee.casee_type in (3010,3031)
+		and p10_casee.status = 1
 		ORDER BY p10_casee.start_time desc) casee on casee.casee_id = p10_project_casee_re.casee_id
 		left join p10_court on p10_court.court_id = casee.court_id
 		left join p10_payment_record on p10_payment_record.project_id = p10_project.project_id

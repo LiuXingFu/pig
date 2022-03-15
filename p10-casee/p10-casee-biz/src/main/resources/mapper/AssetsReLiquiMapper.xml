@@ -97,6 +97,7 @@
 		and p10_target.goal_type = 20001
 		and (json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null
 		or json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure' ) is null)
+		and p10_task_node.form_data is null
 		and (p10_task_node.node_key = "entityZX_STZX_CCZXCF_CCZXCF" or p10_task_node.node_key =
 		"fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")
 		<if test="login.insId != null and login.insId > 0">
@@ -228,6 +229,8 @@
 		where p10_project.del_flag = 0
 		and p10_project.`status` = 1000
 		and p10_assets_re.assets_re_id is not null
+		and p10_casee.casee_type in (3010,3031)
+		and p10_casee.`status` = 1
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ"
 		and p10_task_node.form_data is null
@@ -655,6 +658,7 @@
 		and p10_task_node.node_attributes = 400
 		and (p10_task_node.node_key = "entityZX_STZX_CCZXCF_CCZXCF" or p10_task_node.node_key =
 		"fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")
+		and p10_task_node.form_data is null
 		and (json_extract( p10_assets_re.assets_re_detail, '$.assetsFreeze' ) is null
 		or json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure' ) is null)
 		<if test="login.insId != null and login.insId > 0">
