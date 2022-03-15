@@ -89,9 +89,9 @@ public class Casee extends BaseEntity {
     private String remark;
 
     /**
-     * 司法费金额
+     * 案件受理费
      */
-    @ApiModelProperty(value="司法费金额")
+    @ApiModelProperty(value="案件受理费")
     private BigDecimal judicialExpenses;
 
     /**

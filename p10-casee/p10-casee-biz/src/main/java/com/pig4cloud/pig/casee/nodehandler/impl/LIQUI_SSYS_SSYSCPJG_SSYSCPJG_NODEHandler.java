@@ -36,7 +36,7 @@ public class LIQUI_SSYS_SSYSCPJG_SSYSCPJG_NODEHandler extends TaskNodeHandler {
 		Casee casee=new Casee();
 		casee.setCaseeId(taskNode.getCaseeId());
 		casee.setJudicialExpenses(liQui_ssys_ssyscpjg_ssyscpjg.getLitigationCosts());
-		//修改案件司法费
+		//修改案件案件受理费
 		caseeService.updateById(casee);
 
 		//判断不需要审核，处理裁判结果节点加入案件
