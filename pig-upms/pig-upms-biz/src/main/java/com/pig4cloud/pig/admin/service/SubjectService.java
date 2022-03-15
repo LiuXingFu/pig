@@ -30,6 +30,7 @@ import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectPageVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
+import com.pig4cloud.pig.casee.vo.SubjectIdsOrSubjectBankLoanReIdsVO;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public interface SubjectService extends IService<Subject> {
 	 * @param subjectAddressDTOList
 	 * @return
 	 */
-	List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
+	SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList);
 
 	SubjectVO getByUnifiedIdentity(String unifiedIdentity);
 

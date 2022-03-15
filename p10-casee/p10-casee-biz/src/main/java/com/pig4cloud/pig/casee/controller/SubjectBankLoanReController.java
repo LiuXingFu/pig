@@ -78,7 +78,8 @@ public class SubjectBankLoanReController {
     @SysLog("新增主体关联银行借贷表" )
     @PostMapping
     public R save(@RequestBody SubjectBankLoanRe subjectBankLoanRe) {
-        return R.ok(subjectBankLoanReService.save(subjectBankLoanRe));
+		subjectBankLoanReService.save(subjectBankLoanRe);
+        return R.ok(subjectBankLoanRe.getSubjectBankLoanId());
     }
 
     /**

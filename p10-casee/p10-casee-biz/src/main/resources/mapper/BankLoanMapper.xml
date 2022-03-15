@@ -59,6 +59,7 @@
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
 		<result property="remark" column="remark"/>
+
 	</resultMap>
 
 	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO">
