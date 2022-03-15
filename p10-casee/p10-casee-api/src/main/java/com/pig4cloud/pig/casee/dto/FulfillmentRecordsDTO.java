@@ -82,7 +82,7 @@ public class FulfillmentRecordsDTO extends FulfillmentRecordsLiqui {
 	/**
 	 * 分配款项记录
 	 */
-	List<PaymentRecord> paymentRecordList;
+	List<PaymentRecordAddDTO> paymentRecordList;
 
 	/**
 	 * 推迟履行日期

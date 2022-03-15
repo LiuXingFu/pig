@@ -7,9 +7,9 @@ import lombok.Data;
 public class CaseeSubjectReDTO {
 
 	/**
-	 * 办理人id
+	 * 主体id
 	 */
-	@ApiModelProperty(value = "办理人id")
+	@ApiModelProperty(value = "主体id")
 	private Integer subjectId;
 
 	/**

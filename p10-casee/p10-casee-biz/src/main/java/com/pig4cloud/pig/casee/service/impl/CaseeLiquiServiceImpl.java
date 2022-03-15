@@ -26,6 +26,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
@@ -75,10 +76,14 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private DeadlineConfigureService deadlineConfigureService;
 	@Autowired
 	private TaskNodeService taskNodeService;
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
+	@Autowired
+	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 
 	@Override
 	@Transactional
-	public Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO){
+	public Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO) {
 		Integer modify = 0;
 		modify = this.baseMapper.updateById(caseeLiquiDTO);
 
@@ -88,13 +93,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectStatus.setSourceId(caseeLiquiDTO.getCaseeId());
 		Integer status = caseeLiquiDTO.getStatus();
 		String statusName = null;
-		if(status==2){
+		if (status == 2) {
 			statusName = "案件撤案";
 			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
-		}else if(status==3){
+		} else if (status == 3) {
 			statusName = "案件结案";
 			projectStatus.setChangeTime(caseeLiquiDTO.getCloseTime());
-		}else if(status==4){
+		} else if (status == 4) {
 			statusName = "案件终结";
 			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getEnd().getEndDate());
 		}
@@ -107,7 +112,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	public Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO) {
-		ProjectModifyStatusDTO projectModifyStatusDTO=new ProjectModifyStatusDTO();
+		ProjectModifyStatusDTO projectModifyStatusDTO = new ProjectModifyStatusDTO();
 		projectModifyStatusDTO.setStatus(4000);
 		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
 		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getActualExecution().getClosingDate());
@@ -116,8 +121,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public 	Integer caseWithdrawn(CaseeLiquiDTO caseeLiquiDTO){
-		ProjectModifyStatusDTO projectModifyStatusDTO=new ProjectModifyStatusDTO();
+	public Integer caseWithdrawn(CaseeLiquiDTO caseeLiquiDTO) {
+		ProjectModifyStatusDTO projectModifyStatusDTO = new ProjectModifyStatusDTO();
 		projectModifyStatusDTO.setStatus(4000);
 		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
 		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
@@ -168,14 +173,76 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		projectStatusService.save(projectStatus);
 
 		//添加任务数据以及程序信息
-		Project project = projectLiquiService.getById(caseeLiquiAddDTO.getProjectId());
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(caseeLiquiAddDTO.getProjectId());
 		TargetAddDTO targetAddDTO = new TargetAddDTO();
 		targetAddDTO.setCaseeId(caseeLiqui.getCaseeId());
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
-		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setOutlesId(projectLiqui.getOutlesId());
 		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
-		targetAddDTO.setGoalType(10001);
 		targetService.saveTargetAddDTO(targetAddDTO);
+
+		//添加各各案件司法费产生记录
+		if (caseeLiquiAddDTO.getJudicialExpenses() != null) {
+			ExpenseRecord expenseRecord = new ExpenseRecord();
+
+			switch (caseeLiquiAddDTO.getCaseeType()) {
+				case 1010:
+					expenseRecord.setCostType(10002);
+					break;
+				case 2010:
+					expenseRecord.setCostType(10002);
+					break;
+				case 2020:
+					expenseRecord.setCostType(10003);
+					break;
+				case 2021:
+					expenseRecord.setCostType(10004);
+					break;
+				case 2030:
+					expenseRecord.setCostType(10009);
+					break;
+				case 3010:
+					expenseRecord.setCostType(10005);
+					break;
+			}
+			expenseRecord.setProjectId(caseeLiquiAddDTO.getProjectId());
+			expenseRecord.setCaseeId(caseeLiqui.getCaseeId());
+			expenseRecord.setCaseeNumber(caseeLiquiAddDTO.getCaseeNumber());
+			expenseRecord.setCostIncurredTime(caseeLiquiAddDTO.getStartTime());
+			expenseRecord.setCostAmount(caseeLiquiAddDTO.getJudicialExpenses());
+			expenseRecord.setSubjectName(caseeLiquiAddDTO.getExecutedName());
+			expenseRecord.setStatus(0);
+			expenseRecordService.save(expenseRecord);
+
+			//修改项目总金额
+			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(caseeLiquiAddDTO.getJudicialExpenses()));
+			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+			projectLiquiService.updateById(projectLiqui);
+
+
+			if (caseeLiquiAddDTO.getCaseeType().equals(1010) || caseeLiquiAddDTO.getCaseeType().equals(2010) || caseeLiquiAddDTO.getCaseeType().equals(2020) || caseeLiquiAddDTO.getCaseeType().equals(2030) || caseeLiquiAddDTO.getCaseeType().equals(3010)) {
+				//案件债务人信息
+				List<CaseeSubjectReDTO> executedList = caseeLiquiAddDTO.getExecutedList();
+				for (CaseeSubjectReDTO caseeSubjectReDTO : executedList) {
+					ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+					expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+					expenseRecordSubjectRe.setSubjectId(caseeSubjectReDTO.getSubjectId());
+					expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+				}
+			} else if (caseeLiquiAddDTO.getCaseeType().equals(2021)) {//二审案件主体信息特殊处理
+				//查询一审案件信息
+				CaseeLiqui caseeParentId = this.getCaseeParentId(caseeLiquiAddDTO.getProjectId(), 2020);
+				//查询一审案件债务人信息
+				List<SubjectOptionVO> subjectOptionVOList = caseeSubjectReService.getByCaseeId(caseeParentId.getCaseeId(), null, 1);
+
+				ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+				for (SubjectOptionVO subjectOptionVO : subjectOptionVOList) {
+					expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+					expenseRecordSubjectRe.setSubjectId(subjectOptionVO.getSubjectId());
+					expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+				}
+			}
+		}
 		return caseeLiqui.getCaseeId();
 	}
 
@@ -260,15 +327,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		if (assetsRes.size() > 0) {
 			List<AssetsRe> assetsReList = new ArrayList<>();
 			assetsRes.stream().forEach(item -> {
-				AssetsRe assetsRe = new AssetsRe();
-				assetsRe.setAssetsReId(item.getAssetsReId());
-				assetsRe.setCaseeId(caseeId);
-				// 假如没有创建案件id，将首执案件id保存
-				if (Objects.isNull(item.getCreateCaseeId())) {
-					assetsRe.setCreateCaseeId(caseeId);
-				}
-				assetsReList.add(assetsRe);
-				if (caseeId==null){//如果移交过来的财产没有在诉前或者诉讼阶段处理过，那么添加首执案件时需添加财产程序
+				if (item.getCaseeId() == null) {//如果移交过来的财产没有在诉前或者诉讼阶段处理过，那么添加首执案件时需添加财产程序
 					//添加财产程序
 					TargetAddDTO targetAddDTO = new TargetAddDTO();
 					targetAddDTO.setCaseeId(caseeId);
@@ -282,17 +341,25 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}else {//如果移交过来的财产有在诉前或者诉讼阶段处理过，那么添加首执案件时需修改财产程序案件id以及节点案件id
-					Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, item.getCreateCaseeId()).eq(Target::getGoalId, item.getAssetsId()).eq(Target::getGoalType,20001));
+				} else {//如果移交过来的财产有在诉前或者诉讼阶段处理过，那么添加首执案件时需修改财产程序案件id以及节点案件id
+					Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, item.getCreateCaseeId()).eq(Target::getGoalId, item.getAssetsId()).eq(Target::getGoalType, 20001));
 					target.setCaseeId(caseeId);
 					targetService.updateById(target);
 					//修改节点案件id、不然页面加载节点会查询到诉讼或者诉前的财产程序导致在执行阶段无法显示
-					List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, project.getProjectId()).eq(TaskNode::getCaseeId, item.getCreateCaseeId()).eq(TaskNode::getTargetId,target.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0));
+					List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, project.getProjectId()).eq(TaskNode::getCaseeId, item.getCreateCaseeId()).eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0));
 					for (TaskNode taskNode : list) {
 						taskNode.setCaseeId(caseeId);
 					}
 					taskNodeService.updateBatchById(list);
 				}
+				AssetsRe assetsRe = new AssetsRe();
+				assetsRe.setAssetsReId(item.getAssetsReId());
+				assetsRe.setCaseeId(caseeId);
+				// 假如没有创建案件id，将首执案件id保存
+				if (Objects.isNull(item.getCreateCaseeId())) {
+					assetsRe.setCreateCaseeId(caseeId);
+				}
+				assetsReList.add(assetsRe);
 			});
 			assetsReService.updateBatchById(assetsReList);
 		}
@@ -364,7 +431,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public CaseeLiqui queryByStatusList(Integer projectId,Integer status) {
+	public CaseeLiqui queryByStatusList(Integer projectId, Integer status) {
 		return this.baseMapper.selectByStatusList(projectId, status);
 	}
 
@@ -435,6 +502,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	/**
 	 * 更改案件状态为撤案、结案与终极
+	 *
 	 * @param caseeId
 	 * @param status
 	 */
@@ -453,7 +521,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -461,7 +529,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -469,7 +537,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -477,7 +545,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -485,7 +553,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -493,7 +561,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public 	IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -501,7 +569,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
+	public IPage<CaseeLiquiFlowChartPageVO> queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -515,6 +583,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	/**
 	 * 根据日期集合查询案件数量
+	 *
 	 * @param differenceList
 	 * @return
 	 */
@@ -525,6 +594,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	/**
 	 * 根据特定条件查询案件与案件详情
+	 *
 	 * @param casee
 	 * @return
 	 */

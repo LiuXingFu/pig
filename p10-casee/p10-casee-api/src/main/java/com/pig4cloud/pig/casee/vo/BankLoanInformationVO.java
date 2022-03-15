@@ -22,6 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -51,4 +52,9 @@ public class BankLoanInformationVO extends BankLoan {
 	private String entrustedInsName;
 
 	private String entrustedOutlesName;
+
+	/**
+	 * 移送时间
+	 */
+	private LocalDate handoverTime;
 }
