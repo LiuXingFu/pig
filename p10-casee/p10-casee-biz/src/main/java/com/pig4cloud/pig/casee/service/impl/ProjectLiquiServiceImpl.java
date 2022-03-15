@@ -448,7 +448,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		preLitigationStageVO.setAssetNotAddedCount(assetNotAddedList.getTotal());
 
 		//**********查控保全未完成统计********************************
-		preLitigationStageVO.setSeizedUndoneCount(queryAssetsNotSeizeAndFreeze(1010, 20200));
+		preLitigationStageVO.setSeizedUndoneCount(queryCaseeAssetsNotFreeze(1010));
 
 		//**********立案未送达统计********************************
 		preLitigationStageVO.setStartCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQLASDQK_SQLASDQK", 1010));
@@ -529,7 +529,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countLitigationVO.setLitigationHoldKnotCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQBQJGSDQK_SSBQBQJGSDQK", 2010));
 
 		//**********诉讼保全未完成统计********************************
-		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryAssetsNotSeizeAndFreeze(2010, 20200));
+		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryCaseeAssetsNotFreeze(2010));
 
 		//**********保全完成未结案统计********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
@@ -623,7 +623,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countImplementVO.setChiefExecutiveStandCaseUndelivered(queryCaseNodePage("liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK", 3010));
 
 		//**********首执送达未查控********************************
-		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryAssetsNotSeizeAndFreeze(3010, null));
+		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryCaseeAssetsNotFreeze(3010));
 
 		//***********首执案件节点统计end*************************************************
 
@@ -639,7 +639,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK", 3031));
 
 		//**********执恢送达未查控********************************
-		countImplementVO.setReinstateExecuteRestoreServiceUnchecked(queryAssetsNotSeizeAndFreeze(3031, null));
+		countImplementVO.setReinstateExecuteRestoreServiceUnchecked(queryCaseeAssetsNotFreeze(3031));
 
 		//**********到款未拨付********************************
 		IPage<CaseeLiquiFlowChartPageVO> courtPayment = caseeLiquiService.queryCourtPayment(page, caseeLiquiFlowChartPageDTO);
@@ -668,15 +668,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return caseeLiquiDebtorPageVOIPage.getTotal();
 	}
 
-	public Long queryAssetsNotSeizeAndFreeze(Integer caseeType, Integer type) {
+	public Long queryCaseeAssetsNotFreeze(Integer caseeType) {
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
 
 		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
 		assetsReLiquiFlowChartPageDTO.setCaseeType(caseeType);
-		assetsReLiquiFlowChartPageDTO.setType(type);
-		IPage<AssetsReLiquiFlowChartPageVO> assetsReLiquiFlowChartPageVOIPage = assetsReLiquiService.queryAssetsNotSeizeAndFreeze(page, assetsReLiquiFlowChartPageDTO);
+		IPage<AssetsReLiquiFlowChartPageVO> assetsReLiquiFlowChartPageVOIPage = assetsReLiquiService.queryCaseeAssetsNotFreeze(page, assetsReLiquiFlowChartPageDTO);
 		return assetsReLiquiFlowChartPageVOIPage.getTotal();
 	}
 
@@ -720,11 +719,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setCurrent(1);
 		page.setSize(10);
 
+
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
 		//**********应查控财产未查控********************************
-		countPropertySearchVO.setShouldCheckControlUnchecked(queryAssetsNotSeizeAndFreeze(null, null));
+		IPage<AssetsReLiquiFlowChartPageVO> shouldCheckControlUnchecked = assetsReLiquiService.queryAssetsNotSeizeAndFreeze(page, assetsReLiquiFlowChartPageDTO);
+		countPropertySearchVO.setShouldCheckControlUnchecked(shouldCheckControlUnchecked.getTotal());
 
 		//**********有抵押轮封未商移********************************
-		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
 		IPage<AssetsReLiquiFlowChartPageVO> haveMortgageWheelSealNotTransferred = assetsReLiquiService.queryBusinessTransfer(page, assetsReLiquiFlowChartPageDTO);
 		countPropertySearchVO.setHaveMortgageWheelSealNotTransferred(haveMortgageWheelSealNotTransferred.getTotal());
 

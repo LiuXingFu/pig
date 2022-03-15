@@ -195,4 +195,12 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 */
 	List<AssetsReLiquiMortgageVO> queryAssetsReAddress(Integer projectId);
 
+	/**
+	 * 查询案件财产查封冻结未完成
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryCaseeAssetsNotFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
 }
