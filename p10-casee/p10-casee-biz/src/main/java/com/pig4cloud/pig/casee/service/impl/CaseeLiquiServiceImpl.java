@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -59,6 +60,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Autowired
 	private AssetsReService assetsReService;
 	@Autowired
+	private AssetsService assetsService;
+	@Autowired
 	private CaseeSubjectReService caseeSubjectReService;
 	@Autowired
 	private RemoteSubjectService subjectService;
@@ -68,6 +71,10 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private ProjectStatusService projectStatusService;
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	private DeadlineConfigureService deadlineConfigureService;
+	@Autowired
+	private TaskNodeService taskNodeService;
 
 	@Override
 	@Transactional
@@ -261,36 +268,34 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 					assetsRe.setCreateCaseeId(caseeId);
 				}
 				assetsReList.add(assetsRe);
-
-				//添加财产程序
-				TargetAddDTO targetAddDTO = new TargetAddDTO();
-				targetAddDTO.setCaseeId(caseeId);
-				targetAddDTO.setProcedureNature(4040);
-				targetAddDTO.setOutlesId(project.getOutlesId());
-				targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
-				targetAddDTO.setGoalId(item.getAssetsId());
-				targetAddDTO.setGoalType(20001);
-				try {
-					targetService.saveTargetAddDTO(targetAddDTO);
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (caseeId==null){//如果移交过来的财产没有在诉前或者诉讼阶段处理过，那么添加首执案件时需添加财产程序
+					//添加财产程序
+					TargetAddDTO targetAddDTO = new TargetAddDTO();
+					targetAddDTO.setCaseeId(caseeId);
+					targetAddDTO.setProcedureNature(4040);
+					targetAddDTO.setOutlesId(project.getOutlesId());
+					targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+					targetAddDTO.setGoalId(item.getAssetsId());
+					targetAddDTO.setGoalType(20001);
+					try {
+						targetService.saveTargetAddDTO(targetAddDTO);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}else {//如果移交过来的财产有在诉前或者诉讼阶段处理过，那么添加首执案件时需修改财产程序案件id以及节点案件id
+					Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, item.getCreateCaseeId()).eq(Target::getGoalId, item.getAssetsId()).eq(Target::getGoalType,20001));
+					target.setCaseeId(caseeId);
+					targetService.updateById(target);
+					//修改节点案件id、不然页面加载节点会查询到诉讼或者诉前的财产程序导致在执行阶段无法显示
+					List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, project.getProjectId()).eq(TaskNode::getCaseeId, item.getCreateCaseeId()).eq(TaskNode::getTargetId,target.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0));
+					for (TaskNode taskNode : list) {
+						taskNode.setCaseeId(caseeId);
+					}
+					taskNodeService.updateBatchById(list);
 				}
 			});
 			assetsReService.updateBatchById(assetsReList);
 		}
-		//添加首执案件程序
-		TargetAddDTO targetAddDTO = new TargetAddDTO();
-		targetAddDTO.setCaseeId(caseeId);
-		targetAddDTO.setProcedureNature(caseeLiquiAddDTO.getCaseeType());
-		targetAddDTO.setOutlesId(project.getOutlesId());
-		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
-		targetAddDTO.setGoalType(10001);
-		try {
-			targetService.saveTargetAddDTO(targetAddDTO);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		return caseeId;
 	}
 
@@ -332,7 +337,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 				//添加任务数据以及程序信息
 				TargetAddDTO targetAddDTO = new TargetAddDTO();
 				targetAddDTO.setCaseeId(caseeId);
-				targetAddDTO.setProcedureNature(caseeType);
+				targetAddDTO.setProcedureNature(4040);
 				targetAddDTO.setOutlesId(project.getOutlesId());
 				targetAddDTO.setProjectId(projectId);
 				targetAddDTO.setGoalId(item.getAssetsId());

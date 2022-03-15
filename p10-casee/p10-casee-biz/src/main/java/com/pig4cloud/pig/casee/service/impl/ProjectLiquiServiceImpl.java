@@ -153,6 +153,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		expenseRecord.setCostAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount());
 		expenseRecord.setStatus(0);
 		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
+		expenseRecord.setSubjectName(transferRecordBankLoanVO.getSubjectName());
 		expenseRecordService.save(expenseRecord);
 
 		//添加费用记录关联主体信息
