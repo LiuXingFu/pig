@@ -121,16 +121,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public Integer caseWithdrawn(CaseeLiquiDTO caseeLiquiDTO) {
-		ProjectModifyStatusDTO projectModifyStatusDTO = new ProjectModifyStatusDTO();
-		projectModifyStatusDTO.setStatus(4000);
-		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
-		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
-		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
-		return this.modifyCaseeStatusById(caseeLiquiDTO);
-	}
-
-	@Override
 	@Transactional
 	public Integer addCaseeLiqui(CaseeLiquiAddDTO caseeLiquiAddDTO) throws Exception {
 		// 保存清收案件
