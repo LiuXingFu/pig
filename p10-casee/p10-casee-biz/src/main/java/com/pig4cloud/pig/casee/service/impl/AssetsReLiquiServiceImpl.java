@@ -219,7 +219,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
-	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+	public	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionFailed(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -227,7 +227,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
-	public 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+	public	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionAbnormal(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -235,8 +235,16 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
-	public 	List<AssetsReLiquiMortgageVO> queryAssetsReAddress(Integer projectId){
+	public	List<AssetsReLiquiMortgageVO> queryAssetsReAddress(Integer projectId){
 		return this.baseMapper.selectAssetsReAddress(projectId);
+	}
+
+	@Override
+	public IPage<AssetsReLiquiFlowChartPageVO> queryCaseeAssetsNotFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectCaseeAssetsNotFreeze(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
 	}
 
 }

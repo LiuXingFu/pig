@@ -82,4 +82,6 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	List<AssetsReLiquiMortgageVO> selectAssetsReAddress(@Param("projectId")Integer projectId);
 
+	IPage<AssetsReLiquiFlowChartPageVO> selectCaseeAssetsNotFreeze(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 }

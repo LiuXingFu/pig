@@ -521,7 +521,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+	public IPage<CaseeLiquiFlowChartPageVO> queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -569,7 +569,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	}
 
 	@Override
-	public IPage<CaseeLiquiFlowChartPageVO> queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
+	public IPage<CaseeLiquiFlowChartPageVO> queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
