@@ -122,6 +122,9 @@ public class BankLoanController {
     @SysLog("修改银行借贷表" )
     @PutMapping
     public R updateById(@RequestBody BankLoan bankLoan) {
+		BigDecimal principal = bankLoan.getPrincipal();
+		BigDecimal interest = bankLoan.getInterest();
+		bankLoan.setRental(principal.add(interest));
         return R.ok(bankLoanService.updateById(bankLoan));
     }
 

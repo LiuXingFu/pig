@@ -292,7 +292,6 @@
 		<if test="query.outlesName != null and query.outlesName != ''">
 			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
 		</if>
-		limit 20
 	</select>
 
 	<select id="pageCooperateByOutlesId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
@@ -308,7 +307,6 @@
 		<if test="query.insId != '' and query.insId != null">
 			and p10_associate_outles_re.ins_id = #{query.insId}
 		</if>
-		limit 20
 	</select>
 
 	<select id="pageOutlesList" resultType="com.pig4cloud.pig.admin.api.entity.Outles">
