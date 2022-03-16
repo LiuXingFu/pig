@@ -66,7 +66,7 @@ public interface RemoteSubjectService {
 	 * @return
 	 */
 	@PostMapping("/subject/saveOrUpdateById")
-	R saveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Integer> saveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 *  删除主体信息以及主体关联地址信息

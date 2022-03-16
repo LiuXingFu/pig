@@ -1788,7 +1788,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 		}
 
-
 		//查询案件与案件详情
 		Casee queryCasee = new Casee();
 		queryCasee.setCaseeId(taskNode.getCaseeId());

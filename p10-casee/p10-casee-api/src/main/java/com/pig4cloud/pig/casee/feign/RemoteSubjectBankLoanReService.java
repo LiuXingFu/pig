@@ -40,6 +40,6 @@ public interface RemoteSubjectBankLoanReService {
 	 * @return R
 	 */
 	@PostMapping("/subjectbankloanre")
-	R<Boolean> saveSubjectBankLoanRe(@RequestBody SubjectBankLoanRe subjectBankLoanRe, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Integer> saveSubjectBankLoanRe(@RequestBody SubjectBankLoanRe subjectBankLoanRe, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

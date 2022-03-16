@@ -35,7 +35,7 @@ public class RemoteSubjectBankLoanReServiceFallbackImpl implements RemoteSubject
 	private Throwable cause;
 
 	@Override
-	public R<Boolean> saveSubjectBankLoanRe(SubjectBankLoanRe subjectBankLoanRe, String from) {
+	public R<Integer> saveSubjectBankLoanRe(SubjectBankLoanRe subjectBankLoanRe, String from) {
 		log.error("新增主体关联借贷表信息失败", cause);
 
 		return null;

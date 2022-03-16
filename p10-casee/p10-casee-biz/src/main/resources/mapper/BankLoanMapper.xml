@@ -59,6 +59,10 @@
 		<result property="otherFile" column="other_file"/>
 		<result property="transferDate" column="transfer_date"/>
 		<result property="remark" column="remark"/>
+		<collection property="countAssetsBankLoanRe" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.countAssetsBankLoanReById" column="bank_loan_id"></collection>
+		<collection property="countSubjectBankLoanRe" ofType="java.lang.Integer"
+					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.countSubjectBankLoanReById" column="bank_loan_id"></collection>
 	</resultMap>
 
 	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO">

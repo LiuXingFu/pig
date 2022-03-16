@@ -33,11 +33,16 @@
   </resultMap>
 
 	<select id="getAssetsBankLoanRe" resultType="com.pig4cloud.pig.casee.vo.AssetsInformationVO">
-	SELECT p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id,p10_assets.*,p10_address.*,p10_address.address_id as addressAsId
+	SELECT p10_assets_bank_loan_re.assets_bank_loan_id, p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id,p10_assets.*,p10_address.*,p10_address.address_id as addressAsId
 	FROM `p10_assets_bank_loan_re`
 	LEFT JOIN p10_assets ON p10_assets.assets_id = p10_assets_bank_loan_re.assets_id
 	LEFT JOIN p10_address ON p10_address.user_id = p10_assets.assets_id and p10_address.type=4
 	WHERE
 	p10_assets_bank_loan_re.bank_loan_id = #{bankLoanId} and p10_assets_bank_loan_re.del_flag=0
 	</select>
+
+	<select id="countAssetsBankLoanReById" resultType="java.lang.Integer">
+		SELECT count(0) FROM p10_assets_bank_loan_re WHERE del_flag = 0 and  bank_loan_id = #{bankLoanId}
+	</select>
+
 </mapper>

@@ -17,6 +17,11 @@ import java.util.List;
  */
 @Data
 public class AssetsInformationVO extends Assets {
+
+	/**
+	 *
+	 */
+
 	/**
 	 * 抵押金额
 	 */
@@ -57,6 +62,11 @@ public class AssetsInformationVO extends Assets {
 	 * 关联财产债务人id
 	 */
 	private Integer subjectId;
+
+	/**
+	 * 财产关联银行借贷表id
+	 */
+	private Integer assetsBankLoanId;
 
 	/**
 	 * 银行借贷所有债务人id

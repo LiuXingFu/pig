@@ -37,6 +37,16 @@ public class AssetsDTO extends Assets {
 	private Integer bankLoanId;
 
 	/**
+	 * 财产关联银行借贷表id
+	 */
+	private Integer assetsBankLoanId;
+
+	/**
+	 * 财产id
+	 */
+	private Integer assetsId;
+
+	/**
 	 * 主体表id
 	 */
 	private Integer subjectId;

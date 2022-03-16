@@ -36,9 +36,11 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.feign.RemoteBankLoanService;
 import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
+import com.pig4cloud.pig.casee.vo.SubjectIdsOrSubjectBankLoanReIdsVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
+import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,20 +72,20 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
-	public boolean saveBatchSubject(List<Subject> subjectList){
-		for (Subject subject:subjectList){
-			if(subject.getUnifiedIdentity()!=null&&subject.getUnifiedIdentity()!=""){
+	public boolean saveBatchSubject(List<Subject> subjectList) {
+		for (Subject subject : subjectList) {
+			if (subject.getUnifiedIdentity() != null && subject.getUnifiedIdentity() != "") {
 				//判断是不是身份证
-				if(isIdNum(subject.getUnifiedIdentity())){
+				if (isIdNum(subject.getUnifiedIdentity())) {
 					subject.setNatureType(0);
-				}else {
+				} else {
 					subject.setNatureType(1);
 				}
-				LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper=new LambdaQueryWrapper<>();
-				subjectLambdaQueryWrapper.eq(Subject::getDelFlag,"0").eq(Subject::getUnifiedIdentity,subject.getUnifiedIdentity());
-				Subject subjectQuery=this.getOne(subjectLambdaQueryWrapper);
+				LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+				subjectLambdaQueryWrapper.eq(Subject::getDelFlag, "0").eq(Subject::getUnifiedIdentity, subject.getUnifiedIdentity());
+				Subject subjectQuery = this.getOne(subjectLambdaQueryWrapper);
 				//判断是否存在 存在并且未认证就进行修改 不存在就新增
-				if(subjectQuery!=null&&subjectQuery.getIsAuthentication()==0){
+				if (subjectQuery != null && subjectQuery.getIsAuthentication() == 0) {
 					subject.setSubjectId(subjectQuery.getSubjectId());
 					subject.setName(subject.getName());
 					subject.setPhone(subject.getPhone());
@@ -98,13 +100,14 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	/**
 	 * 保存单条主体
+	 *
 	 * @param subject
 	 * @return
 	 */
 	@Override
-	public Subject saveSubject(Subject subject){
-		if(StringUtil.isNotBlank(subject.getUnifiedIdentity())){
-			if(subject.getNatureType()==null) {
+	public Subject saveSubject(Subject subject) {
+		if (StringUtil.isNotBlank(subject.getUnifiedIdentity())) {
+			if (subject.getNatureType() == null) {
 				//判断是不是身份证
 				if (isIdNum(subject.getUnifiedIdentity())) {
 					subject.setNatureType(0);
@@ -112,11 +115,11 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 					subject.setNatureType(1);
 				}
 			}
-			LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper=new LambdaQueryWrapper<>();
-			subjectLambdaQueryWrapper.eq(Subject::getDelFlag,"0").eq(Subject::getUnifiedIdentity,subject.getUnifiedIdentity());
-			Subject subjectQuery=this.getOne(subjectLambdaQueryWrapper);
+			LambdaQueryWrapper<Subject> subjectLambdaQueryWrapper = new LambdaQueryWrapper<>();
+			subjectLambdaQueryWrapper.eq(Subject::getDelFlag, "0").eq(Subject::getUnifiedIdentity, subject.getUnifiedIdentity());
+			Subject subjectQuery = this.getOne(subjectLambdaQueryWrapper);
 			//判断是否存在 存在并且未认证就进行修改 不存在就新增
-			if(subjectQuery!=null&&subjectQuery.getIsAuthentication()==0){
+			if (subjectQuery != null && subjectQuery.getIsAuthentication() == 0) {
 				subject.setSubjectId(subjectQuery.getSubjectId());
 				subject.setName(subject.getName());
 				subject.setPhone(subject.getPhone());
@@ -130,22 +133,26 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public List<Integer> saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
-		List subjectIds=new ArrayList();
-		BankLoan bankLoan=new BankLoan();
+	public SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
 
-		String subjectNames="";//银行借贷所有债务人名称
+		SubjectIdsOrSubjectBankLoanReIdsVO subjectIdsOrSubjectBankLoanReIdsVO = new SubjectIdsOrSubjectBankLoanReIdsVO();
+
+		List<Integer> subjectIds = new ArrayList();
+		BankLoan bankLoan = new BankLoan();
+		List<Integer> subjectBankLoanReListIds = new ArrayList<>();
+
+		String subjectNames = "";//银行借贷所有债务人名称
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
 			bankLoan.setBankLoanId(subjectAddressDTO.getBankLoanId());
 			//添加债务人主体信息
-			Subject subject=new Subject();
-			BeanCopyUtil.copyBean(subjectAddressDTO,subject);
+			Subject subject = new Subject();
+			BeanCopyUtil.copyBean(subjectAddressDTO, subject);
 			this.saveSubject(subject);
-			if (subjectNames.equals("")){
-				subjectNames=subject.getName();
-			}else {
-				if (!subjectNames.contains(subject.getName())){
-					subjectNames=subjectNames+","+subject.getName();
+			if (subjectNames.equals("")) {
+				subjectNames = subject.getName();
+			} else {
+				if (!subjectNames.contains(subject.getName())) {
+					subjectNames = subjectNames + "," + subject.getName();
 				}
 			}
 			List<Address> addressList = subjectAddressDTO.getAddressList();
@@ -156,25 +163,31 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 				addressService.saveOrUpdate(address);
 			}
 			//添加主体关联银行借贷信息
-			SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
+			SubjectBankLoanRe subjectBankLoanRe = new SubjectBankLoanRe();
 			subjectBankLoanRe.setSubjectId(subject.getSubjectId());
 			subjectBankLoanRe.setDebtType(subjectAddressDTO.getDebtType());
 			subjectBankLoanRe.setBankLoanId(subjectAddressDTO.getBankLoanId());
-			remoteSubjectBankLoanReService.saveSubjectBankLoanRe(subjectBankLoanRe, SecurityConstants.FROM);
+			Integer subjectBankLoanReId = remoteSubjectBankLoanReService.saveSubjectBankLoanRe(subjectBankLoanRe, SecurityConstants.FROM).getData();
+			subjectBankLoanReListIds.add(subjectBankLoanReId);
 			subjectIds.add(subject.getSubjectId());
 		}
 		bankLoan.setSubjectName(subjectNames);
-		remoteBankLoanService.updateBankLoan(bankLoan,SecurityConstants.FROM);
-		return subjectIds;
+		remoteBankLoanService.updateBankLoan(bankLoan, SecurityConstants.FROM);
+
+		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectIds(subjectIds);
+		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectBankLoanReListIds(subjectBankLoanReListIds);
+
+		return subjectIdsOrSubjectBankLoanReIdsVO;
 	}
+
 
 	@Override
 	public SubjectVO getByUnifiedIdentity(String unifiedIdentity) {
 		SubjectVO subjectVO = this.baseMapper.getByUnifiedIdentity(unifiedIdentity);
-		if (subjectVO!=null){
+		if (subjectVO != null) {
 			List<AddressVO> addressList = subjectVO.getAddressList();
 			for (AddressVO addressVO : addressList) {
-				addressVO.setAddressACPName(addressVO.getProvince()+addressVO.getCity()+addressVO.getArea());
+				addressVO.setAddressACPName(addressVO.getProvince() + addressVO.getCity() + addressVO.getArea());
 			}
 		}
 		return subjectVO;
@@ -183,10 +196,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public SubjectGetByIdVO getBySubjectId(Integer subjectId) {
 		SubjectGetByIdVO subjectGetByIdVO = this.baseMapper.getBySubjectId(subjectId);
-		if (subjectGetByIdVO!=null){
+		if (subjectGetByIdVO != null) {
 			List<AddressVO> addressList = subjectGetByIdVO.getAddressList();
 			for (AddressVO addressVO : addressList) {
-				addressVO.setAddressACPName(addressVO.getProvince()+addressVO.getCity()+addressVO.getArea());
+				addressVO.setAddressACPName(addressVO.getProvince() + addressVO.getCity() + addressVO.getArea());
 			}
 		}
 		return subjectGetByIdVO;
@@ -194,6 +207,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	/**
 	 * 根据特定条件分页查询债务人
+	 *
 	 * @param page
 	 * @param subjectPageDTO
 	 * @return
@@ -205,6 +219,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	/**
 	 * 根据id查询债务人信息
+	 *
 	 * @param subjectId
 	 * @return
 	 */
@@ -331,22 +346,23 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public List<Subject> queryBySubjectIdList(List<Integer> subjectIdList){
+	public List<Subject> queryBySubjectIdList(List<Integer> subjectIdList) {
 		return this.baseMapper.selectBatchIds(subjectIdList);
 	}
 
 	@Override
-	public IPage<SubjectProjectCaseeVO> queryPageByProjectId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO){
-		return this.baseMapper.selectPageByProjectId(page,subjectProjectCaseeDTO);
+	public IPage<SubjectProjectCaseeVO> queryPageByProjectId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO) {
+		return this.baseMapper.selectPageByProjectId(page, subjectProjectCaseeDTO);
 	}
 
 	@Override
-	public IPage<SubjectProjectCaseeVO> queryPageByCaseeId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO){
-		return this.baseMapper.selectPageByCaseeId(page,subjectProjectCaseeDTO);
+	public IPage<SubjectProjectCaseeVO> queryPageByCaseeId(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO) {
+		return this.baseMapper.selectPageByCaseeId(page, subjectProjectCaseeDTO);
 	}
 
 	/**
 	 * 添加主体信息与主体地址
+	 *
 	 * @param addSubjectOrAddressDTO
 	 * @return
 	 */
@@ -354,7 +370,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	public int addSubjectOrAddress(AddSubjectOrAddressDTO addSubjectOrAddressDTO) {
 		this.save(addSubjectOrAddressDTO);
 
-		if(Objects.nonNull(addSubjectOrAddressDTO.getInformationAddress()) || Objects.nonNull(addSubjectOrAddressDTO.getCode())) {
+		if (Objects.nonNull(addSubjectOrAddressDTO.getInformationAddress()) || Objects.nonNull(addSubjectOrAddressDTO.getCode())) {
 
 			Address address = new Address();
 
@@ -380,7 +396,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public Subject getByInsId(Integer insId){
+	public Subject getByInsId(Integer insId) {
 		return this.baseMapper.getByInsId(insId);
 	}
 
