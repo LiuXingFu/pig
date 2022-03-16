@@ -271,8 +271,6 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 		//修改银行借贷表信息
 		boolean result = this.updateById(bankLoan);
 
-
-
 		return result;
 	}
 }
