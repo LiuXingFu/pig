@@ -885,20 +885,40 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public CountCompareQuantityVO countCompareQuantity() {
 		CountCompareQuantityVO countCompareQuantityVO = new CountCompareQuantityVO();
 
+		Long compareTheNumberOfItemsCount = this.baseMapper.queryCompareTheNumberOfItemsCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+
+		countCompareQuantityVO.setCompareTheNumberOfItemsRise(compareTheNumberOfItemsCount >= 0);
+
 		//查询较去年项目数
-		countCompareQuantityVO.setCompareTheNumberOfItemsCount(this.baseMapper.queryCompareTheNumberOfItemsCount(jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_")));
+		countCompareQuantityVO.setCompareTheNumberOfItemsCount(Math.abs(compareTheNumberOfItemsCount));
+
+		BigDecimal compareMoneyBackAmountCount = this.paymentRecordService.queryCompareMoneyBackAmountCount();
+
+		countCompareQuantityVO.setCompareMoneyBackAmountRise(compareMoneyBackAmountCount.compareTo(new BigDecimal(0)) > -1);
 
 		//查询较去年回款额
-		countCompareQuantityVO.setCompareMoneyBackAmountCount(this.paymentRecordService.queryCompareMoneyBackAmountCount());
+		countCompareQuantityVO.setCompareMoneyBackAmountCount(compareMoneyBackAmountCount.abs());
+
+		Long compareTheNumberOfCasesCount = this.caseeLiquiService.queryCompareTheNumberOfCasesCount();
+
+		countCompareQuantityVO.setCompareTheNumberOfCasesRise(compareTheNumberOfCasesCount >= 0);
 
 		//查询较去年案件数
-		countCompareQuantityVO.setCompareTheNumberOfCasesCount(this.caseeLiquiService.queryCompareTheNumberOfCasesCount());
+		countCompareQuantityVO.setCompareTheNumberOfCasesCount(Math.abs(compareTheNumberOfCasesCount));
+
+		Long comparePropertyNumbersCount = this.assetsReLiquiService.queryComparePropertyNumbersCount();
+
+		countCompareQuantityVO.setComparePropertyNumbersRise(comparePropertyNumbersCount >= 0);
 
 		//查询较去年财产数
-		countCompareQuantityVO.setComparePropertyNumbersCount(this.assetsReLiquiService.queryComparePropertyNumbersCount());
+		countCompareQuantityVO.setComparePropertyNumbersCount(Math.abs(comparePropertyNumbersCount));
+
+		Long compareReconciliationCount = this.reconciliatioMediationService.queryCompareReconciliationCount();
+
+		countCompareQuantityVO.setCompareReconciliationRise(compareReconciliationCount >= 0);
 
 		//查询较去年和解数
-		countCompareQuantityVO.setCompareReconciliationCount(this.reconciliatioMediationService.queryCompareReconciliationCount());
+		countCompareQuantityVO.setCompareReconciliationCount(Math.abs(compareReconciliationCount));
 
 		return countCompareQuantityVO;
 	}
