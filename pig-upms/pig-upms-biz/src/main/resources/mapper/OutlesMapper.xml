@@ -261,6 +261,9 @@
 		<if test="insId != 0 and insId != null">
 			and p10_outles.ins_id = #{insId}
 		</if>
+		<if test="query.insName != null">
+			and p10_institution.ins_name like concat('%', #{query.insName}, '%')
+		</if>
 		<if test="query.outlesName != null">
 			and p10_outles.outles_name like concat('%', #{query.outlesName}, '%')
 		</if>

@@ -18,6 +18,9 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -720,6 +723,47 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	 */
 	public List<OrganizationQueryVO> queryProjectInsSelect(ProjectInstitutionSelectDTO projectInstitutionSelectDTO) {
 		return this.baseMapper.queryProjectInsSelect(projectInstitutionSelectDTO);
+	}
+
+	@Override
+	@Transactional
+	public Integer deleteByInsId(Integer insId){
+		QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(InsOutlesUser::getInsId,insId);
+		queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
+		// 查询机构下所有用户
+		List<InsOutlesUser> insOutlesUserList = insOutlesUserService.list(queryWrapper);
+		insOutlesUserList.stream().forEach(item->{
+			QueryWrapper<InsOutlesUser> userQueryWrapper = new QueryWrapper<>();
+			userQueryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
+			userQueryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
+			userQueryWrapper.lambda().ne(InsOutlesUser::getInsId,insId);
+			// 查询除删除以外的网点没有所属机构和网点外
+			List<InsOutlesUser> userList = insOutlesUserService.list(userQueryWrapper);
+			if(userList.size()==0){
+				UpdateWrapper<SysUser> userUpdateWrapper = new UpdateWrapper<>();
+				userUpdateWrapper.lambda().eq(SysUser::getUserId,item.getUserId());
+				userUpdateWrapper.lambda().set(SysUser::getDelFlag,CommonConstants.STATUS_DEL);
+				// 修改用户状态为删除
+				sysUserService.update(userUpdateWrapper);
+			}
+		});
+		UpdateWrapper<InsOutlesUser> userUpdateWrapper = new UpdateWrapper<>();
+		userUpdateWrapper.lambda().eq(InsOutlesUser::getInsId,insId);
+		userUpdateWrapper.lambda().set(InsOutlesUser::getDelFlag,CommonConstants.STATUS_DEL);
+		// 修改机构网点用户关联变状态为删除
+		insOutlesUserService.update(userUpdateWrapper);
+		// 修改机构状态为删除
+		UpdateWrapper<Institution> institutionUpdateWrapper = new UpdateWrapper();
+		institutionUpdateWrapper.lambda().eq(Institution::getInsId,insId);
+		institutionUpdateWrapper.lambda().set(Institution::getDelFlag,CommonConstants.STATUS_DEL);
+		this.update(institutionUpdateWrapper);
+		// 删除机构主体关联
+		QueryWrapper<InstitutionSubjectRe> subjectReQueryWrapper = new QueryWrapper<>();
+		subjectReQueryWrapper.lambda().eq(InstitutionSubjectRe::getInsId,insId);
+		institutionSubjectReService.remove(subjectReQueryWrapper);
+
+		return 1;
 	}
 
 }

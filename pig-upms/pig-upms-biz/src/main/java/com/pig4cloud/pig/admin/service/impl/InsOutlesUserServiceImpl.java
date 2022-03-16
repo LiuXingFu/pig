@@ -124,9 +124,13 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		SysDictItem dictItem = sysDictItemService.getDictBySysDictItem(sysDictItem);
 
 		int userType = insOutlesUserAddDTO.getType();
+		Integer insId = insOutlesUserAddDTO.getInsId();
+		Integer outlesId = insOutlesUserAddDTO.getOutlesId();
 		String typeName = "";
-		if(userType==1){
+		if(userType==1 && Objects.nonNull(insId) && Objects.isNull(outlesId)){
 			typeName = "_ADMIN";
+		}else if(userType==1 && Objects.nonNull(insId) && Objects.nonNull(outlesId)){
+			typeName = "_OUTLES_ADMIN";
 		}else if(userType==2){
 			typeName = "_STAFF_GENERAL";
 		}

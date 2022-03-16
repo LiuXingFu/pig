@@ -167,4 +167,11 @@ public interface OutlesService extends IService<Outles> {
 	 * @return
 	 */
 	List<OrganizationQueryVO> queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO);
+
+	/**
+	 * 根据网点id删除网点，并且删除下面所有员工
+	 * @param outlesId
+	 * @return
+	 */
+	Integer deleteOutlesById(Integer outlesId);
 }
