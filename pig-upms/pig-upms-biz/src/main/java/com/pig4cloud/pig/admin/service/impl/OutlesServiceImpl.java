@@ -275,7 +275,7 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Override
 	public IPage<OutlesPageVO> queryPage(Page page, OutlesPageDTO outlesPageDTO){
-		return this.baseMapper.selectPage(page,outlesPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"));
+		return this.baseMapper.selectPage(page,outlesPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"),jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 
 	@Override
