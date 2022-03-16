@@ -145,6 +145,7 @@
 		left join p10_project_subject_re on p10_project_subject_re.project_id = p10_project.project_id
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project.del_flag = 0
+		and p10_project_subject_re.type in (1,2,3)
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
