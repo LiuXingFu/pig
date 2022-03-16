@@ -25,10 +25,7 @@ import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiMortgageVO;
-import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
+import com.pig4cloud.pig.casee.vo.*;
 
 import java.util.List;
 
@@ -202,5 +199,13 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	IPage<AssetsReLiquiFlowChartPageVO> queryCaseeAssetsNotFreeze(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
+	 * 查询债务人财产
+	 * @param subjectId
+	 * @return
+	 */
+	IPage<AssetsReLiquiSubjectVO> queryAssetsReBySubjectId(Page page,Integer subjectId);
+
 
 }

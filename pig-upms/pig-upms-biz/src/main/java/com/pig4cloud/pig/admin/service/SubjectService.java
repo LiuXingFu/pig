@@ -85,4 +85,9 @@ public interface SubjectService extends IService<Subject> {
 	Subject getByInsId(Integer insId);
 
 	List<Subject> getSubjectByBankLoanId(Integer bankLoanId);
+
+	IPage<Subject> queryPageList(Page page, SubjectPageDTO subjectPageDTO);
+
+
+
 }

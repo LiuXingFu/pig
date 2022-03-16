@@ -21,8 +21,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.BehaviorLiquiDebtorPageDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
+import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
 
 /**
@@ -50,4 +52,13 @@ public interface BehaviorLiquiService extends IService<Behavior> {
 	 * @return
 	 */
 	IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
+
+	/**
+	 * 查询债务人行为列表
+	 * @param page
+	 * @param subjectId
+	 * @return
+	 */
+	IPage<BehaviorOrProjectPageVO> queryBehaviorBySubjecrId(Page page, Integer subjectId);
+
 }

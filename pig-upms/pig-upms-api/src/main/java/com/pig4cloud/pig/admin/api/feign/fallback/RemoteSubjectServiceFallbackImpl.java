@@ -94,4 +94,16 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("根据特定条件分页查询债务人失败", cause);
 		return null;
 	}
+
+	@Override
+	public R queryPageList(Page page, SubjectPageDTO subjectPageDTO, String from) {
+		log.error("分页查询项目主体列表失败", cause);
+		return null;
+	}
+
+	@Override
+	public R getById(Integer subjectId, String from) {
+		log.error("根据主体id查询债务人信息失败", cause);
+		return null;
+	}
 }

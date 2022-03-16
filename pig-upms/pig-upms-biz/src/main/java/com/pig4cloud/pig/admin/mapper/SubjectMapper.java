@@ -28,6 +28,7 @@ import com.pig4cloud.pig.admin.api.vo.SubjectDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectProjectCaseeVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectVO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -62,4 +63,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	Subject getByInsId(@Param("insId") Integer insId);
 
 	List<Subject> getSubjectByBankLoanId(Integer bankLoanId);
+
+	IPage<Subject> selectPageList(Page page, @Param("query") SubjectPageDTO subjectPageDTO,@Param("login") InsOutlesDTO insOutlesDTO);
 }

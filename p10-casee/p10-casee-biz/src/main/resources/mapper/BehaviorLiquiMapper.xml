@@ -103,4 +103,11 @@
 		</if>
 	</select>
 
+	<select id="queryBehaviorBySubjecrId" resultType="com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO">
+		select p10_behavior.*,p10_project.project_id,p10_project.company_code,p10_project.status projectStatus,p10_casee.casee_id,p10_casee.casee_number,p10_casee.status caseeStatus from p10_behavior
+		left join p10_project on p10_project.project_id = p10_behavior.project_id
+		left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
+		where p10_project.del_flag = 0
+	</select>
+
 </mapper>
