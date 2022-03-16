@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Outles;
@@ -50,6 +51,9 @@ import java.util.Objects;
 public class OutlesController {
 
 	private final OutlesService outlesService;
+
+	@Autowired
+	private SecurityUtilsService securityUtilsService;
 
 
 	/**
@@ -285,6 +289,35 @@ public class OutlesController {
 	@GetMapping("/queryProjectOutlesSelect")
 	public R queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO){
 		return R.ok(outlesService.queryProjectOutlesSelect(projectOutlesSelectDTO));
+	}
+
+	/**
+	 * 删除网点
+	 *
+	 * @param outlesId
+	 * @return R
+	 */
+	@ApiOperation(value = "删除网点", notes = "删除网点")
+	@SysLog("修改网点")
+	@PutMapping("/deleteOutlesById/{outlesId}")
+	public R deleteOutlesById(@PathVariable("outlesId") Integer outlesId) throws Exception {
+		return R.ok(outlesService.deleteOutlesById(outlesId));
+	}
+
+	/**
+	 * 验证网点名称是否存在
+	 * @param outlesName
+	 * @return
+	 */
+	@ApiOperation(value = "验证网点名称是否存在", notes = "验证网点名称是否存在")
+	@GetMapping("/validOutlesName")
+	public R validOutlesName(String outlesName){
+		QueryWrapper<Outles> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Outles::getOutlesName,outlesName);
+		queryWrapper.lambda().eq(Outles::getDelFlag,0);
+		PigUser pigUser = securityUtilsService.getCacheUser();
+		queryWrapper.lambda().eq(Outles::getInsId,pigUser.getInsId());
+		return R.ok(outlesService.list(queryWrapper));
 	}
 
 }

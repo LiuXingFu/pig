@@ -35,6 +35,11 @@ public class OutlesPageDTO {
 	private Integer insId;
 
 	/**
+	 * 机构名称
+	 */
+	private String insName;
+
+	/**
 	 * 网点id
 	 */
 	private Integer outlesId;

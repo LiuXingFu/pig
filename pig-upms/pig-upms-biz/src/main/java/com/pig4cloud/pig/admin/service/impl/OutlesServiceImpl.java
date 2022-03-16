@@ -17,7 +17,9 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -74,6 +76,9 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
+
+	@Autowired
+	private SysUserService sysUserService;
 
 	/**
 	 * 新增
@@ -385,5 +390,42 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	@Override
 	public List<OrganizationQueryVO> queryProjectOutlesSelect(ProjectOutlesSelectDTO projectOutlesSelectDTO) {
 		return this.baseMapper.queryProjectOutlesSelect(projectOutlesSelectDTO);
+	}
+
+	@Override
+	@Transactional
+	public Integer deleteOutlesById(Integer outlesId){
+		QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(InsOutlesUser::getOutlesId,outlesId);
+		queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
+		// 查询网点下所有用户
+		List<InsOutlesUser> insOutlesUserList = insOutlesUserService.list(queryWrapper);
+		insOutlesUserList.stream().forEach(item->{
+			QueryWrapper<InsOutlesUser> userQueryWrapper = new QueryWrapper<>();
+			userQueryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
+			userQueryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
+			userQueryWrapper.lambda().ne(InsOutlesUser::getOutlesId,outlesId);
+			// 查询除删除以外的网点没有所属机构和网点外
+			List<InsOutlesUser> userList = insOutlesUserService.list(userQueryWrapper);
+			if(userList.size()==0){
+				UpdateWrapper<SysUser> userUpdateWrapper = new UpdateWrapper<>();
+				userUpdateWrapper.lambda().eq(SysUser::getUserId,item.getUserId());
+				userUpdateWrapper.lambda().set(SysUser::getDelFlag,CommonConstants.STATUS_DEL);
+				// 修改用户状态为删除
+				sysUserService.update(userUpdateWrapper);
+			}
+		});
+
+		UpdateWrapper<InsOutlesUser> userUpdateWrapper = new UpdateWrapper<>();
+		userUpdateWrapper.lambda().eq(InsOutlesUser::getOutlesId,outlesId);
+		userUpdateWrapper.lambda().set(InsOutlesUser::getDelFlag,CommonConstants.STATUS_DEL);
+		// 修改机构网点用户关联变状态为删除
+		insOutlesUserService.update(userUpdateWrapper);
+		// 修改网点状态为删除
+		UpdateWrapper<Outles> outles = new UpdateWrapper();
+		outles.lambda().eq(Outles::getOutlesId,outlesId);
+		outles.lambda().set(Outles::getDelFlag,CommonConstants.STATUS_DEL);
+		this.update(outles);
+		return 1;
 	}
 }

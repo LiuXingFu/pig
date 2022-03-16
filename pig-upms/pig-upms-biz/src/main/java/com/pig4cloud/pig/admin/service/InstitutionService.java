@@ -150,4 +150,11 @@ public interface InstitutionService extends IService<Institution> {
 	 * @return
 	 */
 	List<OrganizationQueryVO> queryProjectInsSelect(ProjectInstitutionSelectDTO projectInstitutionSelectDTO);
+
+	/**
+	 * 根据机构id删除机构和网点、员工等信息
+	 * @param insId
+	 * @return
+	 */
+	Integer deleteByInsId(Integer insId);
 }

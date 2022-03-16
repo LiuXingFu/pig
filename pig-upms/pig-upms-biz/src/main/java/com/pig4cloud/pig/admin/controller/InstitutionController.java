@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.service.OutlesService;
@@ -303,4 +304,30 @@ public class InstitutionController {
 		return R.ok(this.institutionService.queryProjectInsSelect(projectInstitutionSelectDTO));
 	}
 
+	/**
+	 * 根据机构id删除机构和网点、员工等信息
+	 *
+	 * @param insId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据机构id删除机构和网点、员工等信息", notes = "根据机构id删除机构和网点、员工等信息")
+	@SysLog("修改网点")
+	@PutMapping("/deleteByInsId/{insId}")
+	public R deleteByInsId(@PathVariable("insId") Integer insId) throws Exception {
+		return R.ok(institutionService.deleteByInsId(insId));
+	}
+
+	/**
+	 * 验证机构名称是否存在
+	 * @param insName
+	 * @return
+	 */
+	@ApiOperation(value = "验证机构名称是否存在", notes = "验证机构名称是否存在")
+	@GetMapping("/validInsName")
+	public R validInsName(String insName){
+		QueryWrapper<Institution> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Institution::getInsName,insName);
+		queryWrapper.lambda().eq(Institution::getDelFlag,0);
+		return R.ok(institutionService.list(queryWrapper));
+	}
 }
