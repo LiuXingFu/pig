@@ -40,4 +40,9 @@
 	WHERE
 	p10_assets_bank_loan_re.bank_loan_id = #{bankLoanId} and p10_assets_bank_loan_re.del_flag=0
 	</select>
+
+	<select id="countAssetsBankLoanReById" resultType="java.lang.Integer">
+		SELECT count(0) FROM p10_assets_bank_loan_re WHERE del_flag = 0 and  bank_loan_id = #{bankLoanId}
+	</select>
+
 </mapper>

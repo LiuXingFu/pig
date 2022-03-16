@@ -34,4 +34,6 @@ import java.util.List;
 public interface AssetsBankLoanReMapper extends BaseMapper<AssetsBankLoanRe> {
 	List<AssetsInformationVO> getAssetsBankLoanRe(Integer bankLoanId);
 
+	Integer countAssetsBankLoanReById(Integer bankLoanId);
+
 }

@@ -60,4 +60,14 @@ public class BankLoanVO extends BankLoan {
 	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
 	 */
 	private Integer status;
+
+	/**
+	 * 关联财产数量
+	 */
+	private Integer countAssetsBankLoanRe;
+
+	/**
+	 * 关联债务人数量
+	 */
+	private Integer countSubjectBankLoanRe;
 }
