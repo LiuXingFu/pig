@@ -249,5 +249,15 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryCaseeAssetsNotFreeze(page,assetsReLiquiFlowChartPageDTO));
 	}
 
+	/**
+	 * 查询债务人财产
+	 * @param subjectId
+	 * @return R
+	 */
+	@ApiOperation(value = "查询债务人财产", notes = "查询债务人财产")
+	@GetMapping("/queryAssetsReBySubjectId" )
+	public R queryAssetsReBySubjectId(Page page,Integer subjectId) {
+		return R.ok(assetsReLiquiService.queryAssetsReBySubjectId(page,subjectId));
+	}
 
 }

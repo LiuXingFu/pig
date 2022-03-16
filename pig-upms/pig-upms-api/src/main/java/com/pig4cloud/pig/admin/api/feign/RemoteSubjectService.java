@@ -119,4 +119,21 @@ public interface RemoteSubjectService {
 	@GetMapping("/subject/pageSubject")
 	R pageSubject(@RequestParam(value = "page" )Page page,@RequestParam(value = "subjectPageDTO" ) SubjectPageDTO subjectPageDTO, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 *	分页查询项目主体列表
+	 * @param page
+	 * @param subjectPageDTO
+	 * @return
+	 */
+	@GetMapping("/subject/queryPageList")
+	R queryPageList(@RequestParam(value = "page" )Page page,@RequestParam(value = "subjectPageDTO" ) SubjectPageDTO subjectPageDTO, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 根据主体id查询债务人信息
+	 * @param subjectId
+	 * @return
+	 */
+	@GetMapping("/subject/selectSubjectById/{subjectId}")
+	R<Subject> getById(@PathVariable("subjectId") Integer subjectId, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

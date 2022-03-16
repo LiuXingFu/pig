@@ -206,6 +206,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				assetsReLiqui.setAssetsId(item.getAssetsId());
 				assetsReLiqui.setSubjectId(item.getSubjectId());
 				assetsReLiqui.setProjectId(projectLiqui.getProjectId());
+
+				R<Subject> subjectR = remoteSubjectService.getById(item.getSubjectId(),SecurityConstants.FROM);
+				assetsReLiqui.setSubjectName(subjectR.getData().getName());
 				// 案件来源1=抵押财产
 				assetsReLiqui.setAssetsSource(1);
 				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
@@ -859,7 +862,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//却查询提醒事项
 		countProjectMattersVO.setRemindMatterCount(expirationReminderVOIPage.getTotal());
 
-		R r = remoteSubjectService.pageSubject(page, new SubjectPageDTO(), SecurityConstants.FROM);
+		R r = remoteSubjectService.queryPageList(page, new SubjectPageDTO(), SecurityConstants.FROM);
 
 		ObjectMapper mapper = new ObjectMapper();
 		//对象转map

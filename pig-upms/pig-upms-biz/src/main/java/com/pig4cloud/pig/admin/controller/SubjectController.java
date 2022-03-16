@@ -304,4 +304,16 @@ public class SubjectController {
 	public R getByInsId(@PathVariable("insId" ) Integer insId) {
 		return R.ok(subjectService.getByInsId(insId));
 	}
+
+	/**
+	 * 分页查询项目主体列表
+	 * @param subjectPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询项目主体列表", notes = "分页查询项目主体列表")
+	@GetMapping("/queryPageList")
+	public R queryPageList(Page page, SubjectPageDTO subjectPageDTO){
+		return R.ok(this.subjectService.queryPageList(page,subjectPageDTO));
+	}
+
 }

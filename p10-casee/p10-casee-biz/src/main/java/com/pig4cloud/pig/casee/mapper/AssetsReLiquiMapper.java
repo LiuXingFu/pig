@@ -26,10 +26,7 @@ import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO;
-import com.pig4cloud.pig.casee.vo.AssetsReLiquiMortgageVO;
-import com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO;
+import com.pig4cloud.pig.casee.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -83,5 +80,7 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 	List<AssetsReLiquiMortgageVO> selectAssetsReAddress(@Param("projectId")Integer projectId);
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectCaseeAssetsNotFreeze(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsReLiquiSubjectVO> queryAssetsReBySubjectId(Page page,@Param("subjectId")Integer subjectId, @Param("login") InsOutlesDTO insOutlesDTO);
 
 }

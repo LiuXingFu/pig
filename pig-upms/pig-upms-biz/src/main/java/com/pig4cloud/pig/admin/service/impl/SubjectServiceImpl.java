@@ -31,6 +31,7 @@ import com.pig4cloud.pig.admin.api.vo.*;
 import com.pig4cloud.pig.admin.mapper.SubjectMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.admin.service.SubjectService;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.feign.RemoteBankLoanService;
@@ -38,6 +39,7 @@ import com.pig4cloud.pig.casee.feign.RemoteSubjectBankLoanReService;
 import com.pig4cloud.pig.casee.vo.SubjectIdsOrSubjectBankLoanReIdsVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	@Autowired
 	private RemoteBankLoanService remoteBankLoanService;
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public boolean saveBatchSubject(List<Subject> subjectList) {
@@ -399,5 +403,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Override
 	public List<Subject> getSubjectByBankLoanId(Integer bankLoanId) {
 		return this.baseMapper.getSubjectByBankLoanId(bankLoanId);
+	}
+
+	@Override
+	public IPage<Subject> queryPageList(Page page, SubjectPageDTO subjectPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectPageList(page,subjectPageDTO,insOutlesDTO);
 	}
 }
