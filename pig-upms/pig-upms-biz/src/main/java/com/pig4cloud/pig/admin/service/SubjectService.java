@@ -81,7 +81,7 @@ public interface SubjectService extends IService<Subject> {
 
 	SubjectDetailsVO getSubjectDetailBySubjectId(Integer subjectId);
 
-	int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity);
+	int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity, Integer insId);
 
 	Subject getByInsId(Integer insId);
 

@@ -169,16 +169,19 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	public boolean updateBankLoanInformation(BankLoanInformationDTO bankLoanInformationDTO) {
 		BankLoan bankLoan=new BankLoan();
 		BeanCopyUtil.copyBean(bankLoanInformationDTO,bankLoan);
-		//修改银行借贷表信息
-		boolean result = this.updateById(bankLoan);
 
 		//债务人信息
 		List<SubjectAddressDTO> subjectAddressDTOList = bankLoanInformationDTO.getSubjectInformationVOList();
+
+		String subjectNames = "";
+
 		if (subjectAddressDTOList!=null&&subjectAddressDTOList.size()>0){
 			AddressDTO addressDTO=new AddressDTO();
 			List<SubjectBankLoanRe> bankLoanReList = new ArrayList<>();
 
 			for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
+
+				subjectNames += subjectAddressDTO.getName() +",";
 
 				//债务人
 				Subject subject=new Subject();
@@ -258,6 +261,17 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 			}
 
 		}
+
+		if(!subjectNames.equals("")) {
+			subjectNames = subjectNames.substring(0, subjectNames.length() - 1);
+		}
+
+		bankLoan.setSubjectName(subjectNames);
+
+		//修改银行借贷表信息
+		boolean result = this.updateById(bankLoan);
+
+
 
 		return result;
 	}
