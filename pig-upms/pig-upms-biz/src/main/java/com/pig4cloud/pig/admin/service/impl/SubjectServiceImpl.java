@@ -391,8 +391,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity) {
-		return this.baseMapper.getIsThereASubjectByUnifiedIdentity(unifiedIdentity);
+	public int getIsThereASubjectByUnifiedIdentity(String unifiedIdentity, Integer insId) {
+		return this.baseMapper.getIsThereASubjectByUnifiedIdentity(unifiedIdentity, insId);
 	}
 
 	@Override

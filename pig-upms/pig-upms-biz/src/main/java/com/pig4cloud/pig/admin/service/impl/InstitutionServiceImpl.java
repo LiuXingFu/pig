@@ -604,16 +604,15 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 	}
 
 	private void setIstitutionSubject(InstitutionModifyDTO institutionModifyDTO, Institution institution) {
-		if (institutionModifyDTO.getSubject().getSubjectId() == null){
+//		if (institutionModifyDTO.getSubject().getSubjectId() == null){
 			//如果机构类型为拍辅、清收、律所和银行添加企业信息
 			if (institutionModifyDTO.getInsType().equals(Integer.valueOf("1100")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1200")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1300")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1400"))) {
 				SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionModifyDTO.getSubject().getUnifiedIdentity());
 				if (Objects.nonNull(subjectVO)) {
 					//主体存在添加机构与主体认证信息
 					InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
-					institutionSubjectRe = new InstitutionSubjectRe();
 					institutionSubjectRe.setInsId(institution.getInsId());
-					institutionSubjectRe.setInsSubjectReId(subjectVO.getSubjectId());
+					institutionSubjectRe.setSubjectId(subjectVO.getSubjectId());
 					institutionSubjectReService.save(institutionSubjectRe);
 
 					//更新主体认证状态
@@ -634,7 +633,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 				}
 			}
-		}
+//		}
 	}
 
 	@Override
