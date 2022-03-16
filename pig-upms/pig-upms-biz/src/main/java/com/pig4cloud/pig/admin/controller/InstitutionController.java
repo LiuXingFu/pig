@@ -324,7 +324,7 @@ public class InstitutionController {
 	 */
 	@ApiOperation(value = "验证机构名称是否存在", notes = "验证机构名称是否存在")
 	@GetMapping("/validInsName")
-	public R validInsName(String insName){
+	public R validInsName(String insName,Integer insId){
 		QueryWrapper<Institution> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(Institution::getInsName,insName);
 		queryWrapper.lambda().eq(Institution::getDelFlag,0);

@@ -311,10 +311,13 @@ public class OutlesController {
 	 */
 	@ApiOperation(value = "验证网点名称是否存在", notes = "验证网点名称是否存在")
 	@GetMapping("/validOutlesName")
-	public R validOutlesName(String outlesName){
+	public R validOutlesName(String outlesName,Integer outlesId){
 		QueryWrapper<Outles> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(Outles::getOutlesName,outlesName);
 		queryWrapper.lambda().eq(Outles::getDelFlag,0);
+		if(Objects.nonNull(outlesId)){
+			queryWrapper.lambda().ne(Outles::getOutlesId,outlesId);
+		}
 		PigUser pigUser = securityUtilsService.getCacheUser();
 		queryWrapper.lambda().eq(Outles::getInsId,pigUser.getInsId());
 		return R.ok(outlesService.list(queryWrapper));
