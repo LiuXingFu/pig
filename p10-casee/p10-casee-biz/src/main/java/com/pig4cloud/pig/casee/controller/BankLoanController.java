@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 
 /**
@@ -124,7 +125,9 @@ public class BankLoanController {
     public R updateById(@RequestBody BankLoan bankLoan) {
 		BigDecimal principal = bankLoan.getPrincipal();
 		BigDecimal interest = bankLoan.getInterest();
-		bankLoan.setRental(principal.add(interest));
+		if(Objects.nonNull(principal) && Objects.nonNull(interest)){
+			bankLoan.setRental(principal.add(interest));
+		}
         return R.ok(bankLoanService.updateById(bankLoan));
     }
 
