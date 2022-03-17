@@ -75,17 +75,22 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 		if (bankLoanDTO.getAssetsDTOList()!=null){
 			for (AssetsDTO assetsDTO : bankLoanDTO.getAssetsDTOList()) {
-				BeanCopyUtil.copyBean(assetsDTO,assets);
-				this.save(assets);//添加财产信息
+				if (assetsDTO.getAssetsId()==null){
+					BeanCopyUtil.copyBean(assetsDTO,assets);
+					this.save(assets);//添加财产信息
 
-				Address address=new Address();
-				BeanUtils.copyProperties(assetsDTO,address);
-				address.setType(4);
-				address.setUserId(assets.getAssetsId());
-				remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
-
+					Address address=new Address();
+					BeanUtils.copyProperties(assetsDTO,address);
+					address.setType(4);
+					address.setUserId(assets.getAssetsId());
+					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+				}
+				if (assetsDTO.getAssetsId()==null){
+					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
+				}else {
+					assetsBankLoanRe.setAssetsId(assetsDTO.getAssetsId());
+				}
 				//添加财产关联银行借贷信息
-				assetsBankLoanRe.setAssetsId(assets.getAssetsId());
 				assetsBankLoanRe.setBankLoanId(assetsDTO.getBankLoanId());
 				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
 				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());

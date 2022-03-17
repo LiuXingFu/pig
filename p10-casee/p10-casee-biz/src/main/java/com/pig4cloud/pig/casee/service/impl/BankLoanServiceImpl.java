@@ -82,16 +82,16 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	@Transactional
 	public boolean saveBankLoanDebtorPawn(BankLoanDTO bankLoanDTO) {
 		//银行借贷信息
-		BankLoan bankLoan=new BankLoan();
+		BankLoan bankLoan = new BankLoan();
 
 		//财产关联银行借贷信息
-		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
+		AssetsBankLoanRe assetsBankLoanRe = new AssetsBankLoanRe();
 
 		//抵押财产信息
-		Assets assets=new Assets();
+		Assets assets = new Assets();
 		assets.setType(20200);//默认实体财产类型
 
-		BeanCopyUtil.copyBean(bankLoanDTO,bankLoan);
+		BeanCopyUtil.copyBean(bankLoanDTO, bankLoan);
 
 		BigDecimal principal = bankLoan.getPrincipal();
 		BigDecimal interest = bankLoan.getInterest();
@@ -100,17 +100,9 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 		//添加银行借贷信息
 		boolean save = this.save(bankLoan);
-//
-//		//添加债务人信息
-//		if (bankLoanDTO.getSubjectAddressDTOList().size()>0){
-//			List<SubjectAddressDTO> subjectAddressDTOList = bankLoanDTO.getSubjectAddressDTOList();
-//			for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
-//
-//			}
-//		}
 
 		//添加主体关联银行借贷信息
-		if (bankLoanDTO.getSubjectIdList().size()>0){
+		if (bankLoanDTO.getSubjectIdList().size() > 0) {
 			List<SubjectBankLoanRe> subjectBankLoanReList = subjectBankLoanReService.list(new LambdaQueryWrapper<SubjectBankLoanRe>().isNull(SubjectBankLoanRe::getBankLoanId).in(SubjectBankLoanRe::getSubjectId, bankLoanDTO.getSubjectIdList()));
 			for (SubjectBankLoanRe bankLoanRe : subjectBankLoanReList) {
 				bankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
@@ -120,13 +112,13 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 
 		//添加抵押财产信息
 		List<AssetsDTO> assetsDTOList = bankLoanDTO.getAssetsDTOList();
-		if (assetsDTOList!=null){
+		if (assetsDTOList != null) {
 			for (AssetsDTO assetsDTO : assetsDTOList) {
-				BeanCopyUtil.copyBean(assetsDTO,assets);
+				BeanCopyUtil.copyBean(assetsDTO, assets);
 				assetsService.save(assets);//添加财产信息
 
-				Address address=new Address();
-				BeanUtils.copyProperties(assetsDTO,address);
+				Address address = new Address();
+				BeanUtils.copyProperties(assetsDTO, address);
 				address.setType(4);
 				address.setUserId(assets.getAssetsId());
 				remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
@@ -148,7 +140,7 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.bankLoanPage(page,bankLoanDTO,insOutlesDTO);
+		return this.baseMapper.bankLoanPage(page, bankLoanDTO, insOutlesDTO);
 	}
 
 	@Override
@@ -167,24 +159,26 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	@Override
 	@Transactional
 	public boolean updateBankLoanInformation(BankLoanInformationDTO bankLoanInformationDTO) {
-		BankLoan bankLoan=new BankLoan();
-		BeanCopyUtil.copyBean(bankLoanInformationDTO,bankLoan);
+		BankLoan bankLoan = new BankLoan();
+		BeanCopyUtil.copyBean(bankLoanInformationDTO, bankLoan);
+		//修改银行借贷表信息
+		boolean result = this.updateById(bankLoan);
 
 		//债务人信息
 		List<SubjectAddressDTO> subjectAddressDTOList = bankLoanInformationDTO.getSubjectInformationVOList();
-
-		String subjectNames = "";
-
-		if (subjectAddressDTOList!=null&&subjectAddressDTOList.size()>0){
-			AddressDTO addressDTO=new AddressDTO();
+		if (subjectAddressDTOList != null && subjectAddressDTOList.size() > 0) {
+			AddressDTO addressDTO = new AddressDTO();
+			//债务人id
+			List<Integer> subjectIdList = new ArrayList<>();
 			List<SubjectBankLoanRe> bankLoanReList = new ArrayList<>();
 
 			for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
 
-				subjectNames += subjectAddressDTO.getName() +",";
-
 				//债务人
-				Subject subject=new Subject();
+				Subject subject = new Subject();
+				BeanCopyUtil.copyBean(subjectAddressDTO, subject);
+				remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);//新增或修改主体信息
+				subjectIdList.add(subject.getSubjectId());
 				BeanCopyUtil.copyBean(subjectAddressDTO, subject);
 				Integer subjectId = remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM).getData();//新增或修改主体信息
 
@@ -201,29 +195,23 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 				subjectBankLoanRe.setSubjectId(subjectId);
 				bankLoanReList.add(subjectBankLoanRe);
 			}
-			remoteAddressService.saveOrUpdateById(addressDTO,SecurityConstants.FROM);//新增或修改主体关联地址信息
+			remoteAddressService.saveOrUpdateById(addressDTO, SecurityConstants.FROM);//新增或修改主体关联地址信息
 
 			subjectBankLoanReService.saveOrUpdateBatch(bankLoanReList);
 
-			//添加主体关联银行借贷信息
-//			List<SubjectBankLoanRe> subjectBankLoanReList = subjectBankLoanReService.list(new LambdaQueryWrapper<SubjectBankLoanRe>().isNull(SubjectBankLoanRe::getBankLoanId).in(SubjectBankLoanRe::getSubjectId, subjectIdList));
-//			for (SubjectBankLoanRe bankLoanRe : subjectBankLoanReList) {
-//				bankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-//			}
-//			subjectBankLoanReService.updateBatchById(subjectBankLoanReList);
 		}
 
 		//抵押财产信息
 		List<AssetsDTO> assetsDTOList = bankLoanInformationDTO.getAssetsList();
-		if (assetsDTOList!=null&&assetsDTOList.size()>0){
-			AddressDTO addressDTO=new AddressDTO();
-			AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
-			Assets assets=new Assets();
+		if (assetsDTOList != null && assetsDTOList.size() > 0) {
+			AssetsBankLoanRe assetsBankLoanRe = new AssetsBankLoanRe();
+			Assets assets = new Assets();
 
 			for (AssetsDTO assetsDTO : assetsDTOList) {
-				BeanCopyUtil.copyBean(assetsDTO,assets);
+				BeanCopyUtil.copyBean(assetsDTO, assets);
 
-				if (assets.getAssetsId()!=null){
+				//修改财产关联银行借贷信息
+				if (assets.getAssetsId() != null) {
 					assetsService.updateById(assets);//修改财产信息
 				} else {
 					assetsService.save(assets);//添加财产信息
@@ -234,7 +222,7 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
 					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
 					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-					assetsBankLoanReService.update(assetsBankLoanRe, new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId,assets.getAssetsId()));
+					assetsBankLoanReService.update(assetsBankLoanRe, new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId, assets.getAssetsId()));
 				} else {
 					//添加财产关联银行借贷信息
 					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
@@ -244,16 +232,9 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
 					assetsBankLoanReService.save(assetsBankLoanRe);
 				}
-
-				Address address=new Address();
-				BeanUtils.copyProperties(assetsDTO,address);
-				if (assetsDTO.getAddressAsId()!=null){
-					address.setAddressId(assetsDTO.getAddressAsId());
-					address.setType(4);
-					address.setUserId(assets.getAssetsId());
-					addressDTO.getAddressList().add(address);
-					remoteAddressService.updateById(addressDTO, SecurityConstants.FROM);//修改财产地址信息
-				}else {
+				if (assetsDTO.getAddressAsId()==null){
+					Address address = new Address();
+					BeanUtils.copyProperties(assetsDTO, address);
 					address.setType(4);
 					address.setUserId(assets.getAssetsId());
 					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//新增财产地址信息
@@ -261,16 +242,7 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 			}
 
 		}
-
-		if(!subjectNames.equals("")) {
-			subjectNames = subjectNames.substring(0, subjectNames.length() - 1);
-		}
-
-		bankLoan.setSubjectName(subjectNames);
-
-		//修改银行借贷表信息
-		boolean result = this.updateById(bankLoan);
-
 		return result;
 	}
 }
+

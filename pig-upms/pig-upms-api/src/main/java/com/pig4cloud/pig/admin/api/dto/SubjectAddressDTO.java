@@ -35,6 +35,11 @@ public class SubjectAddressDTO {
 	 */
 	private Integer bankLoanId;
 
+	/**
+	 * 银行借贷所有债务人名称
+	 */
+	private String subjectName;
+
 	//债务人主体信息
 	/**
 	 * 主体id

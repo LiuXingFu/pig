@@ -17,16 +17,12 @@
 package com.pig4cloud.pig.casee.feign;
 
 import com.pig4cloud.pig.casee.entity.BankLoan;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.feign.factory.RemoteSubjectBankLoanReServiceFallbackFactory;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author lengleng
@@ -44,4 +40,12 @@ public interface RemoteBankLoanService {
 	@PutMapping("/bankloan")
 	R<Boolean> updateBankLoan(@RequestBody BankLoan bankLoan, @RequestHeader(SecurityConstants.FROM) String from);
 
+
+	/**
+	 * 查看银行借贷信息
+	 * @param bankLoanId 查看银行借贷信息
+	 * @return R
+	 */
+	@GetMapping("/bankloan/getByBankLoanId/{bankLoanId}")
+	R<BankLoan> queryBankLoan(@PathVariable("bankLoanId") Integer bankLoanId, @RequestHeader(SecurityConstants.FROM) String from);
 }

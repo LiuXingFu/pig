@@ -44,6 +44,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -133,6 +134,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
+	@Transactional
 	public SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
 
 		SubjectIdsOrSubjectBankLoanReIdsVO subjectIdsOrSubjectBankLoanReIdsVO = new SubjectIdsOrSubjectBankLoanReIdsVO();
@@ -143,16 +145,22 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 		String subjectNames = "";//银行借贷所有债务人名称
 		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
-			bankLoan.setBankLoanId(subjectAddressDTO.getBankLoanId());
 			//添加债务人主体信息
 			Subject subject = new Subject();
 			BeanCopyUtil.copyBean(subjectAddressDTO, subject);
 			this.saveSubject(subject);
-			if (subjectNames.equals("")) {
-				subjectNames = subject.getName();
-			} else {
-				if (!subjectNames.contains(subject.getName())) {
-					subjectNames = subjectNames + "," + subject.getName();
+			bankLoan = remoteBankLoanService.queryBankLoan(subjectAddressDTO.getBankLoanId(), SecurityConstants.FROM).getData();
+			if (bankLoan!=null){
+				if (bankLoan.getSubjectName()==null) {
+					if (subjectNames==""){
+						subjectNames = subject.getName();
+					}else {
+						subjectNames +=","+ subject.getName();
+					}
+				} else {
+					if (!bankLoan.getSubjectName().contains(subject.getName())) {
+						subjectNames = bankLoan.getSubjectName() + "," + subject.getName();
+					}
 				}
 			}
 			List<Address> addressList = subjectAddressDTO.getAddressList();

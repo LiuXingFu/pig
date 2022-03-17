@@ -76,6 +76,17 @@ public class BankLoanController {
     }
 
 	/**
+	 * 通过id查询银行借贷基本信息
+	 * @param bankLoanId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询银行借贷基本信息", notes = "通过id查询银行借贷基本信息")
+	@GetMapping("/getByBankLoanId/{bankLoanId}" )
+	public R getByBankLoanId(@PathVariable("bankLoanId" ) Integer bankLoanId) {
+		return R.ok(bankLoanService.getById(bankLoanId));
+	}
+
+	/**
 	 * 修改银行借贷基本信息
 	 * @param bankLoanInformationDTO 银行借贷基本信息
 	 * @return R

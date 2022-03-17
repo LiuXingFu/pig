@@ -605,35 +605,38 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	private void setIstitutionSubject(InstitutionModifyDTO institutionModifyDTO, Institution institution) {
 //		if (institutionModifyDTO.getSubject().getSubjectId() == null){
-			//如果机构类型为拍辅、清收、律所和银行添加企业信息
-			if (institutionModifyDTO.getInsType().equals(Integer.valueOf("1100")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1200")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1300")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1400"))) {
-				SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionModifyDTO.getSubject().getUnifiedIdentity());
-				if (Objects.nonNull(subjectVO)) {
-					//主体存在添加机构与主体认证信息
-					InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
-					institutionSubjectRe.setInsId(institution.getInsId());
-					institutionSubjectRe.setSubjectId(subjectVO.getSubjectId());
-					institutionSubjectReService.save(institutionSubjectRe);
+		//如果机构类型为拍辅、清收、律所和银行添加企业信息
+		if (institutionModifyDTO.getInsType().equals(Integer.valueOf("1100")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1200")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1300")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1400"))) {
+			SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionModifyDTO.getSubject().getUnifiedIdentity());
+			InstitutionSubjectRe institutionSubjectRe = institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>()
+					.eq(InstitutionSubjectRe::getDelFlag, 0)
+					.eq(InstitutionSubjectRe::getSubjectId, subjectVO.getSubjectId()).eq(InstitutionSubjectRe::getInsId, institution.getInsId()));
+			if (Objects.nonNull(subjectVO)) {
 
-					//更新主体认证状态
-					Subject subject = new Subject();
+				//更新主体认证状态
+				Subject subject = new Subject();
 
-					BeanUtils.copyProperties(subjectVO, subject);
+				BeanUtils.copyProperties(subjectVO, subject);
 
-					this.subjectService.updateById(subject);
+				this.subjectService.updateById(subject);
 
-				} else {
-					//主体不存在创建主体添加机构与主体认证信息
-					int subjectId = this.subjectService.addSubjectOrAddress(institutionModifyDTO.getSubject());
-
-					InstitutionSubjectRe institutionSubjectRe = new InstitutionSubjectRe();
-					institutionSubjectRe.setInsId(institution.getInsId());
-					institutionSubjectRe.setSubjectId(subjectId);
-					institutionSubjectReService.save(institutionSubjectRe);
-
-				}
+			} else {
+				//主体不存在创建主体添加机构与主体认证信息
+				int subjectId = this.subjectService.addSubjectOrAddress(institutionModifyDTO.getSubject());
+//
+				subjectVO.setSubjectId(subjectId);
 			}
-//		}
+
+//			添加主体认证信息
+			if (Objects.isNull(institutionSubjectRe)) {
+				institutionSubjectRe = new InstitutionSubjectRe();
+				institutionSubjectRe.setInsId(institution.getInsId());
+				institutionSubjectRe.setSubjectId(subjectVO.getSubjectId());
+				institutionSubjectReService.save(institutionSubjectRe);
+			} else {
+				institutionSubjectReService.updateById(institutionSubjectRe);
+			}
+		}
 	}
 
 	@Override
@@ -652,7 +655,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 			addressService.saveOrUpdate(address);
 		}
 
-		if(institutionModifyDTO.getSubject() != null) {
+		if (institutionModifyDTO.getSubject() != null) {
 
 			//如果机构类型为拍辅、清收、律所和银行添加企业信息
 			setIstitutionSubject(institutionModifyDTO, institution);
@@ -671,7 +674,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 		if (institutionVO.getInsType().equals(Integer.valueOf("1100")) || institutionVO.getInsType().equals(Integer.valueOf("1200")) || institutionVO.getInsType().equals(Integer.valueOf("1300")) || institutionVO.getInsType().equals(Integer.valueOf("1400"))) {
 			InstitutionSubjectRe institutionSubjectRe = this.institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>().eq(InstitutionSubjectRe::getInsId, institutionVO.getInsId()));
-			if(Objects.nonNull(institutionSubjectRe)) {
+			if (Objects.nonNull(institutionSubjectRe)) {
 				institutionVO.setSubject(this.subjectService.getSubjectDetailBySubjectId(institutionSubjectRe.getSubjectId()));
 			}
 		}
@@ -717,6 +720,7 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	/**
 	 * 根据项目机构id查询项目机构关联机构下拉框
+	 *
 	 * @param projectInstitutionSelectDTO
 	 * @return
 	 */
@@ -726,40 +730,40 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 
 	@Override
 	@Transactional
-	public Integer deleteByInsId(Integer insId){
+	public Integer deleteByInsId(Integer insId) {
 		QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(InsOutlesUser::getInsId,insId);
-		queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(InsOutlesUser::getInsId, insId);
+		queryWrapper.lambda().eq(InsOutlesUser::getDelFlag, CommonConstants.STATUS_NORMAL);
 		// 查询机构下所有用户
 		List<InsOutlesUser> insOutlesUserList = insOutlesUserService.list(queryWrapper);
-		insOutlesUserList.stream().forEach(item->{
+		insOutlesUserList.stream().forEach(item -> {
 			QueryWrapper<InsOutlesUser> userQueryWrapper = new QueryWrapper<>();
-			userQueryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
-			userQueryWrapper.lambda().eq(InsOutlesUser::getDelFlag,CommonConstants.STATUS_NORMAL);
-			userQueryWrapper.lambda().ne(InsOutlesUser::getInsId,insId);
+			userQueryWrapper.lambda().eq(InsOutlesUser::getUserId, item.getUserId());
+			userQueryWrapper.lambda().eq(InsOutlesUser::getDelFlag, CommonConstants.STATUS_NORMAL);
+			userQueryWrapper.lambda().ne(InsOutlesUser::getInsId, insId);
 			// 查询除删除以外的网点没有所属机构和网点外
 			List<InsOutlesUser> userList = insOutlesUserService.list(userQueryWrapper);
-			if(userList.size()==0){
+			if (userList.size() == 0) {
 				UpdateWrapper<SysUser> userUpdateWrapper = new UpdateWrapper<>();
-				userUpdateWrapper.lambda().eq(SysUser::getUserId,item.getUserId());
-				userUpdateWrapper.lambda().set(SysUser::getDelFlag,CommonConstants.STATUS_DEL);
+				userUpdateWrapper.lambda().eq(SysUser::getUserId, item.getUserId());
+				userUpdateWrapper.lambda().set(SysUser::getDelFlag, CommonConstants.STATUS_DEL);
 				// 修改用户状态为删除
 				sysUserService.update(userUpdateWrapper);
 			}
 		});
 		UpdateWrapper<InsOutlesUser> userUpdateWrapper = new UpdateWrapper<>();
-		userUpdateWrapper.lambda().eq(InsOutlesUser::getInsId,insId);
-		userUpdateWrapper.lambda().set(InsOutlesUser::getDelFlag,CommonConstants.STATUS_DEL);
+		userUpdateWrapper.lambda().eq(InsOutlesUser::getInsId, insId);
+		userUpdateWrapper.lambda().set(InsOutlesUser::getDelFlag, CommonConstants.STATUS_DEL);
 		// 修改机构网点用户关联变状态为删除
 		insOutlesUserService.update(userUpdateWrapper);
 		// 修改机构状态为删除
 		UpdateWrapper<Institution> institutionUpdateWrapper = new UpdateWrapper();
-		institutionUpdateWrapper.lambda().eq(Institution::getInsId,insId);
-		institutionUpdateWrapper.lambda().set(Institution::getDelFlag,CommonConstants.STATUS_DEL);
+		institutionUpdateWrapper.lambda().eq(Institution::getInsId, insId);
+		institutionUpdateWrapper.lambda().set(Institution::getDelFlag, CommonConstants.STATUS_DEL);
 		this.update(institutionUpdateWrapper);
 		// 删除机构主体关联
 		QueryWrapper<InstitutionSubjectRe> subjectReQueryWrapper = new QueryWrapper<>();
-		subjectReQueryWrapper.lambda().eq(InstitutionSubjectRe::getInsId,insId);
+		subjectReQueryWrapper.lambda().eq(InstitutionSubjectRe::getInsId, insId);
 		institutionSubjectReService.remove(subjectReQueryWrapper);
 
 		return 1;

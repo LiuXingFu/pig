@@ -169,6 +169,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		targetAddDTO.setProcedureNature(caseeLiqui.getCaseeType());
 		targetAddDTO.setOutlesId(projectLiqui.getOutlesId());
 		targetAddDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+		targetAddDTO.setGoalType(10001);
 		targetService.saveTargetAddDTO(targetAddDTO);
 
 		//添加各各案件司法费产生记录
