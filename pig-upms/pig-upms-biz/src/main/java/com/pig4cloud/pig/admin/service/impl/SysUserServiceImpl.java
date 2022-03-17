@@ -356,6 +356,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		cache.put(SecurityUtils.getUser().getUsername(), cacheUser);
 		if (Objects.nonNull(userInsOutlesRoleVO.getOutles())) {
 			cacheUser.setOutlesId(userInsOutlesRoleVO.getOutles().getOutlesId());
+		}else{
+			cacheUser.setOutlesId(null);
 		}
 		cache.put(SecurityUtils.getUser().getUsername(), cacheUser);
 
