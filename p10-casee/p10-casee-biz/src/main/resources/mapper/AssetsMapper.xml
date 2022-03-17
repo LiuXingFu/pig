@@ -173,4 +173,10 @@
 		</if>
 	</select>
 
+	<select id="queryByAssetsName" resultType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO">
+		SELECT * FROM p10_assets
+		LEFT JOIN p10_address ON p10_assets.assets_id = p10_address.user_id and p10_address.type = 4  and p10_address.del_flag = 0
+		WHERE p10_assets.del_flag = 0 and p10_assets.assets_name like concat('%', #{assetsName}, '%')
+	</select>
+
 </mapper>
