@@ -203,4 +203,16 @@ public class AssetsController {
 		return R.ok(assetsService.list(queryWrapper));
 	}
 
+	/**
+	 * 模糊查询财产名称
+	 * @param assetsName 财产名称
+	 * @return
+	 */
+	@ApiOperation(value = "模糊查询财产名称", notes = "模糊查询财产名称")
+	@GetMapping("/queryByAssetsName" )
+	public R queryByAssetsName(String assetsName) {
+		return R.ok(assetsService.queryByAssetsName(assetsName));
+	}
+
+
 }
