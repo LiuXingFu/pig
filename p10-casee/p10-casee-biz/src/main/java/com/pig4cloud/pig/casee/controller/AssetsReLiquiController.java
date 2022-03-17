@@ -260,4 +260,20 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryAssetsReBySubjectId(page,subjectId));
 	}
 
+	/**
+	 * 验证项目下是否存在同样财产
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "验证项目下是否存在同样财产", notes = "验证项目下是否存在同样财产")
+	@GetMapping("/getByProjectId" )
+	public R queryAssetsReBySubjectId(Integer projectId,Integer assetsId) {
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getDelFlag,0);
+		queryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
+		queryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
+		queryWrapper.last("limit 1");
+		return R.ok(assetsReLiquiService.getOne(queryWrapper));
+	}
+
 }
