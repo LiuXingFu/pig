@@ -42,4 +42,11 @@ public class RemoteBankLoanServiceFallbackImpl implements RemoteBankLoanService 
 
 		return null;
 	}
+
+	@Override
+	public R<BankLoan> queryBankLoan(Integer bankLoanId, String from) {
+		log.error("查询借贷表信息失败", cause);
+
+		return null;
+	}
 }

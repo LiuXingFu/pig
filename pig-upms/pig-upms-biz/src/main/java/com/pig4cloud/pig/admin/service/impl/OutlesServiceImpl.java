@@ -80,6 +80,12 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 	@Autowired
 	private SysUserService sysUserService;
 
+	@Autowired
+	private TaskNodeTemplateService taskNodeTemplateService;
+
+	@Autowired
+	private OutlesTemplateReService outlesTemplateReService;
+
 	/**
 	 * 新增
 	 *
@@ -315,6 +321,15 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		insOutlesUserAddDTO.setType(1);
 		insOutlesUserAddDTO.setUserList(outlesAddDTO.getUserList());
 		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
+
+		//根据当前
+		List<TaskNodeTemplate> taskNodeTemplates = taskNodeTemplateService.queryTemplateType();
+		for (TaskNodeTemplate template : taskNodeTemplates) {
+			OutlesTemplateRe outlesTemplateRe = new OutlesTemplateRe();
+			outlesTemplateRe.setTemplateId(template.getTemplateId());
+			outlesTemplateRe.setOutlesId(outles.getOutlesId());
+			outlesTemplateReService.save(outlesTemplateRe);
+		}
 		return save;
 	}
 
