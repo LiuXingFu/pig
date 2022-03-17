@@ -68,6 +68,6 @@ public interface AssetsService extends IService<Assets> {
 	 */
 	Integer saveAssets(AssetsAddDTO assetsAddDTO);
 
-	AssetsDeailsVO queryByAssetsName(String assetsName);
+	List<AssetsDeailsVO> queryByAssetsName(String assetsName);
 
 }

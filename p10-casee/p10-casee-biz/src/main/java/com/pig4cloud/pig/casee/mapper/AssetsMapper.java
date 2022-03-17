@@ -56,5 +56,5 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 
 	List<AssetsPageVO> selectBySujectId(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("subjectId") Integer subjectId);
 
-	AssetsDeailsVO queryByAssetsName(@Param("assetsName")String assetsName);
+	List<AssetsDeailsVO> queryByAssetsName(@Param("assetsName")String assetsName);
 }
