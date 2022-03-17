@@ -160,4 +160,11 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 
+
+	@Override
+	public AssetsDeailsVO queryByAssetsName(String assetsName){
+		return this.baseMapper.queryByAssetsName(assetsName);
+	}
+
+
 }
