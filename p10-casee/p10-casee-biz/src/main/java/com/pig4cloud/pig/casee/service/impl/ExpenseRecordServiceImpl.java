@@ -60,12 +60,12 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 
 	@Override
 	public boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord) {
-		ExpenseRecord record = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCaseeNumber, expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getCostType, expenseRecord.getCostType()).eq(ExpenseRecord::getStatus,0));
+		ExpenseRecord record = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getCaseeNumber, expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getCostType, expenseRecord.getCostType()).eq(ExpenseRecord::getStatus,0));
 		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
 		expenseRecord.setSubjectName(project.getSubjectPersons());
 
-		if (record!=null){//如果当前费用类型的案件费用信息已经存在则修改
-			record.setCostAmount(expenseRecord.getCostAmount());
+		if (record!=null){//如果当前费用类型的案件费用信息已经存在则费用金额累加
+			record.setCostAmount(record.getCostAmount().add(expenseRecord.getCostAmount()));
 			record.setCostIncurredTime(expenseRecord.getCostIncurredTime());
 			this.updateById(record);
 		}else {

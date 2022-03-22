@@ -75,7 +75,7 @@ public class ExpenseRecordController {
 	@ApiOperation(value = "根据案件案号和费用类型查询费用信息", notes = "根据案件案号和费用类型查询费用信息")
 	@GetMapping("/getByCaseeNumberAndCostType" )
 	public R getByCaseeNumberAndCostType(ExpenseRecord expenseRecord) {
-		return R.ok(expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getCostType,expenseRecord.getCostType()).eq(ExpenseRecord::getCaseeNumber,expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getStatus,0)));
+		return R.ok(expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getCostType,expenseRecord.getCostType()).eq(ExpenseRecord::getCaseeNumber,expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getStatus,0)));
 	}
 
 	/**
