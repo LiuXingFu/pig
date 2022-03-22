@@ -95,11 +95,12 @@
 		p10_bank_loan.*,
 		p10_institution.ins_name as entrustedInsName,
 		p10_outles.outles_name as entrustedOutlesName,
-		p10_transfer_record.status
+		if(ISNULL(p10_project.status),p10_transfer_record.`status`,p10_project.status) as status
 		from p10_bank_loan
 		left join p10_transfer_record on p10_transfer_record.source_id=p10_bank_loan.bank_loan_id and transfer_type=0
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
+		left join p10_project on p10_project.project_id=p10_transfer_record.project_id
 		where
 		p10_bank_loan.del_flag=0
 		<if test="login.insId != null and login.insId > 0">
