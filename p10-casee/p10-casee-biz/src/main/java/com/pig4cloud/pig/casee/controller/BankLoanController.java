@@ -17,12 +17,17 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
 import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
+import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.mapper.BankLoanMapper;
 import com.pig4cloud.pig.casee.service.BankLoanService;
+import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
+import com.pig4cloud.pig.casee.service.TransferRecordService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -49,6 +54,11 @@ public class BankLoanController {
     private final BankLoanService bankLoanService;
 
 	private final BankLoanMapper bankLoanMapper;
+
+	private final SubjectBankLoanReService subjectBankLoanReService;
+
+	private final TransferRecordService transferRecordService;
+
 
 
 	/**
@@ -151,6 +161,15 @@ public class BankLoanController {
     @SysLog("通过id删除银行借贷表" )
     @DeleteMapping("/{bankLoanId}" )
     public R removeById(@PathVariable Integer bankLoanId) {
+		QueryWrapper<SubjectBankLoanRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(SubjectBankLoanRe::getBankLoanId,bankLoanId);
+		subjectBankLoanReService.remove(queryWrapper);
+
+		QueryWrapper<TransferRecord> transferRecordQueryWrapper = new QueryWrapper<>();
+		transferRecordQueryWrapper.lambda().eq(TransferRecord::getSourceId,bankLoanId);
+		transferRecordQueryWrapper.lambda().eq(TransferRecord::getTransferType,0);
+		transferRecordService.remove(transferRecordQueryWrapper);
+
         return R.ok(bankLoanService.removeById(bankLoanId));
     }
 

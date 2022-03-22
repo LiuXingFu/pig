@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
 
 /**
@@ -27,5 +28,7 @@ import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
  * @date 2022-01-11 14:52:12
  */
 public interface ProjectSubjectReService extends IService<ProjectSubjectRe> {
+
+	Integer modifySubjectBySubjectReId(ProjectSubjectReModifyDTO projectSubjectReModifyDTO);
 
 }

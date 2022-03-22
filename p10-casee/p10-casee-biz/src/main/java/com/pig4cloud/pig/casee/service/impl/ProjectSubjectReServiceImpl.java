@@ -17,10 +17,18 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
 import com.pig4cloud.pig.casee.mapper.ProjectSubjectReMapper;
 import com.pig4cloud.pig.casee.service.ProjectSubjectReService;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 项目主体关联表
@@ -31,4 +39,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectSubjectReServiceImpl extends ServiceImpl<ProjectSubjectReMapper, ProjectSubjectRe> implements ProjectSubjectReService {
 
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
+
+	@Override
+	@Transactional
+	public Integer modifySubjectBySubjectReId(ProjectSubjectReModifyDTO projectSubjectReModifyDTO){
+		ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
+		projectSubjectRe.setSubjectReId(projectSubjectReModifyDTO.getSubjectReId());
+		projectSubjectRe.setType(projectSubjectReModifyDTO.getType());
+
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(projectSubjectReModifyDTO,subject);
+		remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
+
+		return this.baseMapper.updateById(projectSubjectRe);
+	}
 }

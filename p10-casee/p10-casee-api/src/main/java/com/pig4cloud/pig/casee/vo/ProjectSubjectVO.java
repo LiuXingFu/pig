@@ -15,4 +15,10 @@ public class ProjectSubjectVO extends Subject {
 	 */
 	@ApiModelProperty(value="类型（0-申请人，1-借款人，2-共同借款人，3-担保人）")
 	private Integer type;
+
+	/**
+	 * 项目主体关联id
+	 */
+	@ApiModelProperty(value="项目主体关联id")
+	private Integer subjectReId;
 }

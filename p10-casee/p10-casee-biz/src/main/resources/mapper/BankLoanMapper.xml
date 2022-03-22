@@ -97,7 +97,9 @@
 		p10_outles.outles_name as entrustedOutlesName,
 		if(ISNULL(p10_project.status),p10_transfer_record.`status`,p10_project.status) as status
 		from p10_bank_loan
-		left join p10_transfer_record on p10_transfer_record.source_id=p10_bank_loan.bank_loan_id and transfer_type=0
+		left join (select p10_transfer_record.`status`,p10_transfer_record.source_id,p10_transfer_record.project_id from p10_transfer_record
+					where del_flag = 0 and transfer_type=0 GROUP BY source_id
+					)p10_transfer_record on p10_transfer_record.source_id = p10_bank_loan.bank_loan_id
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
 		left join p10_project on p10_project.project_id=p10_transfer_record.project_id

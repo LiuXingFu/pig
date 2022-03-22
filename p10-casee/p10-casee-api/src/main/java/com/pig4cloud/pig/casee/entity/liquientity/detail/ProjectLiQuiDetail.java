@@ -48,6 +48,4 @@ public class ProjectLiQuiDetail {
 	private LocalDate startingTime;
 
 
-
-
 }
