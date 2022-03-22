@@ -198,6 +198,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			}
 			expenseRecord.setProjectId(caseeLiquiAddDTO.getProjectId());
 			expenseRecord.setCaseeId(caseeLiqui.getCaseeId());
+			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCaseeNumber(caseeLiquiAddDTO.getCaseeNumber());
 			expenseRecord.setCostIncurredTime(caseeLiquiAddDTO.getStartTime());
 			expenseRecord.setCostAmount(caseeLiquiAddDTO.getJudicialExpenses());

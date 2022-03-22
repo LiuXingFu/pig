@@ -39,15 +39,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		EntityZX_STZX_CCZXDK_CCZXDK entityZX_stzx_cczxdk_cczxdk = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXDK_CCZXDK.class);
 
 		//查询当前财产关联债务人信息
-		List<Subject> subjects = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());
-		String name=null;
-		for (Subject subject : subjects) {
-			if (name!=null){
-				name+=","+subject.getName();
-			}else {
-				name=subject.getName();
-			}
-		}
+		Subject subject = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());
+
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
@@ -66,18 +59,16 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		expenseRecord.setCaseeId(taskNode.getCaseeId());
 		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
 		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(name);
+		expenseRecord.setSubjectName(subject.getName());
 		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 		expenseRecord.setCostType(10007);
 		expenseRecordService.save(expenseRecord);
 
 		//添加费用产生明细关联主体信息
 		ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-		for (Subject subject : subjects) {
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
-		}
+		expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+		expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+		expenseRecordSubjectReService.save(expenseRecordSubjectRe);
 
 		//添加到款回款信息
 		PaymentRecord paymentRecord=new PaymentRecord();
@@ -90,15 +81,14 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		paymentRecord.setProjectId(taskNode.getProjectId());
 		paymentRecord.setCompanyCode(projectLiqui.getCompanyCode());
 		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
-		paymentRecord.setSubjectName(name);
+		paymentRecord.setSubjectName(subject.getName());
 		paymentRecordService.save(paymentRecord);
 
 		//添加抵偿回款信息关联债务人
 		PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
-		for (Subject subject : subjects) {
-			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordSubjectReService.save(paymentRecordSubjectRe);
-		}
+		paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
+		paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+		paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+
 	}
 }

@@ -20,16 +20,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper;
-import com.pig4cloud.pig.casee.service.ExpenseRecordService;
-import com.pig4cloud.pig.casee.service.ExpenseRecordSubjectReService;
-import com.pig4cloud.pig.casee.service.ProjectLiquiService;
-import com.pig4cloud.pig.casee.service.ProjectSubjectReService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +50,8 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	private ProjectSubjectReService projectSubjectReService;
 	@Autowired
 	private ExpenseRecordSubjectReService recordSubjectReService;
+	@Autowired
+	private AssetsReLiquiService assetsReLiquiService;
 
 	@Override
 	public IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
@@ -118,5 +118,12 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	@Override
 	public List<ExpenseRecordDistributeVO> getByPaymentType(ExpenseRecord expenseRecord) {
 		return this.baseMapper.getByPaymentType(expenseRecord);
+	}
+
+	@Override
+	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
+		Subject subject = assetsReLiquiService.queryAssetsSubject(projectId, caseeId, assetsId);
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = recordSubjectReService.list(new LambdaQueryWrapper<ExpenseRecordSubjectRe>().eq(ExpenseRecordSubjectRe::getSubjectId, subject.getSubjectId()));
+		return this.baseMapper.getAssetsByPaymentType(expenseRecordSubjectReList,projectId,caseeId);
 	}
 }

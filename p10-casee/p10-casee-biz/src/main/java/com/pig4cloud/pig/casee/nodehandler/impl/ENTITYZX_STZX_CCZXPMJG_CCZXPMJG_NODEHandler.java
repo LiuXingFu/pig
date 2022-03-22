@@ -82,15 +82,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			//查询案件信息
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 			//查询当前财产关联债务人信息
-			List<Subject> subjects = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxpmjg_cczxpmjg.getAssetsId());
-			String name=null;
-			for (Subject subject : subjects) {
-				if (name!=null){
-					name+=","+subject.getName();
-				}else {
-					name=subject.getName();
-				}
-			}
+			Subject assetsSubject = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxpmjg_cczxpmjg.getAssetsId());
+
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee()));
@@ -106,18 +99,17 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			expenseRecord.setCaseeId(taskNode.getCaseeId());
 			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
 			expenseRecord.setStatus(0);
-			expenseRecord.setSubjectName(name);
+			expenseRecord.setSubjectName(assetsSubject.getName());
 			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCostType(10007);
 			expenseRecordService.save(expenseRecord);
 
 			//添加费用产生明细关联主体信息
 			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-			for (Subject subject : subjects) {
-				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordSubjectReService.save(expenseRecordSubjectRe);
-			}
+			expenseRecordSubjectRe.setSubjectId(assetsSubject.getSubjectId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+
 		}
 	}
 }

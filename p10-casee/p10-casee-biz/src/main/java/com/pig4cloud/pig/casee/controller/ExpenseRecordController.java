@@ -89,6 +89,18 @@ public class ExpenseRecordController {
 			return R.ok(expenseRecordService.getByPaymentType(expenseRecord));
 	}
 
+	/**
+	 * 根据项目id、案件id和财产id查询财产债务人费用信息
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id和财产id查询财产债务人费用信息", notes = "根据项目id、案件id和财产id查询财产债务人费用信息")
+	@GetMapping("/getAssetsByPaymentType" )
+	public R getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(expenseRecordService.getAssetsByPaymentType(projectId,caseeId,assetsId));
+	}
+
+
     /**
      * 新增费用产生记录表
      * @param expenseRecord 费用产生记录表

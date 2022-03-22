@@ -106,7 +106,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 
 
 	@Override
-	public List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
+	public Subject queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
 		return this.baseMapper.queryAssetsSubject(projectId,caseeId,assetsId);
 	}
 

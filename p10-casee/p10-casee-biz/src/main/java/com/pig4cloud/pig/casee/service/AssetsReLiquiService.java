@@ -59,7 +59,7 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @param assetsId
 	 * @return
 	 */
-	List<Subject> queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId);
+	Subject queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId);
 
 	/**
 	 * 通过项目id、案件id、财产id查询财产抵押权信息

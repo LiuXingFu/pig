@@ -26,14 +26,9 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC extends CommonalityData implements 
 	private LocalDate settlementDate;
 
 	/**
-	 * 抵偿人名称
+	 * 抵偿人
 	 */
-	private String subjectName;
-
-	/**
-	 * 抵偿人id
-	 */
-	private Integer subjectId;
+	private String indemnifier;
 
 	/**
 	 * 拍辅费用
