@@ -93,19 +93,26 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			insOutlesUser.setPosition(insOutlesUserAddDTO.getPosition());
 
 			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-			queryWrapper.lambda().eq(SysUser::getDelFlag,0);
 			queryWrapper.lambda().eq(SysUser::getPhone,item.getPhone());
 			SysUser user = sysUserService.getOne(queryWrapper);
 			// 判断用户是否存在
 			if(Objects.nonNull(user)){
 				insOutlesUser.setUserId(user.getUserId());
+				// 用户已存在，状态为删除或冻结时，解除冻结和删除
+				if(!user.getDelFlag().equals(CommonConstants.STATUS_NORMAL)){
+					UserDTO sysUser = new UserDTO();
+					sysUser.setUserId(user.getUserId());
+					sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
+					sysUser.setLockFlag(CommonConstants.STATUS_NORMAL);
+					sysUserService.updateById(sysUser);
+				}
 			}else{
 				UserDTO sysUser = new UserDTO();
 				sysUser.setPassword("123456");
 				sysUser.setNickName(item.getActualName());
 				sysUser.setPhone(item.getPhone());
 				sysUser.setDelFlag(CommonConstants.STATUS_NORMAL);
-				sysUser.setLockFlag("0");
+				sysUser.setLockFlag(CommonConstants.STATUS_NORMAL);
 				sysUser.setUsername(item.getPhone());
 				sysUser.setActualName(item.getActualName());
 				sysUserService.saveUser(sysUser);
