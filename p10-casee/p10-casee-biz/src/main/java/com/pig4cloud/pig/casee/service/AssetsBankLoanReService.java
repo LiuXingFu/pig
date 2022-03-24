@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 
 /**
@@ -28,4 +29,5 @@ import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
  */
 public interface AssetsBankLoanReService extends IService<AssetsBankLoanRe> {
 
+	Integer modifAssetsByAssetsBankLoanReId(AssetsDTO assetsDTO);
 }

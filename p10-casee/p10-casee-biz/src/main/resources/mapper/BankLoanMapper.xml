@@ -120,8 +120,11 @@
 		<if test="query.transferDate != null">
 			and  p10_bank_loan.transfer_date = #{query.transferDate}
 		</if>
-		<if test="query.status != -1">
+		<if test="query.status != -1 and query.status &lt; 1000">
 			and  p10_transfer_record.status = #{query.status}
+		</if>
+		<if test="query.status != -1 and query.status &gt;= 1000">
+			and  p10_project.status = #{query.status}
 		</if>
 		ORDER BY p10_bank_loan.create_time desc
 	</select>

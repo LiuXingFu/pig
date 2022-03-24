@@ -43,12 +43,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		//查询当前财产关联债务人信息
 		Subject subject = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxzcdc_cczxzcdc.getAssetsId());
 
-		//添加拍辅金额时需添加项目总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee()));
-		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-		//修改项目总金额
-		projectLiquiService.updateById(projectLiqui);
 
 		//添加费用明细记录
 		ExpenseRecord expenseRecord=new ExpenseRecord();
@@ -111,10 +106,14 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 			}
 		}
 
+		//添加拍辅金额时需修改项目总金额
+		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee()));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+
 		//添加抵偿时需修改项目回款总金额
 		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(entityZX_stzx_cczxzcdc_cczxzcdc.getCompensationAmount()));
 		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-		//修改项目总金额
+		//修改项目总金额以及回款总金额
 		projectLiquiService.updateById(projectLiqui);
 	}
 }

@@ -17,9 +17,18 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Address;
+import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
+import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,5 +39,32 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AssetsBankLoanReServiceImpl extends ServiceImpl<AssetsBankLoanReMapper, AssetsBankLoanRe> implements AssetsBankLoanReService {
+	@Autowired
+	private AssetsService assetsService;
+	@Autowired
+	private RemoteAddressService remoteAddressService;
 
+	@Override
+	public Integer modifAssetsByAssetsBankLoanReId(AssetsDTO assetsDTO) {
+		Assets assets=new Assets();
+		BeanCopyUtil.copyBean(assetsDTO,assets);
+		assetsService.updateById(assets);
+
+		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
+		BeanCopyUtil.copyBean(assetsDTO,assetsBankLoanRe);
+
+		Address address=new Address();
+		BeanUtils.copyProperties(assetsDTO, address);
+		if (assetsDTO.getAddressAsId()!=null){
+			address.setAddressId(assetsDTO.getAddressAsId());
+			address.setType(4);
+			remoteAddressService.updateByAddressId(address,SecurityConstants.FROM);
+		}else {
+			address.setType(4);
+			address.setUserId(assets.getAssetsId());
+			remoteAddressService.saveAddress(address,SecurityConstants.FROM);
+		}
+
+		return this.baseMapper.updateById(assetsBankLoanRe);
+	}
 }

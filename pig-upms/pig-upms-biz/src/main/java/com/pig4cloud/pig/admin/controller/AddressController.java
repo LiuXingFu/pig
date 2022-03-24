@@ -103,6 +103,19 @@ public class AddressController {
 	}
 
 	/**
+	 * 修改地址表
+	 *
+	 * @param address 地址表
+	 * @return R
+	 */
+	@ApiOperation(value = "修改地址表", notes = "修改地址表")
+	@SysLog("修改地址表")
+	@PutMapping("/updateByAddressId")
+	public R updateByAddressId(@RequestBody Address address) {
+		return R.ok(addressService.updateById(address));
+	}
+
+	/**
 	 * 新增或修改地址表
 	 *
 	 * @param addressDTO 地址表

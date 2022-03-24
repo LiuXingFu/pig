@@ -18,12 +18,15 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +56,19 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 			this.remove(new LambdaQueryWrapper<SubjectBankLoanRe>().eq(SubjectBankLoanRe::getBankLoanId, bankLoanId).eq(SubjectBankLoanRe::getSubjectId, subjectId));
 		}
 		return true;
+	}
+
+	@Override
+	public Integer modifySubjectBySubjectBankLoanId(SubjectBankLoanReDTO subjectBankLoanReDTO) {
+		SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
+		subjectBankLoanRe.setSubjectBankLoanId(subjectBankLoanReDTO.getSubjectBankLoanId());
+		subjectBankLoanRe.setDebtType(subjectBankLoanReDTO.getDebtType());
+
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(subjectBankLoanReDTO,subject);
+		remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
+
+		return this.baseMapper.updateById(subjectBankLoanRe);
 	}
 
 	@Override

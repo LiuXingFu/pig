@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -93,6 +94,18 @@ public class SubjectBankLoanReController {
     public R updateById(@RequestBody SubjectBankLoanRe subjectBankLoanRe) {
         return R.ok(subjectBankLoanReService.updateById(subjectBankLoanRe));
     }
+
+	/**
+	 * 根据银行借贷主体关联id更新债务人类型和主体信息
+	 * @param subjectBankLoanReDTO 根据银行借贷主体关联id更新债务人类型和主体信息
+	 * @return R
+	 */
+	@ApiOperation(value = "根据银行借贷主体关联id更新债务人类型和主体信息", notes = "根据银行借贷主体关联id更新债务人类型和主体信息")
+	@SysLog("根据银行借贷主体关联id更新债务人类型和主体信息" )
+	@PutMapping("/modifySubjectBySubjectBankLoanId")
+	public R modifySubjectBySubjectBankLoanId(@RequestBody SubjectBankLoanReDTO subjectBankLoanReDTO) {
+		return R.ok(subjectBankLoanReService.modifySubjectBySubjectBankLoanId(subjectBankLoanReDTO));
+	}
 
     /**
      * 通过id删除主体关联银行借贷表

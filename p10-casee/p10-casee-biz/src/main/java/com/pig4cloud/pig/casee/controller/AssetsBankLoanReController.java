@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -90,6 +91,18 @@ public class AssetsBankLoanReController {
     public R updateById(@RequestBody AssetsBankLoanRe assetsBankLoanRe) {
         return R.ok(assetsBankLoanReService.updateById(assetsBankLoanRe));
     }
+
+	/**
+	 * 根据银行借贷财产关联id更新财产和主体信息
+	 * @param assetsDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "根据银行借贷财产关联id更新财产和主体信息", notes = "根据银行借贷财产关联id更新财产和主体信息")
+	@SysLog("根据银行借贷财产关联id更新财产和主体信息" )
+	@PutMapping("/modifAssetsByAssetsBankLoanReId")
+	public R modifAssetsByAssetsBankLoanReId(@RequestBody AssetsDTO assetsDTO) {
+		return R.ok(assetsBankLoanReService.modifAssetsByAssetsBankLoanReId(assetsDTO));
+	}
 
     /**
      * 通过id删除财产关联银行借贷表

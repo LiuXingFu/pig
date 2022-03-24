@@ -18,6 +18,8 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
+import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 
 import java.util.List;
@@ -31,6 +33,8 @@ import java.util.List;
 public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
 
 	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
+
+	Integer modifySubjectBySubjectBankLoanId(SubjectBankLoanReDTO subjectBankLoanReDTO);
 
 
 	List<Integer> selectSubjectId(Integer bankLoanId);
