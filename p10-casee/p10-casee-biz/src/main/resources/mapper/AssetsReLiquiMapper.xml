@@ -392,6 +392,7 @@
 	</select>
 
 	<resultMap id="assetsReDetails" type="com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO" extends="assetsMap">
+		<result property="assetsTargetId" column="assetsTargetId"/>
 		<collection property="projectLiqui" ofType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui"
 					column="project_id"
 					select="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper.selectProjectDetails"></collection>
@@ -404,9 +405,11 @@
 	</resultMap>
 
 	<select id="selectAssetsReDetails" resultMap="assetsReDetails">
-		select * from p10_assets_re
-		where del_flag = 0
-		and assets_re_id = #{assetsReId}
+		select p10_assets_re.*,p10_target.target_id as assetsTargetId from p10_assets_re
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		where p10_assets_re.del_flag = 0
+		and p10_target.goal_type = 20001
+		and p10_assets_re.assets_re_id = #{assetsReId}
 	</select>
 
 	<select id="selectDispositionRuling" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">

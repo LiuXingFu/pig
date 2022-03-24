@@ -9,6 +9,11 @@ import lombok.Data;
 public class AssetsReLiquiDetailsVO extends AssetsReLiqui {
 
 	/**
+	 * 程序id
+	 */
+	private Integer assetsTargetId;
+
+	/**
 	 * 项目详情
 	 */
 	@ApiModelProperty(value="项目详情")
