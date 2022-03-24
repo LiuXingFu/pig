@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
@@ -48,13 +49,13 @@ public class PaymentRecordController {
     /**
      * 分页查询
      * @param page 分页对象
-     * @param paymentRecord 回款详细记录表
+     * @param paymentRecordPageDTO 回款详细记录表
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    public R getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
-        return R.ok(paymentRecordService.getPaymentRecordPage(page, paymentRecord));
+    public R getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
+        return R.ok(paymentRecordService.getPaymentRecordPage(page, paymentRecordPageDTO));
     }
 
 

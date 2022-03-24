@@ -16,47 +16,51 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.FulfillmentRecords;
-import com.pig4cloud.pig.casee.entity.liquientity.ReconciliatioMediationLiqui;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
- * 和解/调解表
+ * 回款详细记录表
  *
  * @author Mjh
- * @date 2022-03-01 20:36:17
+ * @date 2022-02-17 17:52:51
  */
 @Data
-public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
+public class PaymentRecordPageDTO {
+
+    /**
+     * 案件id
+     */
+    @ApiModelProperty(value="案件id")
+    private Integer caseeId;
+
+    /**
+     * 公司业务案号
+     */
+    @ApiModelProperty(value="公司业务案号")
+    private String companyCode;
+
 
 	/**
-	 * 待履行记录信息
+	 * 还款人名称
 	 */
-	private List<FulfillmentRecords> fulfillmentRecordsList;
-
-	/**
-	 * 公司业务案号
-	 */
-	private String companyCode;
-
-	/**
-	 * 债务人id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 债务人名称
-	 */
-	private String name;
+	@ApiModelProperty(value="还款人名称")
+	private String subjectName;
 
 	@ApiModelProperty(value="开始时间")
 	private LocalDate beginDate;
 
 	@ApiModelProperty(value="结束时间")
 	private LocalDate endDate;
+
+
 
 }
