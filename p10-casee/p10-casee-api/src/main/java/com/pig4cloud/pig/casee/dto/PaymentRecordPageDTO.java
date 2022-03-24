@@ -14,40 +14,53 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.casee.entity.Assets;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
- * 财产表
+ * 回款详细记录表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author Mjh
+ * @date 2022-02-17 17:52:51
  */
 @Data
-public class AssetsPageVO extends Assets {
+public class PaymentRecordPageDTO {
+
+    /**
+     * 案件id
+     */
+    @ApiModelProperty(value="案件id")
+    private Integer caseeId;
+
+    /**
+     * 公司业务案号
+     */
+    @ApiModelProperty(value="公司业务案号")
+    private String companyCode;
+
 
 	/**
-	 * 省
+	 * 还款人名称
 	 */
-	@ApiModelProperty(value = "省")
-	private String province;
-	/**
-	 * 市
-	 */
-	@ApiModelProperty(value = "市")
-	private String city;
-	/**
-	 * 区
-	 */
-	@ApiModelProperty(value = "区")
-	private String area;
-	/**
-	 * 信息地址
-	 */
-	@ApiModelProperty(value = "信息地址")
-	private String informationAddress;
+	@ApiModelProperty(value="还款人名称")
+	private String subjectName;
+
+	@ApiModelProperty(value="开始时间")
+	private LocalDate beginDate;
+
+	@ApiModelProperty(value="结束时间")
+	private LocalDate endDate;
+
+
+
 }

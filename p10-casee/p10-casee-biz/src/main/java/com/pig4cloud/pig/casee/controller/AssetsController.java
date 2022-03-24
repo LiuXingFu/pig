@@ -214,5 +214,27 @@ public class AssetsController {
 		return R.ok(assetsService.queryByAssetsName(assetsName));
 	}
 
+	/**
+	 * 分页查询财产
+	 * @param
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询财产", notes = "分页查询财产")
+	@GetMapping("/queryAssetsPage" )
+	public R queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
+		return R.ok(assetsService.queryAssetsPage(page,assetsOrProjectPageDTO));
+	}
+
+	/**
+	 * 获取财产信息
+	 * @param
+	 * @return
+	 */
+	@ApiOperation(value = "获取财产信息", notes = "获取财产信息")
+	@GetMapping("/getByAssetsId" )
+	public R getByAssetsId(Integer assetsId) {
+		return R.ok(assetsService.getByAssetsId(assetsId));
+	}
+
 
 }

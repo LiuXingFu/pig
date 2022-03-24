@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
@@ -42,7 +43,7 @@ import java.util.Map;
 @Mapper
 public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecord paymentRecord, @Param("login") InsOutlesDTO insOutlesDTO);
+	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecordPageDTO paymentRecordPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
 

@@ -108,6 +108,13 @@
 		left join p10_project on p10_project.project_id = p10_behavior.project_id
 		left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
 		where p10_project.del_flag = 0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		order by p10_project.project_id,p10_casee.casee_id asc
 	</select>
 
 </mapper>

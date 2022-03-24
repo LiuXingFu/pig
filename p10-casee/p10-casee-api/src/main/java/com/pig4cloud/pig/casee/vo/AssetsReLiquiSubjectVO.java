@@ -70,5 +70,11 @@ public class AssetsReLiquiSubjectVO extends AssetsReLiqui {
 	@ApiModelProperty(value="案号")
 	private String caseeNumber;
 
+	/**
+	 * 案件状态
+	 */
+	@ApiModelProperty(value="案件状态")
+	private Integer caseeStatus;
+
 
 }

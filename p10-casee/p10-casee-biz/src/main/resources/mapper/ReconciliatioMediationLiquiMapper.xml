@@ -93,8 +93,9 @@
 		<if test="query.subjectName != null and query.subjectName != ''">
 			and p10_reconciliatio_mediation.subject_name like concat('%', #{query.subjectName}, '%')
 		</if>
-		<if test="query.reconciliatioMediationData != null">
-			AND p10_reconciliatio_mediation.reconciliatio_mediation_data=#{query.reconciliatioMediationData}
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_reconciliatio_mediation.reconciliatio_mediation_data BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
 		<if test="query.status != null and query.status!=-1">
 			AND p10_reconciliatio_mediation.status=#{query.status}

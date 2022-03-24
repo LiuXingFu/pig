@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
@@ -39,7 +40,7 @@ import java.util.Map;
  */
 public interface PaymentRecordService extends IService<PaymentRecord> {
 
-	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord);
+	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO);
 
 	BigDecimal sumCourtPayment(PaymentRecord paymentRecord);
 

@@ -83,4 +83,6 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	IPage<AssetsReLiquiSubjectVO> queryAssetsReBySubjectId(Page page,@Param("subjectId")Integer subjectId, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<AssetsReLiquiProjectVO> selectByAssetsId(Page page,@Param("assetsId")Integer assetsId, @Param("login") InsOutlesDTO insOutlesDTO);
+
 }

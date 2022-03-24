@@ -53,4 +53,10 @@ public class ReconciliatioMediationDTO extends ReconciliatioMediationLiqui {
 	 */
 	private String name;
 
+	@ApiModelProperty(value="开始时间")
+	private LocalDate beginDate;
+
+	@ApiModelProperty(value="结束时间")
+	private LocalDate endDate;
+
 }

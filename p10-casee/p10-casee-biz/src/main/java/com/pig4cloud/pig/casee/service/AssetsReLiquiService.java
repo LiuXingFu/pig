@@ -207,5 +207,6 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 */
 	IPage<AssetsReLiquiSubjectVO> queryAssetsReBySubjectId(Page page,Integer subjectId);
 
+	IPage<AssetsReLiquiProjectVO> queryByAssetsId(Page page,Integer assetsId);
 
 }

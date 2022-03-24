@@ -686,7 +686,7 @@
 	</resultMap>
 
 	<select id="queryAssetsReBySubjectId" resultMap="resultSubject">
-		select p10_assets_re.*,p10_project.project_id,p10_project.company_code,p10_project.status projectStatus,p10_casee.casee_id,p10_casee.casee_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address from p10_assets_re
+		select p10_assets_re.*,p10_project.project_id,p10_project.company_code,p10_project.status projectStatus,p10_casee.casee_id,p10_casee.casee_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_casee.`status` as caseeStatus from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
@@ -699,5 +699,22 @@
 		<if test="login.outlesId != null and login.outlesId > 0">
 			and p10_project.outles_id = #{login.outlesId}
 		</if>
+		ORDER BY p10_assets.assets_id asc
 	</select>
+
+	<select id="selectByAssetsId" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiProjectVO">
+		select p10_project.company_code,p10_project.`status` as projectStatus,p10_casee.casee_number,p10_casee.`status` as caseeStatus,p10_assets_re.* from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.assets_id = #{assetsId}
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+	</select>
+
+
 </mapper>

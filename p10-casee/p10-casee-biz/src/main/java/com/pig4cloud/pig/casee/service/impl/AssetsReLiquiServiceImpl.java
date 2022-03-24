@@ -252,4 +252,12 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.queryAssetsReBySubjectId(page,subjectId,insOutlesDTO);
 	}
 
+	@Override
+	public 	IPage<AssetsReLiquiProjectVO> queryByAssetsId(Page page,Integer assetsId){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectByAssetsId(page,assetsId,insOutlesDTO);
+	}
+
 }

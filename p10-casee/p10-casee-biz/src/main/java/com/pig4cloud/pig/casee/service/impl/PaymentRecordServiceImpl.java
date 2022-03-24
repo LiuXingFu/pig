@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
+import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
@@ -63,11 +64,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private ExpenseRecordService expenseRecordService;
 
 	@Override
-	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecord paymentRecord) {
+	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.getPaymentRecordPage(page,paymentRecord,insOutlesDTO);
+		return this.baseMapper.getPaymentRecordPage(page,paymentRecordPageDTO,insOutlesDTO);
 	}
 
 	@Override
