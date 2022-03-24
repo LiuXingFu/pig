@@ -406,9 +406,8 @@
 
 	<select id="selectAssetsReDetails" resultMap="assetsReDetails">
 		select p10_assets_re.*,p10_target.target_id as assetsTargetId from p10_assets_re
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_target.goal_type = 20001
 		where p10_assets_re.del_flag = 0
-		and p10_target.goal_type = 20001
 		and p10_assets_re.assets_re_id = #{assetsReId}
 	</select>
 
