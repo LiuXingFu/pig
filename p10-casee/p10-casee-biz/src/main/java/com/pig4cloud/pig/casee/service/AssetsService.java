@@ -70,4 +70,8 @@ public interface AssetsService extends IService<Assets> {
 
 	List<AssetsDeailsVO> queryByAssetsName(String assetsName);
 
+	IPage<AssetsPageVO> queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+
+	AssetsPageVO getByAssetsId(Integer assetsId);
+
 }

@@ -50,4 +50,10 @@ public class AssetsOrProjectPageDTO {
 	@ApiModelProperty(value="债务人id")
 	private Integer subjectId;
 
+	/**
+	 * 所有权人
+	 */
+	@ApiModelProperty(value="所有权人")
+	private String owner;
+
 }

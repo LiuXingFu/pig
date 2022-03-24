@@ -156,19 +156,25 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	@Override
 	@Transactional
 	public Integer saveAssets(AssetsAddDTO assetsAddDTO){
-
-
-
-
-
 		return 0;
 	}
-
-
 
 	@Override
 	public List<AssetsDeailsVO> queryByAssetsName(String assetsName){
 		return this.baseMapper.queryByAssetsName(assetsName);
+	}
+
+	@Override
+	public 	IPage<AssetsPageVO> queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectAssetsPage(page,assetsOrProjectPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public AssetsPageVO getByAssetsId(Integer assetsId){
+		return this.baseMapper.getByAssetsId(assetsId);
 	}
 
 

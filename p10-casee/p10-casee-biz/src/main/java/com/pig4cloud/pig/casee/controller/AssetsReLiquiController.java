@@ -276,4 +276,15 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.getOne(queryWrapper));
 	}
 
+	/**
+	 * 查询债务人财产
+	 * @param assetsId
+	 * @return R
+	 */
+	@ApiOperation(value = "查询财产", notes = "查询债务人财产")
+	@GetMapping("/queryByAssetsId" )
+	public R queryByAssetsId(Page page,Integer assetsId) {
+		return R.ok(assetsReLiquiService.queryByAssetsId(page,assetsId));
+	}
+
 }

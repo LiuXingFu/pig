@@ -16,14 +16,10 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 财产表
@@ -33,18 +29,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 public class AssetsPageVO extends Assets {
-
-	/**
-	 * 财产来源（1-抵押财产，2-案件）
-	 */
-	@ApiModelProperty(value="财产来源（1-抵押财产，2-案件）")
-	private Integer assetsSource;
-
-	/**
-	 * 抵押权人
-	 */
-	@ApiModelProperty(value = "抵押权人")
-	private Integer mortgagee;
 
 	/**
 	 * 省
@@ -66,10 +50,4 @@ public class AssetsPageVO extends Assets {
 	 */
 	@ApiModelProperty(value = "信息地址")
 	private String informationAddress;
-
-	/**
-	 * 案件财产关联id
-	 */
-	@ApiModelProperty(value = "案件财产关联id")
-	private Integer assetsReId;
 }
