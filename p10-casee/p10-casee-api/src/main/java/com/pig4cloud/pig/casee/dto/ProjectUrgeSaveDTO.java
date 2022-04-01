@@ -69,7 +69,7 @@ public class ProjectUrgeSaveDTO {
      * 督促电话
      */
     @ApiModelProperty(value="督促电话")
-    private Integer urgePhone;
+    private String urgePhone;
     /**
      * 督促日期
      */
