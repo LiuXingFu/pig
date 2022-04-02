@@ -85,7 +85,7 @@ public class ProjectUrge extends BaseEntity {
      * 督促电话
      */
     @ApiModelProperty(value="督促电话")
-    private Integer urgePhone;
+    private String urgePhone;
 
     /**
      * 办理人名称
