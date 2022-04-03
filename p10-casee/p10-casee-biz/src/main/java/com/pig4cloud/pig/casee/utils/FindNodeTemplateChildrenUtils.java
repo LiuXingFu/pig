@@ -128,10 +128,10 @@ public class FindNodeTemplateChildrenUtils {
 						} else {
 							TaskNode taskNodeSQYS = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXSQYS_CCZXSQYS").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()));
 							EntityZX_STZX_CCZXSQYS_CCZXSQYS entityZX_stzx_cczxsqys_cczxsqys = JsonUtils.jsonToPojo(taskNodeSQYS.getFormData(), EntityZX_STZX_CCZXSQYS_CCZXSQYS.class);
-							if (entityZX_stzx_cczxcf_cczxcf != null && entityZX_stzx_cczxsqys_cczxsqys != null) {
+							if (entityZX_stzx_cczxcf_cczxcf != null) {
 								if ((mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0) ||//有抵押权、查封为首封
-										(mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 1 && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 0) ||//有抵押权、查封为轮候、已商情移送(结果成功)
-										(mortgagee == 1 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0 && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 2)) {//无抵押权、首封、无抵押权人
+										(mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 1 && entityZX_stzx_cczxsqys_cczxsqys != null && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 0) ||//有抵押权、查封为轮候、已商情移送(结果成功)
+										(mortgagee == 1 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0 && entityZX_stzx_cczxsqys_cczxsqys != null && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 2)) {//无抵押权、首封、无抵押权人
 									return taskNodeVO;
 								}
 							}
