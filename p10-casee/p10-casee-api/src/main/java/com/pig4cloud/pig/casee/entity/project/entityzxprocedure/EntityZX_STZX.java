@@ -57,26 +57,6 @@ public class EntityZX_STZX extends CommonalityData implements Serializable {
 	EntityZX_STZX_CCZXPMGG entityZX_STZX_CCZXPMGG = new EntityZX_STZX_CCZXPMGG();
 
 	/**
-	 *	接受咨询
-	 */
-	EntityZX_STZX_JSZX entityZX_STZX_JSZX=new EntityZX_STZX_JSZX();
-
-	/**
-	 *	报名看样
-	 */
-	EntityZX_STZX_BMKY entityZX_STZX_BMKY=new EntityZX_STZX_BMKY();
-
-	/**
-	 *	看样准备工作
-	 */
-	EntityZX_STZX_KYZBGZ entityZX_STZX_KYZBGZ=new EntityZX_STZX_KYZBGZ();
-
-	/**
-	 * 引领看样
-	 */
-	EntityZX_STZX_YLKY entityZX_STZX_YLKY=new EntityZX_STZX_YLKY();
-
-	/**
 	 * 财产执行拍卖结果
 	 */
 	EntityZX_STZX_CCZXPMJG entityZX_STZX_CCZXPMJG = new EntityZX_STZX_CCZXPMJG();
