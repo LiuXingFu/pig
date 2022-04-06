@@ -52,6 +52,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private ProjectSubjectReService projectSubjectReService;
 	@Autowired
 	private CaseeSubjectReService caseeSubjectReService;
+	@Autowired
+	private ProjectStatusService projectStatusService;
 
 
 	@Override
@@ -109,6 +111,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectCaseeRe.setProjectId(projectPaifu.getProjectId());
 		projectCaseeRe.setCaseeId(casee.getCaseeId());
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,projectCaseeRe);
+
+		// 保存项目状态变更记录表
+		ProjectStatus projectStatus = new ProjectStatus();
+		projectStatus.setStatusName("在办");
+		projectStatus.setUserName(projectPaifuSaveDTO.getUserNickName());
+		projectStatus.setType(1);
+		projectStatus.setSourceId(projectPaifu.getProjectId());
+		projectStatusService.save(projectStatus);
+
 		return save;
 	}
 
