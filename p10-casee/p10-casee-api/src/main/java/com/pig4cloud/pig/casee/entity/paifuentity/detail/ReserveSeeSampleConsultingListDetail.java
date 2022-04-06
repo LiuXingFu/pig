@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @date 2021-10-19 16:03:22
  */
 @Data
-public class ReserveSeeSampleConsultingList implements Serializable {
+public class ReserveSeeSampleConsultingListDetail implements Serializable {
 	/**姓名*/
     private String name;
 	/**联系电话*/

@@ -1,7 +1,7 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
 import com.pig4cloud.pig.casee.entity.CommonalityData;
-import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleSeeSampleList;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleSeeSampleListDetail;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -18,5 +18,5 @@ public class EntityZX_STZX_BMKY_BMKY extends CommonalityData implements Serializ
 	 *
 	 *  报名看样名单
 	 */
-	List<ReserveSeeSampleSeeSampleList> reserveSeeSampleSeeSampleLists=new ArrayList<>();
+	List<ReserveSeeSampleSeeSampleListDetail> reserveSeeSampleSeeSampleLists=new ArrayList<>();
 }
