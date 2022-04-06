@@ -1,7 +1,7 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
 
 import com.pig4cloud.pig.casee.entity.CommonalityData;
-import com.pig4cloud.pig.casee.entity.paifuentity.detail.ActualLookSamplerList;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.ActualLookSamplerListDetail;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class PaiFu_STCC_YLKY_YLKY extends CommonalityData implements Serializable {
 	/**看样人员名单*/
-	private List<ActualLookSamplerList> samplerList;
+	private List<ActualLookSamplerListDetail> samplerList;
 
 	/**附件地址*/
 	private String fileUrl;
