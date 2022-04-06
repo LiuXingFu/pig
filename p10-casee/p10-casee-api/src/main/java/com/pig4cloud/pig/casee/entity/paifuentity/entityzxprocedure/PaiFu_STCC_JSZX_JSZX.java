@@ -1,7 +1,7 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
 
 import com.pig4cloud.pig.casee.entity.CommonalityData;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.detail.ReserveSeeSampleConsultingList;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleConsultingList;
 import lombok.Data;
 
 import java.io.Serializable;

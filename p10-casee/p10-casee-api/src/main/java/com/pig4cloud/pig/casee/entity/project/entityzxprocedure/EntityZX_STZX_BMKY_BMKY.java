@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
+package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleSeeSampleList;
@@ -9,15 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 报名看样
+ *	报名看样
  */
 @Data
-public class PaiFu_STCC_BMKY_BMKY extends CommonalityData implements Serializable {
+public class EntityZX_STZX_BMKY_BMKY extends CommonalityData implements Serializable {
 
 	/**
 	 *
 	 *  报名看样名单
 	 */
 	List<ReserveSeeSampleSeeSampleList> reserveSeeSampleSeeSampleLists=new ArrayList<>();
-
 }

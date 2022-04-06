@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.detail;
+package com.pig4cloud.pig.casee.entity.paifuentity.detail;
 
 
 import lombok.Data;
