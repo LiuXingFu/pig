@@ -66,4 +66,10 @@ public class CaseeSubjectReListDTO {
 	@ApiModelProperty(value = "备注")
 	private String remark;
 
+	/**
+	 * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人，4-案外人）
+	 */
+	@ApiModelProperty(value = "类型（0-申请人，1-借款人，2-共同借款人，3-担保人，4-案外人）")
+	private Integer type;
+
 }

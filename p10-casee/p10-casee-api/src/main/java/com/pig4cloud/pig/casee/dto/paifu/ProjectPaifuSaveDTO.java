@@ -45,18 +45,6 @@ public class ProjectPaifuSaveDTO {
     private String companyCode;
 
     /**
-     * 机构id
-     */
-    @ApiModelProperty(value="机构id")
-    private Integer insId;
-
-    /**
-     * 网点id
-     */
-    @ApiModelProperty(value="网点id")
-    private Integer outlesId;
-
-    /**
      * 办理人id
      */
     @ApiModelProperty(value="办理人id")

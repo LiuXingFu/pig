@@ -17,8 +17,14 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
 import com.pig4cloud.pig.casee.service.ProjectPaifuService;
+import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +45,28 @@ public class ProjectPaifuController {
 	@Autowired
     private ProjectPaifuService projectPaifuService;
 
+	/**
+	 * 项目拍辅分页查询
+	 * @param page 分页对象
+	 * @param projectPaifuPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "项目拍辅分页查询", notes = "项目拍辅分页查询")
+	@GetMapping("/queryProjectCaseePage" )
+	public R queryProjectCaseePage(Page page, ProjectPaifuPageDTO projectPaifuPageDTO) {
+		return R.ok(projectPaifuService.queryProjectCaseePage(page, projectPaifuPageDTO));
+	}
+
+	/**
+	 * 新增拍辅项目案件
+	 * @param projectPaifuSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "新增拍辅项目案件", notes = "新增拍辅项目案件")
+	@SysLog("新增拍辅项目案件" )
+	@PostMapping("/saveProjectCasee")
+	public R saveProjectCasee(@RequestBody ProjectPaifuSaveDTO projectPaifuSaveDTO) {
+		return R.ok(projectPaifuService.saveProjectCasee(projectPaifuSaveDTO));
+	}
 
 }

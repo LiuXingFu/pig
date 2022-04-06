@@ -17,9 +17,14 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.paifu.CaseeSubjectReListDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 
 
 /**
@@ -29,6 +34,12 @@ public interface ProjectPaifuService extends IService<Project> {
 
 	Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO);
 
-
+	/**
+	 * 分页查询列表
+	 * @param page
+	 * @param projectPaifuPageDTO
+	 * @return
+	 */
+	IPage<ProjectPaifuPageVO> queryProjectCaseePage(Page page, ProjectPaifuPageDTO projectPaifuPageDTO);
 
 }

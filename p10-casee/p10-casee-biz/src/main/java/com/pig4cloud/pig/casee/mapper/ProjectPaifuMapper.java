@@ -18,8 +18,14 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 拍辅项目表
@@ -29,4 +35,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ProjectPaifuMapper extends BaseMapper<Project> {
+
+	IPage<ProjectPaifuPageVO> selectPagePaifu(Page page, @Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }

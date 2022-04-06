@@ -47,16 +47,10 @@ public class ProjectPaifuPageVO extends ProjectPaifu {
 	private String caseeNumber;
 
 	/**
-	 * 承办法院id
+	 * 承办法院
 	 */
-	@ApiModelProperty(value="承办法院id")
-	private Integer courtId;
-
-	/**
-	 * 承办法官id
-	 */
-	@ApiModelProperty(value="承办法官id")
-	private Integer judgeId;
+	@ApiModelProperty(value="承办法院")
+	private Integer courtName;
 
 	/**
 	 * 法官名称
