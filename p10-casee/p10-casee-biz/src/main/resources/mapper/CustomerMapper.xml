@@ -62,8 +62,8 @@
 		<if test="query.subjectName != null and query.subjectName != ''">
 			and p10_subject.name like concat('%',#{query.subjectName},'%')
 		</if>
-		<if test="query.recommenderName != null and query.recommenderName != ''">
-			and sys_user.actual_name like concat('%',#{query.recommenderName},'%')
+		<if test="query.phone != null and query.phone != ''">
+			and p10_subject.phone like concat('%',#{query.phone},'%')
 		</if>
 		<if test="query.customerType != null and query.customerType != -1">
 			and p10_customer.customer_type = #{query.customerType}
