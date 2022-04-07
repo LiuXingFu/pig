@@ -25,7 +25,6 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.vo.*;
-import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -89,4 +88,6 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	Map<String, BigDecimal> getCaseeMap(@Param("polylineActive") Integer polylineActive, @Param("differenceList") List<String> differenceList, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
 
 	CaseeLiqui getCaseeLiqui(@Param("query") Casee casee);
+
+	CaseeLiqui selectLastCasee(@Param("projectId") Integer projectId);
 }
