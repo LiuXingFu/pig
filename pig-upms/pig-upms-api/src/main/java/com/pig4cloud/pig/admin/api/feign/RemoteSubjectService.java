@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteSubjectServiceFallbackFactory;
+import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
@@ -56,7 +57,7 @@ public interface RemoteSubjectService {
 	 * @return
 	 */
 	@PostMapping("/subject/saveSubject")
-	R saveSubject(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Subject> saveSubject(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 
 
 	/**
@@ -135,5 +136,13 @@ public interface RemoteSubjectService {
 	 */
 	@GetMapping("/subject/selectSubjectById/{subjectId}")
 	R<Subject> getById(@PathVariable("subjectId") Integer subjectId, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 通过身份证查询主体信息
+	 * @param unifiedIdentity 身份证
+	 * @return R
+	 */
+	@GetMapping("/subject/getByUnifiedIdentity/{unifiedIdentity}" )
+	R<SubjectVO> getByUnifiedIdentity(@PathVariable("unifiedIdentity" ) String unifiedIdentity, @RequestHeader(SecurityConstants.FROM) String from);
 
 }
