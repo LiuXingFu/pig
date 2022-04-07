@@ -72,6 +72,13 @@
 		</if>
 	</select>
 
+	<select id="getAssetsByProjectId" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+		select p10_assets_re.*,p10_assets.*,p10_address.* from p10_assets_re
+		left join p10_assets on p10_assets_re.assets_id=p10_assets.assets_id and p10_assets.type=20200
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		where p10_assets_re.project_id=#{projectId}
+	</select>
+
 	<select id="queryAssetsSubject" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
 		select p10_subject.* from p10_assets_re
 		left join p10_subject on p10_subject.subject_id=p10_assets_re.subject_id

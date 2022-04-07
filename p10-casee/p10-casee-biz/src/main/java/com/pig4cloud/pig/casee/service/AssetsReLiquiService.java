@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
@@ -44,6 +45,12 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 */
 	Integer saveAssetsCasee(AssetsAddDTO assetsAddDTO)throws Exception;
 
+	/**
+	 * 根据项目id查询是否有可移交的财产
+	 * @param projectId
+	 * @return
+	 */
+	List<AssetsReDTO> getTransferAssetsByProjectId(Integer projectId);
 	/**
 	 * 根据条件查询案件财产表数据
 	 * @param assetsRe

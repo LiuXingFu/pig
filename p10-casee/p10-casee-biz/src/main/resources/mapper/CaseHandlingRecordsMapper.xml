@@ -37,6 +37,11 @@
     <result property="caseeId" column="casee_id"/>
     <result property="targetId" column="target_id"/>
     <result property="formData" column="form_data"/>
+	<result property="sourceId" column="source_id"/>
+	<result property="sourceType" column="source_type"/>
+	<result property="insId" column="ins_id"/>
+	<result property="outlesId" column="outles_id"/>
+
   </resultMap>
 
 	<select id="queryCaseeHandlingRecords" resultType="com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO">
@@ -44,5 +49,8 @@
 		left join sys_user on sys_user.user_id=p10_casee_handling_records.create_by
 		where
 		p10_casee_handling_records.project_id=#{caseeHandlingRecords.projectId} and p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId} and p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
+		<if test="caseeHandlingRecords.sourceId!=null and caseeHandlingRecords.sourceType!=null">
+			and caseeHandlingRecords.source_id=#{caseeHandlingRecords.sourceId} and caseeHandlingRecords.source_type=#{caseeHandlingRecords.sourceType}
+		</if>
 	</select>
 </mapper>

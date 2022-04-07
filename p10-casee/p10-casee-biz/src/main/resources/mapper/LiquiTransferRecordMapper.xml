@@ -21,36 +21,26 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.ProjectCaseeReMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper">
 
-  <resultMap id="ProjectCaseeReMap" type="com.pig4cloud.pig.casee.entity.ProjectCaseeRe">
-    <id property="projectCaseeId" column="project_casee_id"/>
+  <resultMap id="liquiTransferRecordMap" type="com.pig4cloud.pig.casee.entity.LiquiTransferRecord">
+    <id property="liquiTransferRecordId" column="liqui_transfer_record_id"/>
     <result property="createBy" column="create_by"/>
     <result property="createTime" column="create_time"/>
-    <result property="updateBy" column="update_by"/>
     <result property="updateTime" column="update_time"/>
-    <result property="delFlag" column="del_flag"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="entrustInsId" column="entrust_ins_id"/>
+    <result property="entrustOutlesId" column="entrust_outles_id"/>
+    <result property="entrustedInsId" column="entrusted_ins_id"/>
+    <result property="entrustedOutlesId" column="entrusted_outles_id"/>
     <result property="projectId" column="project_id"/>
     <result property="caseeId" column="casee_id"/>
-    <result property="userId" column="user_id"/>
-    <result property="actualName" column="actual_name"/>
-    <result property="projectCaseeDetail" column="project_casee_detail"/>
+    <result property="caseeNumber" column="casee_number"/>
+    <result property="handoverTime" column="handover_time"/>
+    <result property="returnTime" column="return_time"/>
+    <result property="status" column="status"/>
+    <result property="feedbackNotes" column="feedback_notes"/>
+    <result property="remark" column="remark"/>
+    <result property="delFlag" column="del_flag"/>
   </resultMap>
-
-	<select id="getCaseeByProjectId" resultType="com.pig4cloud.pig.casee.entity.Casee">
-		select p10_casee.* from p10_project_casee_re left join p10_casee on p10_casee.casee_id=p10_project_casee_re.casee_id
-		 where p10_project_casee_re.project_id=#{projectId} and p10_casee.casee_type in(3010,3031)
-	</select>
-
-	<select id="getImplementCaseeByProjectId" resultType="com.pig4cloud.pig.casee.entity.Casee">
-		SELECT
-			p10_casee.*
-		FROM
-			`p10_project_casee_re`
-			LEFT JOIN p10_casee ON p10_casee.casee_id = p10_project_casee_re.casee_id
-		WHERE
-			p10_project_casee_re.project_id = #{projectId}
-			ORDER BY p10_casee.start_time desc
-			LIMIT 1
-	</select>
 </mapper>

@@ -15,25 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.mapper;
+package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 
 /**
+ * 清收移交记录表
  *
- *
- * @author pig code generator
- * @date 2022-02-13 22:13:19
+ * @author Mjh
+ * @date 2022-04-06 15:21:31
  */
-@Mapper
-public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
-	List<Casee> getCaseeByProjectId(Integer projectId);
-
-	Casee getImplementCaseeByProjectId(Integer projectId);
+public interface LiquiTransferRecordService extends IService<LiquiTransferRecord> {
 
 }

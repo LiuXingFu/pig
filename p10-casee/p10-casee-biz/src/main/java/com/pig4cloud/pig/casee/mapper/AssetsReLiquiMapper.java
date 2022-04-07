@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -40,6 +41,8 @@ import java.util.List;
  */
 @Mapper
 public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
+
+	List<AssetsReDTO> getAssetsByProjectId(Integer projectId);
 
 	AssetsReLiqui getAssetsReCasee(@Param("query") AssetsRe assetsRe);
 
