@@ -677,4 +677,13 @@
 		</if>
 	</select>
 
+	<select id="selectLastCasee" resultType="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">
+		select p10_casee.* from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
+		where p10_project.project_id = #{projectId}
+		ORDER BY p10_casee.start_time desc
+		limit 1
+	</select>
+
 </mapper>

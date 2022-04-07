@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.detail;
+package com.pig4cloud.pig.casee.entity.paifuentity.detail;
 
 
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @date 2021-10-19 16:03:22
  */
 @Data
-public class ActualLookSamplerList implements Serializable {
+public class ActualLookSamplerListDetail implements Serializable {
 	/**姓名*/
     private String name;
 	/**联系电话*/

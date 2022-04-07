@@ -18,6 +18,7 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -61,8 +62,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Autowired
 	private AssetsReService assetsReService;
 	@Autowired
-	private AssetsService assetsService;
-	@Autowired
 	private CaseeSubjectReService caseeSubjectReService;
 	@Autowired
 	private RemoteSubjectService subjectService;
@@ -73,13 +72,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
-	private DeadlineConfigureService deadlineConfigureService;
-	@Autowired
 	private TaskNodeService taskNodeService;
 	@Autowired
 	private ExpenseRecordService expenseRecordService;
 	@Autowired
 	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
+	@Autowired
+	private AssetsReLiquiService assetsReLiquiService;
 
 	@Override
 	@Transactional
@@ -370,6 +369,10 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		// 30311=执恢
 		caseeLiqui.setCategory(30311);
 		this.baseMapper.updateById(caseeLiqui);
+
+		CaseeLiqui casee = this.baseMapper.selectLastCasee(caseeLiquiAddDTO.getProjectId());
+
+		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),caseeId,casee.getCaseeId());
 		return caseeId;
 	}
 

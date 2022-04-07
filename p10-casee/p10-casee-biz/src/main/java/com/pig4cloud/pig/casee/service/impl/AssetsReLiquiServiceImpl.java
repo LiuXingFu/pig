@@ -260,4 +260,9 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.selectByAssetsId(page,assetsId,insOutlesDTO);
 	}
 
+	@Override
+	public Integer updateAssetsRe(Integer projectId,Integer caseeId,Integer newCaseeId){
+		return this.baseMapper.updateAssetsRe(projectId,caseeId,newCaseeId);
+	}
+
 }

@@ -1,7 +1,7 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
 
 import com.pig4cloud.pig.casee.entity.CommonalityData;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.detail.ReserveSeeSampleConsultingList;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleConsultingListDetail;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,5 +16,5 @@ public class PaiFu_STCC_JSZX_JSZX extends CommonalityData implements Serializabl
 	/**
 	 * 咨询名单
 	 */
-	List<ReserveSeeSampleConsultingList> reserveSeeSampleConsultingLists=new ArrayList<>();
+	List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists=new ArrayList<>();
 }

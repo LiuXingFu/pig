@@ -718,5 +718,16 @@
 		</if>
 	</select>
 
+	<update id="updateAssetsRe">
+		UPDATE p10_assets_re set casee_id = #{newCaseeId}
+		where project_id = #{projectId} and casee_id = #{caseeId}
+		and assets_id in (select p10_assets_re.assets_id from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		where p10_assets.type = 20200
+		and p10_assets_re.project_id = #{projectId} and p10_assets_re.casee_id = #{caseeId}
+		and (json_extract(p10_assets.assets_detail,"$.assetsCompletionRuling") is null
+		or json_extract(p10_assets.assets_detail,"$.assetsCompensationAward") is null))
+	</update>
+
 
 </mapper>
