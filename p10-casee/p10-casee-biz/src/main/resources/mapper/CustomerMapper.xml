@@ -70,4 +70,12 @@
 		</if>
 	</select>
 
+	<select id="queryById" resultType="com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO">
+		SELECT * FROM `p10_customer`
+		LEFT JOIN p10_subject ON p10_customer.subject_id = p10_subject.subject_id
+		WHERE
+		p10_customer.del_flag = 0
+		AND p10_customer.customer_id = #{customerId}
+	</select>
+
 </mapper>

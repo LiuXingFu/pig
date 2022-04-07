@@ -29,6 +29,7 @@ import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Customer;
 import com.pig4cloud.pig.casee.mapper.CustomerMapper;
 import com.pig4cloud.pig.casee.service.CustomerService;
+import com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO;
 import com.pig4cloud.pig.casee.vo.CustomerSubjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.R;
@@ -68,6 +69,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	@Override
 	@Transactional
 	public int saveCustomer(CustomerSubjectDTO customerSubjectDTO) {
+		int add = 0;
 		// 判断主体id是否为空
 		if(customerSubjectDTO.getSubjectId() != null) {
 			// 主体id不为空 添加客户信息
@@ -98,7 +100,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				this.save(customer);
 			}
 		}
-		return 1;
+		return add+=1;
 	}
 
 	/**
@@ -112,6 +114,30 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		customerPageDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		customerPageDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.queryCustomerPage(page, customerPageDTO);
+	}
+
+	/**
+	 * 通过id查询客户与主体信息
+	 * @param customerId id
+	 * @return R
+	 */
+	@Override
+	public CustomerOrSubjectVO queryById(Integer customerId) {
+		return this.baseMapper.queryById(customerId);
+	}
+
+	/**
+	 * 修改客户信息
+	 * @param customerSubjectDTO 客户表
+	 * @return R
+	 */
+	@Override
+	public int updateCustomerById(CustomerSubjectDTO customerSubjectDTO) {
+		int update = 0;
+		Subject subject = new Subject();
+		BeanUtil.copyProperties(customerSubjectDTO, subject);
+		this.remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
+		return update += 1;
 	}
 
 	/**

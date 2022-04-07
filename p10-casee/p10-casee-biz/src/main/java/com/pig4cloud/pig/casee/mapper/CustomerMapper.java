@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.CustomerPageDTO;
 import com.pig4cloud.pig.casee.entity.Customer;
+import com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO;
 import com.pig4cloud.pig.casee.vo.CustomerSubjectVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,6 @@ import org.apache.ibatis.annotations.Param;
 public interface CustomerMapper extends BaseMapper<Customer> {
 
 	IPage<CustomerSubjectVO> queryCustomerPage(Page page, @Param("query") CustomerPageDTO customerPageDTO);
+
+	CustomerOrSubjectVO queryById(Integer customerId);
 }

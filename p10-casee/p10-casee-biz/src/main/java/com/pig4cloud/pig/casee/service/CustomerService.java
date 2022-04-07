@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.CustomerPageDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Customer;
+import com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO;
 import com.pig4cloud.pig.casee.vo.CustomerSubjectVO;
 
 /**
@@ -47,4 +48,18 @@ public interface CustomerService extends IService<Customer> {
 	 * @return
 	 */
 	IPage<CustomerSubjectVO> queryCustomerPage(Page page, CustomerPageDTO customerPageDTO);
+
+	/**
+	 * 通过id查询客户与主体信息
+	 * @param customerId id
+	 * @return R
+	 */
+	CustomerOrSubjectVO queryById(Integer customerId);
+
+	/**
+	 * 修改客户信息
+	 * @param customerSubjectDTO 客户表
+	 * @return R
+	 */
+	int updateCustomerById(CustomerSubjectDTO customerSubjectDTO);
 }

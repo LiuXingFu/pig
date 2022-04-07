@@ -114,8 +114,8 @@ public class CustomerController {
 	 * @param customerSubjectDTO
 	 * @return R
 	 */
-	@ApiOperation(value = "新增客户表", notes = "新增客户表")
-	@SysLog("新增客户表" )
+	@ApiOperation(value = "新增客户信息", notes = "新增客户信息")
+	@SysLog("新增客户信息" )
 	@PostMapping("/saveCustomer")
 	public R saveCustomer(@RequestBody CustomerSubjectDTO customerSubjectDTO) {
 		int i = customerService.saveCustomer(customerSubjectDTO);
@@ -136,6 +136,34 @@ public class CustomerController {
 	@GetMapping("/queryCustomerPage" )
 	public R queryCustomerPage(Page page, CustomerPageDTO customerPageDTO){
 		return R.ok(customerService.queryCustomerPage(page, customerPageDTO));
+	}
+
+	/**
+	 * 通过id查询客户与主体信息
+	 * @param customerId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询客户与主体信息", notes = "通过id查询客户与主体信息")
+	@GetMapping("/queryById/{customerId}" )
+	public R queryById(@PathVariable("customerId" ) Integer customerId) {
+		return R.ok(customerService.queryById(customerId));
+	}
+
+	/**
+	 * 修改客户信息
+	 * @param customerSubjectDTO 客户表
+	 * @return R
+	 */
+	@ApiOperation(value = "修改客户信息", notes = "修改客户信息")
+	@SysLog("修改客户信息" )
+	@PutMapping("/updateCustomerById")
+	public R updateCustomerById(@RequestBody CustomerSubjectDTO customerSubjectDTO) {
+		int i = customerService.updateCustomerById(customerSubjectDTO);
+		if (i > 0) {
+			return R.ok("修改客户信息成功！");
+		} else {
+			return R.failed("修改客户信息失败！");
+		}
 	}
 
 }
