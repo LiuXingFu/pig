@@ -16,5 +16,5 @@ public class PaiFu_STCC_JSZX_JSZX extends CommonalityData implements Serializabl
 	/**
 	 * 咨询名单
 	 */
-	List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists=new ArrayList<>();
+	List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = new ArrayList<>();
 }

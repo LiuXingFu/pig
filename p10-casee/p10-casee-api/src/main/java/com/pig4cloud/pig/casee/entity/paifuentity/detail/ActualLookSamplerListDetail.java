@@ -23,7 +23,7 @@ public class ActualLookSamplerListDetail implements Serializable {
 	/**报名时间*/
     private LocalDateTime registrationTime;
 	/**是否实际看样 0-否 1-是*/
-    private Boolean isSeeSample;
+    private Integer isSeeSample;
 	/**备注*/
     private String remark;
 }
