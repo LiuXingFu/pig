@@ -14,17 +14,13 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
-import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 清收移交记录表
@@ -32,7 +28,37 @@ import org.apache.ibatis.annotations.Param;
  * @author Mjh
  * @date 2022-04-06 15:21:31
  */
-@Mapper
-public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecord> {
-	IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, @Param("query") LiquiTransferRecord liquiTransferRecord, @Param("login") InsOutlesDTO insOutlesDTO);
+@Data
+@TableName("p10_liqui_transfer_record")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "清收移交记录表")
+public class LiquiTransferRecordVO extends LiquiTransferRecord {
+
+	/**
+	 * 机构名称
+	 */
+	private String insName;
+
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
+
+    /**
+     * 申请人
+     */
+    private String applicantSubjectName;
+
+    /**
+     * 被执行人
+     */
+    private String executorSubjectName;
+
+    /**
+     * 申请提交时间
+     */
+    private String applicationSubmissionTime;
+
+
+
 }

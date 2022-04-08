@@ -50,6 +50,7 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 
 		LiquiTransferRecord liquiTransferRecord=new LiquiTransferRecord();
 		liquiTransferRecord.setProjectId(taskNode.getProjectId());
+		liquiTransferRecord.setNodeId(taskNode.getNodeId());
 		liquiTransferRecord.setCaseeId(implementCasee.getCaseeId());
 		liquiTransferRecord.setCaseeNumber(implementCasee.getCaseeNumber());
 		liquiTransferRecord.setEntrustInsId(project.getInsId());

@@ -52,7 +52,7 @@ public class LiquiTransferRecordController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
     public R getLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
-        return R.ok(liquiTransferRecordService.page(page, Wrappers.query(liquiTransferRecord)));
+        return R.ok(liquiTransferRecordService.queryLiquiTransferRecordPage(page,liquiTransferRecord));
     }
 
 

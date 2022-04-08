@@ -16,10 +16,16 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper;
 import com.pig4cloud.pig.casee.service.LiquiTransferRecordService;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,5 +36,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRecordMapper, LiquiTransferRecord> implements LiquiTransferRecordService {
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
+	@Override
+	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryLiquiTransferRecordPage(page,liquiTransferRecord,insOutlesDTO);
+	}
 }

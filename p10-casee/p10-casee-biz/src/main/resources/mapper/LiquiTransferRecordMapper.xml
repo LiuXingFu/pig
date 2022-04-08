@@ -33,7 +33,8 @@
     <result property="entrustOutlesId" column="entrust_outles_id"/>
     <result property="entrustedInsId" column="entrusted_ins_id"/>
     <result property="entrustedOutlesId" column="entrusted_outles_id"/>
-    <result property="projectId" column="project_id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="nodeId" column="node_id"/>
     <result property="caseeId" column="casee_id"/>
     <result property="caseeNumber" column="casee_number"/>
     <result property="handoverTime" column="handover_time"/>
@@ -43,4 +44,35 @@
     <result property="remark" column="remark"/>
     <result property="delFlag" column="del_flag"/>
   </resultMap>
+
+
+	<select id="queryLiquiTransferRecordPage" resultType="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO">
+		SELECT
+			p10_liqui_transfer_record.casee_number caseeNumber,
+			p10_liqui_transfer_record.handover_time handoverTime,
+			p10_liqui_transfer_record.status,
+			applicantSubject.`name` applicantSubjectName,
+			executorSubject.`name` executorSubjectName,
+			substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
+			p10_institution.ins_name insName,
+			p10_outles.outles_name outlesName
+		FROM
+			`p10_liqui_transfer_record`
+			LEFT JOIN p10_casee_subject_re applicant ON applicant.casee_id = p10_liqui_transfer_record.casee_id
+			AND applicant.casee_personnel_type = 0
+			LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
+			LEFT JOIN p10_casee_subject_re executor ON executor.casee_id = p10_liqui_transfer_record.casee_id
+			AND executor.casee_personnel_type = 1
+			LEFT JOIN p10_subject executorSubject ON executorSubject.subject_id = executor.subject_id
+			LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
+			LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
+			LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
+			WHERE p10_liqui_transfer_record.del_flag=0
+		<if test="login.insId != null and login.insId > 0">
+			and p10_liqui_transfer_record.entrusted_ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_liqui_transfer_record.entrusted_outles_id = #{login.outlesId}
+		</if>
+	</select>
 </mapper>

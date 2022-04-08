@@ -17,8 +17,12 @@
 
 package com.pig4cloud.pig.casee.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 清收移交记录表
@@ -28,4 +32,5 @@ import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
  */
 public interface LiquiTransferRecordService extends IService<LiquiTransferRecord> {
 
+	IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord);
 }
