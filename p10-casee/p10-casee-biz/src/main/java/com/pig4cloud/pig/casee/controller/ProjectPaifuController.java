@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
 import com.pig4cloud.pig.casee.service.ProjectPaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -67,6 +68,40 @@ public class ProjectPaifuController {
 	@PostMapping("/saveProjectCasee")
 	public R saveProjectCasee(@RequestBody ProjectPaifuSaveDTO projectPaifuSaveDTO) {
 		return R.ok(projectPaifuService.saveProjectCasee(projectPaifuSaveDTO));
+	}
+
+	/**
+	 * 查询项目案件详情
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "查询项目案件详情", notes = "查询项目案件详情")
+	@GetMapping("/queryProjectCaseeDetail" )
+	public R queryProjectCaseeDetail(Integer projectId) {
+		return R.ok(projectPaifuService.queryProjectCaseeDetail(projectId));
+	}
+
+	/**
+	 * 新增拍辅项目主体关联表
+	 * @param projectSubjectReSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "新增拍辅项目主体关联表", notes = "新增拍辅项目主体关联表")
+	@SysLog("新增拍辅项目主体关联表" )
+	@PostMapping("/addProjectSubjectRe")
+	public R addProjectSubjectRe(@RequestBody ProjectSubjectReSaveDTO projectSubjectReSaveDTO) {
+		return R.ok(projectPaifuService.addProjectSubjectRe(projectSubjectReSaveDTO));
+	}
+
+	/**
+	 * 验证项目主体
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "验证项目主体", notes = "验证项目主体")
+	@GetMapping("/queryProjectSubjectRe" )
+	public R queryProjectSubjectRe(Integer projectId,String unifiedIdentity) {
+		return R.ok(projectPaifuService.queryProjectSubjectRe(projectId,unifiedIdentity));
 	}
 
 }

@@ -23,9 +23,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 拍辅项目表
@@ -37,4 +41,11 @@ import org.apache.ibatis.annotations.Param;
 public interface ProjectPaifuMapper extends BaseMapper<Project> {
 
 	IPage<ProjectPaifuPageVO> selectPagePaifu(Page page, @Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	ProjectPaifuDetailVO selectByProjectId(@Param("projectId") Integer projectId);
+
+	List<ProjectSubjectReListVO> selectProjectSubjectReList(@Param("projectId") Integer projectId,@Param("type") Integer type);
+
+	ProjectSubjectReListVO selectProjectSubjectRe(@Param("projectId") Integer projectId,@Param("unifiedIdentity") String unifiedIdentity);
+
 }
