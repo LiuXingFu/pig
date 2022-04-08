@@ -32,4 +32,6 @@ import java.util.List;
 public interface ProjectCaseeReService extends IService<ProjectCaseeRe> {
 
 	List<Casee> getCaseeByProjectId(Integer projectId);
+
+	Casee getImplementCaseeByProjectId(Integer projectId);
 }

@@ -21,6 +21,7 @@ import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.common.core.util.R;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +105,12 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	@Override
 	public R getById(Integer subjectId, String from) {
 		log.error("根据主体id查询债务人信息失败", cause);
+		return null;
+	}
+
+	@Override
+	public R<SubjectVO> getByUnifiedIdentity(String unifiedIdentity, String from) {
+		log.error("根据身份证查询主体信息失败", cause);
 		return null;
 	}
 }

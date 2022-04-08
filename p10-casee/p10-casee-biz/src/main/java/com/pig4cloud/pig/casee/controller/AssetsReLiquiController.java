@@ -57,6 +57,17 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.saveAssetsCasee(assetsAddDTO));
 	}
 
+	/**
+	 * 通过项目id查询可移交财产信息
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询可移交财产信息", notes = "通过项目id查询可移交财产信息")
+	@GetMapping("/getTransferAssetsByProjectId/{projectId}")
+	public R getTransferAssetsByProjectId(@PathVariable Integer projectId) {
+		return R.ok(assetsReLiquiService.getTransferAssetsByProjectId(projectId));
+	}
+
 
 	/**
 	 * 通过项目id和财产id查询案件id

@@ -14,26 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
+import com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper;
+import com.pig4cloud.pig.casee.service.AssetsLiquiTransferRecordReService;
+import org.springframework.stereotype.Service;
 
 /**
+ * 财产关联清收移交记录表
  *
- *
- * @author pig code generator
- * @date 2022-02-13 22:13:19
+ * @author Mjh
+ * @date 2022-04-06 15:22:06
  */
-@Mapper
-public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
-	List<Casee> getCaseeByProjectId(Integer projectId);
-
-	Casee getImplementCaseeByProjectId(Integer projectId);
+@Service
+public class AssetsLiquiTransferRecordReServiceImpl extends ServiceImpl<AssetsLiquiTransferRecordReMapper, AssetsLiquiTransferRecordRe> implements AssetsLiquiTransferRecordReService {
 
 }

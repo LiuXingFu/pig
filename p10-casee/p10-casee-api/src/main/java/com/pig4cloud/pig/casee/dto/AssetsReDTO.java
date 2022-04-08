@@ -14,26 +14,57 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import lombok.Data;
 
 /**
+ * 财产表
  *
- *
- * @author pig code generator
- * @date 2022-02-13 22:13:19
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
-@Mapper
-public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
-	List<Casee> getCaseeByProjectId(Integer projectId);
+@Data
+public class AssetsReDTO extends AssetsReLiqui {
+	/**
+	 * 财产名称
+	 */
+	private String assetsName;
 
-	Casee getImplementCaseeByProjectId(Integer projectId);
+	/**
+	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
+	 */
+	private Integer assetsType;
 
+	/**
+	 * 所有权人
+	 */
+	private String owner;
+
+	/**
+	 * 财产账号/编号
+	 */
+	private String accountNumber;
+
+	/**
+	 * 省
+	 */
+	private String province;
+
+	/**
+	 * 市
+	 */
+	private String city;
+
+	/**
+	 * 区
+	 */
+	private String area;
+
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }

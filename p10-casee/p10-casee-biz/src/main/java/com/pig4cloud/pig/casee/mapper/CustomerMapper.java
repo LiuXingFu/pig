@@ -18,22 +18,25 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.CustomerPageDTO;
+import com.pig4cloud.pig.casee.entity.Customer;
+import com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO;
+import com.pig4cloud.pig.casee.vo.CustomerSubjectVO;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
+ * 客户表
  *
- *
- * @author pig code generator
- * @date 2022-02-13 22:13:19
+ * @author yuanduo
+ * @date 2022-04-06 10:40:19
  */
 @Mapper
-public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
-	List<Casee> getCaseeByProjectId(Integer projectId);
+public interface CustomerMapper extends BaseMapper<Customer> {
 
-	Casee getImplementCaseeByProjectId(Integer projectId);
+	IPage<CustomerSubjectVO> queryCustomerPage(Page page, @Param("query") CustomerPageDTO customerPageDTO);
 
+	CustomerOrSubjectVO queryById(Integer customerId);
 }
