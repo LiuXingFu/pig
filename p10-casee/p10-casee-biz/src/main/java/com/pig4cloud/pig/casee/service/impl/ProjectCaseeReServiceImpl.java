@@ -38,4 +38,9 @@ public class ProjectCaseeReServiceImpl extends ServiceImpl<ProjectCaseeReMapper,
 	public List<Casee> getCaseeByProjectId(Integer projectId) {
 		return this.baseMapper.getCaseeByProjectId(projectId);
 	}
+
+	@Override
+	public Casee getImplementCaseeByProjectId(Integer projectId) {
+		return this.baseMapper.getImplementCaseeByProjectId(projectId);
+	}
 }

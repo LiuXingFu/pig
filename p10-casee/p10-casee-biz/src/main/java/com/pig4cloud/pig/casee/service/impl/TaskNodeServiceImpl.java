@@ -530,17 +530,19 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Transactional
 	public String saveNodeFormData(TaskFlowDTO taskFlowDTO) {
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
+			//添加案件任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
+
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
-
-			//添加案件任务办理记录
-			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
-			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-			caseeHandlingRecordsService.save(caseeHandlingRecords);
 
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);

@@ -91,6 +91,33 @@ public class CaseeHandlingRecords extends BaseEntity {
 	@ApiModelProperty(value="程序id")
 	private Integer targetId;
 
+	/**
+	 * 源id
+	 */
+	@ApiModelProperty(value="源id")
+	private Integer sourceId;
+
+
+	/**
+	 * 类型
+	 */
+	@ApiModelProperty(value="类型")
+	private Integer sourceType;
+
+
+	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value="机构id")
+	private Integer insId;
+
+
+	/**
+	 * 网点id
+	 */
+	@ApiModelProperty(value="网点id")
+	private Integer outlesId;
+
 
 
 }

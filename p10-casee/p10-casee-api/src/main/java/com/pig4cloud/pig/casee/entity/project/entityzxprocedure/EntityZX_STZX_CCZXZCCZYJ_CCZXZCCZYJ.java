@@ -1,10 +1,13 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *	财产执行资产处置移交
@@ -23,9 +26,9 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData impleme
 	private Integer entrustedOutlesId;
 
 	/**
-	 * 移交用户id
+	 * 移交的财产id
 	 */
-	private Integer userId;
+	List<AssetsReDTO> assetsReDTOList;
 
 	/**
 	 * 拍卖申请书
@@ -36,6 +39,12 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData impleme
 	 * 申请提交时间
 	 */
 	private LocalDate applicationSubmissionTime;
+
+	/**
+	 * 移交时间
+	 */
+	@ApiModelProperty(value="移交时间")
+	private LocalDate handoverTime;
 
 	/**
 	 * 备注

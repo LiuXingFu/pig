@@ -18,22 +18,21 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ProjectCaseeRe;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
+ * 清收移交记录表
  *
- *
- * @author pig code generator
- * @date 2022-02-13 22:13:19
+ * @author Mjh
+ * @date 2022-04-06 15:21:31
  */
 @Mapper
-public interface ProjectCaseeReMapper extends BaseMapper<ProjectCaseeRe> {
-	List<Casee> getCaseeByProjectId(Integer projectId);
-
-	Casee getImplementCaseeByProjectId(Integer projectId);
-
+public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecord> {
+	IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, @Param("query") LiquiTransferRecord liquiTransferRecord, @Param("login") InsOutlesDTO insOutlesDTO);
 }
