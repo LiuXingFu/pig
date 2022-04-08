@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.CustomerMapper">
+
+  <resultMap id="customerMap" type="com.pig4cloud.pig.casee.entity.Customer">
+    <id property="customerId" column="customer_id"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createTime" column="create_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="delFlag" column="del_flag"/>
+    <result property="subjectId" column="subject_id"/>
+    <result property="projectId" column="project_id"/>
+    <result property="caseeId" column="casee_id"/>
+    <result property="customerType" column="customer_type"/>
+    <result property="recommenderId" column="recommender_id"/>
+    <result property="insId" column="ins_id"/>
+    <result property="outlesId" column="outles_id"/>
+  </resultMap>
+
+	<select id="queryCustomerPage" resultType="com.pig4cloud.pig.casee.vo.CustomerSubjectVO">
+		SELECT p10_customer.customer_id,
+		p10_customer.customer_type,
+		p10_subject.name as subjectName,
+		sys_user.actual_name as recommenderName,
+		p10_institution.ins_name,
+		p10_outles.outles_name
+		FROM `p10_customer`
+		LEFT JOIN p10_subject ON p10_customer.subject_id = p10_subject.subject_id AND p10_subject.del_flag = 0
+		LEFT JOIN sys_user ON p10_customer.recommender_id = sys_user.user_id AND sys_user.del_flag = 0
+		LEFT JOIN p10_institution ON p10_customer.ins_id = p10_institution.ins_id AND p10_institution.del_flag = 0
+		LEFT JOIN p10_outles ON p10_customer.outles_id = p10_outles.outles_id AND p10_outles.del_flag = 0
+		WHERE
+		p10_customer.del_flag = 0
+		<if test="query.insId != null and query.insId != 0">
+			and p10_institution.ins_id = #{query.insId}
+		</if>
+		<if test="query.outlesId != null and query.outlesId != 0">
+			and p10_outles.outles_id = #{query.outlesId}
+		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and p10_subject.name like concat('%',#{query.subjectName},'%')
+		</if>
+		<if test="query.phone != null and query.phone != ''">
+			and p10_subject.phone like concat('%',#{query.phone},'%')
+		</if>
+		<if test="query.customerType != null and query.customerType != -1">
+			and p10_customer.customer_type = #{query.customerType}
+		</if>
+	</select>
+
+	<select id="queryById" resultType="com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO">
+		SELECT * FROM `p10_customer`
+		LEFT JOIN p10_subject ON p10_customer.subject_id = p10_subject.subject_id
+		WHERE
+		p10_customer.del_flag = 0
+		AND p10_customer.customer_id = #{customerId}
+	</select>
+
+</mapper>
