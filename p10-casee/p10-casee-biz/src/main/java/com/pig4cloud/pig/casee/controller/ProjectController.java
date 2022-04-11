@@ -31,6 +31,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 
 /**
  * 项目表
@@ -129,10 +131,13 @@ public class ProjectController {
 	 */
 	@ApiOperation(value = "验证公司业务案号", notes = "验证公司业务案号")
 	@SysLog("验证公司业务案号" )
-	@GetMapping("/verifyCompanyCode/{companyCode}")
-	public R verifyCompanyCode(@PathVariable("companyCode")String companyCode) {
+	@GetMapping("/verifyCompanyCode")
+	public R verifyCompanyCode(String companyCode,@RequestParam(value = "projectId",required = false) Integer projectId) {
 		QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(Project::getCompanyCode,companyCode);
+		if(Objects.nonNull(projectId)){
+			queryWrapper.lambda().ne(Project::getProjectId,projectId);
+		}
 		queryWrapper.lambda().eq(Project::getDelFlag, CommonConstants.STATUS_NORMAL);
 		return R.ok(projectService.getOne(queryWrapper));
 	}
