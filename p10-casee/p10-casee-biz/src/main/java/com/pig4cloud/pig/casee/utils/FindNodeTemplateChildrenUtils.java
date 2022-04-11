@@ -112,7 +112,7 @@ public class FindNodeTemplateChildrenUtils {
 			if (target!=null&&target.getGoalType()==20001){
 				AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService = SpringUtils.getObject(AssetsLiquiTransferRecordReService.class);
 				//查询当前财产是否移交过
-				AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe = assetsLiquiTransferRecordReService.getOne(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsId, target.getGoalId()));
+				AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe = assetsLiquiTransferRecordReService.getOne(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsReId, target.getGoalId()));
 				if (assetsLiquiTransferRecordRe!=null){//已移交
 					if (taskNodeVO.getStatus() == 0) {
 						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")||taskNodeVO.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")||taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {

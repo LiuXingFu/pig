@@ -116,7 +116,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		List<AssetsReDTO> transferableAssets=new ArrayList<>();
 
 		for (AssetsReDTO assetsReDTO : assetsRes) {//筛选出没有移交过的财产
-			AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe = assetsLiquiTransferRecordReService.getOne(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsId, assetsReDTO.getAssetsId()));
+			AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe = assetsLiquiTransferRecordReService.getOne(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsReId, assetsReDTO.getAssetsReId()));
 			if (assetsLiquiTransferRecordRe==null){
 				assetsReLiquis.add(assetsReDTO);
 			}
