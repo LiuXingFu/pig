@@ -19,23 +19,32 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.paifu.CaseeSubjectReListDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 拍辅项目表
@@ -45,8 +54,6 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
-	private SecurityUtilsService securityUtilsService;
-	@Autowired
 	private CaseeService caseeService;
 	@Autowired
 	private ProjectSubjectReService projectSubjectReService;
@@ -54,17 +61,19 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private CaseeSubjectReService caseeSubjectReService;
 	@Autowired
 	private ProjectStatusService projectStatusService;
+	@Autowired
+	private ProjectCaseeReService projectCaseeReService;
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
 
 
 	@Override
+	@Transactional
 	public Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO){
-		PigUser pigUser = securityUtilsService.getCacheUser();
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		projectPaifu.setProjectType(200);
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,projectPaifu);
-		projectPaifu.setInsId(pigUser.getInsId());
-		projectPaifu.setOutlesId(pigUser.getOutlesId());
 		Integer save = this.baseMapper.insert(projectPaifu);
 
 		// 保存案件表
@@ -74,43 +83,61 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 
 		List<ProjectSubjectRe> projectSubjectRes = new ArrayList();
 		List<CaseeSubjectRe> caseeSubjectRes = new ArrayList();
-		// 遍历申请人集合
-		projectPaifuSaveDTO.getApplicantList().stream().forEach(item->{
+		String proposersNames = "";
+		String subjectPersons = "";
+		// 遍历人员集合
+		for(CaseeSubjectReListDTO item : projectPaifuSaveDTO.getApplicantList()){
+			Subject subject = new Subject();
+			BeanCopyUtil.copyBean(item,subject);
+			Integer subjectId = remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM).getData();
 			ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
-			projectSubjectRe.setSubjectId(item.getSubjectId());
+			projectSubjectRe.setSubjectId(subjectId);
 			projectSubjectRe.setProjectId(projectPaifu.getProjectId());
-			projectSubjectRe.setType(0);
+			projectSubjectRe.setType(item.getCaseePersonnelType());
 			projectSubjectRes.add(projectSubjectRe);
 
 			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
 			caseeSubjectRe.setCaseeId(casee.getCaseeId());
-			caseeSubjectRe.setSubjectId(item.getSubjectId());
-			caseeSubjectRe.setType(item.getType());
-			caseeSubjectRe.setCaseePersonnelType(0);
+			caseeSubjectRe.setSubjectId(subjectId);
+			caseeSubjectRe.setCaseePersonnelType(item.getCaseePersonnelType());
 			caseeSubjectRes.add(caseeSubjectRe);
-		});
-		// 遍历被执行人集合
-		projectPaifuSaveDTO.getExecutedList().stream().forEach(item->{
-			ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
-			projectSubjectRe.setSubjectId(item.getSubjectId());
-			projectSubjectRe.setProjectId(projectPaifu.getProjectId());
-			projectSubjectRe.setType(1);
-			projectSubjectRes.add(projectSubjectRe);
-
-			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
-			caseeSubjectRe.setCaseeId(casee.getCaseeId());
-			caseeSubjectRe.setSubjectId(item.getSubjectId());
-			caseeSubjectRe.setType(item.getType());
-			caseeSubjectRe.setCaseePersonnelType(1);
-			caseeSubjectRes.add(caseeSubjectRe);
-		});
+			if(item.getCaseePersonnelType()==0){
+				if(proposersNames.equals("")){
+					proposersNames = item.getName();
+				}else{
+					proposersNames = proposersNames+","+item.getName();
+				}
+			}else{
+				if(subjectPersons.equals("")){
+					subjectPersons = item.getName();
+				}else{
+					subjectPersons = subjectPersons+","+item.getName();
+				}
+			}
+		}
 		projectSubjectReService.saveBatch(projectSubjectRes);
 		caseeSubjectReService.saveBatch(caseeSubjectRes);
+
+		//更新项目所有委托名称和所有债务人名称
+		ProjectPaifu updateProject = new ProjectPaifu();
+		updateProject.setProjectId(projectPaifu.getProjectId());
+		updateProject.setProposersNames(proposersNames);
+		updateProject.setSubjectPersons(subjectPersons);
+		this.baseMapper.updateById(updateProject);
+
+		//更新案件所有申请人名称和所有被执行人名称
+		Casee updateCasee = new Casee();
+		updateCasee.setCaseeId(casee.getCaseeId());
+		updateCasee.setApplicantName(proposersNames);
+		updateCasee.setExecutedName(subjectPersons);
+		caseeService.updateById(updateCasee);
+
 		// 保存项目案件关联表
 		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
 		projectCaseeRe.setProjectId(projectPaifu.getProjectId());
 		projectCaseeRe.setCaseeId(casee.getCaseeId());
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,projectCaseeRe);
+		projectCaseeReService.save(projectCaseeRe);
 
 		// 保存项目状态变更记录表
 		ProjectStatus projectStatus = new ProjectStatus();
@@ -130,5 +157,64 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPagePaifu(page, projectPaifuPageDTO, insOutlesDTO);
 	}
+
+	@Override
+	public ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId){
+		ProjectPaifuDetailVO projectPaifuDetailVO = this.baseMapper.selectByProjectId(projectId);
+		List<ProjectSubjectReListVO> applicantList = this.baseMapper.selectProjectSubjectReList(projectId,0);
+		List<ProjectSubjectReListVO> executedList = this.baseMapper.selectProjectSubjectReList(projectId,1);
+		projectPaifuDetailVO.setApplicantList(applicantList);
+		projectPaifuDetailVO.setExecutedList(executedList);
+
+		return projectPaifuDetailVO;
+	}
+
+	@Override
+	@Transactional
+	public Integer addProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO){
+		Project project = this.baseMapper.selectById(projectSubjectReSaveDTO.getProjectId());
+		// 保存主体表
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(projectSubjectReSaveDTO,subject);
+		Integer subjectId = remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM).getData();
+		// 保存项目主体关联表
+		ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
+		projectSubjectRe.setSubjectId(subjectId);
+		projectSubjectRe.setProjectId(projectSubjectReSaveDTO.getProjectId());
+		projectSubjectRe.setType(projectSubjectReSaveDTO.getCaseePersonnelType());
+		projectSubjectReService.save(projectSubjectRe);
+		// 保存案件主体关联表
+		CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+		caseeSubjectRe.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+		caseeSubjectRe.setSubjectId(subjectId);
+		caseeSubjectRe.setCaseePersonnelType(projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubjectReService.save(caseeSubjectRe);
+		String projectSubjectName = null;
+		ProjectPaifu updateProject = new ProjectPaifu();
+		Casee updateCasee = new Casee();
+		if(projectSubjectReSaveDTO.getCaseePersonnelType()==0){
+			projectSubjectName = project.getProposersNames()+","+projectSubjectReSaveDTO.getName();
+			updateProject.setProposersNames(projectSubjectName);
+			updateCasee.setApplicantName(projectSubjectName);
+		}else{
+			projectSubjectName = project.getSubjectPersons()+","+projectSubjectReSaveDTO.getName();
+			updateProject.setSubjectPersons(projectSubjectName);
+			updateCasee.setExecutedName(projectSubjectName);
+		}
+		//更新项目所有委托名称或所有债务人名称
+		updateProject.setProjectId(projectSubjectReSaveDTO.getProjectId());
+		this.baseMapper.updateById(updateProject);
+
+		//更新案件所有申请人名称和所有被执行人名称
+		updateCasee.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+		caseeService.updateById(updateCasee);
+		return 1;
+	}
+
+	@Override
+	public 	ProjectSubjectReListVO queryProjectSubjectRe(Integer projectId,String unifiedIdentity){
+		return this.baseMapper.selectProjectSubjectRe(projectId,unifiedIdentity);
+	}
+
 
 }

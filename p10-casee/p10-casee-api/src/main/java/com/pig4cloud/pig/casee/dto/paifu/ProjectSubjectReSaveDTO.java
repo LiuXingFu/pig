@@ -4,7 +4,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class CaseeSubjectReListDTO {
+public class ProjectSubjectReSaveDTO {
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value = "项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value = "案件id")
+	private Integer caseeId;
 
 	/**
 	 * 主体id
