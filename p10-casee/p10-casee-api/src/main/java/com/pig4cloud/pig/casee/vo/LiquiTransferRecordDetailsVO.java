@@ -14,45 +14,65 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
+import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
- * 财产关联清收移交记录表
+ * 清收移交记录表
  *
  * @author Mjh
- * @date 2022-04-06 15:22:06
+ * @date 2022-04-06 15:21:31
  */
 @Data
-@TableName("p10_assets_liqui_transfer_record_re")
-@ApiModel(value = "财产关联清收移交记录表")
-public class AssetsLiquiTransferRecordRe {
+@TableName("p10_liqui_transfer_record")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "清收移交记录表")
+public class LiquiTransferRecordDetailsVO extends LiquiTransferRecord {
+
+	/**
+	 * 机构名称
+	 */
+	private String insName;
+
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
 
     /**
-     * 财产关联清收移交记录id
+     * 申请人
      */
-    @TableId
-    @ApiModelProperty(value="财产关联清收移交记录id")
-    private Integer assetsLiquiTransferRecordId;
+    private String applicantSubjectName;
 
     /**
-     * 财产id
+     * 被执行人
      */
-    @ApiModelProperty(value="财产id")
-    private Integer assetsReId;
+    private String executorSubjectName;
 
     /**
-     * 清收移交记录id
+     * 申请提交时间
      */
-    @ApiModelProperty(value="清收移交记录id")
-    private Integer liquiTransferRecordId;
+    private String applicationSubmissionTime;
+
+	/**
+	 * 拍卖申请书
+	 */
+	private String auctionApplicationFile;
+
+
+	/**
+	 * 移交的财产信息
+	 */
+	private List<AssetsVO> assetsVOList;
+
 
 
 }

@@ -14,25 +14,39 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
-import com.pig4cloud.pig.casee.vo.AssetsVO;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import lombok.Data;
 
 /**
- * 财产关联清收移交记录表
+ * 财产表
  *
- * @author Mjh
- * @date 2022-04-06 15:22:06
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
-@Mapper
-public interface AssetsLiquiTransferRecordReMapper extends BaseMapper<AssetsLiquiTransferRecordRe> {
+@Data
+public class AssetsVO extends Assets {
 
-	List<AssetsVO> queryAssetsByLiQuiTransferRecordId(Integer liquiTransferRecordId);
+	/**
+	 * 省
+	 */
+	private String province;
 
+	/**
+	 * 市
+	 */
+	private String city;
+
+	/**
+	 * 区
+	 */
+	private String area;
+
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }

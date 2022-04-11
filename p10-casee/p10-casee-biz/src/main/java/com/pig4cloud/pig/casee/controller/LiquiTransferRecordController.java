@@ -17,7 +17,6 @@
 
 package com.pig4cloud.pig.casee.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -58,14 +57,25 @@ public class LiquiTransferRecordController {
 
     /**
      * 通过id查询清收移交记录表
-     * @param clearTransferRecordId id
+     * @param liquiTransferRecordId id
      * @return R
      */
     @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{clearTransferRecordId}" )
-    public R getById(@PathVariable("clearTransferRecordId" ) Integer clearTransferRecordId) {
-        return R.ok(liquiTransferRecordService.getById(clearTransferRecordId));
+    @GetMapping("/{liquiTransferRecordId}" )
+    public R getById(@PathVariable("liquiTransferRecordId" ) Integer liquiTransferRecordId) {
+        return R.ok(liquiTransferRecordService.getById(liquiTransferRecordId));
     }
+
+	/**
+	 * 通过id查询清收移交记录以及财产信息
+	 * @param liquiTransferRecordId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询清收移交记录以及财产信息", notes = "通过id查询清收移交记录以及财产信息")
+	@GetMapping("/getByLiquiTransferRecordId/{liquiTransferRecordId}" )
+	public R getByLiquiTransferRecordId(@PathVariable("liquiTransferRecordId" ) Integer liquiTransferRecordId) {
+		return R.ok(liquiTransferRecordService.getByLiquiTransferRecordId(liquiTransferRecordId));
+	}
 
     /**
      * 新增清收移交记录表
@@ -93,14 +103,14 @@ public class LiquiTransferRecordController {
 
     /**
      * 通过id删除清收移交记录表
-     * @param clearTransferRecordId id
+     * @param liquiTransferRecordId id
      * @return R
      */
     @ApiOperation(value = "通过id删除清收移交记录表", notes = "通过id删除清收移交记录表")
     @SysLog("通过id删除清收移交记录表" )
-    @DeleteMapping("/{clearTransferRecordId}" )
-    public R removeById(@PathVariable Integer clearTransferRecordId) {
-        return R.ok(liquiTransferRecordService.removeById(clearTransferRecordId));
+    @DeleteMapping("/{liquiTransferRecordId}" )
+    public R removeById(@PathVariable Integer liquiTransferRecordId) {
+        return R.ok(liquiTransferRecordService.removeById(liquiTransferRecordId));
     }
 
 }

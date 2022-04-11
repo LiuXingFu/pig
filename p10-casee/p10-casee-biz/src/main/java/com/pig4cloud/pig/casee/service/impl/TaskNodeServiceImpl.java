@@ -54,7 +54,6 @@ import com.pig4cloud.pig.common.core.util.*;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,10 +67,6 @@ import org.springframework.transaction.annotation.Transactional;
 import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -109,8 +104,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private BehaviorService BehaviorLiquiService;
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
-	@Autowired
-	private CaseeHandlingRecordsService caseeHandlingRecordsService;
 
 
 	private int sum = 0;
@@ -530,14 +523,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Transactional
 	public String saveNodeFormData(TaskFlowDTO taskFlowDTO) {
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
-			//添加案件任务办理记录
-			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
-			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-			caseeHandlingRecordsService.save(caseeHandlingRecords);
-
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
