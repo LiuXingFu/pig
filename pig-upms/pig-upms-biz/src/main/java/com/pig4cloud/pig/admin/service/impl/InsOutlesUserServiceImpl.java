@@ -92,9 +92,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 			insOutlesUser.setDelFlag(CommonConstants.STATUS_NORMAL);
 			insOutlesUser.setPosition(insOutlesUserAddDTO.getPosition());
 
-			QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
-			queryWrapper.lambda().eq(SysUser::getPhone,item.getPhone());
-			SysUser user = sysUserService.getOne(queryWrapper);
+			SysUser user = sysUserService.getByPhone(item.getPhone());
 			// 判断用户是否存在
 			if(Objects.nonNull(user)){
 				insOutlesUser.setUserId(user.getUserId());

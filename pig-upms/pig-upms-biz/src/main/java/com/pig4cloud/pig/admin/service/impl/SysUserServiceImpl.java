@@ -385,4 +385,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 //		return this.baseMapper.pageJudge(page, user);
 //	}
 
+	@Override
+	public SysUser getByPhone(String phone){
+		return this.baseMapper.getByPhone(phone);
+	}
+
 }
