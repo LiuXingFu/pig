@@ -154,4 +154,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 		};
 	}
 
+	@Override
+	public 	List<String> queryByRoleId(Integer roleId){
+		return this.baseMapper.selectByRoleId(roleId);
+	}
+
 }
