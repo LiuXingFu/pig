@@ -229,4 +229,10 @@
 		LIMIT 10
 	</select>
 
+	<select id="getByPhone" resultType="com.pig4cloud.pig.admin.api.entity.SysUser">
+		select * from sys_user
+		where phone = #{phone}
+		limit 1
+	</select>
+
 </mapper>
