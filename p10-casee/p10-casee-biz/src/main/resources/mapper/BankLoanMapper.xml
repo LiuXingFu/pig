@@ -33,7 +33,8 @@
     <result property="insId" column="ins_id"/>
     <result property="outlesId" column="outles_id"/>
     <result property="principal" column="principal"/>
-    <result property="interest" column="interest"/>
+	<result property="interest" column="interest"/>
+	<result property="calculation" column="calculation"/>
     <result property="rental" column="rental"/>
     <result property="mortgageSituation" column="mortgage_situation"/>
     <result property="loanContract" column="loan_contract"/>
@@ -53,6 +54,7 @@
 		<result property="outlesId" column="outles_id"/>
 		<result property="principal" column="principal"/>
 		<result property="interest" column="interest"/>
+		<result property="calculation" column="calculation"/>
 		<result property="rental" column="rental"/>
 		<result property="mortgageSituation" column="mortgage_situation"/>
 		<result property="loanContract" column="loan_contract"/>
@@ -76,6 +78,7 @@
 		<result property="outlesId" column="outles_id"/>
 		<result property="principal" column="principal"/>
 		<result property="interest" column="interest"/>
+		<result property="calculation" column="calculation"/>
 		<result property="rental" column="rental"/>
 		<result property="mortgageSituation" column="mortgage_situation"/>
 		<result property="loanContract" column="loan_contract"/>
