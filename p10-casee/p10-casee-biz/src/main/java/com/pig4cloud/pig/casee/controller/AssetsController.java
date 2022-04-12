@@ -115,6 +115,23 @@ public class AssetsController {
 	}
 
 	/**
+	 * 通过id删除财产表以及财产关联银行借贷表
+	 * @param assetsId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除财产表以及财产关联银行借贷表", notes = "通过id删除财产表以及财产关联银行借贷表")
+	@SysLog("通过id删除财产表以及财产关联银行借贷表" )
+	@DeleteMapping("/removeByAssetsId/{assetsId}" )
+	public R removeByAssetsId(@PathVariable Integer assetsId) {
+		//删除财产关联银行借贷信息
+		assetsBankLoanReService.remove(new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId,assetsId));
+		//删除财产地址信息
+		remoteAddressService.removeUserIdAndType(assetsId,4, SecurityConstants.FROM);
+
+		return R.ok(assetsService.removeById(assetsId));
+	}
+
+	/**
 	 * 根据财产id查询财产信息与财产地址信息
 	 * @param assetsId
 	 * @return
