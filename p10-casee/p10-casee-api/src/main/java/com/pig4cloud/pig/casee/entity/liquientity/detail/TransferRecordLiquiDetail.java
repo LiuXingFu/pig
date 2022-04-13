@@ -28,4 +28,28 @@ public class TransferRecordLiquiDetail {
 	 */
 	@ApiModelProperty(value="申请诉讼/执行时效开始时间")
 	private LocalDate startingTime;
+
+	/**
+	 * 诉讼案号
+	 */
+	@ApiModelProperty(value="诉讼案号")
+	private String lawsuitNumber;
+
+	/**
+	 * 诉讼费
+	 */
+	@ApiModelProperty(value="诉讼费")
+	private BigDecimal litigationCosts;
+
+	/**
+	 * 未判决利息起算日
+	 */
+	@ApiModelProperty(value="未判决利息起算日")
+	private LocalDate interestStartDate;
+
+	/**
+	 * 主动履行到期日
+	 */
+	@ApiModelProperty(value="主动履行到期日")
+	private LocalDate fulfillmentDueDate;
 }
