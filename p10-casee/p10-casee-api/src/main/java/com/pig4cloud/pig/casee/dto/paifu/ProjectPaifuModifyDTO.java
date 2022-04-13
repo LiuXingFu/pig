@@ -14,12 +14,12 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo.paifu;
+package com.pig4cloud.pig.casee.dto.paifu;
 
-import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,7 +29,13 @@ import java.util.List;
  * @date 2022-02-10 17:30:36
  */
 @Data
-public class ProjectPaifuDetailVO extends ProjectPaifu {
+public class ProjectPaifuModifyDTO {
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
 
 	/**
 	 * 案件id
@@ -38,16 +44,22 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	private Integer caseeId;
 
 	/**
-	 * 机构名称
+	 * 接收时间
 	 */
-	@ApiModelProperty(value="机构名称")
-	private String insName;
+	@ApiModelProperty(value="接收时间")
+	private LocalDate takeTime;
+
+    /**
+     * 公司业务案号
+     */
+    @ApiModelProperty(value="公司业务案号")
+    private String companyCode;
 
 	/**
-	 * 网点名称
+	 * 网点id
 	 */
-	@ApiModelProperty(value="网点名称")
-	private String outlesName;
+	@ApiModelProperty(value="网点id")
+	private Integer outlesId;
 
 	/**
 	 * 案号
@@ -56,10 +68,10 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	private String caseeNumber;
 
 	/**
-	 * 法院名称
+	 * 承办法院id
 	 */
-	@ApiModelProperty(value="法院名称")
-	private String courtName;
+	@ApiModelProperty(value="承办法院id")
+	private Integer courtId;
 
 	/**
 	 * 法官名称
@@ -67,21 +79,41 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	@ApiModelProperty(value="法官名称")
 	private String judgeName;
 
-	/**
-	 * 申请人列表
-	 */
-	@ApiModelProperty(value="申请人列表")
-	private List<ProjectSubjectReListVO> applicantList;
+    /**
+     * 办理人id
+     */
+    @ApiModelProperty(value="办理人id")
+    private Integer userId;
 
-	/**
-	 * 被执行人列表
-	 */
-	@ApiModelProperty(value="被执行人列表")
-	private List<ProjectSubjectReListVO> executedList;
+    /**
+     * 办理人名称
+     */
+    @ApiModelProperty(value="办理人名称")
+    private String userNickName;
 
-	/**
-	 * 标的物列表
-	 */
-	@ApiModelProperty(value="标的物列表")
-	private String assetsList;
+    /**
+     * 年份
+     */
+    @ApiModelProperty(value="年份")
+    private String year;
+
+    /**
+     * 简称
+     */
+    @ApiModelProperty(value="简称")
+    private String alias;
+
+    /**
+     * 字号
+     */
+    @ApiModelProperty(value="字号")
+    private Integer word;
+
+    /**
+     * 描述
+     */
+    @ApiModelProperty(value="描述")
+    private String describes;
+
+
 }

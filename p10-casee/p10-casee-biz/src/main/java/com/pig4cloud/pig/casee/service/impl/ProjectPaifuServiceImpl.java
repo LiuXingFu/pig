@@ -16,16 +16,15 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.paifu.CaseeSubjectReListDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
@@ -214,6 +213,75 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	public 	ProjectSubjectReListVO queryProjectSubjectRe(Integer projectId,String unifiedIdentity){
 		return this.baseMapper.selectProjectSubjectRe(projectId,unifiedIdentity);
+	}
+
+	@Override
+	@Transactional
+	public 	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO){
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		BeanCopyUtil.copyBean(projectPaifuModifyDTO,projectPaifu);
+		Integer modify = this.baseMapper.updateById(projectPaifu);
+
+		Casee casee = new Casee();
+		BeanCopyUtil.copyBean(projectPaifuModifyDTO,casee);
+		caseeService.updateById(casee);
+		return modify;
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO){
+
+		return 1;
+	}
+
+	@Override
+	@Transactional
+	public Integer removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO){
+		Integer projectId = projectSubjectReRemoveDTO.getProjectId();
+		QueryWrapper<ProjectSubjectRe> projectSubjectRe = new QueryWrapper<>();
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getProjectId,projectId);
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getSubjectId,projectSubjectReRemoveDTO.getSubjectId());
+		projectSubjectReService.remove(projectSubjectRe);
+
+		QueryWrapper<CaseeSubjectRe> caseeSubjectRe = new QueryWrapper<>();
+		caseeSubjectRe.lambda().eq(CaseeSubjectRe::getCaseeId,projectSubjectReRemoveDTO.getCaseeId());
+		caseeSubjectRe.lambda().eq(CaseeSubjectRe::getSubjectId,projectSubjectReRemoveDTO.getSubjectId());
+		caseeSubjectReService.remove(caseeSubjectRe);
+
+		Project project = this.baseMapper.selectById(projectId);
+		String subjectName = "";
+		if(projectSubjectReRemoveDTO.getCaseePersonnelType()==0){
+			subjectName = project.getProposersNames();
+		}else{
+			subjectName = project.getSubjectPersons();
+		}
+		String[] subjectNameList = subjectName.split(",");
+		String nameList = "";
+		for(String name : subjectNameList){
+			if(!projectSubjectReRemoveDTO.getName().equals(name)){
+				if(nameList.equals("")){
+					nameList = name;
+				}else{
+					nameList = nameList+","+name;
+				}
+			}
+		}
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		Casee casee = new Casee();
+		casee.setCaseeId(projectSubjectReRemoveDTO.getCaseeId());
+
+		if(projectSubjectReRemoveDTO.getCaseePersonnelType()==0){
+			projectPaifu.setProposersNames(nameList);
+			casee.setApplicantName(nameList);
+		}else{
+			projectPaifu.setSubjectPersons(nameList);
+			casee.setExecutedName(nameList);
+		}
+		this.baseMapper.updateById(projectPaifu);
+		caseeService.updateById(casee);
+		return 1;
 	}
 
 
