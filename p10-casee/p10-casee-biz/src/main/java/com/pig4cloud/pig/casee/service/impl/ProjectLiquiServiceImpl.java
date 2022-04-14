@@ -206,21 +206,21 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			List<AssetsReLiqui> assetsReLiquiList = new ArrayList<>();
 			assetsInformationVOS.stream().forEach(item -> {
 				AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
-				assetsReLiqui.setAssetsId(item.getAssetsId());
-				assetsReLiqui.setSubjectId(item.getSubjectId());
-				assetsReLiqui.setProjectId(projectLiqui.getProjectId());
-
-				R<Subject> subjectR = remoteSubjectService.getById(item.getSubjectId(),SecurityConstants.FROM);
-				assetsReLiqui.setSubjectName(subjectR.getData().getName());
-				// 案件来源1=抵押财产
-				assetsReLiqui.setAssetsSource(1);
-				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-				assetsReCaseeDetail.setMortgagee(0);
-				assetsReCaseeDetail.setMortgageTime(item.getMortgageTime());
-				assetsReCaseeDetail.setMortgageAmount(item.getMortgageAmount());
-				assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				assetsReLiquiList.add(assetsReLiqui);
-				assetsReLiquiService.save(assetsReLiqui);
+//				assetsReLiqui.setAssetsId(item.getAssetsId());
+//				assetsReLiqui.setSubjectId(item.getSubjectId());
+//				assetsReLiqui.setProjectId(projectLiqui.getProjectId());
+//
+//				R<Subject> subjectR = remoteSubjectService.getById(item.getSubjectId(),SecurityConstants.FROM);
+//				assetsReLiqui.setSubjectName(subjectR.getData().getName());
+//				// 案件来源1=抵押财产
+//				assetsReLiqui.setAssetsSource(1);
+//				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+//				assetsReCaseeDetail.setMortgagee(0);
+//				assetsReCaseeDetail.setMortgageTime(item.getMortgageTime());
+//				assetsReCaseeDetail.setMortgageAmount(item.getMortgageAmount());
+//				assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+//				assetsReLiquiList.add(assetsReLiqui);
+//				assetsReLiquiService.save(assetsReLiqui);
 			});
 		}
 
