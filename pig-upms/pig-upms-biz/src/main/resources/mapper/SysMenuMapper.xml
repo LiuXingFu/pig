@@ -56,4 +56,13 @@
         FROM
         sys_menu m, sys_role_menu rm WHERE m.menu_id = rm.menu_id AND m.del_flag = 0 AND rm.role_id IN (#{roleIds})
     </select>
+
+	<!--通过角色ID 查询权限-->
+	<select id="selectByRoleId" resultType="java.lang.String">
+        select sys_menu.permission from sys_menu
+			left join sys_role_menu on sys_role_menu.menu_id = sys_menu.menu_id
+			where sys_menu.del_flag = 0
+			and sys_menu.permission is not null
+			and sys_role_menu.role_id = #{roleId}
+    </select>
 </mapper>

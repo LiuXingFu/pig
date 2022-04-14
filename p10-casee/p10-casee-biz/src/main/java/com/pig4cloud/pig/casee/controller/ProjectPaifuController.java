@@ -18,9 +18,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.service.ProjectPaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -102,6 +100,42 @@ public class ProjectPaifuController {
 	@GetMapping("/queryProjectSubjectRe" )
 	public R queryProjectSubjectRe(Integer projectId,String unifiedIdentity) {
 		return R.ok(projectPaifuService.queryProjectSubjectRe(projectId,unifiedIdentity));
+	}
+
+	/**
+	 * 根据项目id修改项目和案件基本信息
+	 * @param projectPaifuModifyDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id修改项目和案件基本信息", notes = "根据项目id修改项目和案件基本信息")
+	@SysLog("根据项目id修改项目和案件基本信息" )
+	@PutMapping("/modifyByProjectId")
+	public R modifyByProjectId(@RequestBody ProjectPaifuModifyDTO projectPaifuModifyDTO) {
+		return R.ok(projectPaifuService.modifyByProjectId(projectPaifuModifyDTO));
+	}
+
+	/**
+	 * 修改项目主体关联表
+	 * @param projectSubjectReSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改项目主体关联表", notes = "修改项目主体关联表")
+	@SysLog("修改项目主体关联表" )
+	@PutMapping("/modifyProjectSubjectRe")
+	public R modifyProjectSubjectRe(@RequestBody ProjectSubjectReSaveDTO projectSubjectReSaveDTO) {
+		return R.ok(projectPaifuService.modifyProjectSubjectRe(projectSubjectReSaveDTO));
+	}
+
+	/**
+	 * 删除项目主体关联表
+	 * @param projectSubjectReRemoveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "删除项目主体关联表", notes = "删除项目主体关联表")
+	@SysLog("删除项目主体关联表" )
+	@DeleteMapping("/removeProjectSubjectRe" )
+	public R removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO) {
+		return R.ok(projectPaifuService.removeProjectSubjectRe(projectSubjectReRemoveDTO));
 	}
 
 }

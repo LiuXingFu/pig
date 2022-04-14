@@ -66,7 +66,7 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 		List<AssetsReDTO> assetsReDTOList = entityZX_stzx_cczxzcczyj_cczxzcczyj.getAssetsReDTOList();
 		for (AssetsReDTO assetsReDTO : assetsReDTOList) {//添加财产关联清收移交记录信息
 			AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe=new AssetsLiquiTransferRecordRe();
-			assetsLiquiTransferRecordRe.setAssetsId(assetsReDTO.getAssetsId());
+			assetsLiquiTransferRecordRe.setAssetsReId(assetsReDTO.getAssetsReId());
 			assetsLiquiTransferRecordRe.setLiquiTransferRecordId(liquiTransferRecord.getLiquiTransferRecordId());
 			assetsLiquiTransferRecordReService.save(assetsLiquiTransferRecordRe);
 
@@ -83,22 +83,20 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(101);
 				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setSubmissionStatus(0);
 				taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
-
-
-				//如果当前财产合并移交了其它财产需添加其它财产移交办理记录
-				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-				BeanUtils.copyProperties(assetsReDTO,caseeHandlingRecords);
-				caseeHandlingRecords.setNodeName(taskNode.getNodeName());
-				caseeHandlingRecords.setFormData(taskNode.getFormData());
-				caseeHandlingRecords.setTargetId(target.getTargetId());
-				caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsReId());
-				caseeHandlingRecords.setSourceType(0);
-				caseeHandlingRecords.setNodeId(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId());
-				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-				caseeHandlingRecords.setSubmissionStatus(taskNode.getSubmissionStatus());
-				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
+			//添加任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(assetsReDTO,caseeHandlingRecords);
+			caseeHandlingRecords.setNodeName(taskNode.getNodeName());
+			caseeHandlingRecords.setFormData(taskNode.getFormData());
+			caseeHandlingRecords.setTargetId(target.getTargetId());
+			caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsReId());
+			caseeHandlingRecords.setSourceType(0);
+			caseeHandlingRecords.setNodeId(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId());
+			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+			caseeHandlingRecords.setSubmissionStatus(taskNode.getSubmissionStatus());
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
 		}
 	}
 }

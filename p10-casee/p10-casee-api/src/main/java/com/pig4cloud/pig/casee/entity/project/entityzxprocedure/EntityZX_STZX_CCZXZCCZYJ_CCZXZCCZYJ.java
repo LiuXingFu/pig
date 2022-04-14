@@ -26,7 +26,7 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData impleme
 	private Integer entrustedOutlesId;
 
 	/**
-	 * 移交的财产id
+	 * 移交的财产信息
 	 */
 	List<AssetsReDTO> assetsReDTOList;
 

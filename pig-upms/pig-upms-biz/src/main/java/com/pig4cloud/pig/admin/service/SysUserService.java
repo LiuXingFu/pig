@@ -131,4 +131,6 @@ public interface SysUserService extends IService<SysUser> {
 //	 * @return
 //	 */
 //	IPage<SysUser> pageJudge(Page page, SysUser user);
+
+	SysUser getByPhone(String phone);
 }

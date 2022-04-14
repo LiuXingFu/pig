@@ -22,8 +22,10 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
+import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
+import com.pig4cloud.pig.casee.service.BankLoanService;
 import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -44,6 +46,8 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 	private RemoteSubjectService remoteSubjectService;
 	@Autowired
 	private RemoteAddressService remoteAddressService;
+	@Autowired
+	private BankLoanService bankLoanService;
 
 	@Override
 	public boolean removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds) {
@@ -56,6 +60,19 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 			this.remove(new LambdaQueryWrapper<SubjectBankLoanRe>().eq(SubjectBankLoanRe::getBankLoanId, bankLoanId).eq(SubjectBankLoanRe::getSubjectId, subjectId));
 		}
 		return true;
+	}
+
+	@Override
+	public boolean removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId, String name) {
+		BankLoan bankLoan = bankLoanService.getById(bankLoanId);
+		String subjectName = bankLoan.getSubjectName();
+		if (subjectName.contains(name)){
+			subjectName=subjectName.replaceAll(name+",","");
+		}
+		bankLoan.setSubjectName(subjectName);
+		//修改债务人名称
+		bankLoanService.updateById(bankLoan);
+		return this.removeById(subjectBankLoanId);
 	}
 
 	@Override

@@ -341,12 +341,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 		userInsOutlesRoleVO.setSysRole(sysRole);
 
 
-		List<SysMenu> sysMenuList = sysMenuService.findMenuByRoleId(sysRole.getRoleId());
+		List<String> permissions = sysMenuService.queryByRoleId(sysRole.getRoleId());
 		// 设置权限列表（menu.permission）
-		Set<String> permissions = new HashSet<>();
-		sysMenuList.stream().forEach(item ->{
-			permissions.add(item.getPermission());
-		});
+//		Set<String> permissions = new HashSet<>();
+//		sysMenuList.stream().forEach(item ->{
+//			permissions.add(item.getPermission());
+//		});
 		userInsOutlesRoleVO.setPermissions(ArrayUtil.toArray(permissions, String.class));
 
 		// 保存缓存用户信息机构id和网点id
@@ -384,5 +384,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 //	public IPage<SysUser> pageJudge(Page page, SysUser user) {
 //		return this.baseMapper.pageJudge(page, user);
 //	}
+
+	@Override
+	public SysUser getByPhone(String phone){
+		return this.baseMapper.getByPhone(phone);
+	}
 
 }

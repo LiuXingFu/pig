@@ -76,6 +76,12 @@ public class BankLoan extends BaseEntity {
     @ApiModelProperty(value="利息")
     private BigDecimal interest;
 
+	/**
+	 * 利息计算方式
+	 */
+	@ApiModelProperty(value="利息计算方式")
+	private BigDecimal calculation;
+
     /**
      * 总额
      */

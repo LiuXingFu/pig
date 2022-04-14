@@ -131,4 +131,17 @@ public class SubjectBankLoanReController {
 	public R removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds) {
 		return R.ok(subjectBankLoanReService.removeSubjectAndBankLoan(bankLoanId,subjectIds));
 	}
+
+	/**
+	 * 删除主体关联银行借贷信息修改银行借贷债务人名称
+	 * @param subjectBankLoanId 主体关联银行借贷id
+	 * @param name 主体名称
+	 * @return R
+	 */
+	@ApiOperation(value = "删除主体关联银行借贷信息修改银行借贷债务人名称", notes = "删除主体关联银行借贷信息修改银行借贷债务人名称")
+	@SysLog("删除主体以及主体关联银行借贷信息" )
+	@DeleteMapping("/removeSubjectBankLoanRe" )
+	public R removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId, String name) {
+		return R.ok(subjectBankLoanReService.removeSubjectBankLoanRe(subjectBankLoanId,bankLoanId,name));
+	}
 }

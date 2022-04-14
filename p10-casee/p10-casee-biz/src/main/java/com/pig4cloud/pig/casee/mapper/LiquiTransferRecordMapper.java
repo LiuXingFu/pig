@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +36,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecord> {
 	IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, @Param("query") LiquiTransferRecord liquiTransferRecord, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId);
+
 }

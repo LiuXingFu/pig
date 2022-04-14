@@ -14,30 +14,39 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
-import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import lombok.Data;
 
 /**
- * 主体关联银行借贷表
+ * 财产表
  *
- * @author Mjh
- * @date 2022-01-28 18:52:44
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
-public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
+@Data
+public class AssetsVO extends Assets {
 
-	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
+	/**
+	 * 省
+	 */
+	private String province;
 
-	boolean removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId,String name);
+	/**
+	 * 市
+	 */
+	private String city;
 
-	Integer modifySubjectBySubjectBankLoanId(SubjectBankLoanReDTO subjectBankLoanReDTO);
+	/**
+	 * 区
+	 */
+	private String area;
 
-
-	List<Integer> selectSubjectId(Integer bankLoanId);
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }

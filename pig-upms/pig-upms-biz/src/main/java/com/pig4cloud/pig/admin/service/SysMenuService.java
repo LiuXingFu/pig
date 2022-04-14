@@ -70,4 +70,7 @@ public interface SysMenuService extends IService<SysMenu> {
 	 */
 	List<Tree<Integer>> filterMenu(Set<SysMenu> menuSet, Integer parentId);
 
+	List<String> queryByRoleId(Integer roleId);
+
+
 }
