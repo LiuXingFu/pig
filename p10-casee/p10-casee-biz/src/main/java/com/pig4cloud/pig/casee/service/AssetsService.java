@@ -39,7 +39,7 @@ public interface AssetsService extends IService<Assets> {
 
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	boolean	saveMortgageAssets(MortgageAssetsDTO mortgageAssetsDTO);
+	boolean	saveMortgageAssets(MortgageAssetsAllDTO mortgageAssetsAllDTO);
 
 	AssetsDeailsVO queryById(Integer assetsId);
 

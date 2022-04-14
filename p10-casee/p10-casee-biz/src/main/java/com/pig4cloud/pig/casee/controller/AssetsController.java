@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.AssetsOrProjectPageDTO;
 import com.pig4cloud.pig.casee.dto.BankLoanDTO;
+import com.pig4cloud.pig.casee.dto.MortgageAssetsAllDTO;
 import com.pig4cloud.pig.casee.dto.MortgageAssetsDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
@@ -85,14 +86,14 @@ public class AssetsController {
 
 	/**
 	 * 新增财产表
-	 * @param mortgageAssetsDTO 抵押财产信息
+	 * @param mortgageAssetsAllDTO 抵押财产信息
 	 * @return R
 	 */
 	@ApiOperation(value = "新增财产表", notes = "新增财产表")
 	@SysLog("新增财产表" )
 	@PostMapping
-	public R saveAssets(@RequestBody MortgageAssetsDTO mortgageAssetsDTO) {
-		return R.ok(assetsService.saveMortgageAssets(mortgageAssetsDTO));
+	public R saveAssets(@RequestBody MortgageAssetsAllDTO mortgageAssetsAllDTO) {
+		return R.ok(assetsService.saveMortgageAssets(mortgageAssetsAllDTO));
 	}
 
 	/**
