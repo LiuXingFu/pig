@@ -20,7 +20,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
 import com.pig4cloud.pig.casee.mapper.MortgageAssetsRecordsMapper;
 import com.pig4cloud.pig.casee.service.MortgageAssetsRecordsService;
+import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 抵押记录表
@@ -31,4 +34,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssetsRecordsMapper, MortgageAssetsRecords> implements MortgageAssetsRecordsService {
 
+	@Override
+	public List<AssetsInformationVO> getMortgageAssetsRecordsDetails(Integer bankLoanId) {
+		return this.baseMapper.getMortgageAssetsRecordsDetails(bankLoanId);
+	}
 }

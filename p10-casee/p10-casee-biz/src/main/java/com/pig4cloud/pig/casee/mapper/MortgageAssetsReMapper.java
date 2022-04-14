@@ -18,8 +18,13 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
+import com.pig4cloud.pig.casee.vo.AssetsVO;
+import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 抵押财产关联表
@@ -30,4 +35,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MortgageAssetsReMapper extends BaseMapper<MortgageAssetsRe> {
 
+	List<AssetsVO> getAssetsDetails(Integer mortgageAssetsRecordsId);
 }

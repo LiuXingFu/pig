@@ -55,7 +55,7 @@
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
 		</collection>
 		<collection property="assetsInformationVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
-					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.getAssetsBankLoanRe" column="bank_loan_id">
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsRecordsMapper.getMortgageAssetsRecordsDetails" column="bank_loan_id">
 		</collection>
 	</resultMap>
 

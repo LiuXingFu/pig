@@ -39,31 +39,14 @@
     <result property="delFlag" column="del_flag"/>
   </resultMap>
 
-	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO" extends="mortgageAssetsRecordsMap">
-		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
-					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
-		</collection>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
-					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.getAssetsBankLoanRe" column="bank_loan_id">
+	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.AssetsInformationVO" extends="mortgageAssetsRecordsMap">
+		<collection property="assetsDTOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsReMapper.getAssetsDetails" column="mortgage_assets_records_id">
 		</collection>
 	</resultMap>
 
 
 	<select id="getMortgageAssetsRecordsDetails" resultMap="BankLoanInformationVO">
-		select
-		*,
-		p10_institution.ins_name as entrustedInsName,
-		p10_outles.outles_name as entrustedOutlesName,
-		p10_transfer_record.status,
-		p10_transfer_record.handover_time as handoverTime
-		from p10_bank_loan
-		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
-		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
-		left join p10_transfer_record ON p10_transfer_record.source_id = p10_bank_loan.bank_loan_id and transfer_type=0
-		where
-		p10_bank_loan.del_flag=0 AND p10_bank_loan.bank_loan_id=#{bankLoanId}
-		ORDER BY
-		p10_transfer_record.create_time desc
-		LIMIT 1
+		select * from p10_mortgage_assets_records where p10_mortgage_assets_records.del_flag=0 AND p10_mortgage_assets_records.bank_loan_id=#{bankLoanId}
 	</select>
 </mapper>
