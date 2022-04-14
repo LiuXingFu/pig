@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
 import com.pig4cloud.pig.casee.mapper.ProjectSubjectReMapper;
 import com.pig4cloud.pig.casee.service.ProjectSubjectReService;
+import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,10 @@ public class ProjectSubjectReServiceImpl extends ServiceImpl<ProjectSubjectReMap
 		remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
 
 		return this.baseMapper.updateById(projectSubjectRe);
+	}
+
+	@Override
+	public ProjectSubjectVO getProjectSubjectDetail(Integer projectId, Integer subjectId){
+		return this.baseMapper.getProjectSubjectDetail(projectId,subjectId);
 	}
 }

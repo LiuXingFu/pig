@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
+import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
 
 /**
  * 项目主体关联表
@@ -30,5 +31,13 @@ import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
 public interface ProjectSubjectReService extends IService<ProjectSubjectRe> {
 
 	Integer modifySubjectBySubjectReId(ProjectSubjectReModifyDTO projectSubjectReModifyDTO);
+
+	/**
+	 * 获取项目主体详情
+	 * @param projectId
+	 * @param subjectId
+	 * @return
+	 */
+	ProjectSubjectVO getProjectSubjectDetail(Integer projectId,Integer subjectId);
 
 }

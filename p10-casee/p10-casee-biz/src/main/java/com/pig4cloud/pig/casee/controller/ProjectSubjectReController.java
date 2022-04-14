@@ -116,5 +116,14 @@ public class ProjectSubjectReController {
 		return R.ok(projectSubjectReService.modifySubjectBySubjectReId(projectSubjectReModifyDTO));
 	}
 
+	/**
+	 * 获取项目主体详情
+	 * @return R
+	 */
+	@ApiOperation(value = "获取项目主体详情", notes = "获取项目主体详情")
+	@GetMapping("/getProjectSubjectDetail" )
+	public R getProjectSubjectDetail(Integer projectId,Integer subjectId) {
+		return R.ok(projectSubjectReService.getProjectSubjectDetail(projectId,subjectId));
+	}
 
 }

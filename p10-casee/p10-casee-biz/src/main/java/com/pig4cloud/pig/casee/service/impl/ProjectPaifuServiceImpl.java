@@ -18,6 +18,7 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -231,6 +232,54 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer modifyProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO){
+		// 更新项目主体人员类型
+		UpdateWrapper<ProjectSubjectRe> projectSubjectRe = new UpdateWrapper<>();
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getProjectId,projectSubjectReSaveDTO.getProjectId());
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		projectSubjectRe.lambda().set(ProjectSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		projectSubjectReService.update(projectSubjectRe);
+		// 更新案件主体人员类型
+		UpdateWrapper<CaseeSubjectRe> caseeSubject = new UpdateWrapper<>();
+		caseeSubject.lambda().eq(CaseeSubjectRe::getCaseeId,projectSubjectReSaveDTO.getCaseeId());
+		caseeSubject.lambda().eq(CaseeSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		caseeSubject.lambda().set(CaseeSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubject.lambda().set(CaseeSubjectRe::getCaseePersonnelType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubjectReService.update(caseeSubject);
+		//更新主体信息
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(projectSubjectReSaveDTO,subject);
+		remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
+
+		List<ProjectSubjectReListVO> projectSubjectList = this.baseMapper.selectProjectSubjectReList(projectSubjectReSaveDTO.getProjectId(),-1);
+		String applicantName = "";
+		String executedName = "";
+		for(ProjectSubjectReListVO projectSubjectReListVO:projectSubjectList){
+			String name = projectSubjectReListVO.getName();
+			if(projectSubjectReListVO.getType()==0){
+				if(applicantName.equals("")){
+					applicantName = name;
+				}else{
+					applicantName = applicantName+","+name;
+				}
+			}else{
+				if(executedName.equals("")){
+					executedName = name;
+				}else{
+					executedName = executedName+","+name;
+				}
+			}
+		}
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectSubjectReSaveDTO.getProjectId());
+		projectPaifu.setSubjectPersons(executedName);
+		projectPaifu.setProposersNames(applicantName);
+		this.baseMapper.updateById(projectPaifu);
+
+		Casee casee = new Casee();
+		casee.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+		casee.setApplicantName(applicantName);
+		casee.setExecutedName(executedName);
+		caseeService.updateById(casee);
 
 		return 1;
 	}
@@ -267,6 +316,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				}
 			}
 		}
+		// 更新项目和案件申请人、被执行人所有名称
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		projectPaifu.setProjectId(projectId);
 		Casee casee = new Casee();
