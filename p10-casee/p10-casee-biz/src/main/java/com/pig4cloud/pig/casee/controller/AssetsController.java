@@ -1,5 +1,7 @@
 package com.pig4cloud.pig.casee.controller;
 
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -11,18 +13,27 @@ import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
 import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
+import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
+import com.pig4cloud.pig.casee.vo.excel.ExcleTest;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.ObjectPropertiesAreAllNullUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 
@@ -173,8 +184,46 @@ public class AssetsController {
 	 */
 	@ApiOperation(value = "根据特定条件导出.xls文件", notes = "根据特定条件导出.xls文件")
 	@GetMapping("/exportXls" )
-	public void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception{
-		this.assetsService.exportXls(response, assetsOrProjectPageDTO);
+	public void exportXls(AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception{
+		this.assetsService.exportXls(assetsOrProjectPageDTO);
+	}
+
+	/**
+	 * 根据导入文件储存数据库
+	 */
+	@ApiModelProperty(value = "根据导入文件储存数据库", notes = "根据导入文件储存数据库")
+	@PostMapping("/pubs/importXls")
+	public void importXls(@RequestParam("file") MultipartFile file) {
+		ImportParams params = new ImportParams();
+
+		//设置表头的行数
+		params.setTitleRows(0);
+		params.setHeadRows(1);
+
+//		String file = Thread.currentThread().getContextClassLoader().getResource("D:/excel/财产导出测试.xls").getFile();
+//		List<ExcleTest> list = ExcelImportUtil.importExcel(
+//				new File("D:/excel/郴州农商行 2020.xls"),
+//				ExcleTest.class, params);
+		List<ExcleTest> list = null;
+		try {
+			list = ExcelImportUtil.importExcel(
+					file.getInputStream(),
+					ExcleTest.class, params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(list);
+
+//		for (ExcleTest exportXlsAssetsOrProjectVO : list) {
+//			boolean objectPropertiesAreAllNull = ObjectPropertiesAreAllNullUtils.checkObjAllFieldsIsNull(exportXlsAssetsOrProjectVO.getSysUserList().get(0));
+//			if (objectPropertiesAreAllNull) {
+//				exportXlsAssetsOrProjectVO.setSysUserList(null);
+//			}
+//			AssetsOrProjectPageVO assetsOrProjectPageVO = new AssetsOrProjectPageVO();
+//			BeanCopyUtil.copyBean(exportXlsAssetsOrProjectVO, assetsOrProjectPageVO);
+//			System.out.println(assetsOrProjectPageVO);
+//		}
+
 	}
 
 	/**

@@ -58,7 +58,7 @@
 		<docker.username>username</docker.username>
 		<docker.password>password</docker.password>
 		<!-- Excel 数据导入导出 -->
-		<easyexcel.version>2.2.6</easyexcel.version>
+<!--		<easyexcel.version>2.2.6</easyexcel.version>-->
 	</properties>
 
 	<dependencies>
@@ -102,10 +102,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba</groupId>-->
+<!--			<artifactId>easyexcel</artifactId>-->
+<!--			<version>${easyexcel.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>easyexcel</artifactId>
-			<version>${easyexcel.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.7</version>
 		</dependency>
 	</dependencies>
 
