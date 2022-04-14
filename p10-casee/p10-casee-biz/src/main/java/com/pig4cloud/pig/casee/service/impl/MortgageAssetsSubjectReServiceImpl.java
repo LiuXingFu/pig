@@ -14,45 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.service.impl;
 
-import com.pig4cloud.pig.casee.entity.BankLoan;
-import lombok.Data;
-
-
-import java.time.LocalDate;
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
+import com.pig4cloud.pig.casee.mapper.MortgageAssetsSubjectReMapper;
+import com.pig4cloud.pig.casee.service.MortgageAssetsSubjectReService;
+import org.springframework.stereotype.Service;
 
 /**
- * 银行借贷基本信息
+ * 财产关联债务人表
  *
  * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @date 2022-04-13 11:23:59
  */
-@Data
-public class BankLoanInformationVO extends BankLoan {
+@Service
+public class MortgageAssetsSubjectReServiceImpl extends ServiceImpl<MortgageAssetsSubjectReMapper, MortgageAssetsSubjectRe> implements MortgageAssetsSubjectReService {
 
-	/**
-	 * 债务人信息
-	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
-
-	/**
-	 * 抵押物信息
-	 */
-	private List<AssetsInformationVO> assetsInformationVOList;
-
-	/**
-	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
-	 */
-	private Integer status;
-
-	private String entrustedInsName;
-
-	private String entrustedOutlesName;
-
-	/**
-	 * 移送时间
-	 */
-	private LocalDate handoverTime;
 }

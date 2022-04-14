@@ -20,9 +20,6 @@ package com.pig4cloud.pig.casee.dto;
 import com.pig4cloud.pig.casee.entity.Assets;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 /**
  * 财产表
  *
@@ -32,39 +29,14 @@ import java.time.LocalDate;
 @Data
 public class AssetsDTO extends Assets {
 	/**
-	 * 银行借贷表id
-	 */
-	private Integer bankLoanId;
-
-	/**
-	 * 财产关联银行借贷表id
-	 */
-	private Integer assetsBankLoanId;
-
-	/**
 	 * 财产id
 	 */
 	private Integer assetsId;
 
 	/**
-	 * 主体表id
-	 */
-	private Integer subjectId;
-
-	/**
 	 * 地址id
 	 */
 	private Integer addressAsId;
-
-	/**
-	 * 抵押金额
-	 */
-	private BigDecimal mortgageAmount;
-
-	/**
-	 * 抵押时间
-	 */
-	private LocalDate mortgageTime;
 
 	/**
 	 * 省

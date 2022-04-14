@@ -126,9 +126,9 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 				//添加财产关联银行借贷信息
 				assetsBankLoanRe.setAssetsId(assets.getAssetsId());
 				assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
+//				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
+//				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+//				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
 				assetsBankLoanReService.save(assetsBankLoanRe);
 			}
 		}
@@ -146,13 +146,6 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	@Override
 	public BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId) {
 		BankLoanInformationVO bankLoanInformation = this.baseMapper.getByBankLoanInformation(bankLoanId);
-		List<SubjectInformationVO> subjectInformationVOList = bankLoanInformation.getSubjectInformationVOList();
-		List<AssetsInformationVO> assetsList = bankLoanInformation.getAssetsList();
-		for (SubjectInformationVO subjectInformationVO : subjectInformationVOList) {
-			for (AssetsInformationVO assetsInformationVO : assetsList) {
-				assetsInformationVO.getSubjectIdList().add(subjectInformationVO.getSubjectId());
-			}
-		}
 		return bankLoanInformation;
 	}
 
@@ -218,20 +211,20 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 				}
 
 				//修改财产关联银行借贷信息
-				if (assetsDTO.getAssetsBankLoanId() != null) {
-					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-					assetsBankLoanReService.update(assetsBankLoanRe, new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId, assets.getAssetsId()));
-				} else {
-					//添加财产关联银行借贷信息
-					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
-					assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-					assetsBankLoanReService.save(assetsBankLoanRe);
-				}
+//				if (assetsDTO.getAssetsBankLoanId() != null) {
+//					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
+//					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+//					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
+//					assetsBankLoanReService.update(assetsBankLoanRe, new LambdaQueryWrapper<AssetsBankLoanRe>().eq(AssetsBankLoanRe::getAssetsId, assets.getAssetsId()));
+//				} else {
+//					//添加财产关联银行借贷信息
+//					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
+//					assetsBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+//					assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
+//					assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
+//					assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
+//					assetsBankLoanReService.save(assetsBankLoanRe);
+//				}
 				if (assetsDTO.getAddressAsId()==null){
 					Address address = new Address();
 					BeanUtils.copyProperties(assetsDTO, address);

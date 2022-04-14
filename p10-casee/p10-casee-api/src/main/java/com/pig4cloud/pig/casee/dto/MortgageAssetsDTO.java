@@ -14,45 +14,32 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.BankLoan;
+
+import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
 import lombok.Data;
 
-
-import java.time.LocalDate;
 import java.util.List;
 
+
 /**
- * 银行借贷基本信息
+ * 财产表
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
 @Data
-public class BankLoanInformationVO extends BankLoan {
+public class MortgageAssetsDTO extends MortgageAssetsRecords {
 
 	/**
-	 * 债务人信息
+	 * 抵押财产信息
 	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
+	private List<AssetsDTO> assetsList;
 
 	/**
-	 * 抵押物信息
+	 * 债务人id
 	 */
-	private List<AssetsInformationVO> assetsInformationVOList;
+	private List<Integer> subjectId;
 
-	/**
-	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
-	 */
-	private Integer status;
-
-	private String entrustedInsName;
-
-	private String entrustedOutlesName;
-
-	/**
-	 * 移送时间
-	 */
-	private LocalDate handoverTime;
 }

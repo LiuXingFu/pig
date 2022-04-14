@@ -14,45 +14,43 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.entity;
 
-import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
-import java.time.LocalDate;
-import java.util.List;
-
 /**
- * 银行借贷基本信息
+ * 抵押财产关联表
  *
  * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @date 2022-04-13 11:24:36
  */
 @Data
-public class BankLoanInformationVO extends BankLoan {
+@TableName("p10_mortgage_assets_re")
+@ApiModel(value = "抵押财产关联表")
+public class MortgageAssetsRe {
 
-	/**
-	 * 债务人信息
-	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
+    /**
+     * 抵押财产关联表
+     */
+    @TableId
+    @ApiModelProperty(value="抵押财产关联表")
+    private Integer mortgageAssetsRe;
 
-	/**
-	 * 抵押物信息
-	 */
-	private List<AssetsInformationVO> assetsInformationVOList;
+    /**
+     * 抵押记录表id
+     */
+    @ApiModelProperty(value="抵押记录表id")
+    private Integer mortgageRecordsId;
 
-	/**
-	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
-	 */
-	private Integer status;
+    /**
+     * 财产表id
+     */
+    @ApiModelProperty(value="财产表id")
+    private Integer assetsId;
 
-	private String entrustedInsName;
 
-	private String entrustedOutlesName;
-
-	/**
-	 * 移送时间
-	 */
-	private LocalDate handoverTime;
 }

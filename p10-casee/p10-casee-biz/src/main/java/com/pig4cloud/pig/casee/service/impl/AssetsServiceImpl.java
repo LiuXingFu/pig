@@ -23,11 +23,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.*;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
-import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
-import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
@@ -58,6 +56,12 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	AssetsBankLoanReService assetsBankLoanReService;
 	@Autowired
 	JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	MortgageAssetsRecordsService mortgageAssetsRecordsService;
+	@Autowired
+	MortgageAssetsReService mortgageAssetsReService;
+	@Autowired
+	MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
 
 	@Override
 	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
@@ -65,37 +69,48 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 	@Override
-	public boolean saveAssets(BankLoanDTO bankLoanDTO) {
+	public boolean saveMortgageAssets(MortgageAssetsDTO mortgageAssetsDTO) {
 		//抵押财产信息
-		Assets assets=new Assets();
-		//财产关联银行借贷信息
-		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
+		Assets assets = new Assets();
+		//抵押信息
+		MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
+		BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
+		mortgageAssetsRecordsService.save(mortgageAssetsRecords);
+
+		//抵押财产关联信息
+		MortgageAssetsRe mortgageAssetsRe = new MortgageAssetsRe();
+		//财产关联债务人信息
+		MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 
 		assets.setType(20200);//默认实体财产类型
 
-		if (bankLoanDTO.getAssetsDTOList()!=null){
-			for (AssetsDTO assetsDTO : bankLoanDTO.getAssetsDTOList()) {
-				if (assetsDTO.getAssetsId()==null){
-					BeanCopyUtil.copyBean(assetsDTO,assets);
+		if (mortgageAssetsDTO.getAssetsList() != null) {
+			List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
+			for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsList()) {
+				if (assetsDTO.getAssetsId() == null) {
+					BeanCopyUtil.copyBean(assetsDTO, assets);
 					this.save(assets);//添加财产信息
-
-					Address address=new Address();
-					BeanUtils.copyProperties(assetsDTO,address);
+					Address address = new Address();
+					BeanUtils.copyProperties(assetsDTO, address);
 					address.setType(4);
 					address.setUserId(assets.getAssetsId());
 					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+					mortgageAssetsRe.setAssetsId(assets.getAssetsId());
+					for (Integer subjectId : subjectIdList) {
+						mortgageAssetsSubjectRe.setAssetsId(assets.getAssetsId());
+						mortgageAssetsSubjectRe.setSubjectId(subjectId);
+						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);
+					}
+				} else {
+					for (Integer subjectId : subjectIdList) {
+						mortgageAssetsSubjectRe.setAssetsId(assetsDTO.getAssetsId());
+						mortgageAssetsSubjectRe.setSubjectId(subjectId);
+						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);
+					}
+					mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
 				}
-				if (assetsDTO.getAssetsId()==null){
-					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
-				}else {
-					assetsBankLoanRe.setAssetsId(assetsDTO.getAssetsId());
-				}
-				//添加财产关联银行借贷信息
-				assetsBankLoanRe.setBankLoanId(assetsDTO.getBankLoanId());
-				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-				assetsBankLoanReService.save(assetsBankLoanRe);
+				mortgageAssetsRe.setMortgageRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+				mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
 			}
 		}
 		return true;
@@ -103,6 +118,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 	/**
 	 * 根据财产id查询财产信息与财产地址信息
+	 *
 	 * @param assetsId
 	 * @return
 	 */
@@ -113,6 +129,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 	/**
 	 * 根据特定条件分页查询财产与项目数据
+	 *
 	 * @param page
 	 * @param assetsOrProjectPageDTO
 	 * @return
@@ -149,31 +166,31 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	 */
 
 	@Override
-	public IPage<AssetsPageVO> queryPageByCaseeId(Page page, Integer caseeId){
-		return this.baseMapper.selectPageByCaseeId(page,caseeId);
+	public IPage<AssetsPageVO> queryPageByCaseeId(Page page, Integer caseeId) {
+		return this.baseMapper.selectPageByCaseeId(page, caseeId);
 	}
 
 	@Override
 	@Transactional
-	public Integer saveAssets(AssetsAddDTO assetsAddDTO){
+	public Integer saveAssets(AssetsAddDTO assetsAddDTO) {
 		return 0;
 	}
 
 	@Override
-	public List<AssetsDeailsVO> queryByAssetsName(String assetsName){
+	public List<AssetsDeailsVO> queryByAssetsName(String assetsName) {
 		return this.baseMapper.queryByAssetsName(assetsName);
 	}
 
 	@Override
-	public 	IPage<AssetsPageVO> queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO){
+	public IPage<AssetsPageVO> queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectAssetsPage(page,assetsOrProjectPageDTO,insOutlesDTO);
+		return this.baseMapper.selectAssetsPage(page, assetsOrProjectPageDTO, insOutlesDTO);
 	}
 
 	@Override
-	public AssetsPageVO getByAssetsId(Integer assetsId){
+	public AssetsPageVO getByAssetsId(Integer assetsId) {
 		return this.baseMapper.getByAssetsId(assetsId);
 	}
 
