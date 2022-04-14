@@ -41,10 +41,10 @@ public class MortgageAssetsSubjectRe  {
     private Integer mortgageAssetsSubjectReId;
 
     /**
-     * 财产id
+     * 抵押财产关联表id
      */
-    @ApiModelProperty(value="财产id")
-    private Integer assetsId;
+    @ApiModelProperty(value="抵押财产关联表id")
+    private Integer mortgageAssetsReId;
 
     /**
      * 债务人id

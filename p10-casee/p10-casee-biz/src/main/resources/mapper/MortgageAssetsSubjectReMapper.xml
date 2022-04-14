@@ -25,7 +25,7 @@
 
   <resultMap id="mortgageAssetsSubjectReMap" type="com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe">
     <id property="mortgageAssetsSubjectReId" column="mortgage_assets_subject_re_id"/>
-    <result property="assetsId" column="assets_id"/>
+    <result property="mortgageAssetsReId" column="mortgage_assets_re_id"/>
     <result property="subjectId" column="subject_id"/>
   </resultMap>
 </mapper>

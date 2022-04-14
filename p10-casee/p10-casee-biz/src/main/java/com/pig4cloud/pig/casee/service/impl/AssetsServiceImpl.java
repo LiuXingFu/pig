@@ -104,21 +104,17 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 					address.setUserId(assets.getAssetsId());
 					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
 					mortgageAssetsRe.setAssetsId(assets.getAssetsId());
-					for (Integer subjectId : subjectIdList) {
-						mortgageAssetsSubjectRe.setAssetsId(assets.getAssetsId());
-						mortgageAssetsSubjectRe.setSubjectId(subjectId);
-						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);
-					}
 				} else {
-					for (Integer subjectId : subjectIdList) {
-						mortgageAssetsSubjectRe.setAssetsId(assetsDTO.getAssetsId());
-						mortgageAssetsSubjectRe.setSubjectId(subjectId);
-						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);
-					}
 					mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
 				}
 				mortgageAssetsRe.setMortgageRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
 				mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
+
+				for (Integer subjectId : subjectIdList) {
+					mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+					mortgageAssetsSubjectRe.setSubjectId(subjectId);
+					mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
+				}
 			}
 		}
 		return true;

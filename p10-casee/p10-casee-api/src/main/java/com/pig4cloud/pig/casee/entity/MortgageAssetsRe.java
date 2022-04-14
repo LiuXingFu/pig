@@ -38,7 +38,7 @@ public class MortgageAssetsRe {
      */
     @TableId
     @ApiModelProperty(value="抵押财产关联表")
-    private Integer mortgageAssetsRe;
+    private Integer mortgageAssetsReId;
 
     /**
      * 抵押记录表id
