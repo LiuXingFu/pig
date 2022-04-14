@@ -16,16 +16,16 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.paifu.CaseeSubjectReListDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
@@ -214,6 +214,124 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	public 	ProjectSubjectReListVO queryProjectSubjectRe(Integer projectId,String unifiedIdentity){
 		return this.baseMapper.selectProjectSubjectRe(projectId,unifiedIdentity);
+	}
+
+	@Override
+	@Transactional
+	public 	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO){
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		BeanCopyUtil.copyBean(projectPaifuModifyDTO,projectPaifu);
+		Integer modify = this.baseMapper.updateById(projectPaifu);
+
+		Casee casee = new Casee();
+		BeanCopyUtil.copyBean(projectPaifuModifyDTO,casee);
+		caseeService.updateById(casee);
+		return modify;
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO){
+		// 更新项目主体人员类型
+		UpdateWrapper<ProjectSubjectRe> projectSubjectRe = new UpdateWrapper<>();
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getProjectId,projectSubjectReSaveDTO.getProjectId());
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		projectSubjectRe.lambda().set(ProjectSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		projectSubjectReService.update(projectSubjectRe);
+		// 更新案件主体人员类型
+		UpdateWrapper<CaseeSubjectRe> caseeSubject = new UpdateWrapper<>();
+		caseeSubject.lambda().eq(CaseeSubjectRe::getCaseeId,projectSubjectReSaveDTO.getCaseeId());
+		caseeSubject.lambda().eq(CaseeSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		caseeSubject.lambda().set(CaseeSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubject.lambda().set(CaseeSubjectRe::getCaseePersonnelType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubjectReService.update(caseeSubject);
+		//更新主体信息
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(projectSubjectReSaveDTO,subject);
+		remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
+
+		List<ProjectSubjectReListVO> projectSubjectList = this.baseMapper.selectProjectSubjectReList(projectSubjectReSaveDTO.getProjectId(),-1);
+		String applicantName = "";
+		String executedName = "";
+		for(ProjectSubjectReListVO projectSubjectReListVO:projectSubjectList){
+			String name = projectSubjectReListVO.getName();
+			if(projectSubjectReListVO.getType()==0){
+				if(applicantName.equals("")){
+					applicantName = name;
+				}else{
+					applicantName = applicantName+","+name;
+				}
+			}else{
+				if(executedName.equals("")){
+					executedName = name;
+				}else{
+					executedName = executedName+","+name;
+				}
+			}
+		}
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectSubjectReSaveDTO.getProjectId());
+		projectPaifu.setSubjectPersons(executedName);
+		projectPaifu.setProposersNames(applicantName);
+		this.baseMapper.updateById(projectPaifu);
+
+		Casee casee = new Casee();
+		casee.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+		casee.setApplicantName(applicantName);
+		casee.setExecutedName(executedName);
+		caseeService.updateById(casee);
+
+		return 1;
+	}
+
+	@Override
+	@Transactional
+	public Integer removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO){
+		Integer projectId = projectSubjectReRemoveDTO.getProjectId();
+		QueryWrapper<ProjectSubjectRe> projectSubjectRe = new QueryWrapper<>();
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getProjectId,projectId);
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getSubjectId,projectSubjectReRemoveDTO.getSubjectId());
+		projectSubjectReService.remove(projectSubjectRe);
+
+		QueryWrapper<CaseeSubjectRe> caseeSubjectRe = new QueryWrapper<>();
+		caseeSubjectRe.lambda().eq(CaseeSubjectRe::getCaseeId,projectSubjectReRemoveDTO.getCaseeId());
+		caseeSubjectRe.lambda().eq(CaseeSubjectRe::getSubjectId,projectSubjectReRemoveDTO.getSubjectId());
+		caseeSubjectReService.remove(caseeSubjectRe);
+
+		Project project = this.baseMapper.selectById(projectId);
+		String subjectName = "";
+		if(projectSubjectReRemoveDTO.getCaseePersonnelType()==0){
+			subjectName = project.getProposersNames();
+		}else{
+			subjectName = project.getSubjectPersons();
+		}
+		String[] subjectNameList = subjectName.split(",");
+		String nameList = "";
+		for(String name : subjectNameList){
+			if(!projectSubjectReRemoveDTO.getName().equals(name)){
+				if(nameList.equals("")){
+					nameList = name;
+				}else{
+					nameList = nameList+","+name;
+				}
+			}
+		}
+		// 更新项目和案件申请人、被执行人所有名称
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		Casee casee = new Casee();
+		casee.setCaseeId(projectSubjectReRemoveDTO.getCaseeId());
+
+		if(projectSubjectReRemoveDTO.getCaseePersonnelType()==0){
+			projectPaifu.setProposersNames(nameList);
+			casee.setApplicantName(nameList);
+		}else{
+			projectPaifu.setSubjectPersons(nameList);
+			casee.setExecutedName(nameList);
+		}
+		this.baseMapper.updateById(projectPaifu);
+		caseeService.updateById(casee);
+		return 1;
 	}
 
 

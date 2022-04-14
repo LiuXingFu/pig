@@ -20,10 +20,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.paifu.CaseeSubjectReListDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.ProjectSubjectReSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
@@ -65,5 +62,26 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	ProjectSubjectReListVO queryProjectSubjectRe(Integer projectId,String unifiedIdentity);
+
+	/**
+	 * 根据项目id修改项目和案件基本信息
+	 * @param projectPaifuModifyDTO
+	 * @return
+	 */
+	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO);
+
+	/**
+	 * 修改项目主体关联表
+	 * @return
+	 */
+	Integer modifyProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO);
+
+	/**
+	 * 删除项目主体关联表
+	 * @return
+	 */
+	Integer removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO);
+
+
 
 }

@@ -45,7 +45,9 @@ public interface AssetsService extends IService<Assets> {
 
 	IPage<AssetsOrProjectPageVO> getPageAssetsManage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
-	void exportXls(HttpServletResponse response, AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception;
+	void exportXls(AssetsOrProjectPageDTO assetsOrProjectPageDTO) throws Exception;
+
+//	void importXls()
 
 	IPage<AssetsOrProjectPageVO> getPageDebtorAssets(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
@@ -73,5 +75,7 @@ public interface AssetsService extends IService<Assets> {
 	IPage<AssetsPageVO> queryAssetsPage(Page page, AssetsOrProjectPageDTO assetsOrProjectPageDTO);
 
 	AssetsPageVO getByAssetsId(Integer assetsId);
+
+
 
 }

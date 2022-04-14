@@ -12,7 +12,7 @@ public class AssetsOrProjectPageVO {
 	/**
 	 * 财产id
 	 */
-	private String assetsId;
+	private Integer assetsId;
 
 	/**
 	 * 财产名称
