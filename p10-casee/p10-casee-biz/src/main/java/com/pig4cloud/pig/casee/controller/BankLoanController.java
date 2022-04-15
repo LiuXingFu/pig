@@ -96,17 +96,6 @@ public class BankLoanController {
 		return R.ok(bankLoanService.getById(bankLoanId));
 	}
 
-	/**
-	 * 修改银行借贷基本信息
-	 * @param bankLoanInformationDTO 银行借贷基本信息
-	 * @return R
-	 */
-	@ApiOperation(value = "修改银行借贷基本信息", notes = "修改银行借贷基本信息")
-	@PostMapping("/updateBankLoanInformation" )
-	public R updateBankLoanInformation(@RequestBody BankLoanInformationDTO bankLoanInformationDTO) {
-		return R.ok(bankLoanService.updateBankLoanInformation(bankLoanInformationDTO));
-	}
-
     /**
      * 新增银行借贷表
      * @param bankLoan 银行借贷表
@@ -122,18 +111,6 @@ public class BankLoanController {
 		bankLoanMapper.insert(bankLoan);
         return R.ok(bankLoan.getBankLoanId());
     }
-
-	/**
-	 * 新增银行借贷、债务人、抵押物信息
-	 * @param bankLoanDTO
-	 * @return R
-	 */
-	@ApiOperation(value = "新增银行借贷、债务人、抵押物信息", notes = "新增银行借贷、债务人、抵押物信息")
-	@SysLog("新增银行借贷、债务人、抵押物信息" )
-	@PostMapping("/saveBankLoanDebtorPawn")
-	public R saveBankLoanDebtorPawn(@RequestBody BankLoanDTO bankLoanDTO) {
-		return R.ok(bankLoanService.saveBankLoanDebtorPawn(bankLoanDTO));
-	}
 
     /**
      * 修改银行借贷表

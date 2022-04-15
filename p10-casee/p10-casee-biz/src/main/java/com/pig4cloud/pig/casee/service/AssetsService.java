@@ -26,7 +26,6 @@ import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
