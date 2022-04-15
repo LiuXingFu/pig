@@ -1,6 +1,7 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXDK_CCZXDK;
@@ -10,6 +11,7 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -42,7 +44,7 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
 		//查询当前财产关联债务人信息
-		Subject subject = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());
 
 		//添加拍辅金额时需添加项目总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
@@ -59,16 +61,10 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		expenseRecord.setCaseeId(taskNode.getCaseeId());
 		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
 		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(subject.getName());
+		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 		expenseRecord.setCostType(10007);
 		expenseRecordService.save(expenseRecord);
-
-		//添加费用产生明细关联主体信息
-		ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-		expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-		expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-		expenseRecordSubjectReService.save(expenseRecordSubjectRe);
 
 		//添加到款回款信息
 		PaymentRecord paymentRecord=new PaymentRecord();
@@ -81,14 +77,27 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		paymentRecord.setProjectId(taskNode.getProjectId());
 		paymentRecord.setCompanyCode(projectLiqui.getCompanyCode());
 		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
-		paymentRecord.setSubjectName(subject.getName());
+		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		paymentRecordService.save(paymentRecord);
 
-		//添加抵偿回款信息关联债务人
-		PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
-		paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
-		paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-		paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
+		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
+		// 遍历财产关联多个债务人
+		for (Subject subject:assetsReSubjectDTO.getSubjectList()){
+			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
+			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectRes.add(expenseRecordSubjectRe);
+
+			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
+		}
+		//添加费用产生明细关联主体信息
+		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
+		//添加到款信息关联债务人
+		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 
 	}
 }

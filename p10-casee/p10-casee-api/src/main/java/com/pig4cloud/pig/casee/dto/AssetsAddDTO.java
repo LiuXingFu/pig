@@ -20,6 +20,8 @@ import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 财产表
  *
@@ -83,12 +85,11 @@ public class AssetsAddDTO {
 	@ApiModelProperty(value="描述")
 	private String describes;
 
-
 	/**
-	 * 债务人主体id
+	 * 债务人主体id集合
 	 */
-	@ApiModelProperty(value="债务人主体id")
-	private Integer subjectId;
+	@ApiModelProperty(value="债务人主体id集合")
+	private List<Integer> subjectIdList;
 
 	/**
 	 * 债务人名称

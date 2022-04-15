@@ -22,8 +22,14 @@ public class AssetsReCaseeDetail {
 	/**
 	 * 抵押时间
 	 */
-	@ApiModelProperty(value = "抵押时间")
-	private LocalDate mortgageTime;
+	@ApiModelProperty(value = "抵押开始时间")
+	private LocalDate mortgageStartTime;
+
+	/**
+	 * 抵押时间
+	 */
+	@ApiModelProperty(value = "抵押结束时间")
+	private LocalDate mortgageEndTime;
 
 	/**
 	 * 抵押金额

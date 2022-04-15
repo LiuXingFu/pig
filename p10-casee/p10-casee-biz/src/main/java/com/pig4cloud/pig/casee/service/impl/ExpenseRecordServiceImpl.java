@@ -122,8 +122,6 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 
 	@Override
 	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
-		Subject subject = assetsReLiquiService.queryAssetsSubject(projectId, caseeId, assetsId);
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = recordSubjectReService.list(new LambdaQueryWrapper<ExpenseRecordSubjectRe>().eq(ExpenseRecordSubjectRe::getSubjectId, subject.getSubjectId()));
-		return this.baseMapper.getAssetsByPaymentType(expenseRecordSubjectReList,projectId,caseeId);
+		return this.baseMapper.selectByProjectCaseeAssetsId(projectId,caseeId,assetsId);
 	}
 }

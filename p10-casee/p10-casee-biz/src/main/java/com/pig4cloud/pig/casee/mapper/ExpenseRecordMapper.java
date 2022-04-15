@@ -43,4 +43,5 @@ public interface ExpenseRecordMapper extends BaseMapper<ExpenseRecord> {
 
 	List<ExpenseRecordDistributeVO> getAssetsByPaymentType(@Param("expenseRecordSubjectReList") List<ExpenseRecordSubjectRe> expenseRecordSubjectReList,@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId);
 
+	List<ExpenseRecordDistributeVO> selectByProjectCaseeAssetsId(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId,@Param("assetsId")Integer assetsId);
 }

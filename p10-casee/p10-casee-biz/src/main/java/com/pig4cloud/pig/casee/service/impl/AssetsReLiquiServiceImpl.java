@@ -62,6 +62,8 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
 	@Autowired
 	TaskNodeService taskNodeService;
+	@Autowired
+	AssetsReSubjectService assetsReSubjectService;
 
 	@Override
 	@Transactional
@@ -103,7 +105,17 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		targetAddDTO.setGoalType(20001);
 		targetAddDTO.setGoalId(assetsId);
 		targetService.saveTargetAddDTO(targetAddDTO);
-		return this.baseMapper.insert(assetsReLiqui);
+
+		Integer save = this.baseMapper.insert(assetsReLiqui);
+		List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+		for(Integer subjectId:assetsAddDTO.getSubjectIdList()){
+			AssetsReSubject assetsReSubject = new AssetsReSubject();
+			assetsReSubject.setSubjectId(subjectId);
+			assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
+			assetsReSubjects.add(assetsReSubject);
+		}
+		assetsReSubjectService.saveBatch(assetsReSubjects);
+		return save;
 	}
 
 	@Override
@@ -158,7 +170,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 
 
 	@Override
-	public Subject queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
+	public AssetsReSubjectDTO queryAssetsSubject(Integer projectId, Integer caseeId, Integer assetsId) {
 		return this.baseMapper.queryAssetsSubject(projectId,caseeId,assetsId);
 	}
 

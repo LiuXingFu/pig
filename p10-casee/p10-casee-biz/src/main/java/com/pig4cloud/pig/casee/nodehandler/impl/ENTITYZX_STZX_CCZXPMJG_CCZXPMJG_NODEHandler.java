@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -82,7 +84,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			//查询案件信息
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 			//查询当前财产关联债务人信息
-			Subject assetsSubject = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxpmjg_cczxpmjg.getAssetsId());
+			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxpmjg_cczxpmjg.getAssetsId());
 
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
@@ -99,16 +101,20 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			expenseRecord.setCaseeId(taskNode.getCaseeId());
 			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
 			expenseRecord.setStatus(0);
-			expenseRecord.setSubjectName(assetsSubject.getName());
+			expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCostType(10007);
 			expenseRecordService.save(expenseRecord);
 
 			//添加费用产生明细关联主体信息
-			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-			expenseRecordSubjectRe.setSubjectId(assetsSubject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
+			for (Subject subject:assetsReSubjectDTO.getSubjectList()){
+				ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
+				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordSubjectRes.add(expenseRecordSubjectRe);
+			}
+			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
 
 		}
 	}
