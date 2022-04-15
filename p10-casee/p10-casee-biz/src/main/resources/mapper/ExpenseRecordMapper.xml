@@ -98,4 +98,22 @@
 			</foreach>
 		</if>
 	</select>
+
+	<select id="selectByProjectCaseeAssetsId" resultMap="expenseRecordMapVO">
+		select p10_expense_record.cost_amount as paymentAmount,
+			p10_expense_record.cost_type as fundsType,
+			p10_expense_record.cost_incurred_time,
+			p10_expense_record.project_id,
+			p10_expense_record.casee_id,
+			p10_expense_record.casee_number,
+			p10_expense_record.company_code,
+			p10_expense_record.subject_name,
+			p10_expense_record.expense_record_id
+		from p10_expense_record
+		left join p10_expense_record_subject_re on p10_expense_record_subject_re.expense_record_id = p10_expense_record.expense_record_id
+		left join p10_assets_re_subject on p10_assets_re_subject.subject_id = p10_expense_record_subject_re.subject_id
+		left join p10_assets_re on p10_assets_re.assets_id = p10_assets_re_subject.assets_re_id
+		where p10_expense_record.del_flag = 0 and p10_expense_record.status = 0
+		and p10_assets_re.project_id = #{projectId} and p10_assets_re.casee_id = #{caseeId} and assets_id = #{assetsId}
+	</select>
 </mapper>

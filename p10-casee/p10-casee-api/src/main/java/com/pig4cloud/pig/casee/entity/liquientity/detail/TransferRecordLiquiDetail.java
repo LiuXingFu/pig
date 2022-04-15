@@ -45,11 +45,11 @@ public class TransferRecordLiquiDetail {
 	 * 未判决利息起算日
 	 */
 	@ApiModelProperty(value="未判决利息起算日")
-	private LocalDate interestStartDate;
+	private LocalDate unjudgedInterestStartDate;
 
 	/**
 	 * 主动履行到期日
 	 */
 	@ApiModelProperty(value="主动履行到期日")
-	private LocalDate fulfillmentDueDate;
+	private LocalDate activeFulfillmentDueDate;
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.MortgageAssetsRecordsMapper">
+
+  <resultMap id="mortgageAssetsRecordsMap" type="com.pig4cloud.pig.casee.entity.MortgageAssetsRecords">
+    <id property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
+    <result property="bankLoanId" column="bank_loan_id"/>
+    <result property="mortgageAmount" column="mortgage_amount"/>
+    <result property="mortgageStartTime" column="mortgage_start_time"/>
+    <result property="mortgageEndTime" column="mortgage_end_time"/>
+    <result property="jointMortgage" column="joint_mortgage"/>
+    <result property="subjectName" column="subject_name"/>
+    <result property="describes" column="describes"/>
+    <result property="createTime" column="create_time"/>
+    <result property="createBy" column="create_by"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="delFlag" column="del_flag"/>
+  </resultMap>
+
+	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.AssetsInformationVO" extends="mortgageAssetsRecordsMap">
+		<collection property="assetsDTOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsReMapper.getAssetsDetails" column="mortgage_assets_records_id">
+		</collection>
+	</resultMap>
+
+	<resultMap id="MortgageAssetsRecordsVO" type="com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO" extends="mortgageAssetsRecordsMap">
+		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsReMapper.getAssetsDetails" column="mortgage_assets_records_id">
+		</collection>
+	</resultMap>
+
+	<select id="getMortgageAssetsRecordsDetails" resultMap="BankLoanInformationVO">
+		select * from p10_mortgage_assets_records where p10_mortgage_assets_records.del_flag=0 AND p10_mortgage_assets_records.bank_loan_id=#{bankLoanId}
+	</select>
+
+	<select id="getByMortgageAssetsRecordsId" resultMap="MortgageAssetsRecordsVO">
+	SELECT
+	*
+	FROM
+	p10_mortgage_assets_records
+	WHERE p10_mortgage_assets_records.del_flag = 0
+	AND p10_mortgage_assets_records.mortgage_assets_records_id =#{mortgageAssetsRecordsId}
+	</select>
+</mapper>

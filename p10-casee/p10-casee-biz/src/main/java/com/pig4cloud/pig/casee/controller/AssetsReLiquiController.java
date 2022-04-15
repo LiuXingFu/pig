@@ -173,11 +173,11 @@ public class AssetsReLiquiController {
 	}
 
 	/**
-	 * 查询案件财产详情
+	 * 获取案件财产详情，及项目案件财产详情
 	 * @param assetsReId
 	 * @return R
 	 */
-	@ApiOperation(value = "财产拍卖公告期", notes = "财产拍卖公告期")
+	@ApiOperation(value = "获取案件财产详情，及项目案件财产详情", notes = "获取案件财产详情，及项目案件财产详情")
 	@GetMapping("/getAssetsReDetails" )
 	public R getAssetsReDetails(Integer assetsReId) {
 		return R.ok(assetsReLiquiService.getAssetsReDetails(assetsReId));

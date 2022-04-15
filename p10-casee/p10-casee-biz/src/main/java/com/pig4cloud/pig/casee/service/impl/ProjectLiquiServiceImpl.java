@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -64,57 +65,44 @@ import java.util.*;
  */
 @Service
 public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Project> implements ProjectLiquiService {
-
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
-
 	@Autowired
 	private TransferRecordLiquiService transferRecordLiquiService;
-
 	@Autowired
 	private ProjectOutlesDealReService projectOutlesDealReService;
-
 	@Autowired
 	private RemoteUserService userService;
-
 	@Autowired
 	private ProjectStatusService projectStatusService;
-
 	@Autowired
 	private ProjectSubjectReService projectSubjectReService;
-
 	@Autowired
 	private SubjectBankLoanReService subjectBankLoanReService;
-
 	@Autowired
 	private SecurityUtilsService securityUtilsService;
-
 	@Autowired
 	private AssetsReLiquiService assetsReLiquiService;
-
-	@Autowired
-	private AssetsBankLoanReMapper assetsBankLoanReMapper;
-
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
-
 	@Autowired
 	private RemoteSubjectService remoteSubjectService;
-
 	@Autowired
 	private ExpenseRecordService expenseRecordService;
-
 	@Autowired
 	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-
 	@Autowired
 	private PaymentRecordService paymentRecordService;
-
 	@Autowired
 	private BehaviorLiquiService behaviorLiquiService;
-
 	@Autowired
 	private ReconciliatioMediationLiquiService reconciliatioMediationService;
+	@Autowired
+	private MortgageAssetsRecordsService mortgageAssetsRecordsService;
+	@Autowired
+	private AssetsReSubjectService assetsReSubjectService;
+	@Autowired
+	private MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
 
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO) {
@@ -194,34 +182,61 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectSubjectRe.setProjectId(projectLiqui.getProjectId());
 		projectSubjectRe.setType(0);
 		projectSubjectRes.add(projectSubjectRe);
-
-
 		// 保存项目主体关联表
 		projectSubjectReService.saveBatch(projectSubjectRes);
 
 		// 抵押情况0=有
 		if (transferRecordBankLoanVO.getMortgageSituation() == 0) {
 			// 查询银行借贷抵押财产
-			List<AssetsInformationVO> assetsInformationVOS = assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
-			List<AssetsReLiqui> assetsReLiquiList = new ArrayList<>();
-			assetsInformationVOS.stream().forEach(item -> {
-				AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
-				assetsReLiqui.setAssetsId(item.getAssetsId());
-				assetsReLiqui.setSubjectId(item.getSubjectId());
-				assetsReLiqui.setProjectId(projectLiqui.getProjectId());
+			List<AssetsInformationVO> assetsInformationVOS = mortgageAssetsRecordsService.getMortgageAssetsRecordsDetails(transferRecordBankLoanVO.getSourceId());
+			List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+			List<AssetsRe> assetsReList = new ArrayList<>();
+			// 抵押记录
+			for(AssetsInformationVO assetsInformationVO:assetsInformationVOS){
+				AssetsReLiqui assetsRe = new AssetsReLiqui();
+				String subjectNameList = "";
+				// 抵押财产关联
+				for(AssetsVO assetsVO : assetsInformationVO.getAssetsDTOList()){
+					AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
+					assetsReLiqui.setAssetsId(assetsVO.getAssetsId());
+					assetsReLiqui.setProjectId(projectLiqui.getProjectId());
+					// 案件来源1=抵押财产
+					assetsReLiqui.setAssetsSource(1);
+					// 是否联合抵押1=是
+					if(assetsInformationVO.getJointMortgage()==1){
+						assetsReLiqui.setMortgageAssetsRecordsId(assetsInformationVO.getMortgageAssetsRecordsId());
+					}
+					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+					assetsReCaseeDetail.setMortgagee(0);
+					assetsReCaseeDetail.setMortgageStartTime(assetsInformationVO.getMortgageStartTime());
+					assetsReCaseeDetail.setMortgageEndTime(assetsInformationVO.getMortgageEndTime());
+					assetsReCaseeDetail.setMortgageAmount(assetsInformationVO.getMortgageAmount());
+					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					assetsReLiquiService.save(assetsReLiqui);
 
-				R<Subject> subjectR = remoteSubjectService.getById(item.getSubjectId(),SecurityConstants.FROM);
-				assetsReLiqui.setSubjectName(subjectR.getData().getName());
-				// 案件来源1=抵押财产
-				assetsReLiqui.setAssetsSource(1);
-				AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
-				assetsReCaseeDetail.setMortgagee(0);
-				assetsReCaseeDetail.setMortgageTime(item.getMortgageTime());
-				assetsReCaseeDetail.setMortgageAmount(item.getMortgageAmount());
-				assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				assetsReLiquiList.add(assetsReLiqui);
-				assetsReLiquiService.save(assetsReLiqui);
-			});
+					QueryWrapper<MortgageAssetsSubjectRe> mortgageAssetsSubjectReQuery = new QueryWrapper<>();
+					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsInformationVO.getMortgageAssetsRecordsId());
+					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = mortgageAssetsSubjectReService.list(mortgageAssetsSubjectReQuery);
+					for(MortgageAssetsSubjectRe mortgageAssetsSubjectRe:mortgageAssetsSubjectRes){
+						AssetsReSubject assetsReSubject = new AssetsReSubject();
+						assetsReSubject.setSubjectId(mortgageAssetsSubjectRe.getSubjectId());
+						assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
+						assetsReSubjects.add(assetsReSubject);
+
+						R<Subject> subjectR = remoteSubjectService.getById(mortgageAssetsSubjectRe.getSubjectId(),SecurityConstants.FROM);
+						assetsRe.setAssetsReId(assetsReLiqui.getAssetsReId());
+						if(subjectNameList.equals("")){
+							subjectNameList = subjectR.getData().getName();
+						}else{
+							subjectNameList = subjectNameList+","+subjectR.getData().getName();
+						}
+						assetsRe.setSubjectName(subjectNameList);
+					}
+				}
+				assetsReList.add(assetsRe);
+			}
+			assetsReSubjectService.saveBatch(assetsReSubjects);
+			assetsReLiquiService.updateBatchById(assetsReList);
 		}
 
 		// 保存项目委托关联表
@@ -256,8 +271,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		// 债务人列表
 		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectSubjectDTO);
 		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
-
-//		assetsBankLoanReMapper.getAssetsBankLoanRe(transferRecordBankLoanVO.getSourceId());
 
 		return projectLiquiDetailsVO;
 	}

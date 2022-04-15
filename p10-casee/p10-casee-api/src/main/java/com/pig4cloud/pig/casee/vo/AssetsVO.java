@@ -18,7 +18,6 @@ package com.pig4cloud.pig.casee.vo;
 
 
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
 import lombok.Data;
 
 /**
@@ -31,22 +30,38 @@ import lombok.Data;
 public class AssetsVO extends Assets {
 
 	/**
+	 * 地址id
+	 */
+	private Integer addressAsId;
+
+	/**
 	 * 省
 	 */
 	private String province;
-
 	/**
 	 * 市
 	 */
 	private String city;
-
 	/**
 	 * 区
 	 */
 	private String area;
-
 	/**
 	 * 信息地址
 	 */
 	private String informationAddress;
+	/**
+	 * 行政区划编号
+	 */
+	private String code;
+
+	/**
+	 * 地址来源（比如裁判文书网）
+	 */
+	private String source;
+
+	/**
+	 * 财产性质名称
+	 */
+	private String assetsTypeName;
 }

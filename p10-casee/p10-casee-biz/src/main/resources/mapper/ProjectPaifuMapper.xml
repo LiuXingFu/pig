@@ -97,10 +97,12 @@
 	</select>
 
 	<select id="selectProjectSubjectReList" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO">
-		select p10_project_subject_re.subject_re_id,p10_subject.* from p10_project_subject_re
+		select p10_project_subject_re.subject_re_id,p10_project_subject_re.type,p10_subject.* from p10_project_subject_re
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project_subject_re.project_id = #{projectId}
-		and p10_project_subject_re.type = #{type}
+		<if test="type != null and type >= 0">
+			and p10_project_subject_re.type = #{type}
+		</if>
 	</select>
 
 	<select id="selectProjectSubjectRe" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO">

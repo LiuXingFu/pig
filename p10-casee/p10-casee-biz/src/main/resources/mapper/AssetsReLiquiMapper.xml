@@ -79,9 +79,16 @@
 		where p10_assets_re.project_id=#{projectId}
 	</select>
 
-	<select id="queryAssetsSubject" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
+	<resultMap id="assetsSubjectMap" type="com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO" extends="assetsMap">
+		<collection property="subjectList" ofType="com.pig4cloud.pig.admin.api.entity.Subject"
+					column="assets_re_id"
+					select="com.pig4cloud.pig.casee.mapper.selectByAssetsReIdSubjectList"></collection>
+	</resultMap>
+
+	<select id="queryAssetsSubject" resultMap="assetsSubjectMap">
 		select p10_subject.* from p10_assets_re
-		left join p10_subject on p10_subject.subject_id=p10_assets_re.subject_id
+		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_id
+		left join p10_subject on p10_subject.subject_id=p10_assets_re_subject.subject_id
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
@@ -701,8 +708,9 @@
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
+		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_re_id
 		where p10_project.del_flag = 0
-		and p10_assets_re.subject_id = #{subjectId}
+		and p10_assets_re_subject.subject_id = #{subjectId}
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>

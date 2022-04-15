@@ -26,7 +26,6 @@ import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public interface AssetsService extends IService<Assets> {
 
 	AssetsGetByIdDTO getByAssets(Integer assetsId);
 
-	boolean	saveAssets(BankLoanDTO bankLoanDTO);
+	boolean	saveMortgageAssets(MortgageAssetsAllDTO mortgageAssetsAllDTO);
 
 	AssetsDeailsVO queryById(Integer assetsId);
 

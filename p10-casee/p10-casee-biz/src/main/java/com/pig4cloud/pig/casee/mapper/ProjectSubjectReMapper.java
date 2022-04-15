@@ -18,16 +18,22 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.ProjectSubjectRe;
+import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.math.BigDecimal;
 
 /**
  * 项目主体关联表
  *
- * @author ligt
- * @date 2022-01-11 14:52:12
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Mapper
 public interface ProjectSubjectReMapper extends BaseMapper<ProjectSubjectRe> {
 
+	ProjectSubjectVO getProjectSubjectDetail(@Param("projectId")Integer projectId,@Param("subjectId")Integer subjectId);
 }

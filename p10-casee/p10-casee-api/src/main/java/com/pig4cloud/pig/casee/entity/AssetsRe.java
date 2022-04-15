@@ -109,6 +109,10 @@ public class AssetsRe extends BaseEntity {
 	@ApiModelProperty(value="财产来源（1-抵押财产，2-案件）")
 	private Integer assetsSource;
 
-
+	/**
+	 * 抵押记录id
+	 */
+	@ApiModelProperty(value="抵押记录id")
+	private Integer mortgageAssetsRecordsId;
 
 }

@@ -16,8 +16,6 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-//import com.alibaba.excel.EasyExcel;
-
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -27,11 +25,9 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.SysUserEXport;
 import com.pig4cloud.pig.casee.dto.*;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.AssetsBankLoanRe;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.AssetsMapper;
-import com.pig4cloud.pig.casee.service.AssetsBankLoanReService;
-import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
@@ -45,10 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +60,12 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	AssetsBankLoanReService assetsBankLoanReService;
 	@Autowired
 	JurisdictionUtilsService jurisdictionUtilsService;
+	@Autowired
+	MortgageAssetsRecordsService mortgageAssetsRecordsService;
+	@Autowired
+	MortgageAssetsReService mortgageAssetsReService;
+	@Autowired
+	MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
 
 	@Override
 	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
@@ -73,37 +73,47 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 	@Override
-	public boolean saveAssets(BankLoanDTO bankLoanDTO) {
-		//抵押财产信息
-		Assets assets = new Assets();
-		//财产关联银行借贷信息
-		AssetsBankLoanRe assetsBankLoanRe = new AssetsBankLoanRe();
+	@Transactional
+	public boolean saveMortgageAssets(MortgageAssetsAllDTO mortgageAssetsAllDTO) {
+		for (MortgageAssetsDTO mortgageAssetsDTO : mortgageAssetsAllDTO.getMortgageAssetsDTOList()) {
+			//抵押财产信息
+			Assets assets = new Assets();
+			//抵押信息
+			MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
+			BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
+			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
 
-		assets.setType(20200);//默认实体财产类型
+			//抵押财产关联信息
+			MortgageAssetsRe mortgageAssetsRe = new MortgageAssetsRe();
+			//财产关联债务人信息
+			MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 
-		if (bankLoanDTO.getAssetsDTOList() != null) {
-			for (AssetsDTO assetsDTO : bankLoanDTO.getAssetsDTOList()) {
-				if (assetsDTO.getAssetsId() == null) {
-					BeanCopyUtil.copyBean(assetsDTO, assets);
-					this.save(assets);//添加财产信息
+			assets.setType(20200);//默认实体财产类型
 
-					Address address = new Address();
-					BeanUtils.copyProperties(assetsDTO, address);
-					address.setType(4);
-					address.setUserId(assets.getAssetsId());
-					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+			if (mortgageAssetsDTO.getAssetsList() != null) {
+				List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
+				for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsList()) {
+					if (assetsDTO.getAssetsId() == null) {
+						BeanCopyUtil.copyBean(assetsDTO, assets);
+						this.save(assets);//添加财产信息
+						Address address = new Address();
+						BeanUtils.copyProperties(assetsDTO, address);
+						address.setType(4);
+						address.setUserId(assets.getAssetsId());
+						remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+						mortgageAssetsRe.setAssetsId(assets.getAssetsId());
+					} else {
+						mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
+					}
+					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+					mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
+
+					for (Integer subjectId : subjectIdList) {
+						mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+						mortgageAssetsSubjectRe.setSubjectId(subjectId);
+						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
+					}
 				}
-				if (assetsDTO.getAssetsId() == null) {
-					assetsBankLoanRe.setAssetsId(assets.getAssetsId());
-				} else {
-					assetsBankLoanRe.setAssetsId(assetsDTO.getAssetsId());
-				}
-				//添加财产关联银行借贷信息
-				assetsBankLoanRe.setBankLoanId(assetsDTO.getBankLoanId());
-				assetsBankLoanRe.setSubjectId(assetsDTO.getSubjectId());
-				assetsBankLoanRe.setMortgageTime(assetsDTO.getMortgageTime());
-				assetsBankLoanRe.setMortgageAmount(assetsDTO.getMortgageAmount());
-				assetsBankLoanReService.save(assetsBankLoanRe);
 			}
 		}
 		return true;

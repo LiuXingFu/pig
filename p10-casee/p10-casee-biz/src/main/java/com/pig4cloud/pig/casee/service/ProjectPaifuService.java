@@ -82,4 +82,10 @@ public interface ProjectPaifuService extends IService<Project> {
 	 */
 	Integer removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO);
 
+	/**
+	 * 保存项目接收
+	 * @return
+	 */
+	Integer saveProjectReceipt(ProjectPaifuReceiptDTO projectPaifuReceiptDTO);
+
 }

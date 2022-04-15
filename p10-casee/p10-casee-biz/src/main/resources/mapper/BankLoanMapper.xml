@@ -43,53 +43,19 @@
 	<result property="remark" column="remark"/>
   </resultMap>
 
-	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO">
-		<id property="bankLoanId" column="bank_loan_id"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="insId" column="ins_id"/>
-		<result property="outlesId" column="outles_id"/>
-		<result property="principal" column="principal"/>
-		<result property="interest" column="interest"/>
-		<result property="calculation" column="calculation"/>
-		<result property="rental" column="rental"/>
-		<result property="mortgageSituation" column="mortgage_situation"/>
-		<result property="loanContract" column="loan_contract"/>
-		<result property="otherFile" column="other_file"/>
-		<result property="transferDate" column="transfer_date"/>
-		<result property="remark" column="remark"/>
+	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO" extends="bankLoanMap">
 		<collection property="countAssetsBankLoanRe" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.countAssetsBankLoanReById" column="bank_loan_id"></collection>
 		<collection property="countSubjectBankLoanRe" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.countSubjectBankLoanReById" column="bank_loan_id"></collection>
 	</resultMap>
 
-	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO">
-		<id property="bankLoanId" column="bank_loan_id"/>
-		<result property="createBy" column="create_by"/>
-		<result property="createTime" column="create_time"/>
-		<result property="updateBy" column="update_by"/>
-		<result property="updateTime" column="update_time"/>
-		<result property="delFlag" column="del_flag"/>
-		<result property="insId" column="ins_id"/>
-		<result property="outlesId" column="outles_id"/>
-		<result property="principal" column="principal"/>
-		<result property="interest" column="interest"/>
-		<result property="calculation" column="calculation"/>
-		<result property="rental" column="rental"/>
-		<result property="mortgageSituation" column="mortgage_situation"/>
-		<result property="loanContract" column="loan_contract"/>
-		<result property="otherFile" column="other_file"/>
-		<result property="transferDate" column="transfer_date"/>
-		<result property="remark" column="remark"/>
+	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO" extends="bankLoanMap">
 		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
 		</collection>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
-					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.getAssetsBankLoanRe" column="bank_loan_id">
+		<collection property="assetsInformationVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsInformationVO"
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsRecordsMapper.getMortgageAssetsRecordsDetails" column="bank_loan_id">
 		</collection>
 	</resultMap>
 

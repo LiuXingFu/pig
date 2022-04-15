@@ -16,8 +16,9 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,6 +28,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
@@ -35,15 +37,12 @@ import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
-import com.pig4cloud.pig.common.security.service.PigUser;
-import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 拍辅项目表
@@ -64,7 +63,10 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private ProjectCaseeReService projectCaseeReService;
 	@Autowired
 	private RemoteSubjectService remoteSubjectService;
-
+	@Autowired
+	private LiquiTransferRecordService liquiTransferRecordService;
+	@Autowired
+	private AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
 
 	@Override
 	@Transactional
@@ -231,6 +233,54 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer modifyProjectSubjectRe(ProjectSubjectReSaveDTO projectSubjectReSaveDTO){
+		// 更新项目主体人员类型
+		UpdateWrapper<ProjectSubjectRe> projectSubjectRe = new UpdateWrapper<>();
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getProjectId,projectSubjectReSaveDTO.getProjectId());
+		projectSubjectRe.lambda().eq(ProjectSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		projectSubjectRe.lambda().set(ProjectSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		projectSubjectReService.update(projectSubjectRe);
+		// 更新案件主体人员类型
+		UpdateWrapper<CaseeSubjectRe> caseeSubject = new UpdateWrapper<>();
+		caseeSubject.lambda().eq(CaseeSubjectRe::getCaseeId,projectSubjectReSaveDTO.getCaseeId());
+		caseeSubject.lambda().eq(CaseeSubjectRe::getSubjectId,projectSubjectReSaveDTO.getSubjectId());
+		caseeSubject.lambda().set(CaseeSubjectRe::getType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubject.lambda().set(CaseeSubjectRe::getCaseePersonnelType,projectSubjectReSaveDTO.getCaseePersonnelType());
+		caseeSubjectReService.update(caseeSubject);
+		//更新主体信息
+		Subject subject = new Subject();
+		BeanCopyUtil.copyBean(projectSubjectReSaveDTO,subject);
+		remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
+
+		List<ProjectSubjectReListVO> projectSubjectList = this.baseMapper.selectProjectSubjectReList(projectSubjectReSaveDTO.getProjectId(),-1);
+		String applicantName = "";
+		String executedName = "";
+		for(ProjectSubjectReListVO projectSubjectReListVO:projectSubjectList){
+			String name = projectSubjectReListVO.getName();
+			if(projectSubjectReListVO.getType()==0){
+				if(applicantName.equals("")){
+					applicantName = name;
+				}else{
+					applicantName = applicantName+","+name;
+				}
+			}else{
+				if(executedName.equals("")){
+					executedName = name;
+				}else{
+					executedName = executedName+","+name;
+				}
+			}
+		}
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectSubjectReSaveDTO.getProjectId());
+		projectPaifu.setSubjectPersons(executedName);
+		projectPaifu.setProposersNames(applicantName);
+		this.baseMapper.updateById(projectPaifu);
+
+		Casee casee = new Casee();
+		casee.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+		casee.setApplicantName(applicantName);
+		casee.setExecutedName(executedName);
+		caseeService.updateById(casee);
 
 		return 1;
 	}
@@ -267,6 +317,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				}
 			}
 		}
+		// 更新项目和案件申请人、被执行人所有名称
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		projectPaifu.setProjectId(projectId);
 		Casee casee = new Casee();
@@ -282,6 +333,40 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		this.baseMapper.updateById(projectPaifu);
 		caseeService.updateById(casee);
 		return 1;
+	}
+
+	@Override
+	@Transactional
+	public 	Integer saveProjectReceipt(ProjectPaifuReceiptDTO projectPaifuReceiptDTO){
+		LiquiTransferRecord liquiTransferRecord =  liquiTransferRecordService.getById(projectPaifuReceiptDTO.getLiquiTransferRecordId());
+		Casee casee = caseeService.getById(liquiTransferRecord.getCaseeId());
+		// 保存项目表
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		BeanCopyUtil.copyBean(projectPaifuReceiptDTO,projectPaifu);
+		projectPaifu.setProjectType(200);
+		projectPaifu.setInsId(liquiTransferRecord.getEntrustedInsId());
+		projectPaifu.setOutlesId(liquiTransferRecord.getEntrustedOutlesId());
+		projectPaifu.setProposersNames(casee.getApplicantName());
+		projectPaifu.setSubjectPersons(casee.getExecutedName());
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		BeanCopyUtil.copyBean(projectPaifuReceiptDTO,projectPaifuDetail);
+		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
+		Integer save = this.baseMapper.insert(projectPaifu);
+		// 保存项目案件关联
+		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
+		projectCaseeRe.setProjectId(projectPaifu.getProjectId());
+		projectCaseeRe.setCaseeId(liquiTransferRecord.getCaseeId());
+		projectCaseeRe.setUserId(projectPaifuReceiptDTO.getUserId());
+		projectCaseeRe.setActualName(projectPaifuReceiptDTO.getUserNickName());
+		projectCaseeReService.save(projectCaseeRe);
+
+		QueryWrapper<AssetsLiquiTransferRecordRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId,projectPaifuReceiptDTO.getLiquiTransferRecordId());
+		List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordRes = assetsLiquiTransferRecordReService.list(queryWrapper);
+
+
+
+		return save;
 	}
 
 

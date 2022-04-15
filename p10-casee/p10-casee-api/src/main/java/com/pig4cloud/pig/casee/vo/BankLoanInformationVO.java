@@ -16,9 +16,7 @@
  */
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.BankLoan;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
@@ -42,7 +40,7 @@ public class BankLoanInformationVO extends BankLoan {
 	/**
 	 * 抵押物信息
 	 */
-	private List<AssetsInformationVO> assetsList;
+	private List<AssetsInformationVO> assetsInformationVOList;
 
 	/**
 	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
