@@ -28,4 +28,10 @@
     <result property="mortgageAssetsReId" column="mortgage_assets_re_id"/>
     <result property="subjectId" column="subject_id"/>
   </resultMap>
+
+	<select id="getMortgageAssetsSubject" resultType="java.lang.Integer">
+		select p10_subject.subject_id from p10_mortgage_assets_subject_re
+		left join p10_subject on p10_subject.subject_id=p10_mortgage_assets_subject_re.subject_id
+		where p10_mortgage_assets_subject_re.mortgage_assets_re_id=#{mortgageAssetsReId}
+	</select>
 </mapper>

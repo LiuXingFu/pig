@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 财产关联债务人表
  *
@@ -30,4 +32,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MortgageAssetsSubjectReMapper extends BaseMapper<MortgageAssetsSubjectRe> {
 
+	List<Integer> getMortgageAssetsSubject(Integer mortgageAssetsReId);
 }

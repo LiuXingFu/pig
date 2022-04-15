@@ -30,11 +30,6 @@ import lombok.Data;
 public class AssetsVO extends Assets {
 
 	/**
-	 * 财产id
-	 */
-	private Integer assetsId;
-
-	/**
 	 * 地址id
 	 */
 	private Integer addressAsId;

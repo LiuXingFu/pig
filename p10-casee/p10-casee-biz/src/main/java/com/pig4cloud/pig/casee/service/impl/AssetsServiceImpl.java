@@ -105,7 +105,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 					} else {
 						mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
 					}
-					mortgageAssetsRe.setMortgageRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
 					mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
 
 					for (Integer subjectId : subjectIdList) {

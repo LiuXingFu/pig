@@ -44,7 +44,7 @@ public class MortgageAssetsRe {
      * 抵押记录表id
      */
     @ApiModelProperty(value="抵押记录表id")
-    private Integer mortgageRecordsId;
+    private Integer mortgageAssetsRecordsId;
 
     /**
      * 财产表id
