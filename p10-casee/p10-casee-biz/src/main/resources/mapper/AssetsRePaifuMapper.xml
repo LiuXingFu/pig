@@ -23,6 +23,26 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper">
 
+	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.Assets">
+		<id property="assetsId" column="assets_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="assetsName" column="assets_name"/>
+		<result property="type" column="type"/>
+		<result property="assetsType" column="assets_type"/>
+		<result property="assetsDetail" column="assets_detail"/>
+		<result property="describes" column="describes"/>
+		<result property="accountNumber" column="account_number"/>
+	</resultMap>
+
+	<resultMap id="assetsPaifuVOMap" type="com.pig4cloud.pig.casee.vo.AssetsPaifuVO" extends="assetsMap">
+		<result property="assetsReDetail" column="assets_re_detail"/>
+		<result property="subjectId" column="subject_id"></result>
+	</resultMap>
+
 	<select id="queryTargetPage" resultType="com.pig4cloud.pig.casee.vo.TargetAssetsReAssetsCaseeVO">
 		SELECT
 		p10_assets_re.assets_re_id,
@@ -58,6 +78,21 @@
 			AND json_extract( p10_assets_re.assets_re_detail,
 			'$.assetsSeizure.seizureExpiryDate' ) BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
+
+	<select id="queryAssetsPaifuById" resultMap="assetsPaifuVOMap">
+		SELECT p10_assets.*, p10_assets_re.assets_re_detail, p10_assets_re.subject_id  FROM `p10_assets_re`
+		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id AND p10_assets.del_flag = 0
+		WHERE p10_assets_re.del_flag = 0
+		<if test="projectId != null and projectId != 0">
+			AND p10_assets_re.project_id = #{projectId}
+		</if>
+		<if test="caseeId != null and caseeId != 0">
+			AND p10_assets_re.casee_id = #{caseeId}
+		</if>
+		<if test="assetsId != null and assetsId != 0">
+			AND p10_assets_re.assets_id = #{assetsId}
 		</if>
 	</select>
 

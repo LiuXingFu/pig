@@ -41,4 +41,6 @@ public interface AddressMapper extends BaseMapper<Address> {
 	List<AddressVO> getByAddressList(@Param("userId") Integer userId);
 
 	List<Address> selectAddressList(@Param("userId") Integer userId,@Param("type") Integer type);
+
+	Address queryAssetsByTypeIdAndType(@Param("typeId") Integer typeId, @Param("type") Integer type);
 }

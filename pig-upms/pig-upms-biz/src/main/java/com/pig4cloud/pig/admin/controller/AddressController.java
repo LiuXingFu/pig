@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.service.AddressService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -153,5 +154,17 @@ public class AddressController {
 	@DeleteMapping("/removeUserIdAndType")
 	public R removeUserIdAndType(Integer userId,Integer type) {
 		return R.ok(addressService.remove(new LambdaQueryWrapper<Address>().eq(Address::getUserId,userId).eq(Address::getType,type)));
+	}
+
+	/**
+	 * 根据地址类型与地址类型id查询地址信息
+	 * @param typeId
+	 * @param type
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/queryAssetsByTypeIdAndType/{typeId}/{type}")
+	public R queryAssetsByTypeIdAndType(@PathVariable("typeId") Integer typeId, @PathVariable("type") Integer type) {
+		return R.ok(addressService.queryAssetsByTypeIdAndType(typeId, type));
 	}
 }

@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.common.core.util.R;
 
 /**
  * 清收移交记录表
@@ -35,4 +36,6 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 	IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord);
 
 	LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId);
+
+	R queryTransferRecord(Integer caseeId);
 }

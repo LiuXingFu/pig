@@ -26,13 +26,23 @@ public class CustomerSubjectVO {
 	private String recommenderName;
 
 	/**
-	 * 推荐机构名称
+	 * 机构名称
 	 */
 	private String insName;
 
 	/**
-	 * 推荐网点名称
+	 * 网点名称
 	 */
 	private String outlesName;
+
+	/**
+	 * 电话
+	 */
+	private String phone;
+
+	/**
+	 * 统一标识(身份证/统一社会信用代码/组织机构代码)
+	 */
+	private String unifiedIdentity;
 
 }

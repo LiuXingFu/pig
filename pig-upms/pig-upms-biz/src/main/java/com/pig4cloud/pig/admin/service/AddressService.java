@@ -34,4 +34,6 @@ public interface AddressService extends IService<Address> {
 	Address getById(Integer addressId,Integer type);
 
 	Address getByUserId(Integer userId, Integer type);
+
+	Address queryAssetsByTypeIdAndType(Integer typeId, Integer type);
 }

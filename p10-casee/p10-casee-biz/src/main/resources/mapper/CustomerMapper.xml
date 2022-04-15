@@ -43,6 +43,8 @@
 		SELECT p10_customer.customer_id,
 		p10_customer.customer_type,
 		p10_subject.name as subjectName,
+		p10_subject.phone,
+		p10_subject.unified_identity,
 		sys_user.actual_name as recommenderName,
 		p10_institution.ins_name,
 		p10_outles.outles_name
