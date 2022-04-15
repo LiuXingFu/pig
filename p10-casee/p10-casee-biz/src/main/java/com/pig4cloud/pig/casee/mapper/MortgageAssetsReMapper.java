@@ -18,10 +18,8 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsVO;
-import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

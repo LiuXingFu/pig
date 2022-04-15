@@ -33,12 +33,7 @@ import com.pig4cloud.pig.casee.vo.BankLoanVO;
  * @date 2022-01-29 10:20:00
  */
 public interface BankLoanService extends IService<BankLoan> {
-
-	boolean saveBankLoanDebtorPawn(BankLoanDTO bankLoanDTO);
-
 	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
 
 	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
-
-	boolean updateBankLoanInformation(BankLoanInformationDTO bankLoanInformationDTO);
 }

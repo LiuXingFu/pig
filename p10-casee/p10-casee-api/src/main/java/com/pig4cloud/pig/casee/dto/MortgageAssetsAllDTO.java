@@ -14,29 +14,23 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
-import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
-import com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO;
-import org.apache.ibatis.annotations.Mapper;
+import lombok.Data;
 
 import java.util.List;
 
 
 /**
- * 抵押记录表
+ * 财产表
  *
- * @author Mjh
- * @date 2022-04-13 11:24:18
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
-@Mapper
-public interface MortgageAssetsRecordsMapper extends BaseMapper<MortgageAssetsRecords> {
+@Data
+public class MortgageAssetsAllDTO {
 
-	List<AssetsInformationVO> getMortgageAssetsRecordsDetails(Integer bankLoanId);
-
-	MortgageAssetsRecordsVO getByMortgageAssetsRecordsId(Integer mortgageAssetsRecordsId);
+	List<MortgageAssetsDTO> mortgageAssetsDTOList;
 
 }

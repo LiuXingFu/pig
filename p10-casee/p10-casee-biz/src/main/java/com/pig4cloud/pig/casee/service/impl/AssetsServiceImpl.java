@@ -16,8 +16,6 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-//import com.alibaba.excel.EasyExcel;
-
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -43,10 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,43 +73,46 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	}
 
 	@Override
-	public boolean saveMortgageAssets(MortgageAssetsDTO mortgageAssetsDTO) {
-		//抵押财产信息
-		Assets assets = new Assets();
-		//抵押信息
-		MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
-		BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
-		mortgageAssetsRecordsService.save(mortgageAssetsRecords);
+	@Transactional
+	public boolean saveMortgageAssets(MortgageAssetsAllDTO mortgageAssetsAllDTO) {
+		for (MortgageAssetsDTO mortgageAssetsDTO : mortgageAssetsAllDTO.getMortgageAssetsDTOList()) {
+			//抵押财产信息
+			Assets assets = new Assets();
+			//抵押信息
+			MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
+			BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
+			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
 
-		//抵押财产关联信息
-		MortgageAssetsRe mortgageAssetsRe = new MortgageAssetsRe();
-		//财产关联债务人信息
-		MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
+			//抵押财产关联信息
+			MortgageAssetsRe mortgageAssetsRe = new MortgageAssetsRe();
+			//财产关联债务人信息
+			MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 
-		assets.setType(20200);//默认实体财产类型
+			assets.setType(20200);//默认实体财产类型
 
-		if (mortgageAssetsDTO.getAssetsList() != null) {
-			List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
-			for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsList()) {
-				if (assetsDTO.getAssetsId() == null) {
-					BeanCopyUtil.copyBean(assetsDTO, assets);
-					this.save(assets);//添加财产信息
-					Address address = new Address();
-					BeanUtils.copyProperties(assetsDTO, address);
-					address.setType(4);
-					address.setUserId(assets.getAssetsId());
-					remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
-					mortgageAssetsRe.setAssetsId(assets.getAssetsId());
-				} else {
-					mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
-				}
-				mortgageAssetsRe.setMortgageRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
-				mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
+			if (mortgageAssetsDTO.getAssetsList() != null) {
+				List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
+				for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsList()) {
+					if (assetsDTO.getAssetsId() == null) {
+						BeanCopyUtil.copyBean(assetsDTO, assets);
+						this.save(assets);//添加财产信息
+						Address address = new Address();
+						BeanUtils.copyProperties(assetsDTO, address);
+						address.setType(4);
+						address.setUserId(assets.getAssetsId());
+						remoteAddressService.saveAddress(address, SecurityConstants.FROM);//添加财产地址信息
+						mortgageAssetsRe.setAssetsId(assets.getAssetsId());
+					} else {
+						mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
+					}
+					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+					mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
 
-				for (Integer subjectId : subjectIdList) {
-					mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
-					mortgageAssetsSubjectRe.setSubjectId(subjectId);
-					mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
+					for (Integer subjectId : subjectIdList) {
+						mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+						mortgageAssetsSubjectRe.setSubjectId(subjectId);
+						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
+					}
 				}
 			}
 		}

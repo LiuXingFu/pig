@@ -23,7 +23,6 @@ import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
 import com.pig4cloud.pig.casee.service.MortgageAssetsRecordsService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +67,18 @@ public class MortgageAssetsRecordsController {
         return R.ok(mortgageAssetsRecordsService.getById(mortgageAssetsRecordsId));
     }
 
-    /**
+	/**
+	 * 通过id查询抵押记录以及财产主体信息
+	 * @param mortgageAssetsRecordsId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/getByMortgageAssetsRecordsId/{mortgageAssetsRecordsId}" )
+	public R getByMortgageAssetsRecordsId(@PathVariable("mortgageAssetsRecordsId" ) Integer mortgageAssetsRecordsId) {
+		return R.ok(mortgageAssetsRecordsService.getByMortgageAssetsRecordsId(mortgageAssetsRecordsId));
+	}
+
+	/**
      * 新增抵押记录表
      * @param mortgageAssetsRecords 抵押记录表
      * @return R
