@@ -38,7 +38,7 @@ import java.util.List;
 public class MortgageAssetsRecordsVO extends MortgageAssetsRecords {
 
 	//财产信息
-	List<AssetsVO> assetsVOList=new ArrayList<>();
+	List<AssetsVO> assetsList=new ArrayList<>();
 
-	List<Integer> subjectList=new ArrayList<>();
+	List<Integer> subjectId=new ArrayList<>();
 }

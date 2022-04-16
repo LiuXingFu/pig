@@ -46,7 +46,7 @@
 	</resultMap>
 
 	<resultMap id="MortgageAssetsRecordsVO" type="com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO" extends="mortgageAssetsRecordsMap">
-		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
 					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsReMapper.getAssetsDetails" column="mortgage_assets_records_id">
 		</collection>
 	</resultMap>

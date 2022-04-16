@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.MortgageAssetsDTO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
@@ -101,6 +102,18 @@ public class MortgageAssetsRecordsController {
     public R updateById(@RequestBody MortgageAssetsRecords mortgageAssetsRecords) {
         return R.ok(mortgageAssetsRecordsService.updateById(mortgageAssetsRecords));
     }
+
+	/**
+	 * 修改抵押财产信息
+	 * @param mortgageAssetsDTO 修改抵押财产信息
+	 * @return R
+	 */
+	@ApiOperation(value = "修改抵押财产信息", notes = "修改抵押财产信息")
+	@SysLog("修改抵押财产信息" )
+	@PutMapping("/updateByMortgageAssets")
+	public R updateByMortgageAssets(@RequestBody MortgageAssetsDTO mortgageAssetsDTO) {
+		return R.ok(mortgageAssetsRecordsService.updateByMortgageAssets(mortgageAssetsDTO));
+	}
 
     /**
      * 通过id删除抵押记录表
