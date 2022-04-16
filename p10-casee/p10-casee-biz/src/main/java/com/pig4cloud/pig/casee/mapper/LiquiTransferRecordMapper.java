@@ -27,6 +27,8 @@ import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 清收移交记录表
  *
@@ -39,4 +41,5 @@ public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecor
 
 	LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId);
 
+	List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId);
 }

@@ -23,72 +23,78 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper">
 
-  <resultMap id="liquiTransferRecordMap" type="com.pig4cloud.pig.casee.entity.LiquiTransferRecord">
-    <id property="liquiTransferRecordId" column="liqui_transfer_record_id"/>
-    <result property="createBy" column="create_by"/>
-    <result property="createTime" column="create_time"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="entrustInsId" column="entrust_ins_id"/>
-    <result property="entrustOutlesId" column="entrust_outles_id"/>
-    <result property="entrustedInsId" column="entrusted_ins_id"/>
-    <result property="entrustedOutlesId" column="entrusted_outles_id"/>
-	<result property="projectId" column="project_id"/>
-	<result property="nodeId" column="node_id"/>
-    <result property="caseeId" column="casee_id"/>
-    <result property="caseeNumber" column="casee_number"/>
-    <result property="handoverTime" column="handover_time"/>
-    <result property="returnTime" column="return_time"/>
-    <result property="status" column="status"/>
-    <result property="feedbackNotes" column="feedback_notes"/>
-    <result property="remark" column="remark"/>
-    <result property="delFlag" column="del_flag"/>
-  </resultMap>
+	<resultMap id="liquiTransferRecordMap" type="com.pig4cloud.pig.casee.entity.LiquiTransferRecord">
+		<id property="liquiTransferRecordId" column="liqui_transfer_record_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="entrustInsId" column="entrust_ins_id"/>
+		<result property="entrustOutlesId" column="entrust_outles_id"/>
+		<result property="entrustedInsId" column="entrusted_ins_id"/>
+		<result property="entrustedOutlesId" column="entrusted_outles_id"/>
+		<result property="projectId" column="project_id"/>
+		<result property="nodeId" column="node_id"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="caseeNumber" column="casee_number"/>
+		<result property="handoverTime" column="handover_time"/>
+		<result property="returnTime" column="return_time"/>
+		<result property="status" column="status"/>
+		<result property="feedbackNotes" column="feedback_notes"/>
+		<result property="remark" column="remark"/>
+		<result property="delFlag" column="del_flag"/>
+	</resultMap>
 
-	<resultMap id="liquiTransferRecordDetailsVOMap" type="com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO" extends="liquiTransferRecordMap">
+	<resultMap id="liquiTransferRecordDetailsVOMap" type="com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO"
+			   extends="liquiTransferRecordMap">
 		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
-					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsByLiQuiTransferRecordId" column="liqui_transfer_record_id">
+					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsByLiQuiTransferRecordId"
+					column="liqui_transfer_record_id">
 		</collection>
 	</resultMap>
 
 	<select id="queryLiquiTransferRecordPage" resultType="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO">
 		SELECT
-			p10_liqui_transfer_record.casee_number caseeNumber,
-			p10_liqui_transfer_record.handover_time handoverTime,
-			p10_liqui_transfer_record.status,
-			p10_liqui_transfer_record.casee_id caseeId,
-			p10_liqui_transfer_record.liqui_transfer_record_id liquiTransferRecordId,
-			applicantSubject.`name` applicantSubjectName,
-			executorSubject.`name` executorSubjectName,
-			substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
-			p10_institution.ins_name insName,
-			p10_outles.outles_name outlesName,
-			p10_liqui_transfer_record.entrust_ins_id,
-			p10_liqui_transfer_record.entrust_outles_id,
-			p10_liqui_transfer_record.entrusted_ins_id,
-			p10_liqui_transfer_record.entrusted_outles_id,
-			p10_liqui_transfer_record.project_id,
-			entrustedIns.ins_name entrustedInsName,
-			entrustedOutles.outles_name entrustedOutlesName
+		p10_liqui_transfer_record.casee_number caseeNumber,
+		p10_liqui_transfer_record.handover_time handoverTime,
+		p10_liqui_transfer_record.status,
+		p10_liqui_transfer_record.casee_id caseeId,
+		p10_liqui_transfer_record.liqui_transfer_record_id liquiTransferRecordId,
+		applicantSubject.`name` applicantSubjectName,
+		executorSubject.`name` executorSubjectName,
+		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS
+		applicationSubmissionTime,
+		p10_institution.ins_name insName,
+		p10_outles.outles_name outlesName,
+		p10_liqui_transfer_record.entrust_ins_id,
+		p10_liqui_transfer_record.entrust_outles_id,
+		p10_liqui_transfer_record.entrusted_ins_id,
+		p10_liqui_transfer_record.entrusted_outles_id,
+		p10_liqui_transfer_record.project_id,
+		entrustedIns.ins_name entrustedInsName,
+		entrustedOutles.outles_name entrustedOutlesName
 		FROM
-			`p10_liqui_transfer_record`
-			LEFT JOIN p10_casee_subject_re applicant ON applicant.casee_id = p10_liqui_transfer_record.casee_id
-			AND applicant.casee_personnel_type = 0
-			LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
-			LEFT JOIN p10_casee_subject_re executor ON executor.casee_id = p10_liqui_transfer_record.casee_id
-			AND executor.casee_personnel_type = 1
-			LEFT JOIN p10_subject executorSubject ON executorSubject.subject_id = executor.subject_id
-			LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
-			LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
-			LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
-			LEFT JOIN p10_institution AS entrustedIns ON entrustedIns.ins_id = p10_liqui_transfer_record.entrusted_ins_id
-			LEFT JOIN p10_outles AS entrustedOutles ON entrustedOutles.outles_id = p10_liqui_transfer_record.entrusted_outles_id
-			WHERE p10_liqui_transfer_record.del_flag=0
+		`p10_liqui_transfer_record`
+		LEFT JOIN p10_casee_subject_re applicant ON applicant.casee_id = p10_liqui_transfer_record.casee_id
+		AND applicant.casee_personnel_type = 0
+		LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
+		LEFT JOIN p10_casee_subject_re executor ON executor.casee_id = p10_liqui_transfer_record.casee_id
+		AND executor.casee_personnel_type = 1
+		LEFT JOIN p10_subject executorSubject ON executorSubject.subject_id = executor.subject_id
+		LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
+		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
+		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
+		LEFT JOIN p10_institution AS entrustedIns ON entrustedIns.ins_id = p10_liqui_transfer_record.entrusted_ins_id
+		LEFT JOIN p10_outles AS entrustedOutles ON entrustedOutles.outles_id =
+		p10_liqui_transfer_record.entrusted_outles_id
+		WHERE p10_liqui_transfer_record.del_flag=0
 		<if test="login.insId != null and login.insId > 0">
-			and p10_liqui_transfer_record.entrusted_ins_id = #{login.insId} or p10_liqui_transfer_record.entrust_ins_id = #{login.insId}
+			and p10_liqui_transfer_record.entrusted_ins_id = #{login.insId} or p10_liqui_transfer_record.entrust_ins_id
+			= #{login.insId}
 		</if>
 		<if test="login.outlesId != null and login.outlesId > 0">
-			and p10_liqui_transfer_record.entrusted_outles_id = #{login.outlesId} or p10_liqui_transfer_record.entrust_outles_id = #{login.outlesId}
+			and p10_liqui_transfer_record.entrusted_outles_id = #{login.outlesId} or
+			p10_liqui_transfer_record.entrust_outles_id = #{login.outlesId}
 		</if>
 	</select>
 
@@ -117,5 +123,24 @@
 		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
 		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
 		WHERE p10_liqui_transfer_record.del_flag=0 AND p10_liqui_transfer_record.liqui_transfer_record_id=#{liquiTransferRecordId}
+	</select>
+
+	<select id="queryTransferRecord" resultType="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO">
+		SELECT
+		p10_liqui_transfer_record.casee_number caseeNumber,
+		p10_liqui_transfer_record.*,
+		p10_institution.ins_name insName,
+		p10_outles.outles_name outlesName,
+		applicantSubject.`name` applicantSubjectName,
+		executorSubject.`name` executorSubjectName
+		FROM `p10_liqui_transfer_record`
+		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
+		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
+		LEFT JOIN p10_casee_subject_re applicant ON applicant.casee_id = p10_liqui_transfer_record.casee_id
+		AND applicant.casee_personnel_type = 0
+		LEFT JOIN p10_subject executorSubject ON executorSubject.subject_id = executor.subject_id
+		LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
+		WHERE p10_liqui_transfer_record.del_flag = 0
+		AND p10_liqui_transfer_record.casee_id = #{caseeId}
 	</select>
 </mapper>

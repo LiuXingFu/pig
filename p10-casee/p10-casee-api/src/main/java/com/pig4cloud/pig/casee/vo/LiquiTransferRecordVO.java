@@ -69,6 +69,4 @@ public class LiquiTransferRecordVO extends LiquiTransferRecord {
      */
     private String applicationSubmissionTime;
 
-
-
 }

@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
@@ -121,7 +122,25 @@ public class LiquiTransferRecordController {
 	@ApiOperation(value = "根据案件id查询移交记录", notes = "根据案件id查询移交记录")
 	@GetMapping("/queryTransferRecord/{caseeId}" )
 	public R queryTransferRecord(@PathVariable("caseeId") Integer caseeId) {
-		return this.liquiTransferRecordService.queryTransferRecord(caseeId);
+		return R.ok(this.liquiTransferRecordService.queryTransferRecord(caseeId));
+	}
+
+	/**
+	 * 再次移送
+	 * @param updateLiquiTransferRecordDTO
+	 * @return
+	 */
+	@ApiOperation(value = "再次移送", notes = "再次移送")
+	@SysLog("再次移送" )
+	@PutMapping
+	public R updateLiquiTransferRecord(UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO) {
+		int count = this.liquiTransferRecordService.updateLiquiTransferRecord(updateLiquiTransferRecordDTO);
+
+		if (count > 0){
+			return R.ok("移送成功！");
+		} else {
+			return R.failed("移送失败！");
+		}
 	}
 
 }
