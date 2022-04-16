@@ -28,10 +28,6 @@ import lombok.Data;
  */
 @Data
 public class AssetsDTO extends Assets {
-	/**
-	 * 财产id
-	 */
-	private Integer assetsId;
 
 	/**
 	 * 地址id
