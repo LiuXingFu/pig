@@ -69,6 +69,10 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
 	@Autowired
 	private ProjectOutlesDealReService projectOutlesDealReService;
+	@Autowired
+	private AssetsReService assetsReService;
+	@Autowired
+	private AssetsReSubjectService assetsReSubjectService;
 
 	@Override
 	@Transactional
@@ -366,7 +370,29 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		queryWrapper.lambda().eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId,projectPaifuReceiptDTO.getLiquiTransferRecordId());
 		List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordRes = assetsLiquiTransferRecordReService.list(queryWrapper);
 
-
+		List<AssetsReSubject> assetsReSubjectList = new ArrayList<>();
+		for(AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe:assetsLiquiTransferRecordRes){
+			AssetsRe assetsRe = assetsReService.getById(assetsLiquiTransferRecordRe.getAssetsReId());
+			AssetsRe paifuAssetsRe = new AssetsRe();
+			paifuAssetsRe.setProjectId(projectPaifu.getProjectId());
+			paifuAssetsRe.setCaseeId(assetsRe.getCaseeId());
+			paifuAssetsRe.setCreateCaseeId(assetsRe.getCreateCaseeId());
+			paifuAssetsRe.setAssetsId(assetsRe.getAssetsReId());
+			paifuAssetsRe.setSubjectName(assetsRe.getSubjectName());
+			paifuAssetsRe.setAssetsSource(assetsRe.getAssetsSource());
+			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
+			assetsReService.save(paifuAssetsRe);
+			QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
+			assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsLiquiTransferRecordRe.getAssetsReId());
+			List<AssetsReSubject> assetsReSubjects = assetsReSubjectService.list(assetsReSubjectQueryWrapper);
+			for(AssetsReSubject assetsReSubject : assetsReSubjects){
+				AssetsReSubject paifuAssetsReSubject = new AssetsReSubject();
+				paifuAssetsReSubject.setAssetsReId(paifuAssetsRe.getAssetsReId());
+				paifuAssetsReSubject.setSubjectId(assetsReSubject.getSubjectId());
+				assetsReSubjectList.add(paifuAssetsReSubject);
+			}
+		}
+		assetsReSubjectService.saveBatch(assetsReSubjectList);
 
 		// 保存项目委托关联表
 		ProjectOutlesDealRe projectOutlesDealRe = new ProjectOutlesDealRe();
@@ -376,7 +402,6 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectOutlesDealRe.setType(1);
 		projectOutlesDealRe.setProjectId(projectPaifu.getProjectId());
 		projectOutlesDealReService.save(projectOutlesDealRe);
-
 		return save;
 	}
 

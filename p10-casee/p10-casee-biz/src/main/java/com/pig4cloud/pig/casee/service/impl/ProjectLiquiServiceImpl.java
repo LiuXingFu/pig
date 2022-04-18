@@ -193,8 +193,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			List<AssetsRe> assetsReList = new ArrayList<>();
 			// 抵押记录
 			for(AssetsInformationVO assetsInformationVO:assetsInformationVOS){
-				AssetsReLiqui assetsRe = new AssetsReLiqui();
-				String subjectNameList = "";
 				// 抵押财产关联
 				for(AssetsVO assetsVO : assetsInformationVO.getAssetsDTOList()){
 					AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
@@ -217,23 +215,18 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 					QueryWrapper<MortgageAssetsSubjectRe> mortgageAssetsSubjectReQuery = new QueryWrapper<>();
 					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsVO.getMortgageAssetsReId());
 					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = mortgageAssetsSubjectReService.list(mortgageAssetsSubjectReQuery);
+					AssetsReLiqui assetsRe = new AssetsReLiqui();
 					for(MortgageAssetsSubjectRe mortgageAssetsSubjectRe:mortgageAssetsSubjectRes){
 						AssetsReSubject assetsReSubject = new AssetsReSubject();
 						assetsReSubject.setSubjectId(mortgageAssetsSubjectRe.getSubjectId());
 						assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
 						assetsReSubjects.add(assetsReSubject);
 
-						R<Subject> subjectR = remoteSubjectService.getById(mortgageAssetsSubjectRe.getSubjectId(),SecurityConstants.FROM);
 						assetsRe.setAssetsReId(assetsReLiqui.getAssetsReId());
-						if(subjectNameList.equals("")){
-							subjectNameList = subjectR.getData().getName();
-						}else{
-							subjectNameList = subjectNameList+","+subjectR.getData().getName();
-						}
-						assetsRe.setSubjectName(subjectNameList);
+						assetsRe.setSubjectName(assetsInformationVO.getSubjectName());
 					}
+					assetsReList.add(assetsRe);
 				}
-				assetsReList.add(assetsRe);
 			}
 			assetsReSubjectService.saveBatch(assetsReSubjects);
 			assetsReLiquiService.updateBatchById(assetsReList);
