@@ -67,6 +67,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private LiquiTransferRecordService liquiTransferRecordService;
 	@Autowired
 	private AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
+	@Autowired
+	private ProjectOutlesDealReService projectOutlesDealReService;
 
 	@Override
 	@Transactional
@@ -365,6 +367,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordRes = assetsLiquiTransferRecordReService.list(queryWrapper);
 
 
+
+		// 保存项目委托关联表
+		ProjectOutlesDealRe projectOutlesDealRe = new ProjectOutlesDealRe();
+		projectOutlesDealRe.setInsId(liquiTransferRecord.getEntrustInsId());
+		projectOutlesDealRe.setOutlesId(liquiTransferRecord.getEntrustOutlesId());
+		projectOutlesDealRe.setUserId(liquiTransferRecord.getCreateBy());
+		projectOutlesDealRe.setType(1);
+		projectOutlesDealRe.setProjectId(projectPaifu.getProjectId());
+		projectOutlesDealReService.save(projectOutlesDealRe);
 
 		return save;
 	}
