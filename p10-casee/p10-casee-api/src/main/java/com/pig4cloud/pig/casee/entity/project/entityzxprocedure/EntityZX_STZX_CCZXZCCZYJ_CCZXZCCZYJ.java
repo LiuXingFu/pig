@@ -16,12 +16,12 @@ import java.util.List;
 public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData implements Serializable {
 
 	/**
-	 * 移交机构id
+	 * 拍辅机构id
 	 */
 	private Integer entrustedInsId;
 
 	/**
-	 * 移交网点id
+	 * 拍辅网点id
 	 */
 	private Integer entrustedOutlesId;
 

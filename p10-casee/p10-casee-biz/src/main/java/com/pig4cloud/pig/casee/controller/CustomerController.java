@@ -19,17 +19,23 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.CustomerPageDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.Customer;
 import com.pig4cloud.pig.casee.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 
 /**
@@ -45,6 +51,9 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     private final  CustomerService customerService;
+
+	@Autowired
+	RemoteSubjectService remoteSubjectService;
 
     /**
      * 分页查询
@@ -106,7 +115,12 @@ public class CustomerController {
     @SysLog("通过id删除客户表" )
     @DeleteMapping("/{customerId}" )
     public R removeById(@PathVariable Integer customerId) {
-        return R.ok(customerService.removeById(customerId));
+		Customer customer = this.customerService.getById(customerId);
+		Subject subject = this.remoteSubjectService.getById(customer.getSubjectId(), SecurityConstants.FROM).getData();
+		if(Objects.isNull(subject.getUnifiedIdentity())) {
+			this.remoteSubjectService.removeById(subject.getSubjectId(), SecurityConstants.FROM);
+		}
+		return R.ok(customerService.removeById(customerId));
     }
 
 	/**
