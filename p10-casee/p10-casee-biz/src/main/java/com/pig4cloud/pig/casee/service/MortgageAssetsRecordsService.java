@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.MortgageAssetsDTO;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO;
@@ -35,4 +36,6 @@ public interface MortgageAssetsRecordsService extends IService<MortgageAssetsRec
 	List<AssetsInformationVO> getMortgageAssetsRecordsDetails(Integer bankLoanId);
 
 	MortgageAssetsRecordsVO getByMortgageAssetsRecordsId(Integer mortgageAssetsRecordsId);
+
+	boolean updateByMortgageAssets(MortgageAssetsDTO mortgageAssetsDTO);
 }

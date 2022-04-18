@@ -69,4 +69,11 @@ public class RemoteAddressServiceFallbackImpl implements RemoteAddressService {
 
 		return null;
 	}
+
+	@Override
+	public R queryAssetsByTypeIdAndType(Integer typeId, Integer type, String from) {
+		log.error("根据类型id和类型查询地址信息失败", cause);
+
+		return null;
+	}
 }

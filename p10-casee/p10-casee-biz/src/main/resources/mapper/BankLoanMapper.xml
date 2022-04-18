@@ -44,8 +44,6 @@
   </resultMap>
 
 	<resultMap id="bankLoanMapVO" type="com.pig4cloud.pig.casee.vo.BankLoanVO" extends="bankLoanMap">
-		<collection property="countAssetsBankLoanRe" ofType="java.lang.Integer"
-					select="com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper.countAssetsBankLoanReById" column="bank_loan_id"></collection>
 		<collection property="countSubjectBankLoanRe" ofType="java.lang.Integer"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.countSubjectBankLoanReById" column="bank_loan_id"></collection>
 	</resultMap>

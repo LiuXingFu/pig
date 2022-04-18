@@ -64,7 +64,7 @@ public class BankLoanVO extends BankLoan {
 	/**
 	 * 关联财产数量
 	 */
-	private Integer countAssetsBankLoanRe;
+	private Integer countMortgageAssetsRecords;
 
 	/**
 	 * 关联债务人数量

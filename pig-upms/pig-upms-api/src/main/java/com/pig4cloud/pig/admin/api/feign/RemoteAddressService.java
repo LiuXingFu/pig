@@ -38,8 +38,6 @@ import java.util.List;
 		fallbackFactory = RemoteAddressServiceFallbackFactory.class)
 public interface RemoteAddressService {
 
-
-
 	@PostMapping("/address")
 	R saveAddress(@RequestBody Address address,@RequestHeader(SecurityConstants.FROM) String from);
 
@@ -53,7 +51,9 @@ public interface RemoteAddressService {
 	R updateByAddressId(@RequestBody Address address, @RequestHeader(SecurityConstants.FROM) String from);
 
 	@DeleteMapping("/address/removeUserIdAndType")
-	R removeUserIdAndType(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type,@RequestHeader(SecurityConstants.FROM) String from);
+	R removeUserIdAndType(@RequestParam("userId") Integer userId, @RequestParam("type") Integer type, @RequestHeader(SecurityConstants.FROM) String from);
 
+	@GetMapping("/address/queryAssetsByTypeIdAndType/{typeId}/{type}")
+	R<Address> queryAssetsByTypeIdAndType(@PathVariable("typeId") Integer typeId, @PathVariable("type") Integer type, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

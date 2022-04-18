@@ -25,9 +25,12 @@ import com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper;
 import com.pig4cloud.pig.casee.service.LiquiTransferRecordService;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * 清收移交记录表
@@ -45,13 +48,20 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.queryLiquiTransferRecordPage(page,liquiTransferRecord,insOutlesDTO);
+		return this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecord, insOutlesDTO);
 	}
 
 	@Override
 	public LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId) {
 		LiquiTransferRecordDetailsVO liquiTransferRecordDetailsVO = this.baseMapper.getByLiquiTransferRecordId(liquiTransferRecordId);
-		liquiTransferRecordDetailsVO.setAuctionApplicationFile(liquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1,liquiTransferRecordDetailsVO.getAuctionApplicationFile().length()-1));
+		if (Objects.nonNull(liquiTransferRecordDetailsVO.getAuctionApplicationFile())) {
+			liquiTransferRecordDetailsVO.setAuctionApplicationFile(liquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1, liquiTransferRecordDetailsVO.getAuctionApplicationFile().length() - 1));
+		}
 		return liquiTransferRecordDetailsVO;
+	}
+
+	@Override
+	public R queryTransferRecord(Integer caseeId) {
+		return null;
 	}
 }

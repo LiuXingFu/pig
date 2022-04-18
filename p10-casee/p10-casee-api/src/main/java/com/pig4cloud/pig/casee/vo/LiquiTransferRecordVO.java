@@ -44,6 +44,16 @@ public class LiquiTransferRecordVO extends LiquiTransferRecord {
 	 */
 	private String outlesName;
 
+	/**
+	 * 委托机构名称
+	 */
+	private String entrustedInsName;
+
+	/**
+	 * 委托网点名称
+	 */
+	private String entrustedOutlesName;
+
     /**
      * 申请人
      */

@@ -128,4 +128,11 @@
 		AND user_id = #{userId}
 		AND `type` = #{type}
 	</select>
+
+	<select id="queryAssetsByTypeIdAndType" resultType="com.pig4cloud.pig.admin.api.entity.Address">
+		SELECT * FROM p10_address
+		WHERE del_flag = 0
+		AND user_id = #{typeId}
+		AND type = #{type}
+	</select>
 </mapper>

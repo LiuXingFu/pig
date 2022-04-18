@@ -58,4 +58,15 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 	public Address getByUserId(Integer userId, Integer type) {
 		return this.baseMapper.getByUserId(userId, type);
 	}
+
+	/**
+	 * 根据地址类型与地址类型id查询地址信息
+	 * @param typeId
+	 * @param type
+	 * @return
+	 */
+	@Override
+	public Address queryAssetsByTypeIdAndType(Integer typeId, Integer type) {
+		return this.baseMapper.queryAssetsByTypeIdAndType(typeId, type);
+	}
 }

@@ -80,27 +80,40 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			customer.setRecommenderId(securityUtilsService.getCacheUser().getId());
 			this.save(customer);
 		} else {
-			// 主体id为空 根据身份标识查询主体信息
-			SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
-			// 判断主体信息是否为空
-			if (Objects.isNull(subjectVO)) {
-				// 主体信息为空 添加主体信息
-				Subject subject = new Subject();
-				BeanUtil.copyProperties(customerSubjectDTO, subject);
+			if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity())) {
+				// 主体id为空 根据身份标识查询主体信息
+				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
+				// 判断主体信息是否为空
+				if (Objects.isNull(subjectVO)) {
+					saveSubjectOrCustomer(customerSubjectDTO);
 
-				subject = this.remoteSubjectService.saveSubject(subject, SecurityConstants.FROM).getData();
-
-				//主体信息添加完成 添加客户信息
-				Customer customer = getCustomer(customerSubjectDTO, subject.getSubjectId());
-				this.save(customer);
-
+				} else {
+					// 主体信息不为空 添加客户信息
+					Customer customer = getCustomer(customerSubjectDTO, subjectVO.getSubjectId());
+					this.save(customer);
+				}
 			} else {
-				// 主体信息不为空 添加客户信息
-				Customer customer = getCustomer(customerSubjectDTO, subjectVO.getSubjectId());
-				this.save(customer);
+				// 主体信息为空 添加主体信息
+				saveSubjectOrCustomer(customerSubjectDTO);
 			}
 		}
 		return add+=1;
+	}
+
+	/**
+	 * 添加主体与客户信息
+	 * @param customerSubjectDTO
+	 */
+	private void saveSubjectOrCustomer(CustomerSubjectDTO customerSubjectDTO) {
+		// 主体信息为空 添加主体信息
+		Subject subject = new Subject();
+		BeanUtil.copyProperties(customerSubjectDTO, subject);
+
+		subject = this.remoteSubjectService.saveSubject(subject, SecurityConstants.FROM).getData();
+
+		//主体信息添加完成 添加客户信息
+		Customer customer = getCustomer(customerSubjectDTO, subject.getSubjectId());
+		this.save(customer);
 	}
 
 	/**
@@ -134,10 +147,35 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	@Override
 	public int updateCustomerById(CustomerSubjectDTO customerSubjectDTO) {
 		int update = 0;
+		Subject querySubject = remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
+
+		if (Objects.nonNull(querySubject.getUnifiedIdentity()) && Objects.nonNull(customerSubjectDTO.getUnifiedIdentity())) {
+			saveUpdateSubject(customerSubjectDTO);
+		} else {
+			if (Objects.nonNull(querySubject.getUnifiedIdentity())) {
+				// 主体id为空 根据身份标识查询主体信息
+				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
+				remoteSubjectService.removeById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM);
+				customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+				saveUpdateSubject(customerSubjectDTO);
+				Customer customer = new Customer();
+				BeanUtils.copyProperties(customerSubjectDTO, customer);
+				this.updateById(customer);
+			} else {
+				saveUpdateSubject(customerSubjectDTO);
+			}
+		}
+		return update += 1;
+	}
+
+	/**
+	 * 更新或添加主体信息
+	 * @param customerSubjectDTO
+	 */
+	private void saveUpdateSubject(CustomerSubjectDTO customerSubjectDTO) {
 		Subject subject = new Subject();
 		BeanUtil.copyProperties(customerSubjectDTO, subject);
-		this.remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
-		return update += 1;
+		this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
 	}
 
 	/**

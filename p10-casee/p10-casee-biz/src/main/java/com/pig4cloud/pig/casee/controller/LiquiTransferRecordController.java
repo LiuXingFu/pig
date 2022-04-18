@@ -113,4 +113,15 @@ public class LiquiTransferRecordController {
         return R.ok(liquiTransferRecordService.removeById(liquiTransferRecordId));
     }
 
+	/**
+	 * 根据案件id查询移交记录
+	 * @param caseeId
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件id查询移交记录", notes = "根据案件id查询移交记录")
+	@GetMapping("/queryTransferRecord/{caseeId}" )
+	public R queryTransferRecord(@PathVariable("caseeId") Integer caseeId) {
+		return this.liquiTransferRecordService.queryTransferRecord(caseeId);
+	}
+
 }
