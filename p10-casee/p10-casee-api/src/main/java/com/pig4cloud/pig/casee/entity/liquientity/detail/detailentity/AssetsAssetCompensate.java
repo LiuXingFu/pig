@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.assets.detail.detailentity;
+package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCDC_CCZXZCDC;

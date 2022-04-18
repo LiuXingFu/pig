@@ -1,10 +1,6 @@
 package com.pig4cloud.pig.casee.vo;
 
-import com.alibaba.fastjson.JSON;
-import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
-import io.swagger.annotations.ApiModelProperty;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import lombok.Data;
 
 /**

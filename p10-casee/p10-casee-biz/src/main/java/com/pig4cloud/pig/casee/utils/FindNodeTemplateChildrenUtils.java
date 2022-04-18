@@ -5,7 +5,7 @@ import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.*;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;

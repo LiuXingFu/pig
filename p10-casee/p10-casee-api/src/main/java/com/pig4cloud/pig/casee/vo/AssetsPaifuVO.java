@@ -2,15 +2,10 @@ package com.pig4cloud.pig.casee.vo;
 
 import com.alibaba.fastjson.JSON;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
-import com.pig4cloud.pig.casee.entity.detail.AssetsLiquiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class AssetsPaifuVO extends Assets {

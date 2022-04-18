@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.assets.detail.detailentity;
+package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;

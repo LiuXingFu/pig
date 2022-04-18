@@ -20,13 +20,12 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.vo.*;
 
 import java.util.List;

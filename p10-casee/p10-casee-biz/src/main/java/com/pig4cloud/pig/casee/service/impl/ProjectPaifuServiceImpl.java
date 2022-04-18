@@ -381,6 +381,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			paifuAssetsRe.setSubjectName(assetsRe.getSubjectName());
 			paifuAssetsRe.setAssetsSource(assetsRe.getAssetsSource());
 			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
+			paifuAssetsRe.setAssetsReDetail(assetsRe.getAssetsReDetail());
 			assetsReService.save(paifuAssetsRe);
 			QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
 			assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsLiquiTransferRecordRe.getAssetsReId());

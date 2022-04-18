@@ -16,7 +16,6 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -33,12 +32,11 @@ import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.*;
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
-import com.pig4cloud.pig.casee.mapper.AssetsBankLoanReMapper;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;

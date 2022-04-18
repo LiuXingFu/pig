@@ -23,6 +23,9 @@ public class TargetAssetsReAssetsCaseePageDTO {
 	@ApiModelProperty(value="结束时间")
 	private LocalDate endDate;
 
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
 	@ApiModelProperty(value="案件id")
 	private Integer caseeId;
 

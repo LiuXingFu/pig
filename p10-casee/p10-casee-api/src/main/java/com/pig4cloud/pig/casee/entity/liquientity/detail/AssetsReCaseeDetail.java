@@ -1,6 +1,6 @@
-package com.pig4cloud.pig.casee.entity.assets.detail;
+package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
-import com.pig4cloud.pig.casee.entity.assets.detail.detailentity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -16,7 +16,7 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

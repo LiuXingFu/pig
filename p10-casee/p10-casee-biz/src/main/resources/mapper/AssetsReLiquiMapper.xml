@@ -23,7 +23,7 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper">
 
-	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
+	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
 		<id property="assetsId" column="assets_id"/>
 		<result property="createTime" column="create_time"/>
 		<result property="createBy" column="create_by"/>
@@ -41,7 +41,7 @@
 		<result property="assetsSource" column="assets_source"/>
 	</resultMap>
 
-	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
+	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
 		SELECT * FROM p10_assets_re WHERE del_flag = 0
 		<if test="query.assetsReId != null and query.assetsReId != 0">
 			and assets_re_id = #{query.assetsReId}
@@ -92,7 +92,7 @@
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
-	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui">
+	<select id="queryAssetsMortgage" resultType="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
 		select p10_assets_re.* from p10_assets_re
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
