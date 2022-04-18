@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.common.core.util.R;
 
 import java.util.List;
@@ -43,4 +44,6 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 	List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId);
 
 	int updateLiquiTransferRecord(UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO);
+
+	QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId);
 }

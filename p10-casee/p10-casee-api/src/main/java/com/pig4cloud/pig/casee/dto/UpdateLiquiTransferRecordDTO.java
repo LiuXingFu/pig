@@ -10,6 +10,12 @@ import java.util.List;
 public class UpdateLiquiTransferRecordDTO {
 
 	/**
+	 * 清收移交记录id
+	 */
+	@ApiModelProperty(value = "清收移交记录id")
+	private Integer liquiTransferRecordId;
+
+	/**
 	 * 委托机构id
 	 */
 	@ApiModelProperty(value = "委托机构id")

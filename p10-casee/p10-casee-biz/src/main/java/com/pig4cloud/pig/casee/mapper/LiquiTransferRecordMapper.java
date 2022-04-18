@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,4 +43,6 @@ public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecor
 	LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId);
 
 	List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId);
+
+	QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId);
 }

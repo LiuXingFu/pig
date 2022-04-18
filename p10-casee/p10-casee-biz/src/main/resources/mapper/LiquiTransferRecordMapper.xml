@@ -53,6 +53,14 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="queryLiquiTransferRecordDetailsVOMap" type="com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO"
+			   extends="liquiTransferRecordMap">
+		<collection property="assetsReDTOList" ofType="com.pig4cloud.pig.casee.dto.AssetsReDTO"
+					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsReDTOByLiQuiTransferRecordId"
+					column="liqui_transfer_record_id">
+		</collection>
+	</resultMap>
+
 	<select id="queryLiquiTransferRecordPage" resultType="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO">
 		SELECT
 		p10_liqui_transfer_record.casee_number caseeNumber,
@@ -142,5 +150,32 @@
 		LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
 		WHERE p10_liqui_transfer_record.del_flag = 0
 		AND p10_liqui_transfer_record.casee_id = #{caseeId}
+	</select>
+
+	<select id="queryByLiquiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO">
+		SELECT
+		p10_liqui_transfer_record.casee_number,
+		p10_liqui_transfer_record.handover_time,
+		p10_liqui_transfer_record.casee_id,
+		p10_liqui_transfer_record.liqui_transfer_record_id,
+		p10_liqui_transfer_record.project_id,
+		applicantSubject.`name` applicantSubjectName,
+		executorSubject.`name` executorSubjectName,
+		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
+		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
+		p10_institution.ins_name insName,
+		p10_outles.outles_name outlesName
+		FROM
+		`p10_liqui_transfer_record`
+		LEFT JOIN p10_casee_subject_re applicant ON applicant.casee_id = p10_liqui_transfer_record.casee_id
+		AND applicant.casee_personnel_type = 0
+		LEFT JOIN p10_subject applicantSubject ON applicantSubject.subject_id = applicant.subject_id
+		LEFT JOIN p10_casee_subject_re executor ON executor.casee_id = p10_liqui_transfer_record.casee_id
+		AND executor.casee_personnel_type = 1
+		LEFT JOIN p10_subject executorSubject ON executorSubject.subject_id = executor.subject_id
+		LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
+		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
+		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
+		WHERE p10_liqui_transfer_record.del_flag=0 AND p10_liqui_transfer_record.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
 </mapper>

@@ -40,4 +40,16 @@
 		LEFT JOIN p10_address ON p10_address.user_id=p10_assets.assets_id AND p10_address.type=4
 		WHERE p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
+
+	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+		SELECT
+		p10_assets_re.*,
+		p10_address.*
+		FROM
+		`p10_assets_liqui_transfer_record_re`
+		LEFT JOIN p10_assets_re ON p10_assets_re.assets_re_id = p10_assets_liqui_transfer_record_re.assets_re_id
+		LEFT JOIN p10_assets ON p10_assets.assets_id=p10_assets_re.assets_id
+		LEFT JOIN p10_address ON p10_address.user_id=p10_assets.assets_id AND p10_address.type=4
+		WHERE p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=#{liquiTransferRecordId}
+	</select>
 </mapper>

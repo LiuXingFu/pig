@@ -29,6 +29,7 @@ import com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
+import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -67,6 +68,9 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	@Autowired
 	SecurityUtilsService securityUtilsService;
 
+	@Autowired
+	AssetsReLiquiService assetsReLiquiService;
+
 	@Override
 	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
@@ -91,6 +95,7 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 	/**
 	 * 再次移送
+	 *
 	 * @param updateLiquiTransferRecordDTO
 	 * @return
 	 */
@@ -99,6 +104,28 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	public int updateLiquiTransferRecord(UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO) {
 
 		int update = 0;
+
+		List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordReList = assetsLiquiTransferRecordReService.list(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId, updateLiquiTransferRecordDTO.getLiquiTransferRecordId()));
+
+		for (AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe : assetsLiquiTransferRecordReList) {
+			AssetsRe assetsRe = assetsReLiquiService.getById(assetsLiquiTransferRecordRe.getAssetsReId());
+
+			//查询该财产程序信息
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, assetsRe.getCaseeId()).eq(Target::getGoalId, assetsRe.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 4040));
+
+			TaskNode entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, assetsRe.getProjectId()).eq(TaskNode::getCaseeId, assetsRe.getCaseeId()).eq(TaskNode::getTargetId, target.getTargetId())
+					.eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ"));
+
+			entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(0);
+
+			taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
+
+			caseeHandlingRecordsService.remove(new LambdaQueryWrapper<CaseeHandlingRecords>()
+					.eq(CaseeHandlingRecords::getProjectId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getProjectId())
+					.eq(CaseeHandlingRecords::getCaseeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getCaseeId())
+					.eq(CaseeHandlingRecords::getTargetId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getTargetId())
+					.eq(CaseeHandlingRecords::getNodeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId()));
+		}
 
 		//创建一条新的移送信息
 		LiquiTransferRecord liquiTransferRecord = new LiquiTransferRecord();
@@ -137,18 +164,7 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 			if (entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getStatus() != 101) {
 				//添加任务办理记录
-				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-				BeanUtils.copyProperties(assetsReDTO,caseeHandlingRecords);
-				caseeHandlingRecords.setNodeName(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeName());
-				caseeHandlingRecords.setFormData(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getFormData());
-				caseeHandlingRecords.setTargetId(target.getTargetId());
-				caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsReId());
-				caseeHandlingRecords.setSourceType(0);
-				caseeHandlingRecords.setNodeId(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId());
-				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-				caseeHandlingRecords.setSubmissionStatus(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getSubmissionStatus());
-				caseeHandlingRecordsService.save(caseeHandlingRecords);
+				addCaseeHandlingRecords(assetsReDTO, target, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
 			}
 
 			entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(101);
@@ -159,5 +175,27 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		}
 
 		return update += 1;
+	}
+
+	private void addCaseeHandlingRecords(AssetsRe assetsRe, Target target, TaskNode entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ) {
+		CaseeHandlingRecords caseeHandlingRecords = new CaseeHandlingRecords();
+		BeanUtils.copyProperties(assetsRe, caseeHandlingRecords);
+		caseeHandlingRecords.setNodeName(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeName());
+		caseeHandlingRecords.setFormData(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getFormData());
+		caseeHandlingRecords.setTargetId(target.getTargetId());
+		caseeHandlingRecords.setSourceId(assetsRe.getAssetsReId());
+		caseeHandlingRecords.setSourceType(0);
+		caseeHandlingRecords.setNodeId(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId());
+		caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+		caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+		caseeHandlingRecords.setSubmissionStatus(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getSubmissionStatus());
+		caseeHandlingRecordsService.save(caseeHandlingRecords);
+	}
+
+	@Override
+	public QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId) {
+		QueryLiquiTransferRecordDetailsVO queryLiquiTransferRecordDetailsVO = this.baseMapper.queryByLiquiTransferRecordId(liquiTransferRecordId);
+
+		return queryLiquiTransferRecordDetailsVO;
 	}
 }
