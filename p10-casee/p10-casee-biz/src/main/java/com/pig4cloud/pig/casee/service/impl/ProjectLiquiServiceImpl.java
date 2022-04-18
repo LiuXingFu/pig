@@ -215,7 +215,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 					assetsReLiquiService.save(assetsReLiqui);
 
 					QueryWrapper<MortgageAssetsSubjectRe> mortgageAssetsSubjectReQuery = new QueryWrapper<>();
-					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsInformationVO.getMortgageAssetsRecordsId());
+					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsVO.getMortgageAssetsReId());
 					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = mortgageAssetsSubjectReService.list(mortgageAssetsSubjectReQuery);
 					for(MortgageAssetsSubjectRe mortgageAssetsSubjectRe:mortgageAssetsSubjectRes){
 						AssetsReSubject assetsReSubject = new AssetsReSubject();
