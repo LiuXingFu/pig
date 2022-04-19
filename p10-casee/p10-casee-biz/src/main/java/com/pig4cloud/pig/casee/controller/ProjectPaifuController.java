@@ -74,8 +74,8 @@ public class ProjectPaifuController {
 	 * @return
 	 */
 	@ApiOperation(value = "查询项目案件详情", notes = "查询项目案件详情")
-	@GetMapping("/queryProjectCaseeDetail" )
-	public R queryProjectCaseeDetail(Integer projectId) {
+	@GetMapping("/queryProjectCaseeDetailList" )
+	public R queryProjectCaseeDetailList(Integer projectId) {
 		return R.ok(projectPaifuService.queryProjectCaseeDetail(projectId));
 	}
 
@@ -136,6 +136,17 @@ public class ProjectPaifuController {
 	@DeleteMapping("/removeProjectSubjectRe" )
 	public R removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO) {
 		return R.ok(projectPaifuService.removeProjectSubjectRe(projectSubjectReRemoveDTO));
+	}
+
+	/**
+	 * 查询项目案件详情
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "查询项目案件详情", notes = "查询项目案件详情")
+	@GetMapping("/queryProjectCaseeDetail" )
+	public R queryProjectCaseeDetail(Integer projectId) {
+		return R.ok(projectPaifuService.queryProjectCaseeDetail(projectId));
 	}
 
 }

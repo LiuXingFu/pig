@@ -166,7 +166,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	}
 
 	@Override
-	public ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId){
+	public ProjectPaifuDetailVO queryProjectCaseeDetailList(Integer projectId){
 		ProjectPaifuDetailVO projectPaifuDetailVO = this.baseMapper.selectByProjectId(projectId);
 		List<ProjectSubjectReListVO> applicantList = this.baseMapper.selectProjectSubjectReList(projectId,0);
 		List<ProjectSubjectReListVO> executedList = this.baseMapper.selectProjectSubjectReList(projectId,1);
@@ -404,6 +404,11 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectOutlesDealRe.setProjectId(projectPaifu.getProjectId());
 		projectOutlesDealReService.save(projectOutlesDealRe);
 		return save;
+	}
+
+	@Override
+	public	ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId){
+		return this.baseMapper.selectByProjectId(projectId);
 	}
 
 

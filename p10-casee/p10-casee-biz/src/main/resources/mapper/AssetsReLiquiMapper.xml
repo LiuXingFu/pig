@@ -24,21 +24,20 @@
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper">
 
 	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
-		<id property="assetsId" column="assets_id"/>
+		<id property="assetsReId" column="assets_re_id"/>
 		<result property="createTime" column="create_time"/>
 		<result property="createBy" column="create_by"/>
 		<result property="updateTime" column="update_time"/>
 		<result property="updateBy" column="update_by"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="assetsId" column="assets_id"/>
-		<result property="targetId" column="target_id"/>
 		<result property="projectId" column="project_id"/>
 		<result property="caseeId" column="casee_id"/>
-		<result property="subjectId" column="subject_id"/>
 		<result property="subjectName" column="subject_name"/>
 		<result property="assetsReDetail" column="assets_re_detail"/>
 		<result property="remark" column="remark"/>
 		<result property="assetsSource" column="assets_source"/>
+		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
 	</resultMap>
 
 	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
