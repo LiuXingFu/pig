@@ -23,6 +23,23 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper">
 
+	<resultMap id="assetsReMap" type="com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu">
+		<id property="assetsReId" column="assets_re_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="assetsId" column="assets_id"/>
+		<result property="projectId" column="project_id"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="subjectName" column="subject_name"/>
+		<result property="assetsReDetail" column="assets_re_detail"/>
+		<result property="remark" column="remark"/>
+		<result property="assetsSource" column="assets_source"/>
+		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
+	</resultMap>
+
 	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.Assets">
 		<id property="assetsId" column="assets_id"/>
 		<result property="createTime" column="create_time"/>
@@ -43,27 +60,18 @@
 		<result property="subjectId" column="subject_id"></result>
 	</resultMap>
 
-	<select id="queryTargetPage" resultType="com.pig4cloud.pig.casee.vo.TargetAssetsReAssetsCaseeVO">
-		SELECT
-		p10_assets_re.assets_re_id,
-		p10_assets_re.assets_re_detail,
-		p10_assets.assets_id,
-		p10_assets.assets_name,
-		p10_assets.owner,
-		p10_assets.type,
-		p10_assets.assets_type,
-		p10_assets.account_number,
-		p10_casee.casee_id,
-		p10_casee.`status`
-		FROM
-		p10_assets_re
-		LEFT JOIN p10_casee ON p10_assets_re.casee_id = p10_casee.casee_id and p10_casee.del_flag = 0
-		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
-		WHERE
-		p10_assets_re.del_flag = 0
-		AND p10_assets_re.casee_id IS NOT NULL
-		<if test="query.caseeId != null and query.caseeId != 0">
-			AND p10_assets_re.casee_id = #{query.caseeId}
+	<resultMap id="assetsList" type="com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO" extends="assetsReMap">
+		<collection property="assets" ofType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO"
+					column="assets_id"
+					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.queryById"></collection>
+	</resultMap>
+
+	<select id="queryAssetsRePageByProjectId" resultMap="assetsList">
+		select * from p10_assets_re
+		where p10_assets_re.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		<if test="query.projectId != null and query.projectId != 0">
+			AND p10_assets_re.project_id = #{query.projectId}
 		</if>
 		<if test="query.assetsName != null and query.assetsName != ''">
 			AND p10_assets.assets_name like concat('%',#{query.assetsName},'%')
@@ -76,7 +84,7 @@
 		</if>
 		<if test="query.beginDate != null and query.endDate != null">
 			AND json_extract( p10_assets_re.assets_re_detail,
-			'$.assetsSeizure.seizureExpiryDate' ) BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			'$.AssetsSeizure.seizureExpiryDate' ) BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
 	</select>

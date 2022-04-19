@@ -1,10 +1,10 @@
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
@@ -15,25 +15,20 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.AssetsReSubject;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
-import com.pig4cloud.pig.casee.entity.AssetsReSubject;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
 import com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper;
 import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
 import com.pig4cloud.pig.casee.service.AssetsReSubjectService;
-import com.pig4cloud.pig.casee.service.MortgageAssetsReService;
-import com.pig4cloud.pig.casee.service.MortgageAssetsRecordsService;
+import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
-import io.swagger.annotations.ApiModel;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,7 +39,6 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
 	RemoteAddressService remoteAddressService;
-
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
@@ -54,18 +48,9 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	@Autowired
 	RemoteAddressService addressService;
 
-	@Autowired
-	MortgageAssetsSubjectReServiceImpl mortgageAssetsSubjectReService;
-
-	@Autowired
-	MortgageAssetsReService mortgageAssetsReService;
-
-	@Autowired
-	AssetsReSubjectService assetsReSubjectService;
-
 	@Override
-	public IPage<TargetAssetsReAssetsCaseeVO> queryTargetPage(Page page, TargetAssetsReAssetsCaseePageDTO targetAssetsReAssetsCaseePageDTO) {
-		return this.baseMapper.queryTargetPage(page, targetAssetsReAssetsCaseePageDTO);
+	public IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
+		return this.baseMapper.queryAssetsRePageByProjectId(page, assetsRePageDTO);
 	}
 
 
