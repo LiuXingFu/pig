@@ -92,9 +92,28 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 		BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
 
 		List<AssetsDTO> assetsList = mortgageAssetsDTO.getAssetsDTOList();
+		Assets assets=new Assets();
+
 		for (AssetsDTO assetsDTO : assetsList) {
 			Integer assetsId = assetsDTO.getAssetsId();
 			if (assetsId!=null){//财产已存在
+				//修改财产信息
+				BeanCopyUtil.copyBean(assetsDTO,assets);
+				assetsService.updateById(assets);
+
+				Address address=new Address();
+				BeanUtils.copyProperties(assetsDTO, address);
+				//如果当前财产地址不为空则修改地址信息否则添加地址信息
+				if (assetsDTO.getAddressAsId()!=null){
+					address.setAddressId(assetsDTO.getAddressAsId());
+					address.setType(4);
+					remoteAddressService.updateByAddressId(address,SecurityConstants.FROM);
+				}else {
+					address.setType(4);
+					address.setUserId(assets.getAssetsId());
+					remoteAddressService.saveAddress(address,SecurityConstants.FROM);
+				}
+
 				//查询该财产是否关联抵押信息
 				MortgageAssetsRe mortgageAssetsRe = mortgageAssetsReService.getOne(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getAssetsId, assetsId).eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsRecords.getMortgageAssetsRecordsId()));
 				if (mortgageAssetsRe!=null){//有关联则修改
@@ -122,11 +141,10 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 				}
 			}else {
 				//抵押财产信息
-				Assets assets = new Assets();
 				BeanCopyUtil.copyBean(assetsDTO, assets);
 				assetsService.save(assets);//添加财产信息
 				//财产地址信息
-				Address address = new Address();
+				Address address=new Address();
 				BeanUtils.copyProperties(assetsDTO, address);
 				address.setType(4);
 				address.setUserId(assets.getAssetsId());
