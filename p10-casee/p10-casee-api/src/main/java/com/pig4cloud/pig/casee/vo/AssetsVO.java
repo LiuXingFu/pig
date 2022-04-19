@@ -35,6 +35,11 @@ public class AssetsVO extends Assets {
 	private Integer mortgageAssetsReId;
 
 	/**
+	 * 财产关联清收移交记录表id
+	 */
+	private Integer assetsLiquiTransferRecordId;
+
+	/**
 	 * 地址id
 	 */
 	private Integer addressAsId;

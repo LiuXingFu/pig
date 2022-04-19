@@ -32,7 +32,8 @@
 	<select id="queryAssetsByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
 		SELECT
 		p10_assets.*,
-		p10_address.*
+		p10_address.*,
+		p10_assets_liqui_transfer_record_re.assets_liqui_transfer_record_id
 		FROM
 		`p10_assets_liqui_transfer_record_re`
 		LEFT JOIN p10_assets_re ON p10_assets_re.assets_re_id = p10_assets_liqui_transfer_record_re.assets_re_id
