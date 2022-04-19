@@ -1,17 +1,16 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.TargetAssetsReAssetsCaseePageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
 import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
 import com.pig4cloud.pig.common.core.util.R;
+import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,15 +22,15 @@ public class AssetsRePaifuController {
 	private AssetsRePaifuService assetsRePaifuService;
 
 	/**
-	 * 分页查询标的列表
+	 * 根据项目id分页查询标的物列表
 	 * @param page 分页对象
-	 * @param targetAssetsReAssetsCaseePageDTO
+	 * @param assetsRePageDTO
 	 * @return
 	 */
-	@ApiOperation(value = "分页查询标的列表", notes = "分页查询标的列表")
-	@GetMapping("/queryTargetPage")
-	public R queryTargetPage(Page page, TargetAssetsReAssetsCaseePageDTO targetAssetsReAssetsCaseePageDTO) {
-		return R.ok(assetsRePaifuService.queryTargetPage(page, targetAssetsReAssetsCaseePageDTO));
+	@ApiOperation(value = "根据项目id分页查询标的物列表", notes = "根据项目id分页查询标的物列表")
+	@GetMapping("/queryAssetsRePageByProjectId")
+	public R queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
+		return R.ok(assetsRePaifuService.queryAssetsRePageByProjectId(page, assetsRePageDTO));
 	}
 
 	/**
@@ -45,6 +44,18 @@ public class AssetsRePaifuController {
 	@GetMapping("/queryAssetsPaifuById")
 	public R queryAssetsPaifuById(Integer assetsId, Integer projectId, Integer caseeId) {
 		return R.ok(this.assetsRePaifuService.queryAssetsPaifuById(assetsId, projectId, caseeId));
+	}
+
+	/**
+	 * 保存财产及项目案件关联财产
+	 * @param assetsRePaifuSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "保存财产及项目案件关联财产", notes = "保存财产及项目案件关联财产")
+	@SysLog("保存财产及项目案件关联财产" )
+	@PostMapping("/saveAssetsRe")
+	public R saveAssetsRe(@RequestBody AssetsRePaifuSaveDTO assetsRePaifuSaveDTO) {
+		return R.ok(assetsRePaifuService.saveAssetsRe(assetsRePaifuSaveDTO));
 	}
 
 }

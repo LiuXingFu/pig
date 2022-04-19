@@ -4,31 +4,50 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.casee.dto.TargetAssetsReAssetsCaseePageDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.AssetsReSubject;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper;
 import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
+import com.pig4cloud.pig.casee.service.AssetsReSubjectService;
+import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
-import com.pig4cloud.pig.casee.vo.TargetAssetsReAssetsCaseeVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, AssetsRe> implements AssetsRePaifuService {
-
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
 	RemoteAddressService remoteAddressService;
-
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+	@Autowired
+	AssetsService assetsService;
+	@Autowired
+	AssetsReSubjectService assetsReSubjectService;
+	@Autowired
+	RemoteAddressService addressService;
 
 	@Override
-	public IPage<TargetAssetsReAssetsCaseeVO> queryTargetPage(Page page, TargetAssetsReAssetsCaseePageDTO targetAssetsReAssetsCaseePageDTO) {
-		return this.baseMapper.queryTargetPage(page, targetAssetsReAssetsCaseePageDTO);
+	public IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
+		return this.baseMapper.queryAssetsRePageByProjectId(page, assetsRePageDTO);
 	}
 
 
@@ -38,5 +57,46 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 		Address address = remoteAddressService.queryAssetsByTypeIdAndType(assetsPaifuVO.getAssetsId(), 4, SecurityConstants.FROM).getData();
 		assetsPaifuVO.setAddress(address);
 		return assetsPaifuVO;
+	}
+
+	@Override
+	@Transactional
+	public	Integer saveAssetsRe(AssetsRePaifuSaveDTO assetsRePaifuSaveDTO){
+		Assets assets = new Assets();
+		BeanCopyUtil.copyBean(assetsRePaifuSaveDTO,assets);
+		assetsService.saveOrUpdate(assets);
+
+		AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
+		BeanCopyUtil.copyBean(assetsRePaifuSaveDTO,assetsRePaifu);
+		AssetsRePaifuDetail assetsRePaifuDetail = new AssetsRePaifuDetail();
+		BeanCopyUtil.copyBean(assetsRePaifuSaveDTO,assetsRePaifuDetail);
+		assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+		assetsRePaifu.setAssetsId(assets.getAssetsId());
+		assetsRePaifu.setCreateCaseeId(assetsRePaifuSaveDTO.getCaseeId());
+		if(assetsRePaifuSaveDTO.getMortgagee()==0){
+			assetsRePaifu.setAssetsSource(1);
+		}else{
+			assetsRePaifu.setAssetsSource(2);
+		}
+		Integer save = this.baseMapper.insert(assetsRePaifu);
+
+		// 批量保存财产债务人
+		List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+		for(Integer subjectId:assetsRePaifuSaveDTO.getSubjectIdList()){
+			AssetsReSubject assetsReSubject = new AssetsReSubject();
+			assetsReSubject.setSubjectId(subjectId);
+			assetsReSubject.setAssetsReId(assetsRePaifu.getAssetsReId());
+			assetsReSubjects.add(assetsReSubject);
+		}
+		assetsReSubjectService.saveBatch(assetsReSubjects);
+
+		if(assetsRePaifuSaveDTO.getAssetsId()==null && assetsRePaifuSaveDTO.getCode()==null){
+			Address address = new Address();
+			BeanCopyUtil.copyBean(assetsRePaifuSaveDTO,address);
+			address.setType(4);
+			address.setUserId(assets.getAssetsId());
+			addressService.saveAddress(address,SecurityConstants.FROM);
+		}
+		return save;
 	}
 }

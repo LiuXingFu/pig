@@ -45,11 +45,11 @@ public interface ProjectPaifuService extends IService<Project> {
 	IPage<ProjectPaifuPageVO> queryProjectCaseePage(Page page, ProjectPaifuPageDTO projectPaifuPageDTO);
 
 	/**
-	 * 查询项目案件详情
+	 * 查询项目案件详情及债务人等集合
 	 * @param projectId
 	 * @return
 	 */
-	ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId);
+	ProjectPaifuDetailVO queryProjectCaseeDetailList(Integer projectId);
 
 	/**
 	 * 保存项目主体关联表
@@ -87,5 +87,13 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	Integer saveProjectReceipt(ProjectPaifuReceiptDTO projectPaifuReceiptDTO);
+
+	/**
+	 * 查询项目案件详情
+	 * @param projectId
+	 * @return
+	 */
+	ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId);
+
 
 }
