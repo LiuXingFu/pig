@@ -1,6 +1,6 @@
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

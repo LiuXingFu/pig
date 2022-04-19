@@ -17,7 +17,7 @@
 package com.pig4cloud.pig.casee.dto;
 
 
-import com.pig4cloud.pig.casee.entity.assets.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import lombok.Data;
 
 /**

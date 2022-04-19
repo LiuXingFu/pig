@@ -1,10 +1,8 @@
-package com.pig4cloud.pig.casee.entity.assets;
+package com.pig4cloud.pig.casee.entity.liquientity;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.entity.assets.detail.AssetsReCaseeDetail;
-import io.swagger.annotations.ApiModel;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

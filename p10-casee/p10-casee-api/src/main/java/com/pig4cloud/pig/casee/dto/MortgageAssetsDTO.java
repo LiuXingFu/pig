@@ -35,7 +35,7 @@ public class MortgageAssetsDTO extends MortgageAssetsRecords {
 	/**
 	 * 抵押财产信息
 	 */
-	private List<AssetsDTO> assetsList;
+	private List<AssetsDTO> assetsDTOList;
 
 	/**
 	 * 债务人id

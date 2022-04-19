@@ -91,7 +91,7 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 		MortgageAssetsRecords mortgageAssetsRecords=new MortgageAssetsRecords();
 		BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
 
-		List<AssetsDTO> assetsList = mortgageAssetsDTO.getAssetsList();
+		List<AssetsDTO> assetsList = mortgageAssetsDTO.getAssetsDTOList();
 		for (AssetsDTO assetsDTO : assetsList) {
 			Integer assetsId = assetsDTO.getAssetsId();
 			if (assetsId!=null){//财产已存在
@@ -108,6 +108,7 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
 					}
 				}else {//无关联则添加
+					mortgageAssetsRe=new MortgageAssetsRe();
 					mortgageAssetsRe.setAssetsId(assetsId);
 					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
 					mortgageAssetsReService.save(mortgageAssetsRe);//添加财产关联抵押信息
