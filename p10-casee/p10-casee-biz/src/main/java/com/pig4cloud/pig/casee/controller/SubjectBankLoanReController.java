@@ -141,7 +141,7 @@ public class SubjectBankLoanReController {
 	@ApiOperation(value = "删除主体关联银行借贷信息修改银行借贷债务人名称", notes = "删除主体关联银行借贷信息修改银行借贷债务人名称")
 	@SysLog("删除主体以及主体关联银行借贷信息" )
 	@DeleteMapping("/removeSubjectBankLoanRe" )
-	public R removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId, String name) {
-		return R.ok(subjectBankLoanReService.removeSubjectBankLoanRe(subjectBankLoanId,bankLoanId,name));
+	public R removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId,Integer subjectId, String name) {
+		return R.ok(subjectBankLoanReService.removeSubjectBankLoanRe(subjectBankLoanId,bankLoanId,subjectId,name));
 	}
 }

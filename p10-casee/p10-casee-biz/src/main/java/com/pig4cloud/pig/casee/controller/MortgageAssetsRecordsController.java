@@ -17,9 +17,14 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.MortgageAssetsDTO;
+import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
+import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
+import com.pig4cloud.pig.casee.service.MortgageAssetsReService;
+import com.pig4cloud.pig.casee.service.MortgageAssetsSubjectReService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
@@ -28,6 +33,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -42,7 +49,12 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "mortgageassetsrecords", tags = "抵押记录表管理")
 public class MortgageAssetsRecordsController {
 
-    private final  MortgageAssetsRecordsService mortgageAssetsRecordsService;
+	private final  MortgageAssetsRecordsService mortgageAssetsRecordsService;
+
+	private final MortgageAssetsReService mortgageAssetsReService;
+
+	private final MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
+
 
     /**
      * 分页查询
@@ -126,5 +138,25 @@ public class MortgageAssetsRecordsController {
     public R removeById(@PathVariable Integer mortgageAssetsRecordsId) {
         return R.ok(mortgageAssetsRecordsService.removeById(mortgageAssetsRecordsId));
     }
+
+	/**
+	 * 通过id删除抵押记录以及财产和主体信息
+	 * @param mortgageAssetsRecordsId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除抵押记录以及财产和主体信息", notes = "通过id删除抵押记录以及财产和主体信息")
+	@SysLog("通过id删除抵押记录以及财产和主体信息" )
+	@DeleteMapping("/removeMortgageAssetsRecords/{mortgageAssetsRecordsId}" )
+	public R removeMortgageAssetsRecords(@PathVariable Integer mortgageAssetsRecordsId) {
+		List<MortgageAssetsRe> list = mortgageAssetsReService.list(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsRecordsId));
+		for (MortgageAssetsRe mortgageAssetsRe : list) {
+			//删除财产关联债务人信息
+			mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,mortgageAssetsRe.getMortgageAssetsReId()));
+		}
+		//删除抵押记录信息关联财产
+		mortgageAssetsReService.remove(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId,mortgageAssetsRecordsId));
+
+		return R.ok(mortgageAssetsRecordsService.removeById(mortgageAssetsRecordsId));
+	}
 
 }

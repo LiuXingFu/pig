@@ -39,4 +39,5 @@ public interface MortgageAssetsRecordsMapper extends BaseMapper<MortgageAssetsRe
 
 	MortgageAssetsRecordsVO getByMortgageAssetsRecordsId(Integer mortgageAssetsRecordsId);
 
+	Integer countMortgageAssetsRecords(Integer bankLoanId);
 }

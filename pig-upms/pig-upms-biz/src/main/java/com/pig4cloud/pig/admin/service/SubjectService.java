@@ -20,10 +20,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.AddSubjectOrAddressDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.SubjectDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.SubjectGetByIdVO;
@@ -90,5 +87,5 @@ public interface SubjectService extends IService<Subject> {
 	IPage<Subject> queryPageList(Page page, SubjectPageDTO subjectPageDTO);
 
 
-
+	String querySubjectName(List<Integer> subjectIdList);
 }

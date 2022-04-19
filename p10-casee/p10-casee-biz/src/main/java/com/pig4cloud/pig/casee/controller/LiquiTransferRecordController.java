@@ -143,7 +143,6 @@ public class LiquiTransferRecordController {
 	@PutMapping("/updateLiquiTransferRecord")
 	public R updateLiquiTransferRecord(@RequestBody UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO) {
 		int count = this.liquiTransferRecordService.updateLiquiTransferRecord(updateLiquiTransferRecordDTO);
-
 		if (count > 0) {
 			return R.ok("移送成功！");
 		} else {
@@ -152,11 +151,11 @@ public class LiquiTransferRecordController {
 	}
 
 	/**
-	 * 根据id查询清收移交信息与
+	 * 根据id查询清收移交信息与财产信息
 	 * @param liquiTransferRecordId
 	 * @return
 	 */
-	@ApiOperation(value = "通过id查询清收移交记录以及财产信息", notes = "通过id查询清收移交记录以及财产信息")
+	@ApiOperation(value = "根据id查询清收移交信息与财产信息", notes = "根据id查询清收移交信息与财产信息")
 	@GetMapping("/queryByLiquiTransferRecordId/{liquiTransferRecordId}")
 	public R queryByLiquiTransferRecordId(@PathVariable("liquiTransferRecordId") Integer liquiTransferRecordId) {
 		return R.ok(liquiTransferRecordService.queryByLiquiTransferRecordId(liquiTransferRecordId));

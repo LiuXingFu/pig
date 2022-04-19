@@ -34,4 +34,6 @@ import java.util.List;
 public interface MortgageAssetsReMapper extends BaseMapper<MortgageAssetsRe> {
 
 	List<AssetsVO> getAssetsDetails(Integer mortgageAssetsRecordsId);
+
+	List<AssetsVO> getAssetsUpdateDetails(Integer mortgageAssetsRecordsId);
 }
