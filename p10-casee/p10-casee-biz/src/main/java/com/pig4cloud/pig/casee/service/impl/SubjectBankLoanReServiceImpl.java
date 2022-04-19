@@ -83,7 +83,6 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		}
 		bankLoan.setSubjectName(subjectName);
 
-//		只有一个债务人时删除债务人，银行债务人名称没有变动，上面那个方法要改
 		//修改债务人名称
 		bankLoanService.updateById(bankLoan);
 		//查询抵押信息
