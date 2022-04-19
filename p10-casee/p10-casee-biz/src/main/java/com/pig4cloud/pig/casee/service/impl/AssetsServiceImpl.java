@@ -90,9 +90,9 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 			assets.setType(20200);//默认实体财产类型
 
-			if (mortgageAssetsDTO.getAssetsList() != null) {
+			if (mortgageAssetsDTO.getAssetsDTOList() != null) {
 				List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
-				for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsList()) {
+				for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsDTOList()) {
 					if (assetsDTO.getAssetsId() == null) {
 						BeanCopyUtil.copyBean(assetsDTO, assets);
 						this.save(assets);//添加财产信息
