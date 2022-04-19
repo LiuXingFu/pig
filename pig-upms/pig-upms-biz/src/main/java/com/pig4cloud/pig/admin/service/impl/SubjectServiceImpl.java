@@ -21,10 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.AddSubjectOrAddressDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
-import com.pig4cloud.pig.admin.api.dto.SubjectProjectCaseeDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.*;
@@ -150,12 +147,12 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			BeanCopyUtil.copyBean(subjectAddressDTO, subject);
 			this.saveSubject(subject);
 			bankLoan = remoteBankLoanService.queryBankLoan(subjectAddressDTO.getBankLoanId(), SecurityConstants.FROM).getData();
-			if (bankLoan!=null){
-				if (bankLoan.getSubjectName()==null) {
-					if (subjectNames==""){
+			if (bankLoan != null) {
+				if (bankLoan.getSubjectName() == null) {
+					if (subjectNames == "") {
 						subjectNames = subject.getName();
-					}else {
-						subjectNames +=","+ subject.getName();
+					} else {
+						subjectNames += "," + subject.getName();
 					}
 				} else {
 					if (!bankLoan.getSubjectName().contains(subject.getName())) {
@@ -414,10 +411,31 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public IPage<Subject> queryPageList(Page page, SubjectPageDTO subjectPageDTO){
+	public IPage<Subject> queryPageList(Page page, SubjectPageDTO subjectPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectPageList(page,subjectPageDTO,insOutlesDTO);
+		return this.baseMapper.selectPageList(page, subjectPageDTO, insOutlesDTO);
+	}
+
+	@Override
+	public String querySubjectName(List<Integer> subjectIdList) {
+		String subjectName = "";
+
+		subjectName = getSubjectName(subjectIdList, subjectName);
+
+		return subjectName;
+	}
+
+	private String getSubjectName(List<Integer> subjectIds, String subjectName) {
+		List<Subject> subjects = this.listByIds(subjectIds);
+		for (int i = 0; i < subjects.size(); i++) {
+			if (i == 0) {
+				subjectName += subjects.get(i).getName();
+			} else {
+				subjectName += "," + subjects.get(i).getName();
+			}
+		}
+		return subjectName;
 	}
 }

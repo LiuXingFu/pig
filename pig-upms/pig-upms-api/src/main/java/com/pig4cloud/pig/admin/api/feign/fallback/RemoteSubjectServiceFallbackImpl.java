@@ -113,4 +113,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("根据身份证查询主体信息失败", cause);
 		return null;
 	}
+
+	@Override
+	public R<String> querySubjectName(List<Integer> subjectIdList, String from) {
+		log.error("根据债务人id集合查询债务人姓名（多个用，号隔开）失败", cause);
+		return null;
+	}
 }

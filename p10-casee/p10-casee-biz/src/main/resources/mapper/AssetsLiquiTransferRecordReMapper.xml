@@ -43,6 +43,7 @@
 
 	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
 		SELECT
+		p10_assets.*,
 		p10_assets_re.*,
 		p10_address.*
 		FROM

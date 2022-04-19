@@ -16,7 +16,6 @@
 
 package com.pig4cloud.pig.admin.api.feign;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
@@ -25,7 +24,6 @@ import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
 import com.pig4cloud.pig.common.core.util.R;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -144,5 +142,14 @@ public interface RemoteSubjectService {
 	 */
 	@GetMapping("/subject/getByUnifiedIdentity/{unifiedIdentity}" )
 	R<SubjectVO> getByUnifiedIdentity(@PathVariable("unifiedIdentity" ) String unifiedIdentity, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 根据债务人id集合查询债务人姓名（多个用，号隔开）
+	 * @param subjectIdList
+	 * @param from
+	 * @return
+	 */
+	@GetMapping("/subject/querySubjectNameList")
+	R<String> querySubjectName(@RequestParam(value = "subjectIdList" ,required=false) List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

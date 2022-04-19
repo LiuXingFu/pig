@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
@@ -30,8 +31,8 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
-import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.BeanUtils;
@@ -39,8 +40,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 清收移交记录表
@@ -71,26 +74,104 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
 
+	@Autowired
+	CaseeSubjectReService caseeSubjectReService;
+
+	@Autowired
+	RemoteSubjectService remoteSubjectService;
+
 	@Override
 	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecord, insOutlesDTO);
+		IPage<LiquiTransferRecordVO> liquiTransferRecordVOIPage = this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecord, insOutlesDTO);
+
+		List<LiquiTransferRecordVO> liquiTransferRecordVORecords = new ArrayList<>();
+
+		for (LiquiTransferRecordVO record : liquiTransferRecordVOIPage.getRecords()) {
+
+			//根据案件id与type查询案件执行人与申请人
+			String executorSubjectName = getExecutorSubjectName(record.getCaseeId());
+
+			record.setExecutorSubjectName(executorSubjectName);
+
+			String applicantSubjectName = getApplicantSubjectName(record.getCaseeId());
+
+			record.setApplicantSubjectName(applicantSubjectName);
+
+			liquiTransferRecordVORecords.add(record);
+		}
+
+		liquiTransferRecordVOIPage.setRecords(liquiTransferRecordVORecords);
+
+		return liquiTransferRecordVOIPage;
 	}
 
+	/**
+	 * 通过id查询清收移交记录以及财产信息
+	 *
+	 * @param liquiTransferRecordId
+	 * @return
+	 */
 	@Override
 	public LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId) {
 		LiquiTransferRecordDetailsVO liquiTransferRecordDetailsVO = this.baseMapper.getByLiquiTransferRecordId(liquiTransferRecordId);
 		if (Objects.nonNull(liquiTransferRecordDetailsVO.getAuctionApplicationFile())) {
 			liquiTransferRecordDetailsVO.setAuctionApplicationFile(liquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1, liquiTransferRecordDetailsVO.getAuctionApplicationFile().length() - 1));
 		}
+
+		//根据案件id与type查询案件执行人与申请人
+		String executorSubjectName = getExecutorSubjectName(liquiTransferRecordDetailsVO.getCaseeId());
+
+		liquiTransferRecordDetailsVO.setExecutorSubjectName(executorSubjectName);
+
+		String applicantSubjectName = getApplicantSubjectName(liquiTransferRecordDetailsVO.getCaseeId());
+
+		liquiTransferRecordDetailsVO.setApplicantSubjectName(applicantSubjectName);
+
 		return liquiTransferRecordDetailsVO;
+	}
+
+	/**
+	 * 申请人名称封装
+	 * @param caseeId
+	 * @return
+	 */
+	private String getApplicantSubjectName(Integer caseeId) {
+		List<Integer> applicantSubIds = caseeSubjectReService.list(new LambdaQueryWrapper<CaseeSubjectRe>()
+				.eq(CaseeSubjectRe::getDelFlag, 0).eq(CaseeSubjectRe::getCaseeId, caseeId).eq(CaseeSubjectRe::getCaseePersonnelType, 0)).stream().map(CaseeSubjectRe::getSubjectId).collect(Collectors.toList());
+
+		return remoteSubjectService.querySubjectName(applicantSubIds, SecurityConstants.FROM).getData();
+	}
+
+	/**
+	 * 被执行人名称封装
+	 *
+	 * @param caseeId
+	 * @return
+	 */
+	private String getExecutorSubjectName(Integer caseeId) {
+		List<Integer> executorIds = caseeSubjectReService.list(new LambdaQueryWrapper<CaseeSubjectRe>()
+				.eq(CaseeSubjectRe::getDelFlag, 0).eq(CaseeSubjectRe::getCaseeId, caseeId).eq(CaseeSubjectRe::getCaseePersonnelType, 1)).stream().map(CaseeSubjectRe::getSubjectId).collect(Collectors.toList());
+
+		return remoteSubjectService.querySubjectName(executorIds, SecurityConstants.FROM).getData();
 	}
 
 	@Override
 	public List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId) {
-		return this.baseMapper.queryTransferRecord(caseeId);
+		List<LiquiTransferRecordVO> liquiTransferRecordVOS = this.baseMapper.queryTransferRecord(caseeId);
+		for (LiquiTransferRecordVO liquiTransferRecordVO : liquiTransferRecordVOS) {
+			//根据案件id与type查询案件执行人与申请人
+			String executorSubjectName = getExecutorSubjectName(liquiTransferRecordVO.getCaseeId());
+
+			liquiTransferRecordVO.setExecutorSubjectName(executorSubjectName);
+
+			String applicantSubjectName = getApplicantSubjectName(liquiTransferRecordVO.getCaseeId());
+
+			liquiTransferRecordVO.setApplicantSubjectName(applicantSubjectName);
+		}
+		return liquiTransferRecordVOS;
 	}
 
 	/**
@@ -192,9 +273,27 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		caseeHandlingRecordsService.save(caseeHandlingRecords);
 	}
 
+	/**
+	 * 根据id查询清收移交信息与财产信息
+	 * @param liquiTransferRecordId
+	 * @return
+	 */
 	@Override
 	public QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId) {
 		QueryLiquiTransferRecordDetailsVO queryLiquiTransferRecordDetailsVO = this.baseMapper.queryByLiquiTransferRecordId(liquiTransferRecordId);
+
+		if (Objects.nonNull(queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile())) {
+			queryLiquiTransferRecordDetailsVO.setAuctionApplicationFile(queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1, queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile().length() - 1));
+		}
+
+		//根据案件id与type查询案件执行人与申请人
+		String executorSubjectName = getExecutorSubjectName(queryLiquiTransferRecordDetailsVO.getCaseeId());
+
+		queryLiquiTransferRecordDetailsVO.setExecutorSubjectName(executorSubjectName);
+
+		String applicantSubjectName = getApplicantSubjectName(queryLiquiTransferRecordDetailsVO.getCaseeId());
+
+		queryLiquiTransferRecordDetailsVO.setApplicantSubjectName(applicantSubjectName);
 
 		return queryLiquiTransferRecordDetailsVO;
 	}

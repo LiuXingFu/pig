@@ -316,4 +316,15 @@ public class SubjectController {
 		return R.ok(this.subjectService.queryPageList(page,subjectPageDTO));
 	}
 
+	/**
+	 * 根据债务人id集合查询债务人姓名（多个用，号隔开）
+	 * @param subjectIdList
+	 * @return
+	 */
+	@ApiOperation(value = "根据债务人id集合查询债务人姓名（多个用，号隔开）", notes = "根据债务人id集合查询债务人姓名（多个用，号隔开）")
+	@GetMapping("/querySubjectNameList")
+	public R querySubjectName(@RequestParam(value = "subjectIdList" ,required=false) List<Integer> subjectIdList) {
+		return R.ok(this.subjectService.querySubjectName(subjectIdList));
+	}
+
 }
