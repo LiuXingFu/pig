@@ -82,7 +82,10 @@
 	</select>
 
 	<select id="queryAssetsPaifuById" resultMap="assetsPaifuVOMap">
-		SELECT p10_assets.*, p10_assets_re.assets_re_detail, p10_assets_re.subject_id  FROM `p10_assets_re`
+		SELECT p10_assets.*,
+		p10_assets_re.assets_re_detail,
+		p10_assets_re.assets_re_id
+		FROM `p10_assets_re`
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id AND p10_assets.del_flag = 0
 		WHERE p10_assets_re.del_flag = 0
 		<if test="projectId != null and projectId != 0">
