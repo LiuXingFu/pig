@@ -34,6 +34,7 @@
 		<result property="entrustedInsId" column="entrusted_ins_id"/>
 		<result property="entrustedOutlesId" column="entrusted_outles_id"/>
 		<result property="projectId" column="project_id"/>
+		<result property="paifuProjectId" column="paifu_project_id"/>
 		<result property="nodeId" column="node_id"/>
 		<result property="caseeId" column="casee_id"/>
 		<result property="caseeNumber" column="casee_number"/>
@@ -114,6 +115,8 @@
 		p10_liqui_transfer_record.casee_id,
 		p10_liqui_transfer_record.liqui_transfer_record_id,
 		p10_liqui_transfer_record.project_id,
+		p10_liqui_transfer_record.entrusted_ins_id,
+		p10_liqui_transfer_record.entrusted_outles_id,
 		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,

@@ -48,9 +48,6 @@
 		<if test="query.assetsId != null and query.assetsId != 0">
 			and assets_id = #{query.assetsId}
 		</if>
-		<if test="query.targetId != null and query.targetId != 0">
-			and target_id = #{query.targetId}
-		</if>
 		<if test="query.projectId != null and query.projectId != 0">
 			and project_id = #{query.projectId}
 		</if>
@@ -59,9 +56,6 @@
 		</if>
 		<if test="query.createCaseeId != null and query.createCaseeId != 0">
 			and create_casee_id = #{query.createCaseeId}
-		</if>
-		<if test="query.subjectId != null and query.subjectId != 0">
-			and subject_id = #{query.subjectId}
 		</if>
 		<if test="query.subjectName = null and query.subjectName != ''">
 			and subject_name like concat('%', #{query.subjectName}, '%')

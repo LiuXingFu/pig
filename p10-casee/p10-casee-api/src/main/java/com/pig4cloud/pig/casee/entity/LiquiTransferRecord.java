@@ -76,6 +76,12 @@ public class LiquiTransferRecord extends BaseEntity {
     private Integer projectId;
 
 	/**
+	 * 拍辅项目id
+	 */
+	@ApiModelProperty(value="拍辅项目id")
+	private Integer paifuProjectId;
+
+	/**
 	 * 节点id
 	 */
 	@ApiModelProperty(value="节点id")
