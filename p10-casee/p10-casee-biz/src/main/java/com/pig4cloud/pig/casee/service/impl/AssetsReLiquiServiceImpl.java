@@ -324,8 +324,8 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
-	public Integer updateAssetsRe(Integer projectId,Integer caseeId,Integer newCaseeId){
-		return this.baseMapper.updateAssetsRe(projectId,caseeId,newCaseeId);
+	public Integer updateAssetsRe(Integer projectId,Integer newCaseeId){
+		return this.baseMapper.updateAssetsRe(projectId,newCaseeId);
 	}
 
 }
