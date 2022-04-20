@@ -392,6 +392,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			for(CaseeSubjectRe caseeSubjectRe:caseeSubjectRes){
 				ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
 				BeanCopyUtil.copyBean(caseeSubjectRe,projectSubjectRe);
+				if(caseeSubjectRe.getCaseePersonnelType()==1){
+					projectSubjectRe.setType(1);
+				}
 				projectSubjectRe.setProjectId(projectPaifu.getProjectId());
 				projectSubjectRes.add(projectSubjectRe);
 			}
