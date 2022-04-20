@@ -110,7 +110,16 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 			record.setApplicantSubjectName(applicantSubjectName);
 
+			int count = this.count(new LambdaQueryWrapper<LiquiTransferRecord>()
+					.eq(LiquiTransferRecord::getProjectId, record.getProjectId())
+					.eq(LiquiTransferRecord::getCaseeId, record.getCaseeId())
+					.eq(LiquiTransferRecord::getNodeId, record.getNodeId())
+					.eq(LiquiTransferRecord::getStatus, 0));
+
+			record.setEdit(count > 1);
+
 			liquiTransferRecordVORecords.add(record);
+
 		}
 
 		liquiTransferRecordVOIPage.setRecords(liquiTransferRecordVORecords);

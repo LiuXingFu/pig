@@ -69,4 +69,9 @@ public class LiquiTransferRecordVO extends LiquiTransferRecord {
      */
     private String applicationSubmissionTime;
 
+	/**
+	 * 是否编辑
+	 */
+	private boolean edit;
+
 }
