@@ -372,7 +372,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 		CaseeLiqui casee = this.baseMapper.selectLastCasee(caseeLiquiAddDTO.getProjectId());
 
-		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),caseeId,casee.getCaseeId());
+		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),casee.getCaseeId(),caseeId);
 		return caseeId;
 	}
 

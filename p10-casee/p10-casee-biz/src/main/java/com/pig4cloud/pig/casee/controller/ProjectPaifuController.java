@@ -76,7 +76,7 @@ public class ProjectPaifuController {
 	@ApiOperation(value = "查询项目案件详情", notes = "查询项目案件详情")
 	@GetMapping("/queryProjectCaseeDetailList" )
 	public R queryProjectCaseeDetailList(Integer projectId) {
-		return R.ok(projectPaifuService.queryProjectCaseeDetail(projectId));
+		return R.ok(projectPaifuService.queryProjectCaseeDetailList(projectId));
 	}
 
 	/**
