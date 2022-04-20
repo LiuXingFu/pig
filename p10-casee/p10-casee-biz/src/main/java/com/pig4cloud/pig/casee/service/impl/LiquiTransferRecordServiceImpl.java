@@ -24,8 +24,10 @@ import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuReceiptDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ;
 import com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper;
@@ -84,6 +86,9 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 	@Autowired
 	RemoteRelationshipAuthenticateService remoteRelationshipAuthenticateService;
+
+	@Autowired
+	ProjectPaifuService projectPaifuService;
 
 	@Override
 	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecordPageDTO liquiTransferRecordPageDTO) {
@@ -302,4 +307,29 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 		return queryLiquiTransferRecordDetailsVO;
 	}
+
+	@Override
+	public boolean reception(LiquiTransferRecordDTO liquiTransferRecordDTO) {
+		LiquiTransferRecord liquiTransferRecord=new LiquiTransferRecord();
+		BeanUtils.copyProperties(liquiTransferRecordDTO,liquiTransferRecord);
+		ProjectPaifuReceiptDTO projectPaifuReceiptDTO=new ProjectPaifuReceiptDTO();
+		BeanUtils.copyProperties(liquiTransferRecordDTO,projectPaifuReceiptDTO);
+		projectPaifuReceiptDTO.setProjectId(liquiTransferRecordDTO.getPaifuProjectId());
+		projectPaifuReceiptDTO.setTakeTime(liquiTransferRecordDTO.getReturnTime());
+
+		//保存拍辅项目id
+		liquiTransferRecord.setPaifuProjectId(projectPaifuService.saveProjectReceipt(projectPaifuReceiptDTO));
+
+		return this.updateById(liquiTransferRecord);
+	}
+
+	@Override
+	public Project queryCompanyCode(Integer projectId, Integer insId, Integer outlesId) {
+		List<LiquiTransferRecord> liquiTransferRecordList = this.list(new LambdaQueryWrapper<LiquiTransferRecord>().eq(LiquiTransferRecord::getProjectId, projectId).eq(LiquiTransferRecord::getEntrustedInsId, insId).eq(LiquiTransferRecord::getEntrustedOutlesId, outlesId).eq(LiquiTransferRecord::getDelFlag, 0));
+		if (liquiTransferRecordList.size()>1){
+			return projectPaifuService.getById(liquiTransferRecordList.get(0).getPaifuProjectId());
+		}
+		return null;
+	}
+
 }

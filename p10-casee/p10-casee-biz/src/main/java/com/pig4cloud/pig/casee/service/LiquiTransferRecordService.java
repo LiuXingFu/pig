@@ -20,13 +20,14 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
-import com.pig4cloud.pig.common.core.util.R;
 
 import java.util.List;
 
@@ -47,4 +48,8 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 	int updateLiquiTransferRecord(UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO);
 
 	QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId);
+
+	boolean reception(LiquiTransferRecordDTO liquiTransferRecordDTO);
+
+	Project queryCompanyCode(Integer projectId,Integer insId,Integer outlesId);
 }

@@ -19,7 +19,10 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
@@ -161,4 +164,28 @@ public class LiquiTransferRecordController {
 	public R queryByLiquiTransferRecordId(@PathVariable("liquiTransferRecordId") Integer liquiTransferRecordId) {
 		return R.ok(liquiTransferRecordService.queryByLiquiTransferRecordId(liquiTransferRecordId));
 	}
+
+	/**
+	 * 接收移交记录
+	 * @param liquiTransferRecordDTO 接收移交记录
+	 * @return R
+	 */
+	@ApiOperation(value = "接收移交记录", notes = "接收移交记录")
+	@SysLog("接收移交记录" )
+	@PostMapping("/reception")
+	public R reception(@RequestBody LiquiTransferRecordDTO liquiTransferRecordDTO) {
+		return R.ok(liquiTransferRecordService.reception(liquiTransferRecordDTO));
+	}
+
+	/**
+	 * 根据清收项目id,受托机构、受托网点id，查询拍辅公司业务案号
+	 * @param projectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据清收项目id,受托机构、受托网点id，查询拍辅公司业务案号", notes = "根据清收项目id,受托机构、受托网点id，查询拍辅公司业务案号")
+	@GetMapping("/queryCompanyCode")
+	public R queryCompanyCode(Integer projectId,Integer insId,Integer outlesId) {
+		return R.ok(liquiTransferRecordService.queryCompanyCode(projectId,insId,outlesId));
+	}
+
 }
