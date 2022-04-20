@@ -27,6 +27,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
@@ -78,6 +79,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO){
+
+
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		projectPaifu.setProjectType(200);
@@ -360,39 +363,47 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
 		this.saveOrUpdate(projectPaifu);
 
-		if(Objects.nonNull(projectPaifuReceiptDTO.getProjectId())){
-			QueryWrapper<ProjectCaseeRe> queryWrapper = new QueryWrapper<>();
-			queryWrapper.lambda().eq(ProjectCaseeRe::getProjectId,projectPaifuReceiptDTO.getProjectId());
-			queryWrapper.lambda().eq(ProjectCaseeRe::getCaseeId,liquiTransferRecord.getCaseeId());
-			queryWrapper.lambda().eq(ProjectCaseeRe::getDelFlag,0);
-
-		}
-
 		// 保存项目案件关联
 		ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
 		projectCaseeRe.setProjectId(projectPaifu.getProjectId());
 		projectCaseeRe.setCaseeId(liquiTransferRecord.getCaseeId());
 		projectCaseeRe.setUserId(projectPaifuReceiptDTO.getUserId());
 		projectCaseeRe.setActualName(projectPaifuReceiptDTO.getUserNickName());
-		projectCaseeReService.save(projectCaseeRe);
-
-
-
-
-
-
-
-
-
+		// 验证项目案件关联表是否存在
+		if(Objects.nonNull(projectPaifuReceiptDTO.getProjectId())){
+			QueryWrapper<ProjectCaseeRe> queryWrapper = new QueryWrapper<>();
+			queryWrapper.lambda().eq(ProjectCaseeRe::getProjectId,projectPaifuReceiptDTO.getProjectId());
+			queryWrapper.lambda().eq(ProjectCaseeRe::getCaseeId,liquiTransferRecord.getCaseeId());
+			queryWrapper.lambda().eq(ProjectCaseeRe::getDelFlag,0);
+			ProjectCaseeRe projectCaseeReOne = projectCaseeReService.getOne(queryWrapper);
+			if(Objects.isNull(projectCaseeReOne)){
+				projectCaseeReService.save(projectCaseeRe);
+			}
+		}else{
+			// 保存项目主体关联表
+			QueryWrapper<CaseeSubjectRe> queryWrapper = new QueryWrapper<>();
+			queryWrapper.lambda().eq(CaseeSubjectRe::getCaseeId,liquiTransferRecord.getCaseeId());
+			List<CaseeSubjectRe> caseeSubjectRes = caseeSubjectReService.list(queryWrapper);
+			List<ProjectSubjectRe> projectSubjectRes = new ArrayList<>();
+			for(CaseeSubjectRe caseeSubjectRe:caseeSubjectRes){
+				ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
+				BeanCopyUtil.copyBean(caseeSubjectRe,projectSubjectRe);
+				projectSubjectRe.setProjectId(projectPaifu.getProjectId());
+				projectSubjectRes.add(projectSubjectRe);
+			}
+			projectCaseeReService.save(projectCaseeRe);
+		}
+		// 查询移交财产信息
 		QueryWrapper<AssetsLiquiTransferRecordRe> queryWrapper = new QueryWrapper<>();
 		queryWrapper.lambda().eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId,projectPaifuReceiptDTO.getLiquiTransferRecordId());
 		List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordRes = assetsLiquiTransferRecordReService.list(queryWrapper);
 
-		List<ProjectSubjectRe> projectSubjectRes = new ArrayList();
 		List<AssetsReSubject> assetsReSubjectList = new ArrayList<>();
+		// 遍历移交财产集合
 		for(AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe:assetsLiquiTransferRecordRes){
 			AssetsRe assetsRe = assetsReService.getById(assetsLiquiTransferRecordRe.getAssetsReId());
-			AssetsRe paifuAssetsRe = new AssetsRe();
+			// 保存拍辅项目案件财产关联
+			AssetsRePaifu paifuAssetsRe = new AssetsRePaifu();
 			paifuAssetsRe.setProjectId(projectPaifu.getProjectId());
 			paifuAssetsRe.setCaseeId(assetsRe.getCaseeId());
 			paifuAssetsRe.setCreateCaseeId(assetsRe.getCreateCaseeId());
@@ -402,19 +413,18 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
 			paifuAssetsRe.setAssetsReDetail(assetsRe.getAssetsReDetail());
 			assetsReService.save(paifuAssetsRe);
+			// 查询财产主体关联
 			QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
 			assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsLiquiTransferRecordRe.getAssetsReId());
 			List<AssetsReSubject> assetsReSubjects = assetsReSubjectService.list(assetsReSubjectQueryWrapper);
+			// 遍历项目案件财产主体关联
 			for(AssetsReSubject assetsReSubject : assetsReSubjects){
-
-
 				AssetsReSubject paifuAssetsReSubject = new AssetsReSubject();
 				paifuAssetsReSubject.setAssetsReId(paifuAssetsRe.getAssetsReId());
 				paifuAssetsReSubject.setSubjectId(assetsReSubject.getSubjectId());
 				assetsReSubjectList.add(paifuAssetsReSubject);
 			}
 		}
-		projectSubjectReService.saveBatch(projectSubjectRes);
 		assetsReSubjectService.saveBatch(assetsReSubjectList);
 
 		// 保存项目委托关联表
