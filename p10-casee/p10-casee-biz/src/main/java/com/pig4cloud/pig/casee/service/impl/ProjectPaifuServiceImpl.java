@@ -396,6 +396,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				projectSubjectRes.add(projectSubjectRe);
 			}
 			projectCaseeReService.save(projectCaseeRe);
+			projectSubjectReService.saveBatch(projectSubjectRes);
 		}
 		// 查询移交财产信息
 		QueryWrapper<AssetsLiquiTransferRecordRe> queryWrapper = new QueryWrapper<>();
@@ -411,7 +412,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			paifuAssetsRe.setProjectId(projectPaifu.getProjectId());
 			paifuAssetsRe.setCaseeId(assetsRe.getCaseeId());
 			paifuAssetsRe.setCreateCaseeId(assetsRe.getCreateCaseeId());
-			paifuAssetsRe.setAssetsId(assetsRe.getAssetsReId());
+			paifuAssetsRe.setAssetsId(assetsRe.getAssetsId());
 			paifuAssetsRe.setSubjectName(assetsRe.getSubjectName());
 			paifuAssetsRe.setAssetsSource(assetsRe.getAssetsSource());
 			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
