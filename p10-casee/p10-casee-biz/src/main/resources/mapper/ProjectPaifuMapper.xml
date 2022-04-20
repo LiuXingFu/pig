@@ -50,7 +50,7 @@
 
 	<select id="selectPagePaifu" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO">
 		select p10_project.*,p10_casee.*,p10_court.court_name as courtName from p10_project
-		left join (select * from (select * from p10_project_casee_reorder by create_time desc)p10_project_casee_re GROUP BY p10_project_casee_re.project_id)p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join (select * from (select * from p10_project_casee_re order by create_time desc)p10_project_casee_re GROUP BY p10_project_casee_re.project_id)p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
 		left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_project.del_flag = 0
