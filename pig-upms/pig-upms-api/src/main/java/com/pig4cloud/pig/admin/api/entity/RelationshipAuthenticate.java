@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 关联认证表
+ * 机构法院关联表
  *
  * @author yuanduo
  * @date 2022-01-11 14:48:51
@@ -33,26 +33,26 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("p10_relationship_authenticate")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "关联认证表")
+@ApiModel(value = "机构法院关联表")
 public class RelationshipAuthenticate  extends Model<RelationshipAuthenticate> {
 
     /**
-     * 关联认证id
+     * 关联id
      */
     @TableId
-    @ApiModelProperty(value="关联认证id")
+    @ApiModelProperty(value="关联id")
     private Integer id;
 
     /**
-     * 认证id
+     * 机构id
      */
-    @ApiModelProperty(value="认证id")
+    @ApiModelProperty(value="机构id")
     private Integer authenticateId;
 
     /**
-     * 认证目标id
+     * 法院id
      */
-    @ApiModelProperty(value="认证目标id")
+    @ApiModelProperty(value="法院id")
     private Integer authenticateGoalId;
 
 

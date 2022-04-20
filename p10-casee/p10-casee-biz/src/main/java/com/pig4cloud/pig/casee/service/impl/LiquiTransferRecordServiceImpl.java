@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
@@ -80,6 +81,9 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+
+	@Autowired
+	RemoteRelationshipAuthenticateService remoteRelationshipAuthenticateService;
 
 	@Override
 	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecordPageDTO liquiTransferRecordPageDTO) {

@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.RelationshipAuthenticate;
 import com.pig4cloud.pig.admin.mapper.RelationshipAuthenticateMapper;
@@ -31,4 +32,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class RelationshipAuthenticateServiceImpl extends ServiceImpl<RelationshipAuthenticateMapper, RelationshipAuthenticate> implements RelationshipAuthenticateService {
 
+	/**
+	 * 通过AuthenticateId查询authenticateGoalId
+	 * @param authenticateId
+	 * @return
+	 */
+	@Override
+	public Integer getByAuthenticateId(Integer authenticateId) {
+		return this.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>().eq(RelationshipAuthenticate::getAuthenticateId, authenticateId)).getAuthenticateGoalId();
+	}
 }

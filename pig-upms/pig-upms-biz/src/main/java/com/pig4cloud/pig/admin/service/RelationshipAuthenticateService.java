@@ -28,4 +28,5 @@ import com.pig4cloud.pig.admin.api.entity.RelationshipAuthenticate;
  */
 public interface RelationshipAuthenticateService extends IService<RelationshipAuthenticate> {
 
+	Integer getByAuthenticateId(Integer authenticateId);
 }
