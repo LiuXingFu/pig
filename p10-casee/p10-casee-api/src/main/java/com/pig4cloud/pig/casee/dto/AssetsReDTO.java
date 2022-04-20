@@ -28,6 +28,17 @@ import lombok.Data;
  */
 @Data
 public class AssetsReDTO extends AssetsReLiqui {
+
+	/**
+	 * 财产关联id
+	 */
+	private Integer assetsReId;
+
+	/**
+	 * 财产id
+	 */
+	private Integer assetsId;
+
 	/**
 	 * 财产名称
 	 */

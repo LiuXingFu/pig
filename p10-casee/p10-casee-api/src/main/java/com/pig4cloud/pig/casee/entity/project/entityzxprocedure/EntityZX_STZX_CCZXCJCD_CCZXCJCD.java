@@ -6,6 +6,7 @@ import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +19,7 @@ public class EntityZX_STZX_CCZXCJCD_CCZXCJCD extends CommonalityData implements 
 	/**
 	 * 裁定日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date dateOfAdjudication;
+	private LocalDate dateOfAdjudication;
 
 	/**
 	 * 拍卖结束执行案号

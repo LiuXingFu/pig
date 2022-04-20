@@ -1,12 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * 财产执行查封
@@ -16,13 +14,11 @@ public class EntityZX_STZX_CCZXCF_CCZXCF extends CommonalityData implements Seri
 	/**
 	 * 查封日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
 	private LocalDate sealUpTime;
 
 	/**
 	 * 查封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd")
 	private LocalDate seizureExpiryDate;
 
 	/**
@@ -38,7 +34,6 @@ public class EntityZX_STZX_CCZXCF_CCZXCF extends CommonalityData implements Seri
 	/**
 	 * 首封到期日
 	 */
-	@JSONField(format="yyyy-MM-dd")
 	private LocalDate firstCoverDueDate;
 
 	/**

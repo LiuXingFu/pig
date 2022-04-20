@@ -5,6 +5,7 @@ import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -15,14 +16,12 @@ public class FundingZX_ZJZX_ZJZXDJ_ZJZXDJ extends CommonalityData implements Ser
 	/**
 	 * 冻结时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date freezeTime;
+	private LocalDate freezeTime;
 
 	/**
 	 * 冻结到期日
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date freezeExpirationDate;
+	private LocalDate freezeExpirationDate;
 
 	/**
 	 * 是否首冻(0-否 1-是)

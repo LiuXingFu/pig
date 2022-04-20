@@ -152,6 +152,7 @@
 		p10_liqui_transfer_record.casee_number,
 		p10_liqui_transfer_record.handover_time,
 		p10_liqui_transfer_record.casee_id,
+		p10_liqui_transfer_record.node_id,
 		p10_liqui_transfer_record.liqui_transfer_record_id,
 		p10_liqui_transfer_record.project_id,
 		p10_liqui_transfer_record.entrust_ins_id,

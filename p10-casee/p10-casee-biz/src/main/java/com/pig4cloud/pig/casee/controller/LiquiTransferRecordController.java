@@ -144,7 +144,7 @@ public class LiquiTransferRecordController {
 	 */
 	@ApiOperation(value = "再次移送", notes = "再次移送")
 	@SysLog("再次移送")
-	@PutMapping("/updateLiquiTransferRecord")
+	@PostMapping("/updateLiquiTransferRecord")
 	public R updateLiquiTransferRecord(@RequestBody UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO) {
 		int count = this.liquiTransferRecordService.updateLiquiTransferRecord(updateLiquiTransferRecordDTO);
 		if (count > 0) {

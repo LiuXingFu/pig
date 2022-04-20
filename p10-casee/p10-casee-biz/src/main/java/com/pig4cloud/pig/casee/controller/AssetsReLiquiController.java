@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
+import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.service.AssetsReLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -296,6 +297,21 @@ public class AssetsReLiquiController {
 	@GetMapping("/queryByAssetsId" )
 	public R queryByAssetsId(Page page,Integer assetsId) {
 		return R.ok(assetsReLiquiService.queryByAssetsId(page,assetsId));
+	}
+
+	/**
+	 * 删除移交财产相关信息
+	 * @return
+	 */
+	@ApiOperation(value = "删除移交财产相关信息", notes = "删除移交财产相关信息")
+	@DeleteMapping("/deleteAssetsTransfer")
+	public R deleteAssetsTransfer(@RequestBody DelAssetsTransferDTO delAssetsTransferDTO) {
+		int i = assetsReLiquiService.deleteAssetsTransfer(delAssetsTransferDTO);
+		if (i > 0) {
+			return R.ok("删除移交信息成功！");
+		} else {
+			return R.failed("删除移交信息失败！");
+		}
 	}
 
 }
