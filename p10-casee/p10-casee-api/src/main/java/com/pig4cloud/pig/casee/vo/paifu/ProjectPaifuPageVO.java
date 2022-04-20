@@ -50,7 +50,7 @@ public class ProjectPaifuPageVO extends ProjectPaifu {
 	 * 承办法院
 	 */
 	@ApiModelProperty(value="承办法院")
-	private Integer courtName;
+	private String courtName;
 
 	/**
 	 * 法官名称

@@ -117,6 +117,7 @@
 		p10_liqui_transfer_record.project_id,
 		p10_liqui_transfer_record.entrusted_ins_id,
 		p10_liqui_transfer_record.entrusted_outles_id,
+		p10_liqui_transfer_record.status,
 		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
