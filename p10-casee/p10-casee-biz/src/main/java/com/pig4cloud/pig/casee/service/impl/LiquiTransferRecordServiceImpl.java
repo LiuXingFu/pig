@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ;
@@ -81,11 +82,11 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	RemoteSubjectService remoteSubjectService;
 
 	@Override
-	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
+	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecordPageDTO liquiTransferRecordPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		IPage<LiquiTransferRecordVO> liquiTransferRecordVOIPage = this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecord, insOutlesDTO);
+		IPage<LiquiTransferRecordVO> liquiTransferRecordVOIPage = this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecordPageDTO, insOutlesDTO);
 
 		List<LiquiTransferRecordVO> liquiTransferRecordVORecords = new ArrayList<>();
 

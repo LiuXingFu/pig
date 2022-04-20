@@ -18,3 +18,4 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 
 	AssetsPaifuVO queryAssetsPaifuById(@Param("assetsId") Integer assetsId, @Param("projectId") Integer projectId, @Param("caseeId") Integer caseeId);
 }
+

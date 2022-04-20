@@ -40,10 +40,25 @@
 		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
 	</resultMap>
 
-<!--	<resultMap id="assetsPaifuVOMap" type="com.pig4cloud.pig.casee.vo.AssetsPaifuVO" extends="assetsMap">-->
-<!--		<result property="assetsReDetail" column="assets_re_detail"/>-->
-<!--		<result property="subjectId" column="subject_id"></result>-->
-<!--	</resultMap>-->
+	<resultMap id="assetsMap" type="com.pig4cloud.pig.casee.entity.Assets">
+		<id property="assetsId" column="assets_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="assetsName" column="assets_name"/>
+		<result property="type" column="type"/>
+		<result property="assetsType" column="assets_type"/>
+		<result property="assetsDetail" column="assets_detail"/>
+		<result property="describes" column="describes"/>
+		<result property="accountNumber" column="account_number"/>
+	</resultMap>
+
+	<resultMap id="assetsPaifuVOMap" type="com.pig4cloud.pig.casee.vo.AssetsPaifuVO" extends="assetsMap">
+		<result property="assetsReDetail" column="assets_re_detail"/>
+		<result property="subjectId" column="subject_id"></result>
+	</resultMap>
 
 	<resultMap id="assetsList" type="com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO" extends="assetsReMap">
 		<collection property="assets" ofType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO"
@@ -74,8 +89,11 @@
 		</if>
 	</select>
 
-	<select id="queryAssetsPaifuById" resultType="com.pig4cloud.pig.casee.vo.AssetsPaifuVO">
-		SELECT p10_assets.*, p10_assets_re.assets_re_detail, p10_assets_re.subject_id  FROM `p10_assets_re`
+	<select id="queryAssetsPaifuById" resultMap="assetsPaifuVOMap">
+		SELECT p10_assets.*,
+		p10_assets_re.assets_re_detail,
+		p10_assets_re.assets_re_id
+		FROM `p10_assets_re`
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id AND p10_assets.del_flag = 0
 		WHERE p10_assets_re.del_flag = 0
 		<if test="projectId != null and projectId != 0">

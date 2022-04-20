@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -47,13 +48,13 @@ public class LiquiTransferRecordController {
 	 * 分页查询
 	 *
 	 * @param page                分页对象
-	 * @param liquiTransferRecord 清收移交记录表
+	 * @param liquiTransferRecordPageDTO 清收移交记录表
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page")
-	public R getLiquiTransferRecordPage(Page page, LiquiTransferRecord liquiTransferRecord) {
-		return R.ok(liquiTransferRecordService.queryLiquiTransferRecordPage(page, liquiTransferRecord));
+	public R getLiquiTransferRecordPage(Page page, LiquiTransferRecordPageDTO liquiTransferRecordPageDTO) {
+		return R.ok(liquiTransferRecordService.queryLiquiTransferRecordPage(page, liquiTransferRecordPageDTO));
 	}
 
 

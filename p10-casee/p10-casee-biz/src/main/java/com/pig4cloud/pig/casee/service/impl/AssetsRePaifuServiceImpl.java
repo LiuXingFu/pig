@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,6 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, AssetsRe> implements AssetsRePaifuService {
@@ -55,7 +58,19 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	public AssetsPaifuVO queryAssetsPaifuById(Integer assetsId, Integer projectId, Integer caseeId) {
 		AssetsPaifuVO assetsPaifuVO = this.baseMapper.queryAssetsPaifuById(assetsId, projectId, caseeId);
 		Address address = remoteAddressService.queryAssetsByTypeIdAndType(assetsPaifuVO.getAssetsId(), 4, SecurityConstants.FROM).getData();
-		assetsPaifuVO.setAddress(address);
+		if (Objects.nonNull(address)) {
+			assetsPaifuVO.setAddressId(address.getAddressId());
+			assetsPaifuVO.setProvince(address.getProvince());
+			assetsPaifuVO.setArea(address.getArea());
+			assetsPaifuVO.setCity(address.getCity());
+			assetsPaifuVO.setCode(address.getCode());
+		}
+
+		List<Integer> subjectIds = this.assetsReSubjectService.list(new LambdaQueryWrapper<AssetsReSubject>()
+				.eq(AssetsReSubject::getAssetsReId, assetsPaifuVO.getAssetsReId())).stream().map(AssetsReSubject::getSubjectId).collect(Collectors.toList());
+
+		assetsPaifuVO.setSubjectIds(subjectIds);
+
 		return assetsPaifuVO;
 	}
 
