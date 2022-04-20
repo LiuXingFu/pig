@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
@@ -75,11 +76,13 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private AssetsReService assetsReService;
 	@Autowired
 	private AssetsReSubjectService assetsReSubjectService;
+	@Autowired
+	private RemoteRelationshipAuthenticateService relationshipAuthenticateService;
 
 	@Override
 	@Transactional
 	public Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO){
-
+		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuSaveDTO.getCourtId(), SecurityConstants.FROM).getData();
 
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
@@ -90,6 +93,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		// 保存案件表
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,casee);
+		casee.setCourtId(courtId);
 		caseeService.save(casee);
 
 		List<ProjectSubjectRe> projectSubjectRes = new ArrayList();

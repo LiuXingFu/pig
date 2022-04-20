@@ -132,6 +132,7 @@
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_casee.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_casee.casee_id = #{caseeId}
 	</select>
 
