@@ -32,6 +32,12 @@ import java.util.List;
 public class ProjectPaifuReceiptDTO {
 
 	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
 	 * 接收时间
 	 */
 	@ApiModelProperty(value="接收时间")
@@ -80,9 +86,9 @@ public class ProjectPaifuReceiptDTO {
     private String describes;
 
 	/**
-	 * 清收移交记录表
+	 * 清收移交记录id
 	 */
-	@ApiModelProperty(value="清收移交记录表")
+	@ApiModelProperty(value="清收移交记录id")
 	private Integer liquiTransferRecordId;
 
 }
