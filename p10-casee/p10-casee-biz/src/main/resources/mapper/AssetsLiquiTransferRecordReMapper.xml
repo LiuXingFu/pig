@@ -54,4 +54,17 @@
 		LEFT JOIN p10_address ON p10_address.user_id=p10_assets.assets_id AND p10_address.type=4
 		WHERE p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
+
+	<select id="getByTransferRecordAssets" resultType="com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe">
+	SELECT
+	p10_assets_liqui_transfer_record_re.*
+	FROM
+	p10_project
+	LEFT JOIN p10_liqui_transfer_record ON p10_liqui_transfer_record.project_id = p10_project.project_id
+	LEFT JOIN p10_assets_liqui_transfer_record_re on p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=p10_liqui_transfer_record.liqui_transfer_record_id
+	WHERE
+	p10_project.project_id = #{projectId}
+	and p10_assets_liqui_transfer_record_re.assets_re_id=#{assetsReId}
+	</select>
+
 </mapper>

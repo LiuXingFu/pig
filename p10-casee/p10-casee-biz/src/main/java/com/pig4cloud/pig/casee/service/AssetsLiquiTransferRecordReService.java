@@ -20,6 +20,8 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
 
+import java.util.List;
+
 /**
  * 财产关联清收移交记录表
  *
@@ -28,4 +30,5 @@ import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
  */
 public interface AssetsLiquiTransferRecordReService extends IService<AssetsLiquiTransferRecordRe> {
 
+	List<AssetsLiquiTransferRecordRe> getByTransferRecordAssets(Integer projectId,Integer assetsReId);
 }
