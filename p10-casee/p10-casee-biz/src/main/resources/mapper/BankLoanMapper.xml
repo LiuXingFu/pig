@@ -60,20 +60,30 @@
 	</resultMap>
 
 	<select id="bankLoanPage" resultMap="bankLoanMapVO">
-		select
+		SELECT
 		p10_bank_loan.*,
-		p10_institution.ins_name as entrustedInsName,
-		p10_outles.outles_name as entrustedOutlesName,
-		if(ISNULL(p10_project.status),p10_transfer_record.`status`,p10_project.status) as status
-		from p10_bank_loan
-		left join (select p10_transfer_record.`status`,p10_transfer_record.source_id,p10_transfer_record.project_id from p10_transfer_record
-					where del_flag = 0 and transfer_type=0 GROUP BY source_id
-					)p10_transfer_record on p10_transfer_record.source_id = p10_bank_loan.bank_loan_id
-		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
-		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
-		left join p10_project on p10_project.project_id=p10_transfer_record.project_id
-		where
-		p10_bank_loan.del_flag=0
+		p10_institution.ins_name AS entrustedInsName,
+		p10_outles.outles_name AS entrustedOutlesName,
+		IF
+		( ISNULL( p10_project.STATUS ), p10_transfer_record.`status`, p10_project.STATUS ) AS STATUS
+		FROM
+		p10_bank_loan
+		LEFT JOIN (
+		SELECT
+		t.transfer_record_id,
+		t.`status`,
+		t.source_id,
+		t.project_id
+		FROM
+		( SELECT * FROM p10_transfer_record WHERE del_flag = 0 AND transfer_type = 0 ORDER BY transfer_record_id DESC LIMIT 10000 ) t
+		GROUP BY
+		t.source_id
+		) p10_transfer_record ON p10_transfer_record.source_id = p10_bank_loan.bank_loan_id
+		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_bank_loan.ins_id
+		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_bank_loan.outles_id
+		LEFT JOIN p10_project ON p10_project.project_id = p10_transfer_record.project_id
+		WHERE
+		p10_bank_loan.del_flag = 0
 		<if test="login.insId != null and login.insId > 0">
 			and p10_bank_loan.ins_id = #{login.insId}
 		</if>
