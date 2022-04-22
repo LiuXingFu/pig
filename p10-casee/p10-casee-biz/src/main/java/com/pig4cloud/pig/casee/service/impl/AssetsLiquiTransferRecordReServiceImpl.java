@@ -22,6 +22,8 @@ import com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper;
 import com.pig4cloud.pig.casee.service.AssetsLiquiTransferRecordReService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 财产关联清收移交记录表
  *
@@ -31,4 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetsLiquiTransferRecordReServiceImpl extends ServiceImpl<AssetsLiquiTransferRecordReMapper, AssetsLiquiTransferRecordRe> implements AssetsLiquiTransferRecordReService {
 
+	@Override
+	public List<AssetsLiquiTransferRecordRe> getByTransferRecordAssets(Integer projectId,Integer assetsReId) {
+		return this.baseMapper.getByTransferRecordAssets(projectId,assetsReId);
+	}
 }
