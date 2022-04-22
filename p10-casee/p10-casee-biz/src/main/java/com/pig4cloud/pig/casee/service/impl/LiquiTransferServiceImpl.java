@@ -16,25 +16,28 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
-import com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper;
-import com.pig4cloud.pig.casee.service.AssetsLiquiTransferRecordReService;
+import com.pig4cloud.pig.casee.dto.LiquiTransferPageDTO;
+import com.pig4cloud.pig.casee.entity.LiquiTransfer;
+import com.pig4cloud.pig.casee.mapper.LiquiTransferMapper;
+import com.pig4cloud.pig.casee.service.LiquiTransferService;
+import com.pig4cloud.pig.casee.vo.LiquiTransferPageVO;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
- * 财产关联清收移交记录表
+ * 清收移交表
  *
- * @author Mjh
- * @date 2022-04-06 15:22:06
+ * @author yuanduo
+ * @date 2022-04-21 15:39:01
  */
 @Service
-public class AssetsLiquiTransferRecordReServiceImpl extends ServiceImpl<AssetsLiquiTransferRecordReMapper, AssetsLiquiTransferRecordRe> implements AssetsLiquiTransferRecordReService {
+public class LiquiTransferServiceImpl extends ServiceImpl<LiquiTransferMapper, LiquiTransfer> implements LiquiTransferService {
 
 	@Override
-	public List<AssetsLiquiTransferRecordRe> getByTransferRecordAssets(Integer projectId,Integer assetsReId) {
-		return this.baseMapper.getByTransferRecordAssets(projectId,assetsReId);
+	public IPage<LiquiTransferPageVO> getLiquiTransferPage(Page page, LiquiTransferPageDTO liquiTransferPageDTO) {
+		return this.baseMapper.getLiquiTransferPage(page, liquiTransferPageDTO);
 	}
 }

@@ -30,6 +30,7 @@ import com.pig4cloud.pig.admin.api.vo.MessageRecordVO;
 import com.pig4cloud.pig.admin.mapper.MessageRecordMapper;
 import com.pig4cloud.pig.admin.service.ClientUserReService;
 import com.pig4cloud.pig.admin.service.MessageRecordService;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.BeanUtils;
@@ -53,11 +54,15 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 	private ClientUserReService clientUserReService;
 	@Autowired
 	private RequestAppService requestAppService;
+	@Autowired
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public IPage getMessageRecordPage(Page page, MessageRecordDTO messageRecordDTO) {
-		PigUser pigUser = securityUtilsService.getCacheUser();
-		return this.baseMapper.getMessageRecordVosPage(page,messageRecordDTO,pigUser.getInsId(),pigUser.getId());
+		messageRecordDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		messageRecordDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		messageRecordDTO.setUserId(securityUtilsService.getCacheUser().getId());
+		return this.baseMapper.getMessageRecordVosPage(page, messageRecordDTO);
 	}
 
 	@Override

@@ -7,18 +7,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.entity.AssetsReSubject;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper;
-import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
-import com.pig4cloud.pig.casee.service.AssetsReSubjectService;
-import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -47,6 +44,16 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	AssetsReSubjectService assetsReSubjectService;
 	@Autowired
 	RemoteAddressService addressService;
+	@Autowired
+	AssetsRePaifuService assetsRePaifuService;
+	@Autowired
+	private TargetService targetService;
+	@Autowired
+	TaskNodeService taskNodeService;
+	@Autowired
+	CaseeHandlingRecordsService caseeHandlingRecordsService;
+	@Autowired
+	AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
 
 	@Override
 	public IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
@@ -113,5 +120,40 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 			addressService.saveAddress(address,SecurityConstants.FROM);
 		}
 		return save;
+	}
+
+	/**
+	 * 删除移交财产相关信息
+	 * @param delAssetsTransferDTO
+	 * @return
+	 */
+	@Override
+	public int deleteAssetsTransfer(DelAssetsTransferDTO delAssetsTransferDTO) {
+
+		int delete = 0;
+
+		AssetsRe assetsRe = assetsRePaifuService.getById(delAssetsTransferDTO.getAssetsReDTO().getAssetsReId());
+
+		//查询该财产程序信息
+		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, assetsRe.getCaseeId()).eq(Target::getGoalId, assetsRe.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 4040));
+
+		TaskNode entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, assetsRe.getProjectId()).eq(TaskNode::getCaseeId, assetsRe.getCaseeId()).eq(TaskNode::getTargetId, target.getTargetId())
+				.eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ"));
+
+		entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(0);
+
+		taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
+
+		caseeHandlingRecordsService.remove(new LambdaQueryWrapper<CaseeHandlingRecords>()
+				.eq(CaseeHandlingRecords::getProjectId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getProjectId())
+				.eq(CaseeHandlingRecords::getCaseeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getCaseeId())
+				.eq(CaseeHandlingRecords::getTargetId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getTargetId())
+				.eq(CaseeHandlingRecords::getNodeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId()));
+
+		assetsLiquiTransferRecordReService.remove(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>()
+				.eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId, delAssetsTransferDTO.getLiquiTransferRecordId())
+				.eq(AssetsLiquiTransferRecordRe::getAssetsReId, delAssetsTransferDTO.getAssetsReDTO().getAssetsReId()));
+
+		return delete+=1;
 	}
 }

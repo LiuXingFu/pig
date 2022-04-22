@@ -15,20 +15,24 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.LiquiTransferPageDTO;
+import com.pig4cloud.pig.casee.entity.LiquiTransfer;
+import com.pig4cloud.pig.casee.vo.LiquiTransferPageVO;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 财产关联清收移交记录表
+ * 清收移交表
  *
- * @author Mjh
- * @date 2022-04-06 15:22:06
+ * @author yuanduo
+ * @date 2022-04-21 15:39:01
  */
-public interface AssetsLiquiTransferRecordReService extends IService<AssetsLiquiTransferRecordRe> {
+@Mapper
+public interface LiquiTransferMapper extends BaseMapper<LiquiTransfer> {
 
-	List<AssetsLiquiTransferRecordRe> getByTransferRecordAssets(Integer projectId,Integer assetsReId);
+	IPage<LiquiTransferPageVO> getLiquiTransferPage(Page page, LiquiTransferPageDTO liquiTransferPageDTO);
 }

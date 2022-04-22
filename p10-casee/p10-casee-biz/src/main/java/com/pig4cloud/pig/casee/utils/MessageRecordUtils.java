@@ -33,7 +33,7 @@ public class MessageRecordUtils {
 		R<UserVO> userById = remoteUserService.getUserById(taskNode.getUpdateBy(), SecurityConstants.FROM);
 		MessageRecordDTO messageRecordDTO=new MessageRecordDTO();
 		messageRecordDTO.setCreateBy(taskNode.getUpdateBy());
-		messageRecordDTO.setCreateTime(LocalDateTime.now());
+//		messageRecordDTO.setCreateTime(LocalDateTime.now());
 		messageRecordDTO.setMessageType(100);
 		messageRecordDTO.setMessageTitle(userById.getData().getNickName()+message+taskNode.getNodeName());
 		messageRecordDTO.setMessageContent(JsonUtils.objectToJson(taskNode));

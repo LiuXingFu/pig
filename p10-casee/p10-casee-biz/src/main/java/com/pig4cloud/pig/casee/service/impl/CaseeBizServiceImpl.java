@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -245,7 +246,7 @@ public class CaseeBizServiceImpl extends ServiceImpl<CaseeBizMapper, CaseeBizBas
 			for (CaseeOutlesDealRe caseeOutlesDealRe : caseeOutlesDealReList) {
 				MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
 				messageRecordDTO.setCreateBy(pigUser.getId());
-				messageRecordDTO.setCreateTime(LocalDateTime.now());
+				messageRecordDTO.setCreateTime(LocalDate.now());
 				// 300=清收消息
 				messageRecordDTO.setMessageType(300);
 				messageRecordDTO.setMessageTitle(messageTitle);

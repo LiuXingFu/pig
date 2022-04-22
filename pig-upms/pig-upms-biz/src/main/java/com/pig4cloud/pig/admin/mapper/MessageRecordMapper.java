@@ -44,7 +44,7 @@ public interface MessageRecordMapper extends BaseMapper<MessageRecord> {
 	 * @param messageRecordDTO 消息记录表
 	 * @return
 	 */
-	IPage<MessageRecordVO> getMessageRecordVosPage(Page page, @Param("query") MessageRecordDTO messageRecordDTO, @Param("insId") Integer insId, @Param("userId") Integer userId);
+	IPage<MessageRecordVO> getMessageRecordVosPage(Page page, @Param("query") MessageRecordDTO messageRecordDTO);
 
 	MessageRecordVO getById(@Param("messageId")Integer messageId);
 

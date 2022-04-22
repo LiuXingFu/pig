@@ -20,14 +20,17 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
 import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteInsOutlesUserService;
+import com.pig4cloud.pig.admin.api.feign.RemoteMessageRecordService;
 import com.pig4cloud.pig.admin.api.feign.RemoteNodeTemplateService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
@@ -47,6 +50,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.utils.FindNodeTemplateChildrenUtils;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
+import com.pig4cloud.pig.casee.vo.paifu.NodeMessageRecordVO;
 import com.pig4cloud.pig.common.core.constant.CaseeOrTargetTaskFlowConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.*;
@@ -66,6 +70,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -103,7 +108,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private BehaviorService BehaviorLiquiService;
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
-
+	@Autowired
+	private RemoteMessageRecordService messageRecordService;
 
 	private int sum = 0;
 
@@ -1631,6 +1637,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
 					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+					//此处还需修改
+					List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
+					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
+					messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
+					messageRecordDTO.setCreateTime(LocalDate.now());
+					messageRecordDTO.setMessageType(10000);
+					Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
+					messageRecordDTO.setMessageTitle("案号为"+casee.getCaseeNumber()+"的"+taskNode.getNodeName()+"任务已更新");
+					messageRecordDTO.setMessageContent("你好");
+					messageRecordDTO.setReceiverInsId(165);
+					messageRecordDTO.setReceiverOutlesId(180);
+
+					NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
+					BeanCopyUtil.copyBean(taskNode, nodeMessageRecordVO);
+					String json = JsonUtils.objectToJson(nodeMessageRecordVO);
+
+					messageRecordDTO.setTargetValue(json);
+					messageRecordDTOList.add(messageRecordDTO);
+
+					messageRecordService.batchSendMessageRecordOutPush(messageRecordDTOList, SecurityConstants.FROM);
+
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
 					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
