@@ -139,4 +139,8 @@ public class CaseeServiceImpl extends ServiceImpl<CaseeMapper, Casee> implements
 		}
 	}
 
+	@Override
+	public 	List<CaseeVO> queryByPaifuProjectId(Integer projectId){
+		return this.baseMapper.selectByPaifuProjectId(projectId);
+	}
 }

@@ -26,6 +26,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -155,12 +156,13 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectCaseeReService.save(projectCaseeRe);
 
 		// 保存项目状态变更记录表
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setStatusName("在办");
-		projectStatus.setUserName(projectPaifuSaveDTO.getUserNickName());
-		projectStatus.setType(1);
-		projectStatus.setSourceId(projectPaifu.getProjectId());
-		projectStatusService.save(projectStatus);
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(1000);
+		projectStatusSaveDTO.setStatusName("在办");
+		projectStatusSaveDTO.setProjectId(projectPaifu.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectPaifuSaveDTO.getTakeTime());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 
 		return save;
 	}
@@ -176,11 +178,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	public ProjectPaifuDetailVO queryProjectCaseeDetailList(Integer projectId){
 		ProjectPaifuDetailVO projectPaifuDetailVO = this.baseMapper.selectByProjectId(projectId);
-		List<ProjectSubjectReListVO> applicantList = this.baseMapper.selectProjectSubjectReList(projectId,0);
-		List<ProjectSubjectReListVO> executedList = this.baseMapper.selectProjectSubjectReList(projectId,1);
-		projectPaifuDetailVO.setApplicantList(applicantList);
-		projectPaifuDetailVO.setExecutedList(executedList);
-
+		projectPaifuDetailVO.setApplicantList(this.baseMapper.selectProjectSubjectReList(projectId,0));
+		projectPaifuDetailVO.setExecutedList(this.baseMapper.selectProjectSubjectReList(projectId,1));
+//		projectPaifuDetailVO.setCaseeList(caseeService.queryByPaifuProjectId(projectId));
 		return projectPaifuDetailVO;
 	}
 
@@ -443,6 +443,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectOutlesDealRe.setType(1);
 		projectOutlesDealRe.setProjectId(projectPaifu.getProjectId());
 		projectOutlesDealReService.save(projectOutlesDealRe);
+
+		// 保存项目状态变更记录表
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(1000);
+		projectStatusSaveDTO.setStatusName("在办");
+		projectStatusSaveDTO.setProjectId(projectPaifu.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectPaifuReceiptDTO.getTakeTime());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 		return projectCaseeRe.getProjectId();
 	}
 

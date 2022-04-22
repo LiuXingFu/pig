@@ -82,6 +82,7 @@ public class ReconciliatioMediationLiquiServiceImpl extends ServiceImpl<Reconcil
 		//修改项目状态为和解
 		ProjectModifyStatusDTO projectModifyStatusDTO=new ProjectModifyStatusDTO();
 		projectModifyStatusDTO.setProjectId(reconciliatioMediationDTO.getProjectId());
+		projectModifyStatusDTO.setChangeTime(reconciliatioMediationDTO.getReconciliatioMediationData());
 		projectModifyStatusDTO.setStatus(3000);
 		projectModifyStatusDTO.setStatusName("和解");
 		projectLiquiService.modifyStatusById(projectModifyStatusDTO);

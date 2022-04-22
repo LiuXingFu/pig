@@ -28,25 +28,37 @@ import java.time.LocalDate;
  * @date 2022-02-10 17:30:36
  */
 @Data
-public class ProjectModifyStatusDTO {
-
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
-
-    /**
-     * 项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)
-     */
-    @ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
-    private Integer status;
+public class ProjectStatusSaveDTO {
 
 	/**
-	 * 变更时间
+	 * 类型（1-项目 2-案件）
 	 */
-	@ApiModelProperty(value="变更时间")
-	private LocalDate changeTime;
+	@ApiModelProperty(value="类型（1-项目 2-案件）")
+	private Integer type;
+
+	/**
+	 * 状态值
+	 */
+	@ApiModelProperty(value="状态值")
+	private Integer statusVal;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
+
+	/**
+	 * 源id
+	 */
+	@ApiModelProperty(value="源id")
+	private Integer sourceId;
 
 	/**
 	 * 状态名称
@@ -61,9 +73,21 @@ public class ProjectModifyStatusDTO {
 	private String statusNameType;
 
 	/**
-	 * 说明
+	 * 变更时间
 	 */
-	@ApiModelProperty(value="说明")
+	@ApiModelProperty(value="变更时间")
+	private LocalDate changeTime;
+
+	/**
+	 * 描述
+	 */
+	@ApiModelProperty(value="描述")
 	private String describes;
+
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
 
 }

@@ -18,6 +18,12 @@ import java.util.List;
 public class CaseeLiquiDetailsVO extends CaseeLiqui {
 
 	/**
+	 * 程序id
+	 */
+	@ApiModelProperty(value="程序id")
+	private Integer targetId;
+
+	/**
 	 * 项目id
 	 */
 	@ApiModelProperty(value="项目id")

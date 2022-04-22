@@ -52,5 +52,11 @@ public interface CaseeService extends IService<Casee> {
 	 */
 	void configurationNodeTemplate(Casee casee, TargetAddDTO targetAddDTO, Project project , Integer templateId);
 
+	/**
+	 * 根据拍辅项目id查询清收移交案件记录
+	 * @param projectId
+	 * @return
+	 */
+	List<CaseeVO> queryByPaifuProjectId(Integer projectId);
 
 }

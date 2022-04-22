@@ -23,11 +23,13 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
+import com.pig4cloud.pig.casee.service.ProjectStatusService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +48,8 @@ import java.util.List;
 public class CaseeLiquiController {
 
 	private final CaseeLiquiService caseeLiquiService;
+	@Autowired
+	private ProjectStatusService projectStatusService;
 
 	/**
 	 * 新增案件表
@@ -265,26 +269,36 @@ public class CaseeLiquiController {
 
 	/**
 	 * 修改案件状态
-	 * @param caseeLiquiDTO
+	 * @param caseeLiquiModifyStatusDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "修改案件状态", notes = "修改案件状态")
 	@SysLog("修改案件状态" )
 	@PostMapping("/modifyCaseeStatusById")
-	public R modifyCaseeStatusById(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
-		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiDTO));
+	public R modifyCaseeStatusById(@RequestBody CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO) {
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiModifyStatusDTO));
 	}
 
 	/**
 	 * 案件实际执结
-	 * @param caseeLiquiDTO
+	 * @param caseeLiquiModifyStatusDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "案件实际执结", notes = "案件实际执结")
 	@SysLog("案件实际执结" )
 	@PostMapping("/actualExecution")
-	public R actualExecution(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
-		return R.ok(this.caseeLiquiService.actualExecution(caseeLiquiDTO));
+	public R actualExecution(@RequestBody CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO) {
+		// 保存项目状态变更记录表
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(4000);
+		projectStatusSaveDTO.setStatusName("结案");
+		projectStatusSaveDTO.setStatusNameType(caseeLiquiModifyStatusDTO.getStatusNameType());
+		projectStatusSaveDTO.setProjectId(caseeLiquiModifyStatusDTO.getProjectId());
+		projectStatusSaveDTO.setChangeTime(caseeLiquiModifyStatusDTO.getChangeTime());
+		projectStatusSaveDTO.setDescribes(caseeLiquiModifyStatusDTO.getDescribes());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiModifyStatusDTO));
 	}
 
 	/**

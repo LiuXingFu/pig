@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.vo.paifu;
 
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
+import com.pig4cloud.pig.casee.vo.CaseeVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -84,4 +85,10 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	 */
 	@ApiModelProperty(value="标的物列表")
 	private String assetsList;
+
+	/**
+	 * 案件集合
+	 */
+	@ApiModelProperty(value="案件集合")
+	private List<CaseeVO> caseeList;
 }

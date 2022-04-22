@@ -1,10 +1,14 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
+import com.pig4cloud.pig.casee.dto.CaseeLiquiModifyStatusDTO;
 import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSBQ.LiQui_SSBQ_SSBQBQJG_SSBQBQJG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +26,14 @@ public class LIQUI_SSBQ_SSBQBQJG_SSBQBQJG_NODEHandler extends TaskNodeHandler {
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
-		//根据案件id结案
-		caseeLiquiService.caseeModify(taskNode.getCaseeId(), 3);
+		LiQui_SSBQ_SSBQBQJG_SSBQBQJG liQui_ssbq_ssbqbqjg_ssbqbqjg = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSBQ_SSBQBQJG_SSBQBQJG.class);
+
+		// 更新案件状态
+		CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO = new CaseeLiquiModifyStatusDTO();
+		caseeLiquiModifyStatusDTO.setStatus(3);
+		caseeLiquiModifyStatusDTO.setProjectId(taskNode.getProjectId());
+		caseeLiquiModifyStatusDTO.setCaseeId(taskNode.getCaseeId());
+		caseeLiquiModifyStatusDTO.setChangeTime(liQui_ssbq_ssbqbqjg_ssbqbqjg.getCaseClosedTime());
+		caseeLiquiService.modifyCaseeStatusById(caseeLiquiModifyStatusDTO);
 	}
 }
