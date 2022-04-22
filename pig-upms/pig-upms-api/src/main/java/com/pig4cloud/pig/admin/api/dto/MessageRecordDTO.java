@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -27,7 +28,7 @@ public class MessageRecordDTO  {
 	 * 创建时间
 	 */
 	@TableField(fill = FieldFill.INSERT)
-	private LocalDateTime createTime;
+	private LocalDate createTime;
 
 	/**
 	 * 消息类型(0-普通消息 100-任务消息 200-拍辅消息 300-清收消息 400-合作消息)
@@ -72,15 +73,30 @@ public class MessageRecordDTO  {
 	@ApiModelProperty(value="状态 未读-0 已读-200")
 	private Integer readFlag;
 
-	@JsonFormat(timezone = "GMT+8" ,pattern="yyyy-MM-dd HH:mm:ss")
+//	@JsonFormat(timezone = "GMT+8" ,pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDate beginDate;//开始时间
 
-	private LocalDateTime beginDate;//开始时间
-
-	@JsonFormat(timezone = "GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime endDate;//结束时间
+//	@JsonFormat(timezone = "GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDate endDate;//结束时间
 
 
 	//分页对象
 	private Page page;
+
+	/**
+	 * 当前机构id
+	 */
+	private Integer insId;
+
+	/**
+	 * 当前网点id
+	 */
+	private Integer outlesId;
+
+	/**
+	 * 当用户id
+	 */
+	private Integer userId;
+
 }
 

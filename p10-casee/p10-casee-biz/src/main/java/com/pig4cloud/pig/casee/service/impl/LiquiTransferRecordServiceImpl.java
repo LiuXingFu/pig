@@ -102,21 +102,21 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		for (LiquiTransferRecordVO record : liquiTransferRecordVOIPage.getRecords()) {
 
 			//根据案件id与type查询案件执行人与申请人
-			String executorSubjectName = getExecutorSubjectName(record.getCaseeId());
-
-			record.setExecutorSubjectName(executorSubjectName);
-
-			String applicantSubjectName = getApplicantSubjectName(record.getCaseeId());
-
-			record.setApplicantSubjectName(applicantSubjectName);
+//			String executorSubjectName = getExecutorSubjectName(record.getCaseeId());
+//
+//			record.setExecutorSubjectName(executorSubjectName);
+//
+//			String applicantSubjectName = getApplicantSubjectName(record.getCaseeId());
+//
+//			record.setApplicantSubjectName(applicantSubjectName);
 
 			int count = this.count(new LambdaQueryWrapper<LiquiTransferRecord>()
 					.eq(LiquiTransferRecord::getProjectId, record.getProjectId())
 					.eq(LiquiTransferRecord::getCaseeId, record.getCaseeId())
 					.eq(LiquiTransferRecord::getNodeId, record.getNodeId())
-					.eq(LiquiTransferRecord::getStatus, 0));
+					.ne(LiquiTransferRecord::getStatus, 2));
 
-			record.setEdit(count > 1);
+			record.setEdit(count < 1);
 
 			liquiTransferRecordVORecords.add(record);
 
@@ -252,6 +252,10 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 			//资产处置移交
 			EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ entityZX_stzx_cczxzcczyj_cczxzcczyj = JsonUtils.jsonToPojo(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getFormData(), EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.class);
 
+			if (Objects.isNull(entityZX_stzx_cczxzcczyj_cczxzcczyj)) {
+				entityZX_stzx_cczxzcczyj_cczxzcczyj = new EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ();
+			}
+
 			entityZX_stzx_cczxzcczyj_cczxzcczyj.setAssetsReDTOList(updateLiquiTransferRecordDTO.getAssetsReDTOList());
 
 			entityZX_stzx_cczxzcczyj_cczxzcczyj.setApplicationSubmissionTime(updateLiquiTransferRecordDTO.getApplicationSubmissionTime());
@@ -264,6 +268,8 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 			entityZX_stzx_cczxzcczyj_cczxzcczyj.setEntrustedOutlesId(updateLiquiTransferRecordDTO.getEntrustedOutlesId());
 
+			JsonUtils.objectToJsonObject(entityZX_stzx_cczxzcczyj_cczxzcczyj);
+
 			if (entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getStatus() != 101) {
 				//添加任务办理记录
 				addCaseeHandlingRecords(assetsReDTO, target, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
@@ -272,6 +278,8 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 			entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(101);
 
 			entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setSubmissionStatus(0);
+
+			entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setFormData(JsonUtils.objectToJsonObject(entityZX_stzx_cczxzcczyj_cczxzcczyj));
 
 			taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
 		}

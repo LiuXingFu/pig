@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -27,4 +28,6 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	Integer saveAssetsRe(AssetsRePaifuSaveDTO assetsRePaifuSaveDTO);
+
+	int deleteAssetsTransfer(DelAssetsTransferDTO delAssetsTransferDTO);
 }

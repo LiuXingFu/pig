@@ -299,19 +299,4 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryByAssetsId(page,assetsId));
 	}
 
-	/**
-	 * 删除移交财产相关信息
-	 * @return
-	 */
-	@ApiOperation(value = "删除移交财产相关信息", notes = "删除移交财产相关信息")
-	@DeleteMapping("/deleteAssetsTransfer")
-	public R deleteAssetsTransfer(@RequestBody DelAssetsTransferDTO delAssetsTransferDTO) {
-		int i = assetsReLiquiService.deleteAssetsTransfer(delAssetsTransferDTO);
-		if (i > 0) {
-			return R.ok("删除移交信息成功！");
-		} else {
-			return R.failed("删除移交信息失败！");
-		}
-	}
-
 }

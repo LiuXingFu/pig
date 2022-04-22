@@ -214,6 +214,4 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	IPage<AssetsReLiquiProjectVO> queryByAssetsId(Page page,Integer assetsId);
 
 	Integer updateAssetsRe(Integer projectId,Integer newCaseeId);
-
-	int deleteAssetsTransfer(DelAssetsTransferDTO delAssetsTransferDTO);
 }

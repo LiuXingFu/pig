@@ -44,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -492,7 +493,7 @@ public class CaseeBizLiquiServiceImpl extends ServiceImpl<CaseeBizLiquiMapper, C
 			String messageContent = "办理的案号为"+companyCode+"，案件状态申请"+statusName+"。"+explain+"请知悉！";
 			MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
 			messageRecordDTO.setCreateBy(pigUser.getId());
-			messageRecordDTO.setCreateTime(LocalDateTime.now());
+			messageRecordDTO.setCreateTime(LocalDate.now());
 			// 300=清收消息
 			messageRecordDTO.setMessageType(300);
 			messageRecordDTO.setMessageTitle(messageTitle);

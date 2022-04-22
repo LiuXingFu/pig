@@ -81,21 +81,26 @@
 		LEFT JOIN p10_outles outles_receiver ON outles_receiver.outles_id=messageRecord.receiver_outles_id
 
 		<where>
-			`messageRecord`.del_flag = '0' and (`messageRecord`.receiver_ins_id=#{insId} or
-			`messageRecord`.sender_ins_id=#{insId})
-			<if test="userId != null">
-				and `messageRecord`.receiver_user_id = #{userId}
+			`messageRecord`.del_flag = '0'
+			<if test="query.insId != null and query.insId != 0">
+				and (`messageRecord`.receiver_ins_id=#{query.insId} or `messageRecord`.sender_ins_id=#{query.insId})
+			</if>
+			<if test="query.userId != null and query.insId != 0">
+				and `messageRecord`.receiver_user_id = #{query.userId}
 			</if>
 
 			<if test="query.messageTitle != null and query.messageTitle != ''">
 				and `messageRecord`.message_title LIKE CONCAT('%',#{query.messageTitle},'%')
 			</if>
+
 			<if test="query.messageType != null and query.messageType != ''">
 				and `messageRecord`.message_type = #{query.messageType}
 			</if>
+
 			<if test="query.readFlag != null and query.readFlag != -1  ">
 				and `messageRecord`.read_flag = #{query.readFlag}
 			</if>
+
 			<if test="query.senderUserName != null and query.senderUserName != ''">
 				and (user_sender.nick_name LIKE CONCAT('%',#{query.senderUserName},'%') or
 				outles_sender.outles_name LIKE CONCAT('%',#{query.senderUserName},'%') )
