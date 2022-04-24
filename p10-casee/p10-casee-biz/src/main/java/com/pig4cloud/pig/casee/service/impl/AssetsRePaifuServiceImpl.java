@@ -9,9 +9,11 @@ import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper;
@@ -54,6 +56,8 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
 	@Autowired
 	AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
+	@Autowired
+	ProjectPaifuService projectPaifuService;
 
 	@Override
 	public IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
@@ -118,6 +122,21 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 			address.setType(4);
 			address.setUserId(assets.getAssetsId());
 			addressService.saveAddress(address,SecurityConstants.FROM);
+		}
+
+		//添加任务数据以及程序信息
+		Project project = projectPaifuService.getById(assetsRePaifuSaveDTO.getProjectId());
+		TargetAddDTO targetAddDTO = new TargetAddDTO();
+		targetAddDTO.setCaseeId(assetsRePaifuSaveDTO.getCaseeId());
+		targetAddDTO.setProcedureNature(6060);
+		targetAddDTO.setOutlesId(project.getOutlesId());
+		targetAddDTO.setProjectId(assetsRePaifuSaveDTO.getProjectId());
+		targetAddDTO.setGoalId(assets.getAssetsId());
+		targetAddDTO.setGoalType(20001);
+		try {
+			targetService.saveTargetAddDTO(targetAddDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return save;
 	}
