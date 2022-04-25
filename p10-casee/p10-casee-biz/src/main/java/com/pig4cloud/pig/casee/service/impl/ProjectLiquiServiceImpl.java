@@ -1167,5 +1167,18 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return this.baseMapper.selectStatisticsReminder(page, expirationReminderDTO, insOutlesDTO);
 	}
 
+	@Override
+	public	Integer modifyProjectAmount(Integer projectId){
+		ProjectLiqui projectLiqui = this.getByProjectId(projectId);
+		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		// 统计产生费用总金额
+		BigDecimal projectAmount = expenseRecordService.totalAmountByProjectId(projectId);
+		projectLiQuiDetail.setProjectAmount(projectAmount);
+		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+
+		return this.baseMapper.updateById(projectLiqui);
+	}
+
 
 }
