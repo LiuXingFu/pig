@@ -21,10 +21,13 @@ import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -48,6 +51,12 @@ public class RemoteAddressServiceFallbackImpl implements RemoteAddressService {
 	@Override
 	public R saveOrUpdateById(AddressDTO addressDTO, String from) {
 		log.error("添加或修改地址失败", cause);
+		return null;
+	}
+
+	@Override
+	public R saveOrUpdate(@RequestBody Address address, @RequestHeader(SecurityConstants.FROM) String from){
+		log.error("根据id批量新增或修改地址表", cause);
 		return null;
 	}
 

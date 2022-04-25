@@ -1,6 +1,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,6 +11,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -18,6 +20,7 @@ import com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -155,5 +158,48 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 				.eq(AssetsLiquiTransferRecordRe::getAssetsReId, delAssetsTransferDTO.getAssetsReDTO().getAssetsReId()));
 
 		return delete+=1;
+	}
+
+	@Override
+	public AssetsRePaifuDetailVO getAssetsReById(Integer assetsReId){
+		return this.baseMapper.selectByAssetsReId(assetsReId);
+	}
+
+	@Override
+	@Transactional
+	public 	Integer modifyByAssetsReId(AssetsRePaifuModifyDTO assetsRePaifuModifyDTO){
+		AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
+		BeanCopyUtil.copyBean(assetsRePaifuModifyDTO,assetsRePaifu);
+		if(assetsRePaifuModifyDTO.getAssetsRePaifuDetail().getMortgagee()==0){
+			assetsRePaifu.setAssetsSource(1);
+		}else{
+			assetsRePaifu.setAssetsSource(2);
+		}
+		Integer modify = this.baseMapper.updateById(assetsRePaifu);
+
+		QueryWrapper<AssetsReSubject> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsRePaifuModifyDTO.getAssetsReId());
+		assetsReSubjectService.remove(queryWrapper);
+
+		List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+		for(Integer subjectId :assetsRePaifuModifyDTO.getSubjectIdList()){
+			AssetsReSubject assetsReSubject = new AssetsReSubject();
+			assetsReSubject.setSubjectId(subjectId);
+			assetsReSubject.setAssetsReId(assetsRePaifuModifyDTO.getAssetsReId());
+			assetsReSubjects.add(assetsReSubject);
+		}
+		assetsReSubjectService.saveBatch(assetsReSubjects);
+
+		Assets assets = new Assets();
+		BeanCopyUtil.copyBean(assetsRePaifuModifyDTO,assets);
+		assetsService.updateById(assets);
+
+		Address address = new Address();
+		BeanCopyUtil.copyBean(assetsRePaifuModifyDTO,address);
+		address.setUserId(assetsRePaifuModifyDTO.getAssetsId());
+		address.setType(4);
+		addressService.saveOrUpdate(address,SecurityConstants.FROM);
+
+		return modify;
 	}
 }

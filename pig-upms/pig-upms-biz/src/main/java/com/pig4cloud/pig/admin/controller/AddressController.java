@@ -130,6 +130,19 @@ public class AddressController {
 	}
 
 	/**
+	 * 根据id批量新增或修改地址表
+	 *
+	 * @param address 地址表
+	 * @return R
+	 */
+	@ApiOperation(value = "新增或修改地址表", notes = "新增或修改地址表")
+	@SysLog("新增或修改地址表")
+	@PostMapping("/saveOrUpdate")
+	public R saveOrUpdate(@RequestBody Address address) {
+		return R.ok(addressService.saveOrUpdate(address));
+	}
+
+	/**
 	 * 通过id删除地址表
 	 *
 	 * @param addressId id

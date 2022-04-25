@@ -69,6 +69,12 @@ public class ProjectPaifuSaveDTO {
 	private String caseeNumber;
 
 	/**
+	 * 立案日期
+	 */
+	@ApiModelProperty(value="立案日期")
+	private LocalDate startTime;
+
+	/**
 	 * 承办法院id
 	 */
 	@ApiModelProperty(value="承办法院id")

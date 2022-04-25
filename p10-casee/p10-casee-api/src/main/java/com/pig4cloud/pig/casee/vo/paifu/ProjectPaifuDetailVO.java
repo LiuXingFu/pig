@@ -21,6 +21,7 @@ import com.pig4cloud.pig.casee.vo.CaseeVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -55,6 +56,12 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	 */
 	@ApiModelProperty(value="案号")
 	private String caseeNumber;
+
+	/**
+	 * 立案日期
+	 */
+	@ApiModelProperty(value="立案日期")
+	private LocalDate startTime;
 
 	/**
 	 * 法院名称

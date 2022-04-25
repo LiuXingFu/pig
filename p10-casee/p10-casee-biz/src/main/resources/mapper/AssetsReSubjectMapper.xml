@@ -34,4 +34,9 @@
 		left join p10_subject on p10_subject.subject_id = p10_assets_re_subject.subject_id
 		where p10_assets_re_subject.assets_re_id = #{assetsReId}
 	</select>
+
+	<select id="selectByAssetsReId" resultType="java.lang.Integer">
+		select p10_assets_re_subject.subject_id from p10_assets_re_subject
+		where p10_assets_re_subject.assets_re_id = #{assetsReId}
+	</select>
 </mapper>
