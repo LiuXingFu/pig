@@ -26,6 +26,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 拍卖记录表
@@ -35,6 +36,24 @@ import java.time.LocalDate;
  */
 @Data
 public class AuctionRecordSaveDTO {
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
+
+	/**
+	 * 项目案件财产关联id集合
+	 */
+	@ApiModelProperty(value="项目案件财产关联id集合")
+	private List<Integer> assetsReIdList;
 
     /**
      * 拍卖表id
@@ -53,18 +72,6 @@ public class AuctionRecordSaveDTO {
      */
     @ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
     private String type;
-
-    /**
-     * 拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
-     */
-    @ApiModelProperty(value="拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
-    private Integer status;
-
-    /**
-     * 拍卖公告
-     */
-    @ApiModelProperty(value="拍卖公告")
-    private String auctionAnnouncement;
 
     /**
      * 公告发布时间

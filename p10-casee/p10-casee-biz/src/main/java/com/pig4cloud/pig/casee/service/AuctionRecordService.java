@@ -28,6 +28,6 @@ import com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecord;
  */
 public interface AuctionRecordService extends IService<AuctionRecord> {
 
-	public Integer saveAuctionRecord();
+//	public Integer saveAuctionRecord();
 
 }
