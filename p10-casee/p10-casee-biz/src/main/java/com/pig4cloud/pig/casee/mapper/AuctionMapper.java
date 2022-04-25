@@ -18,7 +18,7 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.paifuentity.Auction;
+import com.pig4cloud.pig.casee.entity.Auction;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

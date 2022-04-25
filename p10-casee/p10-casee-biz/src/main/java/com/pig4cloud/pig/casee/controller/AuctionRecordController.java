@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecord;
+import com.pig4cloud.pig.casee.entity.AuctionRecord;
 import com.pig4cloud.pig.casee.service.AuctionRecordService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;

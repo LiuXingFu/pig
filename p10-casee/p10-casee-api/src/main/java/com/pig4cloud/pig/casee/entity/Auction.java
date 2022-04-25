@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -25,35 +25,52 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 拍卖与项目案件财产关联表
+ * 拍卖表
  *
  * @author pig code generator
  * @date 2022-04-25 18:54:58
  */
 @Data
-@TableName("p10_auction_assets_re")
+@TableName("p10_auction")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖与项目案件财产关联表")
-public class AuctionAssetsRe extends BaseEntity {
+@ApiModel(value = "拍卖表")
+public class Auction extends BaseEntity {
 
     /**
-     * 拍卖财产关联表
+     * 拍卖表
      */
     @TableId
-    @ApiModelProperty(value="拍卖财产关联表")
-    private Integer auctionAssetsRe;
-
-    /**
-     * 拍卖id
-     */
-    @ApiModelProperty(value="拍卖id")
+    @ApiModelProperty(value="拍卖表")
     private Integer auctionId;
 
     /**
-     * 项目案件财产关联id
+     * 是否联合拍卖(1:否，2-是)
      */
-    @ApiModelProperty(value="项目案件财产关联id")
-    private Integer assetsRe;
+    @ApiModelProperty(value="是否联合拍卖(1:否，2-是)")
+    private Integer jointAuction;
 
+    /**
+     * 项目id
+     */
+    @ApiModelProperty(value="项目id")
+    private Integer projectId;
+
+    /**
+     * 案件id
+     */
+    @ApiModelProperty(value="案件id")
+    private Integer caseeId;
+
+	/**
+	 * 当前拍卖类型（100-一拍，200-二拍，300-变卖）
+	 */
+	@ApiModelProperty(value="当前拍卖类型（100-一拍，200-二拍，300-变卖）")
+	private String auctionType;
+
+	/**
+	 * 当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
+	 */
+	@ApiModelProperty(value="当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
+	private Integer auctionStatus;
 
 }

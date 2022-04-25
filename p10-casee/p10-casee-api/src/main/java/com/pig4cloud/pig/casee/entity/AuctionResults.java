@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,43 +23,69 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
- * 拍卖表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:58
+ * @date 2022-04-25 20:59:35
  */
 @Data
-@TableName("p10_auction")
+@TableName("p10_auction_results")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖表")
-public class Auction extends BaseEntity {
+@ApiModel(value = "拍卖结果表")
+public class AuctionResults extends BaseEntity {
 
     /**
-     * 拍卖表
+     * 拍卖结果id
      */
     @TableId
-    @ApiModelProperty(value="拍卖表")
-    private Integer auctionId;
+    @ApiModelProperty(value="拍卖结果id")
+    private Integer auctionResultsId;
 
     /**
-     * 是否联合拍卖(1:否，2-是)
+     * 拍卖记录id
      */
-    @ApiModelProperty(value="是否联合拍卖(1:否，2-是)")
-    private Integer jointAuction;
+    @ApiModelProperty(value="拍卖记录id")
+    private Integer auctionRecordId;
 
     /**
-     * 项目id
+     * 结果时间
      */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
+    @ApiModelProperty(value="结果时间")
+    private LocalDate dealTime;
 
     /**
-     * 案件id
+     * 成交价格
      */
-    @ApiModelProperty(value="案件id")
-    private Integer caseeId;
+    @ApiModelProperty(value="成交价格")
+    private BigDecimal dealPrice;
+
+    /**
+     * 参拍人数
+     */
+    @ApiModelProperty(value="参拍人数")
+    private Integer auctionPeopleNumber;
+
+    /**
+     * 买受人
+     */
+    @ApiModelProperty(value="买受人")
+    private String buyer;
+
+    /**
+     * 附件
+     */
+    @ApiModelProperty(value="附件")
+    private String appendix;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value="备注")
+    private String remark;
 
 
 }

@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,27 +23,27 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 /**
- * 拍卖成交表
+ * 拍卖记录状态表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:57
+ * @date 2022-04-25 18:54:58
  */
 @Data
-@TableName("p10_auction_deal")
+@TableName("p10_auction_record_status")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖成交表")
-public class AuctionDeal extends BaseEntity {
+@ApiModel(value = "拍卖记录状态表")
+public class AuctionRecordStatus extends BaseEntity {
 
     /**
-     * 拍卖成交id
+     * 拍卖记录状态记录表
      */
     @TableId
-    @ApiModelProperty(value="拍卖成交id")
-    private Integer auctionDeal;
+    @ApiModelProperty(value="拍卖记录状态记录表")
+    private Integer auctionRecordStatusId;
 
     /**
      * 拍卖记录id
@@ -52,40 +52,16 @@ public class AuctionDeal extends BaseEntity {
     private Integer auctionRecordId;
 
     /**
-     * 成交时间
+     * 改变时间
      */
-    @ApiModelProperty(value="成交时间")
-    private LocalDate dealTime;
+    @ApiModelProperty(value="改变时间")
+    private LocalDate changeTime;
 
     /**
-     * 成交价格
+     * 状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
      */
-    @ApiModelProperty(value="成交价格")
-    private BigDecimal dealPrice;
-
-    /**
-     * 参拍人数
-     */
-    @ApiModelProperty(value="参拍人数")
-    private Integer auctionPeopleNumber;
-
-    /**
-     * 买受人
-     */
-    @ApiModelProperty(value="买受人")
-    private String buyer;
-
-    /**
-     * 附件
-     */
-    @ApiModelProperty(value="附件")
-    private String appendix;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
+    @ApiModelProperty(value="状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
+    private Integer status;
 
 
 }

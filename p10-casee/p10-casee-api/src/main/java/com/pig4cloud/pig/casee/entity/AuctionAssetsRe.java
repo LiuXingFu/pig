@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,44 +24,36 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
-
 /**
- * 拍卖记录状态表
+ * 拍卖与项目案件财产关联表
  *
  * @author pig code generator
  * @date 2022-04-25 18:54:58
  */
 @Data
-@TableName("p10_auction_record_status")
+@TableName("p10_auction_assets_re")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖记录状态表")
-public class AuctionRecordStatus extends BaseEntity {
+@ApiModel(value = "拍卖与项目案件财产关联表")
+public class AuctionAssetsRe extends BaseEntity {
 
     /**
-     * 拍卖记录状态记录表
+     * 拍卖财产关联表
      */
     @TableId
-    @ApiModelProperty(value="拍卖记录状态记录表")
-    private Integer auctionRecordStatus;
+    @ApiModelProperty(value="拍卖财产关联表")
+    private Integer auctionAssetsReId;
 
     /**
-     * 拍卖记录id
+     * 拍卖id
      */
-    @ApiModelProperty(value="拍卖记录id")
-    private Integer auctionRecordId;
+    @ApiModelProperty(value="拍卖id")
+    private Integer auctionId;
 
     /**
-     * 改变时间
+     * 项目案件财产关联id
      */
-    @ApiModelProperty(value="改变时间")
-    private LocalDate changeTime;
-
-    /**
-     * 状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
-     */
-    @ApiModelProperty(value="状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
-    private Integer status;
+    @ApiModelProperty(value="项目案件财产关联id")
+    private Integer assetsReId;
 
 
 }

@@ -23,8 +23,8 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionRecordStatusMapper">
 
-  <resultMap id="auctionRecordStatusMap" type="com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecordStatus">
-    <id property="auctionRecordStatus" column="auction_record_status"/>
+  <resultMap id="auctionRecordStatusMap" type="com.pig4cloud.pig.casee.entity.AuctionRecordStatus">
+    <id property="auctionRecordStatusId" column="auction_record_status_id"/>
     <result property="auctionRecordId" column="auction_record_id"/>
     <result property="changeTime" column="change_time"/>
     <result property="status" column="status"/>

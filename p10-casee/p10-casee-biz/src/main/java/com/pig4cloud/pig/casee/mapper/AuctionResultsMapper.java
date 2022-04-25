@@ -18,16 +18,16 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionDeal;
+import com.pig4cloud.pig.casee.entity.AuctionResults;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 拍卖成交表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:57
+ * @date 2022-04-25 20:59:35
  */
 @Mapper
-public interface AuctionDealMapper extends BaseMapper<AuctionDeal> {
+public interface AuctionResultsMapper extends BaseMapper<AuctionResults> {
 
 }

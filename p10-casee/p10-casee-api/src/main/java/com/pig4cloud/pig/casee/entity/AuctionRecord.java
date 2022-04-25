@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -55,19 +55,19 @@ public class AuctionRecord extends BaseEntity {
      * 标题
      */
     @ApiModelProperty(value="标题")
-    private String title;
+    private String auctionTitle;
 
     /**
      * 拍卖类型（100-一拍，200-二拍，300-变卖）
      */
     @ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
-    private String type;
+    private String auctionType;
 
     /**
      * 拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
      */
     @ApiModelProperty(value="拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
-    private Integer status;
+    private Integer auctionStatus;
 
     /**
      * 拍卖公告
@@ -122,6 +122,12 @@ public class AuctionRecord extends BaseEntity {
      */
     @ApiModelProperty(value="备注")
     private String remark;
+
+	/**
+	 * 详情
+	 */
+	@ApiModelProperty(value="详情")
+	private String auctionRecordDetail;
 
 
 }

@@ -61,17 +61,17 @@ public class AuctionRecordSaveDTO {
     @ApiModelProperty(value="拍卖表id")
     private Integer auctionId;
 
-    /**
-     * 标题
-     */
-    @ApiModelProperty(value="标题")
-    private String title;
+	/**
+	 * 标题
+	 */
+	@ApiModelProperty(value="标题")
+	private String auctionTitle;
 
-    /**
-     * 拍卖类型（100-一拍，200-二拍，300-变卖）
-     */
-    @ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
-    private String type;
+	/**
+	 * 拍卖类型（100-一拍，200-二拍，300-变卖）
+	 */
+	@ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
+	private String auctionType;
 
     /**
      * 公告发布时间

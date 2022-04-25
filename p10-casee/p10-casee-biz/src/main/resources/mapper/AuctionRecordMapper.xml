@@ -23,16 +23,16 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionRecordMapper">
 
-  <resultMap id="auctionRecordMap" type="com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecord">
+  <resultMap id="auctionRecordMap" type="com.pig4cloud.pig.casee.entity.AuctionRecord">
     <id property="auctionRecordId" column="auction_record_id"/>
     <result property="createTime" column="create_time"/>
     <result property="createBy" column="create_by"/>
     <result property="updateTime" column="update_time"/>
     <result property="updateBy" column="update_by"/>
     <result property="auctionId" column="auction_id"/>
-    <result property="title" column="title"/>
-    <result property="type" column="type"/>
-    <result property="status" column="status"/>
+    <result property="auctionTitle" column="auction_title"/>
+    <result property="auctionType" column="auction_type"/>
+    <result property="auctionStatus" column="auction_status"/>
     <result property="auctionAnnouncement" column="auction_announcement"/>
     <result property="announcementStartTime" column="announcement_start_time"/>
     <result property="auctionStartTime" column="auction_start_time"/>

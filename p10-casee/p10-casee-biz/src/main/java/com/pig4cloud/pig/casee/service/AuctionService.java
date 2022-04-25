@@ -18,7 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.paifuentity.Auction;
+import com.pig4cloud.pig.casee.entity.Auction;
 
 /**
  * 拍卖表

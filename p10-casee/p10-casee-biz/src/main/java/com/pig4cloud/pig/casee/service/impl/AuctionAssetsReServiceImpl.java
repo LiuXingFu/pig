@@ -17,7 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionAssetsRe;
+import com.pig4cloud.pig.casee.entity.AuctionAssetsRe;
 import com.pig4cloud.pig.casee.mapper.AuctionAssetsReMapper;
 import com.pig4cloud.pig.casee.service.AuctionAssetsReService;
 import org.springframework.stereotype.Service;
