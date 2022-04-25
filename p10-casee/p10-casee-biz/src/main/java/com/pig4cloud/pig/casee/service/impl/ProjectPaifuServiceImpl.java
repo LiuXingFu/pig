@@ -27,6 +27,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -79,6 +80,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private AssetsReSubjectService assetsReSubjectService;
 	@Autowired
 	private RemoteRelationshipAuthenticateService relationshipAuthenticateService;
+	@Autowired
+	private TargetService targetService;
 
 	@Override
 	@Transactional
@@ -421,6 +424,21 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
 			paifuAssetsRe.setAssetsReDetail(assetsRe.getAssetsReDetail());
 			assetsReService.save(paifuAssetsRe);
+
+			//添加任务数据以及程序信息
+			TargetAddDTO targetAddDTO = new TargetAddDTO();
+			targetAddDTO.setCaseeId(assetsRe.getCaseeId());
+			targetAddDTO.setProcedureNature(6060);
+			targetAddDTO.setOutlesId(projectPaifu.getOutlesId());
+			targetAddDTO.setProjectId(projectPaifu.getProjectId());
+			targetAddDTO.setGoalId(assetsRe.getAssetsId());
+			targetAddDTO.setGoalType(20001);
+			try {
+				targetService.saveTargetAddDTO(targetAddDTO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			// 查询财产主体关联
 			QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
 			assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsLiquiTransferRecordRe.getAssetsReId());

@@ -149,8 +149,8 @@ public class TaskNodeController {
 	 */
 	@ApiOperation(value = "根据案件id,程序性质查询模板数据", notes = "根据案件id,程序性质查询模板数据")
 	@GetMapping("/queryNodeTemplateByCaseeId")
-	public R queryNodeTemplateByCaseeId(Integer caseeId,Integer procedureNature,@RequestParam(value = "id",required = false) Integer id) {
-		return R.ok(taskNodeService.queryNodeTemplateByCaseeId(caseeId,procedureNature,id));
+	public R queryNodeTemplateByCaseeId(Integer projectId,Integer caseeId,Integer procedureNature,@RequestParam(value = "id",required = false) Integer id) {
+		return R.ok(taskNodeService.queryNodeTemplateByCaseeId(projectId,caseeId,procedureNature,id));
 	}
 
 	/**

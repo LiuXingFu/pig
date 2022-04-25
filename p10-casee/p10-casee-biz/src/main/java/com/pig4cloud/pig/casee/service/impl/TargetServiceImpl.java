@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Target;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu;
 import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX;
 import com.pig4cloud.pig.casee.entity.project.fundingzxprocedure.FundingZX;
@@ -199,8 +200,8 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	}
 
 	@Override
-	public List<TaskNodeVO> getTarget(Integer caseeId, Integer procedureNature,Integer id) {
-		return this.baseMapper.getTarget(caseeId,procedureNature,id);
+	public List<TaskNodeVO> getTarget(Integer projectId,Integer caseeId, Integer procedureNature,Integer id) {
+		return this.baseMapper.getTarget(projectId,caseeId,procedureNature,id);
 	}
 
 	/**
@@ -259,7 +260,8 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 				jsonObject= net.sf.json.JSONObject.fromObject(beIllegal);
 				break;
 			case 6060:
-
+				PaiFu paiFu=new PaiFu();
+				jsonObject= net.sf.json.JSONObject.fromObject(paiFu);
 				break;
 			case 7070:
 				LiQuiLX liQuiLX=new LiQuiLX();

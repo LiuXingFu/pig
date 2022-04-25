@@ -57,6 +57,6 @@ public interface TargetMapper extends BaseMapper<Target> {
 
 	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO, Integer insId, Integer outelsId);
 
-	List<TaskNodeVO> getTarget(@Param("caseeId")Integer caseeId, @Param("procedureNature")Integer procedureNature,@Param("id")Integer id);
+	List<TaskNodeVO> getTarget(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId, @Param("procedureNature")Integer procedureNature,@Param("id")Integer id);
 
 }
