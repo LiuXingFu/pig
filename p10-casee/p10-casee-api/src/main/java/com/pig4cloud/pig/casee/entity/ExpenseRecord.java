@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
@@ -58,9 +60,9 @@ public class ExpenseRecord extends BaseEntity {
     private Integer projectId;
 
     /**
-     * 费用类型(10001-本金/利息 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-调解结果 30001-移交金额)
+     * 费用类型(10001-本金 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-调解结果 30001-利息)
      */
-    @ApiModelProperty(value="费用类型(10001-本金/利息 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-调解结果 30001-移交金额)")
+    @ApiModelProperty(value="费用类型(10001-本金 10002-保全费 10003-一审诉讼费 10004-二审诉讼费 10005-首次执行费 10006-定价费 10007-拍辅费 10008-代理费 10009-其它费用 20001-调解结果 30001-利息)")
     private Integer costType;
 
     /**
@@ -85,6 +87,7 @@ public class ExpenseRecord extends BaseEntity {
      * 案件id
      */
     @ApiModelProperty(value="案件id")
+	@TableField(updateStrategy = FieldStrategy.IGNORED)
     private Integer caseeId;
 
     /**

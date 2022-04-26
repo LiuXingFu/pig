@@ -116,6 +116,10 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		}
 
 		for (PaymentRecordAddDTO paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
+			paymentRecord.setCaseeId(paymentRecordDTO.getCaseeId());
+			paymentRecord.setCaseeNumber(paymentRecordDTO.getCaseeNumber());
+			paymentRecord.setProjectId(paymentRecordDTO.getProjectId());
+			paymentRecord.setCompanyCode(paymentRecordDTO.getCompanyCode());
 			paymentRecord.setFatherId(paymentRecordDTO.getPaymentRecordId());
 			paymentRecord.setPaymentDate(paymentRecordDTO.getPaymentDate());
 			paymentRecord.setPaymentType(paymentRecordDTO.getPaymentType());
@@ -133,7 +137,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 			//修改明细记录状态
 			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());
-			if (expenseRecord.getCostAmount()==paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount())){
+			if (expenseRecord.getCostAmount().equals(paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount()))){
 				expenseRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
 				expenseRecord.setStatus(1);
 				expenseRecordService.updateById(expenseRecord);

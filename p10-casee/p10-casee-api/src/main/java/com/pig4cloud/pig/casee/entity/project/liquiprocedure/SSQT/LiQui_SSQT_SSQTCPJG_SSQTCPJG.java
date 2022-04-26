@@ -20,8 +20,7 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 裁判/调解日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date refereeMediationTime;
+	private LocalDate refereeMediationTime;
 
 	/**
 	 * 诉讼费用
@@ -63,6 +62,16 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	 * 裁判金额
 	 */
 	private BigDecimal refereeAmount;
+
+	/**
+	 * 本金
+	 */
+	private BigDecimal principal;
+
+	/**
+	 * 利息
+	 */
+	private BigDecimal interest;
 
 	/**
 	 * 判决书

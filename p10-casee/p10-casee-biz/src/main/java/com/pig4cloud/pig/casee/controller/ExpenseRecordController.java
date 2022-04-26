@@ -125,6 +125,18 @@ public class ExpenseRecordController {
 		return R.ok(expenseRecordService.saveExpenseRecordUpdateProject(expenseRecord));
 	}
 
+	/**
+	 * 修改费用产生记录并修改项目金额
+	 * @param expenseRecord 修改费用产生记录并修改项目金额
+	 * @return R
+	 */
+	@ApiOperation(value = "修改费用产生记录并修改项目金额", notes = "修改费用产生记录并修改项目金额")
+	@SysLog("修改费用产生记录并修改项目金额" )
+	@PutMapping("/updateExpenseRecordUpdateProject")
+	public R updateExpenseRecordUpdateProject(@RequestBody ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.updateExpenseRecordUpdateProject(expenseRecord));
+	}
+
     /**
      * 修改费用产生记录表
      * @param expenseRecord 费用产生记录表
@@ -138,15 +150,15 @@ public class ExpenseRecordController {
     }
 
 	/**
-	 * 修改费用产生记录以及项目金额
+	 * 修改费用产生记录状态以及项目金额
 	 * @param expenseRecord
 	 * @return R
 	 */
-	@ApiOperation(value = "修改费用产生记录以及项目金额", notes = "修改费用产生记录以及项目金额")
-	@SysLog("修改费用产生记录以及项目金额" )
-	@PutMapping("/updateExpenseRecordAndProjectAmount")
-	public R updateExpenseRecordAndProjectAmount(@RequestBody ExpenseRecord expenseRecord) {
-		return R.ok(expenseRecordService.updateExpenseRecordAndProjectAmount(expenseRecord));
+	@ApiOperation(value = "修改费用产生记录状态以及项目金额", notes = "修改费用产生记录状态以及项目金额")
+	@SysLog("修改费用产生记录状态以及项目金额" )
+	@PutMapping("/updateExpenseRecordStatusAndProjectAmount")
+	public R updateExpenseRecordStatusAndProjectAmount(@RequestBody ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.updateExpenseRecordStatusAndProjectAmount(expenseRecord));
 	}
 
     /**
