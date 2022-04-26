@@ -52,28 +52,35 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	@Override
 	@Transactional
 	public 	Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO){
+		// 保存拍卖信息
 		Auction auction = new Auction();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO,auction);
 		auction.setAuctionStatus(100);
 		auctionService.save(auction);
-		if(auctionRecordSaveDTO.getAuctionId()==null){
-			QueryWrapper<AuctionAssetsRe> queryWrapper = new QueryWrapper<>();
-			queryWrapper.lambda().eq(AuctionAssetsRe::getAuctionId,auctionRecordSaveDTO.getAuctionId());
-			auctionAssetsReService.remove(queryWrapper);
-		}
-		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
-		for(Integer assetsId:auctionRecordSaveDTO.getAssetsReIdList()){
-			AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
-			auctionAssetsRe.setAssetsReId(assetsId);
-			auctionAssetsRe.setAuctionId(auction.getAuctionId());
-			auctionAssetsRes.add(auctionAssetsRe);
-		}
-		auctionAssetsReService.saveBatch(auctionAssetsRes);
 
+		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
+		if(auctionRecordSaveDTO.getAssetsReIdList().size()>0){
+			if(auctionRecordSaveDTO.getAuctionId() != null){
+				// 已存在记录先删除财产关联
+				QueryWrapper<AuctionAssetsRe> queryWrapper = new QueryWrapper<>();
+				queryWrapper.lambda().eq(AuctionAssetsRe::getAuctionId,auctionRecordSaveDTO.getAuctionId());
+				auctionAssetsReService.remove(queryWrapper);
+			}
+			// 保存拍卖财产关联
+			for(Integer assetsId:auctionRecordSaveDTO.getAssetsReIdList()){
+				AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
+				auctionAssetsRe.setAssetsReId(assetsId);
+				auctionAssetsRe.setAuctionId(auction.getAuctionId());
+				auctionAssetsRes.add(auctionAssetsRe);
+			}
+			auctionAssetsReService.saveBatch(auctionAssetsRes);
+		}
+
+		// 保存拍卖记录
 		AuctionRecord auctionRecord = new AuctionRecord();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO,auctionRecord);
 		Integer save = this.baseMapper.insert(auctionRecord);
-
+		// 保存拍卖记录状态
 		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
 		auctionRecordStatus.setAuctionRecordId(auctionRecord.getAuctionRecordId());
 		auctionRecordStatus.setStatus(100);
