@@ -129,12 +129,14 @@
 	</select>
 
 	<select id="queryByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiDetailsVO">
-		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
+		select p10_project.project_id,p10_project.company_code,p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName,p10_target.target_id from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id
 		where p10_casee.del_flag = 0
+		and p10_target.goal_id is null
 		and p10_project.project_type = 100
 		and p10_casee.casee_id = #{caseeId}
 	</select>

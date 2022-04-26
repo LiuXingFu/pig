@@ -109,9 +109,9 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 更新案件状态
 	 * @return
 	 */
-	Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO);
+	Integer modifyCaseeStatusById(CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO);
 
-	Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO);
+//	Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO);
 
 	/**
 	 * 分页查询清收案件
@@ -160,13 +160,6 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 诉讼案件自动结案
 	 */
 	void litigationCaseeClose();
-
-	/**
-	 * 更改案件状态为撤案、结案与终极
-	 * @param caseeId
-	 * @param status
-	 */
-	void caseeModify(Integer caseeId, Integer status);
 
 	/**
 	 * 分页查询上诉到期未确认列表
@@ -239,6 +232,6 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * 根据特定条件查询案件与案件详情
 	 * @param casee
 	 * @return
-	 */
+			 */
 	CaseeLiqui getCaseeLiqui(Casee casee);
 }

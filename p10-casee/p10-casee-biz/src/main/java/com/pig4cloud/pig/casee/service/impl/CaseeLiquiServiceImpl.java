@@ -83,41 +83,36 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	@Transactional
-	public Integer modifyCaseeStatusById(CaseeLiquiDTO caseeLiquiDTO) {
+	public Integer modifyCaseeStatusById(CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO) {
 		Integer modify = 0;
-		modify = this.baseMapper.updateById(caseeLiquiDTO);
-
-		// 保存案件状态变更记录
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setType(2);
-		projectStatus.setSourceId(caseeLiquiDTO.getCaseeId());
-		Integer status = caseeLiquiDTO.getStatus();
-		String statusName = null;
-		if (status == 2) {
-			statusName = "案件撤案";
-			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getWithdrawTheCase().getWithdrawalDate());
-		} else if (status == 3) {
-			statusName = "案件结案";
-			projectStatus.setChangeTime(caseeLiquiDTO.getCloseTime());
-		} else if (status == 4) {
-			statusName = "案件终结";
-			projectStatus.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getEnd().getEndDate());
+		CaseeLiqui caseeLiqui = new CaseeLiqui();
+		caseeLiqui.setCaseeId(caseeLiquiModifyStatusDTO.getCaseeId());
+		caseeLiqui.setStatus(caseeLiquiModifyStatusDTO.getStatus());
+		if(caseeLiquiModifyStatusDTO.getStatus()!=0 && caseeLiquiModifyStatusDTO.getStatus()!=1){
+			caseeLiqui.setCloseTime(caseeLiquiModifyStatusDTO.getChangeTime());
 		}
-		projectStatus.setStatusName(statusName);
-		projectStatus.setType(2);
-		projectStatus.setSourceId(caseeLiquiDTO.getCaseeId());
-		projectStatusService.save(projectStatus);
-		return modify;
-	}
+		modify = this.baseMapper.updateById(caseeLiqui);
 
-	@Override
-	public Integer actualExecution(CaseeLiquiDTO caseeLiquiDTO) {
-		ProjectModifyStatusDTO projectModifyStatusDTO = new ProjectModifyStatusDTO();
-		projectModifyStatusDTO.setStatus(4000);
-		projectModifyStatusDTO.setProjectId(caseeLiquiDTO.getProjectId());
-		projectModifyStatusDTO.setChangeTime(caseeLiquiDTO.getCaseeLiquiDetail().getActualExecution().getClosingDate());
-		projectLiquiService.modifyStatusById(projectModifyStatusDTO);
-		return this.modifyCaseeStatusById(caseeLiquiDTO);
+		Integer status = caseeLiquiModifyStatusDTO.getStatus();
+		String statusName = null;
+		if (status == 1){
+			statusName = "立案";
+		}else if (status == 2) {
+			statusName = "撤案";
+		} else if (status == 3) {
+			statusName = "结案";
+		} else if (status == 4) {
+			statusName = "终结";
+		}
+
+		// 保存项目状态变更记录表
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(2);
+		projectStatusSaveDTO.setStatusVal(status);
+		projectStatusSaveDTO.setStatusName(statusName);
+		BeanCopyUtil.copyBean(caseeLiquiModifyStatusDTO,projectStatusSaveDTO);
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
+		return modify;
 	}
 
 	@Override
@@ -154,13 +149,13 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		});
 		caseeSubjectReService.saveBatch(caseeSubjectReList);
 
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setType(2);
-		projectStatus.setSourceId(caseeLiqui.getCaseeId());
-		projectStatus.setStatusName("案件立案");
-		projectStatus.setUserName(caseeLiquiAddDTO.getActualName());
-		projectStatus.setChangeTime(caseeLiquiAddDTO.getStartTime());
-		projectStatusService.save(projectStatus);
+		// 保存项目状态变更记录表
+		CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO = new CaseeLiquiModifyStatusDTO();
+		caseeLiquiModifyStatusDTO.setStatus(1);
+		caseeLiquiModifyStatusDTO.setProjectId(caseeLiquiAddDTO.getProjectId());
+		caseeLiquiModifyStatusDTO.setCaseeId(caseeLiqui.getCaseeId());
+		caseeLiquiModifyStatusDTO.setChangeTime(caseeLiquiAddDTO.getStartTime());
+		this.modifyCaseeStatusById(caseeLiquiModifyStatusDTO);
 
 		//添加任务数据以及程序信息
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(caseeLiquiAddDTO.getProjectId());
@@ -492,26 +487,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 		// 批量更新案件状态=结案
 		this.updateBatchById(caseeList);
-	}
-
-	/**
-	 * 更改案件状态为撤案、结案与终极
-	 *
-	 * @param caseeId
-	 * @param status
-	 */
-	@Override
-	public void caseeModify(Integer caseeId, Integer status) {
-		//修改案件状态
-		CaseeLiquiDTO caseeLiquiDTO = new CaseeLiquiDTO();
-
-		caseeLiquiDTO.setCaseeId(caseeId);
-
-		caseeLiquiDTO.setStatus(status);
-
-		caseeLiquiDTO.setCloseTime(LocalDate.now());
-
-		this.modifyCaseeStatusById(caseeLiquiDTO);
 	}
 
 	@Override

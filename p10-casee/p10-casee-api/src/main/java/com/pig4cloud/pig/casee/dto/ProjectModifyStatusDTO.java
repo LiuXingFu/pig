@@ -31,9 +31,9 @@ import java.time.LocalDate;
 public class ProjectModifyStatusDTO {
 
     /**
-     * projectId
+     * 项目id
      */
-    @ApiModelProperty(value="projectId")
+    @ApiModelProperty(value="项目id")
     private Integer projectId;
 
     /**
@@ -53,6 +53,12 @@ public class ProjectModifyStatusDTO {
 	 */
 	@ApiModelProperty(value="状态名称")
 	private String statusName;
+
+	/**
+	 * 状态选择类型名称
+	 */
+	@ApiModelProperty(value="状态选择类型名称")
+	private String statusNameType;
 
 	/**
 	 * 说明

@@ -16,7 +16,6 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,6 +25,8 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
+import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -78,6 +79,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private AssetsReSubjectService assetsReSubjectService;
 	@Autowired
 	private RemoteRelationshipAuthenticateService relationshipAuthenticateService;
+	@Autowired
+	private TargetService targetService;
 
 	@Override
 	@Transactional
@@ -155,12 +158,13 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectCaseeReService.save(projectCaseeRe);
 
 		// 保存项目状态变更记录表
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setStatusName("在办");
-		projectStatus.setUserName(projectPaifuSaveDTO.getUserNickName());
-		projectStatus.setType(1);
-		projectStatus.setSourceId(projectPaifu.getProjectId());
-		projectStatusService.save(projectStatus);
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(1000);
+		projectStatusSaveDTO.setStatusName("在办");
+		projectStatusSaveDTO.setProjectId(projectPaifu.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectPaifuSaveDTO.getTakeTime());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 
 		return save;
 	}
@@ -176,11 +180,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	public ProjectPaifuDetailVO queryProjectCaseeDetailList(Integer projectId){
 		ProjectPaifuDetailVO projectPaifuDetailVO = this.baseMapper.selectByProjectId(projectId);
-		List<ProjectSubjectReListVO> applicantList = this.baseMapper.selectProjectSubjectReList(projectId,0);
-		List<ProjectSubjectReListVO> executedList = this.baseMapper.selectProjectSubjectReList(projectId,1);
-		projectPaifuDetailVO.setApplicantList(applicantList);
-		projectPaifuDetailVO.setExecutedList(executedList);
-
+		projectPaifuDetailVO.setApplicantList(this.baseMapper.selectProjectSubjectReList(projectId,0));
+		projectPaifuDetailVO.setExecutedList(this.baseMapper.selectProjectSubjectReList(projectId,1));
+//		projectPaifuDetailVO.setCaseeList(caseeService.queryByPaifuProjectId(projectId));
 		return projectPaifuDetailVO;
 	}
 
@@ -421,6 +423,21 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			paifuAssetsRe.setMortgageAssetsRecordsId(assetsRe.getMortgageAssetsRecordsId());
 			paifuAssetsRe.setAssetsReDetail(assetsRe.getAssetsReDetail());
 			assetsReService.save(paifuAssetsRe);
+
+			//添加任务数据以及程序信息
+			TargetAddDTO targetAddDTO = new TargetAddDTO();
+			targetAddDTO.setCaseeId(assetsRe.getCaseeId());
+			targetAddDTO.setProcedureNature(6060);
+			targetAddDTO.setOutlesId(projectPaifu.getOutlesId());
+			targetAddDTO.setProjectId(projectPaifu.getProjectId());
+			targetAddDTO.setGoalId(assetsRe.getAssetsId());
+			targetAddDTO.setGoalType(20001);
+			try {
+				targetService.saveTargetAddDTO(targetAddDTO);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			// 查询财产主体关联
 			QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
 			assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsLiquiTransferRecordRe.getAssetsReId());
@@ -443,6 +460,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectOutlesDealRe.setType(1);
 		projectOutlesDealRe.setProjectId(projectPaifu.getProjectId());
 		projectOutlesDealReService.save(projectOutlesDealRe);
+
+		// 保存项目状态变更记录表
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(1000);
+		projectStatusSaveDTO.setStatusName("在办");
+		projectStatusSaveDTO.setProjectId(projectPaifu.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectPaifuReceiptDTO.getTakeTime());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 		return projectCaseeRe.getProjectId();
 	}
 

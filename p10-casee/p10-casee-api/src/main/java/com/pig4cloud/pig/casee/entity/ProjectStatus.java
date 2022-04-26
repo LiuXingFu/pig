@@ -51,6 +51,24 @@ public class ProjectStatus extends BaseEntity {
     @ApiModelProperty(value="类型（1-项目 2-案件）")
     private Integer type;
 
+	/**
+	 * 状态值
+	 */
+	@ApiModelProperty(value="状态值")
+	private Integer statusVal;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
+
     /**
      * 源id
      */
@@ -80,6 +98,12 @@ public class ProjectStatus extends BaseEntity {
 	 */
 	@ApiModelProperty(value="变更时间")
 	private LocalDate changeTime;
+
+	/**
+	 * 状态详情
+	 */
+	@ApiModelProperty(value="状态详情")
+	private String statusDetail;
 
 	/**
 	 * 描述

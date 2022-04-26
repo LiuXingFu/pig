@@ -100,7 +100,7 @@ public class FindNodeTemplateChildrenUtils {
 		CaseeLiquiService caseeLiquiService = SpringUtils.getObject(CaseeLiquiService.class);
 
 		Casee casee = caseeLiquiService.getById(taskNodeVO.getCaseeId());
-		if ((casee.getCaseeType().equals(1010) || casee.getCaseeType().equals(2010)) && target != null) {//如果是诉前保全案件或者诉讼保全案件控制财产程序只显示查封或者冻结环节
+		if (casee.getCaseeType() != null&&(casee.getCaseeType().equals(1010) || casee.getCaseeType().equals(2010)) && target != null) {//如果是诉前保全案件或者诉讼保全案件控制财产程序只显示查封或者冻结环节
 			if (taskNodeVO.getStatus() == 0) {
 				if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")||taskNodeVO.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")||taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
 					return taskNodeVO;

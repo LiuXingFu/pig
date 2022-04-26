@@ -41,4 +41,6 @@ public interface CaseeMapper extends BaseMapper<Casee> {
 	 * 查询案件列表
 	 */
 	List<CaseeVO> selectCaseeList(@Param("query") CaseeGetListDTO caseeGetListDTO);
+
+	List<CaseeVO> selectByPaifuProjectId(@Param("projectId") Integer projectId);
 }

@@ -33,6 +33,7 @@ import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,5 +124,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	@Override
 	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
 		return this.baseMapper.selectByProjectCaseeAssetsId(projectId,caseeId,assetsId);
+	}
+
+	@Override
+	public BigDecimal totalAmountByProjectId(Integer projectId){
+		return this.baseMapper.totalAmountByProjectId(projectId);
 	}
 }

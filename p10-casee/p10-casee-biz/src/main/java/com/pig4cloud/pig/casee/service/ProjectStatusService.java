@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
 import com.pig4cloud.pig.casee.entity.ProjectStatus;
 
 /**
@@ -27,4 +28,11 @@ import com.pig4cloud.pig.casee.entity.ProjectStatus;
  * @date 2022-01-18 15:21:05
  */
 public interface ProjectStatusService extends IService<ProjectStatus> {
+
+	/**
+	 * 保存状态记录
+	 * @param projectStatusSaveDTO
+	 * @return
+	 */
+	Integer saveStatusRecord(ProjectStatusSaveDTO projectStatusSaveDTO);
 }

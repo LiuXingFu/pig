@@ -57,6 +57,12 @@
 		<if test="query.projectId !=null">
 			and casee.project_id=#{query.projectId}
 		</if>
+	</select>
 
+	<select id="selectByPaifuProjectId" resultType="com.pig4cloud.pig.casee.vo.CaseeVO">
+		select p10_casee.*,p10_court.court_name from p10_liqui_transfer_record
+		left join p10_casee on p10_casee.casee_id = p10_liqui_transfer_record.casee_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where paifu_project_id = #{projectId}
 	</select>
 </mapper>

@@ -5,6 +5,7 @@ import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -15,8 +16,7 @@ public class LiQui_SSBQ_SSBQBQJG_SSBQBQJG extends CommonalityData implements Ser
 	/**
 	 * 结案日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date caseClosedTime;
+	private LocalDate caseClosedTime;
 
 	/**
 	 * 保全是否足额(0-否 1-是)

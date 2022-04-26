@@ -28,6 +28,7 @@ import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,6 +47,8 @@ import java.util.List;
 public class CaseeLiquiController {
 
 	private final CaseeLiquiService caseeLiquiService;
+	@Autowired
+	private ProjectStatusService projectStatusService;
 
 	/**
 	 * 新增案件表
@@ -88,7 +91,6 @@ public class CaseeLiquiController {
 
 	/**
 	 * 添加二审诉讼案件
-	 *
 	 * @param caseeSecondInstanceDTO
 	 * @return R
 	 */
@@ -133,7 +135,7 @@ public class CaseeLiquiController {
 	 */
 	@ApiOperation(value = "根据项目id、案件类型查询一审或首执案件信息", notes = "根据项目id、案件类型查询一审或首执案件信息")
 	@GetMapping("/getCaseeParentId/{projectId}/{caseeType}")
-	public R getCaseeParentId(@PathVariable("projectId") Integer projectId, @PathVariable("caseeType") Integer caseeType) {
+	public R getCaseeParentId(@PathVariable("projectId") Integer projectId,@PathVariable("caseeType") Integer caseeType) {
 		return R.ok(caseeLiquiService.getCaseeParentId(projectId, caseeType));
 	}
 
@@ -198,8 +200,8 @@ public class CaseeLiquiController {
 	 */
 	@ApiOperation(value = "查询债务人信息及财产和行为集合", notes = "查询债务人信息及财产和行为集合")
 	@GetMapping("/queryAssetsBehavior")
-	public R queryAssetsBehavior(Integer caseeId, @RequestParam(value = "caseePersonnelType", required = false) Integer caseePersonnelType) {
-		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId, caseePersonnelType));
+	public R queryAssetsBehavior(Integer caseeId,@RequestParam(value = "caseePersonnelType",required = false)Integer caseePersonnelType) {
+		return R.ok(caseeLiquiService.queryAssetsBehavior(caseeId,caseePersonnelType));
 	}
 
 	/**
@@ -218,7 +220,7 @@ public class CaseeLiquiController {
 	/**
 	 * 分页查询案件流程图接口
 	 *
-	 * @param page                       分页对象
+	 * @param page              分页对象
 	 * @param caseeLiquiFlowChartPageDTO 案件清收表
 	 * @return
 	 */
@@ -249,7 +251,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "分页查询上诉到期未确认列表", notes = "分页查询上诉到期未确认列表")
 	@GetMapping("/queryLitigationFirstInstanceAppealExpired")
 	public R queryLitigationFirstInstanceAppealExpired(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryLitigationFirstInstanceAppealExpired(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryLitigationFirstInstanceAppealExpired(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
@@ -261,33 +263,41 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "分页查询执恢案件待立案列表", notes = "分页查询执恢案件待立案列表")
 	@GetMapping("/queryAddReinstatementCase")
 	public R queryAddReinstatementCase(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryAddReinstatementCase(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryAddReinstatementCase(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
 	 * 修改案件状态
-	 *
-	 * @param caseeLiquiDTO
+	 * @param caseeLiquiModifyStatusDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "修改案件状态", notes = "修改案件状态")
-	@SysLog("修改案件状态")
+	@SysLog("修改案件状态" )
 	@PostMapping("/modifyCaseeStatusById")
-	public R modifyCaseeStatusById(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
-		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiDTO));
+	public R modifyCaseeStatusById(@RequestBody CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO) {
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiModifyStatusDTO));
 	}
 
 	/**
 	 * 案件实际执结
-	 *
 	 * @param caseeLiquiDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "案件实际执结", notes = "案件实际执结")
-	@SysLog("案件实际执结")
+	@SysLog("案件实际执结" )
 	@PostMapping("/actualExecution")
-	public R actualExecution(@RequestBody CaseeLiquiDTO caseeLiquiDTO) {
-		return R.ok(this.caseeLiquiService.actualExecution(caseeLiquiDTO));
+	public R actualExecution(@RequestBody CaseeLiquiModifyStatusDTO caseeLiquiModifyStatusDTO) {
+		// 保存项目状态变更记录表
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(4000);
+		projectStatusSaveDTO.setStatusName("结案");
+		projectStatusSaveDTO.setStatusNameType(caseeLiquiModifyStatusDTO.getStatusNameType());
+		projectStatusSaveDTO.setProjectId(caseeLiquiModifyStatusDTO.getProjectId());
+		projectStatusSaveDTO.setChangeTime(caseeLiquiModifyStatusDTO.getChangeTime());
+		projectStatusSaveDTO.setDescribes(caseeLiquiModifyStatusDTO.getDescribes());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
+		return R.ok(this.caseeLiquiService.modifyCaseeStatusById(caseeLiquiModifyStatusDTO));
 	}
 
 	/**
@@ -299,7 +309,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "法院到款未领款", notes = "法院到款未领款")
 	@GetMapping("/queryCourtPayment")
 	public R queryCourtPayment(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryCourtPayment(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryCourtPayment(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
@@ -311,7 +321,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "分页查询款项结清未实际执结", notes = "分页查询款项结清未实际执结")
 	@GetMapping("/queryPaymentCompleted")
 	public R queryPaymentCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryPaymentCompleted(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryPaymentCompleted(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
@@ -323,7 +333,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "分页查询执行案件债务人未添加行为", notes = "分页查询执行案件债务人未添加行为")
 	@GetMapping("/queryNotAddBehavior")
 	public R queryNotAddBehavior(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryNotAddBehavior(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryNotAddBehavior(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
@@ -335,7 +345,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "分页查询案件债务人未添加财产", notes = "分页查询案件债务人未添加财产")
 	@GetMapping("/caseeSubjectNotAddAssets")
 	public R caseeSubjectNotAddAssets(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.caseeSubjectNotAddAssets(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.caseeSubjectNotAddAssets(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	/**
@@ -347,7 +357,7 @@ public class CaseeLiquiController {
 	@ApiOperation(value = "财产保全完成未结案", notes = "财产保全完成未结案")
 	@GetMapping("/queryPropertyPreservationCompleted")
 	public R queryPropertyPreservationCompleted(Page page, CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO) {
-		return R.ok(this.caseeLiquiService.queryPropertyPreservationCompleted(page, caseeLiquiFlowChartPageDTO));
+		return R.ok(this.caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO));
 	}
 
 	@ApiOperation(value = "根据案件id查询案件详情", notes = "根据案件id查询案件详情")

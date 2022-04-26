@@ -130,4 +130,11 @@ public interface ProjectLiquiService extends IService<Project> {
 	 */
 	IPage<ExpirationReminderVO> queryStatisticsReminder(Page page, ExpirationReminderDTO expirationReminderDTO);
 
+	/**
+	 * 更新项目总金额
+	 * @param projectId
+	 * @return
+	 */
+	Integer modifyProjectAmount(Integer projectId);
+
 }

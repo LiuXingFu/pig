@@ -154,12 +154,13 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		}
 
 		// 保存项目状态变更记录表
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setStatusName("在办");
-		projectStatus.setUserName(projectLiquiAddVO.getUserNickName());
-		projectStatus.setType(1);
-		projectStatus.setSourceId(projectLiqui.getProjectId());
-		projectStatusService.save(projectStatus);
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(1000);
+		projectStatusSaveDTO.setStatusName("在办");
+		projectStatusSaveDTO.setProjectId(projectLiqui.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectLiquiAddVO.getTakeTime());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 
 		// 查询银行借贷主体关联表
 		QueryWrapper<SubjectBankLoanRe> queryWrapper = new QueryWrapper<>();
@@ -272,31 +273,19 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		ProjectLiqui projectLiqui = new ProjectLiqui();
 		projectLiqui.setProjectId(projectModifyStatusDTO.getProjectId());
 		projectLiqui.setStatus(projectModifyStatusDTO.getStatus());
-		String projectName = null;
-
-		if (projectModifyStatusDTO.getStatus().equals(1000)) {
-			projectName = "项目在办";
-		} else if (projectModifyStatusDTO.getStatus().equals(2000)) {
-			projectName = "项目暂缓";
-		} else if (projectModifyStatusDTO.getStatus().equals(3000)) {
-			projectName = "项目和解";
-		} else if (projectModifyStatusDTO.getStatus().equals(4000)) {
-			projectName = "项目退出";
+		if(projectModifyStatusDTO.getStatus()==4000){
+			projectLiqui.setCloseTime(projectModifyStatusDTO.getChangeTime());
 		}
-
 		// 保存项目状态变更记录表
-		ProjectStatus projectStatus = new ProjectStatus();
-		projectStatus.setType(1);
-		projectStatus.setSourceId(projectModifyStatusDTO.getProjectId());
-		projectStatus.setStatusName(projectName);
-
-		// 获取操作人用户名称
-		R<UserVO> userVOR = userService.getUserById(securityUtilsService.getCacheUser().getId(), SecurityConstants.FROM);
-		projectStatus.setUserName(userVOR.getData().getActualName());
-
-		BeanCopyUtil.copyBean(projectModifyStatusDTO, projectStatus);
-		projectStatusService.save(projectStatus);
-
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		projectStatusSaveDTO.setType(1);
+		projectStatusSaveDTO.setStatusVal(projectModifyStatusDTO.getStatus());
+		projectStatusSaveDTO.setStatusName(projectModifyStatusDTO.getStatusName());
+		projectStatusSaveDTO.setStatusNameType(projectModifyStatusDTO.getStatusNameType());
+		projectStatusSaveDTO.setProjectId(projectLiqui.getProjectId());
+		projectStatusSaveDTO.setChangeTime(projectModifyStatusDTO.getChangeTime());
+		projectStatusSaveDTO.setDescribes(projectModifyStatusDTO.getDescribes());
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
 		return this.baseMapper.updateById(projectLiqui);
 	}
 
@@ -1176,6 +1165,19 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectStatisticsReminder(page, expirationReminderDTO, insOutlesDTO);
+	}
+
+	@Override
+	public	Integer modifyProjectAmount(Integer projectId){
+		ProjectLiqui projectLiqui = this.getByProjectId(projectId);
+		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		// 统计产生费用总金额
+		BigDecimal projectAmount = expenseRecordService.totalAmountByProjectId(projectId);
+		projectLiQuiDetail.setProjectAmount(projectAmount);
+		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+
+		return this.baseMapper.updateById(projectLiqui);
 	}
 
 

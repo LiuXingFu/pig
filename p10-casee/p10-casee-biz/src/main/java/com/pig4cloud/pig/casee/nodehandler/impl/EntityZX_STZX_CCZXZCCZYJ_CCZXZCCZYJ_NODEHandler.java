@@ -57,7 +57,7 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 		liquiTransferRecord.setEntrustOutlesId(project.getOutlesId());
 		liquiTransferRecord.setEntrustedInsId(entityZX_stzx_cczxzcczyj_cczxzcczyj.getEntrustedInsId());
 		liquiTransferRecord.setEntrustedOutlesId(entityZX_stzx_cczxzcczyj_cczxzcczyj.getEntrustedOutlesId());
-		liquiTransferRecord.setHandoverTime(entityZX_stzx_cczxzcczyj_cczxzcczyj.getApplicationSubmissionTime());
+		liquiTransferRecord.setHandoverTime(entityZX_stzx_cczxzcczyj_cczxzcczyj.getHandoverTime());
 		liquiTransferRecord.setStatus(0);
 		liquiTransferRecord.setRemark(entityZX_stzx_cczxzcczyj_cczxzcczyj.getRemark());
 		//添加清收移交记录

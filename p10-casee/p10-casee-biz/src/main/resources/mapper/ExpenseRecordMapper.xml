@@ -114,6 +114,13 @@
 		left join p10_assets_re_subject on p10_assets_re_subject.subject_id = p10_expense_record_subject_re.subject_id
 		left join p10_assets_re on p10_assets_re.assets_id = p10_assets_re_subject.assets_re_id
 		where p10_expense_record.del_flag = 0 and p10_expense_record.status = 0
-		and p10_assets_re.project_id = #{projectId} and p10_assets_re.casee_id = #{caseeId} and assets_id = #{assetsId}
+		and p10_assets_re.project_id = #{projectId} and p10_assets_re.casee_id = #{caseeId} and p10_expense_record.assets_id = #{assetsId} and p10_expense_record.status=0
+	</select>
+
+	<select id="totalAmountByProjectId" resultType="java.math.BigDecimal">
+		select sum(p10_expense_record.cost_amount) from p10_expense_record
+		where p10_expense_record.del_flag = 0
+		and p10_expense_record.status != 2
+		and p10_expense_record.project_id = #{projectId}
 	</select>
 </mapper>

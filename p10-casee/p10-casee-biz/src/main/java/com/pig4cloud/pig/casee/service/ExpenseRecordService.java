@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,4 +43,12 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO>getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId);
+
+	/**
+	 * 根据项目id统计总金额
+	 * @param projectId
+	 * @return
+	 */
+	BigDecimal totalAmountByProjectId(Integer projectId);
+
 }
