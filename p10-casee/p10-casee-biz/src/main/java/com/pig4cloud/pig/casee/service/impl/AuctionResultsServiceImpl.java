@@ -14,24 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.Auction;
-import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.AuctionResults;
+import com.pig4cloud.pig.casee.mapper.AuctionResultsMapper;
+import com.pig4cloud.pig.casee.service.AuctionResultsService;
+import org.springframework.stereotype.Service;
 
 /**
- * 拍卖表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:58
+ * @date 2022-04-25 20:59:35
  */
-@Mapper
-public interface AuctionMapper extends BaseMapper<Auction> {
-
-	AuctionDetailVO getByAssetsReId(@Param("projectId")Integer projectId,@Param("assetsReId")Integer assetsReId);
+@Service
+public class AuctionResultsServiceImpl extends ServiceImpl<AuctionResultsMapper, AuctionResults> implements AuctionResultsService {
 
 }

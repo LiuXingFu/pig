@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
-import com.pig4cloud.pig.casee.entity.paifuentity.Auction;
+import com.pig4cloud.pig.casee.entity.Auction;
 import com.pig4cloud.pig.casee.service.AuctionService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
@@ -108,5 +108,16 @@ public class AuctionController {
     public R removeById(@PathVariable Integer auctionId) {
         return R.ok(auctionService.removeById(auctionId));
     }
+
+	/**
+	 * 根据项目id、案件id、财产id查询拍卖
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id、财产id查询拍卖", notes = "根据项目id、案件id、财产id查询拍卖")
+	@GetMapping("/queryAuctionByProjectIdCaseeId" )
+	public R queryAuctionByProjectIdCaseeId(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(auctionService.queryAuctionByProjectIdCaseeId(projectId,caseeId,assetsId));
+	}
+
 
 }

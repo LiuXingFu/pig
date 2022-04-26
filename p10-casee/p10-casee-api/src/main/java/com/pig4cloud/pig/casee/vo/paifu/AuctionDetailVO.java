@@ -14,21 +14,24 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
+package com.pig4cloud.pig.casee.vo.paifu;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionDeal;
-import com.pig4cloud.pig.casee.mapper.AuctionDealMapper;
-import com.pig4cloud.pig.casee.service.AuctionDealService;
-import org.springframework.stereotype.Service;
+import com.pig4cloud.pig.casee.entity.Auction;
+import lombok.Data;
+import java.util.List;
 
 /**
- * 拍卖成交表
+ * 拍卖表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:57
+ * @date 2022-04-25 18:54:58
  */
-@Service
-public class AuctionDealServiceImpl extends ServiceImpl<AuctionDealMapper, AuctionDeal> implements AuctionDealService {
+@Data
+public class AuctionDetailVO extends Auction {
+
+    List<AssetsRePaifuDetailVO> assetsReList;
+
+    private Integer assetsReId;
+
 
 }

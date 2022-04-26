@@ -21,16 +21,17 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionDealMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionResultsMapper">
 
-  <resultMap id="auctionDealMap" type="com.pig4cloud.pig.casee.entity.paifuentity.AuctionDeal">
-    <id property="auctionDeal" column="auction_deal"/>
-    <result property="auctionRecordId" column="auction_record_id"/>
-    <result property="dealTime" column="deal_time"/>
-    <result property="dealPrice" column="deal_price"/>
-    <result property="auctionPeopleNumber" column="auction_people_number"/>
-    <result property="buyer" column="buyer"/>
-    <result property="appendix" column="appendix"/>
-    <result property="remark" column="remark"/>
-  </resultMap>
+	<resultMap id="auctionResultsMap" type="com.pig4cloud.pig.casee.entity.AuctionResults">
+		<id property="auctionResultsId" column="auction_results_id"/>
+		<result property="auctionRecordId" column="auction_record_id"/>
+		<result property="resultsTime" column="results_time"/>
+		<result property="resultsType" column="results_type"/>
+		<result property="dealPrice" column="deal_price"/>
+		<result property="auctionPeopleNumber" column="auction_people_number"/>
+		<result property="buyer" column="buyer"/>
+		<result property="appendix" column="appendix"/>
+		<result property="remark" column="remark"/>
+	</resultMap>
 </mapper>

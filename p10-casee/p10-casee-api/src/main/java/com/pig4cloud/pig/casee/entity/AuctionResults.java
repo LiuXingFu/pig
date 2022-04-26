@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto.paifu;
+package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,91 +23,63 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 /**
- * 拍卖记录表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:58
+ * @date 2022-04-25 20:59:35
  */
 @Data
-public class AuctionRecordSaveDTO {
+@TableName("p10_auction_results")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "拍卖结果表")
+public class AuctionResults extends BaseEntity {
+
+    /**
+     * 拍卖结果id
+     */
+    @TableId
+    @ApiModelProperty(value="拍卖结果id")
+    private Integer auctionResultsId;
+
+    /**
+     * 拍卖记录id
+     */
+    @ApiModelProperty(value="拍卖记录id")
+    private Integer auctionRecordId;
+
+    /**
+     * 结果时间
+     */
+    @ApiModelProperty(value="结果时间")
+    private LocalDate resultsTime;
 
 	/**
-	 * 项目id
+	 * 结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）
 	 */
-	@ApiModelProperty(value="项目id")
-	private Integer projectId;
-
-	/**
-	 * 案件id
-	 */
-	@ApiModelProperty(value="案件id")
-	private Integer caseeId;
-
-	/**
-	 * 项目案件财产关联id集合
-	 */
-	@ApiModelProperty(value="项目案件财产关联id集合")
-	private List<Integer> assetsReIdList;
+	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
+	private Integer resultsType;
 
     /**
-     * 拍卖表id
+     * 成交价格
      */
-    @ApiModelProperty(value="拍卖表id")
-    private Integer auctionId;
-
-	/**
-	 * 标题
-	 */
-	@ApiModelProperty(value="标题")
-	private String auctionTitle;
-
-	/**
-	 * 拍卖类型（100-一拍，200-二拍，300-变卖）
-	 */
-	@ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
-	private String auctionType;
+    @ApiModelProperty(value="成交价格")
+    private BigDecimal dealPrice;
 
     /**
-     * 公告发布时间
+     * 参拍人数
      */
-    @ApiModelProperty(value="公告发布时间")
-    private LocalDate announcementStartTime;
+    @ApiModelProperty(value="参拍人数")
+    private Integer auctionPeopleNumber;
 
     /**
-     * 拍卖开始时间
+     * 买受人
      */
-    @ApiModelProperty(value="拍卖开始时间")
-    private LocalDate auctionStartTime;
-
-    /**
-     * 拍卖结束时间
-     */
-    @ApiModelProperty(value="拍卖结束时间")
-    private LocalDate auctionEndTime;
-
-    /**
-     * 起拍价
-     */
-    @ApiModelProperty(value="起拍价")
-    private BigDecimal startingPrice;
-
-    /**
-     * 拍卖平台
-     */
-    @ApiModelProperty(value="拍卖平台")
-    private Integer auctionPlatform;
-
-    /**
-     * 拍卖链接
-     */
-    @ApiModelProperty(value="拍卖链接")
-    private String auctionLink;
+    @ApiModelProperty(value="买受人")
+    private String buyer;
 
     /**
      * 附件

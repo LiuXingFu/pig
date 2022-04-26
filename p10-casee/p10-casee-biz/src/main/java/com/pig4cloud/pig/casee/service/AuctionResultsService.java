@@ -18,14 +18,14 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionDeal;
+import com.pig4cloud.pig.casee.entity.AuctionResults;
 
 /**
- * 拍卖成交表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:57
+ * @date 2022-04-25 20:59:35
  */
-public interface AuctionDealService extends IService<AuctionDeal> {
+public interface AuctionResultsService extends IService<AuctionResults> {
 
 }

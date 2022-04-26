@@ -23,14 +23,32 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionMapper">
 
-  <resultMap id="auctionMap" type="com.pig4cloud.pig.casee.entity.paifuentity.Auction">
-    <id property="auctionId" column="auction_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="createBy" column="create_by"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="jointAuction" column="joint_auction"/>
-    <result property="projectId" column="project_id"/>
-    <result property="caseeId" column="casee_id"/>
-  </resultMap>
+	<resultMap id="auctionMap" type="com.pig4cloud.pig.casee.entity.Auction">
+		<id property="auctionId" column="auction_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="jointAuction" column="joint_auction"/>
+		<result property="projectId" column="project_id"/>
+		<result property="caseeId" column="casee_id"/>
+		<result property="auctionType" column="auction_type"/>
+		<result property="auctionStatus" column="auction_status"/>
+	</resultMap>
+
+	<resultMap id="getAssetsRe" type="com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO" extends="auctionMap">
+		<result property="assetsReId" column="assets_re_id"/>
+		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO"
+					column="assets_re_id"
+					select="com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper.selectByAssetsReId"></collection>
+	</resultMap>
+
+	<select id="getByAssetsReId" resultMap="getAssetsRe">
+		select * from p10_auction
+		left join p10_auction_assets_re on p10_auction_assets_re.auction_id = p10_auction.auction_id
+		where p10_auction.project_id = #{projectId}
+		and p10_auction_assets_re.assets_re_id = #{assetsReId}
+		ORDER BY p10_auction.create_time desc
+		limit 1
+	</select>
 </mapper>

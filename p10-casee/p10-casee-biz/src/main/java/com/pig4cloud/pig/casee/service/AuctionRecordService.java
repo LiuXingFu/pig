@@ -18,7 +18,10 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecord;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
+import com.pig4cloud.pig.casee.entity.AuctionRecord;
+import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
 
 /**
  * 拍卖记录表
@@ -28,6 +31,18 @@ import com.pig4cloud.pig.casee.entity.paifuentity.AuctionRecord;
  */
 public interface AuctionRecordService extends IService<AuctionRecord> {
 
-//	public Integer saveAuctionRecord();
+	/**
+	 * 添加拍卖记录
+	 * @param auctionRecordSaveDTO
+	 * @return
+	 */
+	Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO);
+
+	/**
+	 * 添加拍卖结果
+	 * @param auctionResultsSaveDTO
+	 */
+	void saveAuctionResults(AuctionResultsSaveDTO auctionResultsSaveDTO);
+
 
 }

@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity.paifuentity;
+package com.pig4cloud.pig.casee.dto.paifu;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,36 +24,71 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 /**
- * 拍卖与项目案件财产关联表
+ * 拍卖结果表
  *
  * @author pig code generator
- * @date 2022-04-25 18:54:58
+ * @date 2022-04-25 20:59:35
  */
 @Data
-@TableName("p10_auction_assets_re")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖与项目案件财产关联表")
-public class AuctionAssetsRe extends BaseEntity {
+public class AuctionResultsSaveDTO {
+
+	/**
+	 * 拍卖id
+	 */
+	@ApiModelProperty(value="拍卖id")
+	private Integer auctionId;
 
     /**
-     * 拍卖财产关联表
+     * 拍卖记录id
      */
-    @TableId
-    @ApiModelProperty(value="拍卖财产关联表")
-    private Integer auctionAssetsRe;
+    @ApiModelProperty(value="拍卖记录id")
+    private Integer auctionRecordId;
 
     /**
-     * 拍卖id
+     * 结果时间
      */
-    @ApiModelProperty(value="拍卖id")
-    private Integer auctionId;
+    @ApiModelProperty(value="结果时间")
+    private LocalDate resultsTime;
+
+	/**
+	 * 结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）
+	 */
+	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
+	private Integer resultsType;
 
     /**
-     * 项目案件财产关联id
+     * 成交价格
      */
-    @ApiModelProperty(value="项目案件财产关联id")
-    private Integer assetsRe;
+    @ApiModelProperty(value="成交价格")
+    private BigDecimal dealPrice;
+
+    /**
+     * 参拍人数
+     */
+    @ApiModelProperty(value="参拍人数")
+    private Integer auctionPeopleNumber;
+
+    /**
+     * 买受人
+     */
+    @ApiModelProperty(value="买受人")
+    private String buyer;
+
+    /**
+     * 附件
+     */
+    @ApiModelProperty(value="附件")
+    private String appendix;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value="备注")
+    private String remark;
 
 
 }

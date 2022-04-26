@@ -16,10 +16,15 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.paifuentity.Auction;
+import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.Auction;
 import com.pig4cloud.pig.casee.mapper.AuctionMapper;
+import com.pig4cloud.pig.casee.service.AssetsReService;
 import com.pig4cloud.pig.casee.service.AuctionService;
+import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,5 +35,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AuctionServiceImpl extends ServiceImpl<AuctionMapper, Auction> implements AuctionService {
+	@Autowired
+	AssetsReService assetsReService;
 
+
+	@Override
+	public AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId, Integer projectId, Integer caseeId){
+		QueryWrapper<AssetsRe> assetsReQueryWrapper = new QueryWrapper<>();
+		assetsReQueryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
+		assetsReQueryWrapper.lambda().eq(AssetsRe::getCaseeId,caseeId);
+		assetsReQueryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
+		AssetsRe assetsRe = assetsReService.getOne(assetsReQueryWrapper);
+		return this.baseMapper.getByAssetsReId(projectId,assetsRe.getAssetsReId());
+	}
 }
