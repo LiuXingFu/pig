@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * 财产执行拍卖公告
@@ -40,7 +41,7 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	/**
 	 * 公告发布时间
 	 */
-	private LocalDate announcementReleaseTime;
+	private Date announcementReleaseTime;
 
 	/**
 	 * 起拍价
@@ -65,7 +66,7 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	/**
 	 * 拍卖结束日期
 	 */
-	private LocalDate auctionEndDate;
+	private Date auctionEndDate;
 
 	/**
 	 * 备注

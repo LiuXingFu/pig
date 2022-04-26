@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK extends CommonalityData im
 	/**
 	 * 裁判结果生效日期
 	 */
-	private LocalDate effectiveDate;
+	private Date effectiveDate;
 
 	/**
 	 * 最终送达情况备注

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * 签收记录
@@ -29,7 +30,7 @@ public class ReceiptRecord extends CommonalityData implements Serializable {
 	/**
 	 * 最终签收日期
 	 */
-	private LocalDate finalReceiptTime;
+	private Date finalReceiptTime;
 
 	/**
 	 * 备注
