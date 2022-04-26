@@ -17,6 +17,8 @@
 package com.pig4cloud.pig.admin.api.feign;
 
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
+import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
+import com.pig4cloud.pig.admin.api.entity.TaskNode;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteMessageRecordServiceFallbackFactory;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.constant.ServiceNameConstants;
@@ -50,5 +52,13 @@ public interface RemoteMessageRecordService {
 	 */
 	@PostMapping("/messagerecord/batchSendMessageRecordOutPush")
 	R batchSendMessageRecordOutPush(@RequestBody List<MessageRecordDTO> messageRecordDTOList,@RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 * 发送任务消息
+	 * @param taskNode
+	 * @return
+	 */
+	@PostMapping("/messagerecord/sendPaifuTaskMessage")
+	R sendPaifuTaskMessage(@RequestBody TaskNode taskNode, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

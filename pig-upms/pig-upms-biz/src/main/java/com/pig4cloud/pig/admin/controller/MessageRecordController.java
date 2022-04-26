@@ -19,8 +19,15 @@ package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
+import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
 import com.pig4cloud.pig.admin.api.entity.MessageRecord;
 import com.pig4cloud.pig.admin.service.MessageRecordService;
+import com.pig4cloud.pig.casee.entity.Casee;
+import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.vo.paifu.NodeMessageRecordVO;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -28,6 +35,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -161,6 +170,27 @@ public class MessageRecordController {
 	@GetMapping("/getMessageNumber")
 	public R withCooperativeAgencies(){
 		return R.ok(this.messageRecordService.getMessageNumber());
+	}
+
+	/**
+	 * 发送拍辅任务消息
+	 * @param taskNode
+	 * @return
+	 */
+	@ApiOperation(value = "发送拍辅任务消息", notes = "发送拍辅任务消息")
+	@SysLog("发送拍辅任务消息" )
+	@PostMapping("/sendPaifuTaskMessage")
+	public R sendPaifuTaskMessage(@RequestBody TaskNode taskNode) {
+
+		int count = this.messageRecordService.sendPaifuTaskMessage(taskNode);
+
+		if(count > 0){
+			return R.ok("发送任务消息成功！");
+		} else if(count == 0) {
+			return R.ok("无消息发送！");
+		}else{
+			return R.failed("发送任务消息失败！");
+		}
 	}
 
 }

@@ -17,11 +17,14 @@
 package com.pig4cloud.pig.admin.api.feign.fallback;
 
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
+import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
+import com.pig4cloud.pig.admin.api.entity.TaskNode;
 import com.pig4cloud.pig.admin.api.feign.RemoteMessageRecordService;
 import com.pig4cloud.pig.common.core.util.R;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -45,6 +48,12 @@ public class RemoteMessageRecordServiceFallbackImpl implements RemoteMessageReco
 	@Override
 	public R batchSendMessageRecordOutPush(List<MessageRecordDTO> messageRecordDTOList, String from) {
 		log.error("添加消息失败", cause);
+		return null;
+	}
+
+	@Override
+	public R sendPaifuTaskMessage(@RequestBody TaskNode taskNode, String from) {
+		log.error("发送清收任务消息失败", cause);
 		return null;
 	}
 }

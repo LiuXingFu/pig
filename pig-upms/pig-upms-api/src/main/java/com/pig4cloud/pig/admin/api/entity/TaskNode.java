@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.admin.api.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
@@ -23,13 +24,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 
 /**
  * 流程节点表
  *
- * @author pig code generator
- * @date 2021-09-10 15:05:20
+ * @author xiaojun
+ * @date 2021-09-07 17:01:38
  */
 @Data
 @TableName("p10_task_node")
@@ -40,14 +42,14 @@ public class TaskNode extends BaseEntity {
 	/**
 	 * 节点 ID
 	 */
-	@TableId
+	@TableId(value="node_id",type = IdType.INPUT)
 	@ApiModelProperty(value="节点 ID")
-	private Integer nodeId;
+	private String nodeId;
 
 	/**
-	 * 节点KEY
+	 * 节点key
 	 */
-	@ApiModelProperty(value="节点KEY")
+	@ApiModelProperty(value="节点key")
 	private String nodeKey;
 
 	/**
@@ -63,9 +65,9 @@ public class TaskNode extends BaseEntity {
 	private Integer canSkip;
 
 	/**
-	 * 节点属性 0-节点 100-任务节点
+	 * 节点属性 100:一级节点 200:二级节点 300:三级节点 400:任务节点
 	 */
-	@ApiModelProperty(value="节点属性 0-节点 100-任务节点")
+	@ApiModelProperty(value="节点属性 100:一级节点 200:二级节点 300:三级节点 400:任务节点")
 	private Integer nodeAttributes;
 
 	/**
@@ -90,13 +92,7 @@ public class TaskNode extends BaseEntity {
 	 * 节点顺序
 	 */
 	@ApiModelProperty(value="节点顺序")
-	private Integer order;
-
-	/**
-	 * 该节点激活需要的父节点进度
-	 */
-	@ApiModelProperty(value="该节点激活需要的父节点进度")
-	private Integer indexProcess;
+	private Integer nodeOrder;
 
 	/**
 	 * 增加进度
@@ -114,7 +110,7 @@ public class TaskNode extends BaseEntity {
 	 * 父节点ID
 	 */
 	@ApiModelProperty(value="父节点ID")
-	private Integer parentNodeId;
+	private String parentNodeId;
 
 	/**
 	 * 备注
@@ -141,22 +137,58 @@ public class TaskNode extends BaseEntity {
 	private String actReProcdefId;
 
 	/**
-	 * 案件id
+	 * 子任务最终进度
 	 */
-	@ApiModelProperty(value="案件id")
-	private Integer caseId;
+	@ApiModelProperty(value="子任务最终进度")
+	private Integer finalProcess;
 
 	/**
-	 * 标的id
-	 */
-	@ApiModelProperty(value="标的id")
-	private Integer targetId;
-
-	/**
-	 * 节点当前进度
+	 * 当前子节点进度
 	 */
 	@ApiModelProperty(value="节点当前进度")
 	private Integer process;
+
+	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value="机构id")
+	private Integer insId;
+
+	/**
+	 * 网点id
+	 */
+	@ApiModelProperty(value="网点id")
+	private Integer outlesId;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
+
+	/**
+	 * 程序id
+	 */
+	@ApiModelProperty(value="程序id")
+	private Integer targetId;
+
+	/**
+	 * 节点排序
+	 */
+	@ApiModelProperty(value="节点排序")
+	private Integer sort;
+
+	/**
+	 * 机构类型 1100-拍辅机构 1200-清收机构
+	 */
+	@ApiModelProperty(value="机构类型 1100-拍辅机构 1200-清收机构 ")
+	private Integer insType;
 
 	/**
 	 * 流程任务ID 开始办理 具体的任务流ID
@@ -165,10 +197,36 @@ public class TaskNode extends BaseEntity {
 	private String actTaskId;
 
 	/**
-	 * 节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过
+	 * 节点状态 节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过 500-可跳过 600-已委托
 	 */
-	@ApiModelProperty(value="节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过")
+	@ApiModelProperty(value="节点状态 节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过 500-可跳过 600-已委托")
 	private Integer status;
+
+	/**
+	 * 委托状态 0-委托中 1-拒绝
+	 */
+	@ApiModelProperty(value="委托状态 0-委托中 1-拒绝")
+	private Integer trusteeStatus;
+
+	/**
+	 * 委托类型 0-办理任务 1-审核任务
+	 */
+	@ApiModelProperty(value="委托类型 0-办理任务 1-审核任务")
+	private Integer trusteeType;
+
+	/**
+	 * 节点类型(0-任务办理节点 100-清收案件开启 101-清收案件结案 102-清收案件中止 103-清收案件暂缓 104-清收案件还款详情 110-清收标的毁损 111-清收标的灭失
+	 * 			120-清收标的物毁损 121-清收标的物灭失)
+	 */
+	@ApiModelProperty(value="0-任务办理节点 100-清收案件开启 101-清收案件结案 102-清收案件中止 103-清收案件暂缓 104-清收案件还款详情 110-清收标的毁损 111-清收标的灭失\n" +
+			"120-清收标的物毁损 121-清收标的物灭失")
+	private Integer nodeType;
+
+	/**
+	 * 节点状态 0-新增 1-补录
+	 */
+	@ApiModelProperty(value="0-新增 1-补录")
+	private Integer submissionStatus;
 
 	/**
 	 * 表单填充数据

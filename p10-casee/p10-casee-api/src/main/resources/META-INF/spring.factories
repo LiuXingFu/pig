@@ -1,7 +1,15 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.pig4cloud.pig.casee.feign.fallback.RemoteSubjectBankLoanReServiceFallbackImpl,\
   com.pig4cloud.pig.casee.feign.factory.RemoteSubjectBankLoanReServiceFallbackFactory,\
-com.pig4cloud.pig.casee.feign.fallback.RemoteBankLoanServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteBankLoanServiceFallbackImpl,\
   com.pig4cloud.pig.casee.feign.factory.RemoteBankLoanServiceFallbackFactory,\
   com.pig4cloud.pig.casee.feign.fallback.RemoteProjectServiceFallbackImpl,\
-  com.pig4cloud.pig.casee.feign.factory.RemoteProjectServiceFallbackFactory
+  com.pig4cloud.pig.casee.feign.factory.RemoteProjectServiceFallbackFactory,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteLiquiTransferRecordServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.factory.RemoteLiquiTransferRecordServiceFallbackFactory,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteAssetsRePaifuServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.factory.RemoteAssetsRePaifuServiceFallbackFactory,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteAssetsServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.factory.RemoteAssetsServiceFallbackFactory,\
+  com.pig4cloud.pig.casee.feign.fallback.RemoteCaseeLiquiServiceFallbackImpl,\
+  com.pig4cloud.pig.casee.feign.factory.RemoteCaseeLiquiServiceFallbackFactory

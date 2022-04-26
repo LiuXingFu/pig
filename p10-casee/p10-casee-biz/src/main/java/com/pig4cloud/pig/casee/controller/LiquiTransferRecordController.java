@@ -188,4 +188,15 @@ public class LiquiTransferRecordController {
 		return R.ok(liquiTransferRecordService.queryCompanyCode(projectId,insId,outlesId));
 	}
 
+	/**
+	 * 根据拍辅项目id查询清收移交记录信息
+	 * @param paifuProjectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据拍辅项目id查询清收移交记录信息", notes = "根据拍辅项目id查询清收移交记录信息")
+	@GetMapping("/getByPaifuProjectId/{paifuProjectId}/{assetsId}")
+	public R getByPaifuProjectIdAndAssetsId(@PathVariable("paifuProjectId") Integer paifuProjectId, @PathVariable("assetsId") Integer assetsId) {
+		return R.ok(liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(paifuProjectId, assetsId));
+	}
+
 }

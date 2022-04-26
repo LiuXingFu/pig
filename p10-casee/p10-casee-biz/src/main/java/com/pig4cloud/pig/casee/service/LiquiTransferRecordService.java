@@ -52,4 +52,6 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 	boolean reception(LiquiTransferRecordDTO liquiTransferRecordDTO);
 
 	Project queryCompanyCode(Integer projectId,Integer insId,Integer outlesId);
+
+	LiquiTransferRecord getByPaifuProjectIdAndAssetsId(Integer paifuProjectId, Integer assetsId);
 }

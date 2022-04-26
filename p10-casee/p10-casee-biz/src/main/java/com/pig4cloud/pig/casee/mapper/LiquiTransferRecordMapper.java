@@ -46,4 +46,6 @@ public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecor
 	List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId);
 
 	QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId);
+
+	LiquiTransferRecord getByPaifuProjectIdAndAssetsId(@Param("paifuProjectId") Integer paifuProjectId, @Param("assetsId") Integer assetsId);
 }

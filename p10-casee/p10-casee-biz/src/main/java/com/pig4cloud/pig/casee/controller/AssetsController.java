@@ -294,5 +294,16 @@ public class AssetsController {
 		return R.ok(assetsService.getByAssetsId(assetsId));
 	}
 
+	/**
+	 * 根据程序id查询财产
+	 * @param targetId
+	 * @return
+	 */
+	@ApiOperation(value = "根据财产id查询财产详情", notes = "根据财产id查询财产详情")
+	@GetMapping("/queryAssetsPaifuById/{targetId}")
+	public R queryAssetsByTargetId(@PathVariable("targetId") Integer targetId) {
+		return R.ok(this.assetsService.queryAssetsByTargetId(targetId));
+	}
+
 
 }

@@ -21,10 +21,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
+import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
 import com.pig4cloud.pig.admin.api.entity.MessageRecord;
 import com.pig4cloud.pig.admin.api.vo.CooperationNewsVO;
 import com.pig4cloud.pig.admin.api.vo.MessageNumberVO;
 import com.pig4cloud.pig.admin.api.vo.MessageRecordVO;
+import com.pig4cloud.pig.casee.entity.TaskNode;
 
 import java.util.List;
 
@@ -83,4 +85,17 @@ public interface MessageRecordService extends IService<MessageRecord> {
 	 * 查询消息气泡数
 	 */
 	MessageNumberVO getMessageNumber();
+
+	/**
+	 * 发送拍辅任务消息
+	 * @param taskNode
+	 * @return
+	 */
+	int sendPaifuTaskMessage(TaskNode taskNode);
+
+	/**
+	 * 根据发送消息目标类型发送消息
+	 * @param taskMessageDTO
+	 */
+	void sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO);
 }

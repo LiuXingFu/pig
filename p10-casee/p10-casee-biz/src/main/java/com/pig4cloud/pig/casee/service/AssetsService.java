@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.AssetsOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.AssetsPageVO;
@@ -76,5 +77,5 @@ public interface AssetsService extends IService<Assets> {
 	AssetsPageVO getByAssetsId(Integer assetsId);
 
 
-
+	Assets queryAssetsByTargetId(Integer targetId);
 }
