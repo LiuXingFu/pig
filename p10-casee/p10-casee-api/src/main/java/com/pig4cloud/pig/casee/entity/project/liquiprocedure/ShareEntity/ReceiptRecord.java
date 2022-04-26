@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 签收记录
@@ -30,8 +29,7 @@ public class ReceiptRecord extends CommonalityData implements Serializable {
 	/**
 	 * 最终签收日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date finalReceiptTime;
+	private LocalDate finalReceiptTime;
 
 	/**
 	 * 备注

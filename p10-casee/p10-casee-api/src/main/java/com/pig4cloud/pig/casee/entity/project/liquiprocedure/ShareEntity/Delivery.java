@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -16,8 +15,7 @@ public class Delivery extends CommonalityData implements Serializable {
 	/**
 	 * 送达日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date deliveryTime;
+	private LocalDate deliveryTime;
 
 	/**
 	 * 送达对象(多个债务人)

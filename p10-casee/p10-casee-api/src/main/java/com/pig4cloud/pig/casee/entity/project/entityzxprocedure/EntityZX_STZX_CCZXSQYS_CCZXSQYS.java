@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 财产执行商请移送
@@ -16,8 +15,7 @@ public class EntityZX_STZX_CCZXSQYS_CCZXSQYS extends CommonalityData implements 
 	/**
 	 * 商请移送日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date pleaseTransferDate;
+	private LocalDate pleaseTransferDate;
 
 	/**
 	 * 商请移送情况(0-移送处置权成功 1-移送处置权失败)

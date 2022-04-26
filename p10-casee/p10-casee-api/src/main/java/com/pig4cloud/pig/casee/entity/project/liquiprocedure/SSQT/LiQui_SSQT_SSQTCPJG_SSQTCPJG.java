@@ -1,6 +1,5 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSQT;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.InstalmentFulfillmentRecord;
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,8 +43,7 @@ public class LiQui_SSQT_SSQTCPJG_SSQTCPJG extends CommonalityData implements Ser
 	/**
 	 * 生效日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date effectiveDate;
+	private LocalDate effectiveDate;
 
 	/**
 	 * 裁判类型(0-判决 1-裁定 2-调解)

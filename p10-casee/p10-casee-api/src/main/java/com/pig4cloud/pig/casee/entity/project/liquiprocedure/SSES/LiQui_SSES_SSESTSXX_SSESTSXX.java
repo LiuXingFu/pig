@@ -1,12 +1,11 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.OtherPanelMembers;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -17,14 +16,12 @@ public class LiQui_SSES_SSESTSXX_SSESTSXX extends CommonalityData implements Ser
 	/**
 	 * 开庭日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date courtSessionTime;
+	private LocalDate courtSessionTime;
 
 	/**
 	 * 到场日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date turnUpTime;
+	private LocalDate turnUpTime;
 
 	/**
 	 * 审判庭

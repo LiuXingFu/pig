@@ -1,12 +1,11 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,8 +22,7 @@ public class LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK extends CommonalityData im
 	/**
 	 * 裁判结果生效日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date effectiveDate;
+	private LocalDate effectiveDate;
 
 	/**
 	 * 最终送达情况备注
