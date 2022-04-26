@@ -14,14 +14,11 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo.paifu;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.Auction;
-import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import lombok.Data;
+import java.util.List;
 
 /**
  * 拍卖表
@@ -29,9 +26,12 @@ import org.apache.ibatis.annotations.Param;
  * @author pig code generator
  * @date 2022-04-25 18:54:58
  */
-@Mapper
-public interface AuctionMapper extends BaseMapper<Auction> {
+@Data
+public class AuctionDetailVO extends Auction {
 
-	AuctionDetailVO getByAssetsReId(@Param("projectId")Integer projectId,@Param("assetsReId")Integer assetsReId);
+    List<AssetsRePaifuDetailVO> assetsReList;
+
+    private Integer assetsReId;
+
 
 }

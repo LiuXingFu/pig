@@ -46,4 +46,5 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	Integer modifyByAssetsReId(AssetsRePaifuModifyDTO assetsRePaifuModifyDTO);
+
 }

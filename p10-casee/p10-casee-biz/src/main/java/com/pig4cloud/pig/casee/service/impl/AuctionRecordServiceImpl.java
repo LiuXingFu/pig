@@ -19,12 +19,10 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.AuctionRecordMapper;
-import com.pig4cloud.pig.casee.service.AuctionAssetsReService;
-import com.pig4cloud.pig.casee.service.AuctionRecordService;
-import com.pig4cloud.pig.casee.service.AuctionRecordStatusService;
-import com.pig4cloud.pig.casee.service.AuctionService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,27 +45,29 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	AuctionRecordStatusService auctionRecordStatusService;
 	@Autowired
 	AuctionAssetsReService auctionAssetsReService;
+	@Autowired
+	AuctionResultsService auctionResultsService;
 
 
 	@Override
 	@Transactional
-	public 	Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO){
+	public Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
 		// 保存拍卖信息
 		Auction auction = new Auction();
-		BeanCopyUtil.copyBean(auctionRecordSaveDTO,auction);
+		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auction);
 		auction.setAuctionStatus(100);
 		auctionService.save(auction);
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
-		if(auctionRecordSaveDTO.getAssetsReIdList().size()>0){
-			if(auctionRecordSaveDTO.getAuctionId() != null){
+		if (auctionRecordSaveDTO.getAssetsReIdList().size() > 0) {
+			if (auctionRecordSaveDTO.getAuctionId() != null) {
 				// 已存在记录先删除财产关联
 				QueryWrapper<AuctionAssetsRe> queryWrapper = new QueryWrapper<>();
-				queryWrapper.lambda().eq(AuctionAssetsRe::getAuctionId,auctionRecordSaveDTO.getAuctionId());
+				queryWrapper.lambda().eq(AuctionAssetsRe::getAuctionId, auctionRecordSaveDTO.getAuctionId());
 				auctionAssetsReService.remove(queryWrapper);
 			}
 			// 保存拍卖财产关联
-			for(Integer assetsId:auctionRecordSaveDTO.getAssetsReIdList()){
+			for (Integer assetsId : auctionRecordSaveDTO.getAssetsReIdList()) {
 				AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
 				auctionAssetsRe.setAssetsReId(assetsId);
 				auctionAssetsRe.setAuctionId(auction.getAuctionId());
@@ -78,7 +78,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 
 		// 保存拍卖记录
 		AuctionRecord auctionRecord = new AuctionRecord();
-		BeanCopyUtil.copyBean(auctionRecordSaveDTO,auctionRecord);
+		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
 		Integer save = this.baseMapper.insert(auctionRecord);
 		// 保存拍卖记录状态
 		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
@@ -88,5 +88,41 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecordStatusService.save(auctionRecordStatus);
 
 		return save;
+	}
+
+	@Override
+	@Transactional
+	public void saveAuctionResults(AuctionResultsSaveDTO auctionResultsSaveDTO) {
+		// 更新拍卖记录状态
+		AuctionRecord auctionRecord = new AuctionRecord();
+		auctionRecord.setAuctionRecordId(auctionResultsSaveDTO.getAuctionRecordId());
+		Integer resultsType = auctionResultsSaveDTO.getResultsType();
+		Integer auctionStatus = null;
+		if (resultsType == 10 || resultsType == 20 || resultsType == 50) {
+			auctionStatus = 300;
+		} else if (resultsType == 30) {
+			auctionStatus = 500;
+		} else if (resultsType == 40) {
+			auctionStatus = 400;
+		}
+		auctionRecord.setAuctionStatus(auctionStatus);
+		this.baseMapper.updateById(auctionRecord);
+
+		// 更新拍卖表当前拍卖状态
+		Auction auction = new Auction();
+		auction.setAuctionId(auctionResultsSaveDTO.getAuctionId());
+		auction.setAuctionStatus(auctionStatus);
+		auctionService.updateById(auction);
+
+		// 保存拍卖记录状态
+		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
+		auctionRecordStatus.setAuctionRecordId(auctionResultsSaveDTO.getAuctionRecordId());
+		auctionRecordStatus.setStatus(auctionStatus);
+		auctionRecordStatus.setChangeTime(auctionResultsSaveDTO.getResultsTime());
+		auctionRecordStatusService.save(auctionRecordStatus);
+		// 保存拍卖结果
+		AuctionResults auctionResults = new AuctionResults();
+		BeanCopyUtil.copyBean(auctionResultsSaveDTO, auctionResults);
+		auctionResultsService.save(auctionResults);
 	}
 }

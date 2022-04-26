@@ -14,7 +14,7 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.dto.paifu;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -33,17 +34,13 @@ import java.time.LocalDate;
  * @date 2022-04-25 20:59:35
  */
 @Data
-@TableName("p10_auction_results")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "拍卖结果表")
-public class AuctionResults extends BaseEntity {
+public class AuctionResultsSaveDTO {
 
-    /**
-     * 拍卖结果id
-     */
-    @TableId
-    @ApiModelProperty(value="拍卖结果id")
-    private Integer auctionResultsId;
+	/**
+	 * 拍卖id
+	 */
+	@ApiModelProperty(value="拍卖id")
+	private Integer auctionId;
 
     /**
      * 拍卖记录id
