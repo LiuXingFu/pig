@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 诉讼阶段一审上诉到期确认
@@ -15,8 +14,7 @@ public class LiQui_SSYS_SSYSSSDQQR_SSYSSSDQQR extends CommonalityData implements
 	/**
 	 * 确认日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date confirmTime;
+	private LocalDate confirmTime;
 
 	/**
 	 * 被告是否上诉(0-否 1-是 )
@@ -26,8 +24,7 @@ public class LiQui_SSYS_SSYSSSDQQR_SSYSSSDQQR extends CommonalityData implements
 	/**
 	 * 应诉时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date respondingTime;
+	private LocalDate respondingTime;
 
 	/**
 	 * 备注

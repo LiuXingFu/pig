@@ -62,6 +62,12 @@ public class Auction extends BaseEntity {
     private Integer caseeId;
 
 	/**
+	 * 标题
+	 */
+	@ApiModelProperty(value="标题")
+	private String auctionTitle;
+
+	/**
 	 * 当前拍卖类型（100-一拍，200-二拍，300-变卖）
 	 */
 	@ApiModelProperty(value="当前拍卖类型（100-一拍，200-二拍，300-变卖）")

@@ -14,6 +14,7 @@ import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -23,6 +24,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -220,5 +222,13 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 		addressService.saveOrUpdate(address,SecurityConstants.FROM);
 
 		return modify;
+	}
+
+	@Override
+	public IPage<AssetsReTargetPageVO> queryTargetPage(Page page, AssetsReTargetPageDTO assetsReTargetPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryTargetPage(page,assetsReTargetPageDTO,insOutlesDTO);
 	}
 }

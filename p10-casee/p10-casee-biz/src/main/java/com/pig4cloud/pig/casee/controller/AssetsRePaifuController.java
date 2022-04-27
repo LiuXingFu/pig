@@ -5,6 +5,7 @@ import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -92,10 +93,22 @@ public class AssetsRePaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "根据项目案件财产关联更新财产基本信息", notes = "根据项目案件财产关联更新财产基本信息")
-	@SysLog("根据项目案件财产关联更新财产基本信息" )
+	@SysLog("根据项目案件财产关联更新财产基本信息 " )
 	@PutMapping("/modifyByAssetsReId")
 	public R modifyByAssetsReId(@RequestBody AssetsRePaifuModifyDTO assetsRePaifuModifyDTO) {
 		return R.ok(assetsRePaifuService.modifyByAssetsReId(assetsRePaifuModifyDTO));
+	}
+
+	/**
+	 * 分页查询标的物列表
+	 * @param page 分页对象
+	 * @param assetsReTargetPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id分页查询标的物列表", notes = "根据项目id分页查询标的物列表")
+	@GetMapping("/queryTargetPage")
+	public R queryTargetPage(Page page, AssetsReTargetPageDTO assetsReTargetPageDTO) {
+		return R.ok(assetsRePaifuService.queryTargetPage(page, assetsReTargetPageDTO));
 	}
 
 }

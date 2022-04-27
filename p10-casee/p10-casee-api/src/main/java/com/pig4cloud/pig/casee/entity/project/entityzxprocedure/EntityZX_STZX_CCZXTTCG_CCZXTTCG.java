@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 财产执行腾退成功
@@ -16,8 +15,7 @@ public class EntityZX_STZX_CCZXTTCG_CCZXTTCG extends CommonalityData implements 
 	/**
 	 * 腾退日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date vacateDate;
+	private LocalDate vacateDate;
 
 	/**
 	 * 附件

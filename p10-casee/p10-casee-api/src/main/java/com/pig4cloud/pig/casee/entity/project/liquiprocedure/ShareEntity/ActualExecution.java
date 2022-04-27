@@ -1,13 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.pig4cloud.pig.admin.api.entity.FileAdder;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 /**
  * 实际执结
@@ -17,8 +14,7 @@ public class ActualExecution extends CommonalityData implements Serializable {
 	/**
 	 * 结案日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date caseClosedTime;
+	private LocalDate caseClosedTime;
 
 	/**
 	 * 执结类型(0-自动履行完毕 1-强制执行完毕 2-和解履行完毕 3-半强制执行半自动履行)

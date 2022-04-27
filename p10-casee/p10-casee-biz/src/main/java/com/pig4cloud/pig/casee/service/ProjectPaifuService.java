@@ -96,4 +96,5 @@ public interface ProjectPaifuService extends IService<Project> {
 	ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId);
 
 
+
 }

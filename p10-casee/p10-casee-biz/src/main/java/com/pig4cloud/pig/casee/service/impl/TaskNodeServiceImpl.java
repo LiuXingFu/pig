@@ -1607,6 +1607,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				AssetsRe assetsRe = new AssetsRe();
 				assetsRe.setAssetsId(target.getGoalId());
 				assetsRe.setCaseeId(target.getCaseeId());
+				assetsRe.setProjectId(taskNode.getProjectId());
 
 				AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 

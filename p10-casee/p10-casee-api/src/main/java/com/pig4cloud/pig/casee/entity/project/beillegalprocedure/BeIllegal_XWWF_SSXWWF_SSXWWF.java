@@ -1,12 +1,11 @@
 package com.pig4cloud.pig.casee.entity.project.beillegalprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 实施行为违法
@@ -16,8 +15,7 @@ public class BeIllegal_XWWF_SSXWWF_SSXWWF extends CommonalityData implements Ser
 	/**
 	 * 限制日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date limitTime;
+	private LocalDate limitTime;
 
 	/**
 	 * 案号
