@@ -122,4 +122,39 @@
 		and p10_assets_re.assets_re_id = #{assetsReId}
 	</select>
 
+	<select id="queryTargetPage" resultType="com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO">
+		select * from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
+		where p10_assets_re.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.project_type = 200
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != 0">
+			AND (p10_project.company_code like concat('%',#{query.caseeNumber},'%')
+				or p10_casee.casee_number like concat('%',#{query.caseeNumber},'%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			AND p10_assets.assets_name like concat('%',#{query.assetsName},'%')
+		</if>
+		<if test="query.owner != null and query.owner != ''">
+			AND p10_assets.owner like concat('%',#{query.owner},'%')
+		</if>
+		<if test="query.accountNumber != null and query.accountNumber != ''">
+			AND p10_assets.account_number like concat('%',#{query.accountNumber},'%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null">
+			AND json_extract( p10_assets_re.assets_re_detail,
+			'$.AssetsSeizure.seizureExpiryDate' ) BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+	</select>
+
 </mapper>
