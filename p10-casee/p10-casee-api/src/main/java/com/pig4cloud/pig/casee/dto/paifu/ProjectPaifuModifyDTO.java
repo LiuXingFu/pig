@@ -62,6 +62,12 @@ public class ProjectPaifuModifyDTO {
 	private Integer outlesId;
 
 	/**
+	 * 立案日期
+	 */
+	@ApiModelProperty(value="立案日期")
+	private LocalDate startTime;
+
+	/**
 	 * 案号
 	 */
 	@ApiModelProperty(value="案号")
