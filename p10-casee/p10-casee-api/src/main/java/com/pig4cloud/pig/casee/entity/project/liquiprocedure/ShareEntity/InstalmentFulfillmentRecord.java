@@ -1,12 +1,11 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 分期履行记录
@@ -22,8 +21,7 @@ public class InstalmentFulfillmentRecord extends CommonalityData implements Seri
 	/**
 	 * 分期履行时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date installmentTime;
+	private LocalDate installmentTime;
 
 	/**
 	 * 分期履行金额

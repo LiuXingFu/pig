@@ -1,14 +1,12 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.pig4cloud.pig.admin.api.entity.FileAdder;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.InstalmentFulfillmentRecord;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,8 +17,7 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	/**
 	 * 裁判/调解日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date refereeMediationTime;
+	private LocalDate refereeMediationTime;
 
 	/**
 	 * 诉讼费用
@@ -56,6 +53,16 @@ public class LiQui_SSYS_SSYSCPJG_SSYSCPJG extends CommonalityData implements Ser
 	 * 裁判金额
 	 */
 	private BigDecimal refereeAmount;
+
+	/**
+	 * 本金
+	 */
+	private BigDecimal principal;
+
+	/**
+	 * 利息
+	 */
+	private BigDecimal interest;
 
 	/**
 	 * 确定内容

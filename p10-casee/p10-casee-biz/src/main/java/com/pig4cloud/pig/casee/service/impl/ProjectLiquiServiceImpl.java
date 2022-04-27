@@ -134,23 +134,42 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//查询银行借贷债务人信息
 		List<Integer> subjectIdList = subjectBankLoanReService.selectSubjectId(transferRecordBankLoanVO.getSourceId());
 		R<List<Subject>> result = remoteSubjectService.queryBySubjectIdList(subjectIdList, SecurityConstants.FROM);
-		//添加费用产生记录
-		ExpenseRecord expenseRecord = new ExpenseRecord();
-		expenseRecord.setProjectId(projectLiqui.getProjectId());
-		expenseRecord.setCostType(30001);
-		expenseRecord.setCostIncurredTime(projectLiqui.getTakeTime());
-		expenseRecord.setCostAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount());
-		expenseRecord.setStatus(0);
-		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
-		expenseRecord.setSubjectName(transferRecordBankLoanVO.getSubjectName());
-		expenseRecordService.save(expenseRecord);
+		//添加项目费用产生记录 本金
+		ExpenseRecord expenseRecordPrincipal = new ExpenseRecord();
+		expenseRecordPrincipal.setProjectId(projectLiqui.getProjectId());
+		expenseRecordPrincipal.setCostType(10001);
+		expenseRecordPrincipal.setCostIncurredTime(projectLiqui.getTakeTime());
+		expenseRecordPrincipal.setCostAmount(projectLiqui.getProjectLiQuiDetail().getPrincipal());
+		expenseRecordPrincipal.setStatus(0);
+		expenseRecordPrincipal.setCompanyCode(projectLiqui.getCompanyCode());
+		expenseRecordPrincipal.setSubjectName(transferRecordBankLoanVO.getSubjectName());
+		expenseRecordService.save(expenseRecordPrincipal);
 
 		//添加费用记录关联主体信息
 		ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
 		for (Subject subject : result.getData()) {
 			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecordPrincipal.getExpenseRecordId());
 			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+		}
+
+		//添加项目费用产生记录 利息
+		ExpenseRecord expenseRecordInterest = new ExpenseRecord();
+		expenseRecordInterest.setProjectId(projectLiqui.getProjectId());
+		expenseRecordInterest.setCostType(30001);
+		expenseRecordInterest.setCostIncurredTime(projectLiqui.getTakeTime());
+		expenseRecordInterest.setCostAmount(projectLiqui.getProjectLiQuiDetail().getInterest());
+		expenseRecordInterest.setStatus(0);
+		expenseRecordInterest.setCompanyCode(projectLiqui.getCompanyCode());
+		expenseRecordInterest.setSubjectName(transferRecordBankLoanVO.getSubjectName());
+		expenseRecordService.save(expenseRecordInterest);
+
+		//添加费用记录关联主体信息
+		ExpenseRecordSubjectRe expenseRecordSubjectInterestRe = new ExpenseRecordSubjectRe();
+		for (Subject subject : result.getData()) {
+			expenseRecordSubjectInterestRe.setSubjectId(subject.getSubjectId());
+			expenseRecordSubjectInterestRe.setExpenseRecordId(expenseRecordInterest.getExpenseRecordId());
+			expenseRecordSubjectReService.save(expenseRecordSubjectInterestRe);
 		}
 
 		// 保存项目状态变更记录表

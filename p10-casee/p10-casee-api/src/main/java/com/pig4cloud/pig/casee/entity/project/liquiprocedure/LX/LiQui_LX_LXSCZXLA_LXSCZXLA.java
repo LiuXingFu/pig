@@ -1,12 +1,11 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.LX;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -17,8 +16,7 @@ public class LiQui_LX_LXSCZXLA_LXSCZXLA extends CommonalityData implements Seria
 	/**
 	 * 立案时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date filingTime;
+	private LocalDate filingTime;
 
 	/**
 	 * 首执案号
