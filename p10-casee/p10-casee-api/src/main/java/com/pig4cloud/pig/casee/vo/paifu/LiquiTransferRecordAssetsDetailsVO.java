@@ -14,40 +14,25 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.dto;
+package com.pig4cloud.pig.casee.vo.paifu;
 
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * 回款详细记录表
+ * 清收移交记录表
  *
  * @author Mjh
- * @date 2022-02-17 17:52:51
+ * @date 2022-04-06 15:21:31
  */
 @Data
-public class PaymentRecordDTO extends PaymentRecord {
-	/**
-	 * 分配款项记录
-	 */
-	List<PaymentRecordAddDTO> paymentRecordList;
+@TableName("p10_liqui_transfer_record")
+@ApiModel(value = "清收移交记录表")
+public class LiquiTransferRecordAssetsDetailsVO {
 
-	/**
-	 * 主体id
-	 */
-	private Integer subjectId;
-
-	/**
-	 * 主体id
-	 */
-	private List<Integer> subjectIdList;
-
-	/**
-	 * 到款记录
-	 */
-	private List<PaymentRecord> courtPayment;
-
+	List<LiquiTransferRecordDetailsVO> liquiTransferRecordDetailsVOList;
 }
-

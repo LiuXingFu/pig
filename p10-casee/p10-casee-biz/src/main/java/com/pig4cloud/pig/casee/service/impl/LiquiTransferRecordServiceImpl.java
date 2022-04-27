@@ -35,6 +35,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
+import com.pig4cloud.pig.casee.vo.paifu.LiquiTransferRecordAssetsDetailsVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -351,4 +352,8 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		return null;
 	}
 
+	@Override
+	public List<LiquiTransferRecordAssetsDetailsVO> getTransferRecordAssetsByProjectId(Integer projectId) {
+		return this.baseMapper.getTransferRecordAssetsByProjectId(projectId);
+	}
 }

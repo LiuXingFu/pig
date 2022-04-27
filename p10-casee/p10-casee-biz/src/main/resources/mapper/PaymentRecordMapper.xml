@@ -31,6 +31,7 @@
 		<result property="updateBy" column="update_by"/>
 		<result property="delFlag" column="del_flag"/>
 		<result property="projectId" column="project_id"/>
+		<result property="expenseRecordId" column="expense_record_id"/>
 		<result property="paymentType" column="payment_type"/>
 		<result property="fundsType" column="funds_type"/>
 		<result property="paymentDate" column="payment_date"/>
@@ -108,7 +109,7 @@
 				p10_payment_record.project_id = #{projectId}
 				AND p10_payment_record.funds_type LIKE concat( '%', 200, '%' )
 				AND p10_payment_record.payment_type = 200
-				AND p10_payment_record.status = 0
+				AND p10_payment_record.status != 2
 			) lumpSum
 		WHERE
 			p10_payment_record.project_id = #{projectId}

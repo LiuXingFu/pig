@@ -51,6 +51,12 @@ public class PaymentRecord extends BaseEntity {
     @ApiModelProperty(value="0-正常，1-删除")
     private String delFlag;
 
+	/**
+	 * 费用记录id
+	 */
+	@ApiModelProperty(value="费用记录id")
+	private Integer expenseRecordId;
+
     /**
      * 项目id
      */
