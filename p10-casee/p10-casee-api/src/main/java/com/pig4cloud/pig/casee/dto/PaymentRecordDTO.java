@@ -40,11 +40,6 @@ public class PaymentRecordDTO extends PaymentRecord {
 	private Integer subjectId;
 
 	/**
-	 * 主体名称
-	 */
-	private String subjectName;
-
-	/**
 	 * 主体id
 	 */
 	private List<Integer> subjectIdList;
