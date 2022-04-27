@@ -56,15 +56,15 @@
 
 	<resultMap id="queryLiquiTransferRecordDetailsVOMap" type="com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO"
 			   extends="liquiTransferRecordMap">
-		<collection property="assetsReDTOList" ofType="com.pig4cloud.pig.casee.dto.AssetsReDTO"
+		<collection property="assetsReDTOList" ofType="com.pig4cloud.pig.casee.vo.AssetsReLiquiVO"
 					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsReDTOByLiQuiTransferRecordId"
 					column="liqui_transfer_record_id">
 		</collection>
 	</resultMap>
 
-	<resultMap id="LiquiTransferRecordAssetsDetailsVOMap" type="com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO"
+	<resultMap id="LiquiTransferRecordAssetsDetailsVOMap" type="com.pig4cloud.pig.casee.vo.paifu.LiquiTransferRecordAssetsDetailsVO"
 			   extends="liquiTransferRecordMap">
-		<collection property="assetsReDTOList" ofType="com.pig4cloud.pig.casee.dto.AssetsReDTO"
+		<collection property="assetsReLiquiVOS" ofType="com.pig4cloud.pig.casee.vo.AssetsReLiquiVO"
 					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsReDTOByLiQuiTransferRecordId"
 					column="liqui_transfer_record_id">
 		</collection>

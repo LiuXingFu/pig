@@ -17,6 +17,10 @@
 package com.pig4cloud.pig.casee.vo.paifu;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
+import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
+import com.pig4cloud.pig.casee.vo.AssetsReLiquiVO;
+import com.pig4cloud.pig.casee.vo.AssetsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -32,7 +36,41 @@ import java.util.List;
 @Data
 @TableName("p10_liqui_transfer_record")
 @ApiModel(value = "清收移交记录表")
-public class LiquiTransferRecordAssetsDetailsVO {
+public class LiquiTransferRecordAssetsDetailsVO extends LiquiTransferRecord {
 
-	List<LiquiTransferRecordDetailsVO> liquiTransferRecordDetailsVOList;
+	/**
+	 * 机构名称
+	 */
+	private String insName;
+
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
+
+	/**
+	 * 申请人
+	 */
+	private String applicantSubjectName;
+
+	/**
+	 * 被执行人
+	 */
+	private String executorSubjectName;
+
+	/**
+	 * 申请提交时间
+	 */
+	private String applicationSubmissionTime;
+
+	/**
+	 * 拍卖申请书
+	 */
+	private String auctionApplicationFile;
+
+
+	/**
+	 * 移交的财产信息
+	 */
+	private List<AssetsReLiquiVO> assetsReLiquiVOS;
 }

@@ -42,6 +42,6 @@ public class QueryLiquiTransferRecordDetailsVO extends LiquiTransferRecord {
 	/**
 	 * 移交的财产信息
 	 */
-	List<AssetsReDTO> assetsReDTOList;
+	List<AssetsReLiquiVO> assetsReDTOList;
 
 }
