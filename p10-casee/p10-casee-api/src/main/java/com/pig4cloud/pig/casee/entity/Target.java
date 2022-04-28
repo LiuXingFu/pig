@@ -58,6 +58,12 @@ public class Target extends BaseEntity {
 	private String targetName;
 
 	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
 	 * 案件id
 	 */
 	@ApiModelProperty(value="案件id")

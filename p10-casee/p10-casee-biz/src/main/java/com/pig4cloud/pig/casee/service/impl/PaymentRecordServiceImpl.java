@@ -119,11 +119,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			paymentRecord.setCaseeId(paymentRecordDTO.getCaseeId());
 			paymentRecord.setCaseeNumber(paymentRecordDTO.getCaseeNumber());
 			paymentRecord.setProjectId(paymentRecordDTO.getProjectId());
+			paymentRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
 			paymentRecord.setCompanyCode(paymentRecordDTO.getCompanyCode());
 			paymentRecord.setFatherId(paymentRecordDTO.getPaymentRecordId());
 			paymentRecord.setPaymentDate(paymentRecordDTO.getPaymentDate());
 			paymentRecord.setPaymentType(paymentRecordDTO.getPaymentType());
-			paymentRecord.setSubjectName(paymentRecordDTO.getSubjectName());
 			//添加分配款项信息
 			this.save(paymentRecord);
 

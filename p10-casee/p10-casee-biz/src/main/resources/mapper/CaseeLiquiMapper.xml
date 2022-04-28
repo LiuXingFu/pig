@@ -56,7 +56,7 @@
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
-		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_target.goal_type = 10001
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id and p10_target.goal_type = 10001
 		where p10_casee.del_flag = 0
 		and p10_project.project_type = 100
 		<if test="projectId!=null and projectId!=''">
@@ -134,7 +134,7 @@
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
-		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		where p10_casee.del_flag = 0
 		and p10_target.goal_id is null
 		and p10_project.project_type = 100
@@ -238,7 +238,7 @@
 		lawyerName,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
-		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		left join (select * from (
@@ -301,7 +301,7 @@
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
-		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_casee.del_flag = 0
 		and p10_project.project_type = 100
@@ -555,7 +555,7 @@
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
-		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id and
 		p10_project_casee_re.casee_id = p10_casee.casee_id

@@ -42,7 +42,7 @@
 		WHERE p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
 
-	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiVO">
 		SELECT
 		p10_assets.*,
 		p10_assets_re.*,

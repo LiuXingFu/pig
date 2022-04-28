@@ -98,33 +98,10 @@
 		from p10_target t where t.target_id = #{query.targetId}
 	</select>
 
-	<select id="standCaseUndeliveredPage" resultType="com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO">
-		SELECT
-		p10_project.company_code,
-		p10_casee.*,
-		p10_target.target_id,
-		p10_casee_lawyer_re.actual_name AS lawyerName,
-		p10_court.court_name,
-		p10_project_casee_re.actual_name AS userName
-		FROM
-		p10_target
-		LEFT JOIN p10_casee ON p10_target.casee_id = p10_casee.casee_id
-		AND p10_casee.del_flag = 0
-		LEFT JOIN p10_project_casee_re ON p10_project_casee_re.casee_id = p10_casee.casee_id
-		AND p10_project_casee_re.del_flag = 0
-		LEFT JOIN p10_project ON p10_project.project_id = p10_project_casee_re.project_id
-		AND p10_project.del_flag = 0
-		LEFT JOIN p10_casee_lawyer_re ON p10_casee_lawyer_re.casee_id = p10_casee.casee_id
-		LEFT JOIN p10_court ON p10_court.court_id = p10_casee.court_id
-		AND p10_court.del_flag = 0
-		WHERE
-		p10_target.del_flag = 0
-
-	</select>
-
 	<select id="getTarget" resultType="com.pig4cloud.pig.casee.vo.TaskNodeVO">
-		SELECT p10_task_node.* FROM p10_target left join p10_task_node on p10_task_node.target_id=p10_target.target_id
-		WHERE p10_task_node.project_id=#{projectId} and p10_target.casee_id=#{caseeId} AND p10_target.procedure_nature=#{procedureNature} and p10_target.del_flag=0 AND p10_task_node.node_type=0
+		SELECT p10_task_node.* FROM p10_target left
+		join p10_task_node on p10_task_node.target_id=p10_target.target_id
+		WHERE p10_task_node.project_id=#{projectId} and p10_target.casee_id=#{caseeId} and p10_target.project_id = #{projectId} AND p10_target.procedure_nature=#{procedureNature} and p10_target.del_flag=0 AND p10_task_node.node_type=0
 		<if test="id!=null">
 			and p10_target.goal_id=#{id}
 		</if>

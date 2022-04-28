@@ -62,14 +62,6 @@ public interface TargetService extends IService<Target> {
 	int saveTargetAddDTO(TargetAddDTO targetAddDTO) throws Exception;
 
 	/**
-	 * 根据案件类型分页查询立案未送达
-	 * @param page
-	 * @param targetCaseeProjectPageDTO
-	 * @return
-	 */
-	IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO);
-
-	/**
 	 * 根据案件id,程序性质查询模板数据
 	 * @param caseeId 案件id
 	 * @param id 财产或程序id

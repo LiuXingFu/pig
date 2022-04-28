@@ -95,7 +95,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
@@ -132,7 +132,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node node on node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.node_id = node.node_id
 		where p10_project.del_flag = 0
@@ -171,7 +171,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
@@ -231,7 +231,7 @@
 				) p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_target.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.`status` = 1000
@@ -265,7 +265,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join (select * from (
 				select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
 				where p10_task_node.`status` = 0
@@ -368,7 +368,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
@@ -413,7 +413,7 @@
 
 	<select id="selectAssetsReDetails" resultMap="assetsReDetails">
 		select p10_assets_re.*,p10_target.target_id as assetsTargetId from p10_assets_re
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_target.goal_type = 20001
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_assets_re.project_id = p10_target.project_id and p10_target.goal_type = 20001
 		where p10_assets_re.del_flag = 0
 		and p10_assets_re.assets_re_id = #{assetsReId}
 	</select>
@@ -423,7 +423,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
@@ -461,7 +461,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join (select p10_task_node.target_id,p10_task_node.node_id from p10_task_node
 				where p10_task_node.node_attributes = 400
 				and p10_task_node.node_key = "entityZX_STZX_CCZXPMJG_CCZXPMJG"
@@ -502,7 +502,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join (select p10_task_node.target_id,p10_task_node.node_id,p10_task_node.form_data,p10_task_node.node_name from p10_task_node
 				where p10_task_node.node_attributes = 400
 				and (p10_task_node.node_key = "entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK" or p10_task_node.node_key = "entityZX_STZX_CCZXDK_CCZXDK")
@@ -543,7 +543,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join (select p10_task_node.target_id,p10_task_node.node_id,p10_task_node.form_data,p10_task_node.node_name from p10_task_node
 		where p10_task_node.node_attributes = 400
 		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
@@ -584,7 +584,7 @@
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.`status` = 1000
@@ -602,7 +602,7 @@
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.`status` = 3000
@@ -657,7 +657,7 @@
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_assets_re.casee_id is not null
