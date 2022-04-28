@@ -58,6 +58,7 @@ import com.pig4cloud.pig.common.core.util.*;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +73,7 @@ import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -111,6 +113,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private RemoteMessageRecordService remoteMessageRecordService;
+	@Autowired
+	CaseeHandlingRecordsService caseeHandlingRecordsService;
 
 	private int sum = 0;
 
@@ -1651,27 +1655,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
 					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//此处还需修改
-					List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
-					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
-					messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
-					messageRecordDTO.setCreateTime(LocalDate.now());
-					messageRecordDTO.setMessageType(10000);
-					Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
-					messageRecordDTO.setMessageTitle("案号为"+casee.getCaseeNumber()+"的"+taskNode.getNodeName()+"任务已更新");
-					messageRecordDTO.setMessageContent("你好");
-					messageRecordDTO.setReceiverInsId(165);
-					messageRecordDTO.setReceiverOutlesId(180);
-
-					NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
-					BeanCopyUtil.copyBean(taskNode, nodeMessageRecordVO);
-					String json = JsonUtils.objectToJson(nodeMessageRecordVO);
-
-					messageRecordDTO.setTargetValue(json);
-					messageRecordDTOList.add(messageRecordDTO);
-
-					messageRecordService.batchSendMessageRecordOutPush(messageRecordDTOList, SecurityConstants.FROM);
 
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
