@@ -1640,12 +1640,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
 
-					com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
-
-					BeanCopyUtil.copyBean(taskNode, taskNode1);
-
-					remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
-
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
 					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);

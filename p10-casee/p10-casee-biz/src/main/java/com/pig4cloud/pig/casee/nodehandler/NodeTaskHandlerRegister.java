@@ -31,8 +31,8 @@ public class NodeTaskHandlerRegister {
 //	@Autowired
 //	LIQUI_LX_ZQCS_ZQCS_NODEHandler liqui_lx_zqcs_zqcs_nodeHandler;
 
-//	@Autowired
-//	PAIFUGENERALLY_NODEHandler paiFuGenerallyNodeHandler;
+	@Autowired
+	PAIFUGENERALLY_NODEHandler paiFuGenerallyNodeHandler;
 
 	@Autowired
 	LIQUIGENERALLY_NODEHandler liQuiGenerallyNodeHandler;
@@ -95,7 +95,6 @@ public class NodeTaskHandlerRegister {
 	EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler;
 
 
-
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
 
@@ -108,7 +107,7 @@ public class NodeTaskHandlerRegister {
 	//初始方法
 	@PostConstruct
 	public void init() {
-//		// 拍辅任务节点提交map实现类
+		// 拍辅任务节点提交map实现类
 //		submitHandlerMap.put("paiFu_JGRZ_SFYJ_YJJG", paifu_jgrz_sfyj_yjjg_nodeHandler);
 //		submitHandlerMap.put("paiFu_JGRZ_DXXJ_XJJG", paifu_jgrz_dxxj_xjjg_nodeHandler);
 //		submitHandlerMap.put("paiFu_JGRZ_WLXJ_XTLR", paifu_jgrz_wlxj_xtlr_nodeHandler);
@@ -126,8 +125,8 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", liqui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk_nodeHandler);
-		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX",limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
-		submitHandlerMap.put("liQui_SSQT_SSQTCPJGSX_SSQTCPJGSX",liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler);
+		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX", limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
+		submitHandlerMap.put("liQui_SSQT_SSQTCPJGSX_SSQTCPJGSX", liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler);
 
 		//财产程序任务提交map实体类
 		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg_nodeHandler);
@@ -170,7 +169,11 @@ public class NodeTaskHandlerRegister {
 
 		if (taskNodeHandler == null) {
 
-			taskNodeHandler = liQuiGenerallyNodeHandler;
+			if (taskNode.getInsType().equals(1100)) {
+				taskNodeHandler = paiFuGenerallyNodeHandler;
+			} else {
+				taskNodeHandler = liQuiGenerallyNodeHandler;
+			}
 		}
 
 		taskNodeHandler.handlerTaskSubmit(taskNode);
@@ -193,7 +196,11 @@ public class NodeTaskHandlerRegister {
 
 		if (taskNodeHandler == null) {
 
-			taskNodeHandler = liQuiGenerallyNodeHandler;
+			if (taskFlowDTO.getInsType().equals(1100)) {
+				taskNodeHandler = paiFuGenerallyNodeHandler;
+			} else {
+				taskNodeHandler = liQuiGenerallyNodeHandler;
+			}
 
 		}
 		taskNodeHandler.handlerTaskAudit(taskFlowDTO);
@@ -216,7 +223,11 @@ public class NodeTaskHandlerRegister {
 
 		if (taskNodeHandler == null) {
 
-			taskNodeHandler = liQuiGenerallyNodeHandler;
+			if (taskNode.getInsType().equals(1100)) {
+				taskNodeHandler = paiFuGenerallyNodeHandler;
+			} else {
+				taskNodeHandler = liQuiGenerallyNodeHandler;
+			}
 
 		}
 

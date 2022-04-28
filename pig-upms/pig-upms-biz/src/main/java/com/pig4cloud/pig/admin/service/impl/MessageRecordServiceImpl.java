@@ -188,8 +188,8 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 		Assets assets = remoteAssetsService.queryAssetsByTargetId(taskNode.getTargetId(), SecurityConstants.FROM).getData();
 
-//		LiquiTransferRecord liquiTransferRecord = remoteLiquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), assets.getAssetsId(), SecurityConstants.FROM).getData();
-		LiquiTransferRecord liquiTransferRecord = remoteLiquiTransferRecordService.getByPaifuProjectIdAndAssetsId(571, 708, SecurityConstants.FROM).getData();
+		LiquiTransferRecord liquiTransferRecord = remoteLiquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), assets.getAssetsId(), SecurityConstants.FROM).getData();
+//		LiquiTransferRecord liquiTransferRecord = remoteLiquiTransferRecordService.getByPaifuProjectIdAndAssetsId(571, 708, SecurityConstants.FROM).getData();
 
 		if (Objects.nonNull(liquiTransferRecord)) {
 			//根据案件id查询案件
@@ -210,6 +210,10 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 			//将任务数据相关数据存入nodeMessageRecordVO
 			BeanCopyUtil.copyBean(taskNode, nodeMessageRecordVO);
+
+			nodeMessageRecordVO.setAssetsId(assets.getAssetsId());
+
+			nodeMessageRecordVO.setAssetsType(assets.getAssetsType());
 
 			//将nodeMessageRecordVO转换成json
 			String json = JsonUtils.objectToJson(nodeMessageRecordVO);
