@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.Auction;
+import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
 
 /**
  * 拍卖表
@@ -27,5 +28,14 @@ import com.pig4cloud.pig.casee.entity.Auction;
  * @date 2022-04-25 18:54:58
  */
 public interface AuctionService extends IService<Auction> {
+
+	/**
+	 * 根据项目id、案件id、财产id查询拍卖
+	 * @param assetsId
+	 * @param projectId
+	 * @param caseeId
+	 * @return
+	 */
+	AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId,Integer projectId,Integer caseeId);
 
 }

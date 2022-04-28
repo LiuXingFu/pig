@@ -8,10 +8,12 @@ import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 
 public interface AssetsRePaifuService extends IService<AssetsRe> {
 
@@ -43,4 +45,13 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	Integer modifyByAssetsReId(AssetsRePaifuModifyDTO assetsRePaifuModifyDTO);
+
+	/**
+	 * 分页查询标的物列表
+	 * @param page
+	 * @param assetsReTargetPageDTO
+	 * @return
+	 */
+	IPage<AssetsReTargetPageVO> queryTargetPage(Page page, AssetsReTargetPageDTO assetsReTargetPageDTO);
+
 }

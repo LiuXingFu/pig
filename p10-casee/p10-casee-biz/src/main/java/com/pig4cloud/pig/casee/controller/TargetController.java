@@ -137,17 +137,4 @@ public class TargetController {
 
     }
 
-
-	/**
-	 * 根据案件类型分页查询立案未送达
-	 * @param page
-	 * @param targetCaseeProjectPageDTO
-	 * @return
-	 */
-	@ApiOperation(value = "根据案件类型分页查询立案未送达", notes = "根据案件类型分页查询立案未送达")
-	@GetMapping("/standCaseUndeliveredPage")
-	public R standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
-		return R.ok(targetService.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO));
-	}
-
 }

@@ -31,11 +31,6 @@ import java.math.BigDecimal;
 public class PaymentRecordAddDTO extends PaymentRecord {
 
 	/**
-	 * 费用记录id
-	 */
-	private Integer expenseRecordId;
-
-	/**
 	 * 费用记录回款总额
 	 */
 	private BigDecimal paymentSumAmount;

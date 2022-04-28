@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.limitprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 行为限制限制撤销
@@ -15,8 +14,7 @@ public class Limit_XWXZ_XWXZXZCX_XWXZXZCX extends CommonalityData implements Ser
 	/**
 	 * 撤销日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date revokeTime;
+	private LocalDate revokeTime;
 
 	/**
 	 * 撤销原因

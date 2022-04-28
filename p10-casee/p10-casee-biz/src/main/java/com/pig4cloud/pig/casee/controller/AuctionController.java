@@ -109,4 +109,15 @@ public class AuctionController {
         return R.ok(auctionService.removeById(auctionId));
     }
 
+	/**
+	 * 根据项目id、案件id、财产id查询拍卖
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id、财产id查询拍卖", notes = "根据项目id、案件id、财产id查询拍卖")
+	@GetMapping("/queryAuctionByProjectIdCaseeId" )
+	public R queryAuctionByProjectIdCaseeId(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(auctionService.queryAuctionByProjectIdCaseeId(projectId,caseeId,assetsId));
+	}
+
+
 }

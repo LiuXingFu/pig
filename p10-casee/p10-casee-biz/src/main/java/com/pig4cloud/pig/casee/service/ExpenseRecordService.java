@@ -38,7 +38,9 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 
    boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord);
 
-   boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord);
+	boolean updateExpenseRecordUpdateProject(ExpenseRecord expenseRecord);
+
+	boolean updateExpenseRecordStatusAndProjectAmount(ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 

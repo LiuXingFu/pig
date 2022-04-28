@@ -1,10 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Date;
 public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements Serializable {
 
 	/**
-	 * 拍卖公告阶段(0-一拍 1-二拍 2-变卖)
+	 * 拍卖公告阶段(100-一拍 200-二拍 300-变卖)
 	 */
 	private Integer auctionAnnouncementStage;
 
@@ -26,8 +26,7 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	/**
 	 * 撤销日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date revocationDate;
+	private LocalDate revocationDate;
 
 	/**
 	 * 撤销附件
@@ -42,7 +41,6 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	/**
 	 * 公告发布时间
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date announcementReleaseTime;
 
 	/**
@@ -63,13 +61,11 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements 
 	/**
 	 * 拍卖开始日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
-	private Date auctionStartDate;
+	private LocalDate auctionStartDate;
 
 	/**
 	 * 拍卖结束日期
 	 */
-	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	private Date auctionEndDate;
 
 	/**

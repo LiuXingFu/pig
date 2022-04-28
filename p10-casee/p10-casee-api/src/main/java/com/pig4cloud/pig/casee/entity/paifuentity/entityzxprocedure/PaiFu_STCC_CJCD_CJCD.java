@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 成交裁定
@@ -15,8 +14,7 @@ public class PaiFu_STCC_CJCD_CJCD extends CommonalityData implements Serializabl
 	/**
 	 * 裁定日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date dateOfAdjudication;
+	private LocalDate dateOfAdjudication;
 
 	/**
 	 * 拍卖结束执行案号

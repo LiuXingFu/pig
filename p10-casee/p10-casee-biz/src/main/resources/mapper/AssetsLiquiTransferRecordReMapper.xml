@@ -42,7 +42,7 @@
 		WHERE p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
 
-	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+	<select id="queryAssetsReDTOByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiVO">
 		SELECT
 		p10_assets.*,
 		p10_assets_re.*,
@@ -60,7 +60,7 @@
 	p10_assets_liqui_transfer_record_re.*
 	FROM
 	p10_project
-	LEFT JOIN p10_liqui_transfer_record ON p10_liqui_transfer_record.project_id = p10_project.project_id
+	LEFT JOIN p10_liqui_transfer_record ON p10_liqui_transfer_record.project_id = p10_project.project_id AND p10_liqui_transfer_record.`status` != 2
 	LEFT JOIN p10_assets_liqui_transfer_record_re on p10_assets_liqui_transfer_record_re.liqui_transfer_record_id=p10_liqui_transfer_record.liqui_transfer_record_id
 	WHERE
 	p10_project.project_id = #{projectId}

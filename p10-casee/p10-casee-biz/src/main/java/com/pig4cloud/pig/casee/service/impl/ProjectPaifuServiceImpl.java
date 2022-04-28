@@ -236,12 +236,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public 	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO){
+		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuModifyDTO.getCourtId(), SecurityConstants.FROM).getData();
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,projectPaifu);
 		Integer modify = this.baseMapper.updateById(projectPaifu);
 
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,casee);
+		casee.setCourtId(courtId);
 		caseeService.updateById(casee);
 		return modify;
 	}

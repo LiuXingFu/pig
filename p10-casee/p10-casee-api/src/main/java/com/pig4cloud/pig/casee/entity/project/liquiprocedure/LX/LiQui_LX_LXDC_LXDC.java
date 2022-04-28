@@ -1,11 +1,10 @@
 package com.pig4cloud.pig.casee.entity.project.liquiprocedure.LX;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -16,8 +15,7 @@ public class LiQui_LX_LXDC_LXDC extends CommonalityData implements Serializable 
 	/**
 	 * 督促日期
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private Date urgeTime;
+	private LocalDate urgeTime;
 
 	/**
 	 * 督促依据(0-判决书/调解书 1-和解协议)

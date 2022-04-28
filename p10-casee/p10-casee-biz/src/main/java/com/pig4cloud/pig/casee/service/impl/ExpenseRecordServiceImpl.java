@@ -95,7 +95,24 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public boolean updateExpenseRecordAndProjectAmount(ExpenseRecord expenseRecord) {
+	public boolean updateExpenseRecordUpdateProject(ExpenseRecord expenseRecord) {
+		//查询没有修改之前的费用明显
+		ExpenseRecord record = this.getById(expenseRecord.getExpenseRecordId());
+
+		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
+
+		ProjectLiQuiDetail projectLiQuiDetail = project.getProjectLiQuiDetail();
+		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(record.getCostAmount()));//先减去没有修改之前的费用金额
+		project.setProjectLiQuiDetail(projectLiQuiDetail);
+		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(expenseRecord.getCostAmount()));//再添加修改后的费用金额
+		project.setProjectLiQuiDetail(projectLiQuiDetail);
+		//修改项目金额
+		projectLiquiService.updateById(project);
+		return this.updateById(expenseRecord);
+	}
+
+	@Override
+	public boolean updateExpenseRecordStatusAndProjectAmount(ExpenseRecord expenseRecord) {
 		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
 		ProjectLiQuiDetail projectLiQuiDetail = project.getProjectLiQuiDetail();
 		if (expenseRecord.getStatus()==0){//恢复正常
