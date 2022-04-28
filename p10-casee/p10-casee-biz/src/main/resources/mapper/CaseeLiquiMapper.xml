@@ -512,7 +512,7 @@
 	</select>
 
 	<select id="caseeSubjectNotAddAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select p10_subject.subject_id,p10_subject.name as
+		select DISTINCT p10_subject.subject_id,p10_subject.name as
 		subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name
 		as userName from p10_casee_subject_re
 		left join p10_casee on p10_casee.casee_id = p10_casee_subject_re.casee_id
@@ -619,10 +619,13 @@
 	</select>
 
 	<select id="selectCaseeDetails" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO">
-		select p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name from p10_casee
+		select p10_casee.*,p10_casee_lawyer_re.actual_name as lawyerName,p10_court.court_name,p10_project.project_id,p10_project.company_code from p10_casee
+		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
+		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 		left join p10_casee_lawyer_re on p10_casee_lawyer_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where p10_casee.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_casee.casee_id = #{caseeId}
 	</select>
 

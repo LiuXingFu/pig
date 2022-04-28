@@ -570,4 +570,9 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	public CaseeLiqui getCaseeLiqui(Casee casee) {
 		return this.baseMapper.getCaseeLiqui(casee);
 	}
+
+	@Override
+	public	CaseeLiquiPageVO getCaseeDetails(Integer caseeId){
+		return this.baseMapper.selectCaseeDetails(caseeId);
+	}
 }

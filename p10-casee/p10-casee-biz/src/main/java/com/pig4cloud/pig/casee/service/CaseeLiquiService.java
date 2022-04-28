@@ -234,4 +234,11 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 			 */
 	CaseeLiqui getCaseeLiqui(Casee casee);
+
+	/**
+	 * 根据案件id获取项目案件详情
+	 * @param caseeId
+	 * @return
+	 */
+	CaseeLiquiPageVO getCaseeDetails(Integer caseeId);
 }
