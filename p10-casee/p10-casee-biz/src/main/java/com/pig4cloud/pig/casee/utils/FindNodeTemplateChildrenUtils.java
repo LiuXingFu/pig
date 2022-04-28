@@ -1,10 +1,7 @@
 package com.pig4cloud.pig.casee.utils;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.Target;
-import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.*;
 import com.pig4cloud.pig.casee.service.*;
@@ -110,10 +107,12 @@ public class FindNodeTemplateChildrenUtils {
 			}
 		} else {//其它程序判断
 			if (target!=null&&target.getGoalType()==20001){
+				AssetsReService assetsReService=SpringUtils.getObject(AssetsReService.class);
+				AssetsRe assetsRe = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getProjectId, taskNodeVO.getProjectId()).eq(AssetsRe::getCaseeId, taskNodeVO.getCaseeId()).eq(AssetsRe::getAssetsId, target.getGoalId()));
 				AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService = SpringUtils.getObject(AssetsLiquiTransferRecordReService.class);
 				//查询当前财产是否移交过
-				AssetsLiquiTransferRecordRe assetsLiquiTransferRecordRe = assetsLiquiTransferRecordReService.getOne(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsReId, target.getGoalId()));
-				if (assetsLiquiTransferRecordRe!=null){//已移交
+				List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordReList = assetsLiquiTransferRecordReService.list(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsReId, assetsRe.getAssetsReId()));
+				if (assetsLiquiTransferRecordReList.size()>=1){//已移交
 					if (taskNodeVO.getStatus() == 0) {
 						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")||taskNodeVO.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")||taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
 							return taskNodeVO;

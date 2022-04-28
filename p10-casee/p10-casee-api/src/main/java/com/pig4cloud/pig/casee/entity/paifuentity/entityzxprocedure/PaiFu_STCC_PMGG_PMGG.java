@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 public class PaiFu_STCC_PMGG_PMGG extends CommonalityData implements Serializable {
 	/**
-	 * 拍卖公告阶段(0-一拍 1-二拍 2-变卖)
+	 * 拍卖公告阶段(100-一拍 200-二拍 300-变卖)
 	 */
 	private Integer auctionAnnouncementStage;
 
