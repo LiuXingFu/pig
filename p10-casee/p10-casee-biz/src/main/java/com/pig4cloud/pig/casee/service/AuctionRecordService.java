@@ -44,5 +44,13 @@ public interface AuctionRecordService extends IService<AuctionRecord> {
 	 */
 	void saveAuctionResults(AuctionResultsSaveDTO auctionResultsSaveDTO);
 
+	/**
+	 * 根据项目id、案件id、财产id查询最后一条拍卖记录
+	 * @param projectId
+	 * @param caseeId
+	 * @param assetsId
+	 * @return
+	 */
+	AuctionRecord getLastAuctionRecord(Integer projectId,Integer caseeId,Integer assetsId);
 
 }

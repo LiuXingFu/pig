@@ -125,4 +125,9 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		BeanCopyUtil.copyBean(auctionResultsSaveDTO, auctionResults);
 		auctionResultsService.save(auctionResults);
 	}
+
+	@Override
+	public AuctionRecord getLastAuctionRecord(Integer projectId,Integer caseeId,Integer assetsId){
+		return this.baseMapper.getLastAuctionRecord(projectId,caseeId,assetsId);
+	}
 }
