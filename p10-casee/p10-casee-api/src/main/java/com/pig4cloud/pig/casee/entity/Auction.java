@@ -49,18 +49,6 @@ public class Auction extends BaseEntity {
     @ApiModelProperty(value="是否联合拍卖(1:否，2-是)")
     private Integer jointAuction;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
-
-    /**
-     * 案件id
-     */
-    @ApiModelProperty(value="案件id")
-    private Integer caseeId;
-
 	/**
 	 * 标题
 	 */

@@ -109,4 +109,14 @@ public class AuctionRecordController {
         return R.ok(auctionRecordService.removeById(auctionRecordId));
     }
 
+	/**
+	 * 根据项目id、案件id、财产id查询最后一条拍卖记录
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id、财产id查询最后一条拍卖记录", notes = "根据项目id、案件id、财产id查询最后一条拍卖记录")
+	@GetMapping("/getLastAuctionRecord" )
+	public R getLastAuctionRecord(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(auctionRecordService.getLastAuctionRecord(projectId,caseeId,assetsId));
+	}
+
 }
