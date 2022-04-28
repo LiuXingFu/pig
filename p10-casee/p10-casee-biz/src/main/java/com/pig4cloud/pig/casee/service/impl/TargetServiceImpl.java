@@ -187,18 +187,6 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 
 	}
 
-	/**
-	 * 根据案件类型分页查询立案未送达
-	 *
-	 * @param page
-	 * @param targetCaseeProjectPageDTO
-	 * @return
-	 */
-	@Override
-	public IPage<TargetCaseeProjectPageVO> standCaseUndeliveredPage(Page page, TargetCaseeProjectPageDTO targetCaseeProjectPageDTO) {
-		return this.baseMapper.standCaseUndeliveredPage(page, targetCaseeProjectPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-	}
-
 	@Override
 	public List<TaskNodeVO> getTarget(Integer projectId,Integer caseeId, Integer procedureNature,Integer id) {
 		return this.baseMapper.getTarget(projectId,caseeId,procedureNature,id);
