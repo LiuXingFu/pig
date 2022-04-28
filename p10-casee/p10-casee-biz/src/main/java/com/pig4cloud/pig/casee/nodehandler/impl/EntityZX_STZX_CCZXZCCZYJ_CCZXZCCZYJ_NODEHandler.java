@@ -84,19 +84,6 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setSubmissionStatus(0);
 				taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
 			}
-			//添加任务办理记录
-			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-			BeanUtils.copyProperties(assetsReDTO,caseeHandlingRecords);
-			caseeHandlingRecords.setNodeName(taskNode.getNodeName());
-			caseeHandlingRecords.setFormData(taskNode.getFormData());
-			caseeHandlingRecords.setTargetId(target.getTargetId());
-			caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsReId());
-			caseeHandlingRecords.setSourceType(0);
-			caseeHandlingRecords.setNodeId(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId());
-			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-			caseeHandlingRecords.setSubmissionStatus(taskNode.getSubmissionStatus());
-			caseeHandlingRecordsService.save(caseeHandlingRecords);
 		}
 	}
 }
