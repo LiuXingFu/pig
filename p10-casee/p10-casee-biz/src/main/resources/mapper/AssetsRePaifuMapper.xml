@@ -89,28 +89,13 @@
 		</if>
 	</select>
 
-	<select id="queryAssetsPaifuById" resultMap="assetsPaifuVOMap">
-		SELECT p10_assets.*,
-		p10_assets_re.assets_re_detail,
-		p10_assets_re.assets_re_id
-		FROM `p10_assets_re`
-		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id AND p10_assets.del_flag = 0
-		WHERE p10_assets_re.del_flag = 0
-		<if test="projectId != null and projectId != 0">
-			AND p10_assets_re.project_id = #{projectId}
-		</if>
-		<if test="caseeId != null and caseeId != 0">
-			AND p10_assets_re.casee_id = #{caseeId}
-		</if>
-		<if test="assetsId != null and assetsId != 0">
-			AND p10_assets_re.assets_id = #{assetsId}
-		</if>
-	</select>
-
 	<resultMap id="getAssets" type="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" extends="assetsReMap">
 		<collection property="subjectIdList" ofType="java.lang.Integer"
 					column="assets_re_id"
 					select="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper.selectByAssetsReId"></collection>
+		<collection property="subjectList" ofType="com.pig4cloud.pig.admin.api.entity.Subject"
+					column="assets_re_id"
+					select="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper.selectByAssetsReIdSubjectList"></collection>
 	</resultMap>
 
 	<select id="selectByAssetsReId" resultMap="getAssets">

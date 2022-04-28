@@ -79,13 +79,15 @@
 		LEFT JOIN sys_user user_receiver ON user_receiver.user_id = messageRecord.receiver_user_id
 		LEFT JOIN sys_user user_sender ON user_sender.user_id = messageRecord.create_by
 		LEFT JOIN p10_outles outles_receiver ON outles_receiver.outles_id=messageRecord.receiver_outles_id
-
 		<where>
 			`messageRecord`.del_flag = '0'
 			<if test="query.insId != null and query.insId != 0">
 				and (`messageRecord`.receiver_ins_id=#{query.insId} or `messageRecord`.sender_ins_id=#{query.insId})
 			</if>
-			<if test="query.userId != null and query.insId != 0">
+			<if test="query.outlesId != null and query.outlesId != 0">
+				and (`messageRecord`.receiver_outles_id=#{query.outlesId} or `messageRecord`.sender_outles_id = #{query.outlesId})
+			</if>
+			<if test="query.userId != null">
 				and `messageRecord`.receiver_user_id = #{query.userId}
 			</if>
 
@@ -97,7 +99,7 @@
 				and `messageRecord`.message_type = #{query.messageType}
 			</if>
 
-			<if test="query.readFlag != null and query.readFlag != -1  ">
+			<if test="query.readFlag != null and query.readFlag != -1">
 				and `messageRecord`.read_flag = #{query.readFlag}
 			</if>
 
@@ -106,12 +108,10 @@
 				outles_sender.outles_name LIKE CONCAT('%',#{query.senderUserName},'%') )
 			</if>
 
-			<if test="query.beginDate != null    and query.endDate != null  ">
+			<if test="query.beginDate != null and query.endDate != null  ">
 				AND messageRecord.update_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 				DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 			</if>
-
-
 		</where>
 		ORDER BY `messageRecord`.create_time DESC
 	</select>
@@ -181,6 +181,7 @@
 			and `messageRecord`.read_flag = 0
 		</where>
 	</select>
+
 	<select id="selectAuditTaskNumber" resultType="java.lang.Integer">
 		SELECT
 			COUNT(*) FROM (

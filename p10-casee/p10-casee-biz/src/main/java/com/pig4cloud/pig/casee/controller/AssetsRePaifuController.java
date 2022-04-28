@@ -37,19 +37,6 @@ public class AssetsRePaifuController {
 	}
 
 	/**
-	 * 根据财产id、项目id和案件id查询财产详情
-	 * @param assetsId
-	 * @param projectId
-	 * @param caseeId
-	 * @return
-	 */
-	@ApiOperation(value = "根据财产id查询财产详情", notes = "根据财产id查询财产详情")
-	@GetMapping("/queryAssetsPaifuById")
-	public R queryAssetsPaifuById(Integer assetsId, Integer projectId, Integer caseeId) {
-		return R.ok(this.assetsRePaifuService.queryAssetsPaifuById(assetsId, projectId, caseeId));
-	}
-
-	/**
 	 * 保存财产及项目案件关联财产
 	 * @param assetsRePaifuSaveDTO
 	 * @return R
@@ -59,21 +46,6 @@ public class AssetsRePaifuController {
 	@PostMapping("/saveAssetsRe")
 	public R saveAssetsRe(@RequestBody AssetsRePaifuSaveDTO assetsRePaifuSaveDTO) {
 		return R.ok(assetsRePaifuService.saveAssetsRe(assetsRePaifuSaveDTO));
-	}
-
-	/**
-	 * 删除移交财产相关信息
-	 * @return
-	 */
-	@ApiOperation(value = "删除移交财产相关信息", notes = "删除移交财产相关信息")
-	@DeleteMapping("/deleteAssetsTransfer")
-	public R deleteAssetsTransfer(@RequestBody DelAssetsTransferDTO delAssetsTransferDTO) {
-		int i = assetsRePaifuService.deleteAssetsTransfer(delAssetsTransferDTO);
-		if (i > 0) {
-			return R.ok("删除移交信息成功！");
-		} else {
-			return R.failed("删除移交信息失败！");
-		}
 	}
 
 	/**

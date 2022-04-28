@@ -54,6 +54,8 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 
 	Project queryCompanyCode(Integer projectId,Integer insId,Integer outlesId);
 
+	LiquiTransferRecord getByPaifuProjectIdAndAssetsId(Integer paifuProjectId, Integer assetsId);
+
 	/**
 	 * 通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息
 	 * @return

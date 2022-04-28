@@ -39,6 +39,7 @@ import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -567,7 +568,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	 * @return
 	 */
 	@Override
-	public CaseeLiqui getCaseeLiqui(Casee casee) {
+	public CaseeLiqui getCaseeLiqui(@RequestParam("casee") Casee casee) {
 		return this.baseMapper.getCaseeLiqui(casee);
 	}
 

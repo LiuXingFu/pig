@@ -19,8 +19,6 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 
 	IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, @Param("query") AssetsRePageDTO assetsRePageDTO);
 
-	AssetsPaifuVO queryAssetsPaifuById(@Param("assetsId") Integer assetsId, @Param("projectId") Integer projectId, @Param("caseeId") Integer caseeId);
-
 	AssetsRePaifuDetailVO selectByAssetsReId(@Param("assetsReId") Integer assetsReId);
 
 	IPage<AssetsReTargetPageVO> queryTargetPage(Page page, @Param("query") AssetsReTargetPageDTO assetsReTargetPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);

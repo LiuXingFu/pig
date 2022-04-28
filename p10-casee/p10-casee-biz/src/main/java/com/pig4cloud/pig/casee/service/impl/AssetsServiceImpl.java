@@ -240,5 +240,10 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 		return this.baseMapper.getByAssetsId(assetsId);
 	}
 
+	@Override
+	public Assets queryAssetsByTargetId(Integer targetId) {
+		return this.baseMapper.queryAssetsByTargetId(targetId);
+	}
+
 
 }
