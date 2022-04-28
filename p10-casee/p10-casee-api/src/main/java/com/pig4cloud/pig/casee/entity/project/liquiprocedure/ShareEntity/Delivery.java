@@ -18,9 +18,14 @@ public class Delivery extends CommonalityData implements Serializable {
 	private LocalDate deliveryTime;
 
 	/**
-	 * 送达对象(多个债务人)
+	 * 送达对象id(多个债务人)
 	 */
-	private List<String> executedNameList;
+	private List<Integer> subjectIdList;
+
+	/**
+	 * 送达对象名称(多个债务人)
+	 */
+	private String subjectNames;
 
 	/**
 	 * 送达方式(0-邮寄送达 1-当面送达 2-留置送达 3-短信送达 4-公告送达 5-其它送达方式)
