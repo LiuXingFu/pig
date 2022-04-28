@@ -48,9 +48,15 @@
 		select p10_casee_handling_records.*,sys_user.actual_name as name from p10_casee_handling_records
 		left join sys_user on sys_user.user_id=p10_casee_handling_records.create_by
 		where
-		p10_casee_handling_records.project_id=#{caseeHandlingRecords.projectId} and p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId} and p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
+		p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId}
 		<if test="caseeHandlingRecords.sourceId!=null and caseeHandlingRecords.sourceType!=null">
-			and caseeHandlingRecords.source_id=#{caseeHandlingRecords.sourceId} and caseeHandlingRecords.source_type=#{caseeHandlingRecords.sourceType}
+			and p10_casee_handling_records.source_id=#{caseeHandlingRecords.sourceId} and p10_casee_handling_records.source_type=#{caseeHandlingRecords.sourceType}
+		</if>
+		<if test="caseeHandlingRecords.projectId!=null">
+			and p10_casee_handling_records.project_id=#{caseeHandlingRecords.projectId}
+		</if>
+		<if test="caseeHandlingRecords.targetId!=null">
+			and p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
 		</if>
 	</select>
 </mapper>

@@ -537,6 +537,18 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+
+			//添加案件任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+			if (taskFlowDTO.getAssetsId()!=null){
+				caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+				caseeHandlingRecords.setSourceType(0);
+			}
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
 		}
 		return taskFlowDTO.getNodeId();
 	}
@@ -1639,6 +1651,27 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
 					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+					//此处还需修改
+					List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
+					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
+					messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
+					messageRecordDTO.setCreateTime(LocalDate.now());
+					messageRecordDTO.setMessageType(10000);
+					Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
+					messageRecordDTO.setMessageTitle("案号为"+casee.getCaseeNumber()+"的"+taskNode.getNodeName()+"任务已更新");
+					messageRecordDTO.setMessageContent("你好");
+					messageRecordDTO.setReceiverInsId(165);
+					messageRecordDTO.setReceiverOutlesId(180);
+
+					NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
+					BeanCopyUtil.copyBean(taskNode, nodeMessageRecordVO);
+					String json = JsonUtils.objectToJson(nodeMessageRecordVO);
+
+					messageRecordDTO.setTargetValue(json);
+					messageRecordDTOList.add(messageRecordDTO);
+
+					messageRecordService.batchSendMessageRecordOutPush(messageRecordDTOList, SecurityConstants.FROM);
 
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
