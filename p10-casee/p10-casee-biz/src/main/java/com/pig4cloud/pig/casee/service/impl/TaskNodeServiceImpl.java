@@ -57,6 +57,7 @@ import com.pig4cloud.pig.common.core.util.*;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -110,6 +112,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private RemoteMessageRecordService messageRecordService;
+	@Autowired
+	CaseeHandlingRecordsService caseeHandlingRecordsService;
 
 	private int sum = 0;
 
@@ -536,6 +540,18 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+
+			//添加案件任务办理记录
+			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+			if (taskFlowDTO.getAssetsId()!=null){
+				caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+				caseeHandlingRecords.setSourceType(0);
+			}
+			caseeHandlingRecordsService.save(caseeHandlingRecords);
 		}
 		return taskFlowDTO.getNodeId();
 	}
