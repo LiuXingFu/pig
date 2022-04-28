@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.appserver.RequestAppService;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
+import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.feign.RemoteAuthUtilsService;
 import com.pig4cloud.pig.admin.api.vo.*;
@@ -34,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -249,13 +251,21 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 		MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
 		messageRecordDTO.setMessageTitle(institution.getInsName() + (institutionAssociate.getAssociateStatus() == 100 ? "同意" : "拒接") +"了你的合作请求");
 		messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
-//		messageRecordDTO.setReceiverUserId(insAssociate.getUserId());
-		messageRecordDTO.setReceiverInsId(insAssociate.getInsId());
 		messageRecordDTO.setMessageType(0);
-		List<MessageRecordDTO> messageRecordDTOList=new ArrayList<>();
-		messageRecordDTOList.add(messageRecordDTO);
+		messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
+		messageRecordDTO.setCreateTime(LocalDate.now());
 
-		messageRecordService.batchSendMessageRecordPush(messageRecordDTOList);
+		TaskMessageDTO taskMessageDTO = new TaskMessageDTO();
+
+		taskMessageDTO.setInsId(insAssociate.getInsId());
+
+		taskMessageDTO.setMessageGoalType(1);
+
+		taskMessageDTO.setMessageGoalPermission(1101);
+
+		taskMessageDTO.setMessageRecordDTO(messageRecordDTO);
+
+		messageRecordService.sendTaskMessageByTaskMessageDTO(taskMessageDTO);
 	}
 
 	/**

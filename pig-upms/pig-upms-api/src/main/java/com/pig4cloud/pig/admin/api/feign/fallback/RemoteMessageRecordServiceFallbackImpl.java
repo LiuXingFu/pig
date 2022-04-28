@@ -56,4 +56,10 @@ public class RemoteMessageRecordServiceFallbackImpl implements RemoteMessageReco
 		log.error("发送清收任务消息失败", cause);
 		return null;
 	}
+
+	@Override
+	public R sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO, String from) {
+		log.error("指定消息目标与目标权限发送到指定用户消息列表中失败", cause);
+		return null;
+	}
 }

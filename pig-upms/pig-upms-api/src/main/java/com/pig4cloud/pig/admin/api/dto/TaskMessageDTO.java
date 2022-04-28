@@ -24,8 +24,8 @@ public class TaskMessageDTO {
 	/**
 	 * 发送目标类型
 	 *  1.机构
-	 *  2.网点 如果群发网点加上机构id
-	 *  3.个人
+	 *  2.网点 必须有机构id与网点id
+	 *  3.个人 必须有机构id与网点id加用户id
 	 */
 	private Integer messageGoalType;
 
@@ -33,7 +33,14 @@ public class TaskMessageDTO {
 	 * 发送消息目标权限
 	 * 	发送目标类型
 	 * 		1.机构
-	 *
+	 *			1001 所有机构用户
+	 *			1101 所有机构管理
+	 *			1201 所有机构管理与网点管理
+	 *	    2.网点
+	 *	    	2001 所有网点用户
+	 *	    	2101 所有网点管理员
+	 *	    3.个人
+	 *	    	设置为null即可
 	 */
 	private Integer messageGoalPermission;
 

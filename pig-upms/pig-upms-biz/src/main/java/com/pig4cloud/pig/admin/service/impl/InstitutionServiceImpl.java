@@ -608,9 +608,6 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		//如果机构类型为拍辅、清收、律所和银行添加企业信息
 		if (institutionModifyDTO.getInsType().equals(Integer.valueOf("1100")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1200")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1300")) || institutionModifyDTO.getInsType().equals(Integer.valueOf("1400"))) {
 			SubjectVO subjectVO = subjectService.getByUnifiedIdentity(institutionModifyDTO.getSubject().getUnifiedIdentity());
-			InstitutionSubjectRe institutionSubjectRe = institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>()
-					.eq(InstitutionSubjectRe::getDelFlag, 0)
-					.eq(InstitutionSubjectRe::getSubjectId, subjectVO.getSubjectId()).eq(InstitutionSubjectRe::getInsId, institution.getInsId()));
 			if (Objects.nonNull(subjectVO)) {
 
 				//更新主体认证状态
@@ -621,11 +618,17 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 				this.subjectService.updateById(subject);
 
 			} else {
+				subjectVO = new SubjectVO();
+
 				//主体不存在创建主体添加机构与主体认证信息
 				int subjectId = this.subjectService.addSubjectOrAddress(institutionModifyDTO.getSubject());
 //
 				subjectVO.setSubjectId(subjectId);
 			}
+
+			InstitutionSubjectRe institutionSubjectRe = institutionSubjectReService.getOne(new LambdaQueryWrapper<InstitutionSubjectRe>()
+					.eq(InstitutionSubjectRe::getDelFlag, 0)
+					.eq(InstitutionSubjectRe::getSubjectId, subjectVO.getSubjectId()).eq(InstitutionSubjectRe::getInsId, institution.getInsId()));
 
 //			添加主体认证信息
 			if (Objects.isNull(institutionSubjectRe)) {

@@ -23,6 +23,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
+import com.pig4cloud.pig.casee.service.ProjectStatusService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
@@ -280,7 +281,7 @@ public class CaseeLiquiController {
 
 	/**
 	 * 案件实际执结
-	 * @param caseeLiquiDTO
+	 * @param caseeLiquiModifyStatusDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "案件实际执结", notes = "案件实际执结")

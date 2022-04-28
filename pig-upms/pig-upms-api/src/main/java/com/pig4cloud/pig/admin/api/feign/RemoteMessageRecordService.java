@@ -61,4 +61,12 @@ public interface RemoteMessageRecordService {
 	@PostMapping("/messagerecord/sendPaifuTaskMessage")
 	R sendPaifuTaskMessage(@RequestBody TaskNode taskNode, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 * 指定消息目标与目标权限发送到指定用户消息列表中
+	 * @param taskMessageDTO
+	 * @return
+	 */
+	@PostMapping("/messagerecord/sendTaskMessageByTaskMessageDTO")
+	R sendTaskMessageByTaskMessageDTO(@RequestBody TaskMessageDTO taskMessageDTO, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

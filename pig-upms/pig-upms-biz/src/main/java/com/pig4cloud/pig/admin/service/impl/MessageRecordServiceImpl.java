@@ -228,9 +228,7 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 			taskMessageDTO.setMessageRecordDTO(messageRecordDTO);
 
-			this.sendTaskMessageByTaskMessageDTO(taskMessageDTO);
-
-			return send = 1;
+			return this.sendTaskMessageByTaskMessageDTO(taskMessageDTO);
 		}
 
 		return send = 0;
@@ -241,22 +239,47 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 	 * @param taskMessageDTO
 	 */
 	@Override
-	public void sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO) {
+	public int sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO) {
+
+		int send = 0;
+
 		List<InsOutlesUser> insOutlesUsers = new ArrayList<>();
 
 		//根据消息目标类型查询机构网点用户关联表
 		if (taskMessageDTO.getMessageGoalType().equals(1)) {
 			//根据机构id查询机构下的所有员工
-			List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
-					.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId()));
-			insOutlesUsers.addAll(list);
-		} else if (taskMessageDTO.getMessageGoalType().equals(2)) {
+			if(taskMessageDTO.getMessageGoalPermission().equals(1001)) {
+				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
+						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId()));
+				insOutlesUsers.addAll(list);
+				//根据机构id查询为机构管理员的员工
+			} else if (taskMessageDTO.getMessageGoalPermission().equals(1101)) {
+				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
+						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId())
+						.eq(InsOutlesUser::getType, 1).isNull(InsOutlesUser::getOutlesId));
+				insOutlesUsers.addAll(list);
+				//根据机构id查询为机构管理员与网点管理员的员工
+			} else {
+				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
+						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId())
+						.eq(InsOutlesUser::getType, 1));
+				insOutlesUsers.addAll(list);
+			}
 			//根据机构+网点与机构无网点的机构网点用户关联数据
-			List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
-					.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId())
-					.eq(InsOutlesUser::getOutlesId, taskMessageDTO.getOutlesId()));
-			insOutlesUsers.addAll(list);
-//			if (taskMessageDTO.get)
+		} else if (taskMessageDTO.getMessageGoalType().equals(2)) {
+			//根据机构id与网点查询
+			if (taskMessageDTO.getMessageGoalPermission().equals(2001)) {
+				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
+						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId())
+						.eq(InsOutlesUser::getOutlesId, taskMessageDTO.getOutlesId()));
+				insOutlesUsers.addAll(list);
+			} else {
+				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
+						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId())
+						.eq(InsOutlesUser::getOutlesId, taskMessageDTO.getOutlesId())
+						.eq(InsOutlesUser::getType, 1));
+				insOutlesUsers.addAll(list);
+			}
 		} else {
 			//将传入的用户id查询机构网点用户关联数据
 			InsOutlesUser insOutlesUser = insOutlesUserService.getOne(new LambdaQueryWrapper<InsOutlesUser>()
@@ -293,6 +316,8 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 		//发送消息集合
 		this.batchSendMessageRecordOutPush(messageRecordDTOList);
+
+		return send += 1;
 	}
 
 }

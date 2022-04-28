@@ -67,27 +67,6 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 		return this.baseMapper.queryAssetsRePageByProjectId(page, assetsRePageDTO);
 	}
 
-
-	@Override
-	public AssetsPaifuVO queryAssetsPaifuById(Integer assetsId, Integer projectId, Integer caseeId) {
-		AssetsPaifuVO assetsPaifuVO = this.baseMapper.queryAssetsPaifuById(assetsId, projectId, caseeId);
-		Address address = remoteAddressService.queryAssetsByTypeIdAndType(assetsPaifuVO.getAssetsId(), 4, SecurityConstants.FROM).getData();
-		if (Objects.nonNull(address)) {
-			assetsPaifuVO.setAddressId(address.getAddressId());
-			assetsPaifuVO.setProvince(address.getProvince());
-			assetsPaifuVO.setArea(address.getArea());
-			assetsPaifuVO.setCity(address.getCity());
-			assetsPaifuVO.setCode(address.getCode());
-		}
-
-		List<Integer> subjectIds = this.assetsReSubjectService.list(new LambdaQueryWrapper<AssetsReSubject>()
-				.eq(AssetsReSubject::getAssetsReId, assetsPaifuVO.getAssetsReId())).stream().map(AssetsReSubject::getSubjectId).collect(Collectors.toList());
-
-		assetsPaifuVO.setSubjectIds(subjectIds);
-
-		return assetsPaifuVO;
-	}
-
 	@Override
 	@Transactional
 	public	Integer saveAssetsRe(AssetsRePaifuSaveDTO assetsRePaifuSaveDTO){
@@ -142,41 +121,6 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 			e.printStackTrace();
 		}
 		return save;
-	}
-
-	/**
-	 * 删除移交财产相关信息
-	 * @param delAssetsTransferDTO
-	 * @return
-	 */
-	@Override
-	public int deleteAssetsTransfer(DelAssetsTransferDTO delAssetsTransferDTO) {
-
-		int delete = 0;
-
-		AssetsRe assetsRe = assetsRePaifuService.getById(delAssetsTransferDTO.getAssetsReDTO().getAssetsReId());
-
-		//查询该财产程序信息
-		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, assetsRe.getCaseeId()).eq(Target::getGoalId, assetsRe.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 4040));
-
-		TaskNode entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, assetsRe.getProjectId()).eq(TaskNode::getCaseeId, assetsRe.getCaseeId()).eq(TaskNode::getTargetId, target.getTargetId())
-				.eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ"));
-
-		entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(0);
-
-		taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
-
-		caseeHandlingRecordsService.remove(new LambdaQueryWrapper<CaseeHandlingRecords>()
-				.eq(CaseeHandlingRecords::getProjectId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getProjectId())
-				.eq(CaseeHandlingRecords::getCaseeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getCaseeId())
-				.eq(CaseeHandlingRecords::getTargetId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getTargetId())
-				.eq(CaseeHandlingRecords::getNodeId, entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId()));
-
-		assetsLiquiTransferRecordReService.remove(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>()
-				.eq(AssetsLiquiTransferRecordRe::getLiquiTransferRecordId, delAssetsTransferDTO.getLiquiTransferRecordId())
-				.eq(AssetsLiquiTransferRecordRe::getAssetsReId, delAssetsTransferDTO.getAssetsReDTO().getAssetsReId()));
-
-		return delete+=1;
 	}
 
 	@Override

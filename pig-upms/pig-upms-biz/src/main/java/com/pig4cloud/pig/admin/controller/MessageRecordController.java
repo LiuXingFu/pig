@@ -193,4 +193,22 @@ public class MessageRecordController {
 		}
 	}
 
+	/**
+	 * 指定消息目标与目标权限发送到指定用户消息列表中
+	 * @param taskMessageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "指定消息目标与目标权限发送到指定用户消息列表中", notes = "指定消息目标与目标权限发送到指定用户消息列表中")
+	@SysLog("指定消息目标与目标权限发送到指定用户消息列表中" )
+	@PostMapping("/sendTaskMessageByTaskMessageDTO")
+	public R sendTaskMessageByTaskMessageDTO(@RequestBody TaskMessageDTO taskMessageDTO){
+		int count = this.messageRecordService.sendTaskMessageByTaskMessageDTO(taskMessageDTO);
+
+		if (count > 0) {
+			return R.ok("指定消息目标与目标权限发送到指定用户成功！");
+		} else {
+			return R.failed("指定消息目标与目标权限发送到指定用户失败！");
+		}
+	}
+
 }

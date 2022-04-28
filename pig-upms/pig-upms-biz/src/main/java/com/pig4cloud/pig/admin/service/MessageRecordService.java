@@ -97,5 +97,5 @@ public interface MessageRecordService extends IService<MessageRecord> {
 	 * 根据发送消息目标类型发送消息
 	 * @param taskMessageDTO
 	 */
-	void sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO);
+	int sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO);
 }
