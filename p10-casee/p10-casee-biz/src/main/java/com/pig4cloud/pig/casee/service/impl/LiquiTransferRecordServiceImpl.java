@@ -22,16 +22,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
-import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
-import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuReceiptDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ;
 import com.pig4cloud.pig.casee.mapper.LiquiTransferRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.AssetsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO;
 import com.pig4cloud.pig.casee.vo.QueryLiquiTransferRecordDetailsVO;
@@ -90,6 +87,9 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 
 	@Autowired
 	ProjectPaifuService projectPaifuService;
+
+	@Autowired
+	AssetsReService assetsReService;
 
 	@Override
 	public IPage<LiquiTransferRecordVO> queryLiquiTransferRecordPage(Page page, LiquiTransferRecordPageDTO liquiTransferRecordPageDTO) {
@@ -215,6 +215,11 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 			assetsLiquiTransferRecordRe.setAssetsReId(assetsReDTO.getAssetsReId());
 			assetsLiquiTransferRecordReService.save(assetsLiquiTransferRecordRe);
 
+			AssetsRe assetsRe = assetsReService.getById(assetsReDTO.getAssetsReId());
+			assetsRe.setStatus(700);
+			//修改财产关联表状态为移送中
+			assetsReService.updateById(assetsRe);
+
 			//查询该财产程序信息
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, assetsReDTO.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 4040));
 
@@ -312,6 +317,18 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		liquiTransferRecord.setPaifuProjectId(projectPaifuService.saveProjectReceipt(projectPaifuReceiptDTO));
 
 		return this.updateById(liquiTransferRecord);
+	}
+
+	@Override
+	public Integer returnTransfer(LiquiTransferRecordDetailsDTO liquiTransferRecordDetailsDTO) {
+		List<AssetsVO> assetsVOList = liquiTransferRecordDetailsDTO.getAssetsVOList();
+		for (AssetsVO assetsVO : assetsVOList) {
+			AssetsRe assetsRe = assetsReService.getById(assetsVO.getAssetsReId());
+			assetsRe.setStatus(100);
+			//修改财产关联表状态为在办
+			assetsReService.updateById(assetsRe);
+		}
+		return this.baseMapper.updateById(liquiTransferRecordDetailsDTO);
 	}
 
 	@Override

@@ -18,6 +18,8 @@ public class ReserveSeeSampleConsultingListDetail implements Serializable {
     private String name;
 	/**联系电话*/
     private String phone;
+	/**身份证*/
+	private String identityCard;
 	/**咨询问题*/
     private String askQuestions;
 }
