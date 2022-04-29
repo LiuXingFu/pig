@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDetailsDTO;
 import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
@@ -51,6 +52,8 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 	QueryLiquiTransferRecordDetailsVO queryByLiquiTransferRecordId(Integer liquiTransferRecordId);
 
 	boolean reception(LiquiTransferRecordDTO liquiTransferRecordDTO);
+
+	Integer returnTransfer(LiquiTransferRecordDetailsDTO liquiTransferRecordDetailsDTO);
 
 	Project queryCompanyCode(Integer projectId,Integer insId,Integer outlesId);
 

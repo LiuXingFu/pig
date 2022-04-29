@@ -18,10 +18,7 @@
 package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
-import com.pig4cloud.pig.casee.dto.LiquiTransferRecordDTO;
-import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
-import com.pig4cloud.pig.casee.dto.UpdateLiquiTransferRecordDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -175,6 +172,18 @@ public class LiquiTransferRecordController {
 	@PostMapping("/reception")
 	public R reception(@RequestBody LiquiTransferRecordDTO liquiTransferRecordDTO) {
 		return R.ok(liquiTransferRecordService.reception(liquiTransferRecordDTO));
+	}
+
+	/**
+	 * 退回移交记录
+	 * @param liquiTransferRecordDetailsDTO 退回移交记录
+	 * @return R
+	 */
+	@ApiOperation(value = "退回移交记录", notes = "退回移交记录")
+	@SysLog("退回移交记录" )
+	@PutMapping("/returnTransfer")
+	public R returnTransfer(@RequestBody LiquiTransferRecordDetailsDTO liquiTransferRecordDetailsDTO) {
+		return R.ok(liquiTransferRecordService.returnTransfer(liquiTransferRecordDetailsDTO));
 	}
 
 	/**
