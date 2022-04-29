@@ -20,11 +20,15 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
+import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.CountFlowChartVO;
 
 import java.util.List;
 
@@ -95,6 +99,19 @@ public interface ProjectPaifuService extends IService<Project> {
 	 */
 	ProjectPaifuDetailVO queryProjectCaseeDetail(Integer projectId);
 
+	/**
+	 * 统计业务流程图
+	 * @return
+	 */
+	CountFlowChartVO countProjectFlowChart();
+
+	/**
+	 * 分页查询业务流程图节点列表
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 
 
 }

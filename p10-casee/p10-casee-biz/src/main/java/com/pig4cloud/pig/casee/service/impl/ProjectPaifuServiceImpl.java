@@ -25,9 +25,11 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
+import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -37,6 +39,8 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.CountFlowChartVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -479,5 +483,86 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		return this.baseMapper.selectByProjectId(projectId);
 	}
 
+	public Long queryPropertyFlowChartPage(String nodeKey, List<Integer> assetsTypeList) {
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO = new AssetsRePaifuFlowChartPageDTO();
+		assetsRePaifuFlowChartPageDTO.setNodeKey(nodeKey);
+		assetsRePaifuFlowChartPageDTO.setAssetsTypeList(assetsTypeList);
+		IPage<AssetsRePaifuFlowChartPageVO> assetsRePaifuFlowChartPageVOIPage = this.queryFlowChartPage(page, assetsRePaifuFlowChartPageDTO);
+		return assetsRePaifuFlowChartPageVOIPage.getTotal();
+	}
+
+	@Override
+	public CountFlowChartVO countProjectFlowChart(){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+		CountFlowChartVO countFlowChartVO = new CountFlowChartVO();
+
+		// 待接收统计
+		LiquiTransferRecordPageDTO liquiTransferRecordPageDTO = new LiquiTransferRecordPageDTO();
+		liquiTransferRecordPageDTO.setStatus(0);
+		countFlowChartVO.setPendingCount(liquiTransferRecordService.queryLiquiTransferRecordPage(page,liquiTransferRecordPageDTO).getTotal());
+
+		//动产未现勘
+		List<Integer> chattelNotAvailable = new ArrayList<>();
+		chattelNotAvailable.add(20202);
+		countFlowChartVO.setChattelNotAvailable(queryPropertyFlowChartPage("paiFu_STCC_XK_XK",chattelNotAvailable));
+
+		//不动产未现勘
+		List<Integer> assetsTypeList = new ArrayList<>();
+		assetsTypeList.add(20201);
+		assetsTypeList.add(20204);
+		countFlowChartVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("paiFu_STCC_XK_XK",assetsTypeList));
+
+		//不动产现勘未入户
+		countFlowChartVO.setRealEstateSurveyNotRegistered(queryPropertyFlowChartPage("PaiFu_STCC_BDCXKRH_BDCXKRH",assetsTypeList));
+
+		//拍卖价格依据未出具
+		countFlowChartVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("PaiFu_STCC_JGYJ_JGYJ",null));
+
+		//有依据未上拍
+		countFlowChartVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//公告期未拍卖
+		countFlowChartVO.setAnnouncementPeriodNotAuctioned(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//拍卖到期无结果
+		countFlowChartVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//拍卖成交未处理
+		countFlowChartVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//拍卖不成交未处理
+		countFlowChartVO.setAuctionTransactionFailedNotProcessed(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//拍卖异常未撤销
+		countFlowChartVO.setAuctionExceptionNotCancelled(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//到款/抵偿未裁定
+		countFlowChartVO.setArrivalCompensationNotAdjudicated(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//裁定未送达
+		countFlowChartVO.setRulingNotService(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+		//送达未腾退
+		countFlowChartVO.setDeliveredButNotVacated(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+
+
+
+
+		return countFlowChartVO;
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryFlowChartPage(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
 
 }

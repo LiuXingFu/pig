@@ -22,10 +22,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ProjectPaifuPageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,5 +49,7 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 	List<ProjectSubjectReListVO> selectProjectSubjectReList(@Param("projectId") Integer projectId,@Param("type") Integer type);
 
 	ProjectSubjectReListVO selectProjectSubjectRe(@Param("projectId") Integer projectId,@Param("unifiedIdentity") String unifiedIdentity);
+
+	IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 }

@@ -96,36 +96,7 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		IPage<LiquiTransferRecordVO> liquiTransferRecordVOIPage = this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecordPageDTO, insOutlesDTO);
-
-		List<LiquiTransferRecordVO> liquiTransferRecordVORecords = new ArrayList<>();
-
-		for (LiquiTransferRecordVO record : liquiTransferRecordVOIPage.getRecords()) {
-
-			//根据案件id与type查询案件执行人与申请人
-//			String executorSubjectName = getExecutorSubjectName(record.getCaseeId());
-//
-//			record.setExecutorSubjectName(executorSubjectName);
-//
-//			String applicantSubjectName = getApplicantSubjectName(record.getCaseeId());
-//
-//			record.setApplicantSubjectName(applicantSubjectName);
-
-			int count = this.count(new LambdaQueryWrapper<LiquiTransferRecord>()
-					.eq(LiquiTransferRecord::getProjectId, record.getProjectId())
-					.eq(LiquiTransferRecord::getCaseeId, record.getCaseeId())
-					.eq(LiquiTransferRecord::getNodeId, record.getNodeId())
-					.ne(LiquiTransferRecord::getStatus, 2));
-
-			record.setEdit(count < 1);
-
-			liquiTransferRecordVORecords.add(record);
-
-		}
-
-		liquiTransferRecordVOIPage.setRecords(liquiTransferRecordVORecords);
-
-		return liquiTransferRecordVOIPage;
+		return this.baseMapper.queryLiquiTransferRecordPage(page, liquiTransferRecordPageDTO, insOutlesDTO);
 	}
 
 	/**
