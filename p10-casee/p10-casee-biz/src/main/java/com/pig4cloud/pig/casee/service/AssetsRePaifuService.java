@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
@@ -24,16 +25,12 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 */
 	IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO);
 
-	AssetsPaifuVO queryAssetsPaifuById(Integer assetsId, Integer projectId, Integer caseeId);
-
 	/**
 	 * 保存财产及项目案件关联财产
 	 * @param assetsRePaifuSaveDTO
 	 * @return
 	 */
 	Integer saveAssetsRe(AssetsRePaifuSaveDTO assetsRePaifuSaveDTO);
-
-	int deleteAssetsTransfer(DelAssetsTransferDTO delAssetsTransferDTO);
 
 	/**
 	 * 根据id查询项目案件财产关联和财产详情

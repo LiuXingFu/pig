@@ -64,4 +64,6 @@ public interface AssetsMapper extends BaseMapper<Assets> {
 	AssetsPageVO getByAssetsId(@Param("assetsId") Integer assetsId);
 
 	List<ExportXlsAssetsOrProjectVO> getListAssetsManage( @Param("query") AssetsOrProjectPageDTO assetsOrProjectPageDTO);
+
+	Assets queryAssetsByTargetId(Integer targetId);
 }

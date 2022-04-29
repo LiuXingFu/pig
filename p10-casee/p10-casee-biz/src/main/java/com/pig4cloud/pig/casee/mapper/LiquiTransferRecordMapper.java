@@ -50,4 +50,6 @@ public interface LiquiTransferRecordMapper extends BaseMapper<LiquiTransferRecor
 
 	List<LiquiTransferRecordAssetsDetailsVO> getTransferRecordAssetsByProjectId(Integer projectId);
 
+
+	LiquiTransferRecord getByPaifuProjectIdAndAssetsId(@Param("paifuProjectId") Integer paifuProjectId, @Param("assetsId") Integer assetsId);
 }

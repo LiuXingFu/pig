@@ -65,6 +65,18 @@ public class NodeMessageRecordVO {
 	private Integer targetId;
 
 	/**
+	 * 财产id
+	 */
+	@ApiModelProperty(value = "财产id")
+	private Integer assetsId;
+
+	/**
+	 * 财产性质
+	 */
+	@ApiModelProperty(value = "财产性质")
+	private Integer assetsType;
+
+	/**
 	 * 节点状态 节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过 500-可跳过 600-已委托
 	 */
 	@ApiModelProperty(value="节点状态 节点状态 0-未提交 101-待审核 111-驳回 301-跳过 401-提交不审核 403-审核通过 500-可跳过 600-已委托")

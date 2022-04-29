@@ -361,6 +361,25 @@ public class CaseeLiquiController {
 		return R.ok(this.caseeLiquiService.queryPropertyPreservationCompleted(page,caseeLiquiFlowChartPageDTO));
 	}
 
+	@ApiOperation(value = "根据案件id查询案件详情", notes = "根据案件id查询案件详情")
+	@GetMapping("/getCaseeLiqui")
+	public R getCaseeLiqui(Casee casee) {
+		return R.ok(this.caseeLiquiService.getCaseeLiqui(casee));
+	}
+
+	/**
+	 * 根据id查询特定案件详情
+	 * @param caseeId
+	 * @return
+	 */
+	@ApiOperation(value = "根据案件id查询案件详情", notes = "根据案件id查询案件详情")
+	@GetMapping("/getCaseeLiquiByCaseeId/{caseeId}")
+	public R getCaseeLiquiByCaseeId(@PathVariable("caseeId") Integer caseeId) {
+		Casee casee = new Casee();
+		casee.setCaseeId(caseeId);
+		return R.ok(this.caseeLiquiService.getCaseeLiqui(casee));
+	}
+
 	/**
 	 * 根据案件id获取项目案件详情
 	 *

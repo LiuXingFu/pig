@@ -139,6 +139,8 @@ public class ProjectController {
 			queryWrapper.lambda().ne(Project::getProjectId,projectId);
 		}
 		queryWrapper.lambda().eq(Project::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().orderByDesc(Project::getTakeTime);
+		queryWrapper.last("limit 1");
 		return R.ok(projectService.getOne(queryWrapper));
 	}
 

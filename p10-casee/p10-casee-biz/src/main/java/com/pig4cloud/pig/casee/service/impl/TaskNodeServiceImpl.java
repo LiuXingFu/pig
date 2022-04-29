@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -111,7 +112,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
-	private RemoteMessageRecordService messageRecordService;
+	private RemoteMessageRecordService remoteMessageRecordService;
 	@Autowired
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
 
@@ -1654,27 +1655,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
 
 					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//此处还需修改
-					List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
-					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
-					messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
-					messageRecordDTO.setCreateTime(LocalDate.now());
-					messageRecordDTO.setMessageType(10000);
-					Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
-					messageRecordDTO.setMessageTitle("案号为"+casee.getCaseeNumber()+"的"+taskNode.getNodeName()+"任务已更新");
-					messageRecordDTO.setMessageContent("你好");
-					messageRecordDTO.setReceiverInsId(165);
-					messageRecordDTO.setReceiverOutlesId(180);
-
-					NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
-					BeanCopyUtil.copyBean(taskNode, nodeMessageRecordVO);
-					String json = JsonUtils.objectToJson(nodeMessageRecordVO);
-
-					messageRecordDTO.setTargetValue(json);
-					messageRecordDTOList.add(messageRecordDTO);
-
-					messageRecordService.batchSendMessageRecordOutPush(messageRecordDTOList, SecurityConstants.FROM);
 
 					//实体财产到款实体类
 				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {

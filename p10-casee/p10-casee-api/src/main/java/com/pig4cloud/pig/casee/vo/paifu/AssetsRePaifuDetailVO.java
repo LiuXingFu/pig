@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.vo.paifu;
 
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,6 +42,11 @@ public class AssetsRePaifuDetailVO extends AssetsRePaifu {
 	 */
 	@ApiModelProperty(value="债务人id集合")
 	private List<Integer> subjectIdList;
+
+	/**
+	 * 债务人集合
+	 */
+	private List<Subject> subjectList;
 
 	/**
 	 * 地址id

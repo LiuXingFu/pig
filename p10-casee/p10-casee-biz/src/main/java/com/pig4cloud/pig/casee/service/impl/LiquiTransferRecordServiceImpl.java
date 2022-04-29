@@ -373,4 +373,14 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	public List<LiquiTransferRecordAssetsDetailsVO> getTransferRecordAssetsByProjectId(Integer projectId) {
 		return this.baseMapper.getTransferRecordAssetsByProjectId(projectId);
 	}
+	/**
+	 * 根据拍辅项目id查询清收移交记录信息
+	 * @param paifuProjectId
+	 * @return
+	 */
+	@Override
+	public LiquiTransferRecord getByPaifuProjectIdAndAssetsId(Integer paifuProjectId, Integer assetsId) {
+		return this.baseMapper.getByPaifuProjectIdAndAssetsId(paifuProjectId, assetsId);
+	}
+
 }
