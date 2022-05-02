@@ -22,9 +22,9 @@ public class AssetsRePaifuFlowChartPageDTO {
 	private String assetsName;
 
 	/**
-	 * 债务人
+	 * 所有权人/债务人
 	 */
-	@ApiModelProperty(value="债务人")
+	@ApiModelProperty(value="所有权人/债务人")
 	private String executedName;
 
 	/**

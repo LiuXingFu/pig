@@ -113,5 +113,11 @@ public interface ProjectPaifuService extends IService<Project> {
 	 */
 	IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 
-
+	/**
+	 * 分页查询不动产现勘未入户
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 }

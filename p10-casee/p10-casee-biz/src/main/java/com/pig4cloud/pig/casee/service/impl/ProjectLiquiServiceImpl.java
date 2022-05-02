@@ -781,6 +781,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		page.setCurrent(1);
 		page.setSize(10);
 
+		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
 
 		//**********动产未现勘********************************
 		countAuctionPropertyVO.setChattelNotAvailable(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK", null));
@@ -789,10 +790,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countAuctionPropertyVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("entityZX_STZX_CCZXXK_CCZXXK", null));
 
 		//**********不动产现勘未入户********************************
-		List<Integer> assetsTypeList = new ArrayList<>();
-		assetsTypeList.add(20201);
-		assetsTypeList.add(20204);
-		countAuctionPropertyVO.setRealEstateSurveyNotRegistered(queryPropertyFlowChartPage("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH", assetsTypeList));
+		IPage<AssetsReLiquiFlowChartPageVO> realEstateSurveyNotRegistered = assetsReLiquiService.queryRealEstateSurveyNotRegistered(page, assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setRealEstateSurveyNotRegistered(realEstateSurveyNotRegistered.getTotal());
 
 		//**********拍卖价格依据未出具********************************
 		countAuctionPropertyVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("entityZX_STZX_CCZXJGYJ_CCZXJGYJ", null));
@@ -801,7 +800,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countAuctionPropertyVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("entityZX_STZX_CCZXPMGG_CCZXPMGG", null));
 
 		//**********公告期未拍卖********************************
-		AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO = new AssetsReLiquiFlowChartPageDTO();
+
 		IPage<AssetsReLiquiFlowChartPageVO> announcementPeriodNotAuctioned = assetsReLiquiService.queryPropertyAuctionAnnouncementPeriod(page, assetsReLiquiFlowChartPageDTO);
 		countAuctionPropertyVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 

@@ -519,7 +519,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		countFlowChartVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("paiFu_STCC_XK_XK",assetsTypeList));
 
 		//不动产现勘未入户
-		countFlowChartVO.setRealEstateSurveyNotRegistered(queryPropertyFlowChartPage("PaiFu_STCC_BDCXKRH_BDCXKRH",assetsTypeList));
+		AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO = new AssetsRePaifuFlowChartPageDTO();
+		IPage<AssetsRePaifuFlowChartPageVO> realEstateSurveyNotRegistered = this.queryRealEstateNotSurveyedPage(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setRealEstateSurveyNotRegistered(realEstateSurveyNotRegistered.getTotal());
 
 		//拍卖价格依据未出具
 		countFlowChartVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("PaiFu_STCC_JGYJ_JGYJ",null));
@@ -563,6 +565,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.queryFlowChartPage(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryRealEstateNotSurveyedPage(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
 	}
 
 }

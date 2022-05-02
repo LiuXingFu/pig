@@ -172,4 +172,15 @@ public class ProjectPaifuController {
 		return R.ok(projectPaifuService.queryFlowChartPage(page, assetsRePaifuFlowChartPageDTO));
 	}
 
+	/**
+	 * 分页查询不动产现勘未入户
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "项目拍辅分页查询", notes = "项目拍辅分页查询")
+	@GetMapping("/queryRealEstateNotSurveyedPage" )
+	public R queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryRealEstateNotSurveyedPage(page, assetsRePaifuFlowChartPageDTO));
+	}
 }

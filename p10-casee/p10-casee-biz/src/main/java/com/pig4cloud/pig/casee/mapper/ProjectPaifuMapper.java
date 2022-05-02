@@ -52,4 +52,5 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 
 	IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<AssetsRePaifuFlowChartPageVO> queryRealEstateNotSurveyedPage(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }

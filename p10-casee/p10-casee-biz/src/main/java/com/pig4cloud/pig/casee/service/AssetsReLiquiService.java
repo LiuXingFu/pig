@@ -107,6 +107,14 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	IPage<AssetsReLiquiFlowChartPageVO> queryPropertyToBeAuctioned(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
 
 	/**
+	 * 分页查询不动产现勘未入户
+	 * @param page
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsReLiquiFlowChartPageVO> queryRealEstateSurveyNotRegistered(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO);
+
+	/**
 	 * 分页查询可处置财产程序节点统计列表
 	 * @param page
 	 * @param assetsReLiquiFlowChartPageDTO
