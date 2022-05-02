@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.mapper.AuctionRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -47,7 +48,10 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	AuctionAssetsReService auctionAssetsReService;
 	@Autowired
 	AuctionResultsService auctionResultsService;
-
+	@Autowired
+	AssetsRePaifuService assetsRePaifuService;
+	@Autowired
+	AuctionRecordAssetsReService auctionRecordAssetsReService;
 
 	@Override
 	@Transactional
@@ -58,7 +62,13 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auction.setAuctionStatus(100);
 		auctionService.saveOrUpdate(auction);
 
+		// 保存拍卖记录
+		AuctionRecord auctionRecord = new AuctionRecord();
+		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
+		Integer save = this.baseMapper.insert(auctionRecord);
+
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
+		List<AuctionRecordAssetsRe> auctionRecordAssetsRes = new ArrayList<>();
 		if (auctionRecordSaveDTO.getAssetsReIdList().size() > 0) {
 			if (auctionRecordSaveDTO.getAuctionId() != null) {
 				// 已存在记录先删除财产关联
@@ -67,19 +77,26 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 				auctionAssetsReService.remove(queryWrapper);
 			}
 			// 保存拍卖财产关联
-			for (Integer assetsId : auctionRecordSaveDTO.getAssetsReIdList()) {
+			for (Integer assetsReId : auctionRecordSaveDTO.getAssetsReIdList()) {
 				AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
-				auctionAssetsRe.setAssetsReId(assetsId);
+				auctionAssetsRe.setAssetsReId(assetsReId);
 				auctionAssetsRe.setAuctionId(auction.getAuctionId());
 				auctionAssetsRes.add(auctionAssetsRe);
+				// 更新项目案件财产关联表状态为拍卖中
+				AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
+				assetsRePaifu.setAssetsReId(assetsReId);
+				assetsRePaifu.setStatus(200);
+				assetsRePaifuService.updateById(assetsRePaifu);
+
+				AuctionRecordAssetsRe auctionRecordAssetsRe = new AuctionRecordAssetsRe();
+				auctionRecordAssetsRe.setAssetsReId(assetsReId);
+				auctionRecordAssetsRe.setAuctionRecordAssetsRe(auctionRecord.getAuctionRecordId());
+				auctionRecordAssetsRes.add(auctionRecordAssetsRe);
 			}
 			auctionAssetsReService.saveBatch(auctionAssetsRes);
+			auctionRecordAssetsReService.saveBatch(auctionRecordAssetsRes);
 		}
 
-		// 保存拍卖记录
-		AuctionRecord auctionRecord = new AuctionRecord();
-		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
-		Integer save = this.baseMapper.insert(auctionRecord);
 		// 保存拍卖记录状态
 		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
 		auctionRecordStatus.setAuctionRecordId(auctionRecord.getAuctionRecordId());

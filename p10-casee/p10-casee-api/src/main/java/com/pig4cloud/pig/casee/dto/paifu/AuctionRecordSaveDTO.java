@@ -109,6 +109,12 @@ public class AuctionRecordSaveDTO {
     @ApiModelProperty(value="拍卖链接")
     private String auctionLink;
 
+	/**
+	 * 是否联合拍卖(1:否，2-是)
+	 */
+	@ApiModelProperty(value="是否联合拍卖(1:否，2-是)")
+	private Integer jointAuction;
+
     /**
      * 附件
      */
