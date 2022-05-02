@@ -208,4 +208,15 @@ public class LiquiTransferRecordController {
 		return R.ok(liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(paifuProjectId, assetsId));
 	}
 
+	/**
+	 * 通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息", notes = "通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息")
+	@GetMapping("/getTransferRecordAssetsByProjectId" )
+	public R getTransferRecordAssetsByProjectId(Integer projectId) {
+		return R.ok(liquiTransferRecordService.getTransferRecordAssetsByProjectId(projectId));
+	}
+
 }
