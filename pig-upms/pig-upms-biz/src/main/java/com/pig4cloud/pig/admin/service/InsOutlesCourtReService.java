@@ -17,38 +17,27 @@
 
 package com.pig4cloud.pig.admin.service;
 
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.entity.Court;
-import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
+import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
 
 import java.util.List;
 
-
 /**
+ * 机构网点法院关联表
  *
- * @author Mjh
- * @date 2021-08-17 16:22:59
+ * @author yuanduo
+ * @date 2022-04-28 19:56:42
  */
-public interface CourtService extends IService<Court> {
+public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 
-	/**
-	 * 通过地区code或法院名称查询法院信息
-	 *
-	 * @param regionCode 地区code
-	 * @return R
-	 */
-	List<Court> getByRegionCodeOrCourtName(Integer regionCode,String courtName);
+	IPage<InsOutlesCourtReVO> queryInsOutlesCourtPage(Page page, InsOutlesCourtRePageDTO insOutlesCourtRePageDTO);
 
-	/**
-	 * 通过名称查询相应法院
-	 * @param page
-	 * @param court
-	 * @return
-	 */
-	IPage<Court> getCourtPageList(Page page, Court court);
+	List<InsOutlesCourtReVO> queryInsOutlesCourtReByInsIdAndCourtId(Integer insId, Integer courtId);
 
+	int addInsOutlesCourtRe(AddInsOutlesCourtReDTO addInsOutlesCourtReDTO);
 }

@@ -35,8 +35,9 @@
 	<select id="pageInstitutionAssociate" resultType="com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO">
 		select
 		institution_associate.*,
-		institution.ins_name,
-		institution.ins_type,
+		associate_institution.ins_name ,
+		associate_institution.ins_type,
+		institution.ins_type institutionType,
 		p10_address.address_id,
 		p10_address.province,
 		p10_address.city,
@@ -46,7 +47,8 @@
 -- 		institution.ins_principal_name
 		from
 		p10_institution_associate institution_associate
-		LEFT JOIN p10_institution institution ON institution.ins_id = institution_associate.ins_associate_id
+		LEFT JOIN p10_institution associate_institution ON associate_institution.ins_id = institution_associate.ins_associate_id
+		LEFT JOIN p10_institution institution ON institution.ins_id = institution_associate.ins_id
 		left join p10_address on p10_address.user_id = institution.ins_id and p10_address.type = 2
 		where
 		institution.del_flag = '0'

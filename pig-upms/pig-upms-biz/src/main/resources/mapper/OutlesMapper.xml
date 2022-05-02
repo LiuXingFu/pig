@@ -42,6 +42,7 @@
 		<id property="outlesId" column="outles_id"/>
 		<result property="outlesName" column="outles_name"/>
 		<result property="insId" column="ins_id"/>
+		<result property="insType" column="ins_type"/>
 <!--		<result property="userId" column="user_id"/>-->
 		<result property="alias" column="alias"/>
 		<result property="outlesLandLinePhone" column="outles_land_line_phone"/>
@@ -56,6 +57,7 @@
 		<result property="nickName" column="nick_name"/>
 		<result property="phone" column="phone"/>
 		<result property="insName" column="ins_name"/>
+		<result property="insType" column="ins_type"/>
 		<result property="address.addressId" column="address_id"/>
 		<result property="address.province" column="province"/>
 		<result property="address.city" column="city"/>
@@ -71,6 +73,7 @@
 		SELECT
 		outles.outles_id,
 		outles.outles_name,
+		outles.ins_id,
 		outles.ins_id,
 -- 		outles.user_id,
 		outles.address_id,
@@ -109,7 +112,6 @@
 		outles.outles_id,
 		outles.outles_name,
 		outles.ins_id,
--- 		outles.user_id,
 		outles.alias,
 		outles.outles_land_line_phone,
 		outles.outles_remark,
@@ -118,8 +120,7 @@
 		outles.create_by,
 		outles.update_time,
 		outles.update_by,
-		outles.del_flag,
-		ins.ins_name
+		outles.del_flag
 		FROM
 		p10_outles outles
 		LEFT JOIN p10_institution ins ON ins.ins_id = outles.ins_id

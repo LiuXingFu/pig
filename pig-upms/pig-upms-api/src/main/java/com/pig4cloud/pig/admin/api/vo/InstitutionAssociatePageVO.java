@@ -63,4 +63,9 @@ public class InstitutionAssociatePageVO extends Institution {
 	@ApiModelProperty(value = "关联状态 -1-未申请 0-待确认 100-关联 200-拒绝")
 	private Integer associateStatus;
 
+	/**
+	 * 查询机构状态
+	 */
+	private Integer institutionType;
+
 }

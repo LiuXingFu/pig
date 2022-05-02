@@ -15,6 +15,11 @@ public class OutlesVO extends Outles {
 	String insName;
 
 	/**
+	 * 机构类型
+	 */
+	Integer insType;
+
+	/**
 	 * 负责人
 	 */
 	String nickName;

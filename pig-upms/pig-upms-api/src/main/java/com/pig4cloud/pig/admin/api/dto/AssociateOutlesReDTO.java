@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.lang.model.type.IntersectionType;
 import java.util.List;
 
 @Data
@@ -19,5 +20,10 @@ public class AssociateOutlesReDTO {
 	 * 关联机构ID
 	 */
 	private Integer insAssociateId;
+
+	/**
+	 * 关联机构类型
+	 */
+	private Integer insType;
 
 }
