@@ -19,12 +19,11 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
 import com.pig4cloud.pig.casee.service.AssetsReService;
+import com.pig4cloud.pig.casee.vo.AssetsVO;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.KeyValue;
@@ -44,10 +43,9 @@ public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> i
 
 
 	@Override
-	public AssetsDTO getProjectIdByAssets(Integer projectId) {
-		return this.baseMapper.getProjectIdByAssets(projectId);
+	public List<AssetsVO> getProjectIdStatusByAssets(Integer projectId, Integer status) {
+		return this.baseMapper.getProjectIdStatusByAssets(projectId,status);
 	}
-
 	@Override
 	public List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId) {
 		return this.baseMapper.selectCaseeOrAssets(caseeId);

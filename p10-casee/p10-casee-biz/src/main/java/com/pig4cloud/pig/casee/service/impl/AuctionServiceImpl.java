@@ -40,7 +40,7 @@ public class AuctionServiceImpl extends ServiceImpl<AuctionMapper, Auction> impl
 
 
 	@Override
-	public AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId, Integer projectId, Integer caseeId){
+	public AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer projectId, Integer caseeId, Integer assetsId){
 		QueryWrapper<AssetsRe> assetsReQueryWrapper = new QueryWrapper<>();
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getCaseeId,caseeId);

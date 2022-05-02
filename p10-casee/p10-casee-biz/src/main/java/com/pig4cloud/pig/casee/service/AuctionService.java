@@ -36,6 +36,6 @@ public interface AuctionService extends IService<Auction> {
 	 * @param caseeId
 	 * @return
 	 */
-	AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId,Integer projectId,Integer caseeId);
+	AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer projectId,Integer caseeId,Integer assetsId);
 
 }

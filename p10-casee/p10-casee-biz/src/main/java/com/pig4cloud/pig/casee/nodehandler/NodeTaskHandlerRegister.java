@@ -94,6 +94,9 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler;
 
+	@Autowired
+	PaiFu_STCC_PMGG_PMGG_NODEHandler paiFu_stcc_pmgg_pmgg_nodeHandler;
+
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -135,6 +138,9 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("entityZX_STZX_CCZXDK_CCZXDK", entityZX_stzx_cczxdk_cczxdk_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXJGYJ_CCZXJGYJ", entityZX_stzx_cczxjgyj_cczxjgyj_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ", entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler);
+
+		//拍辅任务阶段提交map实现类
+		submitHandlerMap.put("paiFu_STCC_PMGG_PMGG", paiFu_stcc_pmgg_pmgg_nodeHandler);
 
 
 //		// 任务节点审核map实现类

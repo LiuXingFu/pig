@@ -16,13 +16,9 @@
  */
 package com.pig4cloud.pig.casee.dto.paifu;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,22 +34,10 @@ import java.util.List;
 public class AuctionRecordSaveDTO {
 
 	/**
-	 * 项目id
-	 */
-	@ApiModelProperty(value="项目id")
-	private Integer projectId;
-
-	/**
-	 * 案件id
-	 */
-	@ApiModelProperty(value="案件id")
-	private Integer caseeId;
-
-	/**
 	 * 项目案件财产关联id集合
 	 */
 	@ApiModelProperty(value="项目案件财产关联id集合")
-	private List<Integer> assetsReIdList;
+	private List<AssetsReDTO> assetsReIdList;
 
     /**
      * 拍卖表id

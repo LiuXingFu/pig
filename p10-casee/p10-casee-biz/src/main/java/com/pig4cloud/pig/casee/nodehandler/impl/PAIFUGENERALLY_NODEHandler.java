@@ -35,14 +35,6 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 	 */
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		//添加案件任务办理记录
-		CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-		BeanUtils.copyProperties(taskNode,caseeHandlingRecords);
-		caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-		caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-		caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-		caseeHandlingRecordsService.save(caseeHandlingRecords);
-
 		//案件模块与用户模块的实体不一致 所以采取这个方法
 		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
 

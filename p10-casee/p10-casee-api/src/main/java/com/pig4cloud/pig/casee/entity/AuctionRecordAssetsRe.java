@@ -32,9 +32,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_auction_record_assets_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "拍卖记录财产关联表")
-public class AuctionRecordAssetsRe extends BaseEntity {
+public class AuctionRecordAssetsRe {
 
     /**
      * 拍卖记录财产关联id

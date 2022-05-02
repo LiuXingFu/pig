@@ -18,6 +18,7 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
@@ -85,19 +86,19 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 				auctionAssetsReService.remove(queryWrapper);
 			}
 			// 保存拍卖财产关联
-			for (Integer assetsReId : auctionRecordSaveDTO.getAssetsReIdList()) {
+			for (AssetsReDTO assetsReDTO : auctionRecordSaveDTO.getAssetsReIdList()) {
 				AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
-				auctionAssetsRe.setAssetsReId(assetsReId);
+				auctionAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
 				auctionAssetsRe.setAuctionId(auction.getAuctionId());
 				auctionAssetsRes.add(auctionAssetsRe);
 				// 更新项目案件财产关联表状态为拍卖中
 				AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
-				assetsRePaifu.setAssetsReId(assetsReId);
+				assetsRePaifu.setAssetsReId(assetsReDTO.getAssetsReId());
 				assetsRePaifu.setStatus(200);
 				assetsRePaifuService.updateById(assetsRePaifu);
 
 				AuctionRecordAssetsRe auctionRecordAssetsRe = new AuctionRecordAssetsRe();
-				auctionRecordAssetsRe.setAssetsReId(assetsReId);
+				auctionRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
 				auctionRecordAssetsRe.setAuctionRecordAssetsRe(auctionRecord.getAuctionRecordId());
 				auctionRecordAssetsRes.add(auctionRecordAssetsRe);
 			}
