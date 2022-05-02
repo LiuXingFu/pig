@@ -207,4 +207,38 @@
 		</if>
 	</select>
 
+	<select id="queryAnnouncementPeriodNotAuctioned" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select  p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type
+		from p10_auction_record
+		left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		where p10_auction_record.auction_status = 100
+		and p10_project.project_type = 200
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_auction_record.announcement_start_time >= now()
+		and p10_auction_record.auction_start_time &lt;= now()
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
 </mapper>

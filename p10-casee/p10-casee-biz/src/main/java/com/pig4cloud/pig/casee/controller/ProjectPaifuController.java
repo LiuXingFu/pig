@@ -183,4 +183,16 @@ public class ProjectPaifuController {
 	public R queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
 		return R.ok(projectPaifuService.queryRealEstateNotSurveyedPage(page, assetsRePaifuFlowChartPageDTO));
 	}
+
+	/**
+	 * 公告期未拍卖
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "公告期未拍卖", notes = "公告期未拍卖")
+	@GetMapping("/queryAnnouncementPeriodNotAuctioned" )
+	public R queryAnnouncementPeriodNotAuctioned(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryAnnouncementPeriodNotAuctioned(page, assetsRePaifuFlowChartPageDTO));
+	}
 }

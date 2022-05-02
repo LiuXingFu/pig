@@ -72,21 +72,28 @@ public class AssetsRePaifuFlowChartPageVO extends AssetsRePaifu {
 	private String accountNumber;
 
 	/**
-	 * 开拍时间
+	 * 拍卖类型（100-一拍，200-二拍，300-变卖）
 	 */
-	@ApiModelProperty(value="开拍时间")
-	private LocalDate auctionStartDate;
+	@ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
+	private Integer auctionType;
 
 	/**
-	 * 拍卖公告阶段(0-一拍 1-二拍 2-变卖)
+	 * 公告发布时间
 	 */
-	private Integer auctionAnnouncementStage;
+	@ApiModelProperty(value="公告发布时间")
+	private LocalDate announcementStartTime;
 
 	/**
-	 * 拍卖结束日期
+	 * 拍卖开始时间
 	 */
-	@JSONField(format="yyyy-MM-dd")
-	private LocalDate auctionEndDate;
+	@ApiModelProperty(value="拍卖开始时间")
+	private LocalDate auctionStartTime;
+
+	/**
+	 * 拍卖结束时间
+	 */
+	@ApiModelProperty(value="拍卖结束时间")
+	private LocalDate auctionEndTime;
 
 	/**
 	 * 节点名称

@@ -120,4 +120,12 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	IPage<AssetsRePaifuFlowChartPageVO> queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 公告期未拍卖
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryAnnouncementPeriodNotAuctioned(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 }
