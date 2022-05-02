@@ -57,15 +57,22 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	@Override
 	@Transactional
 	public Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
+		Integer jointAuction = 1;
+		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
+			jointAuction = 2;
+		}
+
 		// 保存拍卖信息
 		Auction auction = new Auction();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auction);
 		auction.setAuctionStatus(100);
+		auction.setJointAuction(jointAuction);
 		auctionService.saveOrUpdate(auction);
 
 		// 保存拍卖记录
 		AuctionRecord auctionRecord = new AuctionRecord();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
+		auctionRecord.setJointAuction(jointAuction);
 		Integer save = this.baseMapper.insert(auctionRecord);
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
