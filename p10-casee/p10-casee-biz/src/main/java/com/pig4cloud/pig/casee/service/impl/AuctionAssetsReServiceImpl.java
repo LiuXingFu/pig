@@ -20,7 +20,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.AuctionAssetsRe;
 import com.pig4cloud.pig.casee.mapper.AuctionAssetsReMapper;
 import com.pig4cloud.pig.casee.service.AuctionAssetsReService;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 拍卖与项目案件财产关联表
@@ -31,4 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuctionAssetsReServiceImpl extends ServiceImpl<AuctionAssetsReMapper, AuctionAssetsRe> implements AuctionAssetsReService {
 
+	@Override
+	public List<AssetsRePaifuDetailVO> queryAssetsReByAuctionId(Integer auctionId){
+		return this.baseMapper.selectAssetsReByAuctionId(auctionId);
+	}
 }

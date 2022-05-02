@@ -41,7 +41,7 @@
 					select="com.pig4cloud.pig.casee.mapper.AssetsRePaifuMapper.selectByAssetsReId"></collection>
 	</resultMap>
 
-	<select id="getByAssetsReId" resultMap="auctionMap">
+	<select id="getByAssetsReId" resultType="com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO">
 		select p10_auction.* from p10_auction
 		left join p10_auction_assets_re on p10_auction_assets_re.auction_id = p10_auction.auction_id
 		left join p10_assets_re on p10_auction_assets_re.assets_re_id =p10_assets_re.assets_re_id
@@ -49,13 +49,6 @@
 		and p10_auction_assets_re.assets_re_id = #{assetsReId}
 		ORDER BY p10_auction.create_time desc
 		limit 1
-	</select>
-
-	<select id="getByAuctionId" resultMap="getAssetsRe">
-		select * from p10_auction
-		left join p10_auction_assets_re on p10_auction_assets_re.auction_id = p10_auction.auction_id
-		left join p10_assets_re on p10_auction_assets_re.assets_re_id =p10_assets_re.assets_re_id
-		where p10_auction.auction_id = #{auctionId}
 	</select>
 
 

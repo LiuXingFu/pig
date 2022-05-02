@@ -24,7 +24,7 @@
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AuctionRecordAssetsReMapper">
 
   <resultMap id="auctionRecordAssetsReMap" type="com.pig4cloud.pig.casee.entity.AuctionRecordAssetsRe">
-    <id property="auctionRecordAssetsRe" column="auction_record_assets_re"/>
+    <id property="auctionRecordAssetsReId" column="auction_record_assets_re_id"/>
     <result property="auctionRecordId" column="auction_record_id"/>
     <result property="assetsReId" column="assets_re_id"/>
   </resultMap>

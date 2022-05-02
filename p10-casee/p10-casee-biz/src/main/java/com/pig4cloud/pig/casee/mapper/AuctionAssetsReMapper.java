@@ -19,7 +19,12 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.AuctionAssetsRe;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 拍卖与项目案件财产关联表
@@ -30,4 +35,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AuctionAssetsReMapper extends BaseMapper<AuctionAssetsRe> {
 
+	List<AssetsRePaifuDetailVO> selectAssetsReByAuctionId(@Param("auctionId")Integer auctionId);
 }

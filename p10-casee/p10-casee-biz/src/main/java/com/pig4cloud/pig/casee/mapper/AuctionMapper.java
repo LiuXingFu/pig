@@ -32,8 +32,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AuctionMapper extends BaseMapper<Auction> {
 
-	Auction getByAssetsReId(@Param("projectId")Integer projectId,@Param("assetsReId")Integer assetsReId);
-
-	AuctionDetailVO getByAuctionId(@Param("auctionId")Integer auctionId);
+	AuctionDetailVO getByAssetsReId(@Param("projectId")Integer projectId,@Param("assetsReId")Integer assetsReId);
 
 }
