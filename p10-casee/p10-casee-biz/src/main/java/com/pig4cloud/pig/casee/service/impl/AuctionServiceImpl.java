@@ -46,6 +46,7 @@ public class AuctionServiceImpl extends ServiceImpl<AuctionMapper, Auction> impl
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getCaseeId,caseeId);
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
 		AssetsRe assetsRe = assetsReService.getOne(assetsReQueryWrapper);
-		return this.baseMapper.getByAssetsReId(projectId,assetsRe.getAssetsReId());
+		Auction auction = this.baseMapper.getByAssetsReId(projectId,assetsRe.getAssetsReId());
+		return this.baseMapper.getByAuctionId(auction.getAuctionId());
 	}
 }
