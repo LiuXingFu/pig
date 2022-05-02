@@ -98,7 +98,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 
 				AuctionRecordAssetsRe auctionRecordAssetsRe = new AuctionRecordAssetsRe();
 				auctionRecordAssetsRe.setAssetsReId(assetsReId);
-				auctionRecordAssetsRe.setAuctionRecordAssetsRe(auctionRecord.getAuctionRecordId());
+				auctionRecordAssetsRe.setAuctionRecordId(auctionRecord.getAuctionRecordId());
 				auctionRecordAssetsRes.add(auctionRecordAssetsRe);
 			}
 			auctionAssetsReService.saveBatch(auctionAssetsRes);
