@@ -74,6 +74,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		AuctionRecord auctionRecord = new AuctionRecord();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
 		auctionRecord.setJointAuction(jointAuction);
+		auctionRecord.setAuctionId(auction.getAuctionId());
 		Integer save = this.baseMapper.insert(auctionRecord);
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
