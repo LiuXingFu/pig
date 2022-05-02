@@ -40,7 +40,7 @@ public class AuctionRecordAssetsRe {
      */
     @TableId
     @ApiModelProperty(value="拍卖记录财产关联id")
-    private Integer auctionRecordAssetsRe;
+    private Integer auctionRecordAssetsReId;
 
     /**
      * 拍卖记录id
