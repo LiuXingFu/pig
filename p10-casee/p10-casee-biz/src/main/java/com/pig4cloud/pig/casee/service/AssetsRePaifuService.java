@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
@@ -53,5 +50,11 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	IPage<AssetsReTargetPageVO> queryTargetPage(Page page, AssetsReTargetPageDTO assetsReTargetPageDTO);
+
+	/**
+	 * 修改项目案件财产关联状态
+	 * @return
+	 */
+	Integer modifyAssetsReStatus(AssetsReModifyStatusDTO assetsReModifyStatusDTO);
 
 }

@@ -61,7 +61,7 @@ public class AuctionRecord extends BaseEntity {
      * 拍卖类型（100-一拍，200-二拍，300-变卖）
      */
     @ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
-    private String auctionType;
+    private Integer auctionType;
 
     /**
      * 拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）

@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordStatusSaveDTO;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.casee.entity.AuctionRecord;
@@ -117,6 +118,18 @@ public class AuctionRecordController {
 	@GetMapping("/getLastAuctionRecord" )
 	public R getLastAuctionRecord(Integer projectId,Integer caseeId,Integer assetsId) {
 		return R.ok(auctionRecordService.getLastAuctionRecord(projectId,caseeId,assetsId));
+	}
+
+	/**
+	 * 撤销拍卖记录
+	 * @param auctionRecordStatusSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "撤销拍卖记录", notes = "撤销拍卖记录")
+	@SysLog("撤销拍卖记录" )
+	@PutMapping("/revokeAuctionRecord")
+	public R revokeAuctionRecord(@RequestBody AuctionRecordStatusSaveDTO auctionRecordStatusSaveDTO) {
+		return R.ok(auctionRecordService.revokeAuctionRecord(auctionRecordStatusSaveDTO));
 	}
 
 }

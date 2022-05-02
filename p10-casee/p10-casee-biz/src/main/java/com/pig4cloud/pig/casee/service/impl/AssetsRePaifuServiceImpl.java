@@ -10,11 +10,9 @@ import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -63,6 +61,8 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService;
 	@Autowired
 	ProjectPaifuService projectPaifuService;
+	@Autowired
+	ProjectStatusService projectStatusService;
 
 	@Override
 	public IPage<AssetsRePageVO> queryAssetsRePageByProjectId(Page page, AssetsRePageDTO assetsRePageDTO) {
@@ -174,5 +174,21 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.queryTargetPage(page,assetsReTargetPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyAssetsReStatus(AssetsReModifyStatusDTO assetsReModifyStatusDTO){
+		ProjectStatusSaveDTO projectStatusSaveDTO = new ProjectStatusSaveDTO();
+		BeanCopyUtil.copyBean(assetsReModifyStatusDTO,projectStatusSaveDTO);
+		projectStatusSaveDTO.setStatusVal(assetsReModifyStatusDTO.getStatus());
+		projectStatusSaveDTO.setSourceId(assetsReModifyStatusDTO.getAssetsReId());
+		projectStatusSaveDTO.setType(3);
+		projectStatusService.saveStatusRecord(projectStatusSaveDTO);
+
+		AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
+		assetsRePaifu.setAssetsReId(assetsReModifyStatusDTO.getAssetsReId());
+		assetsRePaifu.setStatus(assetsReModifyStatusDTO.getStatus());
+		return this.baseMapper.updateById(assetsRePaifu);
 	}
 }

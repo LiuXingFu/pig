@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
@@ -146,5 +147,39 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	@Override
 	public AuctionRecord getLastAuctionRecord(Integer projectId,Integer caseeId,Integer assetsId){
 		return this.baseMapper.getLastAuctionRecord(projectId,caseeId,assetsId);
+	}
+
+	@Override
+	@Transactional
+	public Integer revokeAuctionRecord(AuctionRecordStatusSaveDTO auctionRecordStatusSaveDTO){
+		// 保存拍卖记录状态表
+		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
+		BeanCopyUtil.copyBean(auctionRecordStatusSaveDTO,auctionRecordStatus);
+		auctionRecordStatusService.save(auctionRecordStatus);
+		// 更新拍卖记录状态
+		AuctionRecord auctionRecord = new AuctionRecord();
+		auctionRecord.setAuctionRecordId(auctionRecordStatusSaveDTO.getAuctionRecordId());
+		auctionRecord.setAuctionType(auctionRecordStatusSaveDTO.getStatus());
+
+		// 更新拍卖表当前状态
+		AuctionRecord auctionRecordDetail = this.baseMapper.selectById(auctionRecordStatusSaveDTO.getAuctionRecordId());
+		Auction auction = new Auction();
+		auction.setAuctionId(auctionRecordDetail.getAuctionId());
+		auction.setAuctionStatus(auctionRecordStatusSaveDTO.getStatus());
+		auctionService.updateById(auction);
+
+		QueryWrapper<AuctionRecordAssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AuctionRecordAssetsRe::getAuctionRecordId,auctionRecordStatusSaveDTO.getAuctionRecordId());
+		List<AuctionRecordAssetsRe> auctionRecordAssetsRes = auctionRecordAssetsReService.list(queryWrapper);
+		List<AssetsRe> assetsRes = new ArrayList<>();
+		// 更新项目案件财产关联表状态
+		for(AuctionRecordAssetsRe auctionRecordAssetsRe : auctionRecordAssetsRes){
+			AssetsRe assetsRe = new AssetsRe();
+			assetsRe.setAssetsReId(auctionRecordAssetsRe.getAssetsReId());
+			assetsRe.setStatus(100);
+			assetsRes.add(assetsRe);
+		}
+		assetsRePaifuService.updateBatchById(assetsRes);
+		return this.baseMapper.updateById(auctionRecord);
 	}
 }

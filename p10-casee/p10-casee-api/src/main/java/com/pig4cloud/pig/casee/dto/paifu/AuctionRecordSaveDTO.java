@@ -71,7 +71,7 @@ public class AuctionRecordSaveDTO {
 	 * 拍卖类型（100-一拍，200-二拍，300-变卖）
 	 */
 	@ApiModelProperty(value="拍卖类型（100-一拍，200-二拍，300-变卖）")
-	private String auctionType;
+	private Integer auctionType;
 
     /**
      * 公告发布时间

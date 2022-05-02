@@ -14,48 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.dto.paifu;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
 /**
- * 项目/案件状态表
+ * 项目表
  *
- * @author ligt
- * @date 2022-01-18 15:21:05
+ * @author pig code generator
+ * @date 2022-02-10 17:30:36
  */
 @Data
-@TableName("p10_project_status")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "项目/案件状态表")
-public class ProjectStatus extends BaseEntity {
-
-    /**
-     * 状态记录id
-     */
-    @TableId
-    @ApiModelProperty(value="状态记录id")
-    private Integer statusId;
-
-    /**
-     * 类型（1-项目，2-案件，3-财产）
-     */
-    @ApiModelProperty(value="类型（1-项目，2-案件，3-财产）")
-    private Integer type;
-
-	/**
-	 * 状态值
-	 */
-	@ApiModelProperty(value="状态值")
-	private Integer statusVal;
+public class AssetsReModifyStatusDTO {
 
 	/**
 	 * 项目id
@@ -69,23 +42,17 @@ public class ProjectStatus extends BaseEntity {
 	@ApiModelProperty(value="案件id")
 	private Integer caseeId;
 
-    /**
-     * 源id
-     */
-    @ApiModelProperty(value="源id")
-    private Integer sourceId;
+	/**
+	 * 财产关联表id
+	 */
+	@ApiModelProperty(value="财产关联表id")
+	private Integer assetsReId;
 
-    /**
-     * 删除标识（0-正常,1-删除）
-     */
-    @ApiModelProperty(value="删除标识（0-正常,1-删除）")
-    private String delFlag;
-
-    /**
-     * 创建人名称
-     */
-    @ApiModelProperty(value="创建人名称")
-    private String userName;
+	/**
+	 * 状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）
+	 */
+	@ApiModelProperty(value="状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）")
+	private Integer status;
 
 	/**
 	 * 状态名称
@@ -100,14 +67,15 @@ public class ProjectStatus extends BaseEntity {
 	private LocalDate changeTime;
 
 	/**
-	 * 状态详情
-	 */
-	@ApiModelProperty(value="状态详情")
-	private String statusDetail;
-
-	/**
 	 * 描述
 	 */
 	@ApiModelProperty(value="描述")
 	private String describes;
+
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
+
 }
