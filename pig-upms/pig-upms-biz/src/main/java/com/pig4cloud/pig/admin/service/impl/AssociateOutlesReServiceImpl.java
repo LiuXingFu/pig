@@ -21,14 +21,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.AssociateOutlesReDTO;
-import com.pig4cloud.pig.admin.api.entity.AssociateOutlesRe;
-import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
-import com.pig4cloud.pig.admin.api.entity.Outles;
+import com.pig4cloud.pig.admin.api.entity.*;
 import com.pig4cloud.pig.admin.api.vo.AssociateOutlesRePageVO;
 import com.pig4cloud.pig.admin.mapper.AssociateOutlesReMapper;
-import com.pig4cloud.pig.admin.service.AssociateOutlesReService;
-import com.pig4cloud.pig.admin.service.InstitutionAssociateService;
-import com.pig4cloud.pig.admin.service.OutlesService;
+import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import org.springframework.beans.BeanUtils;
@@ -60,6 +56,12 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 	@Autowired
 	SecurityUtilsService securityUtilsService;
 
+	@Autowired
+	RelationshipAuthenticateService relationshipAuthenticateService;
+
+	@Autowired
+	InsOutlesCourtReService insOutlesCourtReService;
+
 	/**
 	 * 分页查询已授权的网点信息
 	 *
@@ -77,8 +79,8 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 	 * 根据associateID查询授权列表
 	 *
 	 * @param insAssociateId
-	 * @patam outlesName
 	 * @return
+	 * @patam outlesName
 	 */
 	@Override
 	public List<Outles> getAuthorizationPage(Integer insAssociateId, String outlesName) throws Exception {
@@ -102,8 +104,12 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 	@Override
 	@Transactional
 	public boolean saveAssociateOutles(AssociateOutlesReDTO associateOutlesDTO) throws Exception {
+		//判断是否勾选网点如果 勾选继续执行
 		if (Objects.nonNull(associateOutlesDTO.getOutlesIds()) && associateOutlesDTO.getOutlesIds().size() > 0) {
 			List<AssociateOutlesRe> list = new ArrayList<>();
+			List<InsOutlesCourtRe> insOutlesCourtReList = new ArrayList<>();
+
+			//循环创建网点授权与机构网点法院关联实体并将他们存入集合中
 			for (Integer outlesId : associateOutlesDTO.getOutlesIds()) {
 				AssociateOutlesRe associateOutlesRe = new AssociateOutlesRe();
 				associateOutlesRe.setInsAssociateId(associateOutlesDTO.getInsAssociateId());
@@ -111,7 +117,35 @@ public class AssociateOutlesReServiceImpl extends ServiceImpl<AssociateOutlesReM
 				associateOutlesRe.setOutlesId(outlesId);
 				associateOutlesRe.setAuthorizationTime(LocalDateTime.now());
 				list.add(associateOutlesRe);
+
+				//判断如果合作机构为拍辅机构 则继续执行 创建机构网点法院关联实体
+				if (associateOutlesDTO.getInsType().equals(1100)) {
+					//查询机构法院关联表
+					RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>()
+							.eq(RelationshipAuthenticate::getAuthenticateId, securityUtilsService.getCacheUser().getInsId()));
+					//查询机构网点法院关联表
+					InsOutlesCourtRe insOutlesCourtRe = this.insOutlesCourtReService.getOne(new LambdaQueryWrapper<InsOutlesCourtRe>()
+							.eq(InsOutlesCourtRe::getCourtId, relationshipAuthenticate.getAuthenticateGoalId())
+							.eq(InsOutlesCourtRe::getOutlesId, outlesId));
+					//判断机构网点法院关联是否存在？不存在，将机构网点法院关联存入集合中
+					if (Objects.isNull(insOutlesCourtRe)) {
+						insOutlesCourtRe = new InsOutlesCourtRe();
+
+						insOutlesCourtRe.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
+						insOutlesCourtRe.setInsId(associateOutlesDTO.getInsAssociateId());
+						insOutlesCourtRe.setOutlesId(outlesId);
+
+						insOutlesCourtReList.add(insOutlesCourtRe);
+					}
+				}
+
 			}
+
+			//机构网点法院关联集合数据大于0，保存数据
+			if (insOutlesCourtReList.size() > 0) {
+				this.insOutlesCourtReService.saveBatch(insOutlesCourtReList);
+			}
+
 			return this.saveBatch(list);
 		} else {
 			throw new Exception("请选择勾线网点！");
