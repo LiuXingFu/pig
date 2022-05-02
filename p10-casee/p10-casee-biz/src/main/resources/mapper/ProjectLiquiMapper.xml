@@ -130,6 +130,7 @@
 		select p10_project.* from p10_project
 		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_project.status = 1000
 		and p10_project_casee_re.project_id is null
 		<if test="login.insId != null and login.insId > 0">
@@ -214,6 +215,7 @@
 					GROUP BY p10_project_casee_re.project_id
 				)casee on casee.casee_id = p10_project_casee_re.casee_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_casee.casee_id is null
 			and casee.casee_id is not null
@@ -225,6 +227,7 @@
 			left join p10_transfer_record on p10_transfer_record.project_id = p10_project.project_id
 			left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id and p10_casee.casee_type = 3010
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_casee.casee_id is null
 			and json_extract( p10_transfer_record.transfer_detail, '$.litigation' ) = 1
@@ -236,6 +239,7 @@
 					GROUP BY project_id
 				)p10_reconciliatio_mediation on p10_reconciliatio_mediation.project_id = p10_project.project_id and p10_reconciliatio_mediation.`status` = 3
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_reconciliatio_mediation.reconciliatio_mediation_id is not null
 			and p10_casee.casee_id is null
@@ -286,6 +290,7 @@
 			left join p10_project on p10_project.project_id = p10_behavior.project_id
 			left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_behavior.behavior_status = 1
 			and p10_behavior.type = 100
@@ -297,6 +302,7 @@
 			left join p10_project on p10_project.project_id = p10_behavior.project_id
 			left join p10_casee on p10_casee.casee_id = p10_behavior.casee_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_behavior.behavior_status = 1
 			and p10_behavior.type = 200
@@ -313,6 +319,7 @@
 					left join p10_casee on p10_project_casee_re.casee_id = p10_casee.casee_id and p10_casee.casee_type in (2020,2021,3031,3031)
 					left join (select project_id,max(urge_time) urge_time from p10_project_urge where del_flag = 0 and urge_according = 100 GROUP BY project_id )p10_project_urge on p10_project_urge.project_id = p10_project.project_id
 					where p10_project.del_flag = 0
+					and p10_project.project_type = 100
 					and p10_project.`status` = 1000
 					and p10_casee.casee_id is null
 					and json_extract( p10_transfer_record.transfer_detail, '$.litigation' )=0
@@ -335,6 +342,7 @@
 					left join p10_casee on p10_project_casee_re.casee_id = p10_casee.casee_id and p10_casee.casee_type in (3031,3031)
 					left join (select project_id,max(urge_time) urge_time from p10_project_urge where del_flag = 0 and urge_according = 200 GROUP BY project_id )p10_project_urge on p10_project_urge.project_id = p10_project.project_id
 					where p10_project.del_flag = 0
+					and p10_project.project_type = 100
 					and p10_project.`status` = 1000
 					and p10_casee.casee_id is null
 					and json_extract( p10_transfer_record.transfer_detail, '$.litigation' )=1
@@ -351,6 +359,7 @@
 			left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 			left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_casee.casee_type = 2020
 			and p10_casee.`status` = 1
@@ -373,6 +382,7 @@
 			left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 			left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_casee.casee_type in (2020,2021,2030)
 			and p10_casee.`status` = 1
@@ -385,6 +395,7 @@
 			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_assets_re.casee_id is not null
 			and p10_assets.type = 20200
@@ -397,6 +408,7 @@
 			left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 			left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_assets_re.casee_id is not null
 			and p10_assets.type = 20100
@@ -411,6 +423,7 @@
 			left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id
 			left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_assets_re.casee_id is not null
 			and p10_assets.type = 20200
@@ -428,6 +441,7 @@
 			left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 			left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 			where p10_project.del_flag = 0
+			and p10_project.project_type = 100
 			and p10_project.`status` = 1000
 			and p10_assets_re.casee_id is not null
 			and p10_assets.type = 20200

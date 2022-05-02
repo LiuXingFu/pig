@@ -49,18 +49,6 @@ public class Auction extends BaseEntity {
     @ApiModelProperty(value="是否联合拍卖(1:否，2-是)")
     private Integer jointAuction;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
-
-    /**
-     * 案件id
-     */
-    @ApiModelProperty(value="案件id")
-    private Integer caseeId;
-
 	/**
 	 * 标题
 	 */
@@ -71,7 +59,7 @@ public class Auction extends BaseEntity {
 	 * 当前拍卖类型（100-一拍，200-二拍，300-变卖）
 	 */
 	@ApiModelProperty(value="当前拍卖类型（100-一拍，200-二拍，300-变卖）")
-	private String auctionType;
+	private Integer auctionType;
 
 	/**
 	 * 当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）

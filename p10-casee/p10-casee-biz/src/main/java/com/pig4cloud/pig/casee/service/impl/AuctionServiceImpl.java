@@ -22,10 +22,15 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.Auction;
 import com.pig4cloud.pig.casee.mapper.AuctionMapper;
 import com.pig4cloud.pig.casee.service.AssetsReService;
+import com.pig4cloud.pig.casee.service.AuctionAssetsReService;
 import com.pig4cloud.pig.casee.service.AuctionService;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 拍卖表
@@ -37,15 +42,20 @@ import org.springframework.stereotype.Service;
 public class AuctionServiceImpl extends ServiceImpl<AuctionMapper, Auction> implements AuctionService {
 	@Autowired
 	AssetsReService assetsReService;
+	@Autowired
+	AuctionAssetsReService auctionAssetsReService;
 
 
 	@Override
-	public AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId, Integer projectId, Integer caseeId){
+	public AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer projectId, Integer caseeId, Integer assetsId){
 		QueryWrapper<AssetsRe> assetsReQueryWrapper = new QueryWrapper<>();
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getProjectId,projectId);
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getCaseeId,caseeId);
 		assetsReQueryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
 		AssetsRe assetsRe = assetsReService.getOne(assetsReQueryWrapper);
-		return this.baseMapper.getByAssetsReId(projectId,assetsRe.getAssetsReId());
+		AuctionDetailVO auctionDetailVO = this.baseMapper.getByAssetsReId(projectId,assetsRe.getAssetsReId());
+		List<AssetsRePaifuDetailVO> assetsReList = auctionAssetsReService.queryAssetsReByAuctionId(auctionDetailVO.getAuctionId());
+		auctionDetailVO.setAssetsReList(assetsReList);
+		return auctionDetailVO;
 	}
 }

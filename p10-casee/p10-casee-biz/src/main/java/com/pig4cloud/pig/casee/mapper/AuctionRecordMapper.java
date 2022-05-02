@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.AuctionRecord;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 拍卖记录表
@@ -29,5 +30,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface AuctionRecordMapper extends BaseMapper<AuctionRecord> {
+
+	AuctionRecord getLastAuctionRecord(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("assetsId") Integer assetsId);
 
 }

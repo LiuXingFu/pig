@@ -163,6 +163,17 @@ public class AssetsReLiquiController {
 	}
 
 	/**
+	 * 分页查询不动产现勘未入户
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "分页查询不动产现勘未入户", notes = "分页查询不动产现勘未入户")
+	@GetMapping("/queryRealEstateSurveyNotRegistered" )
+	public R queryRealEstateSurveyNotRegistered(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryRealEstateSurveyNotRegistered(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
 	 * 财产拍卖公告期
 	 * @param assetsReLiquiFlowChartPageDTO
 	 * @return R

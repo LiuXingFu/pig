@@ -72,14 +72,15 @@ public class AssetsReController {
     }
 
 	/**
-	 * 通过项目id查询财产信息
+	 * 通过项目id财产状态查询财产信息
 	 * @param projectId id
+	 * @param status
 	 * @return R
 	 */
 	@ApiOperation(value = "通过项目id查询财产信息", notes = "通过项目id查询财产信息")
-	@GetMapping("/getProjectIdByAssets/{projectId}" )
-	public R getProjectIdByAssets(@PathVariable("projectId" ) Integer projectId) {
-		return R.ok(assetsReService.getProjectIdByAssets(projectId));
+	@GetMapping("/getProjectIdStatusByAssets" )
+	public R getProjectIdStatusByAssets(Integer projectId,Integer status) {
+		return R.ok(assetsReService.getProjectIdStatusByAssets(projectId,status));
 	}
 
     /**

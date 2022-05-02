@@ -34,9 +34,8 @@ import java.time.LocalDate;
  */
 @Data
 @TableName("p10_auction_record_status")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "拍卖记录状态表")
-public class AuctionRecordStatus extends BaseEntity {
+public class AuctionRecordStatus {
 
     /**
      * 拍卖记录状态记录表
@@ -63,5 +62,16 @@ public class AuctionRecordStatus extends BaseEntity {
     @ApiModelProperty(value="状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
     private Integer status;
 
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendix;
+
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value="备注")
+	private String remark;
 
 }

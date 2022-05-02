@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.paifu.*;
+import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.service.ProjectPaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -149,4 +150,37 @@ public class ProjectPaifuController {
 		return R.ok(projectPaifuService.queryProjectCaseeDetail(projectId));
 	}
 
+	/**
+	 * 统计业务流程图
+	 * @return
+	 */
+	@ApiOperation(value = "统计业务流程图", notes = "统计业务流程图")
+	@GetMapping("/countProjectFlowChart" )
+	public R countProjectFlowChart() {
+		return R.ok(projectPaifuService.countProjectFlowChart());
+	}
+
+	/**
+	 * 分页查询业务流程图节点列表
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "项目拍辅分页查询", notes = "项目拍辅分页查询")
+	@GetMapping("/queryFlowChartPage" )
+	public R queryFlowChartPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryFlowChartPage(page, assetsRePaifuFlowChartPageDTO));
+	}
+
+	/**
+	 * 分页查询不动产现勘未入户
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "项目拍辅分页查询", notes = "项目拍辅分页查询")
+	@GetMapping("/queryRealEstateNotSurveyedPage" )
+	public R queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryRealEstateNotSurveyedPage(page, assetsRePaifuFlowChartPageDTO));
+	}
 }

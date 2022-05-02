@@ -33,6 +33,8 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 	SecurityUtilsService securityUtilsService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	AssetsReService assetsReService;
 
 
 
@@ -70,6 +72,10 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 			assetsLiquiTransferRecordRe.setLiquiTransferRecordId(liquiTransferRecord.getLiquiTransferRecordId());
 			assetsLiquiTransferRecordReService.save(assetsLiquiTransferRecordRe);
 
+			AssetsRe assetsRe = assetsReService.getById(assetsReDTO.getAssetsReId());
+			assetsRe.setStatus(700);
+			//修改财产关联表状态为移送中
+			assetsReService.updateById(assetsRe);
 
 			//查询该财产程序信息
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, assetsReDTO.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 4040));
