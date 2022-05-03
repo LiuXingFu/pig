@@ -589,4 +589,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		return this.baseMapper.queryAuctionExpiresWithoutResults(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
 	}
 
+	@Override
+	public ProjectPaifu queryById(Integer projectId){
+		return this.baseMapper.selectById(projectId);
+	}
+
 }
