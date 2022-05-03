@@ -61,4 +61,10 @@ public interface AuctionRecordService extends IService<AuctionRecord> {
 	 */
 	Integer revokeAuctionRecord(AuctionRecordStatusSaveDTO auctionRecordStatusSaveDTO);
 
+	/**
+	 * 定时器刷新拍卖状态
+	 * @return
+	 */
+	void refreshAuctionStatus();
+
 }

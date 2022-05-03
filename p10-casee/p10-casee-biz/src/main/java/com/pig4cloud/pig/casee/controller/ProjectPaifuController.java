@@ -195,4 +195,16 @@ public class ProjectPaifuController {
 	public R queryAnnouncementPeriodNotAuctioned(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
 		return R.ok(projectPaifuService.queryAnnouncementPeriodNotAuctioned(page, assetsRePaifuFlowChartPageDTO));
 	}
+
+	/**
+	 * 拍卖到期无结果
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "拍卖到期无结果", notes = "拍卖到期无结果")
+	@GetMapping("/queryAuctionExpiresWithoutResults" )
+	public R queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryAuctionExpiresWithoutResults(page, assetsRePaifuFlowChartPageDTO));
+	}
 }

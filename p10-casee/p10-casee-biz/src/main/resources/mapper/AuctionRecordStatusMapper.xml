@@ -29,4 +29,5 @@
     <result property="changeTime" column="change_time"/>
     <result property="status" column="status"/>
   </resultMap>
+
 </mapper>

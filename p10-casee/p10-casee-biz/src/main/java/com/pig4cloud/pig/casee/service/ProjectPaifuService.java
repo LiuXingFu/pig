@@ -128,4 +128,12 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	IPage<AssetsRePaifuFlowChartPageVO> queryAnnouncementPeriodNotAuctioned(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 拍卖到期无结果
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 }

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +63,16 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
 			jointAuction = 2;
 		}
-
+		// 判断发布拍卖时间是否小于当前时间，true的话将拍卖状态set为200：正在进行中
+		Integer auctionStatus = 100;
+		LocalDate now =LocalDate.now();
+		if(now.isBefore(auctionRecordSaveDTO.getAnnouncementStartTime())){
+			auctionStatus = 200;
+		}
 		// 保存拍卖信息
 		Auction auction = new Auction();
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auction);
-		auction.setAuctionStatus(100);
+		auction.setAuctionStatus(auctionStatus);
 		auction.setJointAuction(jointAuction);
 		auctionService.saveOrUpdate(auction);
 
@@ -75,6 +81,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		BeanCopyUtil.copyBean(auctionRecordSaveDTO, auctionRecord);
 		auctionRecord.setJointAuction(jointAuction);
 		auctionRecord.setAuctionId(auction.getAuctionId());
+		auctionRecord.setAuctionStatus(auctionStatus);
 		Integer save = this.baseMapper.insert(auctionRecord);
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
@@ -110,7 +117,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		// 保存拍卖记录状态
 		AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
 		auctionRecordStatus.setAuctionRecordId(auctionRecord.getAuctionRecordId());
-		auctionRecordStatus.setStatus(100);
+		auctionRecordStatus.setStatus(auctionStatus);
 		auctionRecordStatus.setChangeTime(auctionRecordSaveDTO.getAnnouncementStartTime());
 		auctionRecordStatusService.save(auctionRecordStatus);
 
@@ -190,5 +197,36 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		}
 		assetsRePaifuService.updateBatchById(assetsRes);
 		return this.baseMapper.updateById(auctionRecord);
+	}
+
+	@Override
+	@Transactional
+	public void refreshAuctionStatus(){
+		List<AuctionRecord> acutionRecordStatus = this.baseMapper.selectAcutionRecordStatus();
+		Integer auctionStatus = 200;
+
+		List<AuctionRecordStatus> auctionRecordStatuses = new ArrayList<>();
+		List<AuctionRecord> auctionRecords = new ArrayList<>();
+		List<Auction> auctions = new ArrayList<>();
+		for(AuctionRecord auctionRecord : acutionRecordStatus){
+			AuctionRecord updateAuctionRecord = new AuctionRecord();
+			updateAuctionRecord.setAuctionRecordId(auctionRecord.getAuctionRecordId());
+			updateAuctionRecord.setAuctionStatus(auctionStatus);
+			auctionRecords.add(updateAuctionRecord);
+
+			AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
+			auctionRecordStatus.setAuctionRecordId(auctionRecord.getAuctionRecordId());
+			auctionRecordStatus.setStatus(auctionStatus);
+			auctionRecordStatus.setChangeTime(auctionRecord.getAuctionStartTime());
+			auctionRecordStatuses.add(auctionRecordStatus);
+
+			Auction auction = new Auction();
+			auction.setAuctionId(auctionRecord.getAuctionId());
+			auction.setAuctionStatus(auctionStatus);
+			auctions.add(auction);
+		}
+		this.updateBatchById(auctionRecords);
+		auctionRecordStatusService.saveBatch(auctionRecordStatuses);
+		auctionService.updateBatchById(auctions);
 	}
 }

@@ -55,4 +55,10 @@
 		ORDER BY p10_auction_record.announcement_start_time desc
 		limit 1
 	</select>
+
+	<select id="selectAcutionRecordStatus" resultMap="auctionRecordMap">
+		select * from p10_auction_record
+		where auction_start_time &lt;= now()
+		and auction_status = 100
+	</select>
 </mapper>

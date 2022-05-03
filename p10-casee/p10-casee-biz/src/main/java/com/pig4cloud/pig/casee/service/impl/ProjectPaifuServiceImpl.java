@@ -534,7 +534,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		countFlowChartVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
 
 		//拍卖到期无结果
-		countFlowChartVO.setAuctionExpiresWithoutResults(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
+		IPage<AssetsRePaifuFlowChartPageVO> auctionExpiresWithoutResults = this.queryAuctionExpiresWithoutResults(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAuctionExpiresWithoutResults(auctionExpiresWithoutResults.getTotal());
 
 		//拍卖成交未处理
 		countFlowChartVO.setAuctionTransactionNotProcessed(queryPropertyFlowChartPage("PaiFu_STCC_PMGG_PMGG",null));
@@ -582,6 +583,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.queryAnnouncementPeriodNotAuctioned(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAuctionExpiresWithoutResults(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
 	}
 
 }
