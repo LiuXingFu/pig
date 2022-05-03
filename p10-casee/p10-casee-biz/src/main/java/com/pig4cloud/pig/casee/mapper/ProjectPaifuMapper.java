@@ -59,4 +59,14 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 
 	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionNotProcessed(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExceptionNotCancelled(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsRePaifuFlowChartPageVO> queryRulingNotService(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionFailedNotProcessed(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<AssetsRePaifuFlowChartPageVO> queryArrivalCompensationNotAdjudicated(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 }
