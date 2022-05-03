@@ -207,4 +207,64 @@ public class ProjectPaifuController {
 	public R queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
 		return R.ok(projectPaifuService.queryAuctionExpiresWithoutResults(page, assetsRePaifuFlowChartPageDTO));
 	}
+
+	/**
+	 * 拍卖成交未处理
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "拍卖成交未处理", notes = "拍卖成交未处理")
+	@GetMapping("/queryAuctionTransactionNotProcessed" )
+	public R queryAuctionTransactionNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryAuctionTransactionNotProcessed(page, assetsRePaifuFlowChartPageDTO));
+	}
+
+	/**
+	 * 拍卖异常未撤销
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "拍卖异常未撤销", notes = "拍卖异常未撤销")
+	@GetMapping("/queryAuctionExceptionNotCancelled" )
+	public R queryAuctionExceptionNotCancelled(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryAuctionExceptionNotCancelled(page, assetsRePaifuFlowChartPageDTO));
+	}
+
+	/**
+	 * 裁定未送达
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "裁定未送达", notes = "裁定未送达")
+	@GetMapping("/queryRulingNotService" )
+	public R queryRulingNotService(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryRulingNotService(page, assetsRePaifuFlowChartPageDTO));
+	}
+
+	/**
+	 * 拍卖不成交未处理
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "拍卖不成交未处理", notes = "拍卖不成交未处理")
+	@GetMapping("/queryAuctionTransactionFailedNotProcessed" )
+	public R queryAuctionTransactionFailedNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryAuctionTransactionFailedNotProcessed(page, assetsRePaifuFlowChartPageDTO));
+	}
+
+	/**
+	 * 到款/抵偿未裁定
+	 * @param page 分页对象
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "到款/抵偿未裁定", notes = "到款/抵偿未裁定")
+	@GetMapping("/queryArrivalCompensationNotAdjudicated" )
+	public R queryArrivalCompensationNotAdjudicated(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
+		return R.ok(projectPaifuService.queryArrivalCompensationNotAdjudicated(page, assetsRePaifuFlowChartPageDTO));
+	}
 }

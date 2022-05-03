@@ -139,6 +139,46 @@ public interface ProjectPaifuService extends IService<Project> {
 	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
 
 	/**
+	 * 拍卖成交未处理
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 拍卖异常未撤销
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExceptionNotCancelled(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 裁定未送达
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryRulingNotService(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 拍卖不成交未处理
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionFailedNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 到款/抵偿未裁定
+	 * @param page
+	 * @param assetsRePaifuFlowChartPageDTO
+	 * @return
+	 */
+	IPage<AssetsRePaifuFlowChartPageVO> queryArrivalCompensationNotAdjudicated(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
 	 * 根据id查询拍辅项目
 	 * @param projectId
 	 * @return
