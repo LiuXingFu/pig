@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.entity.paifuentity.detail;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
@@ -19,5 +20,15 @@ public class ProjectPaifuDetail {
 	 * 申请提交时间
 	 */
 	private LocalDate applicationSubmissionTime;
+
+	/**
+	 * 项目总金额
+	 */
+	BigDecimal projectAmount;
+
+	/**
+	 * 已回款金额
+	 */
+	BigDecimal repaymentAmount;
 
 }

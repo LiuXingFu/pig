@@ -97,6 +97,9 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	PaiFu_STCC_PMGG_PMGG_NODEHandler paiFu_stcc_pmgg_pmgg_nodeHandler;
 
+	@Autowired
+	PaiFu_STCC_PMJG_PMJG_NODEHandler paiFu_stcc_pmjg_pmjg_nodeHandler;
+
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -141,6 +144,7 @@ public class NodeTaskHandlerRegister {
 
 		//拍辅任务阶段提交map实现类
 		submitHandlerMap.put("paiFu_STCC_PMGG_PMGG", paiFu_stcc_pmgg_pmgg_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_PMJG_PMJG", paiFu_stcc_pmjg_pmjg_nodeHandler);
 
 
 //		// 任务节点审核map实现类

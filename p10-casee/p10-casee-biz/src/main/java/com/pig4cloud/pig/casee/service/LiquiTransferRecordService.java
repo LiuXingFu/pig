@@ -45,7 +45,7 @@ public interface LiquiTransferRecordService extends IService<LiquiTransferRecord
 
 	LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId);
 
-	List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId);
+	List<LiquiTransferRecordVO> queryTransferRecord(Integer projectId, Integer caseeId, String nodeId);
 
 	int updateLiquiTransferRecord(UpdateLiquiTransferRecordDTO updateLiquiTransferRecordDTO);
 
