@@ -119,6 +119,21 @@ public interface TaskNodeService extends IService<TaskNode> {
 	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer projectId,Integer caseeId,Integer procedureNature,Integer id);
 
 	/**
+	 * 根据节点key以及项目、案件信息查询最新一条节点信息
+	 * @param taskNodeKey 节点key
+	 * @param taskNode 节点信息
+	 * @return R
+	 */
+	TaskNode queryNewTaskNode(String taskNodeKey,TaskNode taskNode);
+
+	/**
+	 * 复制节点信息
+	 * @param taskNode 节点信息
+	 * @return R
+	 */
+	void copyTaskNode(TaskNode taskNode);
+
+	/**
 	 * 根据标的id查询当前主任务进度
 	 * @param targetId 标的id
 	 * @return
