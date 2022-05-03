@@ -267,4 +267,16 @@ public class ProjectPaifuController {
 	public R queryArrivalCompensationNotAdjudicated(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO) {
 		return R.ok(projectPaifuService.queryArrivalCompensationNotAdjudicated(page, assetsRePaifuFlowChartPageDTO));
 	}
+
+	/**
+	 * 根据id查询拍辅项目
+	 * @param projectId
+	 * @return
+	 */
+	@ApiOperation(value = "根据id查询拍辅项目", notes = "根据id查询拍辅项目")
+	@GetMapping("/queryById/{projectId}" )
+	public R queryById(@PathVariable("projectId" )Integer projectId) {
+		return R.ok(projectPaifuService.queryById(projectId));
+	}
+
 }

@@ -25,12 +25,6 @@ public class AssetsReTargetPageVO extends AssetsRePaifu {
 	private String companyCode;
 
 	/**
-	 * 项目id
-	 */
-	@ApiModelProperty(value = "项目id")
-	private Integer projectStatus;
-
-	/**
 	 * 案件id
 	 */
 	@ApiModelProperty(value = "案件id")

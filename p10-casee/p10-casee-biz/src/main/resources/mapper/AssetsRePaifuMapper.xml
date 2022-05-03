@@ -108,7 +108,7 @@
 	</select>
 
 	<select id="queryTargetPage" resultType="com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO">
-		select *,p10_project.`status` projectStatus from p10_assets_re
+		select * from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
