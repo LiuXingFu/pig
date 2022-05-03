@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * 拍辅项目表
  */
-public interface ProjectPaifuService extends IService<ProjectPaifu> {
+public interface ProjectPaifuService extends IService<Project> {
 
 	Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO);
 
@@ -137,4 +137,11 @@ public interface ProjectPaifuService extends IService<ProjectPaifu> {
 	 * @return
 	 */
 	IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO);
+
+	/**
+	 * 根据id查询拍辅项目
+	 * @param projectId
+	 * @return
+	 */
+	ProjectPaifu queryById(Integer projectId);
 }

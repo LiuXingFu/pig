@@ -255,7 +255,6 @@
 		and p10_project.project_type = 200
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
-		and p10_assets.type = 20200
 		and p10_target.goal_type = 20001
 		and p10_auction_results.auction_results_id is null
 		and p10_task_node.node_key = "paiFu_STCC_PMJG_PMJG"

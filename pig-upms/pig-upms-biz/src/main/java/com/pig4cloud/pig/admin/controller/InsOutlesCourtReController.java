@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -145,6 +146,17 @@ public class InsOutlesCourtReController {
 		} else {
 			return R.failed("将入驻网点id集合入驻到法院机构绑定的法院失败！");
 		}
+	}
+
+	/**
+	 * 机构网点关联法院选择
+	 * @param insOutlesCourtReSelectDTO
+	 * @return
+	 */
+	@ApiOperation(value = "机构网点关联法院选择", notes = "机构网点关联法院选择")
+	@GetMapping("/getCourtList" )
+	public R getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO){
+		return R.ok(insOutlesCourtReService.getCourtList(insOutlesCourtReSelectDTO));
 	}
 
 }

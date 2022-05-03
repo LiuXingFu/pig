@@ -329,6 +329,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	public TaskNode queryNewTaskNode(String taskNodeKey, TaskNode taskNode) {
+		return this.baseMapper.queryNewTaskNode(taskNodeKey,taskNode);
+	}
+
+	@Override
+	public void copyTaskNode(TaskNode copyTaskNode) {
+		copyTaskNode.setFormData(null);
+		copyTaskNode.setStatus(0);
+		copyTaskNode.setSubmissionStatus(0);
+		copyTaskNode.setNodeType(0);
+		copyTaskNode.setActReProcdefId(null);
+		copyTaskNode.setTrusteeStatus(null);
+		copyTaskNode.setTrusteeType(null);
+		copyTaskNode.setCreateTime(LocalDateTime.now());
+		//拿到拍卖结果id最后一位数+1
+		Integer auctionResultsId = Integer.valueOf(copyTaskNode.getNodeId().substring(copyTaskNode.getNodeId().lastIndexOf("_") + 1, copyTaskNode.getNodeId().length()))+1;
+		StringBuilder stringBuilderPmjg=new StringBuilder(copyTaskNode.getNodeId());
+		copyTaskNode.setNodeId(stringBuilderPmjg.replace(copyTaskNode.getNodeId().lastIndexOf("_") + 1, copyTaskNode.getNodeId().length(), auctionResultsId.toString()).toString());
+		this.baseMapper.insert(copyTaskNode);
+	}
+
+	@Override
 	@Transactional
 	public Integer queryTaskProgress(String targetId) {
 		// 1.根据标的id查询所有进度

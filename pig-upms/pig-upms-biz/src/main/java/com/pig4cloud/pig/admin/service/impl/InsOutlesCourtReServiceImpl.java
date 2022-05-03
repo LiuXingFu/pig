@@ -22,15 +22,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.entity.RelationshipAuthenticate;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.mapper.InsOutlesCourtReMapper;
 import com.pig4cloud.pig.admin.service.InsOutlesCourtReService;
 import com.pig4cloud.pig.admin.service.RelationshipAuthenticateService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +69,7 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 	}
 
 	@Override
+	@Transactional
 	public int addInsOutlesCourtRe(AddInsOutlesCourtReDTO addInsOutlesCourtReDTO) {
 
 		int add = 0;
@@ -87,5 +91,10 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 		this.saveBatch(list);
 
 		return add += 1;
+	}
+
+	@Override
+	public List<OrganizationQueryVO> getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO){
+		return this.baseMapper.selectCourtList(insOutlesCourtReSelectDTO);
 	}
 }

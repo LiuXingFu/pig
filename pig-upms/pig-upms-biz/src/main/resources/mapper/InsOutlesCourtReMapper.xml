@@ -76,4 +76,17 @@
 			AND p10_ins_outles_court_re.court_id = #{courtId}
 	</select>
 
+	<select id="selectCourtList" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		select p10_court.court_id as id,p10_court.court_name as name from p10_ins_outles_court_re
+		left join p10_institution on p10_institution.ins_id = p10_ins_outles_court_re.ins_id
+		left join p10_outles on p10_outles.outles_id = p10_ins_outles_court_re.outles_id
+		left join p10_court on p10_court.court_id = p10_ins_outles_court_re.court_id
+		where p10_ins_outles_court_re.del_flag = 0
+		and p10_ins_outles_court_re.ins_id = #{query.insId}
+		and p10_ins_outles_court_re.outles_id = #{query.outlesId}
+		<if test="query.courtName != null and query.courtName != ''">
+			and p10_court.court_name like concat('%', #{query.courtName}, '%')
+		</if>
+	</select>
+
 </mapper>

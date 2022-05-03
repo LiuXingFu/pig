@@ -70,7 +70,7 @@ public class FindNodeTemplateChildrenUtils {
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getTargetId, taskManagementVO.getTargetId()).eq(Target::getGoalType, 20001));
 			for (int j = 0; j < list.size(); j++) {
 				TaskNodeVO managementVO = new TaskNodeVO();
-				if (list.get(j).getNodeAttributes() == 400) {//如果当前节点是认为节点则判断改节点是否显示
+				if (list.get(j).getNodeAttributes() == 400) {//如果当前节点是任务节点则判断该节点是否显示
 					managementVO = (nodeJudgment(list.get(j), target));
 				} else {
 					managementVO = list.get(j);

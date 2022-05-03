@@ -22,8 +22,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 
 import java.util.List;
 
@@ -40,4 +42,12 @@ public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 	List<InsOutlesCourtReVO> queryInsOutlesCourtReByInsIdAndCourtId(Integer insId, Integer courtId);
 
 	int addInsOutlesCourtRe(AddInsOutlesCourtReDTO addInsOutlesCourtReDTO);
+
+	/**
+	 * 机构网点关联法院选择
+	 * @param insOutlesCourtReSelectDTO
+	 * @return
+	 */
+	List<OrganizationQueryVO> getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO);
+
 }
