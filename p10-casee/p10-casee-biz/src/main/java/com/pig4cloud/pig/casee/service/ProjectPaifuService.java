@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * 拍辅项目表
  */
-public interface ProjectPaifuService extends IService<ProjectPaifu> {
+public interface ProjectPaifuService extends IService<Project> {
 
 	Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO);
 

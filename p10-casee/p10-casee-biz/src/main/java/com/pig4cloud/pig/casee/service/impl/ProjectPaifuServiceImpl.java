@@ -56,7 +56,7 @@ import java.util.Objects;
  * 拍辅项目表
  */
 @Service
-public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, ProjectPaifu> implements ProjectPaifuService {
+public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Project> implements ProjectPaifuService {
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired
@@ -591,7 +591,10 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 
 	@Override
 	public ProjectPaifu queryById(Integer projectId){
-		return this.baseMapper.selectById(projectId);
+		Project project = this.baseMapper.selectById(projectId);
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		BeanCopyUtil.copyBean(project,projectPaifu);
+		return projectPaifu;
 	}
 
 }

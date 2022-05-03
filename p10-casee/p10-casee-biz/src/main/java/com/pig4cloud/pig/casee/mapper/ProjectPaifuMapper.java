@@ -41,7 +41,7 @@ import java.util.List;
  * @date 2022-01-10 15:05:49
  */
 @Mapper
-public interface ProjectPaifuMapper extends BaseMapper<ProjectPaifu> {
+public interface ProjectPaifuMapper extends BaseMapper<Project> {
 
 	IPage<ProjectPaifuPageVO> selectPagePaifu(Page page, @Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
