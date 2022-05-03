@@ -45,26 +45,26 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
 		for (AssetsReDTO assetsReDTO : assetsReIdList) {
 			//根据项目、案件、财产id查询程序信息
-			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, assetsReDTO.getProjectId()).eq(Target::getCaseeId, assetsReDTO.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
 
 			//根据程序id、节点key查询节点信息
-			TaskNode taskNodePmjg = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_PMJG_PMJG"));
+			TaskNode taskNodePmgg = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_PMGG_PMGG"));
 
-			if (!taskNodePmjg.getNodeId().equals(taskNode.getNodeId())) {
-				taskNodePmjg.setFormData(taskNode.getFormData());
-				if (taskNodePmjg.getNeedAudit()==1){//需要审核
-					taskNodePmjg.setStatus(101);
+			if (!taskNodePmgg.getNodeId().equals(taskNode.getNodeId())) {
+				taskNodePmgg.setFormData(taskNode.getFormData());
+				if (taskNodePmgg.getNeedAudit()==1){//需要审核
+					taskNodePmgg.setStatus(101);
 				}else {
-					taskNodePmjg.setStatus(403);
+					taskNodePmgg.setStatus(403);
 				}
-				taskNodePmjg.setSubmissionStatus(0);
+				taskNodePmgg.setSubmissionStatus(0);
 
 				//修改节点信息
-				taskNodeService.updateById(taskNodePmjg);
+				taskNodeService.updateById(taskNodePmgg);
 
 				//添加案件任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-				BeanUtils.copyProperties(taskNodePmjg,caseeHandlingRecords);
+				BeanUtils.copyProperties(taskNodePmgg,caseeHandlingRecords);
 				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
 				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
 				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
