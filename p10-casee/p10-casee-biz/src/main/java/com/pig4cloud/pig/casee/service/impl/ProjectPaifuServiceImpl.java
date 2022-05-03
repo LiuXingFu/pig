@@ -56,7 +56,7 @@ import java.util.Objects;
  * 拍辅项目表
  */
 @Service
-public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Project> implements ProjectPaifuService {
+public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, ProjectPaifu> implements ProjectPaifuService {
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
 	@Autowired

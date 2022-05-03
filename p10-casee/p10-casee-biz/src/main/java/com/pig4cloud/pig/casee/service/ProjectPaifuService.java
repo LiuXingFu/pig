@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
+import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
@@ -36,7 +37,7 @@ import java.util.List;
 /**
  * 拍辅项目表
  */
-public interface ProjectPaifuService extends IService<Project> {
+public interface ProjectPaifuService extends IService<ProjectPaifu> {
 
 	Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO);
 
