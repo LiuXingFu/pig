@@ -128,9 +128,9 @@ public class LiquiTransferRecordController {
 	 * @return
 	 */
 	@ApiOperation(value = "根据案件id查询移交记录", notes = "根据案件id查询移交记录")
-	@GetMapping("/queryTransferRecord/{caseeId}")
-	public R queryTransferRecord(@PathVariable("caseeId") Integer caseeId) {
-		return R.ok(this.liquiTransferRecordService.queryTransferRecord(caseeId));
+	@GetMapping("/queryTransferRecord")
+	public R queryTransferRecord(Integer projectId, Integer caseeId, String nodeId) {
+		return R.ok(this.liquiTransferRecordService.queryTransferRecord(projectId, caseeId, nodeId));
 	}
 
 	/**

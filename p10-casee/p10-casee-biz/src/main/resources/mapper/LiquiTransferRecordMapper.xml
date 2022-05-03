@@ -173,6 +173,8 @@
 		LEFT JOIN p10_outles AS entrustedOutles ON entrustedOutles.outles_id = p10_liqui_transfer_record.entrusted_outles_id
 		WHERE p10_liqui_transfer_record.del_flag = 0
 		AND p10_liqui_transfer_record.casee_id = #{caseeId}
+		AND p10_liqui_transfer_record.project_id = #{projectId}
+		AND p10_liqui_transfer_record.node_id = #{nodeId}
 	</select>
 
 	<select id="queryByLiquiTransferRecordId" resultMap="queryLiquiTransferRecordDetailsVOMap">
