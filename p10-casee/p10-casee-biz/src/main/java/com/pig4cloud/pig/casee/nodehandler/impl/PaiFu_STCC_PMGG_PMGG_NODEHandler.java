@@ -9,6 +9,8 @@ import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.BeanUtils;
@@ -42,6 +44,9 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		//添加拍卖记录信息
 		auctionRecordService.saveAuctionRecord(auctionRecordSaveDTO);
 
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
 		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
 		for (AssetsReDTO assetsReDTO : assetsReIdList) {
 			//根据项目、案件、财产id查询程序信息
@@ -61,6 +66,11 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 
 				//修改节点信息
 				taskNodeService.updateById(taskNodePmgg);
+
+				//发送拍辅任务消息
+				taskNodeService.sendPaifuTaskMessage(taskNodePmgg);
+
+				taskNodeService.setTaskDataSubmission(taskNodePmgg);
 
 				//添加案件任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();

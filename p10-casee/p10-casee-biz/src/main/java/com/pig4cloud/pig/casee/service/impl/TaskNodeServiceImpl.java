@@ -1945,4 +1945,18 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		this.saveBatch(resTaskNodes);
 	}
 
+	/**
+	 * 发送拍辅任务信息
+	 * @param taskNode
+	 */
+	public void sendPaifuTaskMessage(TaskNode taskNode) {
+		//案件模块与用户模块的实体不一致 所以采取这个方法
+		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
+
+		BeanCopyUtil.copyBean(taskNode, taskNode1);
+
+		//调用拍辅任务消息发送方法
+		remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
+	}
+
 }
