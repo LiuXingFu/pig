@@ -35,6 +35,10 @@ public class LiQuiTaskScheduling {
 		try {
 			//诉讼案件自动结案
 			liQuiTaskScheduling.litigationCaseeClose();
+
+			//刷新拍卖状态
+			liQuiTaskScheduling.refreshAuctionStatus();
+
 			XxlJobHelper.handleSuccess(); // v2.3.0 设置任务结果
 		} catch (Exception e) {
 			XxlJobHelper.handleFail(); // v2.3.0 设置任务结果
