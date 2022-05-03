@@ -25,6 +25,12 @@ public class AssetsReTargetPageVO extends AssetsRePaifu {
 	private String companyCode;
 
 	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value = "项目id")
+	private Integer projectStatus;
+
+	/**
 	 * 案件id
 	 */
 	@ApiModelProperty(value = "案件id")
@@ -41,6 +47,12 @@ public class AssetsReTargetPageVO extends AssetsRePaifu {
 	 */
 	@ApiModelProperty(value="财产名称")
 	private String assetsName;
+
+	/**
+	 * 财产类型（20100-资金财产 20200-实体财产）
+	 */
+	@ApiModelProperty(value="财产类型（20100-资金财产 20200-实体财产）")
+	private Integer type;
 
 	/**
 	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））

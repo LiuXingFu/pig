@@ -21,8 +21,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
+import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
+import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,4 +42,6 @@ public interface InsOutlesCourtReMapper extends BaseMapper<InsOutlesCourtRe> {
 	IPage<InsOutlesCourtReVO> queryInsOutlesCourtPage(Page page, @Param("query") InsOutlesCourtRePageDTO insOutlesCourtRePageDTO);
 
 	List<InsOutlesCourtReVO> queryInsOutlesCourtReByInsIdAndCourtId(@Param("insId") Integer insId, @Param("courtId") Integer courtId);
+
+	List<OrganizationQueryVO> selectCourtList(@Param("query") InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO);
 }

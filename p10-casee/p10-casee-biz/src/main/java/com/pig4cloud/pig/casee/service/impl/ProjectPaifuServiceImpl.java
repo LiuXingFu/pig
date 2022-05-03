@@ -89,7 +89,6 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO){
-		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuSaveDTO.getCourtId(), SecurityConstants.FROM).getData();
 
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
@@ -100,7 +99,6 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		// 保存案件表
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,casee);
-		casee.setCourtId(courtId);
 		caseeService.save(casee);
 
 		List<ProjectSubjectRe> projectSubjectRes = new ArrayList();
@@ -240,14 +238,12 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public 	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO){
-		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuModifyDTO.getCourtId(), SecurityConstants.FROM).getData();
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,projectPaifu);
 		Integer modify = this.baseMapper.updateById(projectPaifu);
 
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,casee);
-		casee.setCourtId(courtId);
 		caseeService.updateById(casee);
 		return modify;
 	}
