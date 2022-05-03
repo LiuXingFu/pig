@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -86,9 +87,23 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler extends TaskNodeHan
 			if (!entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNodeId().equals(taskNode.getNodeId())){
 				//修改节点数据
 				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setFormData(taskNode.getFormData());
-				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(101);
+				if (entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.getNeedAudit()==1){//需要审核
+					entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(101);
+				}else {
+					entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setStatus(403);
+				}
 				entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ.setSubmissionStatus(0);
 				taskNodeService.updateById(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ);
+
+				//添加案件任务办理记录
+				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+				BeanUtils.copyProperties(entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ,caseeHandlingRecords);
+				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+				caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsId());
+				caseeHandlingRecords.setSourceType(0);
+				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
 		}
 	}
