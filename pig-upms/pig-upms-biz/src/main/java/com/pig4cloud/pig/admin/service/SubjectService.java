@@ -53,6 +53,8 @@ public interface SubjectService extends IService<Subject> {
 	 */
 	Subject saveSubject(Subject subject);
 
+	Subject getPhoneBySaveOrUpdateById(Subject subject);
+
 	/**
 	 * 新增主体、债务人地址信息以及主体关联债务人信息
 	 * @param subjectAddressDTOList

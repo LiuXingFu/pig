@@ -66,5 +66,6 @@ public interface TaskNodeMapper extends BaseMapper<TaskNode> {
 
 	TaskNode queryNewTaskNode(@Param("taskNodeKey")String taskNodeKey,@Param("taskNode")TaskNode taskNode);
 
+	TaskNode queryLastTaskNode(@Param("taskNodeKey")String taskNodeKey,@Param("targetId")Integer targetId);
 
 }

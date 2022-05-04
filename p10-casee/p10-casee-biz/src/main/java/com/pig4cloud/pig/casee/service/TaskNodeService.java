@@ -127,6 +127,13 @@ public interface TaskNodeService extends IService<TaskNode> {
 	TaskNode queryNewTaskNode(String taskNodeKey,TaskNode taskNode);
 
 	/**
+	 * 根据节点key以及项目、案件信息查询最后一条节点信息
+	 * @param taskNodeKey 节点key
+	 * @return R
+	 */
+	TaskNode queryLastTaskNode(String taskNodeKey,Integer targetId);
+
+	/**
 	 * 复制节点信息
 	 * @param taskNode 节点信息
 	 * @return R

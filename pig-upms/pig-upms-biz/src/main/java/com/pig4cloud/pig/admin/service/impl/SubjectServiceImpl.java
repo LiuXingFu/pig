@@ -131,6 +131,16 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
+	public Subject getPhoneBySaveOrUpdateById(Subject subject) {
+		Subject subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+		if (subjectQuery!=null){
+			subject.setSubjectId(subjectQuery.getSubjectId());
+		}
+		this.saveOrUpdate(subject);
+		return subject;
+	}
+
+	@Override
 	@Transactional
 	public SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList) {
 

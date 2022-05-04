@@ -81,6 +81,7 @@ public class FindNodeTemplateChildrenUtils {
 					}
 				} else {
 					list.remove(j);
+					j--;
 				}
 			}
 			getGrandChildren(list, taskManagementVO.getChildren());

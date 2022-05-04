@@ -4,6 +4,7 @@ package com.pig4cloud.pig.casee.entity.paifuentity.detail;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 报名看样
@@ -21,5 +22,7 @@ public class ReserveSeeSampleConsultingListDetail implements Serializable {
 	/**身份证*/
 	private String identityCard;
 	/**咨询问题*/
-    private String askQuestions;
+    private List<String> askQuestions;
+	/**备注*/
+	private String remark;
 }

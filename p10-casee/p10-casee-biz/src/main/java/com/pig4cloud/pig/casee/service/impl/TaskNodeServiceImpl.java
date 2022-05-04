@@ -334,6 +334,11 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	public TaskNode queryLastTaskNode(String taskNodeKey, Integer targetId) {
+		return this.baseMapper.queryLastTaskNode(taskNodeKey,targetId);
+	}
+
+	@Override
 	public void copyTaskNode(TaskNode copyTaskNode) {
 		copyTaskNode.setFormData(null);
 		copyTaskNode.setStatus(0);
@@ -558,12 +563,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
-			// 处理特殊节点与一般节点
-			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
-
-			//添加任务记录数据
-//			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
-
 			//添加案件任务办理记录
 			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
 			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
@@ -575,6 +574,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				caseeHandlingRecords.setSourceType(0);
 			}
 			caseeHandlingRecordsService.save(caseeHandlingRecords);
+
+			// 处理特殊节点与一般节点
+			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
+
+			//添加任务记录数据
+//			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 		return taskFlowDTO.getNodeId();
 	}

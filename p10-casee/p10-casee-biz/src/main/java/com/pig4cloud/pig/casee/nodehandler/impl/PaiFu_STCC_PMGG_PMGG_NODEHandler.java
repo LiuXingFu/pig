@@ -8,7 +8,10 @@ import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
-import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.service.AuctionRecordService;
+import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsService;
+import com.pig4cloud.pig.casee.service.TargetService;
+import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.BeanUtils;
@@ -48,7 +51,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
 
 			//根据程序id、节点key查询节点信息
-			TaskNode taskNodePmgg = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_PMGG_PMGG"));
+			TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG",target.getTargetId());
 
 			if (!taskNodePmgg.getNodeId().equals(taskNode.getNodeId())) {
 				taskNodePmgg.setFormData(taskNode.getFormData());
