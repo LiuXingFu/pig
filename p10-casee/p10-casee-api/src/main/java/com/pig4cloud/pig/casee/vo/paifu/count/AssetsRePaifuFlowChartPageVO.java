@@ -78,6 +78,12 @@ public class AssetsRePaifuFlowChartPageVO extends AssetsRePaifu {
 	private Integer auctionType;
 
 	/**
+	 * 当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
+	 */
+	@ApiModelProperty(value="当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
+	private Integer auctionStatus;
+
+	/**
 	 * 公告发布时间
 	 */
 	@ApiModelProperty(value="公告发布时间")

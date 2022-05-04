@@ -17,10 +17,13 @@
 package com.pig4cloud.pig.casee.entity.paifuentity;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 项目表
@@ -28,7 +31,9 @@ import lombok.Data;
  * @author ligt
  * @date 2022-01-10 15:05:49
  */
-
+@TableName("p10_project")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "项目表")
 @Data
 public class ProjectPaifu extends Project {
 

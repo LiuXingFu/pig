@@ -62,9 +62,9 @@ public class Auction extends BaseEntity {
 	private Integer auctionType;
 
 	/**
-	 * 当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）
+	 * 当前拍卖状态（100-即将开始，200-正在进行,300-成交，400-中止，500-撤回，600-流拍，700-抵偿）
 	 */
-	@ApiModelProperty(value="当前拍卖状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
+	@ApiModelProperty(value="当前拍卖状态（100-即将开始，200-正在进行,300-成交，400-中止，500-撤回，600-流拍，700-抵偿）")
 	private Integer auctionStatus;
 
 }

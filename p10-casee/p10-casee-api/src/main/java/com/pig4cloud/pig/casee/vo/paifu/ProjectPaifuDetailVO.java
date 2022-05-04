@@ -64,6 +64,12 @@ public class ProjectPaifuDetailVO extends ProjectPaifu {
 	private LocalDate startTime;
 
 	/**
+	 * 法院id
+	 */
+	@ApiModelProperty(value="法院id")
+	private Integer courtId;
+
+	/**
 	 * 法院名称
 	 */
 	@ApiModelProperty(value="法院名称")

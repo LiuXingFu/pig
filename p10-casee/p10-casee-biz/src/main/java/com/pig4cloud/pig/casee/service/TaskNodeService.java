@@ -403,4 +403,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @param receiptRecordList
 	 */
 	void updateFinalReceiptTimeOrEffectiveDate(TaskNode taskNode, List<ReceiptRecord> receiptRecordList, Date effectiveDate);
+
+	/**
+	 * 发送拍辅任务信息
+	 * @param taskNode
+	 */
+	void sendPaifuTaskMessage(TaskNode taskNode);
 }

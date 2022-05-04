@@ -132,9 +132,11 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecord.setAuctionRecordId(auctionResultsSaveDTO.getAuctionRecordId());
 		Integer resultsType = auctionResultsSaveDTO.getResultsType();
 		Integer auctionStatus = null;
-		if (resultsType == 10 || resultsType == 20 || resultsType == 50) {
+		if (resultsType == 10) {
 			auctionStatus = 300;
-		} else if (resultsType == 30) {
+		} else if (resultsType == 20) {
+			auctionStatus = 600;
+		}else if (resultsType == 30) {
 			auctionStatus = 500;
 		} else if (resultsType == 40) {
 			auctionStatus = 400;

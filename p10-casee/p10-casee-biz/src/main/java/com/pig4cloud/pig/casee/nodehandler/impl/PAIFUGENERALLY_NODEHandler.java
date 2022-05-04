@@ -35,14 +35,11 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 	 */
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		//案件模块与用户模块的实体不一致 所以采取这个方法
-		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
 
-		BeanCopyUtil.copyBean(taskNode, taskNode1);
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
 
-		//调用拍辅任务消息发送方法
-		remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
-
+		//更新json
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 

@@ -38,12 +38,6 @@ public class AssetsRePaifuDetail {
 	private BigDecimal mortgageAmount;
 
 	/**
-	 *  拍卖状态：
-	 */
-	@ApiModelProperty(value = "拍卖状态：")
-	private Integer auctionStatus;
-
-	/**
 	 * 实体资产查封实体
 	 */
 	@ApiModelProperty(value = "实体资产查封")

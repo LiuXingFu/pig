@@ -324,4 +324,17 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 		return send += 1;
 	}
 
+	/**
+	 * 更新消息状态为已读
+	 * @param messageId
+	 * @return
+	 */
+	@Override
+	public int updateMessageStatus(Integer messageId) {
+		MessageRecord messageRecord = this.getOne(new LambdaQueryWrapper<MessageRecord>().eq(MessageRecord::getMessageId, messageId));
+		messageRecord.setReadFlag(200);
+		this.updateById(messageRecord);
+		return 1;
+	}
+
 }

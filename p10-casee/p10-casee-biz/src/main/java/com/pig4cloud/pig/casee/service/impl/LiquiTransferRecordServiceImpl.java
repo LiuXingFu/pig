@@ -150,8 +150,8 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	}
 
 	@Override
-	public List<LiquiTransferRecordVO> queryTransferRecord(Integer caseeId) {
-		List<LiquiTransferRecordVO> liquiTransferRecordVOS = this.baseMapper.queryTransferRecord(caseeId);
+	public List<LiquiTransferRecordVO> queryTransferRecord(Integer projectId, Integer caseeId, String nodeId) {
+		List<LiquiTransferRecordVO> liquiTransferRecordVOS = this.baseMapper.queryTransferRecord(projectId, caseeId, nodeId);
 		for (LiquiTransferRecordVO liquiTransferRecordVO : liquiTransferRecordVOS) {
 			//根据案件id与type查询案件执行人与申请人
 			String executorSubjectName = getExecutorSubjectName(liquiTransferRecordVO.getCaseeId());
