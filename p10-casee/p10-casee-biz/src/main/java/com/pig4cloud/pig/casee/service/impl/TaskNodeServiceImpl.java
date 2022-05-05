@@ -377,6 +377,15 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
 					caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsId());
 					caseeHandlingRecords.setSourceType(0);
+					if (nodeKey!="paiFu_STCC_DK_DK"&&nodeKey!="paiFu_STCC_CJCD_CJCD"){
+						if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(100)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
+						}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(200)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(二拍)");
+						}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(300)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(变卖)");
+						}
+					}
 					caseeHandlingRecordsService.save(caseeHandlingRecords);
 				}
 			}
@@ -918,6 +927,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//3.完成正在处理流程
 		this.executionTask(taskFlowDTO, "正在处理", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+
+		if (taskFlowDTO.getNeedAudit()==0){
+			taskFlowDTO.setStatus(403);
+		}else {
+			taskFlowDTO.setStatus(101);
+		}
 
 		// 4.保存任务数据
 		this.updateById(taskFlowDTO);
