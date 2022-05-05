@@ -50,12 +50,4 @@ public class ReceiveConsultationQuestionRe{
      */
     @ApiModelProperty(value="咨询问题")
     private String askQuestions;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
-
-
 }

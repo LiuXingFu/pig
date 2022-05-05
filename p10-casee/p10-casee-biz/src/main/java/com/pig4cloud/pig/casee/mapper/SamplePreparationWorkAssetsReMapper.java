@@ -15,17 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.MakeAnAppointment;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.SamplePreparationWorkAssetsRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 预约看样表
+ * 看样准备工作关联财产表表
  *
  * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @date 2022-05-05 10:24:34
  */
-public interface MakeAnAppointmentService extends IService<MakeAnAppointment> {
+@Mapper
+public interface SamplePreparationWorkAssetsReMapper extends BaseMapper<SamplePreparationWorkAssetsRe> {
 
 }

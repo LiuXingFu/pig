@@ -42,6 +42,10 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅拍卖结果
 		PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_PMJG_PMJG.class);
+
+		//同步联合拍卖财产拍卖结果节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_pmjg_pmjg.getAssetsId(),taskNode,"paiFu_STCC_PMJG_PMJG");
+
 		if (paiFu_stcc_pmjg_pmjg.getAuctionResults()==1){//流拍
 
 			//查询最后一条拍卖公告信息

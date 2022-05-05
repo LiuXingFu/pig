@@ -134,6 +134,14 @@ public interface TaskNodeService extends IService<TaskNode> {
 	TaskNode queryLastTaskNode(String taskNodeKey,Integer targetId);
 
 	/**
+	 * 同步联合拍卖财产节点数据
+	 * @param assetsId 当前提交节点财产id
+	 * @param taskNode 当前提交节点数据
+	 * @return R
+	 */
+	void synchronizeJointAuctionTaskNode(Integer assetsId,TaskNode taskNode,String nodeKey);
+
+	/**
 	 * 复制节点信息
 	 * @param taskNode 节点信息
 	 * @return R

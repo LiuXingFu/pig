@@ -216,7 +216,7 @@ public class SubjectController {
 	@SysLog("新增或修改主体" )
 	@PostMapping("/getPhoneBySaveOrUpdateById")
 	public R getPhoneBySaveOrUpdateById(@RequestBody Subject subject) {
-		return R.ok(subjectService.getPhoneBySaveOrUpdateById(subject).getSubjectId());
+		return R.ok(subjectService.getPhoneBySaveOrUpdateById(subject));
 	}
 
 	/**

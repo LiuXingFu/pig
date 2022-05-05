@@ -14,6 +14,7 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,14 +29,19 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 	ReceiveConsultationQuestionReService receiveConsultationQuestionReService;
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
+	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅接受咨询
 		PaiFu_STCC_JSZX_JSZX paiFu_stcc_jszx_jszx = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JSZX_JSZX.class);
 		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
 
+		//同步联合拍卖财产接受咨询节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(),taskNode,"paiFu_STCC_JSZX_JSZX");
 		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
 			Subject subject = new Subject();
 			ReceiveConsultation receiveConsultation=new ReceiveConsultation();
@@ -61,7 +67,6 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 				ReceiveConsultationQuestionRe receiveConsultationQuestionRe=new ReceiveConsultationQuestionRe();
 				receiveConsultationQuestionRe.setReceiveConsultationId(receiveConsultation.getReceiveConsultationId());
 				receiveConsultationQuestionRe.setAskQuestions(askQuestion);
-				receiveConsultationQuestionRe.setRemark(reserveSeeSampleConsulting.getRemark());
 				receiveConsultationQuestionReService.save(receiveConsultationQuestionRe);//添加咨询问题信息
 			}
 		}

@@ -220,13 +220,14 @@ public class FindNodeTemplateChildrenUtils {
 						}
 					}
 				}
-			}else {
-				if (taskNodeVO.getStatus() == 0) {
-					return taskNodeVO;
-				}
 			}
+//			else {
+//				if (taskNodeVO.getStatus() == 0) {
+//					return taskNodeVO;
+//				}
+//			}
 		}
-		return null;
+		return taskNodeVO;
 	}
 
 	/**
