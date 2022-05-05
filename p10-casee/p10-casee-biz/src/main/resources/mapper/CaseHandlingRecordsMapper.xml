@@ -45,18 +45,26 @@
   </resultMap>
 
 	<select id="queryCaseeHandlingRecords" resultType="com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO">
-		select p10_casee_handling_records.*,sys_user.actual_name as name from p10_casee_handling_records
-		left join sys_user on sys_user.user_id=p10_casee_handling_records.create_by
-		where
-		p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId}
+		SELECT
+		p10_casee_handling_records.*,
+		sys_user.actual_name AS name
+		FROM
+		p10_casee_handling_records
+		LEFT JOIN sys_user ON sys_user.user_id = p10_casee_handling_records.create_by
+		LEFT JOIN p10_casee_handling_records_re on p10_casee_handling_records_re.casee_handling_records_id=p10_casee_handling_records.casee_handling_records_id
+		WHERE
+		p10_casee_handling_records.del_flag=0
 		<if test="caseeHandlingRecords.sourceId!=null and caseeHandlingRecords.sourceType!=null">
-			and p10_casee_handling_records.source_id=#{caseeHandlingRecords.sourceId} and p10_casee_handling_records.source_type=#{caseeHandlingRecords.sourceType}
+			AND p10_casee_handling_records.source_id=#{caseeHandlingRecords.sourceId} and p10_casee_handling_records.source_type=#{caseeHandlingRecords.sourceType}
 		</if>
 		<if test="caseeHandlingRecords.projectId!=null">
-			and p10_casee_handling_records.project_id=#{caseeHandlingRecords.projectId}
+			AND (p10_casee_handling_records.project_id = #{caseeHandlingRecords.projectId} or p10_casee_handling_records_re.liqui_project_id=#{caseeHandlingRecords.projectId})
+		</if>
+		<if test="caseeHandlingRecords.caseeId!=null">
+			AND p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId}
 		</if>
 		<if test="caseeHandlingRecords.targetId!=null">
-			and p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
+			AND p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
 		</if>
 	</select>
 </mapper>

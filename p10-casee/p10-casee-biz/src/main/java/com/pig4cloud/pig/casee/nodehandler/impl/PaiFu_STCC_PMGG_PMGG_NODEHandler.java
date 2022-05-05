@@ -3,7 +3,6 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
@@ -17,8 +16,6 @@ import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -74,14 +71,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 				taskNodeService.setTaskDataSubmission(taskNodePmgg);
 
 				//添加案件任务办理记录
-				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-				BeanUtils.copyProperties(taskNodePmgg,caseeHandlingRecords);
-				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-				caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsId());
-				caseeHandlingRecords.setSourceType(0);
-				caseeHandlingRecordsService.save(caseeHandlingRecords);
+				caseeHandlingRecordsService.addCaseeHandlingRecords(assetsReDTO.getAssetsId(),taskNodePmgg,paiFu_stcc_pmgg_pmgg.getAuctionType());
 			}
 		}
 	}

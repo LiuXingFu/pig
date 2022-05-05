@@ -14,24 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.service;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
-import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.CaseeHandlingRecordsRe;
+import com.pig4cloud.pig.casee.mapper.CaseeHandlingRecordsReMapper;
+import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsReService;
+import org.springframework.stereotype.Service;
 
 /**
  * 案件办理记录表
  *
- * @author Mjh
- * @date 2022-03-10 18:05:58
+ * @author yuanduo
+ * @date 2022-05-05 16:34:49
  */
-public interface CaseeHandlingRecordsService extends IService<CaseeHandlingRecords> {
-	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords);
+@Service
+public class CaseeHandlingRecordsReServiceImpl extends ServiceImpl<CaseeHandlingRecordsReMapper, CaseeHandlingRecordsRe> implements CaseeHandlingRecordsReService {
 
-	boolean addCaseeHandlingRecords(Integer assetsId,TaskNode taskNode,Integer auctionType);
 }

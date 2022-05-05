@@ -18,20 +18,14 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
-import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.CaseeHandlingRecordsRe;
 
 /**
  * 案件办理记录表
  *
- * @author Mjh
- * @date 2022-03-10 18:05:58
+ * @author yuanduo
+ * @date 2022-05-05 16:34:49
  */
-public interface CaseeHandlingRecordsService extends IService<CaseeHandlingRecords> {
-	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords);
+public interface CaseeHandlingRecordsReService extends IService<CaseeHandlingRecordsRe> {
 
-	boolean addCaseeHandlingRecords(Integer assetsId,TaskNode taskNode,Integer auctionType);
 }
