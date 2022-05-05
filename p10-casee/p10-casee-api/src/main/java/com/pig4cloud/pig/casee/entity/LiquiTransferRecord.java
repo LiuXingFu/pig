@@ -70,9 +70,9 @@ public class LiquiTransferRecord extends BaseEntity {
     private Integer entrustedOutlesId;
 
     /**
-     * 项目id
+     * 清收项目id
      */
-    @ApiModelProperty(value="项目id")
+    @ApiModelProperty(value="清收项目id")
     private Integer projectId;
 
 	/**

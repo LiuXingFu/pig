@@ -370,23 +370,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 
 					//添加案件任务办理记录
-					CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-					BeanUtils.copyProperties(newTaskNode,caseeHandlingRecords);
-					caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-					caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-					caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-					caseeHandlingRecords.setSourceId(assetsReDTO.getAssetsId());
-					caseeHandlingRecords.setSourceType(0);
-					if (nodeKey!="paiFu_STCC_DK_DK"&&nodeKey!="paiFu_STCC_CJCD_CJCD"){
-						if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(100)){
-							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
-						}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(200)){
-							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(二拍)");
-						}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(300)){
-							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(变卖)");
-						}
-					}
-					caseeHandlingRecordsService.save(caseeHandlingRecords);
+					caseeHandlingRecordsService.addCaseeHandlingRecords(assetsReDTO.getAssetsId(),newTaskNode,paiFu_stcc_pmgg_pmgg.getAuctionType());
 				}
 			}
 		}
@@ -616,18 +600,22 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
-
-			//添加案件任务办理记录
-			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
-			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-			if (taskFlowDTO.getAssetsId()!=null){
-				caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
-				caseeHandlingRecords.setSourceType(0);
+			if (taskFlowDTO.getInsType().equals(1100)){
+				//添加拍辅任务办理记录
+				caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(),taskFlowDTO,0);
+			}else {
+				//添加清收任务办理记录
+				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+				BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+				if (taskFlowDTO.getAssetsId()!=null){
+					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+					caseeHandlingRecords.setSourceType(0);
+				}
+				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
-			caseeHandlingRecordsService.save(caseeHandlingRecords);
 
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);

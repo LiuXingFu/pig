@@ -1,29 +1,19 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteMessageRecordService;
-import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
-import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
-import com.pig4cloud.pig.common.core.constant.SecurityConstants;
-import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
-import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 @Component
 public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 
 	@Autowired
 	TaskNodeService taskNodeService;
-	@Autowired
-	SecurityUtilsService securityUtilsService;
 	@Autowired
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
 	@Autowired
