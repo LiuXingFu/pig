@@ -58,4 +58,9 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 			signUpLookLikeService.save(signUpLookLike);
 		}
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		super.handlerTaskMakeUp(taskNode);
+	}
 }

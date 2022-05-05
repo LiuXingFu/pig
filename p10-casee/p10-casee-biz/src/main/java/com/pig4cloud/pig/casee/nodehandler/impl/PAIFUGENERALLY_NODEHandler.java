@@ -43,7 +43,20 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 
-	//之前拍辅的处理方法 暂时不删 先注释
+	/**
+	 * 补录程序
+	 * @param taskNode
+	 */
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
+		//更新json
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
+//之前拍辅的处理方法 暂时不删 先注释
 //	@Override
 //	public void handlerTaskSubmit(TaskNode taskNode) {
 //

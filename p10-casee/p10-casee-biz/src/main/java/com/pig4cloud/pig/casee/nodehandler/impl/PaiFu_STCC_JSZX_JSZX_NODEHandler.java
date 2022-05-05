@@ -41,10 +41,10 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
 
 		//同步联合拍卖财产接受咨询节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(),taskNode,"paiFu_STCC_JSZX_JSZX");
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
 		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
 			Subject subject = new Subject();
-			ReceiveConsultation receiveConsultation=new ReceiveConsultation();
+			ReceiveConsultation receiveConsultation = new ReceiveConsultation();
 
 			subject.setName(reserveSeeSampleConsulting.getName());
 			subject.setPhone(reserveSeeSampleConsulting.getPhone());
@@ -62,13 +62,51 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 			receiveConsultation.setRemark(reserveSeeSampleConsulting.getRemark());
 			receiveConsultationService.save(receiveConsultation);//添加咨询名单信息
 
+			reserveSeeSampleConsulting.setReceiveConsultationId(receiveConsultation.getReceiveConsultationId());
+
 			List<String> askQuestions = reserveSeeSampleConsulting.getAskQuestions();
 			for (String askQuestion : askQuestions) {
-				ReceiveConsultationQuestionRe receiveConsultationQuestionRe=new ReceiveConsultationQuestionRe();
+				ReceiveConsultationQuestionRe receiveConsultationQuestionRe = new ReceiveConsultationQuestionRe();
 				receiveConsultationQuestionRe.setReceiveConsultationId(receiveConsultation.getReceiveConsultationId());
 				receiveConsultationQuestionRe.setAskQuestions(askQuestion);
 				receiveConsultationQuestionReService.save(receiveConsultationQuestionRe);//添加咨询问题信息
 			}
+		}
+
+		paiFu_stcc_jszx_jszx.setReserveSeeSampleConsultingLists(reserveSeeSampleConsultingLists);
+
+		String json = JsonUtils.objectToJson(paiFu_stcc_jszx_jszx);
+
+		taskNode.setFormData(json);
+	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+
+		//拍辅接受咨询
+		PaiFu_STCC_JSZX_JSZX paiFu_stcc_jszx_jszx = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JSZX_JSZX.class);
+		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
+		//同步联合拍卖财产接受咨询节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
+
+		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
+			Subject subject = new Subject();
+			ReceiveConsultation receiveConsultation = new ReceiveConsultation();
+
+			subject.setName(reserveSeeSampleConsulting.getName());
+			subject.setPhone(reserveSeeSampleConsulting.getPhone());
+			if (reserveSeeSampleConsulting.getIdentityCard() != null) {
+				subject.setUnifiedIdentity(reserveSeeSampleConsulting.getIdentityCard());
+				receiveConsultation.setIdentityCard(reserveSeeSampleConsulting.getIdentityCard());
+			}
+
+
+
+			//根据手机号添加或修改主体信息
+			R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneBySaveOrUpdateById(subject, SecurityConstants.FROM);
+			Integer subjectId = Integer.valueOf(phoneBySaveOrUpdateById.getData().getSubjectId().toString());
+
 		}
 	}
 }

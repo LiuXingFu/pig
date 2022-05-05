@@ -35,4 +35,9 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 
 
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		super.handlerTaskMakeUp(taskNode);
+	}
 }

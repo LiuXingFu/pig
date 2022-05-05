@@ -85,4 +85,17 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 			}
 		}
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+
+		//拍辅拍卖公告
+		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+		AuctionRecordSaveDTO auctionRecordSaveDTO=new AuctionRecordSaveDTO();
+		BeanUtils.copyProperties(paiFu_stcc_pmgg_pmgg,auctionRecordSaveDTO);
+
+//		auctionRecordService.
+
+	}
 }

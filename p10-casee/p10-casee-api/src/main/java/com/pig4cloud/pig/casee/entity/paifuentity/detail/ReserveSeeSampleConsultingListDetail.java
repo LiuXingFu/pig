@@ -15,6 +15,10 @@ import java.util.List;
  */
 @Data
 public class ReserveSeeSampleConsultingListDetail implements Serializable {
+	/**
+	 * 咨询名单id
+	 */
+	private Integer receiveConsultationId;
 	/**姓名*/
     private String name;
 	/**联系电话*/
