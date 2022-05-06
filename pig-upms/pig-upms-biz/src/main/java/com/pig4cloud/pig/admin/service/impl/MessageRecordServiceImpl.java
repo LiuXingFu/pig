@@ -172,6 +172,7 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 	/**
 	 * 发送拍辅任务消息
+	 *
 	 * @param taskNode
 	 * @return
 	 */
@@ -196,14 +197,14 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 			CaseeLiqui caseeLiqui = remoteCaseeLiquiService.getCaseeLiquiByCaseeId(liquiTransferRecord.getCaseeId(), SecurityConstants.FROM).getData();
 
 			//消息标题
-			messageRecordDTO.setMessageTitle("执行案号：" + liquiTransferRecord.getCaseeNumber() + "，添加任务节点“" + taskNode.getNodeName() + "”");
+			messageRecordDTO.setMessageTitle("执行案号：" + liquiTransferRecord.getCaseeNumber() + "，添加" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "节点“" + taskNode.getNodeName() + "”");
 
 			//消息内容
-			messageRecordDTO.setMessageContent("执行案号："+ liquiTransferRecord.getCaseeNumber()
-					+ "。财产："+assets.getAssetsName()+"。申请人："
-					+ caseeLiqui.getApplicantName() +"，债务人："
+			messageRecordDTO.setMessageContent("执行案号：" + liquiTransferRecord.getCaseeNumber()
+					+ "。财产：" + assets.getAssetsName() + "。申请人："
+					+ caseeLiqui.getApplicantName() + "，债务人："
 					+ caseeLiqui.getExecutedName()
-					+ "。添加任务节点“" + taskNode.getNodeName()
+					+ "。" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "任务节点“" + taskNode.getNodeName()
 					+ "”，请点击按钮查看详情。");
 
 			NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
@@ -240,6 +241,7 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 	/**
 	 * 根据发送消息目标类型发送消息
+	 *
 	 * @param taskMessageDTO
 	 */
 	@Override
@@ -252,7 +254,7 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 		//根据消息目标类型查询机构网点用户关联表
 		if (taskMessageDTO.getMessageGoalType().equals(1)) {
 			//根据机构id查询机构下的所有员工
-			if(taskMessageDTO.getMessageGoalPermission().equals(1001)) {
+			if (taskMessageDTO.getMessageGoalPermission().equals(1001)) {
 				List<InsOutlesUser> list = this.insOutlesUserService.list(new LambdaQueryWrapper<InsOutlesUser>().eq(InsOutlesUser::getDelFlag, 0)
 						.eq(InsOutlesUser::getInsId, taskMessageDTO.getInsId()));
 				insOutlesUsers.addAll(list);
@@ -322,6 +324,20 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 		this.batchSendMessageRecordOutPush(messageRecordDTOList);
 
 		return send += 1;
+	}
+
+	/**
+	 * 更新消息状态为已读
+	 *
+	 * @param messageId
+	 * @return
+	 */
+	@Override
+	public int updateMessageStatus(Integer messageId) {
+		MessageRecord messageRecord = this.getOne(new LambdaQueryWrapper<MessageRecord>().eq(MessageRecord::getMessageId, messageId));
+		messageRecord.setReadFlag(200);
+		this.updateById(messageRecord);
+		return 1;
 	}
 
 }

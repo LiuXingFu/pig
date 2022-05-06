@@ -81,6 +81,7 @@ public class FindNodeTemplateChildrenUtils {
 					}
 				} else {
 					list.remove(j);
+					j--;
 				}
 			}
 			getGrandChildren(list, taskManagementVO.getChildren());
@@ -219,13 +220,14 @@ public class FindNodeTemplateChildrenUtils {
 						}
 					}
 				}
-			}else {
-				if (taskNodeVO.getStatus() == 0) {
-					return taskNodeVO;
-				}
 			}
+//			else {
+//				if (taskNodeVO.getStatus() == 0) {
+//					return taskNodeVO;
+//				}
+//			}
 		}
-		return null;
+		return taskNodeVO;
 	}
 
 	/**

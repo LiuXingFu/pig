@@ -15,23 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
-import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
-
-import java.util.List;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.CaseeHandlingRecordsRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 案件办理记录表
  *
- * @author Mjh
- * @date 2022-03-10 18:05:58
+ * @author yuanduo
+ * @date 2022-05-05 16:34:49
  */
-public interface CaseeHandlingRecordsService extends IService<CaseeHandlingRecords> {
-	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords);
+@Mapper
+public interface CaseeHandlingRecordsReMapper extends BaseMapper<CaseeHandlingRecordsRe> {
 
-	boolean addCaseeHandlingRecords(Integer assetsId,TaskNode taskNode,Integer auctionType);
 }

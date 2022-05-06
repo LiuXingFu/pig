@@ -329,11 +329,11 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 						e.printStackTrace();
 					}
 				} else {//如果移交过来的财产有在诉前或者诉讼阶段处理过，那么添加首执案件时需修改财产程序案件id以及节点案件id
-					Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getCaseeId, item.getCreateCaseeId()).eq(Target::getGoalId, item.getAssetsId()).eq(Target::getGoalType, 20001));
+					Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId,caseeLiquiAddDTO.getProjectId()).eq(Target::getCaseeId, item.getCreateCaseeId()).eq(Target::getGoalId, item.getAssetsId()).eq(Target::getGoalType, 20001));
 					target.setCaseeId(caseeId);
 					targetService.updateById(target);
 					//修改节点案件id、不然页面加载节点会查询到诉讼或者诉前的财产程序导致在执行阶段无法显示
-					List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, project.getProjectId()).eq(TaskNode::getCaseeId, item.getCreateCaseeId()).eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0));
+					List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, project.getProjectId()).eq(TaskNode::getCaseeId, item.getCreateCaseeId()).eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeAttributes, 400));
 					for (TaskNode taskNode : list) {
 						taskNode.setCaseeId(caseeId);
 					}
@@ -365,6 +365,25 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		// 30311=执恢
 		caseeLiqui.setCategory(30311);
 		this.baseMapper.updateById(caseeLiqui);
+
+		// 查询所有财产，更新财产关联表
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getDelFlag, CommonConstants.STATUS_NORMAL);
+		queryWrapper.lambda().eq(AssetsRe::getProjectId, caseeLiquiAddDTO.getProjectId());
+		queryWrapper.lambda().ne(AssetsRe::getStatus, 500);
+		List<AssetsRe> assetsRes = assetsReService.list(queryWrapper);
+
+		for (AssetsRe assetsRe : assetsRes) {
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId,caseeReinstatementDTO.getProjectId()).eq(Target::getCaseeId, assetsRe.getCaseeId()).eq(Target::getGoalId, assetsRe.getAssetsId()).eq(Target::getGoalType, 20001));
+			target.setCaseeId(caseeId);
+			targetService.updateById(target);
+			//修改节点案件id、不然页面加载节点会查询到诉讼或者诉前的财产程序导致在执行阶段无法显示
+			List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, caseeReinstatementDTO.getProjectId()).eq(TaskNode::getCaseeId, assetsRe.getCaseeId()).eq(TaskNode::getTargetId, target.getTargetId()).eq(TaskNode::getNodeAttributes, 400));
+			for (TaskNode taskNode : list) {
+				taskNode.setCaseeId(caseeId);
+			}
+			taskNodeService.updateBatchById(list);
+		}
 
 
 

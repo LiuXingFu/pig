@@ -16,12 +16,10 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
 import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesUser;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
@@ -31,7 +29,6 @@ import com.pig4cloud.pig.admin.api.feign.RemoteNodeTemplateService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
-import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
@@ -42,6 +39,7 @@ import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
@@ -51,7 +49,6 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.utils.FindNodeTemplateChildrenUtils;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
-import com.pig4cloud.pig.casee.vo.paifu.NodeMessageRecordVO;
 import com.pig4cloud.pig.common.core.constant.CaseeOrTargetTaskFlowConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.*;
@@ -72,7 +69,6 @@ import org.springframework.transaction.annotation.Transactional;
 import net.sf.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -334,6 +330,53 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	public TaskNode queryLastTaskNode(String taskNodeKey, Integer targetId) {
+		return this.baseMapper.queryLastTaskNode(taskNodeKey,targetId);
+	}
+
+	@Override
+	@Transactional
+	public void synchronizeJointAuctionTaskNode(Integer assetsId, TaskNode taskNode,String nodeKey) {
+		//查询当前财产程序信息
+		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsId).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
+		//查询当前财产拍卖公告节点信息
+		TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG",target.getTargetId());
+
+		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+		if (paiFu_stcc_pmgg_pmgg!=null){
+			//查询拍卖公告节点联合拍卖财产
+			List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
+			for (AssetsReDTO assetsReDTO : assetsReIdList) {
+				//联合拍卖财产程序信息
+				Target jointAuctionTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
+				//根据程序id、节点key查询最新节点信息
+				TaskNode newTaskNode = this.queryLastTaskNode(nodeKey,jointAuctionTarget.getTargetId());
+				//如果当前财产不是提交任务财产则修改它们的节点信息和状态
+				if (!assetsReDTO.getAssetsId().equals(assetsId)){
+					newTaskNode.setFormData(taskNode.getFormData());
+					if (newTaskNode.getNeedAudit()==1){//需要审核
+						newTaskNode.setStatus(101);
+					}else {
+						newTaskNode.setStatus(403);
+					}
+					newTaskNode.setSubmissionStatus(0);
+					//修改节点信息
+					this.updateById(newTaskNode);
+
+					//发送拍辅任务消息
+					this.sendPaifuTaskMessage(newTaskNode);
+
+					this.setTaskDataSubmission(newTaskNode);
+
+
+					//添加案件任务办理记录
+					caseeHandlingRecordsService.addCaseeHandlingRecords(assetsReDTO.getAssetsId(),newTaskNode,paiFu_stcc_pmgg_pmgg.getAuctionType());
+				}
+			}
+		}
+	}
+
+	@Override
 	public void copyTaskNode(TaskNode copyTaskNode) {
 		copyTaskNode.setFormData(null);
 		copyTaskNode.setStatus(0);
@@ -557,24 +600,28 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
+			if (taskFlowDTO.getInsType().equals(1100)){
+				//添加拍辅任务办理记录
+				caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(),taskFlowDTO,0);
+			}else {
+				//添加清收任务办理记录
+				CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+				BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
+				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+				if (taskFlowDTO.getAssetsId()!=null){
+					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+					caseeHandlingRecords.setSourceType(0);
+				}
+				caseeHandlingRecordsService.save(caseeHandlingRecords);
+			}
 
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
 
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
-
-			//添加案件任务办理记录
-			CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
-			BeanUtils.copyProperties(taskFlowDTO,caseeHandlingRecords);
-			caseeHandlingRecords.setCreateTime(LocalDateTime.now());
-			caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
-			caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-			if (taskFlowDTO.getAssetsId()!=null){
-				caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
-				caseeHandlingRecords.setSourceType(0);
-			}
-			caseeHandlingRecordsService.save(caseeHandlingRecords);
 		}
 		return taskFlowDTO.getNodeId();
 	}
@@ -868,6 +915,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		//3.完成正在处理流程
 		this.executionTask(taskFlowDTO, "正在处理", CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
+
+		if (taskFlowDTO.getNeedAudit()==0){
+			taskFlowDTO.setStatus(403);
+		}else {
+			taskFlowDTO.setStatus(101);
+		}
 
 		// 4.保存任务数据
 		this.updateById(taskFlowDTO);
@@ -1943,6 +1996,20 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		}
 		caseePerformanceService.saveBatch(caseePerformanceList);
 		this.saveBatch(resTaskNodes);
+	}
+
+	/**
+	 * 发送拍辅任务信息
+	 * @param taskNode
+	 */
+	public void sendPaifuTaskMessage(TaskNode taskNode) {
+		//案件模块与用户模块的实体不一致 所以采取这个方法
+		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
+
+		BeanCopyUtil.copyBean(taskNode, taskNode1);
+
+		//调用拍辅任务消息发送方法
+		remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
 	}
 
 }

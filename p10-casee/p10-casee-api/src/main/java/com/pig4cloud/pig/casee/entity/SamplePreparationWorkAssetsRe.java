@@ -18,39 +18,42 @@ package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 业务人员关联看样准备工作表
+ * 看样准备工作关联财产表表
  *
  * @author Mjh
- * @date 2022-04-29 10:49:17
+ * @date 2022-05-05 10:24:34
  */
 @Data
-@TableName("p10_sample_preparation_work_uset_re")
-@ApiModel(value = "业务人员关联看样准备工作表")
-public class SamplePreparationWorkUsetRe {
+@TableName("p10_sample_preparation_work_assets_re")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "看样准备工作关联财产表表")
+public class SamplePreparationWorkAssetsRe extends BaseEntity {
 
     /**
-     * 业务人员关联看样准备工作表id
+     * 财产关联看样准备工作表id
      */
     @TableId
-    @ApiModelProperty(value="业务人员关联看样准备工作表id")
-    private Integer samplePreparationWorkUsetReId;
+    @ApiModelProperty(value="财产关联看样准备工作表id")
+    private Integer samplePreparationWorkAssetsReId;
+
+    /**
+     * 财产表id
+     */
+    @ApiModelProperty(value="财产表id")
+    private Integer assetsId;
 
     /**
      * 看样准备工作表id
      */
     @ApiModelProperty(value="看样准备工作表id")
-    private Integer samplePreparationWorkId;
-
-    /**
-     * 业务人员id
-     */
-    @ApiModelProperty(value="业务人员id")
-    private Integer usetId;
+    private Integer samplePreparationWorkAssetsId;
 
 
 }

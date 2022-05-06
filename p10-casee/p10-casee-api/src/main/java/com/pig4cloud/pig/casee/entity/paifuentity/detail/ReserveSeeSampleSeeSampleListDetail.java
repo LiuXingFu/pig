@@ -21,4 +21,6 @@ public class ReserveSeeSampleSeeSampleListDetail implements Serializable {
     private String identityCard;
 	/**报名时间*/
     private LocalDateTime registrationTime;
+	/**备注*/
+	private String remark;
 }

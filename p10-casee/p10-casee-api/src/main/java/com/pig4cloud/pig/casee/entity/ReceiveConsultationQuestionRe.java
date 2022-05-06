@@ -18,12 +18,9 @@ package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 /**
  * 接受咨询关联咨询问题表
  *
@@ -32,9 +29,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_receive_consultation_question_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "接受咨询关联咨询问题表")
-public class ReceiveConsultationQuestionRe extends BaseEntity {
+public class ReceiveConsultationQuestionRe{
 
     /**
      * 接受咨询关联咨询问题表id
@@ -54,12 +50,4 @@ public class ReceiveConsultationQuestionRe extends BaseEntity {
      */
     @ApiModelProperty(value="咨询问题")
     private String askQuestions;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
-
-
 }

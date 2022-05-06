@@ -17,12 +17,18 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.CaseeHandlingRecordsMapper;
+import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsReService;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsService;
+import com.pig4cloud.pig.casee.service.LiquiTransferRecordService;
 import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
+import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,9 +39,47 @@ import java.util.List;
  */
 @Service
 public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRecordsMapper, CaseeHandlingRecords> implements CaseeHandlingRecordsService {
+	@Autowired
+	CaseeHandlingRecordsReService caseeHandlingRecordsReService;
+	@Autowired
+	SecurityUtilsService securityUtilsService;
+	@Autowired
+	LiquiTransferRecordService liquiTransferRecordService;
 
 	@Override
 	public List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords) {
 		return this.baseMapper.queryCaseeHandlingRecords(caseeHandlingRecords);
+	}
+
+	@Override
+	public boolean addCaseeHandlingRecords(Integer assetsId, TaskNode taskNode,Integer auctionType) {
+		//添加任务办理记录
+		CaseeHandlingRecords caseeHandlingRecords=new CaseeHandlingRecords();
+		BeanUtils.copyProperties(taskNode,caseeHandlingRecords);
+		caseeHandlingRecords.setCreateTime(LocalDateTime.now());
+		caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
+		caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
+		caseeHandlingRecords.setSourceId(assetsId);
+		caseeHandlingRecords.setSourceType(0);
+		if (taskNode.getNodeKey()!="paiFu_STCC_DK_DK"&&taskNode.getNodeKey()!="paiFu_STCC_CJCD_CJCD"){
+			if (auctionType.equals(100)){
+				caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
+			}else if (auctionType.equals(200)){
+				caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(二拍)");
+			}else if (auctionType.equals(300)){
+				caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(变卖)");
+			}
+		}
+		this.save(caseeHandlingRecords);
+
+		//根据拍辅项目id和财产id查询清收移交记录信息
+		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), assetsId);
+
+		//添加任务办理记录关联信息
+		CaseeHandlingRecordsRe caseeHandlingRecordsRe=new CaseeHandlingRecordsRe();
+		caseeHandlingRecordsRe.setCaseeHandlingRecordsId(caseeHandlingRecords.getCaseeHandlingRecordsId());
+		caseeHandlingRecordsRe.setLiquiProjectId(liquiTransferRecord.getProjectId());
+
+		return caseeHandlingRecordsReService.save(caseeHandlingRecordsRe);
 	}
 }

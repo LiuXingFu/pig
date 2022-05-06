@@ -18,11 +18,9 @@ package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 看样人员关联看样准备工作表
@@ -32,9 +30,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_sample_preparation_work_subject_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "看样人员关联看样准备工作表")
-public class SamplePreparationWorkSubjectRe extends BaseEntity {
+public class SamplePreparationWorkSubjectRe {
 
     /**
      * 看样人员关联看样准备工作表id

@@ -166,4 +166,11 @@
 		ORDER BY p10_task_node.create_time desc LIMIT 1
 	</select>
 
+	<select id="queryLastTaskNode" resultType="com.pig4cloud.pig.casee.entity.TaskNode">
+		SELECT * FROM p10_task_node
+		WHERE node_key=#{taskNodeKey}
+		AND target_id=#{targetId}
+		AND del_flag=0 AND node_type=0
+		ORDER BY p10_task_node.create_time desc LIMIT 1
+	</select>
 </mapper>

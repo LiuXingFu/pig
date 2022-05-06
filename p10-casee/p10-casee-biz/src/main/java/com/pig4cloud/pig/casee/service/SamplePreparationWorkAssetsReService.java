@@ -14,21 +14,18 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.MakeAnAppointment;
-import com.pig4cloud.pig.casee.mapper.MakeAnAppointmentMapper;
-import com.pig4cloud.pig.casee.service.MakeAnAppointmentService;
-import org.springframework.stereotype.Service;
+package com.pig4cloud.pig.casee.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.SamplePreparationWorkAssetsRe;
 
 /**
- * 预约看样表
+ * 看样准备工作关联财产表表
  *
  * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @date 2022-05-05 10:24:34
  */
-@Service
-public class MakeAnAppointmentServiceImpl extends ServiceImpl<MakeAnAppointmentMapper, MakeAnAppointment> implements MakeAnAppointmentService {
+public interface SamplePreparationWorkAssetsReService extends IService<SamplePreparationWorkAssetsRe> {
 
 }

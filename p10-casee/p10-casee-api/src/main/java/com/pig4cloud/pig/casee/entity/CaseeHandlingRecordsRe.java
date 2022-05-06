@@ -25,53 +25,32 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 预约看样表
+ * 案件办理记录表
  *
- * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @author yuanduo
+ * @date 2022-05-05 16:34:49
  */
 @Data
-@TableName("p10_make_an_appointment")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "预约看样表")
-public class MakeAnAppointment extends BaseEntity {
+@TableName("p10_casee_handling_records_re")
+@ApiModel(value = "案件办理记录关联表")
+public class CaseeHandlingRecordsRe  {
 
     /**
-     * 预约看样表
+     * 案件办理记录关联表id
      */
     @TableId
-    @ApiModelProperty(value="预约看样表")
-    private Integer makeAnAppointment;
+    @ApiModelProperty(value="案件办理记录关联表id")
+    private Integer caseeHandlingRecordsReId;
 
-    /**
-     * 项目id
-     */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
+	/**
+	 * 案件办理记录id
+	 */
+	@ApiModelProperty(value="案件办理记录id")
+	private Integer caseeHandlingRecordsId;
 
-    /**
-     * 案件id
-     */
-    @ApiModelProperty(value="案件id")
-    private Integer caseeId;
-
-    /**
-     * 财产id
-     */
-    @ApiModelProperty(value="财产id")
-    private Integer assetsId;
-
-    /**
-     * 拍卖记录id
-     */
-    @ApiModelProperty(value="拍卖记录id")
-    private Integer auctionRecordId;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
-
-
+	/**
+	 * 清收项目id
+	 */
+	@ApiModelProperty(value="清收项目id")
+	private Integer liquiProjectId;
 }

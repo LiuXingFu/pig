@@ -100,6 +100,26 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	PaiFu_STCC_PMJG_PMJG_NODEHandler paiFu_stcc_pmjg_pmjg_nodeHandler;
 
+	@Autowired
+	PaiFu_STCC_JSZX_JSZX_NODEHandler paiFu_stcc_jszx_jszx_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_BMKY_BMKY_NODEHandler paiFu_stcc_bmky_bmky_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler paiFu_stcc_kyzbgz_kyzbgz_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_YLKY_YLKY_NODEHandler paiFu_stcc_ylky_ylky_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_PMJGSDQK_PMJGSDQK_NODEHandler paiFu_stcc_pmjgsdqk_pmjgsdqk_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_DK_DK_NODEHandler paiFu_stcc_dk_dk_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_ZCDC_ZCDC_NODEHandler paiFu_stcc_zcdc_zcdc_nodeHandler;
 
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
@@ -145,6 +165,13 @@ public class NodeTaskHandlerRegister {
 		//拍辅任务阶段提交map实现类
 		submitHandlerMap.put("paiFu_STCC_PMGG_PMGG", paiFu_stcc_pmgg_pmgg_nodeHandler);
 		submitHandlerMap.put("paiFu_STCC_PMJG_PMJG", paiFu_stcc_pmjg_pmjg_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_JSZX_JSZX", paiFu_stcc_jszx_jszx_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_BMKY_BMKY", paiFu_stcc_bmky_bmky_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_KYZBGZ_KYZBGZ", paiFu_stcc_kyzbgz_kyzbgz_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_YLKY_YLKY", paiFu_stcc_ylky_ylky_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_PMJGSDQK_PMJGSDQK", paiFu_stcc_pmjgsdqk_pmjgsdqk_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_DK_DK", paiFu_stcc_dk_dk_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_ZCDC_ZCDC", paiFu_stcc_zcdc_zcdc_nodeHandler);
 
 
 //		// 任务节点审核map实现类

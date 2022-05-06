@@ -21,14 +21,11 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.MakeAnAppointmentMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.SamplePreparationWorkAssetsReMapper">
 
-  <resultMap id="makeAnAppointmentMap" type="com.pig4cloud.pig.casee.entity.MakeAnAppointment">
-    <id property="makeAnAppointment" column="make_an_appointment"/>
-    <result property="projectId" column="project_id"/>
-    <result property="caseeId" column="casee_id"/>
+  <resultMap id="samplePreparationWorkAssetsReMap" type="com.pig4cloud.pig.casee.entity.SamplePreparationWorkAssetsRe">
+    <id property="samplePreparationWorkAssetsReId" column="sample_preparation_work_assets_re_id"/>
     <result property="assetsId" column="assets_id"/>
-    <result property="auctionRecordId" column="auction_record_id"/>
-    <result property="remark" column="remark"/>
+    <result property="samplePreparationWorkAssetsId" column="sample_preparation_work_assets_id"/>
   </resultMap>
 </mapper>
