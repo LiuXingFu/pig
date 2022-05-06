@@ -20,6 +20,11 @@ public class PaiFu_STCC_PMGG_PMGG extends CommonalityData implements Serializabl
 	private Integer auctionId;
 
 	/**
+	 * 拍卖记录id
+	 */
+	private Integer auctionRecordId;
+
+	/**
 	 * 拍卖公告阶段(100-一拍 200-二拍 300-变卖)
 	 */
 	private Integer auctionType;

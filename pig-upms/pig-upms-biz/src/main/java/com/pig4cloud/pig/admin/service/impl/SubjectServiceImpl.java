@@ -131,8 +131,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public Subject getPhoneBySaveOrUpdateById(Subject subject) {
-		Subject subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+	public Subject getPhoneAndUnifiedIdentityBySaveOrUpdateById(Subject subject) {
+		Subject subjectQuery = null;
+		if (Objects.isNull(subject.getUnifiedIdentity())) {
+			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+		} else {
+			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getUnifiedIdentity, subject.getUnifiedIdentity()));
+		}
 		if (subjectQuery!=null){
 			subject.setSubjectId(subjectQuery.getSubjectId());
 		}
