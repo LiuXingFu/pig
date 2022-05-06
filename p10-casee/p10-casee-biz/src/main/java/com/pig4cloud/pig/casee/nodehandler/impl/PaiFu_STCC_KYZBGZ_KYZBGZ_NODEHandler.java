@@ -72,7 +72,7 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 			//预约看样人员信息
 			List<Subject> subjectList = samplePreparationWorkListDetail.getSubjectList();
 			for (Subject subject : subjectList) {
-				R<Subject> saveOrUpdateById = remoteSubjectService.getPhoneBySaveOrUpdateById(subject, SecurityConstants.FROM);
+				R<Subject> saveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 				Integer subjectId = Integer.valueOf(saveOrUpdateById.getData().getSubjectId().toString());
 
 				SamplePreparationWorkSubjectRe samplePreparationWorkSubjectRe=new SamplePreparationWorkSubjectRe();
