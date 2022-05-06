@@ -28,4 +28,10 @@
     <result property="subjectId" column="subject_id"/>
     <result property="expenseRecordId" column="expense_record_id"/>
   </resultMap>
+
+	<select id="selectSubjectList" resultType="com.pig4cloud.pig.casee.vo.SubjectVO">
+		select p10_subject.* from p10_expense_record_subject_re
+		left join p10_subject on p10_subject.subject_id = p10_expense_record_subject_re.subject_id
+		where p10_expense_record_subject_re.expense_record_id = #{expenseRecordId}
+	</select>
 </mapper>

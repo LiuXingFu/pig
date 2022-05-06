@@ -20,9 +20,13 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -52,5 +56,41 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	 * @return
 	 */
 	BigDecimal totalAmountByProjectId(Integer projectId);
+
+	/**
+	 * 保存拍辅费用产生记录
+	 * @param expenseRecordPaifuSaveDTO
+	 * @return
+	 */
+	Integer savePaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO);
+
+	/**
+	 * 修改拍辅费用产生记录
+	 * @param expenseRecordPaifuSaveDTO
+	 * @return
+	 */
+	Integer modifyPaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO);
+
+	/**
+	 *	根据费用产生记录id查询费用明细和财产关联集合
+	 * @param expenseRecordId
+	 * @return
+	 */
+	ExpenseRecordPaifuAssetsReListVO queryPaifuExpenseRecordAssetsReList(Integer expenseRecordId);
+
+	/**
+	 * 拍辅分页查询费用产生记录
+	 * @param page
+	 * @param projectId
+	 * @return
+	 */
+	IPage<ExpenseRecordPageVO> queryPaifuExpenseRecordPage(Page page, Integer projectId);
+
+	/**
+	 * 根据id查询费用产生记录详情
+	 * @param expenseRecordId
+	 * @return
+	 */
+	ExpenseRecordDetailVO queryDetailById(Integer expenseRecordId);
 
 }

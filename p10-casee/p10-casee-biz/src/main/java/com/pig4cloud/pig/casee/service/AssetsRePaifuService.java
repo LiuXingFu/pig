@@ -12,6 +12,8 @@ import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 
+import java.util.List;
+
 public interface AssetsRePaifuService extends IService<AssetsRe> {
 
 	/**
@@ -56,5 +58,13 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	Integer modifyAssetsReStatus(AssetsReModifyStatusDTO assetsReModifyStatusDTO);
+
+	/**
+	 * 根据项目id查询财产关联信息
+	 * @param projectId
+	 * @param assetsName
+	 * @return
+	 */
+	List<AssetsRePaifuDetailVO> queryByProjectId(Integer projectId,String assetsName);
 
 }

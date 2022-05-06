@@ -123,4 +123,26 @@
 		and p10_expense_record.status != 2
 		and p10_expense_record.project_id = #{projectId}
 	</select>
+
+	<resultMap id="getAssetsReList" type="com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO" extends="expenseRecordMap">
+		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" column="expense_record_id"
+					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.selectAssetsList">
+		</collection>
+	</resultMap>
+
+	<select id="queryPaifuExpenseRecordPage" resultMap="getAssetsReList">
+		select * from p10_expense_record
+		where p10_expense_record.del_flag=0 and p10_expense_record.project_id=#{projectId}
+	</select>
+	
+	<resultMap id="getSubjectList" type="com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO" extends="expenseRecordMap">
+		<collection property="subjectList" ofType="com.pig4cloud.pig.casee.vo.SubjectVO" column="expense_record_id"
+					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordSubjectReMapper.selectSubjectList">
+		</collection>
+	</resultMap>
+	
+	<select id="queryDetailById" resultMap="getSubjectList">
+		select * from p10_expense_record
+		where p10_expense_record.del_flag=0 and p10_expense_record.expense_record_id=#{expenseRecordId}
+	</select>
 </mapper>

@@ -14,27 +14,26 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo.paifu;
 
-package com.pig4cloud.pig.casee.mapper;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import lombok.Data;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
-import com.pig4cloud.pig.casee.vo.SubjectVO;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * 费用记录关联主体信息
+ * 费用产生记录表
  *
  * @author Mjh
- * @date 2022-02-17 17:53:00
+ * @date 2022-02-17 17:53:07
  */
-@Mapper
-public interface ExpenseRecordSubjectReMapper extends BaseMapper<ExpenseRecordSubjectRe> {
+@Data
 
-	List<SubjectVO> selectSubjectList(@Param("expenseRecordId") Integer expenseRecordId);
+public class ExpenseRecordPageVO extends ExpenseRecord {
+	/**
+	 * 财产关联集合
+	 */
+	List<AssetsRePaifuDetailVO> assetsReList;
 
 }

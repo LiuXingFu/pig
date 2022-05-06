@@ -366,6 +366,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		caseeLiqui.setCategory(30311);
 		this.baseMapper.updateById(caseeLiqui);
 
+
+
 		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),caseeId);
 		return caseeId;
 	}

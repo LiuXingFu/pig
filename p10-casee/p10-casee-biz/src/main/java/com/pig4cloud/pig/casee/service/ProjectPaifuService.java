@@ -31,6 +31,7 @@ import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.CountFlowChartVO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -184,4 +185,18 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	ProjectPaifu queryById(Integer projectId);
+
+	/**
+	 * 更新项目总金额
+	 * @param projectId
+	 * @return
+	 */
+	Integer updateProjectAmount(Integer projectId);
+
+	/**
+	 * 更新项目回款金额
+	 * @param projectId
+	 * @return
+	 */
+	Integer updateRepaymentAmount(Integer projectId);
 }

@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,25 +24,25 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
-import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
-import com.pig4cloud.pig.casee.service.ExpenseRecordService;
-import com.pig4cloud.pig.casee.service.PaymentRecordService;
-import com.pig4cloud.pig.casee.service.PaymentRecordSubjectReService;
-import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,10 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private ExpenseRecordService expenseRecordService;
+	@Autowired
+	private PaymentRecordAssetsReService paymentRecordAssetsReService;
+	@Autowired
+	private ProjectPaifuService projectPaifuService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
@@ -192,5 +197,56 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference) {
 		return this.baseMapper.getPaymentRecordMap(polylineColumnActive, difference, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	@Override
+	public List<PaymentRecordListVO> queryPaifuPaymentRecordList(Integer projectId){
+		return this.baseMapper.queryPaifuPaymentRecordList(projectId);
+	}
+
+	@Override
+	@Transactional
+	public Integer savePaifuPaymentRecord(PaymentRecordSaveDTO paymentRecordSaveDTO){
+		// 查询费用产生记录详情
+		ExpenseRecordPaifuAssetsReListVO expenseRecordPaifuAssetsReListVO = expenseRecordService.queryPaifuExpenseRecordAssetsReList(paymentRecordSaveDTO.getExpenseRecordId());
+
+		if(paymentRecordSaveDTO.getExpenseRecordStatus()==1){
+			// 更新费用产生记录状态1=已还款
+			ExpenseRecord expenseRecord = new ExpenseRecord();
+			expenseRecord.setExpenseRecordId(paymentRecordSaveDTO.getExpenseRecordId());
+			expenseRecord.setStatus(paymentRecordSaveDTO.getExpenseRecordStatus());
+			expenseRecordService.updateById(expenseRecord);
+		}
+
+		PaymentRecord paymentRecord = new PaymentRecord();
+		BeanCopyUtil.copyBean(paymentRecordSaveDTO,paymentRecord);
+		paymentRecord.setProjectId(expenseRecordPaifuAssetsReListVO.getProjectId());
+		paymentRecord.setCompanyCode(expenseRecordPaifuAssetsReListVO.getCompanyCode());
+		paymentRecord.setCaseeId(expenseRecordPaifuAssetsReListVO.getCaseeId());
+		paymentRecord.setCaseeNumber(expenseRecordPaifuAssetsReListVO.getCaseeNumber());
+		paymentRecord.setFundsType(expenseRecordPaifuAssetsReListVO.getCostType());
+		paymentRecord.setPaymentType(100);
+		Integer save = this.baseMapper.insert(paymentRecord);
+		// 批量保存回款主体关联
+		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
+		for(Integer subjectId:paymentRecordSaveDTO.getSubjectIdList()){
+			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setSubjectId(subjectId);
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
+		}
+		// 批量保存回款财产关联
+		List<PaymentRecordAssetsRe> paymentRecordAssetsRes = new ArrayList<>();
+		for(Integer assetsId : expenseRecordPaifuAssetsReListVO.getAssetsReIdList()){
+			PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
+			paymentRecordAssetsRe.setAssetsReId(assetsId);
+			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordAssetsRes.add(paymentRecordAssetsRe);
+		}
+		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
+		paymentRecordAssetsReService.saveBatch(paymentRecordAssetsRes);
+		// 更新项目回款总金额
+		projectPaifuService.updateRepaymentAmount(paymentRecord.getProjectId());
+		return save;
 	}
 }

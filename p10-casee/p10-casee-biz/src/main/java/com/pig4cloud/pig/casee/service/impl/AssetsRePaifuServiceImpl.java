@@ -191,4 +191,9 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 		assetsRePaifu.setStatus(assetsReModifyStatusDTO.getStatus());
 		return this.baseMapper.updateById(assetsRePaifu);
 	}
+
+	@Override
+	public List<AssetsRePaifuDetailVO> queryByProjectId(Integer projectId,String assetsName){
+		return this.baseMapper.selectByProjectId(projectId,assetsName);
+	}
 }

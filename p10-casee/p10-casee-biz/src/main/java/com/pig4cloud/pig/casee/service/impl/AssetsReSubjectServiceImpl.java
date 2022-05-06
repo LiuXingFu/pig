@@ -22,6 +22,8 @@ import com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper;
 import com.pig4cloud.pig.casee.service.AssetsReSubjectService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 项目案件财产关联主体
  *
@@ -31,4 +33,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetsReSubjectServiceImpl extends ServiceImpl<AssetsReSubjectMapper, AssetsReSubject> implements AssetsReSubjectService {
 
+	@Override
+	public List<Integer> queryByAssetsIdList(List<Integer> assetsReIdList){
+		return this.baseMapper.selectByAssetsIdList(assetsReIdList);
+	}
 }

@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.service.ExpenseRecordService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -173,4 +174,61 @@ public class ExpenseRecordController {
         return R.ok(expenseRecordService.removeById(expenseRecordId));
     }
 
+	/**
+	 * 保存拍辅费用产生记录
+	 * @param expenseRecordPaifuSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "保存拍辅费用产生记录", notes = "保存拍辅费用产生记录")
+	@SysLog("保存拍辅费用产生记录" )
+	@PostMapping("/savePaifuExpenseRecord")
+	public R savePaifuExpenseRecord(@RequestBody ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO) {
+		return R.ok(expenseRecordService.savePaifuExpenseRecord(expenseRecordPaifuSaveDTO));
+	}
+
+	/**
+	 * 修改拍辅费用产生记录
+	 * @param expenseRecordPaifuSaveDTO 修改拍辅费用产生记录
+	 * @return R
+	 */
+	@ApiOperation(value = "修改拍辅费用产生记录", notes = "修改拍辅费用产生记录")
+	@SysLog("修改拍辅费用产生记录" )
+	@PutMapping("/modifyPaifuExpenseRecord")
+	public R updateById(@RequestBody ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO) {
+		return R.ok(expenseRecordService.modifyPaifuExpenseRecord(expenseRecordPaifuSaveDTO));
+	}
+
+	/**
+	 * 根据费用产生记录id查询费用明细和财产关联集合
+	 * @param expenseRecordId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据费用产生记录id查询费用明细和财产关联集合", notes = "根据费用产生记录id查询费用明细和财产关联集合")
+	@GetMapping("/queryPaifuExpenseRecordAssetsReList/{expenseRecordId}" )
+	public R queryPaifuExpenseRecordAssetsReList(@PathVariable Integer expenseRecordId) {
+		return R.ok(expenseRecordService.queryPaifuExpenseRecordAssetsReList(expenseRecordId));
+	}
+
+	/**
+	 * 拍辅分页查询费用产生记录
+	 * @param page 分页对象
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "拍辅分页查询费用产生记录", notes = "拍辅分页查询费用产生记录")
+	@GetMapping("/queryPaifuExpenseRecordPage" )
+	public R queryPaifuExpenseRecordPage(Page page, Integer projectId) {
+		return R.ok(expenseRecordService.queryPaifuExpenseRecordPage(page, projectId));
+	}
+
+	/**
+	 * 根据id查询费用产生记录详情
+	 * @param expenseRecordId 费用产生记录id
+	 * @return
+	 */
+	@ApiOperation(value = "根据id查询费用产生记录详情", notes = "根据id查询费用产生记录详情")
+	@GetMapping("/queryDetailById/{expenseRecordId}" )
+	public R queryDetailById(@PathVariable Integer expenseRecordId) {
+		return R.ok(expenseRecordService.queryDetailById(expenseRecordId));
+	}
 }

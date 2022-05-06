@@ -792,8 +792,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		where p10_assets.type = 20200
 		and p10_assets_re.project_id = #{projectId}
-		and (json_extract(p10_assets.assets_detail,"$.assetsCompletionRuling") is null
-		or json_extract(p10_assets.assets_detail,"$.assetsCompensationAward") is null)) p10_assets)
+		and p10_assets_re.status!=500
 	</update>
 
 
