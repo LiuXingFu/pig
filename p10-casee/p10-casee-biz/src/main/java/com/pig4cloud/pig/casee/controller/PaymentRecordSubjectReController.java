@@ -102,5 +102,4 @@ public class PaymentRecordSubjectReController {
     public R removeById(@PathVariable Integer paymentRecordSubjectId) {
         return R.ok(paymentRecordSubjectReService.removeById(paymentRecordSubjectId));
     }
-
 }

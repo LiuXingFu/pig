@@ -23,10 +23,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
+import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -76,4 +78,18 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @return
 	 */
 	Map<String, BigDecimal> getPaymentRecordMap(Integer polylineColumnActive, List<String> difference);
+
+	/**
+	 * 根据项目id查询拍辅回款记录
+	 * @param projectId
+	 * @return
+	 */
+	List<PaymentRecordListVO> queryPaifuPaymentRecordList(Integer projectId);
+
+	/**
+	 * 保存拍辅回款记录
+	 * @param paymentRecordSaveDTO
+	 * @return
+	 */
+	Integer savePaifuPaymentRecord(PaymentRecordSaveDTO paymentRecordSaveDTO);
 }

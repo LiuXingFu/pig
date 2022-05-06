@@ -48,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -82,9 +83,11 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Autowired
 	private AssetsReSubjectService assetsReSubjectService;
 	@Autowired
-	private RemoteRelationshipAuthenticateService relationshipAuthenticateService;
-	@Autowired
 	private TargetService targetService;
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
+	@Autowired
+	private PaymentRecordService paymentRecordService;
 
 	@Override
 	@Transactional
@@ -637,6 +640,42 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		BeanCopyUtil.copyBean(project,projectPaifu);
 		return projectPaifu;
+	}
+
+	@Override
+	@Transactional
+	public Integer updateProjectAmount(Integer projectId){
+		// 统计费用产生明细总金额
+		BigDecimal projectAmount = expenseRecordService.totalAmountByProjectId(projectId);
+		ProjectPaifu projectPaifu = this.queryById(projectId);
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		if(projectPaifu.getProjectPaifuDetail()!=null){
+			BeanCopyUtil.copyBean(projectPaifu.getProjectPaifuDetail(),projectPaifuDetail);
+		}
+		projectPaifuDetail.setProjectAmount(projectAmount);
+		projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
+		return this.baseMapper.updateById(projectPaifu);
+	}
+
+	@Override
+	@Transactional
+	public Integer updateRepaymentAmount(Integer projectId){
+		PaymentRecord paymentRecord = new PaymentRecord();
+		paymentRecord.setProjectId(projectId);
+		// 统计回款总金额
+		BigDecimal repaymentAmount = paymentRecordService.sumCourtPayment(paymentRecord);
+		ProjectPaifu projectPaifu = this.queryById(projectId);
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		if(projectPaifu.getProjectPaifuDetail()!=null){
+			BeanCopyUtil.copyBean(projectPaifu.getProjectPaifuDetail(),projectPaifuDetail);
+		}
+		projectPaifuDetail.setRepaymentAmount(repaymentAmount);
+		projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
+		return this.baseMapper.updateById(projectPaifu);
 	}
 
 }

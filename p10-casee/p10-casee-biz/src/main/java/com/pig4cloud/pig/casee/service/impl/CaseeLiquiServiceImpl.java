@@ -385,6 +385,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			taskNodeService.updateBatchById(list);
 		}
 
+
+
 		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),caseeId);
 		return caseeId;
 	}

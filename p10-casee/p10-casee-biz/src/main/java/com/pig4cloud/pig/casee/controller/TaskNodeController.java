@@ -96,14 +96,14 @@ public class TaskNodeController {
 	}
 
 	/**
-	 * 查询当前拍卖公告节点
-	 * @param taskNode
+	 * 根据节点key以及项目、案件信息查询最后一条节点信息
+	 * @param
 	 * @return R
 	 */
-	@ApiOperation(value = "查询当前拍卖公告节点", notes = "查询当前拍卖公告节点")
-	@GetMapping("/queryAuctionAnnouncement" )
-	public R queryAuctionAnnouncement(TaskNode taskNode) {
-		return R.ok(taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG").orderByDesc(TaskNode::getCreateTime).last("limit 1")));
+	@ApiOperation(value = "根据节点key以及项目、案件信息查询最后一条节点信息", notes = "根据节点key以及项目、案件信息查询最后一条节点信息")
+	@GetMapping("/queryLastTaskNode" )
+	public R queryLastTaskNode(String taskNodeKey,Integer targetId) {
+		return R.ok(taskNodeService.queryLastTaskNode(taskNodeKey,targetId));
 	}
 
     /**

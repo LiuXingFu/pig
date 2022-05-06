@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
+import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -185,6 +186,29 @@ public class PaymentRecordController {
 	@GetMapping("/queryMoneyBackMonthlyRankList")
     public R queryMoneyBackMonthlyRankList(Page page,  CountMoneyBackMonthlyRankDTO countMoneyBackMonthlyRankDTO) {
     	return R.ok(paymentRecordService.queryMoneyBackMonthlyRankList(page, countMoneyBackMonthlyRankDTO));
+	}
+
+	/**
+	 * 根据项目id查询拍辅回款详情
+	 * @param projectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id查询拍辅回款详情", notes = "根据项目id查询拍辅回款详情")
+	@GetMapping("/queryPaifuPaymentRecordList/{projectId}" )
+	public R queryPaifuPaymentRecordList(@PathVariable Integer projectId) {
+		return R.ok(paymentRecordService.queryPaifuPaymentRecordList(projectId));
+	}
+
+	/**
+	 * 保存拍辅回款记录
+	 * @param paymentRecordSaveDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "保存拍辅回款记录", notes = "保存拍辅回款记录")
+	@SysLog("保存拍辅回款记录" )
+	@PostMapping("/savePaifuPaymentRecord")
+	public R savePaifuPaymentRecord(@RequestBody PaymentRecordSaveDTO paymentRecordSaveDTO) {
+		return R.ok(paymentRecordService.savePaifuPaymentRecord(paymentRecordSaveDTO));
 	}
 
 }

@@ -15,26 +15,17 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.mapper;
+package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
-import com.pig4cloud.pig.casee.vo.SubjectVO;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.PaymentRecordAssetsRe;
 
 /**
- * 费用记录关联主体信息
+ * 回款记录财产关联表
  *
- * @author Mjh
- * @date 2022-02-17 17:53:00
+ * @author pig code generator
+ * @date 2022-05-05 21:23:53
  */
-@Mapper
-public interface ExpenseRecordSubjectReMapper extends BaseMapper<ExpenseRecordSubjectRe> {
-
-	List<SubjectVO> selectSubjectList(@Param("expenseRecordId") Integer expenseRecordId);
+public interface PaymentRecordAssetsReService extends IService<PaymentRecordAssetsRe> {
 
 }

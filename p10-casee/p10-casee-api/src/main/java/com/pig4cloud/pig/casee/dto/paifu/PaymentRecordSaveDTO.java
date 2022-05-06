@@ -14,45 +14,75 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.entity;
+package com.pig4cloud.pig.casee.dto.paifu;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
 /**
- * 看样准备工作关联财产表表
+ * 回款详细记录表
  *
  * @author Mjh
- * @date 2022-05-05 10:24:34
+ * @date 2022-02-17 17:52:51
  */
 @Data
-@TableName("p10_sample_preparation_work_assets_re")
-@ApiModel(value = "看样准备工作关联财产表表")
-public class SamplePreparationWorkAssetsRe {
+public class PaymentRecordSaveDTO {
 
-    /**
-     * 财产关联看样准备工作表id
-     */
-    @TableId
-    @ApiModelProperty(value="财产关联看样准备工作表id")
-    private Integer samplePreparationWorkAssetsReId;
+	/**
+	 * 费用记录id
+	 */
+	@ApiModelProperty(value="费用记录id")
+	private Integer expenseRecordId;
 
-    /**
-     * 财产表id
-     */
-    @ApiModelProperty(value="财产表id")
-    private Integer assetsId;
+	/**
+	 * 回款时间
+	 */
+	@ApiModelProperty(value="回款时间")
+	private LocalDate paymentDate;
 
-    /**
-     * 看样准备工作表id
-     */
-    @ApiModelProperty(value="看样准备工作表id")
-    private Integer samplePreparationWorkId;
+	/**
+	 * 回款金额
+	 */
+	@ApiModelProperty(value="回款金额")
+	private BigDecimal paymentAmount;
 
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value="备注")
+	private String remark;
 
+	/**
+	 * 附件
+	 */
+	@ApiModelProperty(value="附件")
+	private String appendixFile;
+
+	/**
+	 * 还款人名称
+	 */
+	@ApiModelProperty(value="还款人名称")
+	private String subjectName;
+
+	/**
+	 * 还款人id集合
+	 */
+	@ApiModelProperty(value="还款人id集合")
+	private List<Integer> subjectIdList;
+
+	/**
+	 * 状态(0-正常 1-已还款 2-作废)
+	 */
+	@ApiModelProperty(value="状态(0-正常 1-已还款 2-作废)")
+	private Integer expenseRecordStatus;
 }

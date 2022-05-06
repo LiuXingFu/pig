@@ -21,31 +21,19 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper">
+<mapper namespace="com.pig4cloud.pig.casee.mapper.PaymentRecordAssetsReMapper">
 
-  <resultMap id="assetsReSubjectMap" type="com.pig4cloud.pig.casee.entity.AssetsReSubject">
-    <id property="assetsReSubjectId" column="assets_re_subject_id"/>
+  <resultMap id="paymentRecordAssetsReMap" type="com.pig4cloud.pig.casee.entity.PaymentRecordAssetsRe">
+    <id property="paymentRecordAssetsReId" column="payment_record_assets_re_id"/>
+    <result property="paymentRecordId" column="payment_record_id"/>
     <result property="assetsReId" column="assets_re_id"/>
-    <result property="subjectId" column="subject_id"/>
   </resultMap>
 
-	<select id="selectByAssetsReIdSubjectList" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
-		select p10_subject.* from p10_assets_re_subject
-		left join p10_subject on p10_subject.subject_id = p10_assets_re_subject.subject_id
-		where p10_assets_re_subject.assets_re_id = #{assetsReId}
-	</select>
-
-	<select id="selectByAssetsReId" resultType="java.lang.Integer">
-		select p10_assets_re_subject.subject_id from p10_assets_re_subject
-		where p10_assets_re_subject.assets_re_id = #{assetsReId}
-	</select>
-
-	<select id="selectByAssetsIdList" resultType="java.lang.Integer">
-		select DISTINCT subject_id from p10_assets_re_subject
-		where assets_re_id in
-		<foreach item="item" index="index" collection="assetsReIdList"
-				 open="(" separator="," close=")">
-			#{item}
-		</foreach>
+	<select id="selectAssetsList" resultType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO">
+		select p10_assets_re.*,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id from p10_payment_record_assets_re
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_payment_record_assets_re.assets_re_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
+		where  p10_payment_record_assets_re.payment_record_id = #{paymentRecordId}
 	</select>
 </mapper>

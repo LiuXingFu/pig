@@ -92,4 +92,13 @@ public class AssetsRePaifuController {
 		return R.ok(assetsRePaifuService.modifyAssetsReStatus(assetsReModifyStatusDTO));
 	}
 
+	/**
+	 * 根据项目id查询财产关联信息
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id查询财产关联信息", notes = "根据项目id查询财产关联信息")
+	@GetMapping("/queryByProjectId")
+	public R queryByProjectId(Integer projectId,@RequestParam(value = "assetsName",required = false)String assetsName) {
+		return R.ok(assetsRePaifuService.queryByProjectId(projectId, assetsName));
+	}
 }

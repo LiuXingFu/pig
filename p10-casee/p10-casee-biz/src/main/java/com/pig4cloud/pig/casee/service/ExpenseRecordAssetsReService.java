@@ -15,26 +15,30 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.mapper;
+package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
-import com.pig4cloud.pig.casee.vo.SubjectVO;
-import io.swagger.models.auth.In;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 
 import java.util.List;
 
 /**
- * 费用记录关联主体信息
+ * 产生费用财产关联表
  *
- * @author Mjh
- * @date 2022-02-17 17:53:00
+ * @author pig code generator
+ * @date 2022-05-03 21:15:30
  */
-@Mapper
-public interface ExpenseRecordSubjectReMapper extends BaseMapper<ExpenseRecordSubjectRe> {
+public interface ExpenseRecordAssetsReService extends IService<ExpenseRecordAssetsRe> {
 
-	List<SubjectVO> selectSubjectList(@Param("expenseRecordId") Integer expenseRecordId);
+	List<Integer> queryByExpenseRecordId(Integer expenseRecordId);
+
+	/**
+	 * 根据费用产生记录id查询财产关联信息
+	 * @param expenseRecordId
+	 * @return
+	 */
+	List<AssetsRePaifuDetailVO> queryAssetsList(Integer expenseRecordId);
 
 }

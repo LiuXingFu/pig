@@ -25,34 +25,34 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 看样准备工作关联财产表表
+ * 产生费用财产关联表
  *
- * @author Mjh
- * @date 2022-05-05 10:24:34
+ * @author pig code generator
+ * @date 2022-05-03 21:15:30
  */
 @Data
-@TableName("p10_sample_preparation_work_assets_re")
-@ApiModel(value = "看样准备工作关联财产表表")
-public class SamplePreparationWorkAssetsRe {
+@TableName("p10_expense_record_assets_re")
+@ApiModel(value = "费用产生记录财产关联表")
+public class ExpenseRecordAssetsRe {
 
     /**
-     * 财产关联看样准备工作表id
+     * 产生费用财产关联表id
      */
     @TableId
-    @ApiModelProperty(value="财产关联看样准备工作表id")
-    private Integer samplePreparationWorkAssetsReId;
+    @ApiModelProperty(value="费用产生记录财产关联表id")
+    private Integer expenseRecordAssetsReId;
 
     /**
-     * 财产表id
+     * 产生费用id
      */
-    @ApiModelProperty(value="财产表id")
-    private Integer assetsId;
+    @ApiModelProperty(value="费用产生记录id")
+    private Integer expenseRecordId;
 
     /**
-     * 看样准备工作表id
+     * 财产关联id
      */
-    @ApiModelProperty(value="看样准备工作表id")
-    private Integer samplePreparationWorkId;
+    @ApiModelProperty(value="财产关联id")
+    private Integer assetsReId;
 
 
 }

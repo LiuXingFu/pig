@@ -24,6 +24,8 @@ import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -47,4 +49,8 @@ public interface ExpenseRecordMapper extends BaseMapper<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO> selectByProjectCaseeAssetsId(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId,@Param("assetsId")Integer assetsId);
 
 	BigDecimal totalAmountByProjectId(@Param("projectId")Integer projectId);
+
+	IPage<ExpenseRecordPageVO> queryPaifuExpenseRecordPage(Page page, @Param("projectId")Integer projectId);
+
+	ExpenseRecordDetailVO queryDetailById(@Param("expenseRecordId")Integer expenseRecordId);
 }

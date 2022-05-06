@@ -14,6 +14,8 @@ import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 
@@ -21,6 +23,10 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 
 	AssetsRePaifuDetailVO selectByAssetsReId(@Param("assetsReId") Integer assetsReId);
 
+	AssetsRePaifuDetailVO queryAeetsDetail(@Param("assetsReId") Integer assetsReId);
+
 	IPage<AssetsReTargetPageVO> queryTargetPage(Page page, @Param("query") AssetsReTargetPageDTO assetsReTargetPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	List<AssetsRePaifuDetailVO> selectByProjectId(@Param("projectId") Integer projectId,@Param("assetsName") String assetsName);
 }
 
