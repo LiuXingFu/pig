@@ -245,8 +245,8 @@
 		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
 		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
-		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
-		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+					left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+					GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
