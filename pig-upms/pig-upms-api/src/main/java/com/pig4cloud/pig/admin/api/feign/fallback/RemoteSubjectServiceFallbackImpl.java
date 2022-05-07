@@ -60,7 +60,7 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	}
 
 	@Override
-	public R<Subject> getPhoneBySaveOrUpdateById(Subject subject, String from) {
+	public R<Subject> getPhoneAndUnifiedIdentityBySaveOrUpdateById(Subject subject, String from) {
 		log.error("添加或修改主体失败", cause);
 
 		return null;

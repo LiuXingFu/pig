@@ -208,15 +208,15 @@ public class SubjectController {
 	}
 
 	/**
-	 * 根据手机号判断新增或修改主体
+	 * 根据手机号和身份证判断新增或修改主体
 	 * @param subject 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "根据手机号判断新增或修改主体", notes = "根据手机号判断新增或修改主体")
 	@SysLog("新增或修改主体" )
-	@PostMapping("/getPhoneBySaveOrUpdateById")
-	public R getPhoneBySaveOrUpdateById(@RequestBody Subject subject) {
-		return R.ok(subjectService.getPhoneBySaveOrUpdateById(subject));
+	@PostMapping("/getPhoneAndUnifiedIdentityBySaveOrUpdateById")
+	public R getPhoneAndUnifiedIdentityBySaveOrUpdateById(@RequestBody Subject subject) {
+		return R.ok(subjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject));
 	}
 
 	/**

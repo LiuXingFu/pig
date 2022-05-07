@@ -82,7 +82,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecord.setJointAuction(jointAuction);
 		auctionRecord.setAuctionId(auction.getAuctionId());
 		auctionRecord.setAuctionStatus(auctionStatus);
-		Integer save = this.baseMapper.insert(auctionRecord);
+		this.baseMapper.insert(auctionRecord);
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
 		List<AuctionRecordAssetsRe> auctionRecordAssetsRes = new ArrayList<>();
@@ -121,7 +121,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecordStatus.setChangeTime(auctionRecordSaveDTO.getAnnouncementStartTime());
 		auctionRecordStatusService.save(auctionRecordStatus);
 
-		return save;
+		return auctionRecord.getAuctionRecordId();
 	}
 
 	@Override

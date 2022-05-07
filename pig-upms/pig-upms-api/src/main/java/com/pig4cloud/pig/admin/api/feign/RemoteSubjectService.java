@@ -73,8 +73,8 @@ public interface RemoteSubjectService {
 	 * @param from 内部调用标志
 	 * @return
 	 */
-	@PostMapping("/subject/getPhoneBySaveOrUpdateById")
-	R<Subject> getPhoneBySaveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
+	@PostMapping("/subject/getPhoneAndUnifiedIdentityBySaveOrUpdateById")
+	R<Subject> getPhoneAndUnifiedIdentityBySaveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
 	 *  删除主体信息以及主体关联地址信息

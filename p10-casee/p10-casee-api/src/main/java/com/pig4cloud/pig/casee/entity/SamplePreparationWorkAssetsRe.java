@@ -32,9 +32,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_sample_preparation_work_assets_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "看样准备工作关联财产表表")
-public class SamplePreparationWorkAssetsRe extends BaseEntity {
+public class SamplePreparationWorkAssetsRe {
 
     /**
      * 财产关联看样准备工作表id
@@ -53,7 +52,7 @@ public class SamplePreparationWorkAssetsRe extends BaseEntity {
      * 看样准备工作表id
      */
     @ApiModelProperty(value="看样准备工作表id")
-    private Integer samplePreparationWorkAssetsId;
+    private Integer samplePreparationWorkId;
 
 
 }
