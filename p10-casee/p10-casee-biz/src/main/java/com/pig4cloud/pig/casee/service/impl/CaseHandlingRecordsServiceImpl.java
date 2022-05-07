@@ -78,8 +78,9 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 		//添加任务办理记录关联信息
 		CaseeHandlingRecordsRe caseeHandlingRecordsRe=new CaseeHandlingRecordsRe();
 		caseeHandlingRecordsRe.setCaseeHandlingRecordsId(caseeHandlingRecords.getCaseeHandlingRecordsId());
-		caseeHandlingRecordsRe.setLiquiProjectId(liquiTransferRecord.getProjectId());
-
+		if (liquiTransferRecord!=null){//如果是清收移交过来的财产会有移交记录  如果是拍辅这边加的财产那么没有拍卖记录
+			caseeHandlingRecordsRe.setLiquiProjectId(liquiTransferRecord.getProjectId());
+		}
 		return caseeHandlingRecordsReService.save(caseeHandlingRecordsRe);
 	}
 }
