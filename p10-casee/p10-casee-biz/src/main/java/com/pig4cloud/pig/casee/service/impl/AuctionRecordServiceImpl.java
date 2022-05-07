@@ -204,13 +204,21 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	@Override
 	@Transactional
 	public void refreshAuctionStatus(){
-		List<AuctionRecord> acutionRecordStatus = this.baseMapper.selectAcutionRecordStatus();
-		Integer auctionStatus = 200;
+
+		List<AuctionRecord> auctionRecordsList = this.baseMapper.selectAcutionRecordStatus();
+		Integer auctionStatus = 0;
 
 		List<AuctionRecordStatus> auctionRecordStatuses = new ArrayList<>();
 		List<AuctionRecord> auctionRecords = new ArrayList<>();
 		List<Auction> auctions = new ArrayList<>();
-		for(AuctionRecord auctionRecord : acutionRecordStatus){
+		for(AuctionRecord auctionRecord : auctionRecordsList){
+			LocalDate changeTime = auctionRecord.getAuctionStartTime();
+			if(auctionRecord.getAuctionStatus()==100){
+				auctionStatus = 200;
+			}else if(auctionRecord.getAuctionStatus()==200){
+				auctionStatus = 300;
+				changeTime = auctionRecord.getAuctionEndTime();
+			}
 			AuctionRecord updateAuctionRecord = new AuctionRecord();
 			updateAuctionRecord.setAuctionRecordId(auctionRecord.getAuctionRecordId());
 			updateAuctionRecord.setAuctionStatus(auctionStatus);
@@ -219,7 +227,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 			AuctionRecordStatus auctionRecordStatus = new AuctionRecordStatus();
 			auctionRecordStatus.setAuctionRecordId(auctionRecord.getAuctionRecordId());
 			auctionRecordStatus.setStatus(auctionStatus);
-			auctionRecordStatus.setChangeTime(auctionRecord.getAuctionStartTime());
+			auctionRecordStatus.setChangeTime(changeTime);
 			auctionRecordStatuses.add(auctionRecordStatus);
 
 			Auction auction = new Auction();
