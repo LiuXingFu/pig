@@ -28,12 +28,14 @@ public class SamplePreparationWorkListDetail implements Serializable {
 	private String remark;
 	/**带看人*/
 	private List<Integer> userIdList;
-	/**所以带看人名称*/
+	/**所有带看人名称*/
 	private String userNames;
 	/**预约看样人员信息*/
 	private List<Subject> subjectList;
 	/**预约看样财产信息*/
 	private List<Integer> assetsIdList;
+	/**所有看样财产名称*/
+	private String assetsNames;
 	/**看样准备工作表id*/
 	private Integer samplePreparationWorkId;
 }
