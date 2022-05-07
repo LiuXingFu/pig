@@ -246,6 +246,7 @@
 		where p10_task_node.`status` = 0
 		and p10_task_node.node_attributes = 400
 		ORDER BY p10_task_node.sort asc
+		limit 999999999999
 		)task_node
 		GROUP BY task_node.target_id
 		) task_node on task_node.target_id = p10_target.target_id
