@@ -72,6 +72,10 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 		String json = JsonUtils.objectToJson(paiFu_stcc_bmky_bmky);
 
 		taskNode.setFormData(json);
+
+		taskNodeService.updateById(taskNode);
+
+		taskNodeService.setTaskDataSubmission(taskNode);
 		return paiFu_stcc_bmky_bmky;
 	}
 
