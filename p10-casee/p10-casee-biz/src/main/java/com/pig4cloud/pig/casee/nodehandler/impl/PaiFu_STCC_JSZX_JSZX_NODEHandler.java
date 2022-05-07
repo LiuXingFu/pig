@@ -41,8 +41,6 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		PaiFu_STCC_JSZX_JSZX paiFu_stcc_jszx_jszx = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JSZX_JSZX.class);
 		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
 
-		//同步联合拍卖财产接受咨询节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
 		setReserveSeeSampleConsultingListDetailList(reserveSeeSampleConsultingLists);
 
 		paiFu_stcc_jszx_jszx.setReserveSeeSampleConsultingLists(reserveSeeSampleConsultingLists);
@@ -53,6 +51,9 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 
 		// 4.保存任务数据
 		this.taskNodeService.updateById(taskNode);
+
+		//同步联合拍卖财产接受咨询节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
 
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
@@ -122,6 +123,8 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		String json = JsonUtils.objectToJson(paiFu_stcc_jszx_jszx);
 
 		taskNode.setFormData(json);
+
+		taskNodeService.updateById(taskNode);
 
 		//同步联合拍卖财产接受咨询节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
