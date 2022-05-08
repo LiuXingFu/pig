@@ -84,6 +84,12 @@ public class AssetsRePaifuFlowChartPageVO extends AssetsRePaifu {
 	private Integer auctionStatus;
 
 	/**
+	 * 拍卖记录id
+	 */
+	@ApiModelProperty(value="拍卖记录id")
+	private Integer auctionRecordId;
+
+	/**
 	 * 公告发布时间
 	 */
 	@ApiModelProperty(value="公告发布时间")
