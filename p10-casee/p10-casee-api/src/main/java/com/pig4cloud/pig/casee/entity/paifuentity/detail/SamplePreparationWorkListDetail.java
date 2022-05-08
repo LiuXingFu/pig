@@ -26,6 +26,8 @@ public class SamplePreparationWorkListDetail implements Serializable {
 	private String keyPosition;
 	/**备注*/
 	private String remark;
+	/**附件*/
+	private String fileUrl;
 	/**带看人*/
 	private List<Integer> userIdList;
 	/**所有带看人名称*/
