@@ -136,6 +136,7 @@
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
 		and p10_target.goal_type = 20001
+		and p10_assets_re.`status` not in (300,400,600)
 		<if test="query.nodeKey != null and query.nodeKey != ''">
 			and p10_task_node.node_key = #{query.nodeKey}
 		</if>
@@ -189,6 +190,7 @@
 		and p10_assets.assets_type in (20201,20204)
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_id is not null
+		and p10_assets_re.`status` not in (300,400,600)
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -219,8 +221,8 @@
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		where p10_auction_record.auction_status = 100
 		and p10_auction_results.auction_results_id is null
-		and p10_auction_record.announcement_start_time >= now()
-		and p10_auction_record.auction_start_time &lt;= now()
+		and p10_auction_record.announcement_start_time &lt;= now()
+		and p10_auction_record.auction_start_time >= now()
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -245,8 +247,8 @@
 		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
 		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
-		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
-		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+					left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+					GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
@@ -276,7 +278,7 @@
 	</select>
 
 	<select id="queryAuctionTransactionNotProcessed" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
-		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_auction.auction_type,p10_auction.auction_status from p10_auction_record
+		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_auction_record.auction_type,p10_auction_record.auction_status from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
@@ -293,6 +295,7 @@
 		and json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is null
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "paiFu_STCC_DK_DK"
+		and p10_auction_record.auction_status not in (400,500)
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -313,18 +316,17 @@
 	</select>
 
 	<select id="queryAuctionExceptionNotCancelled" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
-		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction.auction_type,p10_auction.auction_status from p10_assets_re
-		left join p10_auction_assets_re on p10_auction_assets_re.assets_re_id = p10_assets_re.assets_re_id
-		left join p10_auction on p10_auction.auction_id = p10_auction_assets_re.auction_id
-		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
-		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time,p10_auction_record.auction_record_id from p10_auction_record
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+		where p10_assets_re.status in (300,400,600)
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 200
 		and p10_project.`status` = 1000
-		and p10_assets.type = 20200
-		and p10_auction.auction_status in (100,200)
-		and p10_assets_re.`status` in (300,400,600)
+		and p10_auction_record.auction_status in (100,200)
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
