@@ -243,7 +243,7 @@
 	</select>
 
 	<select id="queryAuctionExpiresWithoutResults" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
-		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time,p10_task_node.node_id
 		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
 		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
