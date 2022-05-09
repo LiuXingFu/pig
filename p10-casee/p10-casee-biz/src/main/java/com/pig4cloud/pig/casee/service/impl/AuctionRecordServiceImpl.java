@@ -177,7 +177,15 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		// 更新拍卖记录状态
 		AuctionRecord auctionRecord = new AuctionRecord();
 		auctionRecord.setAuctionRecordId(auctionRecordStatusSaveDTO.getAuctionRecordId());
-		auctionRecord.setAuctionType(auctionRecordStatusSaveDTO.getStatus());
+		auctionRecord.setAuctionStatus(auctionRecordStatusSaveDTO.getStatus());
+
+		AuctionResults auctionResults = new AuctionResults();
+		auctionResults.setAuctionRecordId(auctionRecordStatusSaveDTO.getAuctionRecordId());
+		auctionResults.setResultsTime(auctionRecordStatusSaveDTO.getChangeTime());
+		auctionResults.setAppendix(auctionRecordStatusSaveDTO.getAppendix());
+		auctionResults.setRemark(auctionRecordStatusSaveDTO.getRemark());
+		auctionResults.setResultsType(500);
+		auctionResultsService.save(auctionResults);
 
 		// 更新拍卖表当前状态
 		AuctionRecord auctionRecordDetail = this.baseMapper.selectById(auctionRecordStatusSaveDTO.getAuctionRecordId());
