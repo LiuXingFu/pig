@@ -124,6 +124,15 @@ public class NodeTaskHandlerRegister {
 	@Autowired
 	PaiFu_STCC_JGYJ_JGYJ_NODEHandler paiFu_stcc_jgyj_jgyj_nodeHandler;
 
+	@Autowired
+	PaiFu_STCC_CJCD_CJCD_NODEHandler paiFu_stcc_cjcd_cjcd_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_DCCD_DCCD_NODEHandler paiFu_stcc_dccd_dccd_nodeHandler;
+
+	@Autowired
+	PaiFu_STCC_DCCDSDQK_DCCDSDQK_NODEHandler paiFu_stcc_dccdsdqk_dccdsdqk_nodeHandler;
+
 	// 任务节点提交节点map
 	private Map<String, TaskNodeHandler> submitHandlerMap = new HashMap<>();
 
@@ -176,6 +185,9 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("paiFu_STCC_DK_DK", paiFu_stcc_dk_dk_nodeHandler);
 		submitHandlerMap.put("paiFu_STCC_ZCDC_ZCDC", paiFu_stcc_zcdc_zcdc_nodeHandler);
 		submitHandlerMap.put("paiFu_STCC_JGYJ_JGYJ", paiFu_stcc_jgyj_jgyj_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_CJCD_CJCD", paiFu_stcc_cjcd_cjcd_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_DCCD_DCCD", paiFu_stcc_dccd_dccd_nodeHandler);
+		submitHandlerMap.put("paiFu_STCC_DCCDSDQK_DCCDSDQK", paiFu_stcc_dccdsdqk_dccdsdqk_nodeHandler);
 
 
 //		// 任务节点审核map实现类
