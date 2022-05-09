@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -11,6 +12,7 @@ import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_P
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +42,8 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 	private ProjectPaifuService projectPaifuService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
-
+	@Autowired
+	private AuctionRecordService auctionRecordService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -51,6 +54,18 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 		//查询当前财产拍卖公告节点信息
 		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(nodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+
+		//拍卖记录信息
+		AuctionResultsSaveDTO auctionResultsSaveDTO=new AuctionResultsSaveDTO();
+		BeanUtils.copyProperties(paiFu_stcc_pmjg_pmjg,auctionResultsSaveDTO);
+		auctionResultsSaveDTO.setAuctionId(paiFu_stcc_pmgg_pmgg.getAuctionId());
+		auctionResultsSaveDTO.setAuctionRecordId(paiFu_stcc_pmgg_pmgg.getAuctionRecordId());
+		auctionResultsSaveDTO.setResultsTime(paiFu_stcc_pmjg_pmjg.getClosingDate());
+		auctionResultsSaveDTO.setResultsType(paiFu_stcc_pmjg_pmjg.getAuctionResults());
+		auctionResultsSaveDTO.setAuctionPeopleNumber(paiFu_stcc_pmjg_pmjg.getNumberOfParticipants());
+		auctionResultsSaveDTO.setAppendix(paiFu_stcc_pmjg_pmjg.getAppendixFile());
+		//修改拍卖记录信息
+		auctionRecordService.saveAuctionResults(auctionResultsSaveDTO);
 
 		//同步联合拍卖财产拍卖结果节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_pmjg_pmjg.getAssetsId(), taskNode, "paiFu_STCC_PMJG_PMJG");

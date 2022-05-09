@@ -25,7 +25,7 @@ public class PaiFu_STCC_PMJG_PMJG extends CommonalityData implements Serializabl
 	/**
 	 * 成交价格
 	 */
-	private Double dealPrice;
+	private BigDecimal dealPrice;
 
 	/**
 	 * 参拍人数

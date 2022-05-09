@@ -100,16 +100,18 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 		expenseRecord.setCostType(10006);
 		expenseRecordService.save(expenseRecord);
 
-		List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
-		//循环当前拍卖公告联合拍卖财产信息
-		for (AssetsReDTO assetsReDTO : paiFu_stcc_pmgg_pmgg.getAssetsReIdList()) {
-			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
-			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordAssetsReList.add(expenseRecordAssetsRe);
+		if (paiFu_stcc_pmgg_pmgg != null) {
+			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
+			//循环当前拍卖公告联合拍卖财产信息
+			for (AssetsReDTO assetsReDTO : paiFu_stcc_pmgg_pmgg.getAssetsReIdList()) {
+				ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
+				expenseRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+				expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordAssetsReList.add(expenseRecordAssetsRe);
+			}
+			// 添加费用产生记录财产关联信息
+			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
 		}
-		// 添加费用产生记录财产关联信息
-		expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
 
 		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
 		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {

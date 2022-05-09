@@ -107,7 +107,9 @@ public class FindNodeTemplateChildrenUtils {
 				return null;
 			}
 		} else {//其它程序判断
-			if (target!=null&&target.getGoalType()==20001){
+			if (taskNodeVO.getInsType().equals(1100)){//如果是拍辅环节则显示全部节点
+				return taskNodeVO;
+			}else if (target!=null&&target.getGoalType()==20001){//如果是清收环节则判断节点是否显示
 				AssetsReService assetsReService=SpringUtils.getObject(AssetsReService.class);
 				AssetsRe assetsRe = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getProjectId, taskNodeVO.getProjectId()).eq(AssetsRe::getCaseeId, taskNodeVO.getCaseeId()).eq(AssetsRe::getAssetsId, target.getGoalId()));
 				AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService = SpringUtils.getObject(AssetsLiquiTransferRecordReService.class);
@@ -220,14 +222,13 @@ public class FindNodeTemplateChildrenUtils {
 						}
 					}
 				}
+			} else {
+				if (taskNodeVO.getStatus() == 0) {
+					return taskNodeVO;
+				}
 			}
-//			else {
-//				if (taskNodeVO.getStatus() == 0) {
-//					return taskNodeVO;
-//				}
-//			}
 		}
-		return taskNodeVO;
+		return null;
 	}
 
 	/**

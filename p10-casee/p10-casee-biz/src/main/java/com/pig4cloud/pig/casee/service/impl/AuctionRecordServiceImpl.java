@@ -58,7 +58,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 
 	@Override
 	@Transactional
-	public Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
+	public AuctionRecord saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
 		Integer jointAuction = 1;
 		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
 			jointAuction = 2;
@@ -121,7 +121,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecordStatus.setChangeTime(auctionRecordSaveDTO.getAnnouncementStartTime());
 		auctionRecordStatusService.save(auctionRecordStatus);
 
-		return auctionRecord.getAuctionRecordId();
+		return auctionRecord;
 	}
 
 	@Override

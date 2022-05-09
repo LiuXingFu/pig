@@ -41,9 +41,11 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		AuctionRecordSaveDTO auctionRecordSaveDTO=new AuctionRecordSaveDTO();
 		BeanUtils.copyProperties(paiFu_stcc_pmgg_pmgg,auctionRecordSaveDTO);
 		//添加拍卖记录信息
-		Integer auctionRecordId = auctionRecordService.saveAuctionRecord(auctionRecordSaveDTO);
+		AuctionRecord auctionRecord = auctionRecordService.saveAuctionRecord(auctionRecordSaveDTO);
 
-		paiFu_stcc_pmgg_pmgg.setAuctionRecordId(auctionRecordId);
+		paiFu_stcc_pmgg_pmgg.setAuctionRecordId(auctionRecord.getAuctionRecordId());
+
+		paiFu_stcc_pmgg_pmgg.setAuctionId(auctionRecord.getAuctionId());
 
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
