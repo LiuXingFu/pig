@@ -103,6 +103,8 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 		taskNode.setFormData(formData);
 
 		taskNodeService.updateById(taskNode);
+
+		taskNodeService.setTaskDataSubmission(taskNode);
 		return paiFu_stcc_kyzbgz_kyzbgz;
 	}
 
