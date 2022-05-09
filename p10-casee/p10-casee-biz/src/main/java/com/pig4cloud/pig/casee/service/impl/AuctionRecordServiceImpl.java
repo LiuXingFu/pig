@@ -58,7 +58,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 
 	@Override
 	@Transactional
-	public Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
+	public AuctionRecord saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
 		Integer jointAuction = 1;
 		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
 			jointAuction = 2;
@@ -121,7 +121,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecordStatus.setChangeTime(auctionRecordSaveDTO.getAnnouncementStartTime());
 		auctionRecordStatusService.save(auctionRecordStatus);
 
-		return auctionRecord.getAuctionRecordId();
+		return auctionRecord;
 	}
 
 	@Override
@@ -177,7 +177,15 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		// 更新拍卖记录状态
 		AuctionRecord auctionRecord = new AuctionRecord();
 		auctionRecord.setAuctionRecordId(auctionRecordStatusSaveDTO.getAuctionRecordId());
-		auctionRecord.setAuctionType(auctionRecordStatusSaveDTO.getStatus());
+		auctionRecord.setAuctionStatus(auctionRecordStatusSaveDTO.getStatus());
+
+		AuctionResults auctionResults = new AuctionResults();
+		auctionResults.setAuctionRecordId(auctionRecordStatusSaveDTO.getAuctionRecordId());
+		auctionResults.setResultsTime(auctionRecordStatusSaveDTO.getChangeTime());
+		auctionResults.setAppendix(auctionRecordStatusSaveDTO.getAppendix());
+		auctionResults.setRemark(auctionRecordStatusSaveDTO.getRemark());
+		auctionResults.setResultsType(500);
+		auctionResultsService.save(auctionResults);
 
 		// 更新拍卖表当前状态
 		AuctionRecord auctionRecordDetail = this.baseMapper.selectById(auctionRecordStatusSaveDTO.getAuctionRecordId());

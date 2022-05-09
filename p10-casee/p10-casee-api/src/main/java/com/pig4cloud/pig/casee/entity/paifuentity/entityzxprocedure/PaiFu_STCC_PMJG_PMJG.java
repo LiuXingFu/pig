@@ -25,7 +25,7 @@ public class PaiFu_STCC_PMJG_PMJG extends CommonalityData implements Serializabl
 	/**
 	 * 成交价格
 	 */
-	private Double dealPrice;
+	private BigDecimal dealPrice;
 
 	/**
 	 * 参拍人数
@@ -36,6 +36,16 @@ public class PaiFu_STCC_PMJG_PMJG extends CommonalityData implements Serializabl
 	 * 买受人
 	 */
 	private String buyer;
+
+	/**
+	 * 买受人电话
+	 */
+	private String phone;
+
+	/**
+	 * 买受人身份证
+	 */
+	private String identityCard;
 
 	/**
 	 * 拍辅费用
