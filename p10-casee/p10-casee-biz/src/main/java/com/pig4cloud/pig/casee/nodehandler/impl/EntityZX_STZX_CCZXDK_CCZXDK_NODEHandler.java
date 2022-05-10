@@ -46,10 +46,6 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
-		AssetsRe assetsReDTO = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getProjectId, taskNode.getProjectId()).eq(AssetsRe::getCaseeId, taskNode.getCaseeId()).eq(AssetsRe::getAssetsId, entityZX_stzx_cczxdk_cczxdk.getAssetsId()));
-		//修改当前财产关联表状态
-		assetsReDTO.setStatus(500);
-		assetsReService.updateById(assetsReDTO);
 
 		//查询当前财产关联债务人信息
 		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());

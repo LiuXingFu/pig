@@ -65,7 +65,7 @@ public class ReceiveConsultation extends BaseEntity {
      * 身份证
      */
     @ApiModelProperty(value="身份证")
-    private String identityCard;
+    private String unifiedIdentity;
 
     /**
      * 备注
