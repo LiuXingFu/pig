@@ -129,7 +129,12 @@ public class InsOutlesUserController {
 	@SysLog("移除用户")
 	@PutMapping("/removeInsOutlesUser/{insOutlesUserId}")
 	public R removeInsOutlesUser(@PathVariable int insOutlesUserId) {
-		return R.ok(insOutlesUserService.removeInsOutlesUser(insOutlesUserId));
+		int i = insOutlesUserService.removeInsOutlesUser(insOutlesUserId);
+		if (i > 0) {
+			return R.ok("移除用户成功！");
+		} else {
+			return R.failed("移除用户失败！");
+		}
 	}
 
 	/**
