@@ -14,6 +14,16 @@ import java.util.Date;
 public class EntityZX_STZX_CCZXPMGG_CCZXPMGG extends CommonalityData implements Serializable {
 
 	/**
+	 * 拍卖id
+	 */
+	private Integer auctionId;
+
+	/**
+	 * 拍卖记录id
+	 */
+	private Integer auctionRecordId;
+
+	/**
 	 * 拍卖公告阶段(100-一拍 200-二拍 300-变卖)
 	 */
 	private Integer auctionAnnouncementStage;
