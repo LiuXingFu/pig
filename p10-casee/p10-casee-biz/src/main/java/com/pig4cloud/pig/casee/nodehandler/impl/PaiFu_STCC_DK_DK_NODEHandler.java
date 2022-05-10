@@ -206,11 +206,11 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
 				.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_DK_DK.getPaiFuExpenseRecordId()));
 
-		//添加费用产生明细关联主体信息
+		//删除费用产生明细关联主体信息
 		expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
 				.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_DK_DK.getPaiFuExpenseRecordId()));
 
-//		删除到款的到款信息
+		//删除到款的到款信息
 		paymentRecordService.removeById(paiFu_STCC_DK_DK.getPaiFuPaymentRecordId());
 
 		//删除回款记录财产关联信息
@@ -238,7 +238,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 			expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
 					.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_DK_DK.getLiQuiExpenseRecordId()));
 
-			//添加费用产生明细关联主体信息
+			//删除费用产生明细关联主体信息
 			expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
 					.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_DK_DK.getLiQuiExpenseRecordId()));
 
