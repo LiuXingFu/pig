@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 
 import com.pig4cloud.pig.casee.entity.TaskReminder;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
@@ -119,14 +120,6 @@ public interface TaskNodeService extends IService<TaskNode> {
 	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer projectId,Integer caseeId,Integer procedureNature,Integer id);
 
 	/**
-	 * 根据节点key以及项目、案件信息查询最新一条节点信息
-	 * @param taskNodeKey 节点key
-	 * @param taskNode 节点信息
-	 * @return R
-	 */
-	TaskNode queryNewTaskNode(String taskNodeKey,TaskNode taskNode);
-
-	/**
 	 * 根据节点key以及项目、案件信息查询最后一条节点信息
 	 * @param taskNodeKey 节点key
 	 * @return R
@@ -140,6 +133,14 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @return R
 	 */
 	void synchronizeJointAuctionTaskNode(Integer assetsId,TaskNode taskNode,String nodeKey);
+
+	/**
+	 * 	复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
+	 * @param paiFu_stcc_pmgg_pmgg 拍卖公告节点信息
+	 * @param taskNode 当前提交节点数据
+	 * @return R
+	 */
+	void auctionResultsCopyTaskNode(PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, TaskNode taskNode);
 
 	/**
 	 * 复制节点信息

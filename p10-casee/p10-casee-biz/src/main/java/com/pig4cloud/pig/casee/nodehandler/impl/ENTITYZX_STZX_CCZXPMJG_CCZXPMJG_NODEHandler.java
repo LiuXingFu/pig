@@ -37,9 +37,9 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍卖结果
 		EntityZX_STZX_CCZXPMJG_CCZXPMJG entityZX_stzx_cczxpmjg_cczxpmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXPMJG_CCZXPMJG.class);
-		if (entityZX_stzx_cczxpmjg_cczxpmjg.getAuctionResults()==1){//流拍
+		if (entityZX_stzx_cczxpmjg_cczxpmjg.getAuctionResults()==20){//流拍
 			//查询最后一条拍卖公告信息
-			TaskNode entityZX_stzx_cczxpmgg_cczxpmgg = taskNodeService.queryNewTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG",taskNode);
+			TaskNode entityZX_stzx_cczxpmgg_cczxpmgg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG",taskNode.getTargetId());
 			if (entityZX_stzx_cczxpmgg_cczxpmgg!=null){
 				//复制拍卖公告节点
 				taskNodeService.copyTaskNode(entityZX_stzx_cczxpmgg_cczxpmgg);
