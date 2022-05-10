@@ -24,7 +24,7 @@ public class ReserveSeeSampleSeeSampleList implements Serializable {
 	/**联系电话*/
     private String phone;
 	/**身份证*/
-    private String identityCard;
+    private String unifiedIdentity;
 	/**报名时间*/
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")

@@ -13,6 +13,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,13 +67,8 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
 			Subject subject = new Subject();
 			ReceiveConsultation receiveConsultation = new ReceiveConsultation();
+			BeanUtils.copyProperties(reserveSeeSampleConsulting,subject);
 
-			subject.setName(reserveSeeSampleConsulting.getName());
-			subject.setPhone(reserveSeeSampleConsulting.getPhone());
-			if (reserveSeeSampleConsulting.getIdentityCard() != null) {
-				subject.setUnifiedIdentity(reserveSeeSampleConsulting.getIdentityCard());
-				receiveConsultation.setIdentityCard(reserveSeeSampleConsulting.getIdentityCard());
-			}
 			//根据手机号添加或修改主体信息
 			R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 			Integer subjectId = Integer.valueOf(phoneBySaveOrUpdateById.getData().getSubjectId().toString());

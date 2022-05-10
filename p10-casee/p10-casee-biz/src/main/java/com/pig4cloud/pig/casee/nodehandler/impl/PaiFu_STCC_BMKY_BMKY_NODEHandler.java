@@ -48,15 +48,11 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 
 		for (ReserveSeeSampleSeeSampleListDetail reserveSeeSampleSeeSampleList : reserveSeeSampleSeeSampleLists) {
 			Subject subject = new Subject();
+			BeanUtils.copyProperties(reserveSeeSampleSeeSampleList,subject);
+
 			SignUpLookLike signUpLookLike = new SignUpLookLike();
 			BeanUtils.copyProperties(reserveSeeSampleSeeSampleList, signUpLookLike);
 
-			subject.setName(reserveSeeSampleSeeSampleList.getName());
-			subject.setPhone(reserveSeeSampleSeeSampleList.getPhone());
-			if (reserveSeeSampleSeeSampleList.getIdentityCard() != null) {
-				subject.setUnifiedIdentity(reserveSeeSampleSeeSampleList.getIdentityCard());
-				signUpLookLike.setIdentityCard(reserveSeeSampleSeeSampleList.getIdentityCard());
-			}
 			//根据手机号添加或修改主体信息
 			R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 			Integer subjectId = Integer.valueOf(phoneBySaveOrUpdateById.getData().getSubjectId().toString());

@@ -12,7 +12,7 @@ public class ListOfSamplers implements Serializable {
 	/**联系电话*/
 	private String phone;
 	/**身份证*/
-	private String identityCard;
+	private String unifiedIdentity;
 	/**是否实际看样 0-否 1-是*/
 	private Integer isSeeSample;
 	/**备注*/
