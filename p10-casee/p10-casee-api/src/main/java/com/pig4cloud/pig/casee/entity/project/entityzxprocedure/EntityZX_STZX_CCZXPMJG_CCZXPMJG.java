@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 public class EntityZX_STZX_CCZXPMJG_CCZXPMJG extends CommonalityData implements Serializable {
 	/**
-	 * 拍卖结果(0-成交 1-流拍)
+	 * 拍卖结果(10-成交 20-流拍)
 	 */
 	private Integer auctionResults;
 

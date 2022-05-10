@@ -52,7 +52,24 @@ public class AuctionRecordStatusSaveDTO{
      */
     @ApiModelProperty(value="状态（100-即将开始，200-正在进行，300-已结束，400-中止，500-撤回）")
     private Integer status;
-    
+
+	/**
+	 * 案件id
+	 */
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 财产id
+	 */
+	@ApiModelProperty(value="财产id")
+	private Integer assetsId;
 	/**
 	 * 附件
 	 */
