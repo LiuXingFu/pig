@@ -39,4 +39,13 @@
 		select p10_assets_re_subject.subject_id from p10_assets_re_subject
 		where p10_assets_re_subject.assets_re_id = #{assetsReId}
 	</select>
+
+	<select id="selectByAssetsIdList" resultType="java.lang.Integer">
+		select DISTINCT subject_id from p10_assets_re_subject
+		where assets_re_id in
+		<foreach item="item" index="index" collection="assetsReIdList"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 </mapper>

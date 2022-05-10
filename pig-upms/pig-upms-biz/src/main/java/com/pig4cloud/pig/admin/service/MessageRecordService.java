@@ -98,4 +98,11 @@ public interface MessageRecordService extends IService<MessageRecord> {
 	 * @param taskMessageDTO
 	 */
 	int sendTaskMessageByTaskMessageDTO(TaskMessageDTO taskMessageDTO);
+
+	/**
+	 * 更新消息状态为已读
+	 * @param messageId
+	 * @return
+	 */
+	int updateMessageStatus(Integer messageId);
 }

@@ -14,20 +14,21 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.service.impl;
 
-package com.pig4cloud.pig.casee.mapper;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.MakeAnAppointment;
-import org.apache.ibatis.annotations.Mapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.AuctionRecordAssetsRe;
+import com.pig4cloud.pig.casee.mapper.AuctionRecordAssetsReMapper;
+import com.pig4cloud.pig.casee.service.AuctionRecordAssetsReService;
+import org.springframework.stereotype.Service;
 
 /**
- * 预约看样表
+ * 拍卖记录财产关联表
  *
- * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @author pig code generator
+ * @date 2022-05-02 11:45:24
  */
-@Mapper
-public interface MakeAnAppointmentMapper extends BaseMapper<MakeAnAppointment> {
+@Service
+public class AuctionRecordAssetsReServiceImpl extends ServiceImpl<AuctionRecordAssetsReMapper, AuctionRecordAssetsRe> implements AuctionRecordAssetsReService {
 
 }

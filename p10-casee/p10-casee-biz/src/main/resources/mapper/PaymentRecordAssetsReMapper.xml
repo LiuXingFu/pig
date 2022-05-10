@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.casee.mapper.PaymentRecordAssetsReMapper">
+
+  <resultMap id="paymentRecordAssetsReMap" type="com.pig4cloud.pig.casee.entity.PaymentRecordAssetsRe">
+    <id property="paymentRecordAssetsReId" column="payment_record_assets_re_id"/>
+    <result property="paymentRecordId" column="payment_record_id"/>
+    <result property="assetsReId" column="assets_re_id"/>
+  </resultMap>
+
+	<select id="selectAssetsList" resultType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO">
+		select p10_assets_re.*,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id from p10_payment_record_assets_re
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_payment_record_assets_re.assets_re_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
+		where  p10_payment_record_assets_re.payment_record_id = #{paymentRecordId}
+	</select>
+</mapper>

@@ -68,6 +68,15 @@ public interface RemoteSubjectService {
 	R<Integer> saveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
 
 	/**
+	 *  根据手机号判断新增或修改主体
+	 * @param subject
+	 * @param from 内部调用标志
+	 * @return
+	 */
+	@PostMapping("/subject/getPhoneAndUnifiedIdentityBySaveOrUpdateById")
+	R<Subject> getPhoneAndUnifiedIdentityBySaveOrUpdateById(@RequestBody Subject subject, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
 	 *  删除主体信息以及主体关联地址信息
 	 * @param subjectId
 	 * @param from 内部调用标志

@@ -30,12 +30,12 @@ import com.pig4cloud.pig.casee.vo.paifu.AuctionDetailVO;
 public interface AuctionService extends IService<Auction> {
 
 	/**
-	 * 根据项目id、案件id、财产id查询拍卖
+	 * 根据项目id、案件id、财产id查询拍卖信息
 	 * @param assetsId
 	 * @param projectId
 	 * @param caseeId
 	 * @return
 	 */
-	AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer assetsId,Integer projectId,Integer caseeId);
+	AuctionDetailVO queryAuctionByProjectIdCaseeId(Integer projectId,Integer caseeId,Integer assetsId);
 
 }

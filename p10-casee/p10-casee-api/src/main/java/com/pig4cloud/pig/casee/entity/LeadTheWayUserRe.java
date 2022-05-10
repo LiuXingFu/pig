@@ -18,7 +18,6 @@ package com.pig4cloud.pig.casee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -32,9 +31,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @TableName("p10_lead_the_way_user_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "业务人员关联引领看样表")
-public class LeadTheWayUserRe extends BaseEntity {
+public class LeadTheWayUserRe {
 
     /**
      * 业务人员关联引领看样表id

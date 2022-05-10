@@ -22,6 +22,8 @@ import com.pig4cloud.pig.casee.entity.AuctionRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 拍卖记录表
  *
@@ -32,5 +34,7 @@ import org.apache.ibatis.annotations.Param;
 public interface AuctionRecordMapper extends BaseMapper<AuctionRecord> {
 
 	AuctionRecord getLastAuctionRecord(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("assetsId") Integer assetsId);
+
+	List<AuctionRecord> selectAcutionRecordStatus();
 
 }

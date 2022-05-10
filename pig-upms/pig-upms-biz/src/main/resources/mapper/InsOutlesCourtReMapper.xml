@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~
+  ~      Copyright (c) 2018-2025, lengleng All rights reserved.
+  ~
+  ~  Redistribution and use in source and binary forms, with or without
+  ~  modification, are permitted provided that the following conditions are met:
+  ~
+  ~ Redistributions of source code must retain the above copyright notice,
+  ~  this list of conditions and the following disclaimer.
+  ~  Redistributions in binary form must reproduce the above copyright
+  ~  notice, this list of conditions and the following disclaimer in the
+  ~  documentation and/or other materials provided with the distribution.
+  ~  Neither the name of the pig4cloud.com developer nor the names of its
+  ~  contributors may be used to endorse or promote products derived from
+  ~  this software without specific prior written permission.
+  ~  Author: lengleng (wangiegie@gmail.com)
+  ~
+  -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pig4cloud.pig.admin.mapper.InsOutlesCourtReMapper">
+
+	<resultMap id="insOutlesCourtReMap" type="com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe">
+		<id property="insOutlesCourtReId" column="ins_outles_court_re_id"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="insId" column="ins_id"/>
+		<result property="outlesId" column="outles_id"/>
+		<result property="courtId" column="court_id"/>
+	</resultMap>
+
+	<select id="queryInsOutlesCourtPage" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO">
+		SELECT
+			p10_ins_outles_court_re.ins_outles_court_re_id,
+			p10_ins_outles_court_re.create_time AS authorizationTime,
+			p10_court.court_id,
+			p10_court.court_name,
+			p10_institution.ins_id,
+			p10_institution.ins_name,
+			p10_outles.outles_id,
+			p10_outles.outles_name
+		FROM
+			p10_ins_outles_court_re
+			LEFT JOIN p10_court ON p10_ins_outles_court_re.court_id = p10_court.court_id AND p10_court.del_flag = 0
+			LEFT JOIN p10_institution ON p10_ins_outles_court_re.ins_id = p10_institution.ins_id AND p10_institution.del_flag = 0
+			LEFT JOIN p10_outles ON p10_ins_outles_court_re.outles_id = p10_outles.outles_id AND p10_outles.del_flag = 0
+		WHERE
+			p10_ins_outles_court_re.del_flag = 0
+			AND p10_ins_outles_court_re.ins_id = #{query.insId}
+			AND p10_ins_outles_court_re.court_id = #{query.courtId}
+	</select>
+
+	<select id="queryInsOutlesCourtReByInsIdAndCourtId" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO">
+		SELECT
+			p10_ins_outles_court_re.ins_outles_court_re_id,
+			p10_court.court_id,
+			p10_court.court_name,
+			p10_institution.ins_id,
+			p10_institution.ins_name,
+			p10_outles.outles_id,
+			p10_outles.outles_name
+		FROM
+			p10_ins_outles_court_re
+			LEFT JOIN p10_court ON p10_ins_outles_court_re.court_id = p10_court.court_id AND p10_court.del_flag = 0
+			LEFT JOIN p10_institution ON p10_ins_outles_court_re.ins_id = p10_institution.ins_id AND p10_institution.del_flag = 0
+			LEFT JOIN p10_outles ON p10_ins_outles_court_re.outles_id = p10_outles.outles_id AND p10_outles.del_flag = 0
+		WHERE
+			p10_ins_outles_court_re.del_flag = 0
+			AND p10_ins_outles_court_re.ins_id = #{insId}
+			AND p10_ins_outles_court_re.court_id = #{courtId}
+	</select>
+
+	<select id="selectCourtList" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+		select p10_court.court_id as id,p10_court.court_name as name from p10_ins_outles_court_re
+		left join p10_institution on p10_institution.ins_id = p10_ins_outles_court_re.ins_id
+		left join p10_outles on p10_outles.outles_id = p10_ins_outles_court_re.outles_id
+		left join p10_court on p10_court.court_id = p10_ins_outles_court_re.court_id
+		where p10_ins_outles_court_re.del_flag = 0
+		and p10_ins_outles_court_re.ins_id = #{query.insId}
+		and p10_ins_outles_court_re.outles_id = #{query.outlesId}
+		<if test="query.courtName != null and query.courtName != ''">
+			and p10_court.court_name like concat('%', #{query.courtName}, '%')
+		</if>
+	</select>
+
+</mapper>

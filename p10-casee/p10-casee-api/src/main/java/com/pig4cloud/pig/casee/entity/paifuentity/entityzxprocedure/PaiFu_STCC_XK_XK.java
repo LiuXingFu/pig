@@ -17,35 +17,9 @@ public class PaiFu_STCC_XK_XK extends CommonalityData implements Serializable {
 	private LocalDate explorationTime;
 
 	/**
-	 * 现勘经办人(0-否 1-是 2-自动履行到申请人)
+	 * 现勘经办人
 	 */
-	private Integer currentSurveyManager;
-
-	/**
-	 * 拍辅机构id
-	 */
-	private Integer insId;
-
-	/**
-	 * 拍辅网点id
-	 */
-	private Integer outlesId;
-
-
-	/**
-	 * 拍辅机构名称
-	 */
-	private String insName;
-
-	/**
-	 * 拍辅网点名称
-	 */
-	private String outlesName;
-
-	/**
-	 * 拍辅办理人名称
-	 */
-	private String nickName;
+	private String currentSurveyManager;
 
 	/**
 	 * 产权证号

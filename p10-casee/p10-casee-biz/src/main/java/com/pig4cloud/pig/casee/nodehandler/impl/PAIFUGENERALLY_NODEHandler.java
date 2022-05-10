@@ -1,29 +1,19 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.feign.RemoteMessageRecordService;
-import com.pig4cloud.pig.casee.dto.AuditTargetDTO;
-import com.pig4cloud.pig.casee.dto.TaskFlowDTO;
-import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
-import com.pig4cloud.pig.common.core.constant.SecurityConstants;
-import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
-import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 @Component
 public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 
 	@Autowired
 	TaskNodeService taskNodeService;
-	@Autowired
-	SecurityUtilsService securityUtilsService;
 	@Autowired
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
 	@Autowired
@@ -35,18 +25,28 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 	 */
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		//案件模块与用户模块的实体不一致 所以采取这个方法
-		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
 
-		BeanCopyUtil.copyBean(taskNode, taskNode1);
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
 
-		//调用拍辅任务消息发送方法
-		remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
-
+		//更新json
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 
-	//之前拍辅的处理方法 暂时不删 先注释
+	/**
+	 * 补录程序
+	 * @param taskNode
+	 */
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
+		//更新json
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
+//之前拍辅的处理方法 暂时不删 先注释
 //	@Override
 //	public void handlerTaskSubmit(TaskNode taskNode) {
 //

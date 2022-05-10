@@ -323,4 +323,17 @@ public class OutlesController {
 		return R.ok(outlesService.list(queryWrapper));
 	}
 
+	/**
+	 * 查询还没入驻的合作法院相关部门
+	 * @param insId
+	 * @param courtInsId
+	 * @param outlesName
+	 * @return
+	 */
+	@ApiOperation(value = "查询还没入驻的合作法院相关部门", notes = "查询还没入驻的合作法院相关部门")
+	@GetMapping("/queryCooperativeCourt" )
+	public R queryCooperativeCourt(Integer insId, Integer courtInsId, String outlesName) {
+		return R.ok(outlesService.queryCooperativeCourt(insId, courtInsId, outlesName));
+	}
+
 }

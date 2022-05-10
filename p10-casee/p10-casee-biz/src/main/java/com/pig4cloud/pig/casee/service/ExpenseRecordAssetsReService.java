@@ -18,14 +18,27 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.MakeAnAppointment;
+import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
+
+import java.util.List;
 
 /**
- * 预约看样表
+ * 产生费用财产关联表
  *
- * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @author pig code generator
+ * @date 2022-05-03 21:15:30
  */
-public interface MakeAnAppointmentService extends IService<MakeAnAppointment> {
+public interface ExpenseRecordAssetsReService extends IService<ExpenseRecordAssetsRe> {
+
+	List<Integer> queryByExpenseRecordId(Integer expenseRecordId);
+
+	/**
+	 * 根据费用产生记录id查询财产关联信息
+	 * @param expenseRecordId
+	 * @return
+	 */
+	List<AssetsRePaifuDetailVO> queryAssetsList(Integer expenseRecordId);
 
 }

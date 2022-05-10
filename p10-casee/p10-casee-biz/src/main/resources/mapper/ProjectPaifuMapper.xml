@@ -85,7 +85,7 @@
 	</select>
 
 	<select id="selectByProjectId" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO">
-		select p10_project.*,p10_casee.casee_id,p10_institution.ins_name as insName,p10_outles.outles_name as outlesName,p10_casee.*,p10_court.court_name as courtName from p10_project
+		select p10_project.*,p10_casee.casee_id,p10_casee.court_id,p10_institution.ins_name as insName,p10_outles.outles_name as outlesName,p10_casee.*,p10_court.court_name as courtName from p10_project
 		left join p10_institution on p10_institution.ins_id = p10_project.ins_id
 		left join p10_outles on p10_outles.outles_id = p10_project.outles_id
 		left join p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
@@ -113,6 +113,340 @@
 			and p10_subject.unified_identity = #{unifiedIdentity}
 		</if>
 		limit 1
+	</select>
+
+	<select id="queryFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join (select * from (
+				select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
+				where p10_task_node.`status` = 0
+				and p10_task_node.node_attributes = 400
+				ORDER BY p10_task_node.sort asc
+				limit 999999999999
+				)task_node
+				GROUP BY task_node.target_id
+				) p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_target.goal_type = 20001
+		and p10_assets_re.`status` not in (300,400,600)
+		<if test="query.nodeKey != null and query.nodeKey != ''">
+			and p10_task_node.node_key = #{query.nodeKey}
+		</if>
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+				or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+		<if test="query.assetsTypeList!=null and query.assetsTypeList.size()>0">
+			and p10_assets.assets_type in
+			<foreach item="item" index="index" collection="query.assetsTypeList"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="queryRealEstateNotSurveyedPage" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join (select p10_task_node.* from p10_task_node
+					left join (
+					select * from p10_task_node
+					where node_attributes = 400
+					and json_extract( form_data,
+					'$.whetherHomeInspection' ) = 0
+					)node on node.target_id = p10_task_node.target_id
+					where node.target_id is not null
+					and p10_task_node.node_key = "PaiFu_STCC_BDCXKRH_BDCXKRH"
+					and p10_task_node.form_data is null
+					)p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_assets.assets_type in (20201,20204)
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_id is not null
+		and p10_assets_re.`status` not in (300,400,600)
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryAnnouncementPeriodNotAuctioned" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.announcement_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time
+		from p10_auction_record
+		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
+		where p10_auction_record.auction_status = 100
+		and p10_auction_results.auction_results_id is null
+		and p10_auction_record.announcement_start_time &lt;= now()
+		and p10_auction_record.auction_start_time >= now()
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryAuctionExpiresWithoutResults" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time,p10_task_node.node_id
+		from p10_auction_record
+		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+					left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+					GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_auction_record.auction_status = 100
+		and p10_auction_results.auction_results_id is null
+		and p10_task_node.node_key = "paiFu_STCC_PMJG_PMJG"
+		and p10_task_node.form_data is null
+		and p10_auction_record.auction_end_time &lt;= now()
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryAuctionTransactionNotProcessed" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_auction_record.auction_type,p10_auction_record.auction_status from p10_auction_record
+		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_auction_results.results_type = 10
+		and json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is null
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_key = "paiFu_STCC_DK_DK"
+		and p10_auction_record.auction_status not in (400,500)
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryAuctionExceptionNotCancelled" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_casee.casee_number,p10_casee.casee_id,p10_auction_record_assets_re.*,p10_auction_record.announcement_start_time,p10_auction_record.auction_start_time,p10_auction_record.auction_end_time,p10_auction_record.auction_type,p10_auction_record.auction_status,p10_auction_record.auction_title as assetsName,p10_auction_record.auction_end_time,p10_auction_record.auction_start_time,p10_auction_record.auction_record_id from p10_auction_record
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
+		where p10_assets_re.status in (300,400,600)
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_auction_record.auction_status in (100,200)
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryRulingNotService" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and json_extract( p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is not null
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_key = "paiFu_STCC_DCCDSDQK_DCCDSDQK"
+		and p10_task_node.form_data is null
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryAuctionTransactionFailedNotProcessed" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_auction.auction_type,p10_auction.auction_status from p10_auction
+		left join p10_auction_assets_re on p10_auction_assets_re.auction_id = p10_auction.auction_id
+		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_assets_re.assets_re_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_task_node.node_key = "paiFu_STCC_PMGG_PMGG"
+		and p10_auction.auction_status = 600
+		and p10_assets_re.status = 200
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
+	<select id="queryArrivalCompensationNotAdjudicated" resultType="com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO">
+		select p10_project.company_code,p10_project.project_id,p10_project.project_id,p10_casee.casee_id,p10_casee.casee_number,p10_casee.casee_id,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract( p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsCompletionRuling' ) is null or json_extract( p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is null)
+		and p10_target.goal_type = 20001
+		and if(json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null,p10_task_node.node_key = "paiFu_STCC_CJCD_CJCD",p10_task_node.node_key = "paiFu_STCC_DCCD_DCCD")
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and (p10_assets.owner like concat('%', #{query.executedName}, '%')
+			or p10_assets_re.subject_name like concat('%', #{query.executedName}, '%'))
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
 	</select>
 
 </mapper>

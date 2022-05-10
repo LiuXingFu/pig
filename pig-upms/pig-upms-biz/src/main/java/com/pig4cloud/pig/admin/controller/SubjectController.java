@@ -208,6 +208,18 @@ public class SubjectController {
 	}
 
 	/**
+	 * 根据手机号和身份证判断新增或修改主体
+	 * @param subject 主体
+	 * @return R
+	 */
+	@ApiOperation(value = "根据手机号判断新增或修改主体", notes = "根据手机号判断新增或修改主体")
+	@SysLog("新增或修改主体" )
+	@PostMapping("/getPhoneAndUnifiedIdentityBySaveOrUpdateById")
+	public R getPhoneAndUnifiedIdentityBySaveOrUpdateById(@RequestBody Subject subject) {
+		return R.ok(subjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject));
+	}
+
+	/**
 	 *	根据特定条件分页查询债务人
 	 * @param page
 	 * @param subjectPageDTO

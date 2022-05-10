@@ -13,6 +13,10 @@ import java.time.LocalDateTime;
  */
 @Data
 public class ReserveSeeSampleSeeSampleListDetail implements Serializable {
+	/**
+	 * 报名看样表id
+	 */
+	private Integer signUpLookLikeId;
 	/**姓名*/
     private String name;
 	/**联系电话*/
@@ -21,4 +25,6 @@ public class ReserveSeeSampleSeeSampleListDetail implements Serializable {
     private String identityCard;
 	/**报名时间*/
     private LocalDateTime registrationTime;
+	/**备注*/
+	private String remark;
 }

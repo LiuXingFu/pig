@@ -25,9 +25,11 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
+import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
+import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -37,6 +39,8 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
+import com.pig4cloud.pig.casee.vo.paifu.count.CountFlowChartVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -44,6 +48,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -78,14 +83,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Autowired
 	private AssetsReSubjectService assetsReSubjectService;
 	@Autowired
-	private RemoteRelationshipAuthenticateService relationshipAuthenticateService;
-	@Autowired
 	private TargetService targetService;
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
+	@Autowired
+	private PaymentRecordService paymentRecordService;
 
 	@Override
 	@Transactional
 	public Integer saveProjectCasee(ProjectPaifuSaveDTO projectPaifuSaveDTO){
-		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuSaveDTO.getCourtId(), SecurityConstants.FROM).getData();
 
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
@@ -96,7 +102,6 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		// 保存案件表
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuSaveDTO,casee);
-		casee.setCourtId(courtId);
 		caseeService.save(casee);
 
 		List<ProjectSubjectRe> projectSubjectRes = new ArrayList();
@@ -236,14 +241,12 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public 	Integer modifyByProjectId(ProjectPaifuModifyDTO projectPaifuModifyDTO){
-		Integer courtId = relationshipAuthenticateService.getByAuthenticateId(projectPaifuModifyDTO.getCourtId(), SecurityConstants.FROM).getData();
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,projectPaifu);
 		Integer modify = this.baseMapper.updateById(projectPaifu);
 
 		Casee casee = new Casee();
 		BeanCopyUtil.copyBean(projectPaifuModifyDTO,casee);
-		casee.setCourtId(courtId);
 		caseeService.updateById(casee);
 		return modify;
 	}
@@ -479,5 +482,200 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		return this.baseMapper.selectByProjectId(projectId);
 	}
 
+	public Long queryPropertyFlowChartPage(String nodeKey, List<Integer> assetsTypeList) {
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+
+		AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO = new AssetsRePaifuFlowChartPageDTO();
+		assetsRePaifuFlowChartPageDTO.setNodeKey(nodeKey);
+		assetsRePaifuFlowChartPageDTO.setAssetsTypeList(assetsTypeList);
+		IPage<AssetsRePaifuFlowChartPageVO> assetsRePaifuFlowChartPageVOIPage = this.queryFlowChartPage(page, assetsRePaifuFlowChartPageDTO);
+		return assetsRePaifuFlowChartPageVOIPage.getTotal();
+	}
+
+	@Override
+	public CountFlowChartVO countProjectFlowChart(){
+		Page page = new Page();
+		page.setCurrent(1);
+		page.setSize(10);
+		CountFlowChartVO countFlowChartVO = new CountFlowChartVO();
+
+		// 待接收统计
+		LiquiTransferRecordPageDTO liquiTransferRecordPageDTO = new LiquiTransferRecordPageDTO();
+		liquiTransferRecordPageDTO.setStatus(0);
+		countFlowChartVO.setPendingCount(liquiTransferRecordService.queryLiquiTransferRecordPage(page,liquiTransferRecordPageDTO).getTotal());
+
+		//动产未现勘
+		List<Integer> chattelNotAvailable = new ArrayList<>();
+		chattelNotAvailable.add(20202);
+		countFlowChartVO.setChattelNotAvailable(queryPropertyFlowChartPage("paiFu_STCC_XK_XK",chattelNotAvailable));
+
+		//不动产未现勘
+		List<Integer> assetsTypeList = new ArrayList<>();
+		assetsTypeList.add(20201);
+		assetsTypeList.add(20204);
+		countFlowChartVO.setRealEstateNotSurveyed(queryPropertyFlowChartPage("paiFu_STCC_XK_XK",assetsTypeList));
+
+		//不动产现勘未入户
+		AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO = new AssetsRePaifuFlowChartPageDTO();
+		IPage<AssetsRePaifuFlowChartPageVO> realEstateSurveyNotRegistered = this.queryRealEstateNotSurveyedPage(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setRealEstateSurveyNotRegistered(realEstateSurveyNotRegistered.getTotal());
+
+		//拍卖价格依据未出具
+		countFlowChartVO.setAuctionPriceBasisNotIssued(queryPropertyFlowChartPage("paiFu_STCC_JGYJ_JGYJ",null));
+
+		//有依据未上拍
+		countFlowChartVO.setThereIsEvidenceNotListed(queryPropertyFlowChartPage("paiFu_STCC_PMGG_PMGG",null));
+
+		//公告期未拍卖
+		IPage<AssetsRePaifuFlowChartPageVO> announcementPeriodNotAuctioned = this.queryAnnouncementPeriodNotAuctioned(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAnnouncementPeriodNotAuctioned(announcementPeriodNotAuctioned.getTotal());
+
+		//拍卖到期无结果
+		IPage<AssetsRePaifuFlowChartPageVO> auctionExpiresWithoutResults = this.queryAuctionExpiresWithoutResults(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAuctionExpiresWithoutResults(auctionExpiresWithoutResults.getTotal());
+
+		//拍卖成交未处理
+		IPage<AssetsRePaifuFlowChartPageVO> auctionTransactionNotProcessed = queryAuctionTransactionNotProcessed(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAuctionTransactionNotProcessed(auctionTransactionNotProcessed.getTotal());
+
+		//拍卖不成交未处理
+		IPage<AssetsRePaifuFlowChartPageVO> auctionTransactionFailedNotProcessed = queryAuctionTransactionFailedNotProcessed(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAuctionTransactionFailedNotProcessed(auctionTransactionFailedNotProcessed.getTotal());
+
+		//拍卖异常未撤销
+		IPage<AssetsRePaifuFlowChartPageVO> auctionExceptionNotCancelled = queryAuctionExceptionNotCancelled(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setAuctionExceptionNotCancelled(auctionExceptionNotCancelled.getTotal());
+
+		//到款/抵偿未裁定
+		IPage<AssetsRePaifuFlowChartPageVO> arrivalCompensationNotAdjudicated = queryArrivalCompensationNotAdjudicated(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setArrivalCompensationNotAdjudicated(arrivalCompensationNotAdjudicated.getTotal());
+
+		//裁定未送达
+		IPage<AssetsRePaifuFlowChartPageVO> rulingNotService = queryRulingNotService(page,assetsRePaifuFlowChartPageDTO);
+		countFlowChartVO.setRulingNotService(rulingNotService.getTotal());
+
+		//送达未腾退
+		countFlowChartVO.setDeliveredButNotVacated(queryPropertyFlowChartPage("paiFu_STCC_TTCG_TTCG",null));
+
+		return countFlowChartVO;
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryFlowChartPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryFlowChartPage(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryRealEstateNotSurveyedPage(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryRealEstateNotSurveyedPage(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAnnouncementPeriodNotAuctioned(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAnnouncementPeriodNotAuctioned(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExpiresWithoutResults(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAuctionExpiresWithoutResults(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAuctionTransactionNotProcessed(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAuctionExceptionNotCancelled(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAuctionExceptionNotCancelled(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryRulingNotService(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryRulingNotService(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryAuctionTransactionFailedNotProcessed(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryAuctionTransactionFailedNotProcessed(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<AssetsRePaifuFlowChartPageVO> queryArrivalCompensationNotAdjudicated(Page page, AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.queryArrivalCompensationNotAdjudicated(page,assetsRePaifuFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public ProjectPaifu queryById(Integer projectId){
+		Project project = this.baseMapper.selectById(projectId);
+		ProjectPaifu projectPaifu = new ProjectPaifu();
+		BeanCopyUtil.copyBean(project,projectPaifu);
+		return projectPaifu;
+	}
+
+	@Override
+	@Transactional
+	public Integer updateProjectAmount(Integer projectId){
+		// 统计费用产生明细总金额
+		BigDecimal projectAmount = expenseRecordService.totalAmountByProjectId(projectId);
+		ProjectPaifu projectPaifu = this.queryById(projectId);
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		if(projectPaifu.getProjectPaifuDetail()!=null){
+			BeanCopyUtil.copyBean(projectPaifu.getProjectPaifuDetail(),projectPaifuDetail);
+		}
+		projectPaifuDetail.setProjectAmount(projectAmount);
+		projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
+		return this.baseMapper.updateById(projectPaifu);
+	}
+
+	@Override
+	@Transactional
+	public Integer updateRepaymentAmount(Integer projectId){
+		PaymentRecord paymentRecord = new PaymentRecord();
+		paymentRecord.setProjectId(projectId);
+		// 统计回款总金额
+		BigDecimal repaymentAmount = paymentRecordService.sumCourtPayment(paymentRecord);
+		ProjectPaifu projectPaifu = this.queryById(projectId);
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		if(projectPaifu.getProjectPaifuDetail()!=null){
+			BeanCopyUtil.copyBean(projectPaifu.getProjectPaifuDetail(),projectPaifuDetail);
+		}
+		projectPaifuDetail.setRepaymentAmount(repaymentAmount);
+		projectPaifu = new ProjectPaifu();
+		projectPaifu.setProjectId(projectId);
+		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
+		return this.baseMapper.updateById(projectPaifu);
+	}
 
 }

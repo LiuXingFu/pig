@@ -40,13 +40,13 @@
 		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
 	</resultMap>
 
-	<select id="getProjectIdByAssets" resultType="com.pig4cloud.pig.casee.dto.AssetsDTO">
-		select p10_address.*,p10_assets.*,p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id
+	<select id="getProjectIdStatusByAssets" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
+		select p10_address.*,p10_assets.*,p10_assets_re.assets_re_id,p10_assets_bank_loan_re.mortgage_amount,p10_assets_bank_loan_re.mortgage_time,p10_assets_bank_loan_re.subject_id
 		from p10_assets_re
 		left join p10_assets on p10_assets.assets_id=p10_assets_re.assets_id
 		left join p10_address on p10_address.user_id=p10_assets_re.assets_id and p10_address.type=4
 		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.assets_id=p10_assets.assets_id
-		where p10_assets_re.project_id=#{projectId}
+		where p10_assets_re.project_id=#{projectId} and p10_assets_re.status=#{status}
 	</select>
 
 	<select id="selectCaseeOrAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO">

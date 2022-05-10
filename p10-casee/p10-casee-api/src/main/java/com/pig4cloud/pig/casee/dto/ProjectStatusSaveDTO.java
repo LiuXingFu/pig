@@ -31,9 +31,9 @@ import java.time.LocalDate;
 public class ProjectStatusSaveDTO {
 
 	/**
-	 * 类型（1-项目 2-案件）
+	 * 类型（1-项目，2-案件，3-财产）
 	 */
-	@ApiModelProperty(value="类型（1-项目 2-案件）")
+	@ApiModelProperty(value="类型（1-项目，2-案件，3-财产）")
 	private Integer type;
 
 	/**

@@ -19,6 +19,9 @@ package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
+import com.pig4cloud.pig.casee.vo.SubjectVO;
+
+import java.util.List;
 
 /**
  * 费用记录关联主体信息

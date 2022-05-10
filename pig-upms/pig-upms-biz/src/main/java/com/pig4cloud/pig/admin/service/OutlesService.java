@@ -174,4 +174,7 @@ public interface OutlesService extends IService<Outles> {
 	 * @return
 	 */
 	Integer deleteOutlesById(Integer outlesId);
+
+
+	List<Outles> queryCooperativeCourt(Integer insId, Integer courtInsId, String outlesName);
 }

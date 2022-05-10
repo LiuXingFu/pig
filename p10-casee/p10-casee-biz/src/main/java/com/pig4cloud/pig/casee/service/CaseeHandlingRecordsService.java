@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
+import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
 
 import java.util.List;
@@ -31,4 +32,6 @@ import java.util.List;
  */
 public interface CaseeHandlingRecordsService extends IService<CaseeHandlingRecords> {
 	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords);
+
+	boolean addCaseeHandlingRecords(Integer assetsId,TaskNode taskNode,Integer auctionType);
 }

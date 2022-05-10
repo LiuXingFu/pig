@@ -50,9 +50,9 @@ public class AssetsRe extends BaseEntity {
     private String delFlag;
 
 	/**
-	 * 状态（100-在办，200-拍卖中，300-暂缓，400-异常，500-已完成）
+	 * 状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）
 	 */
-	@ApiModelProperty(value="状态（100-在办，200-拍卖中，300-暂缓，400-异常，500-已完成）")
+	@ApiModelProperty(value="状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）")
 	private Integer status;
 
 	/**

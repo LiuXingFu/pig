@@ -1,9 +1,11 @@
 package com.pig4cloud.pig.casee.dto.paifu;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class AssetsReTargetPageDTO {
 
 	/**

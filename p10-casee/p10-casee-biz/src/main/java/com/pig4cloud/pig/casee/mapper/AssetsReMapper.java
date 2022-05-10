@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.vo.AssetsVO;
 import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
 import com.pig4cloud.pig.common.core.util.KeyValue;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 @Mapper
 public interface AssetsReMapper extends BaseMapper<AssetsRe> {
-	AssetsDTO getProjectIdByAssets(Integer projectId);
+	List<AssetsVO> getProjectIdStatusByAssets(@Param("projectId")Integer projectId, @Param("status")Integer status);
 
 	List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId);
 

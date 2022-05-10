@@ -211,4 +211,16 @@ public class MessageRecordController {
 		}
 	}
 
+	/**
+	 * 更新消息状态为已读
+	 * @param messageId
+	 * @return
+	 */
+	@ApiOperation(value = "更新消息状态为已读", notes = "更新消息状态为已读")
+	@SysLog("更新消息状态为已读")
+	@PutMapping("/updateMessageStatus/{messageId}")
+	public R updateMessageStatus(@PathVariable("messageId") Integer messageId) {
+		return R.ok(this.messageRecordService.updateMessageStatus(messageId));
+	}
+
 }

@@ -19,7 +19,12 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
+import com.pig4cloud.pig.casee.vo.SubjectVO;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 费用记录关联主体信息
@@ -29,5 +34,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ExpenseRecordSubjectReMapper extends BaseMapper<ExpenseRecordSubjectRe> {
+
+	List<SubjectVO> selectSubjectList(@Param("expenseRecordId") Integer expenseRecordId);
 
 }

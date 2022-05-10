@@ -25,53 +25,34 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 预约看样表
+ * 看样准备工作关联财产表表
  *
  * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @date 2022-05-05 10:24:34
  */
 @Data
-@TableName("p10_make_an_appointment")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "预约看样表")
-public class MakeAnAppointment extends BaseEntity {
+@TableName("p10_sample_preparation_work_assets_re")
+@ApiModel(value = "看样准备工作关联财产表表")
+public class SamplePreparationWorkAssetsRe {
 
     /**
-     * 预约看样表
+     * 财产关联看样准备工作表id
      */
     @TableId
-    @ApiModelProperty(value="预约看样表")
-    private Integer makeAnAppointment;
+    @ApiModelProperty(value="财产关联看样准备工作表id")
+    private Integer samplePreparationWorkAssetsReId;
 
     /**
-     * 项目id
+     * 财产表id
      */
-    @ApiModelProperty(value="项目id")
-    private Integer projectId;
-
-    /**
-     * 案件id
-     */
-    @ApiModelProperty(value="案件id")
-    private Integer caseeId;
-
-    /**
-     * 财产id
-     */
-    @ApiModelProperty(value="财产id")
+    @ApiModelProperty(value="财产表id")
     private Integer assetsId;
 
     /**
-     * 拍卖记录id
+     * 看样准备工作表id
      */
-    @ApiModelProperty(value="拍卖记录id")
-    private Integer auctionRecordId;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty(value="备注")
-    private String remark;
+    @ApiModelProperty(value="看样准备工作表id")
+    private Integer samplePreparationWorkId;
 
 
 }

@@ -20,7 +20,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordSubjectReMapper;
 import com.pig4cloud.pig.casee.service.ExpenseRecordSubjectReService;
+import com.pig4cloud.pig.casee.vo.SubjectVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 费用记录关联主体信息

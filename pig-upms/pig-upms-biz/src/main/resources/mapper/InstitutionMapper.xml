@@ -319,7 +319,7 @@
 		LIMIT 10
 	</select>
 
-	<select id="pageCooperateByInsId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
+	 <select id="pageCooperateByInsId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
 		select DISTINCT p10_institution.ins_id as id,p10_institution.ins_name as name from p10_institution
 		LEFT JOIN p10_institution_associate on p10_institution_associate.ins_associate_id = p10_institution.ins_id and
 		p10_institution_associate.associate_status = 100

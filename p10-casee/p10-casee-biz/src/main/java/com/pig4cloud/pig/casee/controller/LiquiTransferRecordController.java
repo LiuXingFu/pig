@@ -128,9 +128,9 @@ public class LiquiTransferRecordController {
 	 * @return
 	 */
 	@ApiOperation(value = "根据案件id查询移交记录", notes = "根据案件id查询移交记录")
-	@GetMapping("/queryTransferRecord/{caseeId}")
-	public R queryTransferRecord(@PathVariable("caseeId") Integer caseeId) {
-		return R.ok(this.liquiTransferRecordService.queryTransferRecord(caseeId));
+	@GetMapping("/queryTransferRecord")
+	public R queryTransferRecord(Integer projectId, Integer caseeId, String nodeId) {
+		return R.ok(this.liquiTransferRecordService.queryTransferRecord(projectId, caseeId, nodeId));
 	}
 
 	/**
@@ -206,6 +206,17 @@ public class LiquiTransferRecordController {
 	@GetMapping("/getByPaifuProjectId/{paifuProjectId}/{assetsId}")
 	public R getByPaifuProjectIdAndAssetsId(@PathVariable("paifuProjectId") Integer paifuProjectId, @PathVariable("assetsId") Integer assetsId) {
 		return R.ok(liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(paifuProjectId, assetsId));
+	}
+
+	/**
+	 * 通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@ApiOperation(value = "通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息", notes = "通过拍辅项目id查询所有移送完成的移交记录以及移交财产信息")
+	@GetMapping("/getTransferRecordAssetsByProjectId" )
+	public R getTransferRecordAssetsByProjectId(Integer projectId) {
+		return R.ok(liquiTransferRecordService.getTransferRecordAssetsByProjectId(projectId));
 	}
 
 }

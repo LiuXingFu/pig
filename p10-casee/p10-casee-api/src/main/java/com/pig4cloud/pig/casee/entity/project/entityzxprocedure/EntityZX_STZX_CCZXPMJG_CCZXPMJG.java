@@ -38,6 +38,16 @@ public class EntityZX_STZX_CCZXPMJG_CCZXPMJG extends CommonalityData implements 
 	private String buyer;
 
 	/**
+	 * 买受人电话
+	 */
+	private String phone;
+
+	/**
+	 * 买受人身份证
+	 */
+	private String identityCard;
+
+	/**
 	 * 拍辅费用
 	 */
 	private BigDecimal auxiliaryFee;

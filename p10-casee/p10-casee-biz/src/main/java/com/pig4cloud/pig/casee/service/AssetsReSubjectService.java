@@ -20,6 +20,8 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.AssetsReSubject;
 
+import java.util.List;
+
 /**
  * 项目案件财产关联主体
  *
@@ -28,4 +30,5 @@ import com.pig4cloud.pig.casee.entity.AssetsReSubject;
  */
 public interface AssetsReSubjectService extends IService<AssetsReSubject> {
 
+	List<Integer> queryByAssetsIdList(List<Integer> assetsReIdList);
 }

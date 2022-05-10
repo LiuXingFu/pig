@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.entity.PaymentRecord;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -60,4 +61,6 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 	BigDecimal getTotalRepayments();
 
 	Map<String, BigDecimal> getPaymentRecordMap(@Param("polylineColumnActive") Integer polylineColumnActive, @Param("differenceList") List<String> difference, @Param("insId") Integer insId, @Param("outlesId") Integer outlesId);
+
+	List<PaymentRecordListVO> queryPaifuPaymentRecordList(@Param("projectId")Integer projectId);
 }

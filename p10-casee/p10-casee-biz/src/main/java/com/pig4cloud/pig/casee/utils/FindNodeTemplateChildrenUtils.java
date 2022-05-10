@@ -70,7 +70,7 @@ public class FindNodeTemplateChildrenUtils {
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getTargetId, taskManagementVO.getTargetId()).eq(Target::getGoalType, 20001));
 			for (int j = 0; j < list.size(); j++) {
 				TaskNodeVO managementVO = new TaskNodeVO();
-				if (list.get(j).getNodeAttributes() == 400) {//如果当前节点是认为节点则判断改节点是否显示
+				if (list.get(j).getNodeAttributes() == 400) {//如果当前节点是任务节点则判断该节点是否显示
 					managementVO = (nodeJudgment(list.get(j), target));
 				} else {
 					managementVO = list.get(j);
@@ -81,6 +81,7 @@ public class FindNodeTemplateChildrenUtils {
 					}
 				} else {
 					list.remove(j);
+					j--;
 				}
 			}
 			getGrandChildren(list, taskManagementVO.getChildren());
@@ -106,7 +107,9 @@ public class FindNodeTemplateChildrenUtils {
 				return null;
 			}
 		} else {//其它程序判断
-			if (target!=null&&target.getGoalType()==20001){
+			if (taskNodeVO.getInsType().equals(1100)){//如果是拍辅环节则显示全部节点
+				return taskNodeVO;
+			}else if (target!=null&&target.getGoalType()==20001){//如果是清收环节则判断节点是否显示
 				AssetsReService assetsReService=SpringUtils.getObject(AssetsReService.class);
 				AssetsRe assetsRe = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getProjectId, taskNodeVO.getProjectId()).eq(AssetsRe::getCaseeId, taskNodeVO.getCaseeId()).eq(AssetsRe::getAssetsId, target.getGoalId()));
 				AssetsLiquiTransferRecordReService assetsLiquiTransferRecordReService = SpringUtils.getObject(AssetsLiquiTransferRecordReService.class);
@@ -219,7 +222,7 @@ public class FindNodeTemplateChildrenUtils {
 						}
 					}
 				}
-			}else {
+			} else {
 				if (taskNodeVO.getStatus() == 0) {
 					return taskNodeVO;
 				}

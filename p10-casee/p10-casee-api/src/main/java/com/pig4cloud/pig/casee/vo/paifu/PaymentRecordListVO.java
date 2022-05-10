@@ -14,21 +14,26 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.service.impl;
+package com.pig4cloud.pig.casee.vo.paifu;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.entity.MakeAnAppointment;
-import com.pig4cloud.pig.casee.mapper.MakeAnAppointmentMapper;
-import com.pig4cloud.pig.casee.service.MakeAnAppointmentService;
-import org.springframework.stereotype.Service;
+import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import java.util.List;
 
 /**
- * 预约看样表
+ * 回款详细记录表
  *
  * @author Mjh
- * @date 2022-04-29 10:49:16
+ * @date 2022-02-17 17:52:51
  */
-@Service
-public class MakeAnAppointmentServiceImpl extends ServiceImpl<MakeAnAppointmentMapper, MakeAnAppointment> implements MakeAnAppointmentService {
+@Data
+public class PaymentRecordListVO extends PaymentRecord {
+
+	/**
+	 * 关联财产集合
+	 */
+	@ApiModelProperty(value="关联财产集合")
+	private List<AssetsRePaifuDetailVO> assetsReList;
 
 }

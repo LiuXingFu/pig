@@ -43,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author xiaojun
@@ -85,6 +86,15 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 
 	@Autowired
 	private OutlesTemplateReService outlesTemplateReService;
+
+	@Autowired
+	InsOutlesCourtReService insOutlesCourtReService;
+
+	@Autowired
+	OutlesService outlesService;
+
+	@Autowired
+	RelationshipAuthenticateService relationshipAuthenticateService;
 
 	/**
 	 * 新增
@@ -442,5 +452,23 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		outles.lambda().set(Outles::getDelFlag,CommonConstants.STATUS_DEL);
 		this.update(outles);
 		return 1;
+	}
+
+	/**
+	 * 查询还没入驻的合作法院相关部门
+	 * @param insId
+	 * @param courtInsId
+	 * @param outlesName
+	 * @return
+	 */
+	@Override
+	public List<Outles> queryCooperativeCourt(Integer insId, Integer courtInsId, String outlesName) {
+		RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>()
+				.eq(RelationshipAuthenticate::getAuthenticateId, courtInsId));
+
+		List<Integer> outlesIds = insOutlesCourtReService.queryInsOutlesCourtReByInsIdAndCourtId(insId, relationshipAuthenticate.getAuthenticateGoalId())
+				.stream().map(InsOutlesCourtReVO::getOutlesId).collect(Collectors.toList());
+
+		return outlesService.pageOutlesList(insId, outlesName, outlesIds);
 	}
 }

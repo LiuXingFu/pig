@@ -40,6 +40,11 @@
 		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
 	</resultMap>
 
+	<resultMap id="assetsSubjectMap" type="com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO" extends="assetsMap">
+		<collection property="subjectList" ofType="com.pig4cloud.pig.admin.api.entity.Subject"
+					select="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper.selectByAssetsReIdSubjectList" column="assets_re_id"></collection>
+	</resultMap>
+
 	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
 		SELECT * FROM p10_assets_re WHERE del_flag = 0
 		<if test="query.assetsReId != null and query.assetsReId != 0">
@@ -72,16 +77,8 @@
 		where p10_assets_re.project_id=#{projectId}
 	</select>
 
-	<resultMap id="assetsSubjectMap" type="com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO" extends="assetsMap">
-		<collection property="subjectList" ofType="com.pig4cloud.pig.admin.api.entity.Subject"
-					column="assets_re_id"
-					select="com.pig4cloud.pig.casee.mapper.selectByAssetsReIdSubjectList"></collection>
-	</resultMap>
-
 	<select id="queryAssetsSubject" resultMap="assetsSubjectMap">
-		select p10_subject.* from p10_assets_re
-		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_id
-		left join p10_subject on p10_subject.subject_id=p10_assets_re_subject.subject_id
+		select p10_assets_re.* from p10_assets_re
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
 	</select>
 
@@ -98,6 +95,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_casee.`status` = 1
@@ -136,6 +134,7 @@
 		left join p10_task_node node on node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.node_id = node.node_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -174,6 +173,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20100
@@ -234,6 +234,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_assets_re.assets_re_id is not null
 		and p10_casee.casee_type in (3010,3031)
@@ -271,10 +272,12 @@
 				where p10_task_node.`status` = 0
 				and p10_task_node.node_attributes = 400
 				ORDER BY p10_task_node.sort asc
+				limit 999999999999
 				)task_node
 				GROUP BY task_node.target_id
 				) p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -309,6 +312,49 @@
 		</if>
 	</select>
 
+	<select id="selectRealEstateSurveyNotRegistered" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join (
+		select p10_task_node.* from p10_task_node
+		left join (
+		select * from p10_task_node
+		where node_attributes = 400
+		and json_extract( form_data,
+		'$.whetherHomeInspection' ) = 0
+		)node on node.target_id = p10_task_node.target_id
+		where node.target_id is not null
+		and p10_task_node.node_key = "EntityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH"
+		and p10_task_node.form_data is null
+		)p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
+		and p10_project.`status` = 1000
+		and p10_assets.type = 20200
+		and p10_assets.assets_type in (20201,20204)
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_id is not null
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.executedName != null and query.executedName != ''">
+			and p10_assets.owner like concat('%', #{query.executedName}, '%')
+		</if>
+		<if test="query.assetsName != null and query.assetsName != ''">
+			and p10_assets.assets_name like concat('%', #{query.assetsName}, '%')
+		</if>
+	</select>
+
 	<select id="queryComparePropertyNumbersCount" resultType="java.lang.Long">
 		SELECT
 		IFNULL((sum( YEAR ( p10_assets_re.create_time )= YEAR (NOW())) - sum( ( YEAR ( p10_assets_re.create_time )= YEAR (
@@ -319,6 +365,7 @@
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id AND p10_assets.del_flag = 0
 		WHERE
 		p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		AND (YEAR ( p10_assets_re.create_time )= YEAR (NOW()) OR YEAR ( p10_assets_re.create_time )= YEAR (NOW()) - 1 )
 		<if test="insId != null and insId != 0">
 			AND p10_project.ins_id = #{insId}
@@ -336,6 +383,7 @@
 		LEFT JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		<if test="insId != null and insId != 0">
 			AND p10_project.ins_id = #{insId}
 		</if>
@@ -354,6 +402,7 @@
 		LEFT JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		<if test="insId != null and insId != 0">
 			AND p10_project.ins_id = #{insId}
 		</if>
@@ -371,6 +420,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -426,6 +476,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -469,6 +520,7 @@
 				) task_node on task_node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -511,6 +563,7 @@
 				) task_node on task_node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -552,6 +605,7 @@
 		) task_node on task_node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
@@ -587,6 +641,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_casee.del_flag = 0
 		and p10_casee.casee_type in (3010,3031)
@@ -605,6 +660,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_project.`status` = 3000
 		and p10_assets_re.casee_id is not null
 		and p10_casee.casee_type in (3010,3031)
@@ -660,6 +716,7 @@
 		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.casee_id is not null
 		and p10_casee.casee_type = #{query.caseeType}
 		and p10_project.`status` = 1000
@@ -703,6 +760,7 @@
 		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
 		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_re_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re_subject.subject_id = #{subjectId}
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
@@ -718,6 +776,7 @@
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 100
 		and p10_assets_re.assets_id = #{assetsId}
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
@@ -734,8 +793,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		where p10_assets.type = 20200
 		and p10_assets_re.project_id = #{projectId}
-		and (json_extract(p10_assets.assets_detail,"$.assetsCompletionRuling") is null
-		or json_extract(p10_assets.assets_detail,"$.assetsCompensationAward") is null)) p10_assets)
+		and p10_assets_re.status!=500
 	</update>
 
 

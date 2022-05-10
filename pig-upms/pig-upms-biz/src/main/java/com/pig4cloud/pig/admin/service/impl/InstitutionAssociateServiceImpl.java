@@ -86,15 +86,16 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 
 	/**
-	 *	关联机构
+	 * 关联机构
+	 *
 	 * @param institutionAssociate
 	 * @return
 	 */
 	@Override
 	@Transactional
 	public int saveInstitutionAssociate(InstitutionAssociate institutionAssociate) throws Exception {
-		if(Objects.nonNull(institutionAssociate)){
-			institutionAssociate.setInsId( securityUtilsService.getCacheUser().getInsId());
+		if (Objects.nonNull(institutionAssociate)) {
+			institutionAssociate.setInsId(securityUtilsService.getCacheUser().getInsId());
 			institutionAssociate.setAssociateStatus(0);
 			institutionAssociate.setAssociateTime(LocalDateTime.now());
 			this.save(institutionAssociate);
@@ -104,22 +105,13 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 			Institution associate = institutionService.getById(institutionAssociate.getInsAssociateId());
 
-			List<InsOutlesUserListVO> insOutlesUserListVOS = insOutlesUserService.queryUserList(1, associate.getInsId(), 0);
-
 			List<MessageRecordDTO> messageRecordDTOList = new ArrayList<>();
-
-			insOutlesUserListVOS.stream().forEach(new Consumer<InsOutlesUserListVO>() {
-				@Override
-				public void accept(InsOutlesUserListVO insOutlesUserListVO) {
-					MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
-					messageRecordDTO.setMessageTitle(institution.getInsName() + "向你发送了合作请求");
-					messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
-//					messageRecordDTO.setReceiverUserId(insOutlesUserListVO.get());
-					messageRecordDTO.setReceiverInsId(associate.getInsId());
-					messageRecordDTO.setMessageType(400);
-					messageRecordDTOList.add(messageRecordDTO);
-				}
-			});
+			MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
+			messageRecordDTO.setMessageTitle(institution.getInsName() + "向你发送了合作请求");
+			messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
+			messageRecordDTO.setReceiverInsId(associate.getInsId());
+			messageRecordDTO.setMessageType(400);
+			messageRecordDTOList.add(messageRecordDTO);
 
 			messageRecordService.batchSendMessageRecordPush(messageRecordDTOList);
 
@@ -130,21 +122,22 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	}
 
 
-
 	/**
 	 * 根据机构ID分页查询合作机构
+	 *
 	 * @param page
 	 * @param institutionAssociate
 	 * @return
 	 */
 	@Override
 	public IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate) {
-		institutionAssociate.setInsId( securityUtilsService.getCacheUser().getInsId());
+		institutionAssociate.setInsId(securityUtilsService.getCacheUser().getInsId());
 		return this.baseMapper.pageInstitutionAssociate(page, institutionAssociate);
 	}
 
 	/**
 	 * 根据机构关联id查询相关信息
+	 *
 	 * @param associateId
 	 * @return
 	 */
@@ -155,6 +148,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 	/**
 	 * 通过id解除关联
+	 *
 	 * @param associateId id
 	 * @return R
 	 */
@@ -168,7 +162,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 		//根据被关联机构id与机构id查询被关联机构对象
 		InstitutionAssociate institutionAssociate = this.getOne(new LambdaQueryWrapper<InstitutionAssociate>()
 				.eq(InstitutionAssociate::getInsId, associate.getInsAssociateId())
-				.eq(InstitutionAssociate::getInsAssociateId, associate.getInsId()).ne(InstitutionAssociate::getAssociateStatus,"200"));
+				.eq(InstitutionAssociate::getInsAssociateId, associate.getInsId()).ne(InstitutionAssociate::getAssociateStatus, "200"));
 
 		List<Integer> associateIdList = new ArrayList<>();
 		associateIdList.add(associate.getAssociateId());
@@ -199,7 +193,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 		// 1.查询当前登录的机构
 		Integer insId = securityUtilsService.getCacheUser().getInsId();
 		// 2.判断状态是否关联
-		if(certificationRelationshipDTO.getAssociateStatus() == 100){
+		if (certificationRelationshipDTO.getAssociateStatus() == 100) {
 			// 状态关联
 			// 2.1 修改关联公司的关联状态
 			InstitutionAssociate associate = updateInstitutionAssociate(certificationRelationshipDTO, insId);
@@ -236,6 +230,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 	/**
 	 * 回复合作机构消息 同意或拒绝关联
+	 *
 	 * @param institutionAssociate
 	 * @param insId
 	 */
@@ -249,7 +244,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 		// 3.发送消息回复合作请求
 		MessageRecordDTO messageRecordDTO = new MessageRecordDTO();
-		messageRecordDTO.setMessageTitle(institution.getInsName() + (institutionAssociate.getAssociateStatus() == 100 ? "同意" : "拒接") +"了你的合作请求");
+		messageRecordDTO.setMessageTitle(institution.getInsName() + (institutionAssociate.getAssociateStatus() == 100 ? "同意" : "拒接") + "了你的合作请求");
 		messageRecordDTO.setMessageContent(institutionAssociate.getAssociateRemark());
 		messageRecordDTO.setMessageType(0);
 		messageRecordDTO.setCreateBy(securityUtilsService.getCacheUser().getId());
@@ -270,6 +265,7 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 	/**
 	 * 修改合作机构数据
+	 *
 	 * @param institutionAssociate
 	 * @param insId
 	 * @return

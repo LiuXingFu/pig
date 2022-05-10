@@ -34,9 +34,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("p10_lead_the_way_actual_look_sampler_re")
-@EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "看样人员名单关联引领看样表")
-public class LeadTheWayActualLookSamplerRe extends BaseEntity {
+public class LeadTheWayActualLookSamplerRe  {
 
     /**
      * 看样人员名单关联引领看样表id
@@ -74,12 +73,6 @@ public class LeadTheWayActualLookSamplerRe extends BaseEntity {
      */
     @ApiModelProperty(value="身份证")
     private String identityCard;
-
-    /**
-     * 报名时间
-     */
-    @ApiModelProperty(value="报名时间")
-    private LocalDateTime registrationTime;
 
     /**
      * 是否实际看样(0-否 1-是)

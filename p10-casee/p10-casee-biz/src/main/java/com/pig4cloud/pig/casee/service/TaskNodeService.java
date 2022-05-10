@@ -119,6 +119,36 @@ public interface TaskNodeService extends IService<TaskNode> {
 	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer projectId,Integer caseeId,Integer procedureNature,Integer id);
 
 	/**
+	 * 根据节点key以及项目、案件信息查询最新一条节点信息
+	 * @param taskNodeKey 节点key
+	 * @param taskNode 节点信息
+	 * @return R
+	 */
+	TaskNode queryNewTaskNode(String taskNodeKey,TaskNode taskNode);
+
+	/**
+	 * 根据节点key以及项目、案件信息查询最后一条节点信息
+	 * @param taskNodeKey 节点key
+	 * @return R
+	 */
+	TaskNode queryLastTaskNode(String taskNodeKey,Integer targetId);
+
+	/**
+	 * 同步联合拍卖财产节点数据
+	 * @param assetsId 当前提交节点财产id
+	 * @param taskNode 当前提交节点数据
+	 * @return R
+	 */
+	void synchronizeJointAuctionTaskNode(Integer assetsId,TaskNode taskNode,String nodeKey);
+
+	/**
+	 * 复制节点信息
+	 * @param taskNode 节点信息
+	 * @return R
+	 */
+	void copyTaskNode(TaskNode taskNode);
+
+	/**
 	 * 根据标的id查询当前主任务进度
 	 * @param targetId 标的id
 	 * @return
@@ -381,4 +411,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * @param receiptRecordList
 	 */
 	void updateFinalReceiptTimeOrEffectiveDate(TaskNode taskNode, List<ReceiptRecord> receiptRecordList, Date effectiveDate);
+
+	/**
+	 * 发送拍辅任务信息
+	 * @param taskNode
+	 */
+	void sendPaifuTaskMessage(TaskNode taskNode);
 }

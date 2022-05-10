@@ -150,4 +150,27 @@
 		left join p10_institution on p10_institution.ins_id=p10_task_node.ins_id and p10_institution.del_flag=0
 		WHERE p10_task_node.del_flag=0 AND node_id =#{nodeId}
 	</select>
+
+	<select id="queryNewTaskNode" resultType="com.pig4cloud.pig.casee.entity.TaskNode">
+		SELECT * FROM p10_task_node WHERE node_key=#{taskNodeKey}
+		<if test="taskNode.projectId != null and taskNode.projectId != ''">
+			and project_id=#{taskNode.projectId}
+		</if>
+		<if test="taskNode.caseeId != null and taskNode.caseeId != ''">
+			and casee_id=#{taskNode.caseeId}
+		</if>
+		<if test="taskNode.targetId != null and taskNode.targetId != ''">
+			and target_id=#{taskNode.targetId}
+		</if>
+		AND del_flag=0 AND node_type=0
+		ORDER BY p10_task_node.create_time desc LIMIT 1
+	</select>
+
+	<select id="queryLastTaskNode" resultType="com.pig4cloud.pig.casee.entity.TaskNode">
+		SELECT * FROM p10_task_node
+		WHERE node_key=#{taskNodeKey}
+		AND target_id=#{targetId}
+		AND del_flag=0 AND node_type=0
+		ORDER BY p10_task_node.create_time desc LIMIT 1
+	</select>
 </mapper>

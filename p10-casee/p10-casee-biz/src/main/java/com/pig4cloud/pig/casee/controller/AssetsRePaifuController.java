@@ -2,10 +2,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuModifyDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsRePaifuSaveDTO;
-import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.service.AssetsRePaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -83,4 +80,25 @@ public class AssetsRePaifuController {
 		return R.ok(assetsRePaifuService.queryTargetPage(page, assetsReTargetPageDTO));
 	}
 
+	/**
+	 * 修改项目案件财产关联状态
+	 * @param assetsReModifyStatusDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改项目案件财产关联状态", notes = "修改项目案件财产关联状态")
+	@SysLog("修改项目案件财产关联状态 " )
+	@PutMapping("/modifyAssetsReStatus")
+	public R modifyAssetsReStatus(@RequestBody AssetsReModifyStatusDTO assetsReModifyStatusDTO) {
+		return R.ok(assetsRePaifuService.modifyAssetsReStatus(assetsReModifyStatusDTO));
+	}
+
+	/**
+	 * 根据项目id查询财产关联信息
+	 * @return
+	 */
+	@ApiOperation(value = "根据项目id查询财产关联信息", notes = "根据项目id查询财产关联信息")
+	@GetMapping("/queryByProjectId")
+	public R queryByProjectId(Integer projectId,@RequestParam(value = "assetsName",required = false)String assetsName) {
+		return R.ok(assetsRePaifuService.queryByProjectId(projectId, assetsName));
+	}
 }
