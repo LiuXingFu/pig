@@ -71,6 +71,9 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 
 		taskNodeService.updateById(taskNode);
 
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
 		taskNodeService.setTaskDataSubmission(taskNode);
 		return paiFu_stcc_bmky_bmky;
 	}
