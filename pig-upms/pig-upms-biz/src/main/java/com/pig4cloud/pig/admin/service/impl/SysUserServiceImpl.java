@@ -36,6 +36,7 @@ import com.pig4cloud.pig.admin.mapper.SysUserMapper;
 import com.pig4cloud.pig.admin.service.*;
 import com.pig4cloud.pig.common.core.constant.CacheConstants;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
+import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.PigUser;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
@@ -388,6 +389,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 	@Override
 	public SysUser getByPhone(String phone){
 		return this.baseMapper.getByPhone(phone);
+	}
+
+	@Override
+	@Transactional
+	public 	Boolean updateByUserId(UserDTO userDto){
+		SysUser sysUser = new SysUser();
+		BeanCopyUtil.copyBean(userDto,sysUser);
+		if (StrUtil.isNotBlank(userDto.getPassword())) {
+			sysUser.setPassword(ENCODER.encode(userDto.getPassword()));
+		}
+		return this.baseMapper.updateByUserId(sysUser);
 	}
 
 }

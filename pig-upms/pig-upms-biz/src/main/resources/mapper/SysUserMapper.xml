@@ -235,4 +235,8 @@
 		limit 1
 	</select>
 
+	<update id="updateByUserId">
+		update sys_user set password = #{sysUser.password}, actual_name = #{sysUser.actualName}, nick_name = #{sysUser.nickName}, lock_flag = #{sysUser.lockFlag},del_flag = #{sysUser.delFlag} where user_id = #{sysUser.userId}
+	</update>
+
 </mapper>

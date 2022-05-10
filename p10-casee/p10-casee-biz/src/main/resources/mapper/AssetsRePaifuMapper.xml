@@ -160,4 +160,24 @@
 		</if>
 	</select>
 
+	<select id="selectPostAnAuctionList" resultType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO">
+		SELECT p10_assets_re.*,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id,p10_auction_assets_re.auction_id
+		FROM
+			( SELECT DISTINCT p10_assets_re.*  FROM
+				( SELECT p10_assets_re.*  FROM p10_auction_assets_re
+					LEFT JOIN ( SELECT p10_auction_assets_re.auction_id  FROM p10_assets_re
+									LEFT JOIN p10_auction_assets_re ON p10_auction_assets_re.assets_re_id = p10_assets_re.assets_re_id
+								WHERE p10_assets_re.project_id = #{projectId}  AND p10_assets_re.casee_id = #{caseeId}  AND p10_assets_re.assets_id = #{assetsId}
+								) p10_auction ON p10_auction.auction_id = p10_auction_assets_re.auction_id
+					LEFT JOIN p10_assets_re ON p10_assets_re.assets_re_id = p10_auction_assets_re.assets_re_id
+				WHERE p10_auction.auction_id IS NOT NULL
+				UNION ALL
+				SELECT * FROM p10_assets_re  WHERE p10_assets_re.project_id = #{projectId} AND p10_assets_re.`status` = 100
+				) p10_assets_re
+			) p10_assets_re
+		LEFT JOIN p10_auction_assets_re ON p10_auction_assets_re.assets_re_id = p10_assets_re.assets_re_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
+	</select>
+
 </mapper>

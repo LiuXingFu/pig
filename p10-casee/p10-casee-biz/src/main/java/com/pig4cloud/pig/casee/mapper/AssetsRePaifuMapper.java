@@ -28,5 +28,7 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 	IPage<AssetsReTargetPageVO> queryTargetPage(Page page, @Param("query") AssetsReTargetPageDTO assetsReTargetPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	List<AssetsRePaifuDetailVO> selectByProjectId(@Param("projectId") Integer projectId,@Param("assetsName") String assetsName);
+
+	List<AssetsRePaifuDetailVO> selectPostAnAuctionList(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("assetsId") Integer assetsId);
 }
 

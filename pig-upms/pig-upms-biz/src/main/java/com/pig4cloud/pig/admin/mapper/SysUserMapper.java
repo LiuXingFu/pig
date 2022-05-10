@@ -77,4 +77,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 	List<OrganizationQueryVO> pageCooperateByUserId(@Param("query")UserSelectDTO userSelectDTO);
 
 	SysUser getByPhone(@Param("phone")String phone);
+
+	Boolean updateByUserId(@Param("sysUser")SysUser sysUser);
 }

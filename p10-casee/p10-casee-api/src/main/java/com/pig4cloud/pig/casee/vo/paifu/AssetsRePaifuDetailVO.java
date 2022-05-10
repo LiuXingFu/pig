@@ -80,4 +80,10 @@ public class AssetsRePaifuDetailVO extends AssetsRePaifu {
 	@ApiModelProperty(value = "行政区划编号")
 	private String code;
 
+	/**
+	 * 拍卖id
+	 */
+	@ApiModelProperty(value = "拍卖id")
+	private Integer auctionId;
+
 }
