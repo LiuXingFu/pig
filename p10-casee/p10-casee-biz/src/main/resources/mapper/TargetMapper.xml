@@ -100,7 +100,7 @@
 
 	<select id="getTarget" resultType="com.pig4cloud.pig.casee.vo.TaskNodeVO">
 		SELECT p10_task_node.* FROM p10_target left
-		join p10_task_node on p10_task_node.target_id=p10_target.target_id
+		join p10_task_node on p10_task_node.target_id=p10_target.target_id and p10_task_node.del_flag=0
 		WHERE p10_task_node.project_id=#{projectId} and p10_target.casee_id=#{caseeId} and p10_target.project_id = #{projectId} AND p10_target.procedure_nature=#{procedureNature} and p10_target.del_flag=0 AND p10_task_node.node_type=0
 		<if test="id!=null">
 			and p10_target.goal_id=#{id}

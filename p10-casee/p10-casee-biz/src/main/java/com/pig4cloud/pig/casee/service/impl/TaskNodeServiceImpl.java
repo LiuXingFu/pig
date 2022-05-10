@@ -326,11 +326,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public TaskNode queryNewTaskNode(String taskNodeKey, TaskNode taskNode) {
-		return this.baseMapper.queryNewTaskNode(taskNodeKey, taskNode);
-	}
-
-	@Override
 	public TaskNode queryLastTaskNode(String taskNodeKey, Integer targetId) {
 		return this.baseMapper.queryLastTaskNode(taskNodeKey, targetId);
 	}
@@ -378,7 +373,71 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
+	public void auctionResultsCopyTaskNode(PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, TaskNode taskNode) {
+		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
+		for (AssetsReDTO assetsReDTO : assetsReIdList) {
+			//查询联合拍卖财产程序id
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001));
+			//查询最后一条拍卖公告信息
+			TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
+			if (taskNodePmgg != null) {
+				//修改当前节点状态为删除
+				taskNodePmgg.setDelFlag("1");
+				this.updateById(taskNodePmgg);
+				//复制拍卖公告节点
+				this.copyTaskNode(taskNodePmgg);
+			}
+			//查询最后一条接受咨询信息
+			TaskNode taskNodeJszx = this.queryLastTaskNode("paiFu_STCC_JSZX_JSZX", target.getTargetId());
+			if (taskNodeJszx != null) {
+				//修改当前节点状态为删除
+				taskNodeJszx.setDelFlag("1");
+				this.updateById(taskNodeJszx);
+				//复制接受咨询节点
+				this.copyTaskNode(taskNodeJszx);
+			}
+			//查询最后一条报名看样信息
+			TaskNode taskNodeBmky = this.queryLastTaskNode("paiFu_STCC_BMKY_BMKY", target.getTargetId());
+			if (taskNodeBmky != null) {
+				//修改当前节点状态为删除
+				taskNodeBmky.setDelFlag("1");
+				this.updateById(taskNodeBmky);
+				//复制报名看样节点
+				this.copyTaskNode(taskNodeBmky);
+			}
+			//查询最后一条看样准备工作信息
+			TaskNode taskNodeKyzbgz = this.queryLastTaskNode("paiFu_STCC_KYZBGZ_KYZBGZ", target.getTargetId());
+			if (taskNodeKyzbgz != null) {
+				//修改当前节点状态为删除
+				taskNodeKyzbgz.setDelFlag("1");
+				this.updateById(taskNodeKyzbgz);
+				//复制看样准备工作节点
+				this.copyTaskNode(taskNodeKyzbgz);
+			}
+			//查询最后一条引领看样信息
+			TaskNode taskNodeYlky = this.queryLastTaskNode("paiFu_STCC_YLKY_YLKY", target.getTargetId());
+			if (taskNodeYlky != null) {
+				//修改当前节点状态为删除
+				taskNodeYlky.setDelFlag("1");
+				this.updateById(taskNodeYlky);
+				//复制引领看样节点
+				this.copyTaskNode(taskNodeYlky);
+			}
+
+			TaskNode taskNodePmjg = this.queryLastTaskNode("paiFu_STCC_PMJG_PMJG", target.getTargetId());
+			if (taskNodePmjg!=null){
+				//修改当前节点状态为删除
+				taskNodePmjg.setDelFlag("1");
+				this.updateById(taskNodePmjg);
+				//复制拍卖结果节点
+				this.copyTaskNode(taskNodePmjg);
+			}
+		}
+	}
+
+	@Override
 	public void copyTaskNode(TaskNode copyTaskNode) {
+		copyTaskNode.setDelFlag("0");
 		copyTaskNode.setFormData(null);
 		copyTaskNode.setStatus(0);
 		copyTaskNode.setSubmissionStatus(0);
@@ -387,7 +446,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		copyTaskNode.setTrusteeStatus(null);
 		copyTaskNode.setTrusteeType(null);
 		copyTaskNode.setCreateTime(LocalDateTime.now());
-		//拿到拍卖结果id最后一位数+1
+		//拿到当前节点id最后一位数+1
 		Integer auctionResultsId = Integer.valueOf(copyTaskNode.getNodeId().substring(copyTaskNode.getNodeId().lastIndexOf("_") + 1, copyTaskNode.getNodeId().length())) + 1;
 		StringBuilder stringBuilderPmjg = new StringBuilder(copyTaskNode.getNodeId());
 		copyTaskNode.setNodeId(stringBuilderPmjg.replace(copyTaskNode.getNodeId().lastIndexOf("_") + 1, copyTaskNode.getNodeId().length(), auctionResultsId.toString()).toString());
@@ -602,8 +661,17 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				//添加拍辅任务办理记录
-				caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
+				if (taskFlowDTO.getNodeKey()!="paiFu_STCC_XK_XK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_BDCXKRH_BDCXKRH"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_JGYJ_JGYJ"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_ZCDC_ZCDC"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DK_DK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_CJCD_CJCD"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DCCD_DCCD"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DCCDSDQK_DCCDSDQK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_TTCG_TTCG"){
+					//查询当前财产拍卖公告节点信息
+					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
+					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+
+					//添加拍辅任务办理记录
+					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
+				}else {
+					//添加拍辅任务办理记录
+					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
+				}
 			} else {
 				//添加清收任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords = new CaseeHandlingRecords();
