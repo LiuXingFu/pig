@@ -22,13 +22,25 @@ public class PaiFu_STCC_DCCDSDQK_DCCDSDQK_NODEHandler extends TaskNodeHandler {
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {//抵偿裁定送达情况
+		setPaiFuStccDccdsdqkDccdsdqk(taskNode);
+
+	}
+
+	private void setPaiFuStccDccdsdqkDccdsdqk(TaskNode taskNode) {
 		PaiFu_STCC_DCCDSDQK_DCCDSDQK paiFu_stcc_dccdsdqk_dccdsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DCCDSDQK_DCCDSDQK.class);
 
 		//发送拍辅任务消息
 		this.taskNodeService.sendPaifuTaskMessage(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
+		taskNodeService.setTaskDataSubmission(taskNode);
+
 		//同步联合拍卖财产抵偿裁定送达情况节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_dccdsdqk_dccdsdqk.getAssetsId(),taskNode,"paiFu_STCC_DCCDSDQK_DCCDSDQK");
+	}
 
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		setPaiFuStccDccdsdqkDccdsdqk(taskNode);
 	}
 }

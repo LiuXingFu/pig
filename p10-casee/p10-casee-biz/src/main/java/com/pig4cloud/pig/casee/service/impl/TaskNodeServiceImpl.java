@@ -661,7 +661,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (taskFlowDTO.getNodeKey()!="paiFu_STCC_XK_XK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_BDCXKRH_BDCXKRH"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_JGYJ_JGYJ"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_ZCDC_ZCDC"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DK_DK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_CJCD_CJCD"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DCCD_DCCD"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_DCCDSDQK_DCCDSDQK"&&taskFlowDTO.getNodeKey()!="paiFu_STCC_TTCG_TTCG"){
+				if (taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK")&&taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")){
 					//查询当前财产拍卖公告节点信息
 					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
