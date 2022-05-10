@@ -101,4 +101,14 @@ public class AssetsRePaifuController {
 	public R queryByProjectId(Integer projectId,@RequestParam(value = "assetsName",required = false)String assetsName) {
 		return R.ok(assetsRePaifuService.queryByProjectId(projectId, assetsName));
 	}
+
+	/**
+	 * 查询可拍卖财产集合
+	 * @return
+	 */
+	@ApiOperation(value = "查询可拍卖财产集合", notes = "查询可拍卖财产集合")
+	@GetMapping("/queryPostAnAuctionList")
+	public R queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId) {
+		return R.ok(assetsRePaifuService.queryPostAnAuctionList(projectId, caseeId,assetsId));
+	}
 }

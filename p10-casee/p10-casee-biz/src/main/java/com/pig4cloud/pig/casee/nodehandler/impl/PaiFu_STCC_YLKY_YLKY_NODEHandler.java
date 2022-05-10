@@ -67,7 +67,6 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 			for (ListOfSamplers listOfSamplers : subjectList) {
 				Subject subject=new Subject();
 				BeanUtils.copyProperties(listOfSamplers,subject);
-				subject.setUnifiedIdentity(listOfSamplers.getIdentityCard());
 
 				//根据手机号添加或修改主体信息
 				R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);

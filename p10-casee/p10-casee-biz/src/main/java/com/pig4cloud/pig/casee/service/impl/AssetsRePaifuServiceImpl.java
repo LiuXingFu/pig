@@ -196,4 +196,9 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	public List<AssetsRePaifuDetailVO> queryByProjectId(Integer projectId,String assetsName){
 		return this.baseMapper.selectByProjectId(projectId,assetsName);
 	}
+
+	@Override
+	public 	List<AssetsRePaifuDetailVO> queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId){
+		return this.baseMapper.selectPostAnAuctionList(projectId,caseeId,assetsId);
+	}
 }

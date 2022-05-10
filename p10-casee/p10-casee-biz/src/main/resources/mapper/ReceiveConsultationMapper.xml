@@ -28,7 +28,7 @@
     <result property="subjectId" column="subject_id"/>
     <result property="name" column="name"/>
     <result property="phone" column="phone"/>
-    <result property="identityCard" column="identity_card"/>
+    <result property="unifiedIdentity" column="unified_identity"/>
     <result property="remark" column="remark"/>
   </resultMap>
 </mapper>

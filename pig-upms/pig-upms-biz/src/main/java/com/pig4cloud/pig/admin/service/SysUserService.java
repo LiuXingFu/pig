@@ -133,4 +133,11 @@ public interface SysUserService extends IService<SysUser> {
 //	IPage<SysUser> pageJudge(Page page, SysUser user);
 
 	SysUser getByPhone(String phone);
+
+	/**
+	 * 修改用户状态。初始化密码
+	 * @param userDto 用户信息
+	 * @return
+	 */
+	Boolean updateByUserId(UserDTO userDto);
 }

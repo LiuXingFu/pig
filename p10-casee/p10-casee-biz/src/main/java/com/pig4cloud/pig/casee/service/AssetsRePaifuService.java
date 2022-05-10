@@ -67,4 +67,14 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 */
 	List<AssetsRePaifuDetailVO> queryByProjectId(Integer projectId,String assetsName);
 
+	/**
+	 * 查询可拍卖财产集合
+	 * @param projectId
+	 * @param caseeId
+	 * @param assetsId
+	 * @return
+	 */
+	List<AssetsRePaifuDetailVO> queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId);
+
+
 }

@@ -24,7 +24,7 @@ public class ReserveSeeSampleConsultingListDetail implements Serializable {
 	/**联系电话*/
     private String phone;
 	/**身份证*/
-	private String identityCard;
+	private String unifiedIdentity;
 	/**咨询问题*/
     private List<String> askQuestions;
 	/**备注*/

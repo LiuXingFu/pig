@@ -72,7 +72,7 @@ public class LeadTheWayActualLookSamplerRe  {
      * 身份证
      */
     @ApiModelProperty(value="身份证")
-    private String identityCard;
+    private String unifiedIdentity;
 
     /**
      * 是否实际看样(0-否 1-是)
