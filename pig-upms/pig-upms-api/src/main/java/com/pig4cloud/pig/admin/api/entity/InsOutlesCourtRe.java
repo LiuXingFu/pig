@@ -67,5 +67,10 @@ public class InsOutlesCourtRe extends BaseEntity {
     @ApiModelProperty(value="法院id")
     private Integer courtId;
 
+	/**
+	 * 法院机构id
+	 */
+	@ApiModelProperty(value = "法院机构id")
+	private Integer courtInsId;
 
 }

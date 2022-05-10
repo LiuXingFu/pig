@@ -89,4 +89,35 @@
 		</if>
 	</select>
 
+	<select id="queryByInsOutlesCourtReQueryDTO" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO">
+		SELECT
+			p10_ins_outles_court_re.ins_outles_court_re_id,
+			p10_ins_outles_court_re.create_time AS authorizationTime,
+			p10_court.court_id,
+			p10_court.court_name,
+			p10_institution.ins_id,
+			p10_institution.ins_name,
+			p10_outles.outles_id,
+			p10_outles.outles_name
+		FROM
+			p10_ins_outles_court_re
+			LEFT JOIN p10_court ON p10_ins_outles_court_re.court_id = p10_court.court_id AND p10_court.del_flag = 0
+			LEFT JOIN p10_institution ON p10_ins_outles_court_re.ins_id = p10_institution.ins_id AND p10_institution.del_flag = 0
+			LEFT JOIN p10_outles ON p10_ins_outles_court_re.outles_id = p10_outles.outles_id AND p10_outles.del_flag = 0
+		WHERE
+			p10_ins_outles_court_re.del_flag = 0
+			<if test="query.insId != null and query.insId != 0">
+				AND p10_ins_outles_court_re.ins_id = #{query.insId}
+			</if>
+			<if test="query.outlesId != null and query.outlesId != 0">
+				AND p10_ins_outles_court_re.outles_id = #{query.outlesId}
+			</if>
+			<if test="query.courtId != null and query.courtId != 0">
+				AND p10_ins_outles_court_re.court_id = #{query.courtId}
+			</if>
+			<if test="query.courtInsId != null and query.courtInsId != 0">
+				AND p10_ins_outles_court_re.court_ins_id = #{query.courtInsId}
+			</if>
+	</select>
+
 </mapper>

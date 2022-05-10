@@ -19,6 +19,7 @@ package com.pig4cloud.pig.admin.api.dto;
 
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.SysUser;
+import com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO;
 import lombok.Data;
 
 import java.util.List;
@@ -82,4 +83,9 @@ public class OutlesAddDTO{
 	 * 负责人集合
 	 */
 	private List<SysUser> userList;
+
+	/**
+	 *
+	 */
+	private List<CourtAndCourtInsIdVO> courtAndCourtInsIdVOS;
 }

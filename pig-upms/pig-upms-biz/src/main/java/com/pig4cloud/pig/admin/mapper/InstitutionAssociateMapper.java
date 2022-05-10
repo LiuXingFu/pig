@@ -20,12 +20,16 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
+import com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 机构关联表
@@ -40,4 +44,5 @@ public interface InstitutionAssociateMapper extends BaseMapper<InstitutionAssoci
 
 	InstitutionAssociateDetailsVO queryById(Integer associateId);
 
+	List<CourtAndCourtInsIdVO> getAssociateCourt(@Param("insId") Integer insId, @Param("courtName") String courtName, @Param("courtInsIds") List<Integer> courtInsIds);
 }

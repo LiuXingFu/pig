@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AddInsOutlesCourtReDTO {
+public class InsOutlesCourtReAddOutlesIdsDTO {
 
 	Integer insId;
 

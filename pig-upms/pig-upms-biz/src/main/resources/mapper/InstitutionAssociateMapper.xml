@@ -78,4 +78,28 @@
 		AND institution_associate.associate_id = #{associateId}
 	</select>
 
+	<select id="getAssociateCourt" resultType="com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO">
+		SELECT
+			p10_court.*,
+			p10_institution_associate.ins_associate_id AS courtInsId
+		FROM
+		p10_institution_associate
+		LEFT JOIN p10_institution ON p10_institution_associate.ins_associate_id = p10_institution.ins_id
+		LEFT JOIN p10_relationship_authenticate ON p10_institution.ins_id = p10_relationship_authenticate.authenticate_id
+		LEFT JOIN p10_court ON p10_relationship_authenticate.authenticate_goal_id = p10_court.court_id
+		WHERE
+		p10_institution_associate.ins_id = #{insId}
+		AND p10_institution_associate.associate_status = 100
+		AND p10_institution.ins_type = 1500
+		<if test="courtName != null and courtName != ''">
+			AND p10_court.court_name like concat('%', #{courtName}, '%')
+		</if>
+		<if test="courtInsIds != null and courtInsIds.size() > 0">
+			AND p10_institution_associate.ins_associate_id not in
+			<foreach collection="courtInsIds" item="item" open="(" close=")" separator="," >
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
 </mapper>

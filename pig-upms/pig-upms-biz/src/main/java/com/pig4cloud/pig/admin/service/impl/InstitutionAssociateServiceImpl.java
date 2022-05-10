@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * 机构关联表
@@ -83,6 +84,9 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 	@Autowired
 	InsOutlesUserService insOutlesUserService;
+
+	@Autowired
+	InsOutlesCourtReService insOutlesCourtReService;
 
 
 	/**
@@ -226,6 +230,25 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 			return 1;
 		}
+	}
+
+	/**
+	 * 查询合作法院
+	 * @return
+	 */
+	@Override
+	public List<CourtAndCourtInsIdVO> getAssociateCourt(String courtName) {
+		return this.baseMapper.getAssociateCourt(securityUtilsService.getCacheUser().getInsId(), courtName, null);
+	}
+
+	@Override
+	public List<CourtAndCourtInsIdVO> getAssociateCourtByInsIdAndOutlesId(Integer insId, Integer outlesId, String courtName) {
+		List<Integer> courtInsIds = this.insOutlesCourtReService.list(new LambdaQueryWrapper<InsOutlesCourtRe>()
+				.eq(InsOutlesCourtRe::getInsId, insId)
+				.eq(InsOutlesCourtRe::getOutlesId, outlesId))
+				.stream().map(InsOutlesCourtRe::getCourtInsId)
+				.collect(Collectors.toList());
+		return this.baseMapper.getAssociateCourt(insId, courtName, courtInsIds);
 	}
 
 	/**
