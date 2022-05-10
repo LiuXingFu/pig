@@ -114,7 +114,10 @@
 		p10_institution.ins_name as entrustedInsName,
 		p10_outles.outles_name as entrustedOutlesName,
 		p10_transfer_record.status,
-		p10_transfer_record.handover_time as handoverTime
+		p10_transfer_record.handover_time as handoverTime,
+		json_extract(p10_transfer_record.transfer_detail,'$.principal') as transferPrincipal,
+		json_extract(p10_transfer_record.transfer_detail,'$.interest') as transferInterest,
+		json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as transferRental
 		from p10_bank_loan
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id

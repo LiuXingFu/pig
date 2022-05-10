@@ -20,6 +20,7 @@ import com.pig4cloud.pig.casee.entity.BankLoan;
 import lombok.Data;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -50,6 +51,21 @@ public class BankLoanInformationVO extends BankLoan {
 	private String entrustedInsName;
 
 	private String entrustedOutlesName;
+
+	/**
+	 * 移交本金
+	 */
+	private BigDecimal transferPrincipal;
+
+	/**
+	 * 移交利息
+	 */
+	private BigDecimal transferInterest;
+
+	/**
+	 * 移交总额
+	 */
+	private BigDecimal transferRental;
 
 	/**
 	 * 移送时间
