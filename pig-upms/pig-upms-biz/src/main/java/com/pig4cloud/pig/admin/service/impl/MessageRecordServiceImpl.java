@@ -197,7 +197,7 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 			CaseeLiqui caseeLiqui = remoteCaseeLiquiService.getCaseeLiquiByCaseeId(liquiTransferRecord.getCaseeId(), SecurityConstants.FROM).getData();
 
 			//消息标题
-			messageRecordDTO.setMessageTitle("执行案号：" + liquiTransferRecord.getCaseeNumber() + "，添加" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "节点“" + taskNode.getNodeName() + "”");
+			messageRecordDTO.setMessageTitle("执行案号：" + liquiTransferRecord.getCaseeNumber() + "，" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "节点“" + taskNode.getNodeName() + "”");
 
 			//消息内容
 			messageRecordDTO.setMessageContent("执行案号：" + liquiTransferRecord.getCaseeNumber()

@@ -21,10 +21,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
+import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
+import com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateDetailsVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociatePageVO;
 import com.pig4cloud.pig.admin.api.vo.InstitutionAssociateVO;
+
+import java.util.List;
 
 /**
  * 机构关联表
@@ -69,4 +73,12 @@ public interface InstitutionAssociateService extends IService<InstitutionAssocia
 	 * @return R
 	 */
 	Integer certificationRelationship(CertificationRelationshipDTO certificationRelationshipDTO);
+
+	/**
+	 * 查询合作法院
+	 * @return
+	 */
+	List<CourtAndCourtInsIdVO> getAssociateCourt(String courtName);
+
+	List<CourtAndCourtInsIdVO> getAssociateCourtByInsIdAndOutlesId(Integer insId, Integer outlesId, String courtName);
 }

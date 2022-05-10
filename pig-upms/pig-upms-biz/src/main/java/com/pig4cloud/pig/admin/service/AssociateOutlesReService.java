@@ -66,5 +66,11 @@ public interface AssociateOutlesReService extends IService<AssociateOutlesRe> {
 	 */
 	boolean dismissById(Integer associateOutlesId);
 
+	/**
+	 * 分页查询合作网点
+	 * @param page
+	 * @param associateOutlesRe
+	 * @return
+	 */
 	IPage<AssociateOutlesRePageVO> queryCooperateOutlesPage(Page page, AssociateOutlesRe associateOutlesRe);
 }

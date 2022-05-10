@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.entity.LeadTheWay;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
@@ -42,12 +44,15 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅引领看样
-		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
+		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = setPaiFuStccYlkyYlky(taskNode);
 
 		//同步联合拍卖财产引领看样节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(),taskNode,"paiFu_STCC_YLKY_YLKY");
+	}
+
+	private PaiFu_STCC_YLKY_YLKY setPaiFuStccYlkyYlky(TaskNode taskNode) {
+		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
 
 		List<LeadTheWayActualLookSamplerRe> leadTheWayActualLookSamplerReList=new ArrayList<>();
 		List<LeadTheWayUserRe> leadTheWayUserReList=new ArrayList<>();
@@ -55,6 +60,8 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 			LeadTheWay leadTheWay=new LeadTheWay();
 			BeanUtils.copyProperties(actualLookSamplerListDetail,leadTheWay);
 			leadTheWayService.save(leadTheWay);
+			actualLookSamplerListDetail.setLeadTheWayId(leadTheWay.getLeadTheWayId());
+
 			//看样人员名单信息
 			List<ListOfSamplers> subjectList = actualLookSamplerListDetail.getSubjectList();
 			for (ListOfSamplers listOfSamplers : subjectList) {
@@ -82,9 +89,38 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 				leadTheWayUserReList.add(leadTheWayUserRe);
 			}
 		}
+
+		taskNodeService.updateById(taskNode);
+
+		taskNodeService.setTaskDataSubmission(taskNode);
+
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
 		leadTheWayActualLookSamplerReService.saveBatch(leadTheWayActualLookSamplerReList);
 		leadTheWayUserReService.saveBatch(leadTheWayUserReList);
+		return paiFu_stcc_ylky_ylky;
+	}
 
 
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
+
+		PaiFu_STCC_YLKY_YLKY paiFu_STCC_YLKY_YLKY = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
+
+		List<Integer> collect = paiFu_STCC_YLKY_YLKY.getSamplerList().stream().map(ActualLookSamplerListDetail::getLeadTheWayId).collect(Collectors.toList());
+
+		leadTheWayService.removeByIds(collect);
+
+		leadTheWayActualLookSamplerReService.remove(new LambdaQueryWrapper<LeadTheWayActualLookSamplerRe>().in(LeadTheWayActualLookSamplerRe::getLeadTheWayId, collect));
+
+		leadTheWayUserReService.remove(new LambdaQueryWrapper<LeadTheWayUserRe>().in(LeadTheWayUserRe::getLeadTheWayId, collect));
+
+		//拍辅引领看样
+		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = setPaiFuStccYlkyYlky(taskNode);
+
+		//同步联合拍卖财产引领看样节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(),taskNode,"paiFu_STCC_YLKY_YLKY");
 	}
 }

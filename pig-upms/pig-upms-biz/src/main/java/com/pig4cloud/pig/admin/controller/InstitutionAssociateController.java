@@ -130,4 +130,25 @@ public class InstitutionAssociateController {
 		return R.ok(institutionAssociateService.certificationRelationship(certificationRelationshipDTO));
 	}
 
+	/**
+	 * 查询合作法院
+	 * @return
+	 */
+	@ApiOperation(value = "查询合作法院", notes = "查询合作法院")
+	@GetMapping("/getAssociateCourt/{courtName}")
+	public R getAssociateCourt(@PathVariable("courtName") String courtName) {
+		return R.ok(institutionAssociateService.getAssociateCourt(courtName));
+	}
+
+	/**
+	 * 根据机构id和网点id查询合作法院
+	 * @param insId
+	 * @param outlesId
+	 * @return
+	 */
+	@ApiOperation(value = "根据机构id和网点id查询合作法院", notes = "根据机构id和网点id查询合作法院")
+	@GetMapping("/getAssociateCourtByInsIdAndOutlesId")
+	public R getAssociateCourtByInsIdAndOutlesId(Integer insId, Integer outlesId, String courtName) {
+		return R.ok(institutionAssociateService.getAssociateCourtByInsIdAndOutlesId(insId, outlesId, courtName));
+	}
 }

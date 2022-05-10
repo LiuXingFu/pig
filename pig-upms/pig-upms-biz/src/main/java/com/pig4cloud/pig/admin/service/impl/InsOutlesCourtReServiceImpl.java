@@ -20,9 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.entity.RelationshipAuthenticate;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
@@ -68,23 +66,29 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 		return this.baseMapper.queryInsOutlesCourtReByInsIdAndCourtId(insId, courtId);
 	}
 
+	/**
+	 * 将入驻网点id集合入驻到法院机构绑定的法院
+	 * @param insOutlesCourtReAddOutlesIdsDTO
+	 * @return
+	 */
 	@Override
 	@Transactional
-	public int addInsOutlesCourtRe(AddInsOutlesCourtReDTO addInsOutlesCourtReDTO) {
+	public int addInsOutlesCourtReByOutlesIds(InsOutlesCourtReAddOutlesIdsDTO insOutlesCourtReAddOutlesIdsDTO) {
 
 		int add = 0;
 
 		RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>()
-				.eq(RelationshipAuthenticate::getAuthenticateId, addInsOutlesCourtReDTO.getCourtInsId()));
+				.eq(RelationshipAuthenticate::getAuthenticateId, insOutlesCourtReAddOutlesIdsDTO.getCourtInsId()));
 
 		List<InsOutlesCourtRe> list = new ArrayList<>();
 
-		for (int i = 0; i < addInsOutlesCourtReDTO.getOutlesIds().size(); i++) {
-			Integer outlesId = addInsOutlesCourtReDTO.getOutlesIds().get(i);
+		for (int i = 0; i < insOutlesCourtReAddOutlesIdsDTO.getOutlesIds().size(); i++) {
+			Integer outlesId = insOutlesCourtReAddOutlesIdsDTO.getOutlesIds().get(i);
 			InsOutlesCourtRe insOutlesCourtRe = new InsOutlesCourtRe();
-			insOutlesCourtRe.setInsId(addInsOutlesCourtReDTO.getInsId());
+			insOutlesCourtRe.setInsId(insOutlesCourtReAddOutlesIdsDTO.getInsId());
 			insOutlesCourtRe.setOutlesId(outlesId);
 			insOutlesCourtRe.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
+			insOutlesCourtRe.setCourtInsId(insOutlesCourtReAddOutlesIdsDTO.getCourtInsId());
 			list.add(insOutlesCourtRe);
 		}
 
@@ -96,5 +100,46 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 	@Override
 	public List<OrganizationQueryVO> getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO){
 		return this.baseMapper.selectCourtList(insOutlesCourtReSelectDTO);
+	}
+
+
+	/**
+	 * 将入驻法院id集合入驻到绑定的相关网点
+	 * @param insOutlesCourtReAddCourtInsIdsDTO
+	 * @return
+	 */
+	@Override
+	public int addInsOutlesCourtReByCourtInsIds(InsOutlesCourtReAddCourtInsIdsDTO insOutlesCourtReAddCourtInsIdsDTO) {
+
+		int add = 0;
+
+		List<InsOutlesCourtRe> list = new ArrayList<>();
+
+		for (int i = 0; i < insOutlesCourtReAddCourtInsIdsDTO.getCourtInsIds().size(); i++) {
+			Integer courtInsId = insOutlesCourtReAddCourtInsIdsDTO.getCourtInsIds().get(i);
+			RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>()
+					.eq(RelationshipAuthenticate::getAuthenticateId, courtInsId));
+
+			InsOutlesCourtRe insOutlesCourtRe = new InsOutlesCourtRe();
+			insOutlesCourtRe.setInsId(insOutlesCourtReAddCourtInsIdsDTO.getInsId());
+			insOutlesCourtRe.setOutlesId(insOutlesCourtReAddCourtInsIdsDTO.getOutlesId());
+			insOutlesCourtRe.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
+			insOutlesCourtRe.setCourtInsId(courtInsId);
+			list.add(insOutlesCourtRe);
+		}
+
+		this.saveBatch(list);
+
+		return add += 1;
+	}
+
+	/**
+	 * 根据特定条件查询机构网点法院关联数据
+	 * @param insOutlesCourtReQueryDTO
+	 * @return
+	 */
+	@Override
+	public List<InsOutlesCourtReVO> queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO) {
+		return this.baseMapper.queryByInsOutlesCourtReQueryDTO(insOutlesCourtReQueryDTO);
 	}
 }

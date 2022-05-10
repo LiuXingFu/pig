@@ -61,7 +61,7 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 		caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
 		caseeHandlingRecords.setSourceId(assetsId);
 		caseeHandlingRecords.setSourceType(0);
-		if (taskNode.getNodeKey()!="paiFu_STCC_DK_DK"&&taskNode.getNodeKey()!="paiFu_STCC_CJCD_CJCD"){
+		if (taskNode.getNodeKey()!="paiFu_STCC_DK_DK"&&taskNode.getNodeKey()!="paiFu_STCC_CJCD_CJCD"&&taskNode.getNodeKey()!="paiFu_STCC_DCCD_DCCD"&&taskNode.getNodeKey()!="paiFu_STCC_DCCDSDQK_DCCDSDQK"){
 			if (auctionType.equals(100)){
 				caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
 			}else if (auctionType.equals(200)){

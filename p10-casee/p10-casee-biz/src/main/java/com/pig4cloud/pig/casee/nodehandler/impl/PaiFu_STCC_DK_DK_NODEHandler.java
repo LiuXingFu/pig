@@ -48,6 +48,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	private LiquiTransferRecordService liquiTransferRecordService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	AssetsReService assetsReService;
 
 	@Override
 	@Transactional
@@ -135,6 +137,9 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
 			expenseRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
 			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			//修改当前财产关联表状态
+			assetsReDTO.setStatus(500);
+			assetsReService.updateById(assetsReDTO);
 		}
 		// 添加回款记录财产关联信息
 		paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);

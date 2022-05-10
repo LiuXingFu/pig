@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.service.CourtService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -132,7 +133,5 @@ public class CourtController {
 	public R getByRegionId(Integer regionCode,String courtName) {
 		return R.ok(courtService.getByRegionCodeOrCourtName(regionCode,courtName));
 	}
-
-
 
 }

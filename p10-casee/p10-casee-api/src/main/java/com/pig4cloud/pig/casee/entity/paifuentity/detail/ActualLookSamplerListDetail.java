@@ -14,6 +14,9 @@ import java.util.List;
  */
 @Data
 public class ActualLookSamplerListDetail implements Serializable {
+
+	/**引领看样id*/
+	private Integer leadTheWayId;
 	/**看样人员名单*/
 	List<ListOfSamplers> subjectList=new ArrayList<>();
 	/**看样准备工作表id*/

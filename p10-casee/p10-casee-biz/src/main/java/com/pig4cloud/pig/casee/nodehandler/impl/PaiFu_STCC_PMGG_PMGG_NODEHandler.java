@@ -35,27 +35,32 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅拍卖公告
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 		AuctionRecordSaveDTO auctionRecordSaveDTO=new AuctionRecordSaveDTO();
 		BeanUtils.copyProperties(paiFu_stcc_pmgg_pmgg,auctionRecordSaveDTO);
 		//添加拍卖记录信息
-		Integer auctionRecordId = auctionRecordService.saveAuctionRecord(auctionRecordSaveDTO);
+		AuctionRecord auctionRecord = auctionRecordService.saveAuctionRecord(auctionRecordSaveDTO);
 
-		paiFu_stcc_pmgg_pmgg.setAuctionRecordId(auctionRecordId);
+		paiFu_stcc_pmgg_pmgg.setAuctionRecordId(auctionRecord.getAuctionRecordId());
+
+		paiFu_stcc_pmgg_pmgg.setAuctionId(auctionRecord.getAuctionId());
 
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
 		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
-		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, assetsReIdList);
+
 		String json = JsonUtils.objectToJson(paiFu_stcc_pmgg_pmgg);
 
 		taskNode.setFormData(json);
 
 		//修改节点信息
 		taskNodeService.updateById(taskNode);
+
+		taskNodeService.setTaskDataSubmission(taskNode);
+
+		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, assetsReIdList);
 
 	}
 
@@ -68,17 +73,12 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 			TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG",target.getTargetId());
 
 			if (!taskNodePmgg.getNodeId().equals(taskNode.getNodeId())) {
-				taskNodePmgg.setFormData(taskNode.getFormData());
 				if (taskNodePmgg.getNeedAudit()==1){//需要审核
 					taskNodePmgg.setStatus(101);
 				}else {
 					taskNodePmgg.setStatus(403);
 				}
-				taskNodePmgg.setSubmissionStatus(taskNode.getSubmissionStatus());
-
-				String json = JsonUtils.objectToJson(paiFu_stcc_pmgg_pmgg);
-
-				taskNodePmgg.setFormData(json);
+				taskNodePmgg.setFormData(taskNode.getFormData());
 
 				//修改节点信息
 				taskNodeService.updateById(taskNodePmgg);

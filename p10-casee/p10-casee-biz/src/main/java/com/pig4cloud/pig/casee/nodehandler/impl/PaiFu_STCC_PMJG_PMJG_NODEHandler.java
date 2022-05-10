@@ -1,8 +1,10 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -11,6 +13,7 @@ import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_P
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +43,8 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 	private ProjectPaifuService projectPaifuService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
-
+	@Autowired
+	private AuctionRecordService auctionRecordService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -52,43 +56,24 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(nodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
+		//拍卖记录信息
+		AuctionResultsSaveDTO auctionResultsSaveDTO=new AuctionResultsSaveDTO();
+		BeanUtils.copyProperties(paiFu_stcc_pmjg_pmjg,auctionResultsSaveDTO);
+		auctionResultsSaveDTO.setAuctionId(paiFu_stcc_pmgg_pmgg.getAuctionId());
+		auctionResultsSaveDTO.setAuctionRecordId(paiFu_stcc_pmgg_pmgg.getAuctionRecordId());
+		auctionResultsSaveDTO.setResultsTime(paiFu_stcc_pmjg_pmjg.getClosingDate());
+		auctionResultsSaveDTO.setResultsType(paiFu_stcc_pmjg_pmjg.getAuctionResults());
+		auctionResultsSaveDTO.setAuctionPeopleNumber(paiFu_stcc_pmjg_pmjg.getNumberOfParticipants());
+		auctionResultsSaveDTO.setAppendix(paiFu_stcc_pmjg_pmjg.getAppendixFile());
+		//修改拍卖记录信息
+		auctionRecordService.saveAuctionResults(auctionResultsSaveDTO);
+
 		//同步联合拍卖财产拍卖结果节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_pmjg_pmjg.getAssetsId(), taskNode, "paiFu_STCC_PMJG_PMJG");
 
-		if (paiFu_stcc_pmjg_pmjg.getAuctionResults() == 1) {//流拍
-
-			//查询最后一条拍卖公告信息
-			TaskNode taskNodePmgg = taskNodeService.queryNewTaskNode("paiFu_STCC_PMGG_PMGG", taskNode);
-			if (taskNodePmgg != null) {
-				//复制拍卖公告节点
-				taskNodeService.copyTaskNode(taskNodePmgg);
-			}
-			//查询最后一条接受咨询信息
-			TaskNode taskNodeJszx = taskNodeService.queryNewTaskNode("paiFu_STCC_JSZX_JSZX", taskNode);
-			if (taskNodeJszx != null) {
-				//复制接受咨询节点
-				taskNodeService.copyTaskNode(taskNodeJszx);
-			}
-			//查询最后一条报名看样信息
-			TaskNode taskNodeBmky = taskNodeService.queryNewTaskNode("paiFu_STCC_BMKY_BMKY", taskNode);
-			if (taskNodeBmky != null) {
-				//复制报名看样节点
-				taskNodeService.copyTaskNode(taskNodeBmky);
-			}
-			//查询最后一条看样准备工作信息
-			TaskNode taskNodeKyzbgz = taskNodeService.queryNewTaskNode("paiFu_STCC_KYZBGZ_KYZBGZ", taskNode);
-			if (taskNodeKyzbgz != null) {
-				//复制看样准备工作节点
-				taskNodeService.copyTaskNode(taskNodeKyzbgz);
-			}
-			//查询最后一条引领看样信息
-			TaskNode taskNodeYlky = taskNodeService.queryNewTaskNode("paiFu_STCC_YLKY_YLKY", taskNode);
-			if (taskNodeYlky != null) {
-				//复制引领看样节点
-				taskNodeService.copyTaskNode(taskNodeYlky);
-			}
-			//复制拍卖结果节点
-			taskNodeService.copyTaskNode(taskNode);
+		if (paiFu_stcc_pmjg_pmjg.getAuctionResults() == 20) {//流拍
+			//如果拍卖结果流拍则复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
+			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg,taskNode);
 		} else {//成交
 			//通过清收移交记录信息查询清收项目id
 			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_pmjg_pmjg.getAssetsId());

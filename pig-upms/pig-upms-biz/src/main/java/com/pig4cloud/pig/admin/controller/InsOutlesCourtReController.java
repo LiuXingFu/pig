@@ -19,17 +19,15 @@ package com.pig4cloud.pig.admin.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.admin.service.InsOutlesCourtReService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -132,14 +130,14 @@ public class InsOutlesCourtReController {
 
 	/**
 	 * 将入驻网点id集合入驻到法院机构绑定的法院
-	 * @param addInsOutlesCourtReDTO
+	 * @param insOutlesCourtReAddOutlesIdsDTO
 	 * @return
 	 */
 	@ApiOperation(value = "将入驻网点id集合入驻到法院机构绑定的法院", notes = "将入驻网点id集合入驻到法院机构绑定的法院")
 	@SysLog("将入驻网点id集合入驻到法院机构绑定的法院" )
-	@PostMapping("/addInsOutlesCourtRe")
-	public R addInsOutlesCourtRe(@RequestBody AddInsOutlesCourtReDTO addInsOutlesCourtReDTO){
-		int count = insOutlesCourtReService.addInsOutlesCourtRe(addInsOutlesCourtReDTO);
+	@PostMapping("/addInsOutlesCourtReByOutlesIds")
+	public R addInsOutlesCourtReByOutlesIds(@RequestBody InsOutlesCourtReAddOutlesIdsDTO insOutlesCourtReAddOutlesIdsDTO){
+		int count = insOutlesCourtReService.addInsOutlesCourtReByOutlesIds(insOutlesCourtReAddOutlesIdsDTO);
 
 		if (count > 0) {
 			return R.ok("将入驻网点id集合入驻到法院机构绑定的法院成功！");
@@ -157,6 +155,36 @@ public class InsOutlesCourtReController {
 	@GetMapping("/getCourtList" )
 	public R getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO){
 		return R.ok(insOutlesCourtReService.getCourtList(insOutlesCourtReSelectDTO));
+	}
+
+	/**
+	 * 将入驻法院id集合入驻到绑定的相关网点
+	 * @param insOutlesCourtReAddCourtInsIdsDTO
+	 * @return
+	 */
+	@ApiOperation(value = "将入驻法院id集合入驻到绑定的相关网点", notes = "将入驻法院id集合入驻到绑定的相关网点")
+	@SysLog("将入驻法院id集合入驻到绑定的相关网点" )
+	@PostMapping("/addInsOutlesCourtReByCourtInsIds")
+	public R addInsOutlesCourtReByCourtInsIds(@RequestBody InsOutlesCourtReAddCourtInsIdsDTO insOutlesCourtReAddCourtInsIdsDTO) {
+		int i = insOutlesCourtReService.addInsOutlesCourtReByCourtInsIds(insOutlesCourtReAddCourtInsIdsDTO);
+
+		if (i > 0) {
+			return R.ok("将入驻法院id集合入驻到绑定的相关网点成功！");
+		} else {
+			return R.failed("将入驻法院id集合入驻到绑定的相关网点失败！");
+		}
+	}
+
+	/**
+	 * 根据特定条件查询机构网点法院关联数据
+	 * @param insOutlesCourtReQueryDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据特定条件查询机构网点法院关联数据", notes = "根据特定条件查询机构网点法院关联数据")
+	@SysLog("根据特定条件查询机构网点法院关联数据" )
+	@GetMapping("/queryByInsOutlesCourtReQueryDTO")
+	public R queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO) {
+		return R.ok(insOutlesCourtReService.queryByInsOutlesCourtReQueryDTO(insOutlesCourtReQueryDTO));
 	}
 
 }

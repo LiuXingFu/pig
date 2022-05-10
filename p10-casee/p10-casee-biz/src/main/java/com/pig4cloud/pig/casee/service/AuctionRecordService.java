@@ -37,7 +37,7 @@ public interface AuctionRecordService extends IService<AuctionRecord> {
 	 * @param auctionRecordSaveDTO
 	 * @return
 	 */
-	Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO);
+	AuctionRecord saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO);
 
 	/**
 	 * 添加拍卖结果

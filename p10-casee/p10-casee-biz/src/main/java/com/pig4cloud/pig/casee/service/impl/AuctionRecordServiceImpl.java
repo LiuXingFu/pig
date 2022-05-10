@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
@@ -24,9 +25,12 @@ import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordStatusSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.mapper.AuctionRecordMapper;
+import com.pig4cloud.pig.casee.nodehandler.impl.PaiFu_STCC_PMJG_PMJG_NODEHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,10 +59,14 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	AssetsRePaifuService assetsRePaifuService;
 	@Autowired
 	AuctionRecordAssetsReService auctionRecordAssetsReService;
+	@Autowired
+	TargetService targetService;
+	@Autowired
+	TaskNodeService taskNodeService;
 
 	@Override
 	@Transactional
-	public Integer saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
+	public AuctionRecord saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
 		Integer jointAuction = 1;
 		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
 			jointAuction = 2;
@@ -121,7 +129,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionRecordStatus.setChangeTime(auctionRecordSaveDTO.getAnnouncementStartTime());
 		auctionRecordStatusService.save(auctionRecordStatus);
 
-		return auctionRecord.getAuctionRecordId();
+		return auctionRecord;
 	}
 
 	@Override
@@ -206,6 +214,19 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 			assetsRes.add(assetsRe);
 		}
 		assetsRePaifuService.updateBatchById(assetsRes);
+
+		//查询当前撤销财产程序信息
+		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, auctionRecordStatusSaveDTO.getProjectId()).eq(Target::getCaseeId, auctionRecordStatusSaveDTO.getCaseeId()).eq(Target::getGoalId, auctionRecordStatusSaveDTO.getAssetsId()).eq(Target::getGoalType, 20001));
+
+		//查询当前财产拍卖公告节点信息
+		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
+		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(nodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+
+		TaskNode copyTaskNode=new TaskNode();
+		copyTaskNode.setProjectId(auctionRecordStatusSaveDTO.getProjectId());
+		copyTaskNode.setCaseeId(auctionRecordStatusSaveDTO.getCaseeId());
+		//复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
+		taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg,copyTaskNode);
 		return this.baseMapper.updateById(auctionRecord);
 	}
 

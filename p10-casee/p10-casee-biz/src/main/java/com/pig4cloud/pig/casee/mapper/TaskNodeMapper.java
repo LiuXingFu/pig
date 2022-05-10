@@ -63,9 +63,6 @@ public interface TaskNodeMapper extends BaseMapper<TaskNode> {
 	 */
 	AgentMatterVO taskDetails(@Param("nodeId") String nodeId);
 
-
-	TaskNode queryNewTaskNode(@Param("taskNodeKey")String taskNodeKey,@Param("taskNode")TaskNode taskNode);
-
 	TaskNode queryLastTaskNode(@Param("taskNodeKey")String taskNodeKey,@Param("targetId")Integer targetId);
 
 }

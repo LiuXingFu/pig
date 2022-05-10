@@ -20,9 +20,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.AddInsOutlesCourtReDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtRePageDTO;
-import com.pig4cloud.pig.admin.api.dto.InsOutlesCourtReSelectDTO;
+import com.pig4cloud.pig.admin.api.dto.*;
 import com.pig4cloud.pig.admin.api.entity.InsOutlesCourtRe;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
 import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
@@ -37,11 +35,27 @@ import java.util.List;
  */
 public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 
+	/**
+	 * 分页查询机构网点法院关联
+	 * @param page
+	 * @return
+	 */
 	IPage<InsOutlesCourtReVO> queryInsOutlesCourtPage(Page page, InsOutlesCourtRePageDTO insOutlesCourtRePageDTO);
 
+	/**
+	 * 根据机构id与法院id查询机构网点法院关联表信息
+	 * @param insId
+	 * @param courtId
+	 * @return
+	 */
 	List<InsOutlesCourtReVO> queryInsOutlesCourtReByInsIdAndCourtId(Integer insId, Integer courtId);
 
-	int addInsOutlesCourtRe(AddInsOutlesCourtReDTO addInsOutlesCourtReDTO);
+	/**
+	 * 将入驻网点id集合入驻到法院机构绑定的法院
+	 * @param insOutlesCourtReAddOutlesIdsDTO
+	 * @return
+	 */
+	int addInsOutlesCourtReByOutlesIds(InsOutlesCourtReAddOutlesIdsDTO insOutlesCourtReAddOutlesIdsDTO);
 
 	/**
 	 * 机构网点关联法院选择
@@ -50,4 +64,17 @@ public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 	 */
 	List<OrganizationQueryVO> getCourtList(InsOutlesCourtReSelectDTO insOutlesCourtReSelectDTO);
 
+	/**
+	 * 将入驻法院id集合入驻到绑定的相关网点
+	 * @param insOutlesCourtReAddCourtInsIdsDTO
+	 * @return
+	 */
+	int addInsOutlesCourtReByCourtInsIds(InsOutlesCourtReAddCourtInsIdsDTO insOutlesCourtReAddCourtInsIdsDTO);
+
+	/**
+	 * 根据特定条件查询机构网点法院关联数据
+	 * @param insOutlesCourtReQueryDTO
+	 * @return
+	 */
+	List<InsOutlesCourtReVO> queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO);
 }
