@@ -19,7 +19,6 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordStatusSaveDTO;
@@ -68,7 +67,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	@Transactional
 	public AuctionRecord saveAuctionRecord(AuctionRecordSaveDTO auctionRecordSaveDTO) {
 		Integer jointAuction = 1;
-		if(auctionRecordSaveDTO.getAssetsReIdList().size()>1){
+		if(auctionRecordSaveDTO.getJointAuctionAssetsDTOList().size()>1){
 			jointAuction = 2;
 		}
 		// 判断发布拍卖时间是否小于当前时间，true的话将拍卖状态set为200：正在进行中
@@ -94,7 +93,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 
 		List<AuctionAssetsRe> auctionAssetsRes = new ArrayList<>();
 		List<AuctionRecordAssetsRe> auctionRecordAssetsRes = new ArrayList<>();
-		if (auctionRecordSaveDTO.getAssetsReIdList().size() > 0) {
+		if (auctionRecordSaveDTO.getJointAuctionAssetsDTOList().size() > 0) {
 			if (auctionRecordSaveDTO.getAuctionId() != null) {
 				// 已存在记录先删除财产关联
 				QueryWrapper<AuctionAssetsRe> queryWrapper = new QueryWrapper<>();
@@ -102,19 +101,19 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 				auctionAssetsReService.remove(queryWrapper);
 			}
 			// 保存拍卖财产关联
-			for (AssetsReDTO assetsReDTO : auctionRecordSaveDTO.getAssetsReIdList()) {
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : auctionRecordSaveDTO.getJointAuctionAssetsDTOList()) {
 				AuctionAssetsRe auctionAssetsRe = new AuctionAssetsRe();
-				auctionAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+				auctionAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 				auctionAssetsRe.setAuctionId(auction.getAuctionId());
 				auctionAssetsRes.add(auctionAssetsRe);
 				// 更新项目案件财产关联表状态为拍卖中
 				AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
-				assetsRePaifu.setAssetsReId(assetsReDTO.getAssetsReId());
+				assetsRePaifu.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 				assetsRePaifu.setStatus(200);
 				assetsRePaifuService.updateById(assetsRePaifu);
 
 				AuctionRecordAssetsRe auctionRecordAssetsRe = new AuctionRecordAssetsRe();
-				auctionRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+				auctionRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 				auctionRecordAssetsRe.setAuctionRecordId(auctionRecord.getAuctionRecordId());
 				auctionRecordAssetsRes.add(auctionRecordAssetsRe);
 			}
