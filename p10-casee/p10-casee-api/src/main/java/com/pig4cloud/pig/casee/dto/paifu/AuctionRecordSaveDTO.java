@@ -23,6 +23,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +39,7 @@ public class AuctionRecordSaveDTO {
 	 * 项目案件财产关联id集合
 	 */
 	@ApiModelProperty(value="项目案件财产关联id集合")
-	List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList;
+	List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList=new ArrayList<>();
 
     /**
      * 拍卖表id
