@@ -134,7 +134,7 @@ public class FindNodeTemplateChildrenUtils {
 									return taskNodeVO;
 								}
 							} else {//资产处置移交
-								List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).gt(TaskNode::getNodeOrder, taskNodeVO.getNodeOrder()).ne(TaskNode::getStatus, 0));
+								List<TaskNode> list = taskNodeService.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).gt(TaskNode::getNodeOrder, taskNodeVO.getNodeOrder()).notIn(TaskNode::getStatus, 0,301));
 								if (list.size() > 0) {
 									return null;
 								} else {

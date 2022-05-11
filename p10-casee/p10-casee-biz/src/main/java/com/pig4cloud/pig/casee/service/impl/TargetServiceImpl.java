@@ -164,14 +164,6 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 		}
 		//添加任务数据
 		configurationNodeTemplate(targetAddDTO, taskNodeTemplate.getData().getTemplateId());
-		if (targetAddDTO.getGoalId()!=null&&targetAddDTO.getGoalType().equals(20001)){
-			Assets assets = assetsService.getById(targetAddDTO.getGoalId());
-			if (assets.getAssetsType().equals(20202)||assets.getAssetsType().equals(20203)||assets.getAssetsType().equals(20205)){//如果当前财产是动产则直接修改不动产现勘入户节点状态为已跳过
-				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, targetAddDTO.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getNodeName, "不动产现勘入户"));
-				taskNode.setStatus(301);
-				taskNodeService.updateById(taskNode);
-			}
-		}
 		return 1;
 	}
 
