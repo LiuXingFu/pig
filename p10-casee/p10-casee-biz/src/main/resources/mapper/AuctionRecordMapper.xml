@@ -58,7 +58,7 @@
 
 	<select id="selectAcutionRecordStatus" resultMap="auctionRecordMap">
 		select * from p10_auction_record
-		where auction_start_time &lt;= now()
+		where (auction_start_time &lt;= now() or auction_end_time &lt;= now())
 		and auction_status in (100,200)
 	</select>
 </mapper>
