@@ -73,6 +73,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 			R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 			Integer subjectId = Integer.valueOf(phoneBySaveOrUpdateById.getData().getSubjectId().toString());
 
+			receiveConsultation.setUnifiedIdentity(reserveSeeSampleConsulting.getUnifiedIdentity());
 			receiveConsultation.setSubjectId(subjectId);
 			receiveConsultation.setName(reserveSeeSampleConsulting.getName());
 			receiveConsultation.setPhone(reserveSeeSampleConsulting.getPhone());
