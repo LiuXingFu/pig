@@ -63,6 +63,8 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 	TargetService targetService;
 	@Autowired
 	TaskNodeService taskNodeService;
+	@Autowired
+	AssetsReService assetsReService;
 
 	@Override
 	@Transactional
@@ -206,14 +208,20 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		queryWrapper.lambda().eq(AuctionRecordAssetsRe::getAuctionRecordId,auctionRecordStatusSaveDTO.getAuctionRecordId());
 		List<AuctionRecordAssetsRe> auctionRecordAssetsRes = auctionRecordAssetsReService.list(queryWrapper);
 		List<AssetsRe> assetsRes = new ArrayList<>();
+		List<Integer> assetsReIdList = new ArrayList<>();
 		// 更新项目案件财产关联表状态
 		for(AuctionRecordAssetsRe auctionRecordAssetsRe : auctionRecordAssetsRes){
 			AssetsRe assetsRe = new AssetsRe();
 			assetsRe.setAssetsReId(auctionRecordAssetsRe.getAssetsReId());
 			assetsRe.setStatus(100);
 			assetsRes.add(assetsRe);
+
+			Integer assetsReId = auctionRecordAssetsRe.getAssetsReId();
+			assetsReIdList.add(assetsReId);
 		}
 		assetsRePaifuService.updateBatchById(assetsRes);
+
+		List<AssetsRe> assetsReList = assetsReService.queryByAssetsReIdList(assetsReIdList);
 
 		//查询当前撤销财产程序信息
 		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, auctionRecordStatusSaveDTO.getProjectId()).eq(Target::getCaseeId, auctionRecordStatusSaveDTO.getCaseeId()).eq(Target::getGoalId, auctionRecordStatusSaveDTO.getAssetsId()).eq(Target::getGoalType, 20001));

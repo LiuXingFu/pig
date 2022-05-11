@@ -44,4 +44,6 @@ public interface AssetsReMapper extends BaseMapper<AssetsRe> {
 	String queryAssetsReDetail(SaveAssetsDTO saveAssetsDTO);
 
 	void updateAssetsReDetail(@Param("assetsId") Integer assetsId, @Param("caseeId") Integer caseeId,@Param("listParams") List<KeyValue> listParams);
+
+	List<AssetsRe> selectByAssetsReIdList(@Param("assetsReIdList") List<Integer> assetsReIdList);
 }

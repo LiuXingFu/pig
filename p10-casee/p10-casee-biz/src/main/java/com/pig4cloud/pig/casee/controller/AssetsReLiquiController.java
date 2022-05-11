@@ -207,6 +207,17 @@ public class AssetsReLiquiController {
 	}
 
 	/**
+	 * 裁定未送达
+	 * @param assetsReLiquiFlowChartPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "裁定未送达", notes = "裁定未送达")
+	@GetMapping("/queryRulingNotService" )
+	public R queryRulingNotService(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO) {
+		return R.ok(assetsReLiquiService.queryRulingNotService(page,assetsReLiquiFlowChartPageDTO));
+	}
+
+	/**
 	 * 拍卖到期无结果
 	 * @param assetsReLiquiFlowChartPageDTO
 	 * @return R

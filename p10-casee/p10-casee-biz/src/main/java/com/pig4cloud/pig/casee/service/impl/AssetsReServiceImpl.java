@@ -89,4 +89,9 @@ public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> i
 		}
 
 	}
+
+	@Override
+	public List<AssetsRe> queryByAssetsReIdList(List<Integer> assetsReIdList){
+		return this.baseMapper.selectByAssetsReIdList(assetsReIdList);
+	}
 }

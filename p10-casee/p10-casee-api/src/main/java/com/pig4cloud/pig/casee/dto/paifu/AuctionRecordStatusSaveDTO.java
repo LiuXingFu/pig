@@ -82,4 +82,10 @@ public class AuctionRecordStatusSaveDTO{
 	@ApiModelProperty(value="备注")
 	private String remark;
 
+	/**
+	 * 项目类型(100-清收,200-拍辅)
+	 */
+	@ApiModelProperty(value="项目类型(100-清收,200-拍辅)")
+	private Integer projectType;
+
 }
