@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.SignUpLookLike;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifu.detail.ReserveSeeSampleSeeSampleList;
@@ -30,6 +31,8 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 	SignUpLookLikeService signUpLookLikeService;
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+	@Autowired
+	CustomerService customerService;
 
 
 	@Override
@@ -61,6 +64,14 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 			signUpLookLikeService.save(signUpLookLike);
 
 			reserveSeeSampleSeeSampleList.setSignUpLookLikeId(signUpLookLike.getSignUpLookLikeId());
+
+			CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+			BeanUtils.copyProperties(reserveSeeSampleSeeSampleList,customerSubjectDTO);
+			customerSubjectDTO.setProjectId(taskNode.getProjectId());
+			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+			customerSubjectDTO.setCustomerType(20000);
+			//添加客户信息
+			customerService.saveCustomer(customerSubjectDTO);
 		}
 
 		paiFu_stcc_bmky_bmky.setReserveSeeSampleSeeSampleLists(reserveSeeSampleSeeSampleLists);
