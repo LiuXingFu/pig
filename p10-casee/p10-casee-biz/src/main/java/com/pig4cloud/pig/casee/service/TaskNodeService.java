@@ -24,9 +24,7 @@ import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.TaskNode;
-
 import com.pig4cloud.pig.casee.entity.TaskReminder;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
@@ -136,11 +134,11 @@ public interface TaskNodeService extends IService<TaskNode> {
 
 	/**
 	 * 	复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
-	 * @param paiFu_stcc_pmgg_pmgg 拍卖公告节点信息
-	 * @param taskNode 当前提交节点数据
+	 * @param jointAuctionAssetsDTOList 联合拍卖财产信息
+	 * @param projectType 项目类型
 	 * @return R
 	 */
-	void auctionResultsCopyTaskNode(PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, TaskNode taskNode);
+	void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer projectType);
 
 	/**
 	 * 复制节点信息

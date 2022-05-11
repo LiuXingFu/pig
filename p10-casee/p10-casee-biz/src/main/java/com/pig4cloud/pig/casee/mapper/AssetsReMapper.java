@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsVO;
@@ -45,5 +46,5 @@ public interface AssetsReMapper extends BaseMapper<AssetsRe> {
 
 	void updateAssetsReDetail(@Param("assetsId") Integer assetsId, @Param("caseeId") Integer caseeId,@Param("listParams") List<KeyValue> listParams);
 
-	List<AssetsRe> selectByAssetsReIdList(@Param("assetsReIdList") List<Integer> assetsReIdList);
+	List<JointAuctionAssetsDTO> selectByAssetsReIdList(@Param("assetsReIdList") List<Integer> assetsReIdList);
 }

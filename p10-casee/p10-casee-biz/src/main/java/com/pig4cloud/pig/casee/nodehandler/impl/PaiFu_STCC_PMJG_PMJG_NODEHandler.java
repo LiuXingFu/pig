@@ -1,9 +1,8 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -73,7 +72,7 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 
 		if (paiFu_stcc_pmjg_pmjg.getAuctionResults() == 20) {//流拍
 			//如果拍卖结果流拍则复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
-			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg,taskNode);
+			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList());
 		} else {//成交
 			//通过清收移交记录信息查询清收项目id
 			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
@@ -123,9 +122,9 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 
 		List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
 		//循环当前拍卖公告联合拍卖财产信息
-		for (AssetsReDTO assetsReDTO : paiFu_stcc_pmgg_pmgg.getAssetsReIdList()) {
+		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+			expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
 			expenseRecordAssetsReList.add(expenseRecordAssetsRe);
 		}

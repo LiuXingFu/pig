@@ -43,7 +43,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 		//拍卖结果
 		EntityZX_STZX_CCZXPMJG_CCZXPMJG entityZX_stzx_cczxpmjg_cczxpmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXPMJG_CCZXPMJG.class);
 		//查询当前财产拍卖公告节点信息
-		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
+		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG", taskNode.getTargetId());
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(nodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 		//拍卖记录信息

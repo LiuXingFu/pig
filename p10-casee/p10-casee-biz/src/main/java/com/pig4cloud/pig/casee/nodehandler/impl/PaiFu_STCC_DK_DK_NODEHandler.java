@@ -5,6 +5,7 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -153,14 +154,14 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
 
 		//循环当前拍卖公告联合拍卖财产信息
-		for (AssetsReDTO assetsReDTO : paiFu_stcc_pmgg_pmgg.getAssetsReIdList()) {
+		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 			PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
-			paymentRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+			paymentRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordAssetsReList.add(paymentRecordAssetsRe);
 
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(assetsReDTO.getAssetsReId());
+			expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
 		}
 		// 添加回款记录财产关联信息

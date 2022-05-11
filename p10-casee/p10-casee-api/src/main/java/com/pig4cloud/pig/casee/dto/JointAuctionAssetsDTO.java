@@ -14,31 +14,63 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
-import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
-import com.pig4cloud.pig.casee.vo.AssetsVO;
-import com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO;
-
-import java.util.List;
+import lombok.Data;
 
 /**
- * 财产关联表
+ * 财产表
  *
  * @author ligt
- * @date 2022-01-19 15:19:24
+ * @date 2022-01-11 10:29:44
  */
-public interface AssetsReService extends IService<AssetsRe> {
+@Data
+public class JointAuctionAssetsDTO extends AssetsRe {
 
-	List<AssetsVO> getProjectIdStatusByAssets(Integer projectId, Integer status);
+	/**
+	 * 财产id
+	 */
+	private Integer assetsId;
 
-	List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId);
+	/**
+	 * 财产名称
+	 */
+	private String assetsName;
 
-	void updateAssetsReDetail(SaveAssetsDTO saveAssetsDTO);
+	/**
+	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
+	 */
+	private Integer assetsType;
 
-	List<JointAuctionAssetsDTO> queryByAssetsReIdList(List<Integer> assetsReIdList);
+	/**
+	 * 所有权人
+	 */
+	private String owner;
+
+	/**
+	 * 财产账号/编号
+	 */
+	private String accountNumber;
+
+	/**
+	 * 省
+	 */
+	private String province;
+
+	/**
+	 * 市
+	 */
+	private String city;
+
+	/**
+	 * 区
+	 */
+	private String area;
+
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }
