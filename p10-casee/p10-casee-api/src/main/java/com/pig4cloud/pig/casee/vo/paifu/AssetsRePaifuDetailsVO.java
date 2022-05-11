@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.vo.AssetsDeailsVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO;
+import com.pig4cloud.pig.casee.vo.CaseeVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -28,7 +29,7 @@ public class AssetsRePaifuDetailsVO extends AssetsRePaifu {
 	 * 案件详情
 	 */
 	@ApiModelProperty(value="案件详情")
-	private Casee casee;
+	private CaseeVO casee;
 
 	/**
 	 * 财产详情

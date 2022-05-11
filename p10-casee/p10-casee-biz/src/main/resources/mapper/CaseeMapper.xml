@@ -65,4 +65,10 @@
 		left join p10_court on p10_court.court_id = p10_casee.court_id
 		where paifu_project_id = #{projectId}
 	</select>
+
+	<select id="selectByCaseeId" resultType="com.pig4cloud.pig.casee.vo.CaseeVO">
+		select p10_casee.*,p10_court.court_name from p10_casee
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		where p10_casee.casee_id = #{caseeId}
+	</select>
 </mapper>

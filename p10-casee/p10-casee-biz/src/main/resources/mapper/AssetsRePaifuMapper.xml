@@ -185,9 +185,9 @@
 		<collection property="projectPaifu" ofType="com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu"
 					column="project_id"
 					select="com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper.getByPorjectId"></collection>
-		<collection property="casee" ofType="com.pig4cloud.pig.casee.entity.Casee"
+		<collection property="casee" ofType="com.pig4cloud.pig.casee.vo.CaseeVO"
 					column="casee_id"
-					select="com.pig4cloud.pig.casee.mapper.CaseeMapper.selectById"></collection>
+					select="com.pig4cloud.pig.casee.mapper.CaseeMapper.selectByCaseeId"></collection>
 		<collection property="assets" ofType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO"
 					column="assets_id"
 					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.queryById"></collection>
