@@ -22,6 +22,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailsVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -200,5 +201,10 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	@Override
 	public 	List<AssetsRePaifuDetailVO> queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId){
 		return this.baseMapper.selectPostAnAuctionList(projectId,caseeId,assetsId);
+	}
+
+	@Override
+	public AssetsRePaifuDetailsVO queryAssetsReProjectCasee(Integer assetsReId){
+		return this.baseMapper.queryAssetsReProjectCasee(assetsReId);
 	}
 }

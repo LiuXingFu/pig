@@ -10,6 +10,7 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailsVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -30,5 +31,7 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 	List<AssetsRePaifuDetailVO> selectByProjectId(@Param("projectId") Integer projectId,@Param("assetsName") String assetsName);
 
 	List<AssetsRePaifuDetailVO> selectPostAnAuctionList(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("assetsId") Integer assetsId);
+
+	AssetsRePaifuDetailsVO queryAssetsReProjectCasee(@Param("assetsReId") Integer assetsReId);
 }
 
