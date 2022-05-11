@@ -82,8 +82,17 @@ public class LIQUI_SSES_SSESCPJG_SSESCPJG_NODEHandler extends TaskNodeHandler {
 		projectLiQuiDetail.setInterest(liQui_SSES_SSESCPJG_SSESCPJG.getInterest());
 		projectLiQuiDetail.setPrincipalInterestAmount(liQui_SSES_SSESCPJG_SSESCPJG.getRefereeAmount());
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+		//查询二审诉讼费并修改诉讼金额
+		ExpenseRecord esExpenseRecord = expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, taskNode.getProjectId()).eq(ExpenseRecord::getCaseeId, taskNode.getCaseeId()).eq(ExpenseRecord::getCostType, 10004));
+		esExpenseRecord.setCostAmount(liQui_SSES_SSESCPJG_SSESCPJG.getLitigationCosts());
+
+		//修改项目总金额
+		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(esExpenseRecord.getCostAmount()));
+		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(liQui_SSES_SSESCPJG_SSESCPJG.getLitigationCosts()));
+
 		//修改项目本金、利息、以及本金利息总额
 		projectLiquiService.updateById(projectLiqui);
+		expenseRecordService.updateById(esExpenseRecord);
 
 		List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, taskNode.getProjectId()).ne(ProjectSubjectRe::getType,0));
 
