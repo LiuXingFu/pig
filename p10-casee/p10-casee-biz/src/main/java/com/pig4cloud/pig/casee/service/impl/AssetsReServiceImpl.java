@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.SaveAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.mapper.AssetsReMapper;
@@ -91,7 +92,7 @@ public class AssetsReServiceImpl extends ServiceImpl<AssetsReMapper, AssetsRe> i
 	}
 
 	@Override
-	public List<AssetsRe> queryByAssetsReIdList(List<Integer> assetsReIdList){
+	public List<JointAuctionAssetsDTO> queryByAssetsReIdList(List<Integer> assetsReIdList){
 		return this.baseMapper.selectByAssetsReIdList(assetsReIdList);
 	}
 }

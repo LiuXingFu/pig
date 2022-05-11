@@ -14,61 +14,63 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.BankLoan;
+
+import com.pig4cloud.pig.casee.entity.AssetsRe;
 import lombok.Data;
 
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-
 /**
- * 银行借贷基本信息
+ * 财产表
  *
- * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
 @Data
-public class BankLoanInformationVO extends BankLoan {
+public class JointAuctionAssetsDTO extends AssetsRe {
 
 	/**
-	 * 债务人信息
+	 * 财产id
 	 */
-	private List<SubjectInformationVO> subjectInformationVOList;
+	private Integer assetsId;
 
 	/**
-	 * 抵押物信息
+	 * 财产名称
 	 */
-	private List<AssetsInformationVO> assetsInformationVOList;
+	private String assetsName;
 
 	/**
-	 * 状态(0-待接收 1-已接收 2-退回 3-已完成)
+	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
 	 */
-	private Integer status;
-
-	private String entrustedInsName;
-
-	private String entrustedOutlesName;
+	private Integer assetsType;
 
 	/**
-	 * 移交本金
+	 * 所有权人
 	 */
-	private BigDecimal transferPrincipal;
+	private String owner;
 
 	/**
-	 * 移交利息
+	 * 财产账号/编号
 	 */
-	private BigDecimal transferInterest;
+	private String accountNumber;
 
 	/**
-	 * 移交总额
+	 * 省
 	 */
-	private BigDecimal transferRental;
+	private String province;
 
 	/**
-	 * 移送时间
+	 * 市
 	 */
-	private LocalDate handoverTime;
+	private String city;
+
+	/**
+	 * 区
+	 */
+	private String area;
+
+	/**
+	 * 信息地址
+	 */
+	private String informationAddress;
 }

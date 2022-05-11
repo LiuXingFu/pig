@@ -12,9 +12,21 @@ import java.time.LocalDate;
 public class TransferRecordLiquiDetail {
 
 	/**
-	 * 移送金额
+	 * 本金
 	 */
-	@ApiModelProperty(value="移送金额")
+	@ApiModelProperty(value="本金")
+	private BigDecimal principal;
+
+	/**
+	 * 利息
+	 */
+	@ApiModelProperty(value="利息")
+	private BigDecimal interest;
+
+	/**
+	 * 本金利息总额
+	 */
+	@ApiModelProperty(value="本金利息总额")
 	private BigDecimal handoverAmount;
 
 	/**
