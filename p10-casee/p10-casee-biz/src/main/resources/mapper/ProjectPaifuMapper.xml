@@ -226,6 +226,7 @@
 		and p10_auction_results.auction_results_id is null
 		and p10_auction_record.announcement_start_time &lt;= now()
 		and p10_auction_record.auction_start_time >= now()
+		and p10_auction_record_assets_re.`status` = 200
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>

@@ -829,7 +829,8 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countAuctionPropertyVO.setArrivalCompensationNotAdjudicated(arrivalCompensationNotAdjudicated.getTotal());
 
 		//**********裁定未送达********************************
-		countAuctionPropertyVO.setRulingNotService(queryPropertyFlowChartPage("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK", null));
+		IPage<AssetsReLiquiFlowChartPageVO> RulingNotService = assetsReLiquiService.queryRulingNotService(page, assetsReLiquiFlowChartPageDTO);
+		countAuctionPropertyVO.setRulingNotService(RulingNotService.getTotal());
 
 		//**********送达未腾退********************************
 		countAuctionPropertyVO.setDeliveredButNotVacated(queryPropertyFlowChartPage("entityZX_STZX_CCZXTTCG_CCZXTTCG", null));
