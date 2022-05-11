@@ -24,11 +24,11 @@ public class ProjectPaifuDetail {
 	/**
 	 * 项目总金额
 	 */
-	BigDecimal projectAmount=new BigDecimal(0.00);
+	BigDecimal projectAmount;
 
 	/**
 	 * 已回款金额
 	 */
-	BigDecimal repaymentAmount=new BigDecimal(0.00);
+	BigDecimal repaymentAmount;
 
 }

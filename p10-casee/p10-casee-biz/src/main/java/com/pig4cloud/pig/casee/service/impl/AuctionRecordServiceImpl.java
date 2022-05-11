@@ -253,13 +253,15 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		List<AuctionRecordStatus> auctionRecordStatuses = new ArrayList<>();
 		List<AuctionRecord> auctionRecords = new ArrayList<>();
 		List<Auction> auctions = new ArrayList<>();
+		LocalDate newDate = LocalDate.now();
 		for(AuctionRecord auctionRecord : auctionRecordsList){
+
 			LocalDate changeTime = auctionRecord.getAuctionStartTime();
-			if(auctionRecord.getAuctionStatus()==100){
-				auctionStatus = 200;
-			}else if(auctionRecord.getAuctionStatus()==200){
+			if(auctionRecord.getAuctionEndTime().isBefore(newDate) || auctionRecord.getAuctionEndTime().isEqual(newDate)){
 				auctionStatus = 300;
 				changeTime = auctionRecord.getAuctionEndTime();
+			}else if(auctionRecord.getAuctionStartTime().isBefore(newDate) || auctionRecord.getAuctionStartTime().isEqual(newDate)){
+				auctionStatus = 200;
 			}
 			AuctionRecord updateAuctionRecord = new AuctionRecord();
 			updateAuctionRecord.setAuctionRecordId(auctionRecord.getAuctionRecordId());

@@ -66,5 +66,6 @@
 		<if test="caseeHandlingRecords.targetId!=null">
 			AND p10_casee_handling_records.target_id=#{caseeHandlingRecords.targetId}
 		</if>
+		order by p10_casee_handling_records.create_time desc
 	</select>
 </mapper>
