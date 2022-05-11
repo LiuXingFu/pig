@@ -10,6 +10,7 @@ import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailsVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsReTargetPageVO;
 
 import java.util.List;
@@ -75,6 +76,13 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 * @return
 	 */
 	List<AssetsRePaifuDetailVO> queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId);
+
+	/**
+	 * 查询财产关联详情和项目案件财产详情
+	 * @param assetsReId
+	 * @return
+	 */
+	AssetsRePaifuDetailsVO queryAssetsReProjectCasee(Integer assetsReId);
 
 
 }

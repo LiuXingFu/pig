@@ -48,6 +48,11 @@
 		<result property="describes" column="describes"/>
 	</resultMap>
 
+	<select id="getByPorjectId" resultMap="projectMap">
+		select * from p10_project
+		where project_id = #{projectId}
+	</select>
+
 	<select id="selectPagePaifu" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO">
 		select p10_project.*,p10_casee.*,p10_court.court_name as courtName from p10_project
 		left join (select * from (select * from p10_project_casee_re order by create_time desc)p10_project_casee_re GROUP BY p10_project_casee_re.project_id)p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
