@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,7 +25,9 @@ import com.pig4cloud.pig.admin.api.dto.TaskNodeTemplateDTO;
 import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.Target;
+import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu;
 import com.pig4cloud.pig.casee.entity.project.beillegalprocedure.BeIllegal;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX;
@@ -39,6 +42,7 @@ import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS.LiQuiSSYS;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXSZ.LiQuiZXSZ;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ZXZH.LiQuiZXZH;
 import com.pig4cloud.pig.casee.mapper.TargetMapper;
+import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.casee.vo.TargetCaseeProjectPageVO;
@@ -75,6 +79,8 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 	RemoteOutlesTemplateReService remoteOutlesTemplateReService;
 	@Autowired
 	TaskNodeService taskNodeService;
+	@Autowired
+	AssetsService assetsService;
 
 	@Override
 	public IPage<TargetPageVO> queryPageList(Page page, TargetPageDTO targetPageDTO) {
@@ -158,7 +164,14 @@ public class TargetServiceImpl extends ServiceImpl<TargetMapper, Target> impleme
 		}
 		//添加任务数据
 		configurationNodeTemplate(targetAddDTO, taskNodeTemplate.getData().getTemplateId());
-
+		if (targetAddDTO.getGoalId()!=null&&targetAddDTO.getGoalType().equals(20001)){
+			Assets assets = assetsService.getById(targetAddDTO.getGoalId());
+			if (assets.getAssetsType().equals(20202)||assets.getAssetsType().equals(20203)||assets.getAssetsType().equals(20205)){//如果当前财产是动产则直接修改不动产现勘入户节点状态为已跳过
+				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, targetAddDTO.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getNodeName, "不动产现勘入户"));
+				taskNode.setStatus(301);
+				taskNodeService.updateById(taskNode);
+			}
+		}
 		return 1;
 	}
 
