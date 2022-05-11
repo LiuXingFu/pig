@@ -230,4 +230,12 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	IPage<AssetsReLiquiProjectVO> queryByAssetsId(Page page,Integer assetsId);
 
 	Integer updateAssetsRe(Integer projectId,Integer newCaseeId);
+
+
+	/**
+	 * 查询可移交财产集合
+	 * @param projectId
+	 * @return
+	 */
+	List<AssetsReDTO> queryTransferableAssetsReList(Integer projectId);
 }
