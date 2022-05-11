@@ -62,13 +62,12 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
 			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
-			projectPaifu.getProjectPaifuDetail().setProjectAmount(projectPaifu.getProjectPaifuDetail().getProjectAmount().add(paiFu_stcc_jgyj_jgyj.getPricingFee()));
-			projectPaifu.setProjectPaifuDetail(projectPaifu.getProjectPaifuDetail());
-			//修改拍辅项目总金额
-			projectPaifuService.updateById(projectPaifu);
 
 			//添加拍辅回款、费用明细信息
 			addJgyjRepaymentFee(paiFu_stcc_jgyj_jgyj, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO);
+
+			// 更新项目总金额
+			projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
 			//通过清收移交记录信息查询清收项目id
 			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_jgyj_jgyj.getAssetsId());

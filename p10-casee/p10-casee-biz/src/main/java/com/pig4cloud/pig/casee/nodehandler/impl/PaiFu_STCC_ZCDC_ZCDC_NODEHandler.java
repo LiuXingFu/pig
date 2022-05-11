@@ -69,25 +69,20 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_zcdc_zcdc.getAssetsId());
 
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
-		projectPaifu.getProjectPaifuDetail().setProjectAmount(projectPaifu.getProjectPaifuDetail().getProjectAmount().add(paiFu_stcc_zcdc_zcdc.getAuxiliaryFee()));
-		projectPaifu.setProjectPaifuDetail(projectPaifu.getProjectPaifuDetail());
-		//修改拍辅项目总金额
-		projectPaifuService.updateById(projectPaifu);
 
 		addZcdcRepaymentFee(paiFu_stcc_zcdc_zcdc,paiFu_stcc_pmgg_pmgg,projectPaifu,casee,assetsReSubjectDTO);
+		// 更新项目总金额
+		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
 
 		//通过清收移交记录信息查询清收项目id
 		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_zcdc_zcdc.getAssetsId());
 		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
-			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(paiFu_stcc_zcdc_zcdc.getAuxiliaryFee()));
-			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-			//修改清收项目总金额
-			projectLiquiService.updateById(projectLiqui);
 
 			//添加清收回款、费用明细信息
 			addZcdcRepaymentFee(paiFu_stcc_zcdc_zcdc,paiFu_stcc_pmgg_pmgg,projectLiqui,casee,assetsReSubjectDTO);
+			projectLiquiService.modifyProjectAmount(liquiTransferRecord.getProjectId());
 		}
 	}
 
