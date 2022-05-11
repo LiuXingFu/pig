@@ -93,4 +93,9 @@ public class AssetsReLiquiFlowChartPageVO extends AssetsReLiqui {
 	@ApiModelProperty(value="节点名称")
 	private String nodeName;
 
+	/**
+	 * 拍卖id
+	 */
+	private Integer auctionRecordId;
+
 }

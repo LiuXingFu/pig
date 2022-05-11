@@ -70,6 +70,8 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectDispositionRuling(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<AssetsReLiquiFlowChartPageVO> selectRulingNotService(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
 	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionDue(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	IPage<AssetsReLiquiFlowChartPageVO> selectPropertyAuctionSuccess(Page page, @Param("query") AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);

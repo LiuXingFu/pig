@@ -275,6 +275,14 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	}
 
 	@Override
+	public IPage<AssetsReLiquiFlowChartPageVO> queryRulingNotService(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectRulingNotService(page,assetsReLiquiFlowChartPageDTO,insOutlesDTO);
+	}
+
+	@Override
 	public IPage<AssetsReLiquiFlowChartPageVO> queryPropertyAuctionDue(Page page, AssetsReLiquiFlowChartPageDTO assetsReLiquiFlowChartPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));

@@ -38,4 +38,6 @@ public interface AssetsReService extends IService<AssetsRe> {
 	List<CaseeOrAssetsVO> selectCaseeOrAssets(Integer caseeId);
 
 	void updateAssetsReDetail(SaveAssetsDTO saveAssetsDTO);
+
+	List<AssetsRe> queryByAssetsReIdList(List<Integer> assetsReIdList);
 }
