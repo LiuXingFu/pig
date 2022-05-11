@@ -684,14 +684,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
 
-			// 处理特殊节点与一般节点
-			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
-
 			//修改比当前节点顺序小的节点状态为跳过
 			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper=new LambdaUpdateWrapper<>();
 			lambdaQueryWrapper.set(TaskNode::getStatus,301);
 			lambdaQueryWrapper.eq(TaskNode::getTargetId,taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0).le(TaskNode::getSort,taskFlowDTO.getSort());
 			this.update(lambdaQueryWrapper);
+
+			// 处理特殊节点与一般节点
+			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
