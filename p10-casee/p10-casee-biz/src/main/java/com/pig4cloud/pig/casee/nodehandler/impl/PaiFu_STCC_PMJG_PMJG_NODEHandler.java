@@ -74,12 +74,8 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 			//如果拍卖结果流拍则复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
 			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),0);
 		} else {//成交
-			//通过清收移交记录信息查询清收项目id
-			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
 			//查询案件信息
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
-			//查询当前财产关联债务人信息
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(liquiTransferRecord.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
 
 			//查询拍辅项目信息
 			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
@@ -88,11 +84,17 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 			//修改拍辅项目总金额
 			projectPaifuService.updateById(projectPaifu);
 
+			//查询拍辅财产关联债务人信息
+			AssetsReSubjectDTO pfAssetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
+
 			//添加拍辅回款、费用明细信息
-			addPmjgRepaymentFee(paiFu_stcc_pmjg_pmjg,paiFu_stcc_pmgg_pmgg,projectPaifu,casee,assetsReSubjectDTO);
+			addPmjgRepaymentFee(paiFu_stcc_pmjg_pmjg,paiFu_stcc_pmgg_pmgg,projectPaifu,casee,pfAssetsReSubjectDTO);
 
-
+			//通过清收移交记录信息查询清收项目id
+			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
 			if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
+				//查询清收财产关联债务人信息
+				AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(liquiTransferRecord.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_pmjg_pmjg.getAssetsId());
 				//查询清收项目信息
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 				projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee()));
