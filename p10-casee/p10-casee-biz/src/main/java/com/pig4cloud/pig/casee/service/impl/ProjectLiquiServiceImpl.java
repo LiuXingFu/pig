@@ -303,7 +303,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	@Override
 	public ProjectLiqui getByProjectId(Integer projectId) {
-		return this.baseMapper.getByProjectId(projectId);
+		return this.baseMapper.selectProjectDetails(projectId);
 	}
 
 	@Override

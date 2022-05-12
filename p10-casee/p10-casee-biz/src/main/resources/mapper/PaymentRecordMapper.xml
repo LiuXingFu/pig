@@ -71,6 +71,25 @@
 		order by p10_payment_record.create_time desc
 	</select>
 
+	<select id="getByUnassignedPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+		select p10_payment_record.* from
+		p10_payment_record
+		where
+		p10_payment_record.del_flag=0
+		and p10_payment_record.project_id = #{query.projectId}
+		and ISNULL(p10_payment_record.father_id)
+		AND p10_payment_record.payment_type != 100
+		AND p10_payment_record.status = 0
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and p10_payment_record.subject_name like concat('%', #{query.subjectName}, '%')
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_payment_record.payment_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		order by p10_payment_record.create_time desc
+	</select>
+
 	<select id="sumCourtPayment" resultType="java.math.BigDecimal">
 		select SUM(payment_amount) from p10_payment_record
 		where del_flag = 0 and father_id=null
@@ -122,9 +141,7 @@
 	</select>
 
 	<select id="getCourtPaymentUnpaid" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
-		select p10_payment_record.*,p10_payment_record.subject_name as name, p10_subject.subject_id as subjectId from p10_payment_record
-		left join p10_payment_record_subject_re on p10_payment_record_subject_re.payment_record_id=p10_payment_record.payment_record_id
-		left join p10_subject on p10_subject.subject_id=p10_payment_record_subject_re.subject_id
+		select p10_payment_record.*,p10_payment_record.subject_name as name from p10_payment_record
 		where p10_payment_record.del_flag = 0
 		and p10_payment_record.project_id=#{projectId}
 		and p10_payment_record.funds_type like concat( '%', 200, '%' )

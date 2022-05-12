@@ -16,7 +16,6 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -77,6 +76,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
+	public IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
+		return this.baseMapper.getByUnassignedPaymentRecordPage(page,paymentRecordPageDTO);
+	}
+
+	@Override
 	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord){
 		return this.baseMapper.sumCourtPayment(paymentRecord);
 	}
@@ -102,6 +106,9 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	@Override
 	public boolean collection(PaymentRecordDTO paymentRecordDTO) {
+		if (paymentRecordDTO.getPaymentType().equals(300)){//自动履行到申请人
+			paymentRecordDTO.setStatus(1);
+		}
 		//添加领款信息
 		boolean save = this.save(paymentRecordDTO);
 

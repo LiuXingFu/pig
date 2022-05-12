@@ -103,6 +103,7 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		paymentRecord.setProjectId(project.getProjectId());
 		paymentRecord.setCompanyCode(project.getCompanyCode());
 		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
+		paymentRecord.setStatus(0);
 		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		paymentRecordService.save(paymentRecord);
 
