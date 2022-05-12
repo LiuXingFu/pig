@@ -41,7 +41,9 @@ import java.util.List;
 @Mapper
 public interface BehaviorLiquiMapper extends BaseMapper<Behavior> {
 
-	IPage<CaseeLiquiDebtorPageVO> selectDebtorPage(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+	IPage<CaseeLiquiDebtorPageVO> selectSanctionApplyNotImplemented(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	IPage<CaseeLiquiDebtorPageVO> selectLimitNotService(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 

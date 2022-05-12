@@ -77,6 +77,22 @@
 		where p10_assets_re.project_id=#{projectId}
 	</select>
 
+	<select id="selectBySubject" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+		select p10_assets_re.*,p10_assets.type,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_re_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		where p10_project.project_type = 100
+		and p10_assets_re_subject.subject_id = #{subjectId}
+		<if test="caseeId != null and caseeId != ''">
+			and p10_assets_re.casee_id = #{caseeId}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and p10_assets_re.project_id=#{projectId}
+		</if>
+	</select>
+
 	<select id="queryAssetsSubject" resultMap="assetsSubjectMap">
 		select p10_assets_re.* from p10_assets_re
 		where p10_assets_re.project_id=#{projectId} and p10_assets_re.casee_id=#{caseeId} and p10_assets_re.assets_id=#{assetsId}
@@ -211,8 +227,7 @@
 		left join (select p10_assets_re.assets_re_id,p10_target.target_id from p10_assets_re
 		left join p10_target on p10_target.project_id = p10_assets_re.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets_re.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-		where p10_assets_re.project_id = 658
-		and p10_assets_re.`status` = 100
+		where p10_assets_re.`status` = 100
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "entityZX_STZX_CCZXSQYS_CCZXSQYS"
 		and ((json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)

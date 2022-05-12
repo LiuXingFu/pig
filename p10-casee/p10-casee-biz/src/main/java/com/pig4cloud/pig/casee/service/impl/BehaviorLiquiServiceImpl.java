@@ -60,11 +60,19 @@ public class BehaviorLiquiServiceImpl extends ServiceImpl<BehaviorLiquiMapper, B
 	}
 
 	@Override
-	public IPage<CaseeLiquiDebtorPageVO> queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO){
+	public IPage<CaseeLiquiDebtorPageVO> selectSanctionApplyNotImplemented(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.selectDebtorPage(page,behaviorLiquiDebtorPageDTO,insOutlesDTO);
+		return this.baseMapper.selectSanctionApplyNotImplemented(page,behaviorLiquiDebtorPageDTO,insOutlesDTO);
+	}
+
+	@Override
+	public IPage<CaseeLiquiDebtorPageVO> queryLimitNotService(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.selectLimitNotService(page,behaviorLiquiDebtorPageDTO,insOutlesDTO);
 	}
 
 	@Override

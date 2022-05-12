@@ -175,9 +175,9 @@
 		<id property="subjectId" column="subject_id"/>
 		<result property="name" column="name"/>
 		<result property="caseeId" column="casee_id"/>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO"
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.dto.AssetsReDTO"
 					column="{subjectId=subject_id,caseeId=casee_id}"
-					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
+					select="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper.selectBySubject"></collection>
 		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior"
 					column="{subjectId=subject_id,caseeId=casee_id}"
 					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
@@ -513,23 +513,22 @@
 	</select>
 
 	<select id="caseeSubjectNotAddAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeLiquiFlowChartPageVO">
-		select DISTINCT p10_subject.subject_id,p10_subject.name as
-		subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name
-		as userName from p10_casee_subject_re
-		left join p10_casee on p10_casee.casee_id = p10_casee_subject_re.casee_id
+		select p10_subject.subject_id,p10_subject.name as subjectName,p10_project.project_id,p10_project.company_code,p10_casee.*,p10_court.court_name,p10_project_casee_re.actual_name as userName from p10_casee
 		left join p10_project_casee_re on p10_project_casee_re.casee_id = p10_casee.casee_id
 		left join p10_project on p10_project.project_id = p10_project_casee_re.project_id
-		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
+		left join p10_casee_subject_re on p10_casee_subject_re.casee_id = p10_casee.casee_id
 		left join p10_court on p10_court.court_id = p10_casee.court_id
-		left join p10_assets_re_subject on p10_assets_re_subject.subject_id = p10_casee_subject_re.subject_id
-		left join p10_assets_re on p10_assets_re.assets_re_id = p10_assets_re_subject.assets_re_id and p10_assets_re.casee_id = p10_casee.casee_id
+		left join p10_subject on p10_subject.subject_id = p10_casee_subject_re.subject_id
+		left join (select p10_assets_re.project_id,p10_assets_re.casee_id,p10_assets_re.assets_re_id,p10_assets_re_subject.subject_id from p10_assets_re
+		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_re_id
+		where p10_assets_re.casee_id is not null)p10_assets_re on p10_assets_re.project_id = p10_project.project_id and p10_assets_re.casee_id = p10_casee.casee_id and p10_assets_re.subject_id = p10_subject.subject_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_casee.casee_type in (3010,3031)
 		and p10_casee.status = 1
 		and p10_casee_subject_re.casee_personnel_type = 1
-		and p10_assets_re.assets_id is null
+		and p10_assets_re.assets_re_id is null
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>

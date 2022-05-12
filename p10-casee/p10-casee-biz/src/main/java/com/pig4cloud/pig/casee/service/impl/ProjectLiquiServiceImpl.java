@@ -670,19 +670,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return countImplementVO;
 	}
 
-	public Long queryBehaviorNodePage(String nodeKey, Integer type) {
-		Page page = new Page();
-		page.setCurrent(1);
-		page.setSize(10);
-
-		BehaviorLiquiDebtorPageDTO caseeLiquiFlowChartPageDTO = new BehaviorLiquiDebtorPageDTO();
-
-		caseeLiquiFlowChartPageDTO.setNodeKey(nodeKey);
-		caseeLiquiFlowChartPageDTO.setType(type);
-		IPage<CaseeLiquiDebtorPageVO> caseeLiquiDebtorPageVOIPage = behaviorLiquiService.queryDebtorPage(page, caseeLiquiFlowChartPageDTO);
-		return caseeLiquiDebtorPageVOIPage.getTotal();
-	}
-
 	public Long queryCaseeAssetsNotFreeze(Integer caseeType) {
 		Page page = new Page();
 		page.setCurrent(1);
@@ -709,13 +696,15 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countDebtorVO.setBehaviorNotLimit(notAddBehavior.getTotal());
 
 		//**********限制未送达********************************
-		countDebtorVO.setLimitNotService(queryBehaviorNodePage("limit_XWXZ_XWXZSDQK_XWXZSDQK", 100));
+		BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO = new BehaviorLiquiDebtorPageDTO();
+		IPage<CaseeLiquiDebtorPageVO> limitNotService = behaviorLiquiService.queryLimitNotService(page, behaviorLiquiDebtorPageDTO);
+		countDebtorVO.setLimitNotService(limitNotService.getTotal());
 
 		//**********制裁申请未实施********************************
-		countDebtorVO.setSanctionApplyNotImplemented(queryBehaviorNodePage("beIllegal_XWWF_SSXWWF_SSXWWF", 200));
+		IPage<CaseeLiquiDebtorPageVO> sanctionApplyNotImplemented = behaviorLiquiService.selectSanctionApplyNotImplemented(page, behaviorLiquiDebtorPageDTO);
+		countDebtorVO.setSanctionApplyNotImplemented(sanctionApplyNotImplemented.getTotal());
 
 		//**********已结清限制未撤销********************************
-		BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO = new BehaviorLiquiDebtorPageDTO();
 		IPage<CaseeLiquiDebtorPageVO> alreadySettleLimitNotRevoked = behaviorLiquiService.behaviorPaymentCompleted(page, behaviorLiquiDebtorPageDTO);
 		countDebtorVO.setAlreadySettleLimitNotRevoked(alreadySettleLimitNotRevoked.getTotal());
 
