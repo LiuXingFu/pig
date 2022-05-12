@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
+import com.pig4cloud.pig.casee.dto.paifu.excel.ImportPaifuDTO;
 import com.pig4cloud.pig.casee.service.ProjectPaifuService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -276,7 +277,20 @@ public class ProjectPaifuController {
 	@ApiOperation(value = "根据id查询拍辅项目", notes = "根据id查询拍辅项目")
 	@GetMapping("/queryById/{projectId}" )
 	public R queryById(@PathVariable("projectId" )Integer projectId) {
+
 		return R.ok(projectPaifuService.queryById(projectId));
+	}
+
+	/**
+	 * 导入excel拍辅数据
+	 * @return
+	 */
+	@ApiOperation(value = "导入excel拍辅数据", notes = "导入excel拍辅数据")
+	@SysLog("导入excel拍辅数据" )
+	@PostMapping("/importExcel")
+	public R importExcel(@RequestBody ImportPaifuDTO importPaifuDTO) {
+		System.out.println(importPaifuDTO);
+		return R.ok();
 	}
 
 }

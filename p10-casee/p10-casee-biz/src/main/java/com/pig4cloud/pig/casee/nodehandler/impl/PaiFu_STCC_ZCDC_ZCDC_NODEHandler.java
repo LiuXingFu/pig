@@ -251,6 +251,10 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 					.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getLiQuiPaymentRecordId()));
 		}
 
+		//拍辅资产抵偿
+		PaiFu_STCC_ZCDC_ZCDC paiFu_stcc_zcdc_zcdc = setPaiFuStccZcdcZcdc(taskNode);
 
+		//同步联合拍卖财产资产抵偿节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_zcdc_zcdc.getAssetsId(),taskNode,"paiFu_STCC_ZCDC_ZCDC");
 	}
 }
