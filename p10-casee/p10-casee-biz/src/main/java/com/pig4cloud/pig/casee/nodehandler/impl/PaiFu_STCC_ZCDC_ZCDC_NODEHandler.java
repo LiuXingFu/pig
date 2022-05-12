@@ -2,7 +2,6 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -42,8 +41,6 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 	@Autowired
 	private PaymentRecordService paymentRecordService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	private PaymentRecordAssetsReService paymentRecordAssetsReService;
@@ -74,6 +71,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		// 更新项目总金额
 		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
+		// 更新拍辅项目总金额
+		projectPaifuService.updateRepaymentAmount(taskNode.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
 		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_zcdc_zcdc.getAssetsId());
@@ -82,24 +81,18 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 
 			//添加清收回款、费用明细信息
 			addZcdcRepaymentFee(paiFu_stcc_zcdc_zcdc,paiFu_stcc_pmgg_pmgg,projectLiqui,casee,assetsReSubjectDTO);
+			// 更新清收项目总金额
 			projectLiquiService.modifyProjectAmount(liquiTransferRecord.getProjectId());
 		}
 	}
 
 	//添加回款、费用明细信息
 	public void addZcdcRepaymentFee(PaiFu_STCC_ZCDC_ZCDC paiFu_stcc_zcdc_zcdc, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {
-		//添加费用明细记录
-		ExpenseRecord expenseRecord = new ExpenseRecord();
-		expenseRecord.setCostAmount(paiFu_stcc_zcdc_zcdc.getAuxiliaryFee());
-		expenseRecord.setCostIncurredTime(paiFu_stcc_zcdc_zcdc.getSettlementDate());
-		expenseRecord.setProjectId(project.getProjectId());
-		expenseRecord.setCaseeId(casee.getCaseeId());
-		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		expenseRecord.setCompanyCode(project.getCompanyCode());
-		expenseRecord.setCostType(10007);
-		expenseRecordService.save(expenseRecord);
+		//查询当前财产程序拍辅费
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10007);
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_zcdc_zcdc.getAuxiliaryFee()));
+		//修改当前财产程序拍辅费
+		expenseRecordService.updateById(expenseRecord);
 
 		//添加资产抵偿回款信息
 		PaymentRecord paymentRecord = new PaymentRecord();
@@ -114,7 +107,6 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		paymentRecordService.save(paymentRecord);
 
 		List<PaymentRecordAssetsRe> paymentRecordAssetsReList = new ArrayList<>();
-		List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
 
 		//循环当前拍卖公告联合拍卖财产信息
 		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
@@ -122,32 +114,18 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 			paymentRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
 			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordAssetsReList.add(paymentRecordAssetsRe);
-
-			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
-			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
 		}
 		// 添加回款记录财产关联信息
 		paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);
-		// 添加费用明细记录财产关联信息
-		expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
 
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
 		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
 		// 遍历财产关联多个债务人
 		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
-			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectRes.add(expenseRecordSubjectRe);
-
 			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
 		}
-		//添加费用产生明细关联主体信息
-		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
 		//添加到款信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 	}

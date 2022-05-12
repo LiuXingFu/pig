@@ -25,8 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.admin.api.feign.RemoteUserService;
-import com.pig4cloud.pig.admin.api.vo.UserVO;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
@@ -46,7 +44,6 @@ import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.GetDifference;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
-import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,15 +67,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private ProjectOutlesDealReService projectOutlesDealReService;
 	@Autowired
-	private RemoteUserService userService;
-	@Autowired
 	private ProjectStatusService projectStatusService;
 	@Autowired
 	private ProjectSubjectReService projectSubjectReService;
 	@Autowired
 	private SubjectBankLoanReService subjectBankLoanReService;
-	@Autowired
-	private SecurityUtilsService securityUtilsService;
 	@Autowired
 	private AssetsReLiquiService assetsReLiquiService;
 	@Autowired
@@ -125,7 +118,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiQuiDetail.setRepaymentAmount(BigDecimal.valueOf(0));
 		projectLiQuiDetail.setLitigation(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getLitigation());
 		projectLiQuiDetail.setStartingTime(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getStartingTime());
-		BeanCopyUtil.copyBean(transferRecordBankLoanVO,projectLiQuiDetail);
+		BeanCopyUtil.copyBean(transferRecordBankLoanVO.getTransferRecordLiquiDetail(),projectLiQuiDetail);
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
 		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());
