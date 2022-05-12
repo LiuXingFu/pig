@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.SamplePreparationWorkListDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_KYZBGZ_KYZBGZ;
@@ -35,6 +36,8 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 	SamplePreparationWorkAssetsReService samplePreparationWorkAssetsReService;
 	@Autowired
 	RemoteSubjectService remoteSubjectService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	@Transactional
@@ -92,6 +95,14 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 				samplePreparationWorkSubjectRe.setSubjectId(subjectId);
 				samplePreparationWorkSubjectRe.setSamplePreparationWorkId(samplePreparationWork.getSamplePreparationWorkId());
 				samplePreparationWorkSubjectReList.add(samplePreparationWorkSubjectRe);
+
+				CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+				BeanUtils.copyProperties(subject,customerSubjectDTO);
+				customerSubjectDTO.setProjectId(taskNode.getProjectId());
+				customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+				customerSubjectDTO.setCustomerType(20000);
+				//添加客户信息
+				customerService.saveCustomer(customerSubjectDTO);
 			}
 		}
 		samplePreparationWorkSubjectReService.saveBatch(samplePreparationWorkSubjectReList);

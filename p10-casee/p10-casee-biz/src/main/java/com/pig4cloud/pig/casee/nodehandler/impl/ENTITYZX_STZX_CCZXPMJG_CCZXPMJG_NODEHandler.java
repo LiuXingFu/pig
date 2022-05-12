@@ -3,10 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
-import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
-import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMJG_CCZXPMJG;
@@ -36,6 +33,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private AuctionRecordService auctionRecordService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -43,7 +42,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 		//拍卖结果
 		EntityZX_STZX_CCZXPMJG_CCZXPMJG entityZX_stzx_cczxpmjg_cczxpmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXPMJG_CCZXPMJG.class);
 		//查询当前财产拍卖公告节点信息
-		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
+		TaskNode nodePmgg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG", taskNode.getTargetId());
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(nodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 		//拍卖记录信息
@@ -93,6 +92,12 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCostType(10007);
 			expenseRecordService.save(expenseRecord);
+
+			//添加费用产生明细关联财产关联信息
+			ExpenseRecordAssetsRe expenseRecordAssetsRe=new ExpenseRecordAssetsRe();
+			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
 
 			//添加费用产生明细关联主体信息
 			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();

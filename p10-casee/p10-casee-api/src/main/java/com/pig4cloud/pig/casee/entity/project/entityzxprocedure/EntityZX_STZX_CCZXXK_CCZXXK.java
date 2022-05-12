@@ -20,19 +20,29 @@ public class EntityZX_STZX_CCZXXK_CCZXXK extends CommonalityData implements Seri
 	private LocalDate explorationTime;
 
 	/**
-	 * 现勘经办人(0-否 1-是 2-自动履行到申请人)
+	 * 现勘经办人
 	 */
-	private Integer currentSurveyManager;
+	private String currentSurveyManager;
+
+	/**
+	 * 拍辅机构id
+	 */
+	private Integer insId;
+
+	/**
+	 * 拍辅网点id
+	 */
+	private Integer outlesId;
 
 	/**
 	 * 拍辅机构名称
 	 */
-	private String insId;
+	private String insName;
 
 	/**
 	 * 拍辅网点名称
 	 */
-	private String outlesId;
+	private String outlesName;
 
 	/**
 	 * 拍辅办理人名称

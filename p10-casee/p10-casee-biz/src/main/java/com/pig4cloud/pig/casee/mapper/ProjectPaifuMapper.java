@@ -69,4 +69,5 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 
 	IPage<AssetsRePaifuFlowChartPageVO> queryArrivalCompensationNotAdjudicated(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	ProjectPaifu getByPorjectId(@Param("projectId") Integer projectId);
 }

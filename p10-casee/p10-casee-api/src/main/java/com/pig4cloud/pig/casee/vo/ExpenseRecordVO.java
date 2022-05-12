@@ -17,8 +17,10 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import lombok.Data;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 费用产生记录表
@@ -34,4 +36,8 @@ public class ExpenseRecordVO extends ExpenseRecord {
 	 */
 	private BigDecimal projectAmount;
 
+	/**
+	 * 财产关联集合
+	 */
+	List<AssetsRePaifuDetailVO> assetsReList;
 }

@@ -17,11 +17,13 @@
 package com.pig4cloud.pig.casee.dto.paifu;
 
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class AuctionRecordSaveDTO {
 	 * 项目案件财产关联id集合
 	 */
 	@ApiModelProperty(value="项目案件财产关联id集合")
-	private List<AssetsReDTO> assetsReIdList;
+	List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList=new ArrayList<>();
 
     /**
      * 拍卖表id

@@ -68,11 +68,12 @@
 			AND p10_payment_record.payment_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
+		order by p10_payment_record.create_time desc
 	</select>
 
 	<select id="sumCourtPayment" resultType="java.math.BigDecimal">
 		select SUM(payment_amount) from p10_payment_record
-		where del_flag = 0
+		where del_flag = 0 and father_id=null
 		<if test="query.paymentType != null">
 			and payment_type = #{query.paymentType}
 		</if>

@@ -25,8 +25,6 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
@@ -34,6 +32,8 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	private PaymentRecordService paymentRecordService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -48,18 +48,13 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
-		//添加费用明细记录
-		ExpenseRecord expenseRecord=new ExpenseRecord();
-		expenseRecord.setCostAmount(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee());
-		expenseRecord.setCostIncurredTime(entityZX_stzx_cczxzcdc_cczxzcdc.getSettlementDate());
-		expenseRecord.setProjectId(taskNode.getProjectId());
-		expenseRecord.setCaseeId(taskNode.getCaseeId());
-		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
-		expenseRecord.setCostType(10007);
-		expenseRecordService.save(expenseRecord);
+		//查询当前财产程序拍辅费
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),taskNode.getProjectId(),10007);
+		if (expenseRecord!=null){
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee()));
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 
 		//添加抵偿回款信息
 		PaymentRecord paymentRecord=new PaymentRecord();
@@ -73,25 +68,20 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		paymentRecordService.save(paymentRecord);
 
-
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
-		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
+		List<PaymentRecordSubjectRe> paymentRecordSubjectReList = new ArrayList<>();
 		// 遍历财产关联多个债务人
 		for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectRes.add(expenseRecordSubjectRe);
-
 			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
+			paymentRecordSubjectReList.add(paymentRecordSubjectRe);
 		}
-		//添加费用产生明细关联主体信息
-		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
+		//添加抵偿回款信息关联债务人
+		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectReList);
 
+		//抵偿分配记录
 		List<PaymentRecordAddDTO> paymentRecordList = entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordList();
+		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
 		for (PaymentRecordAddDTO record : paymentRecordList) {
 			record.setPaymentType(400);
 			record.setPaymentDate(paymentRecord.getPaymentDate());
@@ -110,6 +100,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				paymentRecordSubjectRes.add(paymentRecordSubject);
 			}
 
+			//如果费用已经还完则修改状态
 			ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
 			if (expenseRecordUpdate.getCostAmount()==record.getPaymentAmount().add(record.getPaymentSumAmount())){
 				expenseRecordUpdate.setExpenseRecordId(record.getExpenseRecordId());
@@ -118,7 +109,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				expenseRecordService.updateById(expenseRecordUpdate);
 			}
 		}
-		//添加抵偿回款信息关联债务人
+		//添加抵偿分配信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 
 		//添加拍辅金额时需修改项目总金额

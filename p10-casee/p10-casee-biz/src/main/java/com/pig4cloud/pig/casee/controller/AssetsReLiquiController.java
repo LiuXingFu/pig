@@ -321,4 +321,14 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryByAssetsId(page,assetsId));
 	}
 
+	/**
+	 * 查询可移交财产集合
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "查询可移交财产集合", notes = "查询可移交财产集合")
+	@GetMapping("/queryTransferableAssetsReList/{projectId}" )
+	public R queryTransferableAssetsReList(@PathVariable Integer projectId) {
+		return R.ok(assetsReLiquiService.queryTransferableAssetsReList(projectId));
+	}
 }

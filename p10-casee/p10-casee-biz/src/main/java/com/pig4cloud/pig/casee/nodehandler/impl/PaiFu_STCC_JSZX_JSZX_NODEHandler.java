@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.ReceiveConsultation;
 import com.pig4cloud.pig.casee.entity.ReceiveConsultationQuestionRe;
 import com.pig4cloud.pig.casee.entity.TaskNode;
@@ -34,6 +35,8 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	@Transactional
@@ -42,7 +45,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		PaiFu_STCC_JSZX_JSZX paiFu_stcc_jszx_jszx = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JSZX_JSZX.class);
 		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
 
-		setReserveSeeSampleConsultingListDetailList(reserveSeeSampleConsultingLists);
+		setReserveSeeSampleConsultingListDetailList(reserveSeeSampleConsultingLists,taskNode);
 
 		paiFu_stcc_jszx_jszx.setReserveSeeSampleConsultingLists(reserveSeeSampleConsultingLists);
 
@@ -63,7 +66,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 	 * 循环添加咨询名单信息与咨询问题信息
 	 * @param reserveSeeSampleConsultingLists
 	 */
-	private void setReserveSeeSampleConsultingListDetailList(List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists) {
+	private void setReserveSeeSampleConsultingListDetailList(List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists,TaskNode taskNode) {
 		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
 			Subject subject = new Subject();
 			ReceiveConsultation receiveConsultation = new ReceiveConsultation();
@@ -89,6 +92,14 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 				receiveConsultationQuestionRe.setAskQuestions(askQuestion);
 				receiveConsultationQuestionReService.save(receiveConsultationQuestionRe);//添加咨询问题信息
 			}
+
+			CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+			BeanUtils.copyProperties(reserveSeeSampleConsulting,customerSubjectDTO);
+			customerSubjectDTO.setProjectId(taskNode.getProjectId());
+			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+			customerSubjectDTO.setCustomerType(10000);
+			//添加客户信息
+			customerService.saveCustomer(customerSubjectDTO);
 		}
 	}
 
@@ -113,7 +124,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 
 		List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists = paiFu_stcc_jszx_jszx.getReserveSeeSampleConsultingLists();
 
-		setReserveSeeSampleConsultingListDetailList(reserveSeeSampleConsultingLists);
+		setReserveSeeSampleConsultingListDetailList(reserveSeeSampleConsultingLists,taskNode);
 
 		paiFu_stcc_jszx_jszx.setReserveSeeSampleConsultingLists(reserveSeeSampleConsultingLists);
 

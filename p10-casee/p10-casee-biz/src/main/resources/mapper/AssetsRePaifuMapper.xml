@@ -179,5 +179,25 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
 	</select>
+	
+	<resultMap id="getProjectCaseeMap" type="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailsVO" extends="assetsReMap">
+		<result property="assetsTargetId" column="assetsTargetId"/>
+		<collection property="projectPaifu" ofType="com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu"
+					column="project_id"
+					select="com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper.getByPorjectId"></collection>
+		<collection property="casee" ofType="com.pig4cloud.pig.casee.vo.CaseeVO"
+					column="casee_id"
+					select="com.pig4cloud.pig.casee.mapper.CaseeMapper.selectByCaseeId"></collection>
+		<collection property="assets" ofType="com.pig4cloud.pig.casee.vo.AssetsDeailsVO"
+					column="assets_id"
+					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.queryById"></collection>
+	</resultMap>
+	
+	<select id="queryAssetsReProjectCasee" resultMap="getProjectCaseeMap">
+		select p10_assets_re.*,p10_target.target_id as assetsTargetId from p10_assets_re
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_assets_re.project_id = p10_target.project_id and p10_target.goal_type = 20001
+		where p10_assets_re.del_flag = 0
+		and p10_assets_re.assets_re_id = #{assetsReId}
+	</select>
 
 </mapper>

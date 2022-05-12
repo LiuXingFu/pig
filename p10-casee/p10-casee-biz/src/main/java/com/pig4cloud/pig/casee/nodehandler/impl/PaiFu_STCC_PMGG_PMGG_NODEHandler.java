@@ -1,7 +1,7 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.AuctionRecord;
 import com.pig4cloud.pig.casee.entity.Target;
@@ -49,7 +49,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
-		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
+		List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList = paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList();
 
 		String json = JsonUtils.objectToJson(paiFu_stcc_pmgg_pmgg);
 
@@ -60,14 +60,14 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 
 		taskNodeService.setTaskDataSubmission(taskNode);
 
-		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, assetsReIdList);
+		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, jointAuctionAssetsDTOList);
 
 	}
 
-	private void setJointAuctionRelatedOperations(TaskNode taskNode, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, List<AssetsReDTO> assetsReIdList) {
-		for (AssetsReDTO assetsReDTO : assetsReIdList) {
+	private void setJointAuctionRelatedOperations(TaskNode taskNode, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList) {
+		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 			//根据项目、案件、财产id查询程序信息
-			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
 
 			//根据程序id、节点key查询节点信息
 			TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG",target.getTargetId());
@@ -91,7 +91,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 				taskNodeService.setTaskDataSubmission(taskNodePmgg);
 
 				//添加案件任务办理记录
-				caseeHandlingRecordsService.addCaseeHandlingRecords(assetsReDTO.getAssetsId(),taskNodePmgg,paiFu_stcc_pmgg_pmgg.getAuctionType());
+				caseeHandlingRecordsService.addCaseeHandlingRecords(jointAuctionAssetsDTO.getAssetsId(),taskNodePmgg,paiFu_stcc_pmgg_pmgg.getAuctionType());
 			}
 		}
 	}
@@ -137,9 +137,9 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 
 		taskNodeService.setTaskDataSubmission(taskNode);
 
-		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
+		List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList = paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList();
 
-		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, assetsReIdList);
+		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, jointAuctionAssetsDTOList);
 
 	}
 }

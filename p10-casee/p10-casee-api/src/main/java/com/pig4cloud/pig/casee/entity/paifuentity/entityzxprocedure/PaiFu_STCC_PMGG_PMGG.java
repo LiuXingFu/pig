@@ -1,6 +1,6 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure;
 
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
 import lombok.Data;
 
@@ -77,6 +77,6 @@ public class PaiFu_STCC_PMGG_PMGG extends CommonalityData implements Serializabl
 	/**
 	 * 拍卖财产
 	 */
-	List<AssetsReDTO> assetsReIdList;
+	List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList;
 
 }

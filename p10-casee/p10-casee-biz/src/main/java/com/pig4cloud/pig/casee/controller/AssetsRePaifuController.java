@@ -111,4 +111,15 @@ public class AssetsRePaifuController {
 	public R queryPostAnAuctionList(Integer projectId,Integer caseeId,Integer assetsId) {
 		return R.ok(assetsRePaifuService.queryPostAnAuctionList(projectId, caseeId,assetsId));
 	}
+
+	/**
+	 * 询财产关联详情和项目案件财产详情
+	 * @return
+	 */
+	@ApiOperation(value = "询财产关联详情和项目案件财产详情", notes = "询财产关联详情和项目案件财产详情")
+	@GetMapping("/queryAssetsReProjectCasee/{assetsReId}")
+	public R queryAssetsReProjectCasee(@PathVariable Integer assetsReId) {
+		return R.ok(assetsRePaifuService.queryAssetsReProjectCasee(assetsReId));
+	}
+
 }

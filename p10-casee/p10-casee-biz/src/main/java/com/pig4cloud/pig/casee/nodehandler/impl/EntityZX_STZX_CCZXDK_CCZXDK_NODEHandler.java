@@ -1,6 +1,5 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -11,6 +10,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +25,6 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
@@ -36,8 +34,11 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	private PaymentRecordService paymentRecordService;
 	@Autowired
 	AssetsReService assetsReService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
+	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
 		//到款
@@ -57,18 +58,13 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		//修改项目总金额
 		projectLiquiService.updateById(projectLiqui);
 
-		//添加费用明细记录
-		ExpenseRecord expenseRecord=new ExpenseRecord();
-		expenseRecord.setCostAmount(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee());
-		expenseRecord.setCostIncurredTime(entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate());
-		expenseRecord.setProjectId(taskNode.getProjectId());
-		expenseRecord.setCaseeId(taskNode.getCaseeId());
-		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
-		expenseRecord.setCostType(10007);
-		expenseRecordService.save(expenseRecord);
+		//查询当前财产程序拍辅费
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),taskNode.getProjectId(),10007);
+		if (expenseRecord!=null){
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 
 		//添加到款回款信息
 		PaymentRecord paymentRecord=new PaymentRecord();
@@ -84,22 +80,14 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		paymentRecordService.save(paymentRecord);
 
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
 		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
 		// 遍历财产关联多个债务人
 		for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectRes.add(expenseRecordSubjectRe);
-
 			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
 		}
-		//添加费用产生明细关联主体信息
-		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
 		//添加到款信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 

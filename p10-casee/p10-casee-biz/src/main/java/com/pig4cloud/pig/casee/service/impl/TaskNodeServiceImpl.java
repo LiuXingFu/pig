@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -39,7 +40,6 @@ import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_JSZX_JSZX;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
@@ -341,14 +341,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 		if (paiFu_stcc_pmgg_pmgg != null) {
 			//查询拍卖公告节点联合拍卖财产
-			List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
-			for (AssetsReDTO assetsReDTO : assetsReIdList) {
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO :  paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 				//联合拍卖财产程序信息
-				Target jointAuctionTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
+				Target jointAuctionTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
 				//根据程序id、节点key查询最新节点信息
 				TaskNode newTaskNode = this.queryLastTaskNode(nodeKey, jointAuctionTarget.getTargetId());
 				//如果当前财产不是提交任务财产则修改它们的节点信息和状态
-				if (!assetsReDTO.getAssetsId().equals(assetsId)) {
+				if (!jointAuctionAssetsDTO.getAssetsId().equals(assetsId)) {
 					newTaskNode.setFormData(taskNode.getFormData());
 					if (newTaskNode.getNeedAudit() == 1) {//需要审核
 						newTaskNode.setStatus(101);
@@ -366,18 +365,17 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					this.setTaskDataSubmission(newTaskNode);
 
 					//添加案件任务办理记录
-					caseeHandlingRecordsService.addCaseeHandlingRecords(assetsReDTO.getAssetsId(), newTaskNode, paiFu_stcc_pmgg_pmgg.getAuctionType());
+					caseeHandlingRecordsService.addCaseeHandlingRecords(jointAuctionAssetsDTO.getAssetsId(), newTaskNode, paiFu_stcc_pmgg_pmgg.getAuctionType());
 				}
 			}
 		}
 	}
 
 	@Override
-	public void auctionResultsCopyTaskNode(PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, TaskNode taskNode) {
-		List<AssetsReDTO> assetsReIdList = paiFu_stcc_pmgg_pmgg.getAssetsReIdList();
-		for (AssetsReDTO assetsReDTO : assetsReIdList) {
+	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer projectType) {
+		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 			//查询联合拍卖财产程序id
-			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsReDTO.getAssetsId()).eq(Target::getGoalType, 20001));
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, jointAuctionAssetsDTO.getProjectId()).eq(Target::getCaseeId, jointAuctionAssetsDTO.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001));
 			//查询最后一条拍卖公告信息
 			TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
 			if (taskNodePmgg != null) {
@@ -686,9 +684,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
 
+			//修改比当前节点顺序小的节点状态为跳过
+			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper=new LambdaUpdateWrapper<>();
+			lambdaQueryWrapper.set(TaskNode::getStatus,301);
+			lambdaQueryWrapper.eq(TaskNode::getTargetId,taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0).le(TaskNode::getSort,taskFlowDTO.getSort());
+			this.update(lambdaQueryWrapper);
+
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
-
 			//添加任务记录数据
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}

@@ -1,12 +1,8 @@
 package com.pig4cloud.pig.casee.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.casee.entity.Customer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class CustomerSubjectDTO extends Customer {
@@ -64,36 +60,5 @@ public class CustomerSubjectDTO extends Customer {
 	 */
 	@ApiModelProperty(value = "民族")
 	private String ethnic;
-
-	/**
-	 * 客户id
-	 */
-	@TableId
-	@ApiModelProperty(value="客户id")
-	private Integer customerId;
-
-	/**
-	 * 主体id
-	 */
-	@ApiModelProperty(value="主体id")
-	private Integer subjectId;
-
-	/**
-	 * 项目id
-	 */
-	@ApiModelProperty(value="项目id")
-	private Integer projectId;
-
-	/**
-	 * 案件id
-	 */
-	@ApiModelProperty(value="案件id")
-	private Integer caseeId;
-
-	/**
-	 * 客户类型 可推荐客户-10000 意向客户-20000 成交客户-30000 关联申请人-40000 其他关联客户-50000
-	 */
-	@ApiModelProperty(value="客户类型 可推荐客户-10000 意向客户-20000 成交客户-30000 关联申请人-40000 其他关联客户-50000")
-	private Integer customerType;
 
 }

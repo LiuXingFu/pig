@@ -203,45 +203,29 @@
 	</select>
 
 	<select id="selectPropertyToBeAuctioned" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
-		  from p10_casee
-		left join (
-				select p10_assets_re.* from p10_assets_re
-				WHERE p10_assets_re.casee_id is not null
-				and json_extract( p10_assets_re.assets_re_detail, '$.mortgagee' ) = 0
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure.sealUpCondition' ) = 0
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsPayment' ) is null
-				UNION
-				select p10_assets_re.* from p10_assets_re
-				left join p10_target on p10_target.goal_id = p10_assets_re.assets_id
-				left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-				WHERE p10_assets_re.casee_id is not null
-				and json_extract( p10_assets_re.assets_re_detail, '$.mortgagee' ) = 0
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure.sealUpCondition' ) = 1
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsPayment' ) is null
-				and p10_target.goal_type = 20001
-				and p10_task_node.node_key = "entityZX_STZX_CCZXSQYS_CCZXSQYS"
-				and json_extract( p10_task_node.form_data, '$.businessPleaseTransfer' ) = "0"
-				UNION
-				select p10_assets_re.* from p10_assets_re
-				WHERE p10_assets_re.casee_id is not null
-				and json_extract( p10_assets_re.assets_re_detail, '$.mortgagee' ) = 2
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsSeizure.sealUpCondition' ) = 0
-				and json_extract( p10_assets_re.assets_re_detail, '$.assetsPayment' ) is null
-				) p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
+		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_target.casee_id = p10_casee.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		left join (select p10_assets_re.assets_re_id,p10_target.target_id from p10_assets_re
+		left join p10_target on p10_target.project_id = p10_assets_re.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets_re.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_assets_re.project_id = 658
+		and p10_assets_re.`status` = 100
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_key = "entityZX_STZX_CCZXSQYS_CCZXSQYS"
+		and ((json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 1 and json_extract( p10_task_node.form_data,'$.businessPleaseTransfer' ) = "0")
+		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 2 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+		)
+		)p10_target on p10_target.assets_re_id = p10_assets_re.assets_re_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
-		and p10_project.`status` = 1000
-		and p10_assets_re.assets_re_id is not null
-		and p10_casee.casee_type in (3010,3031)
-		and p10_casee.`status` = 1
-		and p10_target.goal_type = 20001
+		and p10_assets_re.`status` = 100
+		and p10_task_node.`status` = 0
 		and p10_task_node.node_key = "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ"
-		and p10_task_node.form_data is null
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -547,7 +531,7 @@
 		left join p10_assets on p10_assets.assets_id = p10_auction_record_assets_re.assets_id
 		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-		where p10_auction_record.auction_status = 100
+		where p10_auction_record.auction_status in (100,200,300)
 		and p10_project.del_flag = 0
 		and p10_project.project_type = 100
 		and p10_auction_results.auction_results_id is null
@@ -622,6 +606,7 @@
 		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
+		and p10_task_node.form_data is null
 		and p10_task_node.node_key = "entityZX_STZX_CCZXPMGG_CCZXPMGG"
 		and p10_auction.auction_status = 600
 		and p10_assets_re.status = 200
@@ -778,6 +763,22 @@
 		and p10_assets_re.project_id = #{projectId}
 		and p10_assets_re.status!=500
 	</update>
+
+	<select id="queryTransferableAssetsReList" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
+		select p10_assets_re.*,p10_assets.*,p10_address.* from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		left join p10_target on p10_target.project_id = p10_assets_re.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets_re.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_assets_re.project_id = #{projectId}
+		and p10_assets_re.`status` = 100
+		and p10_target.goal_type = 20001
+		and p10_task_node.node_key = "entityZX_STZX_CCZXSQYS_CCZXSQYS"
+		and ((json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+				or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 1 and json_extract( p10_task_node.form_data,'$.businessPleaseTransfer' ) = "0")
+				or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 2 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+		)
+	</select>
 
 
 </mapper>
