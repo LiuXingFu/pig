@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
@@ -40,5 +41,14 @@ public interface ExpenseRecordAssetsReService extends IService<ExpenseRecordAsse
 	 * @return
 	 */
 	List<AssetsRePaifuDetailVO> queryAssetsList(Integer expenseRecordId);
+
+	/**
+	 * 根据财产关联id查询产生费用信息
+	 * @param assetsReId
+	 * @return
+	 */
+	ExpenseRecord queryAssetsReIdExpenseRecord(Integer assetsReId,Integer projectId,Integer costType);
+
+
 
 }

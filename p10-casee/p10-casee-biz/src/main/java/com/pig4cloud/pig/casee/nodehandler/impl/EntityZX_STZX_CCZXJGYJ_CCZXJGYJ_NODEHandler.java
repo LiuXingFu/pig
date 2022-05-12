@@ -29,6 +29,8 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -61,6 +63,12 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCostType(10006);
 			expenseRecordService.save(expenseRecord);
+
+			//添加费用产生明细关联财产关联信息
+			ExpenseRecordAssetsRe expenseRecordAssetsRe=new ExpenseRecordAssetsRe();
+			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
 
 			//添加费用产生明细关联主体信息
 			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();

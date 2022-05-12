@@ -3,10 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
-import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
-import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMJG_CCZXPMJG;
@@ -36,6 +33,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private AuctionRecordService auctionRecordService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -93,6 +92,12 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
 			expenseRecord.setCostType(10007);
 			expenseRecordService.save(expenseRecord);
+
+			//添加费用产生明细关联财产关联信息
+			ExpenseRecordAssetsRe expenseRecordAssetsRe=new ExpenseRecordAssetsRe();
+			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
 
 			//添加费用产生明细关联主体信息
 			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();

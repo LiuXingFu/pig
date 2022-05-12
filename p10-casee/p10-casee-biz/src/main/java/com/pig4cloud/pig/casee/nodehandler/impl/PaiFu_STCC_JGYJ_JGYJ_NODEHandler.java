@@ -3,12 +3,10 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
-import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_JGYJ_JGYJ;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
@@ -54,9 +52,6 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 		if (paiFu_stcc_jgyj_jgyj.getPricingManner() != 0) {
 			//查询当前财产关联债务人信息
 			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_jgyj_jgyj.getAssetsId());
-			//查询当前财产拍卖公告节点信息
-			TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
-			PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 			//查询案件信息
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
@@ -64,7 +59,7 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
 			//添加拍辅回款、费用明细信息
-			addJgyjRepaymentFee(paiFu_stcc_jgyj_jgyj, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO);
+			addJgyjRepaymentFee(paiFu_stcc_jgyj_jgyj, projectPaifu, casee, assetsReSubjectDTO);
 
 			// 更新项目总金额
 			projectPaifuService.updateProjectAmount(taskNode.getProjectId());
@@ -79,13 +74,13 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 				//修改清收项目总金额
 				projectLiquiService.updateById(projectLiqui);
 				//添加清收回款、费用明细信息
-				addJgyjRepaymentFee(paiFu_stcc_jgyj_jgyj, paiFu_stcc_pmgg_pmgg, projectLiqui, casee, assetsReSubjectDTO);
+				addJgyjRepaymentFee(paiFu_stcc_jgyj_jgyj, projectLiqui, casee, assetsReSubjectDTO);
 			}
 		}
 	}
 
 	//添加回款、费用明细信息
-	public void addJgyjRepaymentFee(PaiFu_STCC_JGYJ_JGYJ paiFu_stcc_jgyj_jgyj, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {
+	public void addJgyjRepaymentFee(PaiFu_STCC_JGYJ_JGYJ paiFu_stcc_jgyj_jgyj, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {
 		//添加定价费用明细记录
 		ExpenseRecord expenseRecord = new ExpenseRecord();
 		expenseRecord.setCostAmount(paiFu_stcc_jgyj_jgyj.getPricingFee());
@@ -99,18 +94,12 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 		expenseRecord.setCostType(10006);
 		expenseRecordService.save(expenseRecord);
 
-		if (paiFu_stcc_pmgg_pmgg != null) {
-			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
-			//循环当前拍卖公告联合拍卖财产信息
-			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
-				ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-				expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
-				expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordAssetsReList.add(expenseRecordAssetsRe);
-			}
-			// 添加费用产生记录财产关联信息
-			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
-		}
+		//循环当前拍卖公告联合拍卖财产信息
+		ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
+		expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+		expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+		// 添加费用产生记录财产关联信息
+		expenseRecordAssetsReService.save(expenseRecordAssetsRe);
 
 		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
 		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {

@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper;
 import com.pig4cloud.pig.casee.service.ExpenseRecordAssetsReService;
@@ -43,5 +44,10 @@ public class ExpenseRecordAssetsReServiceImpl extends ServiceImpl<ExpenseRecordA
 	@Override
 	public List<AssetsRePaifuDetailVO> queryAssetsList(Integer expenseRecordId){
 		return this.baseMapper.selectAssetsList(expenseRecordId);
+	}
+
+	@Override
+	public ExpenseRecord queryAssetsReIdExpenseRecord(Integer assetsReId,Integer projectId,Integer costType) {
+		return this.baseMapper.queryAssetsReIdExpenseRecord(assetsReId,projectId,costType);
 	}
 }
