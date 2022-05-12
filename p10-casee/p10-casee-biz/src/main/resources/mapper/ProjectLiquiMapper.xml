@@ -158,9 +158,9 @@
 		<id property="subjectId" column="subject_id"/>
 		<result property="name" column="name"/>
 		<result property="projectId" column="project_id"/>
-		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.vo.AssetsPageVO"
+		<collection property="assetsList" ofType="com.pig4cloud.pig.casee.dto.AssetsReDTO"
 					column="{subjectId=subject_id,projectId=project_id}"
-					select="com.pig4cloud.pig.casee.mapper.AssetsMapper.selectBySujectId"></collection>
+					select="com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper.selectBySubject"></collection>
 		<collection property="behaviorList" ofType="com.pig4cloud.pig.casee.entity.Behavior"
 					column="{subjectId=subject_id,projectId=project_id}"
 					select="com.pig4cloud.pig.casee.mapper.BehaviorMapper.selectBySubjectId"></collection>
