@@ -42,15 +42,27 @@ public class BehaviorLiquiController {
     private final BehaviorLiquiService behaviorLiquiService;
 
 	/**
-	 * 分页查询债务人程序节点列表
+	 * 制裁申请未实施
 	 *
 	 * @param behaviorLiquiDebtorPageDTO
 	 * @return
 	 */
-	@ApiOperation(value = "分页查询债务人程序节点列表", notes = "分页查询债务人程序节点列表")
-	@GetMapping("/queryDebtorPage")
-	public R queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
-		return R.ok(this.behaviorLiquiService.queryDebtorPage(page,behaviorLiquiDebtorPageDTO));
+	@ApiOperation(value = "制裁申请未实施", notes = "制裁申请未实施")
+	@GetMapping("/selectSanctionApplyNotImplemented")
+	public R selectSanctionApplyNotImplemented(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
+		return R.ok(this.behaviorLiquiService.selectSanctionApplyNotImplemented(page,behaviorLiquiDebtorPageDTO));
+	}
+
+	/**
+	 * 限制未送达
+	 *
+	 * @param behaviorLiquiDebtorPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "限制未送达", notes = "限制未送达")
+	@GetMapping("/queryLimitNotService")
+	public R queryLimitNotService(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
+		return R.ok(this.behaviorLiquiService.queryLimitNotService(page,behaviorLiquiDebtorPageDTO));
 	}
 
 	/**
@@ -62,7 +74,7 @@ public class BehaviorLiquiController {
 	@ApiOperation(value = "结清未撤销", notes = "结清未撤销")
 	@GetMapping("/behaviorPaymentCompleted")
 	public R behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
-		return R.ok(this.behaviorLiquiService.queryDebtorPage(page,behaviorLiquiDebtorPageDTO));
+		return R.ok(this.behaviorLiquiService.behaviorPaymentCompleted(page,behaviorLiquiDebtorPageDTO));
 	}
 	/**
 	 * 查询债务人行为列表

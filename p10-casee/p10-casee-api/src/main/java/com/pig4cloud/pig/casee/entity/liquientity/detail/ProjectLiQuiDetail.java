@@ -38,7 +38,7 @@ public class ProjectLiQuiDetail {
 	 * 已回款金额
 	 */
 	@ApiModelProperty(value="已回款金额")
-	BigDecimal repaymentAmount;
+	BigDecimal repaymentAmount=BigDecimal.valueOf(0);
 
 	/**
 	 * 抵押情况（0-有，1-无）

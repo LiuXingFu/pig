@@ -38,12 +38,20 @@ public interface BehaviorLiquiService extends IService<Behavior> {
 	Integer saveBehaviorLiqui(BehaviorLiqui behaviorLiqui);
 
 	/**
-	 * 分页查询债务人程序节点列表
+	 * 制裁申请未实施
 	 * @param page
 	 * @param behaviorLiquiDebtorPageDTO
 	 * @return
 	 */
-	IPage<CaseeLiquiDebtorPageVO> queryDebtorPage(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
+	IPage<CaseeLiquiDebtorPageVO> selectSanctionApplyNotImplemented(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
+
+	/**
+	 * 限制未送达
+	 * @param page
+	 * @param behaviorLiquiDebtorPageDTO
+	 * @return
+	 */
+	IPage<CaseeLiquiDebtorPageVO> queryLimitNotService(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO);
 
 	/**
 	 * 已结清限制未撤销

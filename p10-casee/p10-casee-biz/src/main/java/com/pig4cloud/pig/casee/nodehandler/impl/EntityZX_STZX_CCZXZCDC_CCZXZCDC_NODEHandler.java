@@ -65,6 +65,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		paymentRecord.setProjectId(taskNode.getProjectId());
 		paymentRecord.setCompanyCode(projectLiqui.getCompanyCode());
 		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
+		paymentRecord.setStatus(0);
 		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
 		paymentRecordService.save(paymentRecord);
 

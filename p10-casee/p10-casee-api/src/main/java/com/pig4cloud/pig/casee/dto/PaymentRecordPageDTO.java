@@ -16,15 +16,8 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -41,6 +34,12 @@ public class PaymentRecordPageDTO {
      */
     @ApiModelProperty(value="案件id")
     private Integer caseeId;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
 
     /**
      * 公司业务案号

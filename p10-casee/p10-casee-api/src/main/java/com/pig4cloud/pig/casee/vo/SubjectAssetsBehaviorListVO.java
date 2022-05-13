@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.vo;
 
+import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -60,7 +61,7 @@ public class SubjectAssetsBehaviorListVO {
 	 *	财产集合
 	 */
 	@ApiModelProperty(value = "财产集合")
-	List<AssetsPageVO> assetsList;
+	List<AssetsReDTO> assetsList;
 
 	/**
 	 *	行为集合

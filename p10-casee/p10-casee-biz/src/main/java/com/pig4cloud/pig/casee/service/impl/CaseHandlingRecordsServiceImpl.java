@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.CaseeHandlingRecordsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.CaseeHandlingRecordsMapper;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsReService;
@@ -47,8 +48,8 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 	LiquiTransferRecordService liquiTransferRecordService;
 
 	@Override
-	public List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords) {
-		return this.baseMapper.queryCaseeHandlingRecords(caseeHandlingRecords);
+	public List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecordsDTO caseeHandlingRecordsDTO) {
+		return this.baseMapper.queryCaseeHandlingRecords(caseeHandlingRecordsDTO);
 	}
 
 	@Override
@@ -79,7 +80,8 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 		CaseeHandlingRecordsRe caseeHandlingRecordsRe=new CaseeHandlingRecordsRe();
 		caseeHandlingRecordsRe.setCaseeHandlingRecordsId(caseeHandlingRecords.getCaseeHandlingRecordsId());
 		if (liquiTransferRecord!=null){//如果是清收移交过来的财产会有移交记录  如果是拍辅这边加的财产那么没有拍卖记录
-			caseeHandlingRecordsRe.setLiquiProjectId(liquiTransferRecord.getProjectId());
+			caseeHandlingRecordsRe.setProjectId(liquiTransferRecord.getProjectId());
+			caseeHandlingRecordsRe.setProjectType(100);
 		}
 		return caseeHandlingRecordsReService.save(caseeHandlingRecordsRe);
 	}

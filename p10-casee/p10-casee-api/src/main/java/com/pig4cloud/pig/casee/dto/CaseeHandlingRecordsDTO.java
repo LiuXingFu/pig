@@ -16,68 +16,58 @@
  */
 package com.pig4cloud.pig.casee.dto;
 
-
-import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * 财产表
+ * 案件办理记录表
  *
- * @author ligt
- * @date 2022-01-11 10:29:44
+ * @author Mjh
+ * @date 2022-03-10 18:05:58
  */
 @Data
-public class AssetsReDTO extends AssetsReLiqui {
+public class CaseeHandlingRecordsDTO {
 
 	/**
-	 * 财产id
+	 * 项目id
 	 */
-	private Integer assetsId;
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
 
 	/**
-	 * 财产名称
+	 * 案件id
 	 */
-	private String assetsName;
+	@ApiModelProperty(value="案件id")
+	private Integer caseeId;
 
 	/**
-	 * 财产类型（20100-资金财产 20200-实体财产）
+	 * 程序id
 	 */
-	@ApiModelProperty(value="财产类型（20100-资金财产 20200-实体财产）")
-	private Integer type;
+	@ApiModelProperty(value="程序id")
+	private Integer targetId;
 
 	/**
-	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
+	 * 源id
 	 */
-	private Integer assetsType;
+	@ApiModelProperty(value="源id")
+	private Integer sourceId;
+
 
 	/**
-	 * 所有权人
+	 * 类型
 	 */
-	private String owner;
+	@ApiModelProperty(value="类型")
+	private Integer sourceType;
 
 	/**
-	 * 财产账号/编号
+	 * 项目类型(100-清收 200-拍辅)
 	 */
-	private String accountNumber;
+	@ApiModelProperty(value="项目类型(100-清收 200-拍辅)")
+	private Integer projectType;
 
-	/**
-	 * 省
-	 */
-	private String province;
-
-	/**
-	 * 市
-	 */
-	private String city;
-
-	/**
-	 * 区
-	 */
-	private String area;
-
-	/**
-	 * 信息地址
-	 */
-	private String informationAddress;
 }

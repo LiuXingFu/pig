@@ -118,9 +118,9 @@ public class PaymentRecord extends BaseEntity {
 	private Integer fatherId;
 
 	/**
-	 * 状态(0-未领款 1-已领款)
+	 * 状态(0-未分配 1-已分配)
 	 */
-	@ApiModelProperty(value="状态(0-未领款 1-已领款)")
+	@ApiModelProperty(value="状态(0-未分配 1-已分配)")
 	private Integer status;
 
 	/**

@@ -59,6 +59,17 @@ public class PaymentRecordController {
         return R.ok(paymentRecordService.getPaymentRecordPage(page, paymentRecordPageDTO));
     }
 
+	/**
+	 * 通过项目id查询未分配记录
+	 * @param paymentRecordPageDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询回款详细记录分页记录", notes = "通过id查询回款详细记录分页记录")
+	@GetMapping("/getByUnassignedPaymentRecordPage" )
+	public R getByUnassignedPaymentRecordPage(Page page,PaymentRecordPageDTO paymentRecordPageDTO) {
+		return R.ok(paymentRecordService.getByUnassignedPaymentRecordPage(page, paymentRecordPageDTO));
+	}
+
 
     /**
      * 通过id查询回款详细记录表
