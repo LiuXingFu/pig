@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.BehaviorLiquiDebtorPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
+import com.pig4cloud.pig.casee.vo.BehaviorDetailVO;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
 
@@ -68,5 +69,12 @@ public interface BehaviorLiquiService extends IService<Behavior> {
 	 * @return
 	 */
 	IPage<BehaviorOrProjectPageVO> queryBehaviorBySubjecrId(Page page, Integer subjectId);
+
+	/**
+	 * 查询行为详情
+	 * @param behaviorId
+	 * @return
+	 */
+	BehaviorDetailVO queryBehaviorDetail(Integer behaviorId);
 
 }
