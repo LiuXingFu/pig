@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.casee.dto.CaseeHandlingRecordsDTO;
 import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -70,13 +71,13 @@ public class CaseeHandlingRecordsController {
 
 	/**
 	 * 查询案件办理记录表
-	 * @param caseeHandlingRecords
+	 * @param caseeHandlingRecordsDTO
 	 * @return R
 	 */
 	@ApiOperation(value = "查询案件办理记录表", notes = "查询案件办理记录表")
 	@GetMapping("/queryCaseeHandlingRecords" )
-	public R queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords) {
-		return R.ok(caseeHandlingRecordsService.queryCaseeHandlingRecords(caseeHandlingRecords));
+	public R queryCaseeHandlingRecords(CaseeHandlingRecordsDTO caseeHandlingRecordsDTO) {
+		return R.ok(caseeHandlingRecordsService.queryCaseeHandlingRecords(caseeHandlingRecordsDTO));
 	}
 
     /**

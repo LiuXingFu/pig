@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.CaseeHandlingRecordsDTO;
 import com.pig4cloud.pig.casee.entity.CaseeHandlingRecords;
 import com.pig4cloud.pig.casee.vo.CaseeHandlingRecordsVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -33,6 +34,6 @@ import java.util.List;
  */
 @Mapper
 public interface CaseeHandlingRecordsMapper extends BaseMapper<CaseeHandlingRecords> {
-	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(@Param("caseeHandlingRecords") CaseeHandlingRecords caseeHandlingRecords);
+	List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(@Param("caseeHandlingRecords") CaseeHandlingRecordsDTO caseeHandlingRecordsDTO);
 
 }

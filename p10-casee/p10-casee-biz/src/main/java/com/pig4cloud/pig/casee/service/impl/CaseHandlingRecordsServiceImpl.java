@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.casee.dto.CaseeHandlingRecordsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.CaseeHandlingRecordsMapper;
 import com.pig4cloud.pig.casee.service.CaseeHandlingRecordsReService;
@@ -47,8 +48,8 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 	LiquiTransferRecordService liquiTransferRecordService;
 
 	@Override
-	public List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecords caseeHandlingRecords) {
-		return this.baseMapper.queryCaseeHandlingRecords(caseeHandlingRecords);
+	public List<CaseeHandlingRecordsVO> queryCaseeHandlingRecords(CaseeHandlingRecordsDTO caseeHandlingRecordsDTO) {
+		return this.baseMapper.queryCaseeHandlingRecords(caseeHandlingRecordsDTO);
 	}
 
 	@Override
