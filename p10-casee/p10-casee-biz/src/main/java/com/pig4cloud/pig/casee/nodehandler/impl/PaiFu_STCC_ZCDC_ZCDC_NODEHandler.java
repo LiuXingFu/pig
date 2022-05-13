@@ -117,6 +117,7 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		//添加资产抵偿回款信息
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setPaymentType(400);
+		paymentRecord.setFundsType(40001);
 		paymentRecord.setPaymentDate(paiFu_stcc_zcdc_zcdc.getSettlementDate());
 		paymentRecord.setPaymentAmount(paiFu_stcc_zcdc_zcdc.getCompensationAmount());
 		paymentRecord.setCaseeId(casee.getCaseeId());
