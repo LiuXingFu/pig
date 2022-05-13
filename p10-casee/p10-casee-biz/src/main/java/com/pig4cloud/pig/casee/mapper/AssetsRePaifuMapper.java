@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsRePageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AssetsReTargetPageDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
@@ -33,5 +34,7 @@ public interface AssetsRePaifuMapper extends BaseMapper<AssetsRe> {
 	List<AssetsRePaifuDetailVO> selectPostAnAuctionList(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("assetsId") Integer assetsId);
 
 	AssetsRePaifuDetailsVO queryAssetsReProjectCasee(@Param("assetsReId") Integer assetsReId);
+
+	AssetsRePaifu getAssetsRePaifu(@Param("query") AssetsRe assetsRe);
 }
 

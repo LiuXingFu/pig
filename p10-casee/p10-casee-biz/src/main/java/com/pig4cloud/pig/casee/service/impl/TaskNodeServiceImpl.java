@@ -40,6 +40,8 @@ import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
@@ -112,6 +114,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private RemoteMessageRecordService remoteMessageRecordService;
 	@Autowired
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
+	@Autowired
+	private AssetsRePaifuService assetsRePaifuService;
 
 	private int sum = 0;
 
@@ -1805,68 +1809,82 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				assetsRe.setCaseeId(target.getCaseeId());
 				assetsRe.setProjectId(taskNode.getProjectId());
 
-				AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
+				if (taskNode.getInsType().equals(1200)) {
+					AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 
-				AssetsReCaseeDetail assetsReCaseeDetail = assetsReLiqui.getAssetsReCaseeDetail();
-				if (Objects.isNull(assetsReCaseeDetail)) {
-					assetsReCaseeDetail = new AssetsReCaseeDetail();
+					AssetsReCaseeDetail assetsReCaseeDetail = assetsReLiqui.getAssetsReCaseeDetail();
+					if (Objects.isNull(assetsReCaseeDetail)) {
+						assetsReCaseeDetail = new AssetsReCaseeDetail();
+					}
+
+					if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
+						//资金资产冻结实体
+						AssetsFreeze assetsFreeze = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreeze.class);
+
+						assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+					} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
+						//资金财产划扣
+						AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
+
+						assetsReCaseeDetail.setAssetsSnap(assetsSnap);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
+						//实体财产查封
+						AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
+
+						assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产到款实体类
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
+						AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
+
+						assetsReCaseeDetail.setAssetsPayment(assetsPayment);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+						//资产抵偿
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
+						AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
+
+						assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产成交裁定
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
+						AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
+
+						assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产抵偿裁定
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
+						AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAward.class);
+
+						assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					}
+					this.assetsReCaseeService.updateById(assetsReLiqui);
+				} else if (taskNode.getInsType().equals(1100)) {
+					AssetsRePaifu assetsRePaifu = this.assetsRePaifuService.getAssetsRePaifu(assetsRe);
+
+					AssetsRePaifuDetail assetsRePaifuDetail = assetsRePaifu.getAssetsRePaifuDetail();
+
+					if (Objects.isNull(assetsRePaifuDetail)) {
+						assetsRePaifuDetail = new AssetsRePaifuDetail();
+					}
+
+					if (taskNode.getNodeKey().equals("")) {
+
+					}
 				}
-
-				if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
-					//资金资产冻结实体
-					AssetsFreeze assetsFreeze = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreeze.class);
-
-					assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
-					//资金财产划扣
-					AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
-
-					assetsReCaseeDetail.setAssetsSnap(assetsSnap);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
-					//实体财产查封
-					AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
-
-					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产到款实体类
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
-					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
-
-					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-					//资产抵偿
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
-					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
-
-					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产成交裁定
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
-					AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
-
-					assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产抵偿裁定
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
-					AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAward.class);
-
-					assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				}
-				this.assetsReCaseeService.updateById(assetsReLiqui);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
 				Behavior behavior = new Behavior();
