@@ -1,6 +1,7 @@
 package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_ZCDC_ZCDC;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCDC_CCZXZCDC;
 import lombok.Data;
 
@@ -14,5 +15,5 @@ import lombok.Data;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsAssetCompensate extends EntityZX_STZX_CCZXZCDC_CCZXZCDC {
+public class AssetsAssetCompensate extends PaiFu_STCC_ZCDC_ZCDC {
 }
