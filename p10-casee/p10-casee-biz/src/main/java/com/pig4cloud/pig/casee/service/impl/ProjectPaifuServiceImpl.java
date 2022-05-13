@@ -36,6 +36,7 @@ import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
@@ -359,7 +360,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public 	Integer saveProjectReceipt(ProjectPaifuReceiptDTO projectPaifuReceiptDTO){
-		LiquiTransferRecord liquiTransferRecord =  liquiTransferRecordService.getById(projectPaifuReceiptDTO.getLiquiTransferRecordId());
+		LiquiTransferRecordDetailsVO liquiTransferRecord = liquiTransferRecordService.getByLiquiTransferRecordId(projectPaifuReceiptDTO.getLiquiTransferRecordId());
 		Casee casee = caseeService.getById(liquiTransferRecord.getCaseeId());
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
