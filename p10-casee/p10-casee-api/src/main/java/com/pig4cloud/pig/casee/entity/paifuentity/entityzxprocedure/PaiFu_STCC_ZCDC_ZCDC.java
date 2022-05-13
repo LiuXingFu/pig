@@ -15,17 +15,6 @@ import java.util.List;
 @Data
 public class PaiFu_STCC_ZCDC_ZCDC extends CommonalityData implements Serializable {
 
-
-	/**
-	 * 拍辅费用记录id
-	 */
-	private Integer paiFuExpenseRecordId;
-
-	/**
-	 * 清收费用记录id
-	 */
-	private Integer liQuiExpenseRecordId;
-
 	/**
 	 * 拍辅回款记录id
 	 */

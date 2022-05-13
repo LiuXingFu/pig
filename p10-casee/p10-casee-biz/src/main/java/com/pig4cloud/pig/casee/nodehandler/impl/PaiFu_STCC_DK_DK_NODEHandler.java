@@ -80,7 +80,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		addDkRepaymentFee(paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO, 2);
 
 		// 更新拍辅项目总金额
-		projectPaifuService.updateRepaymentAmount(taskNode.getProjectId());
+		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
 		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_dk_dk.getAssetsId());
@@ -108,7 +108,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	//添加回款、费用明细信息
 	public void addDkRepaymentFee(PaiFu_STCC_DK_DK paiFu_stcc_dk_dk, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, Integer type) {
 		//查询当前财产程序拍辅费
-		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10007);
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), project.getProjectId(), 10007);
 		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));
 		//修改当前财产程序拍辅费
 		expenseRecordService.updateById(expenseRecord);
@@ -161,7 +161,6 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		PaiFu_STCC_DK_DK paiFu_STCC_DK_DK = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_DK_DK.class);
 
-
 		//查询当前财产关联债务人信息
 		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), paiFu_STCC_DK_DK.getAssetsId());
 
@@ -169,7 +168,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
 		//将之前的拍辅费减除并修改
-		updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO, projectPaifu.getProjectId());
+		updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectPaifu.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
 		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_DK_DK.getAssetsId());
@@ -180,7 +179,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 
 			//将之前的拍辅费减除并修改
-			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO, projectLiqui.getProjectId());
+			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectLiqui.getProjectId());
 
 			//删除到款的到款信息
 			paymentRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
@@ -206,13 +205,14 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 
 	/**
 	 * 将查询的拍辅费查出减除，然后修改
+	 *
 	 * @param paiFu_STCC_DK_DK
-	 * @param assetsReSubjectDTO
+	 * @param assetsReId
 	 * @param projectId
 	 */
-	private void updateExpenseRecord(PaiFu_STCC_DK_DK paiFu_STCC_DK_DK, AssetsReSubjectDTO assetsReSubjectDTO, Integer projectId) {
+	private void updateExpenseRecord(PaiFu_STCC_DK_DK paiFu_STCC_DK_DK, Integer assetsReId, Integer projectId) {
 		//查询当前财产程序拍辅费
-		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), projectId, 10007);
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReId, projectId, 10007);
 		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
 		//修改当前财产程序拍辅费
 		expenseRecordService.updateById(expenseRecord);
