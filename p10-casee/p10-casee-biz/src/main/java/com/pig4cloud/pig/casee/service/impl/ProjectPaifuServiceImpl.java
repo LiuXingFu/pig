@@ -36,6 +36,7 @@ import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
@@ -359,8 +360,15 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public 	Integer saveProjectReceipt(ProjectPaifuReceiptDTO projectPaifuReceiptDTO){
-		LiquiTransferRecord liquiTransferRecord =  liquiTransferRecordService.getById(projectPaifuReceiptDTO.getLiquiTransferRecordId());
+		LiquiTransferRecordDetailsVO liquiTransferRecord = liquiTransferRecordService.getByLiquiTransferRecordId(projectPaifuReceiptDTO.getLiquiTransferRecordId());
 		Casee casee = caseeService.getById(liquiTransferRecord.getCaseeId());
+
+		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
+		if(Objects.nonNull(projectPaifuReceiptDTO.getProjectId())){
+			ProjectPaifu projectPaifu = this.queryById(projectPaifuReceiptDTO.getProjectId());
+			BeanCopyUtil.copyBean(projectPaifu.getProjectPaifuDetail(),projectPaifuDetail);
+		}
+
 		// 保存项目表
 		ProjectPaifu projectPaifu = new ProjectPaifu();
 		BeanCopyUtil.copyBean(projectPaifuReceiptDTO,projectPaifu);
@@ -369,8 +377,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		projectPaifu.setOutlesId(liquiTransferRecord.getEntrustedOutlesId());
 		projectPaifu.setProposersNames(casee.getApplicantName());
 		projectPaifu.setSubjectPersons(casee.getExecutedName());
-		ProjectPaifuDetail projectPaifuDetail = new ProjectPaifuDetail();
-		BeanCopyUtil.copyBean(projectPaifuReceiptDTO,projectPaifuDetail);
+		projectPaifuDetail.setApplicationSubmissionTime(liquiTransferRecord.getApplicationSubmissionTime());
+		projectPaifuDetail.setAuctionApplicationFile(liquiTransferRecord.getAuctionApplicationFile());
 		projectPaifu.setProjectPaifuDetail(projectPaifuDetail);
 		this.saveOrUpdate(projectPaifu);
 

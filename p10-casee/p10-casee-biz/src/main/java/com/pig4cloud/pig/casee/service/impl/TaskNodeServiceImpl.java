@@ -681,6 +681,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
 					caseeHandlingRecords.setSourceType(0);
 				}
+				if (taskFlowDTO.getBehaviorId()!=null){
+					caseeHandlingRecords.setSourceId(taskFlowDTO.getBehaviorId());
+					caseeHandlingRecords.setSourceType(1);
+				}
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
 

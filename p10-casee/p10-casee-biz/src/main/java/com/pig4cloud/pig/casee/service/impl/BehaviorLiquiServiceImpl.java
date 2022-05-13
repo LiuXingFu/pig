@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.entity.Behavior;
 import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.mapper.BehaviorLiquiMapper;
 import com.pig4cloud.pig.casee.service.BehaviorLiquiService;
+import com.pig4cloud.pig.casee.vo.BehaviorDetailVO;
 import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
 import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -89,5 +90,10 @@ public class BehaviorLiquiServiceImpl extends ServiceImpl<BehaviorLiquiMapper, B
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.queryBehaviorBySubjecrId(page,subjectId,insOutlesDTO);
+	}
+
+	@Override
+	public BehaviorDetailVO queryBehaviorDetail(Integer behaviorId){
+		return this.baseMapper.queryBehaviorDetail(behaviorId);
 	}
 }

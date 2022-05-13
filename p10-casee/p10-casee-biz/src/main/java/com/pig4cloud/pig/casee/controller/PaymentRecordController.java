@@ -126,6 +126,17 @@ public class PaymentRecordController {
 		return R.ok(paymentRecordService.getCourtPaymentUnpaid(projectId));
 	}
 
+	/**
+	 * 待分配款项分配信息
+	 * @param paymentRecordDTO 领款
+	 * @return R
+	 */
+	@ApiOperation(value = "待分配款项分配信息", notes = "待分配款项分配信息")
+	@SysLog("待分配款项分配信息" )
+	@PostMapping("/distribute")
+	public R distribute(@RequestBody PaymentRecordDTO paymentRecordDTO) {
+		return R.ok(paymentRecordService.distribute(paymentRecordDTO));
+	}
 
 	/**
 	 * 领款

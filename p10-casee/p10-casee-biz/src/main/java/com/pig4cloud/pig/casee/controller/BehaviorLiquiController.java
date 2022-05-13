@@ -76,6 +76,7 @@ public class BehaviorLiquiController {
 	public R behaviorPaymentCompleted(Page page, BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO) {
 		return R.ok(this.behaviorLiquiService.behaviorPaymentCompleted(page,behaviorLiquiDebtorPageDTO));
 	}
+
 	/**
 	 * 查询债务人行为列表
 	 *
@@ -86,6 +87,17 @@ public class BehaviorLiquiController {
 	@GetMapping("/queryBehaviorBySubjecrId")
 	public R queryBehaviorBySubjecrId(Page page, Integer subjectId) {
 		return R.ok(this.behaviorLiquiService.queryBehaviorBySubjecrId(page,subjectId));
+	}
+
+	/**
+	 * 查询行为详情
+	 * @param behaviorId
+	 * @return
+	 */
+	@ApiOperation(value = "查询债务人行为列表", notes = "查询债务人行为列表")
+	@GetMapping("/queryBehaviorDetail/{behaviorId}")
+	public R queryBehaviorDetail(@PathVariable Integer behaviorId) {
+		return R.ok(this.behaviorLiquiService.queryBehaviorDetail(behaviorId));
 	}
 
 }

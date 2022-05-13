@@ -23,10 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.BehaviorLiquiDebtorPageDTO;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Behavior;
-import com.pig4cloud.pig.casee.vo.BehaviorOrCaseeVO;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectOrCasee;
-import com.pig4cloud.pig.casee.vo.BehaviorOrProjectPageVO;
-import com.pig4cloud.pig.casee.vo.CaseeLiquiDebtorPageVO;
+import com.pig4cloud.pig.casee.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -48,4 +45,6 @@ public interface BehaviorLiquiMapper extends BaseMapper<Behavior> {
 	IPage<CaseeLiquiDebtorPageVO> behaviorPaymentCompleted(Page page, @Param("query")BehaviorLiquiDebtorPageDTO behaviorLiquiDebtorPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	IPage<BehaviorOrProjectPageVO> queryBehaviorBySubjecrId(Page page, @Param("subjectId")Integer subjectId, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	BehaviorDetailVO queryBehaviorDetail(@Param("behaviorId")Integer behaviorId);
 }

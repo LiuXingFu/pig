@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ public class LiquiTransferRecordDetailsVO extends LiquiTransferRecord {
     /**
      * 申请提交时间
      */
-    private String applicationSubmissionTime;
+    private LocalDate applicationSubmissionTime;
 
 	/**
 	 * 拍卖申请书
