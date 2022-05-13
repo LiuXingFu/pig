@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.pig4cloud.pig.casee.entity.CommonalityData;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_DK_DK;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXDK_CCZXDK;
 import lombok.Data;
 
@@ -17,6 +18,6 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsPayment extends EntityZX_STZX_CCZXDK_CCZXDK {
+public class AssetsPayment extends PaiFu_STCC_DK_DK {
 
 }
