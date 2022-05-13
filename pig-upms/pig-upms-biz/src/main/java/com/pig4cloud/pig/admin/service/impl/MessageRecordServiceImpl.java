@@ -223,13 +223,13 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 			TaskMessageDTO taskMessageDTO = new TaskMessageDTO();
 
-			taskMessageDTO.setMessageGoalType(3);
+			taskMessageDTO.setMessageGoalType(2);
 
 			taskMessageDTO.setInsId(liquiTransferRecord.getEntrustInsId());
 
 			taskMessageDTO.setOutlesId(liquiTransferRecord.getEntrustOutlesId());
 
-			taskMessageDTO.setUserId(liquiTransferRecord.getCreateBy());
+			taskMessageDTO.setMessageGoalPermission(2001);
 
 			taskMessageDTO.setMessageRecordDTO(messageRecordDTO);
 

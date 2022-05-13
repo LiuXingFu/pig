@@ -41,6 +41,12 @@ public class PaiFu_STCC_XK_XK_NODEHandler extends TaskNodeHandler {
 			taskNodeBdcxkrh.setStatus(301);
 			taskNodeService.updateById(taskNodeBdcxkrh);
 		}
+
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
+		//更新json
+		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 
 }
