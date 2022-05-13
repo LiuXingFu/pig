@@ -54,6 +54,8 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO);
 
+	boolean distribute(PaymentRecordDTO paymentRecordDTO);
+
 	boolean collection(PaymentRecordDTO paymentRecordDTO);
 	/**
 	 * 较去年回款额

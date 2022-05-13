@@ -160,4 +160,9 @@ public class TaskFlowDTO extends TaskNode {
 	 */
 	private Integer assetsId;
 
+	/**
+	 * 行为id
+	 */
+	private Integer behaviorId;
+
 }

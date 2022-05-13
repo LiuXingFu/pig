@@ -16,6 +16,7 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +104,53 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
 		paymentRecordSubjectRe.setSubjectId(paymentRecordDTO.getSubjectId());
 		return this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+	}
+
+	@Override
+	@Transactional
+	public boolean distribute(PaymentRecordDTO paymentRecordDTO) {
+		//查询当前分配款项记录修改状态为已分配
+		PaymentRecord record = this.getById(paymentRecordDTO.getPaymentRecordId());
+		record.setStatus(1);
+		boolean update = this.updateById(record);
+
+		//修改项目回款总金额
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(paymentRecordDTO.getProjectId());
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(paymentRecordDTO.getPaymentAmount()));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		projectLiquiService.updateById(projectLiqui);
+
+		List<PaymentRecordSubjectRe> paymentRecordSubjectReList = paymentRecordSubjectReService.list(new LambdaQueryWrapper<PaymentRecordSubjectRe>().eq(PaymentRecordSubjectRe::getPaymentRecordId, record.getPaymentRecordId()));
+
+		for (PaymentRecordAddDTO paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
+			paymentRecord.setCaseeId(paymentRecordDTO.getCaseeId());
+			paymentRecord.setCaseeNumber(paymentRecordDTO.getCaseeNumber());
+			paymentRecord.setProjectId(paymentRecordDTO.getProjectId());
+			paymentRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
+			paymentRecord.setCompanyCode(paymentRecordDTO.getCompanyCode());
+			paymentRecord.setFatherId(paymentRecordDTO.getPaymentRecordId());
+			paymentRecord.setPaymentDate(LocalDate.now());
+			paymentRecord.setPaymentType(record.getPaymentType());
+			//添加分配款项信息
+			this.save(paymentRecord);
+
+//			//添加分配款项明细与主体关联信息
+			for (PaymentRecordSubjectRe subjectRe : paymentRecordSubjectReList) {
+				PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+				paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordSubjectRe.setSubjectId(subjectRe.getSubjectId());
+				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+			}
+
+			//修改明细记录状态
+			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());
+			if (expenseRecord.getCostAmount().equals(paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount()))){
+				expenseRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
+				expenseRecord.setStatus(1);
+				expenseRecordService.updateById(expenseRecord);
+			}
+		}
+		return update;
 	}
 
 	@Override
