@@ -472,6 +472,21 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		return null;
 	}
 
+	@Override
+	public TaskReminder judgmentTaskJumpOver(TaskNode taskNode) {
+		TaskReminder taskReminder=new TaskReminder();
+		//查询当前程序所有不可跳过任务节点并且没有提交的
+		List<TaskNode> notSkippedList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getCanSkip, 0).eq(TaskNode::getStatus,0));
+		for (TaskNode notSkippedNode : notSkippedList) {
+			if (taskNode.getSort()>notSkippedNode.getSort()){//如果当前节点在不可跳过节点后面要判断不可跳过节点是否提交
+				taskReminder.setHint(1);
+				taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请填写【" + notSkippedNode.getNodeName() +"】节点。");
+				return taskReminder;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * 根据条件判断节点状态
 	 *
@@ -583,9 +598,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				.orderByAsc(TaskNode::getSort));
 		// 跳过节点集合不为空返回提示信息
 		if (Objects.nonNull(nodeList) && nodeList.size() > 0) {
-			TaskNode threeLevelParentTaskNode = queryParentTaskNode(nodeList.get(0), 3);
 			taskReminder.setHint(2);
-			taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请确保从【" + threeLevelParentTaskNode.getNodeName() + "-" + nodeList.get(0).getNodeName() + "】开始的步骤下的子任务全部完成。");
+			taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请确保从【" + nodeList.get(0).getNodeName() +"】开始。");
 		}
 		return taskReminder;
 	}

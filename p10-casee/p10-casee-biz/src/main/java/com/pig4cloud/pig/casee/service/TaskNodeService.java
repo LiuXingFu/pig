@@ -155,6 +155,13 @@ public interface TaskNodeService extends IService<TaskNode> {
 	Integer queryTaskProgress(String targetId);
 
 	/**
+	 * 判断当前节点是否可跳过
+	 * @param taskNode
+	 * @return
+	 */
+	TaskReminder judgmentTaskJumpOver(TaskNode taskNode);
+
+	/**
 	 * 根据条件判断节点状态
 	 * @param taskNodeId
 	 * @return
