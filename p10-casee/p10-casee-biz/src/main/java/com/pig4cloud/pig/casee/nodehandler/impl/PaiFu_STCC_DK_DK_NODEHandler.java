@@ -54,13 +54,15 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//拍辅到款
-		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = setPaiFuStccDkDk(taskNode);
+		setPaiFuStccDkDk(taskNode);
+
+		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DK_DK.class);
 
 		//同步联合拍卖财产到款节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_dk_dk.getAssetsId(), taskNode, "paiFu_STCC_DK_DK");
 	}
 
-	private PaiFu_STCC_DK_DK setPaiFuStccDkDk(TaskNode taskNode) {
+	private void setPaiFuStccDkDk(TaskNode taskNode) {
 		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DK_DK.class);
 		//查询当前财产拍卖公告节点信息
 		TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
@@ -76,9 +78,6 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 
 		//添加拍辅回款、费用明细信息
 		addDkRepaymentFee(paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO, 2);
-
-		// 更新拍辅项目总金额
-		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
 		// 更新拍辅项目总金额
 		projectPaifuService.updateRepaymentAmount(taskNode.getProjectId());
@@ -103,7 +102,6 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
 		taskNodeService.setTaskDataSubmission(taskNode);
-		return paiFu_stcc_dk_dk;
 	}
 
 
@@ -163,54 +161,26 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		PaiFu_STCC_DK_DK paiFu_STCC_DK_DK = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_DK_DK.class);
 
+
+		//查询当前财产关联债务人信息
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), paiFu_STCC_DK_DK.getAssetsId());
+
+		//查询拍辅项目
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
-		projectPaifu.getProjectPaifuDetail().setProjectAmount(projectPaifu.getProjectPaifuDetail().getProjectAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
-		projectPaifu.setProjectPaifuDetail(projectPaifu.getProjectPaifuDetail());
-		//修改拍辅项目总金额
-		projectPaifuService.updateById(projectPaifu);
 
-		//删除费用明细记录
-		expenseRecordService.removeById(paiFu_STCC_DK_DK.getPaiFuExpenseRecordId());
-
-		//删除费用明细记录财产关联信息
-		expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-				.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_DK_DK.getPaiFuExpenseRecordId()));
-
-		//添加费用产生明细关联主体信息
-		expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-				.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_DK_DK.getPaiFuExpenseRecordId()));
-
-//		删除到款的到款信息
-		paymentRecordService.removeById(paiFu_STCC_DK_DK.getPaiFuPaymentRecordId());
-
-		//删除回款记录财产关联信息
-		paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-				.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_DK_DK.getPaiFuPaymentRecordId()));
-
-		//删除到款信息关联债务人
-		paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-				.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_DK_DK.getPaiFuPaymentRecordId()));
+		//将之前的拍辅费减除并修改
+		updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO, projectPaifu.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
 		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_DK_DK.getAssetsId());
 
 		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
+
+			//查询清收项目
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
-			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
-			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-			//修改清收项目总金额
-			projectLiquiService.updateById(projectLiqui);
 
-			//删除费用明细记录
-			expenseRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiExpenseRecordId());
-
-			//删除费用明细记录财产关联信息
-			expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-					.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_DK_DK.getLiQuiExpenseRecordId()));
-
-			//添加费用产生明细关联主体信息
-			expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-					.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_DK_DK.getLiQuiExpenseRecordId()));
+			//将之前的拍辅费减除并修改
+			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO, projectLiqui.getProjectId());
 
 			//删除到款的到款信息
 			paymentRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
@@ -225,10 +195,26 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		}
 
 		//拍辅到款
-		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = setPaiFuStccDkDk(taskNode);
+		setPaiFuStccDkDk(taskNode);
+
+		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DK_DK.class);
 
 		//同步联合拍卖财产到款节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_dk_dk.getAssetsId(), taskNode, "paiFu_STCC_DK_DK");
 
+	}
+
+	/**
+	 * 将查询的拍辅费查出减除，然后修改
+	 * @param paiFu_STCC_DK_DK
+	 * @param assetsReSubjectDTO
+	 * @param projectId
+	 */
+	private void updateExpenseRecord(PaiFu_STCC_DK_DK paiFu_STCC_DK_DK, AssetsReSubjectDTO assetsReSubjectDTO, Integer projectId) {
+		//查询当前财产程序拍辅费
+		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), projectId, 10007);
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
+		//修改当前财产程序拍辅费
+		expenseRecordService.updateById(expenseRecord);
 	}
 }

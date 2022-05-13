@@ -12,6 +12,16 @@ import java.time.LocalDate;
  */
 @Data
 public class PaiFu_STCC_JGYJ_JGYJ extends CommonalityData implements Serializable {
+
+	/**
+	 * 拍辅费用记录id
+	 */
+	private Integer paiFuExpenseRecordId;
+
+	/**
+	 * 清收费用记录id
+	 */
+	private Integer liQuiExpenseRecordId;
 	/**
 	 * 定价日期
 	 */

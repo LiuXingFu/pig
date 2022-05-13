@@ -958,6 +958,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
+				}else {
+					//添加拍辅任务办理记录
+					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
 			} else {
 				//添加清收任务办理记录

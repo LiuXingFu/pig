@@ -30,7 +30,7 @@ public class PaiFu_STCC_DK_DK extends CommonalityData implements Serializable {
 	private Integer paiFuPaymentRecordId;
 
 	/**
-	 * 清收回款记录
+	 * 清收回款记录id
 	 */
 	private Integer liQuiPaymentRecordId;
 

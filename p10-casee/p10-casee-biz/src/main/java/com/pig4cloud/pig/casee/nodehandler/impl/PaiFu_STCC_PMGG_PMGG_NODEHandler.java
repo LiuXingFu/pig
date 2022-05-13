@@ -80,6 +80,8 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 				}
 				taskNodePmgg.setFormData(taskNode.getFormData());
 
+				taskNodePmgg.setSubmissionStatus(taskNode.getSubmissionStatus());
+
 				//修改节点信息
 				taskNodeService.updateById(taskNodePmgg);
 
