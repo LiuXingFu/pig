@@ -83,8 +83,7 @@
 		p10_liqui_transfer_record.create_time,
 		p10_liqui_transfer_record.del_flag,
 		p10_liqui_transfer_record.liqui_transfer_record_id liquiTransferRecordId,
-		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS
-		applicationSubmissionTime,
+		DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
 		p10_institution.ins_name insName,
 		p10_outles.outles_name outlesName,
 		p10_liqui_transfer_record.entrust_ins_id,
@@ -146,7 +145,7 @@
 		p10_liqui_transfer_record.entrusted_outles_id,
 		p10_liqui_transfer_record.status,
 		p10_liqui_transfer_record.remark,
-		JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ) AS applicationSubmissionTime,
+		DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
 		p10_outles.outles_name outlesName
@@ -189,7 +188,7 @@
 		p10_liqui_transfer_record.entrust_outles_id,
 		p10_liqui_transfer_record.entrusted_ins_id,
 		p10_liqui_transfer_record.entrusted_outles_id,
-		substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
+		DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
 		p10_outles.outles_name outlesName
@@ -208,7 +207,7 @@
 			p10_outles.outles_name outlesName,
 			p10_casee.executed_name as executorSubjectName,
 			p10_casee.applicant_name as applicantSubjectName,
-			substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ) AS applicationSubmissionTime,
+			DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
 			JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile
 		FROM
 			p10_liqui_transfer_record
