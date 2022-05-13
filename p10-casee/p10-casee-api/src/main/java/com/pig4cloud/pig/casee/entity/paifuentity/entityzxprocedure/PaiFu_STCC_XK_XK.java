@@ -22,16 +22,6 @@ public class PaiFu_STCC_XK_XK extends CommonalityData implements Serializable {
 	private String currentSurveyManager;
 
 	/**
-	 * 拍辅机构id
-	 */
-	private Integer insId;
-
-	/**
-	 * 拍辅网点id
-	 */
-	private Integer outlesId;
-
-	/**
 	 * 拍辅机构名称
 	 */
 	private String insName;

@@ -26,6 +26,7 @@
   <resultMap id="caseeHandlingRecordsReMap" type="com.pig4cloud.pig.casee.entity.CaseeHandlingRecordsRe">
 	  <id property="caseeHandlingRecordsReId" column="casee_handling_records_re_id"/>
 	  <id property="caseeHandlingRecordsId" column="casee_handling_records_id"/>
-	  <result property="liquiProjectId" column="liqui_project_id"/>
+	  <result property="projectId" column="project_id"/>
+	  <result property="projectType" column="project_type"/>
   </resultMap>
 </mapper>

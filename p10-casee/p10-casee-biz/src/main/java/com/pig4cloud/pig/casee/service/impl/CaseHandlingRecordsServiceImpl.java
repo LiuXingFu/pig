@@ -79,7 +79,8 @@ public class CaseHandlingRecordsServiceImpl extends ServiceImpl<CaseeHandlingRec
 		CaseeHandlingRecordsRe caseeHandlingRecordsRe=new CaseeHandlingRecordsRe();
 		caseeHandlingRecordsRe.setCaseeHandlingRecordsId(caseeHandlingRecords.getCaseeHandlingRecordsId());
 		if (liquiTransferRecord!=null){//如果是清收移交过来的财产会有移交记录  如果是拍辅这边加的财产那么没有拍卖记录
-			caseeHandlingRecordsRe.setLiquiProjectId(liquiTransferRecord.getProjectId());
+			caseeHandlingRecordsRe.setProjectId(liquiTransferRecord.getProjectId());
+			caseeHandlingRecordsRe.setProjectType(100);
 		}
 		return caseeHandlingRecordsReService.save(caseeHandlingRecordsRe);
 	}

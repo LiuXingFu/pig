@@ -58,7 +58,7 @@
 			AND p10_casee_handling_records.source_id=#{caseeHandlingRecords.sourceId} and p10_casee_handling_records.source_type=#{caseeHandlingRecords.sourceType}
 		</if>
 		<if test="caseeHandlingRecords.projectId!=null">
-			AND (p10_casee_handling_records.project_id = #{caseeHandlingRecords.projectId} or p10_casee_handling_records_re.liqui_project_id=#{caseeHandlingRecords.projectId})
+			AND (p10_casee_handling_records.project_id = #{caseeHandlingRecords.projectId} or (p10_casee_handling_records_re.liqui_project_id=#{caseeHandlingRecords.projectId} AND p10_casee_handling_records_re.project_type = 100))
 		</if>
 		<if test="caseeHandlingRecords.caseeId!=null">
 			AND p10_casee_handling_records.casee_id=#{caseeHandlingRecords.caseeId}

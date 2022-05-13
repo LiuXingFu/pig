@@ -49,8 +49,14 @@ public class CaseeHandlingRecordsRe  {
 	private Integer caseeHandlingRecordsId;
 
 	/**
-	 * 清收项目id
+	 * 项目id
 	 */
-	@ApiModelProperty(value="清收项目id")
-	private Integer liquiProjectId;
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 项目类型(100-清收 200-拍辅)
+	 */
+	@ApiModelProperty(value="项目类型(100-清收 200-拍辅)")
+	private Integer projectType;
 }
