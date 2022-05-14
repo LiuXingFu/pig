@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePageVO;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
@@ -84,5 +85,10 @@ public interface AssetsRePaifuService extends IService<AssetsRe> {
 	 */
 	AssetsRePaifuDetailsVO queryAssetsReProjectCasee(Integer assetsReId);
 
-
+	/**
+	 * 根据条件查询拍辅财产关联数据
+	 * @param assetsRe
+	 * @return
+	 */
+	AssetsRePaifu getAssetsRePaifu(AssetsRe assetsRe);
 }

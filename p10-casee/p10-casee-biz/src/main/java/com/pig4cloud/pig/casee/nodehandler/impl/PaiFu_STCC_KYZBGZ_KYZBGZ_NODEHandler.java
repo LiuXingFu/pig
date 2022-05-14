@@ -6,6 +6,7 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.SamplePreparationWorkListDetail;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_BMKY_BMKY;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_KYZBGZ_KYZBGZ;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
@@ -43,7 +44,9 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//拍辅看样准备工作
-		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_stcc_kyzbgz_kyzbgz = setPaiFuStccKyzbgzKyzbgz(taskNode);
+		setPaiFuStccKyzbgzKyzbgz(taskNode);
+
+		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_stcc_kyzbgz_kyzbgz = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_KYZBGZ_KYZBGZ.class);
 
 		//同步联合拍卖财产看样准备工作节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_kyzbgz_kyzbgz.getAssetsId(), taskNode, "paiFu_STCC_KYZBGZ_KYZBGZ");
@@ -54,7 +57,7 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 	 * @param taskNode
 	 * @return
 	 */
-	private PaiFu_STCC_KYZBGZ_KYZBGZ setPaiFuStccKyzbgzKyzbgz(TaskNode taskNode) {
+	private void setPaiFuStccKyzbgzKyzbgz(TaskNode taskNode) {
 		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_stcc_kyzbgz_kyzbgz = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_KYZBGZ_KYZBGZ.class);
 
 		List<SamplePreparationWorkListDetail> samplePreparationWorkListDetails = paiFu_stcc_kyzbgz_kyzbgz.getSamplePreparationWorkListDetails();
@@ -115,8 +118,11 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 
 		taskNodeService.updateById(taskNode);
 
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
-		return paiFu_stcc_kyzbgz_kyzbgz;
 	}
 
 	@Override
@@ -137,7 +143,10 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 		this.samplePreparationWorkAssetsReService.remove(new LambdaQueryWrapper<SamplePreparationWorkAssetsRe>().in(SamplePreparationWorkAssetsRe::getSamplePreparationWorkId, collect));
 
 		//拍辅看样准备工作
-		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_stcc_kyzbgz_kyzbgz = setPaiFuStccKyzbgzKyzbgz(taskNode);
+		setPaiFuStccKyzbgzKyzbgz(taskNode);
+
+		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_stcc_kyzbgz_kyzbgz = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_KYZBGZ_KYZBGZ.class);
+
 		//同步联合拍卖财产看样准备工作节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_kyzbgz_kyzbgz.getAssetsId(), taskNode, "paiFu_STCC_KYZBGZ_KYZBGZ");
 

@@ -85,11 +85,13 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 
 			taskNode.setFormData(json);
 
+			//节点信息更新
 			this.taskNodeService.updateById(taskNode);
 
 			//发送拍辅任务消息
 			taskNodeService.sendPaifuTaskMessage(taskNode);
 
+			//任务数据提交 保存程序、财产和行为
 			taskNodeService.setTaskDataSubmission(taskNode);
 		}
 	}

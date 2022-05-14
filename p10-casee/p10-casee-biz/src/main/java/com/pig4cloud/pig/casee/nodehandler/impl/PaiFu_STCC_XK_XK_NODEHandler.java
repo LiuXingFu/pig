@@ -45,7 +45,7 @@ public class PaiFu_STCC_XK_XK_NODEHandler extends TaskNodeHandler {
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
-		//更新json
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 

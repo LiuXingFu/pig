@@ -18,5 +18,5 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsCompletionRuling extends PaiFu_STCC_CJCD_CJCD {
+public class AssetsCompletionRuling extends EntityZX_STZX_CCZXCJCD_CCZXCJCD {
 }

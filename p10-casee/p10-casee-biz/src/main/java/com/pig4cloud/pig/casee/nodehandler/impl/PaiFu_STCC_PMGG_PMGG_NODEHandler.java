@@ -46,18 +46,19 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 
 		paiFu_stcc_pmgg_pmgg.setAuctionId(auctionRecord.getAuctionId());
 
-		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
-
 		List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList = paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList();
 
 		String json = JsonUtils.objectToJson(paiFu_stcc_pmgg_pmgg);
 
 		taskNode.setFormData(json);
 
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
+
 		//修改节点信息
 		taskNodeService.updateById(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		setJointAuctionRelatedOperations(taskNode, paiFu_stcc_pmgg_pmgg, jointAuctionAssetsDTOList);
@@ -130,11 +131,13 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		//附件
 		auctionRecord.setAppendix(paiFu_stcc_pmgg_pmgg.getAppendix());
 
+		//修改节点信息
 		auctionRecordService.updateById(auctionRecord);
 
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList = paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList();

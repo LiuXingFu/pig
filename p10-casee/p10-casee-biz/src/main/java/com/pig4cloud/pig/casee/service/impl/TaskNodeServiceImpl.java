@@ -40,6 +40,8 @@ import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_DXXJ_XJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_PGDJ_XTLR;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_SFYJ_YJJG;
 import com.pig4cloud.pig.casee.entity.paifu.PaiFu_JGRZ_WLXJ_XTLR;
+import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
@@ -112,6 +114,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	private RemoteMessageRecordService remoteMessageRecordService;
 	@Autowired
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
+	@Autowired
+	private AssetsRePaifuService assetsRePaifuService;
 
 	private int sum = 0;
 
@@ -341,7 +345,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 		if (paiFu_stcc_pmgg_pmgg != null) {
 			//查询拍卖公告节点联合拍卖财产
-			for (JointAuctionAssetsDTO jointAuctionAssetsDTO :  paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 				//联合拍卖财产程序信息
 				Target jointAuctionTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
 				//根据程序id、节点key查询最新节点信息
@@ -362,6 +366,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					//发送拍辅任务消息
 					this.sendPaifuTaskMessage(newTaskNode);
 
+					//任务数据提交 保存程序、财产和行为
 					this.setTaskDataSubmission(newTaskNode);
 
 					//添加案件任务办理记录
@@ -372,7 +377,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer projectType) {
+	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer projectType) {
 		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 			//查询联合拍卖财产程序id
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, jointAuctionAssetsDTO.getProjectId()).eq(Target::getCaseeId, jointAuctionAssetsDTO.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001));
@@ -423,7 +428,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 
 			TaskNode taskNodePmjg = this.queryLastTaskNode("paiFu_STCC_PMJG_PMJG", target.getTargetId());
-			if (taskNodePmjg!=null){
+			if (taskNodePmjg != null) {
 				//修改当前节点状态为删除
 				taskNodePmjg.setDelFlag("1");
 				this.updateById(taskNodePmjg);
@@ -673,14 +678,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")){
+				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
 					//查询当前财产拍卖公告节点信息
 					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
-				}else {
+				} else {
 					//添加清收任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
@@ -695,7 +700,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
 					caseeHandlingRecords.setSourceType(0);
 				}
-				if (taskFlowDTO.getBehaviorId()!=null){
+				if (taskFlowDTO.getBehaviorId() != null) {
 					caseeHandlingRecords.setSourceId(taskFlowDTO.getBehaviorId());
 					caseeHandlingRecords.setSourceType(1);
 				}
@@ -703,9 +708,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 
 			//修改比当前节点顺序小的节点状态为跳过
-			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper=new LambdaUpdateWrapper<>();
-			lambdaQueryWrapper.set(TaskNode::getStatus,301);
-			lambdaQueryWrapper.eq(TaskNode::getTargetId,taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0).le(TaskNode::getSort,taskFlowDTO.getSort());
+			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper = new LambdaUpdateWrapper<>();
+			lambdaQueryWrapper.set(TaskNode::getStatus, 301);
+			lambdaQueryWrapper.eq(TaskNode::getTargetId, taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0).le(TaskNode::getSort, taskFlowDTO.getSort());
 			this.update(lambdaQueryWrapper);
 
 			// 处理特殊节点与一般节点
@@ -965,14 +970,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
+				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
 					//查询当前财产拍卖公告节点信息
 					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
-				}else {
+				} else {
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
@@ -1819,68 +1824,105 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				assetsRe.setCaseeId(target.getCaseeId());
 				assetsRe.setProjectId(taskNode.getProjectId());
 
-				AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
+				if (taskNode.getInsType().equals(1200)) {
+					AssetsReLiqui assetsReLiqui = this.assetsReCaseeService.getAssetsReCasee(assetsRe);
 
-				AssetsReCaseeDetail assetsReCaseeDetail = assetsReLiqui.getAssetsReCaseeDetail();
-				if (Objects.isNull(assetsReCaseeDetail)) {
-					assetsReCaseeDetail = new AssetsReCaseeDetail();
+					AssetsReCaseeDetail assetsReCaseeDetail = assetsReLiqui.getAssetsReCaseeDetail();
+					if (Objects.isNull(assetsReCaseeDetail)) {
+						assetsReCaseeDetail = new AssetsReCaseeDetail();
+					}
+
+					if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
+						//资金资产冻结实体
+						AssetsFreeze assetsFreeze = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreeze.class);
+
+						assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+					} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
+						//资金财产划扣
+						AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
+
+						assetsReCaseeDetail.setAssetsSnap(assetsSnap);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
+						//实体财产查封
+						AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
+
+						assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产到款实体类
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
+						AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
+
+						assetsReCaseeDetail.setAssetsPayment(assetsPayment);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+						//资产抵偿
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
+						AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
+
+						assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产成交裁定
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
+						AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
+
+						assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+
+						//实体财产抵偿裁定
+					} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
+						AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAward.class);
+
+						assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
+
+						assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+					}
+					this.assetsReCaseeService.updateById(assetsReLiqui);
+				} else if (taskNode.getInsType().equals(1100)) {
+					AssetsRePaifu assetsRePaifu = this.assetsRePaifuService.getAssetsRePaifu(assetsRe);
+
+					AssetsRePaifuDetail assetsRePaifuDetail = assetsRePaifu.getAssetsRePaifuDetail();
+
+					if (Objects.isNull(assetsRePaifuDetail)) {
+						assetsRePaifuDetail = new AssetsRePaifuDetail();
+					}
+
+					if (taskNode.getNodeKey().equals("paiFu_STCC_DK_DK")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsPayment.class);
+
+						assetsRePaifuDetail.setAssetsPayment(assetsPayment);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsAssetCompensate.class);
+
+						assetsRePaifuDetail.setAssetsAssetCompensate(assetsAssetCompensate);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompletionRuling.class);
+
+						assetsRePaifuDetail.setAssetsCompletionRuling(assetsCompletionRuling);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward.class);
+
+						assetsRePaifuDetail.setAssetsCompensationAward(assetsCompensationAward);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					}
+					this.assetsRePaifuService.updateById(assetsRePaifu);
 				}
-
-				if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ")) {
-					//资金资产冻结实体
-					AssetsFreeze assetsFreeze = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsFreeze.class);
-
-					assetsReCaseeDetail.setAssetsFreeze(assetsFreeze);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-				} else if (taskNode.getNodeKey().equals("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK")) {
-					//资金财产划扣
-					AssetsSnap assetsSnap = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSnap.class);
-
-					assetsReCaseeDetail.setAssetsSnap(assetsSnap);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF")) {
-					//实体财产查封
-					AssetsSeizure assetsSeizure = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsSeizure.class);
-
-					assetsReCaseeDetail.setAssetsSeizure(assetsSeizure);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产到款实体类
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {
-					AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsPayment.class);
-
-					assetsReCaseeDetail.setAssetsPayment(assetsPayment);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-					//资产抵偿
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXZCDZ_CCZXZCDZ")) {
-					AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsAssetCompensate.class);
-
-					assetsReCaseeDetail.setAssetsAssetCompensate(assetsAssetCompensate);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产成交裁定
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
-					AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompletionRuling.class);
-
-					assetsReCaseeDetail.setAssetsCompletionRuling(assetsCompletionRuling);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-
-					//实体财产抵偿裁定
-				} else if (taskNode.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {
-					AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), AssetsCompensationAward.class);
-
-					assetsReCaseeDetail.setAssetsCompensationAward(assetsCompensationAward);
-
-					assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
-				}
-				this.assetsReCaseeService.updateById(assetsReLiqui);
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
 				Behavior behavior = new Behavior();

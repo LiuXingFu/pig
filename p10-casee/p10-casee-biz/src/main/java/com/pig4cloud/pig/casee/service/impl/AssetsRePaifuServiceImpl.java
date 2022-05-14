@@ -207,4 +207,9 @@ public class AssetsRePaifuServiceImpl extends ServiceImpl<AssetsRePaifuMapper, A
 	public AssetsRePaifuDetailsVO queryAssetsReProjectCasee(Integer assetsReId){
 		return this.baseMapper.queryAssetsReProjectCasee(assetsReId);
 	}
+
+	@Override
+	public AssetsRePaifu getAssetsRePaifu(AssetsRe assetsRe) {
+		return this.baseMapper.getAssetsRePaifu(assetsRe);
+	}
 }

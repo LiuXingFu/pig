@@ -3,6 +3,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
+import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_DCCD_DCCD;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
@@ -39,10 +40,12 @@ public class PaiFu_STCC_DCCD_DCCD_NODEHandler extends TaskNodeHandler {
 		//查询当前财产拍卖公告节点信息
 		TaskNode taskNodePmgg = taskNodeService.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskNode.getTargetId());
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+		AssetsRe assetsRe = new AssetsRe();
 		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 			//修改当前财产关联表状态
-			jointAuctionAssetsDTO.setStatus(500);
-			assetsReService.updateById(jointAuctionAssetsDTO);
+			assetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
+			assetsRe.setStatus(500);
+			assetsReService.updateById(assetsRe);
 		}
 
 		//发送拍辅任务消息

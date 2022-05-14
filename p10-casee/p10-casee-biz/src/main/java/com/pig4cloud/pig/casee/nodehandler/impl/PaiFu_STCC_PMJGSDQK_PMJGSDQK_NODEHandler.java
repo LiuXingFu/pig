@@ -27,15 +27,17 @@ public class PaiFu_STCC_PMJGSDQK_PMJGSDQK_NODEHandler extends TaskNodeHandler {
 	}
 
 	private void setPMJGSDQK(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅拍卖结果送达情况
 		PaiFu_STCC_PMJGSDQK_PMJGSDQK paiFu_stcc_pmjgsdqk_pmjgsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_PMJGSDQK_PMJGSDQK.class);
 
 		//发送拍辅任务消息
 		this.taskNodeService.sendPaifuTaskMessage(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
+		taskNodeService.setTaskDataSubmission(taskNode);
+
 		//同步联合拍卖财产拍卖结果送达情况节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_pmjgsdqk_pmjgsdqk.getAssetsId(),taskNode,"paiFu_STCC_PMJGSDQK_PMJGSDQK");
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_pmjgsdqk_pmjgsdqk.getAssetsId(), taskNode, "paiFu_STCC_PMJGSDQK_PMJGSDQK");
 	}
 
 	@Override
