@@ -172,6 +172,23 @@ public class TaskNodeController {
 	}
 
 	/**
+	 * 判断当前节点是否可跳过
+	 *
+	 * @return
+	 * 1 补录
+	 * 2 节点前有不可跳过节点 无法填写。请确保从【公告前辅助】开始的必填步骤（包括委托任务）部完成。
+	 * 3 待审核
+	 * 4 委托中
+	 * 5 查看委托审核页面
+	 * 6 驳回
+	 */
+	@ApiOperation(value = "判断当前节点是否可跳过", notes = "判断当前节点是否可跳过")
+	@GetMapping("/judgmentTaskJumpOver")
+	public R judgmentTaskJumpOver(TaskNode taskNode){
+		return R.ok(taskNodeService.judgmentTaskJumpOver(taskNode));
+	}
+
+	/**
 	 * 提交任务数据
 	 * @param taskFlowDTO 提交任务数据
 	 * @return R
