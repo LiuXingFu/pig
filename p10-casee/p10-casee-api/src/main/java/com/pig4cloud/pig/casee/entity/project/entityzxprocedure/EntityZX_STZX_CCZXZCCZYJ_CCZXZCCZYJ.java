@@ -26,6 +26,16 @@ public class EntityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ extends CommonalityData impleme
 	private Integer entrustedOutlesId;
 
 	/**
+	 * 拍辅机构名称
+	 */
+	private String entrustedInsName;
+
+	/**
+	 * 拍辅网点名称
+	 */
+	private String entrustedOutlesName;
+
+	/**
 	 * 移交的财产信息
 	 */
 	List<AssetsReDTO> assetsReDTOList;
