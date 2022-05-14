@@ -47,7 +47,6 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
 		//拍辅拍卖结果
 		PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_PMJG_PMJG.class);
 
@@ -106,6 +105,12 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 				addPmjgRepaymentFee(paiFu_stcc_pmjg_pmjg,paiFu_stcc_pmgg_pmgg,projectLiqui,casee,assetsReSubjectDTO);
 			}
 		}
+
+		//任务数据提交 保存程序、财产和行为
+		taskNodeService.setTaskDataSubmission(taskNode);
+
+		//发送拍辅任务消息
+		taskNodeService.sendPaifuTaskMessage(taskNode);
 	}
 
 	public void addPmjgRepaymentFee(PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {

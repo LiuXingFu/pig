@@ -9,6 +9,7 @@ import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifu.detail.ReserveSeeSampleSeeSampleList;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleSeeSampleListDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_BMKY_BMKY;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_DK_DK;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -39,13 +40,15 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//拍辅报名看样
-		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = setPaiFuStccBmkyBmky(taskNode);
+		setPaiFuStccBmkyBmky(taskNode);
+
+		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_BMKY_BMKY.class);
 
 		//同步联合拍卖财产报名看样节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_bmky_bmky.getAssetsId(), taskNode, "paiFu_STCC_BMKY_BMKY");
 	}
 
-	private PaiFu_STCC_BMKY_BMKY setPaiFuStccBmkyBmky(TaskNode taskNode) {
+	private void setPaiFuStccBmkyBmky(TaskNode taskNode) {
 		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_BMKY_BMKY.class);
 		List<ReserveSeeSampleSeeSampleListDetail> reserveSeeSampleSeeSampleLists = paiFu_stcc_bmky_bmky.getReserveSeeSampleSeeSampleLists();
 
@@ -85,8 +88,8 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
-		return paiFu_stcc_bmky_bmky;
 	}
 
 	@Override
@@ -100,7 +103,9 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 		signUpLookLikeService.removeByIds(collect);
 
 		//拍辅报名看样
-		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = setPaiFuStccBmkyBmky(taskNode);
+		setPaiFuStccBmkyBmky(taskNode);
+
+		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_BMKY_BMKY.class);
 
 		//同步联合拍卖财产报名看样节点数据
 		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_bmky_bmky.getAssetsId(), taskNode, "paiFu_STCC_BMKY_BMKY");

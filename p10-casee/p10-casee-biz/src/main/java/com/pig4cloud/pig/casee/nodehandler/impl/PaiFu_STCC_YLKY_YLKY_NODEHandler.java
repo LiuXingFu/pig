@@ -45,35 +45,37 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		//拍辅引领看样
-		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = setPaiFuStccYlkyYlky(taskNode);
+		setPaiFuStccYlkyYlky(taskNode);
 
-		//同步联合拍卖财产引领看样节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(),taskNode,"paiFu_STCC_YLKY_YLKY");
-	}
-
-	private PaiFu_STCC_YLKY_YLKY setPaiFuStccYlkyYlky(TaskNode taskNode) {
 		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
 
-		List<LeadTheWayActualLookSamplerRe> leadTheWayActualLookSamplerReList=new ArrayList<>();
-		List<LeadTheWayUserRe> leadTheWayUserReList=new ArrayList<>();
+		//同步联合拍卖财产引领看样节点数据
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(), taskNode, "paiFu_STCC_YLKY_YLKY");
+	}
+
+	private void setPaiFuStccYlkyYlky(TaskNode taskNode) {
+		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
+
+		List<LeadTheWayActualLookSamplerRe> leadTheWayActualLookSamplerReList = new ArrayList<>();
+		List<LeadTheWayUserRe> leadTheWayUserReList = new ArrayList<>();
 		for (ActualLookSamplerListDetail actualLookSamplerListDetail : paiFu_stcc_ylky_ylky.getSamplerList()) {
-			LeadTheWay leadTheWay=new LeadTheWay();
-			BeanUtils.copyProperties(actualLookSamplerListDetail,leadTheWay);
+			LeadTheWay leadTheWay = new LeadTheWay();
+			BeanUtils.copyProperties(actualLookSamplerListDetail, leadTheWay);
 			leadTheWayService.save(leadTheWay);
 			actualLookSamplerListDetail.setLeadTheWayId(leadTheWay.getLeadTheWayId());
 
 			//看样人员名单信息
 			List<ListOfSamplers> subjectList = actualLookSamplerListDetail.getSubjectList();
 			for (ListOfSamplers listOfSamplers : subjectList) {
-				Subject subject=new Subject();
-				BeanUtils.copyProperties(listOfSamplers,subject);
+				Subject subject = new Subject();
+				BeanUtils.copyProperties(listOfSamplers, subject);
 
 				//根据手机号添加或修改主体信息
 				R<Subject> phoneBySaveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 				Integer subjectId = Integer.valueOf(phoneBySaveOrUpdateById.getData().getSubjectId().toString());
 
-				LeadTheWayActualLookSamplerRe leadTheWayActualLookSamplerRe=new LeadTheWayActualLookSamplerRe();
-				BeanUtils.copyProperties(listOfSamplers,leadTheWayActualLookSamplerRe);
+				LeadTheWayActualLookSamplerRe leadTheWayActualLookSamplerRe = new LeadTheWayActualLookSamplerRe();
+				BeanUtils.copyProperties(listOfSamplers, leadTheWayActualLookSamplerRe);
 				leadTheWayActualLookSamplerRe.setLeadTheWayId(leadTheWay.getLeadTheWayId());
 				leadTheWayActualLookSamplerRe.setSubjectId(subjectId);
 				leadTheWayActualLookSamplerReList.add(leadTheWayActualLookSamplerRe);
@@ -82,23 +84,25 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 			//带看人员信息
 			List<Integer> userIdList = actualLookSamplerListDetail.getUserIdList();
 			for (Integer integer : userIdList) {
-				LeadTheWayUserRe leadTheWayUserRe=new LeadTheWayUserRe();
+				LeadTheWayUserRe leadTheWayUserRe = new LeadTheWayUserRe();
 				leadTheWayUserRe.setLeadTheWayId(leadTheWay.getLeadTheWayId());
 				leadTheWayUserRe.setUserId(integer);
 				leadTheWayUserReList.add(leadTheWayUserRe);
 			}
 		}
 
+		//节点信息更新
 		taskNodeService.updateById(taskNode);
 
+		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		//发送拍辅任务消息
 		taskNodeService.sendPaifuTaskMessage(taskNode);
 
 		leadTheWayActualLookSamplerReService.saveBatch(leadTheWayActualLookSamplerReList);
+
 		leadTheWayUserReService.saveBatch(leadTheWayUserReList);
-		return paiFu_stcc_ylky_ylky;
 	}
 
 
@@ -117,9 +121,11 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 		leadTheWayUserReService.remove(new LambdaQueryWrapper<LeadTheWayUserRe>().in(LeadTheWayUserRe::getLeadTheWayId, collect));
 
 		//拍辅引领看样
-		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = setPaiFuStccYlkyYlky(taskNode);
+		setPaiFuStccYlkyYlky(taskNode);
+
+		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
 
 		//同步联合拍卖财产引领看样节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(),taskNode,"paiFu_STCC_YLKY_YLKY");
+		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(), taskNode, "paiFu_STCC_YLKY_YLKY");
 	}
 }
