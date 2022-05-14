@@ -1,6 +1,5 @@
 package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import lombok.Data;
 
@@ -8,6 +7,10 @@ import java.util.List;
 
 @Data
 public class QueryLiquiTransferRecordDetailsVO extends LiquiTransferRecord {
+	/**
+	 * 提交资产处置移交财产id
+	 */
+	private Integer assetsId;
 
 	/**
 	 * 机构名称

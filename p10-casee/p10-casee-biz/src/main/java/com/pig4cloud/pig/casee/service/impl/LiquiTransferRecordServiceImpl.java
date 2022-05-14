@@ -291,6 +291,10 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		if (Objects.nonNull(queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile())) {
 			queryLiquiTransferRecordDetailsVO.setAuctionApplicationFile(queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1, queryLiquiTransferRecordDetailsVO.getAuctionApplicationFile().length() - 1));
 		}
+		//查询当前提交资产处置环节财产信息
+		TaskNode taskNode = taskNodeService.getById(queryLiquiTransferRecordDetailsVO.getNodeId());
+		Target target = targetService.getById(taskNode.getTargetId());
+		queryLiquiTransferRecordDetailsVO.setAssetsId(target.getGoalId());
 
 		//根据案件id与type查询案件执行人与申请人
 		String executorSubjectName = getExecutorSubjectName(queryLiquiTransferRecordDetailsVO.getCaseeId());
