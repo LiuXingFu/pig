@@ -89,6 +89,17 @@ public class SubjectController {
 	}
 
 	/**
+	 * 通过电话查询主体信息
+	 * @param phone
+	 * @return
+	 */
+	@ApiOperation(value = "通过身份证查询主体信息", notes = "通过身份证查询主体信息")
+	@GetMapping("/getByPhone/{phone}" )
+	public R getByPhone(@PathVariable("phone") String phone) {
+		return R.ok(subjectService.getByPhone(phone));
+	}
+
+	/**
 	 * 通过id查询主体以及地址信息
 	 * @param subjectId id
 	 * @return R

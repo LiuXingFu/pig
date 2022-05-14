@@ -126,4 +126,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("根据债务人id集合查询债务人姓名（多个用，号隔开）失败", cause);
 		return null;
 	}
+
+	@Override
+	public R<SubjectVO> getByPhone(String phone, String form) {
+		log.error("通过电话查询主体信息失败", cause);
+		return null;
+	}
 }

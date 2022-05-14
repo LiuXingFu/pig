@@ -161,4 +161,12 @@ public interface RemoteSubjectService {
 	@GetMapping("/subject/querySubjectNameList")
 	R<String> querySubjectName(@RequestParam(value = "subjectIdList" ,required=false) List<Integer> subjectIdList, @RequestHeader(SecurityConstants.FROM) String from);
 
+	/**
+	 * 通过电话查询主体信息
+	 * @param phone
+	 * @return
+	 */
+	@GetMapping("/getByPhone/{phone}" )
+	R<SubjectVO> getByPhone(@PathVariable("phone") String phone, @RequestHeader(SecurityConstants.FROM) String form);
+
 }

@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -72,32 +73,107 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		int add = 0;
 		// 判断主体id是否为空
 		if(customerSubjectDTO.getSubjectId() != null) {
-			// 主体id不为空 添加客户信息
-			Customer customer = new Customer();
-			BeanUtils.copyProperties(customerSubjectDTO, customer);
-			customer.setInsId(securityUtilsService.getCacheUser().getInsId());
-			customer.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-			customer.setRecommenderId(securityUtilsService.getCacheUser().getId());
-			this.save(customer);
+
+			Subject subject = this.remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
+
+			SubjectVO subjectVO = new SubjectVO();
+
+			BeanUtil.copyProperties(subject, subjectVO);
+
+			// 添加或修改客户信息
+			addOrUpdateCustomer(customerSubjectDTO, subjectVO);
 		} else {
 			if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity())) {
 				// 主体id为空 根据身份标识查询主体信息
 				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				// 判断主体信息是否为空
 				if (Objects.isNull(subjectVO)) {
-					saveSubjectOrCustomer(customerSubjectDTO);
-
+//					saveSubjectOrCustomer(customerSubjectDTO);
+					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+					if (Objects.isNull(subjectVO)) {
+						saveSubjectOrCustomer(customerSubjectDTO);
+					}
 				} else {
-					// 主体信息不为空 添加客户信息
-					Customer customer = getCustomer(customerSubjectDTO, subjectVO.getSubjectId());
-					this.save(customer);
+					// 添加或修改客户信息
+					addOrUpdateCustomer(customerSubjectDTO, subjectVO);
 				}
 			} else {
+				//根据电话查询主体
+				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
 				// 主体信息为空 添加主体信息
-				saveSubjectOrCustomer(customerSubjectDTO);
+				if (Objects.isNull(subjectVO)) {
+					saveSubjectOrCustomer(customerSubjectDTO);
+					//主体不为空
+				} else {
+					//添加或修改客户信息
+					addOrUpdateCustomer(customerSubjectDTO, subjectVO);
+				}
 			}
 		}
 		return add+=1;
+	}
+
+	/**
+	 * 添加或修改客户信息
+	 * @param customerSubjectDTO
+	 * @param subjectVO
+	 */
+	private void addOrUpdateCustomer(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
+		//根据主体id查询客户信息
+		Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
+		//客户信息为空添加客户信息
+		if (Objects.isNull(customer)) {
+			customer = getCustomer(customerSubjectDTO, subjectVO.getSubjectId());
+			this.save(customer);
+			//客户信息不为空更新客户信息
+		} else {
+			customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+			//判断如果查询的主体有无身份证并分别修改主体信息
+			if (Objects.isNull(subjectVO.getUnifiedIdentity())) {
+				saveUpdateSubject(customerSubjectDTO);
+			} else {
+				customerSubjectDTO.setUnifiedIdentity(subjectVO.getUnifiedIdentity());
+				saveUpdateSubject(customerSubjectDTO);
+			}
+			//如果某些字段为空则排除客户对象
+			setUpdateCustomer(customerSubjectDTO, customer);
+
+			//修改主体
+			this.updateById(customer);
+		}
+	}
+
+	/**
+	 * 如果某些字段为空则排除客户对象
+	 * @param customerSubjectDTO
+	 * @param customer
+	 */
+	private void setUpdateCustomer(CustomerSubjectDTO customerSubjectDTO, Customer customer) {
+
+		if (Objects.nonNull(customerSubjectDTO.getCaseeId())) {
+			customer.setCaseeId(customerSubjectDTO.getCaseeId());
+		}
+
+		if (Objects.nonNull(customerSubjectDTO.getProjectId())) {
+			customer.setProjectId(customerSubjectDTO.getProjectId());
+		}
+
+		if (Objects.nonNull(customerSubjectDTO.getCustomerType())) {
+			customer.setCustomerType(customerSubjectDTO.getCustomerType());
+		}
+
+		if (Objects.nonNull(customerSubjectDTO.getRecommenderId())) {
+			customer.setRecommenderId(customerSubjectDTO.getRecommenderId());
+		}
+
+		if (Objects.nonNull(customerSubjectDTO.getInsId())) {
+			customer.setInsId(customerSubjectDTO.getInsId());
+		}
+
+		if (Objects.nonNull(customerSubjectDTO.getOutlesId())) {
+			customer.setOutlesId(customerSubjectDTO.getOutlesId());
+		}
+
 	}
 
 	/**

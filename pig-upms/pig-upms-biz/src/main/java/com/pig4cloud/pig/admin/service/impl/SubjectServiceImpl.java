@@ -445,6 +445,24 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 		return subjectName;
 	}
 
+	/**
+	 * 通过电话查询主体信息
+	 * @param phone
+	 * @return
+	 */
+	@Override
+	public SubjectVO getByPhone(String phone) {
+		SubjectVO subjectVO = this.baseMapper.getByPhone(phone);
+
+		if (subjectVO != null) {
+			List<AddressVO> addressList = subjectVO.getAddressList();
+			for (AddressVO addressVO : addressList) {
+				addressVO.setAddressACPName(addressVO.getProvince() + addressVO.getCity() + addressVO.getArea());
+			}
+		}
+		return subjectVO;
+	}
+
 	private String getSubjectName(List<Integer> subjectIds, String subjectName) {
 		List<Subject> subjects = this.listByIds(subjectIds);
 		for (int i = 0; i < subjects.size(); i++) {

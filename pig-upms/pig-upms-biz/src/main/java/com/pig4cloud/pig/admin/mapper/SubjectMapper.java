@@ -65,4 +65,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	List<Subject> getSubjectByBankLoanId(Integer bankLoanId);
 
 	IPage<Subject> selectPageList(Page page, @Param("query") SubjectPageDTO subjectPageDTO,@Param("login") InsOutlesDTO insOutlesDTO);
+
+	SubjectVO getByPhone(String phone);
 }

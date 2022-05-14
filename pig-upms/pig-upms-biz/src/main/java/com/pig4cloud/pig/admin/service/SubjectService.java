@@ -90,4 +90,6 @@ public interface SubjectService extends IService<Subject> {
 
 
 	String querySubjectName(List<Integer> subjectIdList);
+
+	SubjectVO getByPhone(String phone);
 }
