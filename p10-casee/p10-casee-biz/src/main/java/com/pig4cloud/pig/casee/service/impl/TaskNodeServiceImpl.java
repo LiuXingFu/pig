@@ -366,6 +366,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					//发送拍辅任务消息
 					this.sendPaifuTaskMessage(newTaskNode);
 
+					//任务数据提交 保存程序、财产和行为
 					this.setTaskDataSubmission(newTaskNode);
 
 					//添加案件任务办理记录
@@ -1913,7 +1914,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 						assetsRePaifuDetail.setAssetsCompletionRuling(assetsCompletionRuling);
 
 						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
-					} else if (taskNode.getNodeKey().equals("PaiFu_STCC_DCCD_DCCD")) {
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")) {
 						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward.class);
 
 						assetsRePaifuDetail.setAssetsCompensationAward(assetsCompensationAward);
