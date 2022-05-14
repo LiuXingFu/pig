@@ -18,6 +18,6 @@ import java.util.Date;
  * @DAY_NAME_SHORT: 周五
  */
 @Data
-public class AssetsPayment extends PaiFu_STCC_DK_DK {
+public class AssetsPayment extends EntityZX_STZX_CCZXDK_CCZXDK {
 
 }

@@ -1,6 +1,7 @@
 package com.pig4cloud.pig.casee.entity.paifuentity.detail;
 
-import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.AssetsSeizure;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

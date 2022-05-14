@@ -345,7 +345,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 		PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 		if (paiFu_stcc_pmgg_pmgg != null) {
 			//查询拍卖公告节点联合拍卖财产
-			for (JointAuctionAssetsDTO jointAuctionAssetsDTO :  paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
 				//联合拍卖财产程序信息
 				Target jointAuctionTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
 				//根据程序id、节点key查询最新节点信息
@@ -376,7 +376,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer projectType) {
+	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer projectType) {
 		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 			//查询联合拍卖财产程序id
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, jointAuctionAssetsDTO.getProjectId()).eq(Target::getCaseeId, jointAuctionAssetsDTO.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001));
@@ -427,7 +427,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 
 			TaskNode taskNodePmjg = this.queryLastTaskNode("paiFu_STCC_PMJG_PMJG", target.getTargetId());
-			if (taskNodePmjg!=null){
+			if (taskNodePmjg != null) {
 				//修改当前节点状态为删除
 				taskNodePmjg.setDelFlag("1");
 				this.updateById(taskNodePmjg);
@@ -663,14 +663,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")){
+				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
 					//查询当前财产拍卖公告节点信息
 					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
-				}else {
+				} else {
 					//添加清收任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
@@ -685,7 +685,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
 					caseeHandlingRecords.setSourceType(0);
 				}
-				if (taskFlowDTO.getBehaviorId()!=null){
+				if (taskFlowDTO.getBehaviorId() != null) {
 					caseeHandlingRecords.setSourceId(taskFlowDTO.getBehaviorId());
 					caseeHandlingRecords.setSourceType(1);
 				}
@@ -693,9 +693,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			}
 
 			//修改比当前节点顺序小的节点状态为跳过
-			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper=new LambdaUpdateWrapper<>();
-			lambdaQueryWrapper.set(TaskNode::getStatus,301);
-			lambdaQueryWrapper.eq(TaskNode::getTargetId,taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes,400).eq(TaskNode::getStatus,0).le(TaskNode::getSort,taskFlowDTO.getSort());
+			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper = new LambdaUpdateWrapper<>();
+			lambdaQueryWrapper.set(TaskNode::getStatus, 301);
+			lambdaQueryWrapper.eq(TaskNode::getTargetId, taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0).le(TaskNode::getSort, taskFlowDTO.getSort());
 			this.update(lambdaQueryWrapper);
 
 			// 处理特殊节点与一般节点
@@ -955,14 +955,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK")&&!taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
+				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
 					//查询当前财产拍卖公告节点信息
 					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
-				}else {
+				} else {
 					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
@@ -1881,9 +1881,32 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 						assetsRePaifuDetail = new AssetsRePaifuDetail();
 					}
 
-					if (taskNode.getNodeKey().equals("")) {
+					if (taskNode.getNodeKey().equals("paiFu_STCC_DK_DK")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsPayment assetsPayment = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsPayment.class);
 
+						assetsRePaifuDetail.setAssetsPayment(assetsPayment);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsAssetCompensate assetsAssetCompensate = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsAssetCompensate.class);
+
+						assetsRePaifuDetail.setAssetsAssetCompensate(assetsAssetCompensate);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("paiFu_STCC_CJCD_CJCD")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompletionRuling assetsCompletionRuling = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompletionRuling.class);
+
+						assetsRePaifuDetail.setAssetsCompletionRuling(assetsCompletionRuling);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
+					} else if (taskNode.getNodeKey().equals("PaiFu_STCC_DCCD_DCCD")) {
+						com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward assetsCompensationAward = JsonUtils.jsonToPojo(taskNode.getFormData(), com.pig4cloud.pig.casee.entity.paifuentity.detail.detailentity.AssetsCompensationAward.class);
+
+						assetsRePaifuDetail.setAssetsCompensationAward(assetsCompensationAward);
+
+						assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
 					}
+					this.assetsRePaifuService.updateById(assetsRePaifu);
 				}
 			} else if (target.getGoalType().equals(Integer.valueOf("30001"))) {
 
