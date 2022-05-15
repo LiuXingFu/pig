@@ -26,6 +26,7 @@ import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
@@ -70,4 +71,6 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 	IPage<AssetsRePaifuFlowChartPageVO> queryArrivalCompensationNotAdjudicated(Page page, @Param("query") AssetsRePaifuFlowChartPageDTO assetsRePaifuFlowChartPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
 	ProjectPaifu getByPorjectId(@Param("projectId") Integer projectId);
+
+	List<ProjectPaifuExportVO> projectPaifuExport(@Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }

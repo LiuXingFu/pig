@@ -1,4 +1,4 @@
-package com.pig4cloud.pig.casee.entity.paifuentity.excel;
+package com.pig4cloud.pig.casee.dto.paifu.excel;
 
 import lombok.Data;
 

@@ -151,4 +151,14 @@
 		select * from p10_expense_record
 		where p10_expense_record.del_flag=0 and p10_expense_record.expense_record_id=#{expenseRecordId}
 	</select>
+
+	<select id="queryByAssetsReId" resultMap="expenseRecordMap">
+		select * from p10_expense_record
+		left join p10_expense_record_assets_re on p10_expense_record_assets_re.expense_record_id = p10_expense_record.expense_record_id
+		where p10_expense_record.del_flag = 0
+		and p10_expense_record.cost_type = 10007
+		and p10_expense_record.project_id = #{projectId}
+		and p10_expense_record_assets_re.assets_re_id = #{assetsReId}
+		limit 1
+	</select>
 </mapper>

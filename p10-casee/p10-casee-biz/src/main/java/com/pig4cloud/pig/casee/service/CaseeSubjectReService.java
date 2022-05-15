@@ -40,4 +40,7 @@ public interface CaseeSubjectReService extends IService<CaseeSubjectRe> {
 	List<SubjectOptionVO> getByCaseeId(Integer caseeId, Integer type,Integer caseePersonnelType);
 
 	List<SubjectOptionVO> getByProjectId(Integer projectId);
+
+	List<SubjectOptionVO> querySubjectList(Integer caseeId,Integer caseePersonnelType);
+
 }

@@ -93,4 +93,12 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	 */
 	ExpenseRecordDetailVO queryDetailById(Integer expenseRecordId);
 
+	/**
+	 * 根据项目id、财产关联id查询拍辅费是否存在
+	 * @param projectId
+	 * @param assetsReId
+	 * @return
+	 */
+	ExpenseRecord queryByAssetsReId(Integer projectId,Integer assetsReId);
+
 }

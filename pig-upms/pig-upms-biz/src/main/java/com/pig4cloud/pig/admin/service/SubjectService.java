@@ -93,5 +93,12 @@ public interface SubjectService extends IService<Subject> {
 
 	SubjectVO getByPhone(String phone);
 
+	/**
+	 * 根据主体名称查询主体
+	 * @param subjectName
+	 * @return
+	 */
+	Subject queryBySubjectName(String subjectName);
+
 	SubjectVO getByUnifiedIdentityAndPhone(String unifiedIdentity, String phone);
 }

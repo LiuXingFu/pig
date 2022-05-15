@@ -18,6 +18,7 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 
 import java.math.BigDecimal;
@@ -31,4 +32,14 @@ import java.math.BigDecimal;
 public interface ProjectService extends IService<Project> {
 
 	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
+
+	/**
+	 * 根据项目类型和案件案号查询项目id
+	 * @param projectType
+	 * @param caseeNumber
+	 * @param insOutlesDTO
+	 * @return
+	 */
+	Project getProjectIdByCaseeNumber(Integer projectType,String caseeNumber, InsOutlesDTO insOutlesDTO);
+
 }

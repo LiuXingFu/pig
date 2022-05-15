@@ -271,4 +271,9 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		expenseRecordDetailVO.setOutstandingAmount(outstandingAmount);
 		return expenseRecordDetailVO;
 	}
+
+	@Override
+	public 	ExpenseRecord queryByAssetsReId(Integer projectId,Integer assetsReId){
+		return this.baseMapper.queryByAssetsReId(projectId,assetsReId);
+	}
 }
