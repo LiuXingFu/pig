@@ -67,4 +67,6 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 	IPage<Subject> selectPageList(Page page, @Param("query") SubjectPageDTO subjectPageDTO,@Param("login") InsOutlesDTO insOutlesDTO);
 
 	SubjectVO getByPhone(String phone);
+
+	SubjectVO getByUnifiedIdentityAndPhone(@Param("unifiedIdentity") String unifiedIdentity, @Param("phone") String phone);
 }

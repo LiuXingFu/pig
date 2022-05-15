@@ -132,4 +132,10 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 		log.error("通过电话查询主体信息失败", cause);
 		return null;
 	}
+
+	@Override
+	public R<SubjectVO> getByUnifiedIdentityAndPhone(String unifiedIdentity, String phone, String from) {
+		log.error("通过身份证与电话查询主体信息", cause);
+		return null;
+	}
 }

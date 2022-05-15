@@ -166,7 +166,16 @@ public interface RemoteSubjectService {
 	 * @param phone
 	 * @return
 	 */
-	@GetMapping("/getByPhone/{phone}" )
+	@GetMapping("/subject/getByPhone/{phone}" )
 	R<SubjectVO> getByPhone(@PathVariable("phone") String phone, @RequestHeader(SecurityConstants.FROM) String form);
+
+	/**
+	 * 通过身份证与电话查询主体信息
+	 * @param unifiedIdentity
+	 * @param phone
+	 * @return
+	 */
+	@GetMapping("/subject/getByPhone/{unifiedIdentity}/{phone}")
+	R<SubjectVO> getByUnifiedIdentityAndPhone(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("phone") String phone, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

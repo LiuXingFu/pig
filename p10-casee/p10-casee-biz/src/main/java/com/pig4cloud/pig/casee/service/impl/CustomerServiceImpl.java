@@ -92,6 +92,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
 					if (Objects.isNull(subjectVO)) {
 						saveSubjectOrCustomer(customerSubjectDTO);
+					} else {
+						//添加或修改客户信息
+						addOrUpdateCustomer(customerSubjectDTO, subjectVO);
 					}
 				} else {
 					// 添加或修改客户信息
@@ -242,6 +245,53 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			}
 		}
 		return update += 1;
+	}
+
+	/**
+	 * 验证身份证与电话客户信息是否存在
+	 * @param unifiedIdentity
+	 * @param phone
+	 * @return
+	 */
+	@Override
+	public int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone) {
+		if ((Objects.nonNull(unifiedIdentity) && !unifiedIdentity.equals("")) && (Objects.nonNull(phone) && !phone.equals(""))) {
+			SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentityAndPhone(unifiedIdentity, phone, SecurityConstants.FROM).getData();
+			if (Objects.nonNull(subjectVO)) {
+				return isCustomer(subjectVO.getSubjectId());
+			} else {
+				subjectVO = this.remoteSubjectService.getByPhone(phone, SecurityConstants.FROM).getData();
+				if (Objects.nonNull(subjectVO)) {
+					return isCustomer(subjectVO.getSubjectId());
+				} else {
+					return 0;
+				}
+			}
+		} else if(Objects.nonNull(unifiedIdentity) && (phone == null || phone.equals(""))) {
+			SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(unifiedIdentity, SecurityConstants.FROM).getData();
+			if (Objects.nonNull(subjectVO)) {
+				return isCustomer(subjectVO.getSubjectId());
+			} else {
+				return 0;
+			}
+		} else if (Objects.nonNull(phone) && (unifiedIdentity == null || unifiedIdentity.equals(""))) {
+			SubjectVO subjectVO = this.remoteSubjectService.getByPhone(phone, SecurityConstants.FROM).getData();
+			if (Objects.nonNull(subjectVO)) {
+				return isCustomer(subjectVO.getSubjectId());
+			} else {
+				return 0;
+			}
+		}
+		return 0;
+	}
+
+	public int isCustomer(Integer subjectId) {
+		Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectId));
+		if (Objects.nonNull(customer)) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	/**
