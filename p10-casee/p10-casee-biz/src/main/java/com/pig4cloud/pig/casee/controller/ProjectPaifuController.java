@@ -277,7 +277,6 @@ public class ProjectPaifuController {
 	@ApiOperation(value = "根据id查询拍辅项目", notes = "根据id查询拍辅项目")
 	@GetMapping("/queryById/{projectId}" )
 	public R queryById(@PathVariable("projectId" )Integer projectId) {
-
 		return R.ok(projectPaifuService.queryById(projectId));
 	}
 
@@ -289,8 +288,7 @@ public class ProjectPaifuController {
 	@SysLog("导入excel拍辅数据" )
 	@PostMapping("/importExcel")
 	public R importExcel(@RequestBody ImportPaifuDTO importPaifuDTO) {
-		System.out.println(importPaifuDTO);
-		return R.ok();
+		return R.ok(projectPaifuService.excelImport(importPaifuDTO));
 	}
 
 }

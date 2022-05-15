@@ -50,6 +50,16 @@ public class PaiFu_STCC_DK_DK extends CommonalityData implements Serializable {
 	private String finalPayer;
 
 	/**
+	 * 付款人电话
+	 */
+	private String phone;
+
+	/**
+	 * 付款人身份证
+	 */
+	private String identityCard;
+
+	/**
 	 * 拍辅费用
 	 */
 	private BigDecimal auxiliaryFee;

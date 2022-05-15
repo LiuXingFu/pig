@@ -461,4 +461,48 @@
 		</if>
 	</select>
 
+	<resultMap id="getAuctionRecord" type="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO">
+
+	</resultMap>
+
+	<select id="projectPaifuExport" resultMap="getAuctionRecord">
+		select p10_project.company_code,p10_casee.casee_number,p10_casee.applicant_name,p10_casee.executed_name,p10_assets.`owner`,p10_assets.assets_name,p10_assets.assets_type,p10_casee.start_time,p10_casee.judge_name,json_extract( p10_task_node.form_data,'$.pricingManner' ) as pricingManner,json_extract( p10_task_node.form_data,'$.listPrice' ) as listPrice,json_extract( p10_task_node.form_data,'$.listPrice' ) as listPrice from p10_assets_re
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_court on p10_court.court_id = p10_casee.court_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_assets_re.assets_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id and p10_task_node.node_key = "entityZX_STZX_CCZXJGYJ_CCZXJGYJ"
+		where p10_project.del_flag = 0
+		and p10_assets_re.casee_id is not null
+		and p10_target.goal_type = 20001
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.status != null and query.status >= 0">
+			and p10_project.status = #{query.status}
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and (p10_project.proposers_names like concat('%', #{query.subjectName}, '%')
+			or p10_project.subject_persons like concat('%', #{query.subjectName}, '%'))
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		<if test="query.userNickName != null and query.userNickName != ''">
+			and p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
+		</if>
+		<if test="query.judgeName != null and query.judgeName != ''">
+			and p10_casee.judge_name like concat('%', #{query.judgeName}, '%')
+		</if>
+	</select>
+
 </mapper>

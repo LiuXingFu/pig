@@ -18,6 +18,7 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -490,5 +491,13 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			}
 		}
 		return subjectName;
+	}
+
+	@Override
+	public Subject queryBySubjectName(String subjectName){
+		QueryWrapper<Subject> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(Subject::getName,subjectName);
+		queryWrapper.last("limit 1");
+		return this.getOne(queryWrapper);
 	}
 }

@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.CaseeAddDTO;
 import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.Project;

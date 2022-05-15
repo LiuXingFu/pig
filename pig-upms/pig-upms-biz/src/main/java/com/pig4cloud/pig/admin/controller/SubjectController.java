@@ -360,4 +360,14 @@ public class SubjectController {
 		return R.ok(this.subjectService.querySubjectName(subjectIdList));
 	}
 
+	/**
+	 * 根据主体名称查询主体
+	 * @param subjectName 主体名称
+	 * @return R
+	 */
+	@ApiOperation(value = "根据主体名称查询主体", notes = "根据主体名称查询主体")
+	@GetMapping("/queryBySubjectName/{subjectName}" )
+	public R queryBySubjectName(@PathVariable String subjectName) {
+		return R.ok(subjectService.queryBySubjectName(subjectName));
+	}
 }

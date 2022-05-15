@@ -52,7 +52,7 @@
 		where p10_assets_re.project_id = #{projectId}
 		and p10_assets_re.casee_id = #{caseeId}
 		and p10_assets_re.assets_id = #{assetsId}
-		ORDER BY p10_auction_record.announcement_start_time desc
+		ORDER BY p10_auction_record.create_time desc
 		limit 1
 	</select>
 

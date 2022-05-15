@@ -112,13 +112,15 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 
 		PaiFu_STCC_YLKY_YLKY paiFu_STCC_YLKY_YLKY = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
 
-		List<Integer> collect = paiFu_STCC_YLKY_YLKY.getSamplerList().stream().map(ActualLookSamplerListDetail::getLeadTheWayId).collect(Collectors.toList());
+		if (paiFu_STCC_YLKY_YLKY!=null){
+			List<Integer> collect = paiFu_STCC_YLKY_YLKY.getSamplerList().stream().map(ActualLookSamplerListDetail::getLeadTheWayId).collect(Collectors.toList());
 
-		leadTheWayService.removeByIds(collect);
+			leadTheWayService.removeByIds(collect);
 
-		leadTheWayActualLookSamplerReService.remove(new LambdaQueryWrapper<LeadTheWayActualLookSamplerRe>().in(LeadTheWayActualLookSamplerRe::getLeadTheWayId, collect));
+			leadTheWayActualLookSamplerReService.remove(new LambdaQueryWrapper<LeadTheWayActualLookSamplerRe>().in(LeadTheWayActualLookSamplerRe::getLeadTheWayId, collect));
 
-		leadTheWayUserReService.remove(new LambdaQueryWrapper<LeadTheWayUserRe>().in(LeadTheWayUserRe::getLeadTheWayId, collect));
+			leadTheWayUserReService.remove(new LambdaQueryWrapper<LeadTheWayUserRe>().in(LeadTheWayUserRe::getLeadTheWayId, collect));
+		}
 
 		//拍辅引领看样
 		setPaiFuStccYlkyYlky(taskNode);

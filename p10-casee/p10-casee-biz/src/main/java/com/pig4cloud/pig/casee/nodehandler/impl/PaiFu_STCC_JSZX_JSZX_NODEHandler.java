@@ -102,6 +102,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 			customerSubjectDTO.setProjectId(taskNode.getProjectId());
 			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 			customerSubjectDTO.setCustomerType(10000);
+			customerSubjectDTO.setNatureType(0);
 			//添加客户信息
 			customerService.saveCustomer(customerSubjectDTO);
 		}
@@ -113,15 +114,16 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 
 		PaiFu_STCC_JSZX_JSZX paiFu_STCC_JSZX_JSZX = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_JSZX_JSZX.class);
+		if (paiFu_STCC_JSZX_JSZX!=null){
+			//		咨询名单id集合
+			List<Integer> collect = paiFu_STCC_JSZX_JSZX.getReserveSeeSampleConsultingLists().stream().map(ReserveSeeSampleConsultingListDetail::getReceiveConsultationId).collect(Collectors.toList());
 
-//		咨询名单id集合
-		List<Integer> collect = paiFu_STCC_JSZX_JSZX.getReserveSeeSampleConsultingLists().stream().map(ReserveSeeSampleConsultingListDetail::getReceiveConsultationId).collect(Collectors.toList());
+			//删除接收咨询数据
+			receiveConsultationService.removeByIds(collect);
 
-		//删除接收咨询数据
-		receiveConsultationService.removeByIds(collect);
-
-		//删除接受咨询关联咨询问题数据
-		receiveConsultationQuestionReService.remove(new LambdaQueryWrapper<ReceiveConsultationQuestionRe>().in(ReceiveConsultationQuestionRe::getReceiveConsultationId, collect));
+			//删除接受咨询关联咨询问题数据
+			receiveConsultationQuestionReService.remove(new LambdaQueryWrapper<ReceiveConsultationQuestionRe>().in(ReceiveConsultationQuestionRe::getReceiveConsultationId, collect));
+		}
 
 		//拍辅接受咨询
 		PaiFu_STCC_JSZX_JSZX paiFu_stcc_jszx_jszx = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JSZX_JSZX.class);

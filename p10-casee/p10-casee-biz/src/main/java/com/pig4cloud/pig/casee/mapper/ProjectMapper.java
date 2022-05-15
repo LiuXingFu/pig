@@ -18,8 +18,10 @@
 package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 
@@ -33,4 +35,6 @@ import java.math.BigDecimal;
 public interface ProjectMapper extends BaseMapper<Project> {
 
 	BigDecimal getProjectAmountBySubjectId(Integer subjectId);
+
+	Project getProjectIdByCaseeNumber(@Param("projectType") Integer projectType, @Param("caseeNumber") String caseeNumber, @Param("login") InsOutlesDTO insOutlesDTO);
 }

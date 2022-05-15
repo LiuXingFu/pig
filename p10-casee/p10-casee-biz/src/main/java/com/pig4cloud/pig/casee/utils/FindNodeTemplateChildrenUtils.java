@@ -143,7 +143,7 @@ public class FindNodeTemplateChildrenUtils {
 									if (entityZX_stzx_cczxcf_cczxcf != null) {
 										if ((mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0) ||//有抵押权、查封为首封
 												(mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 1 && entityZX_stzx_cczxsqys_cczxsqys != null && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 0) ||//有抵押权、查封为轮候、已商情移送(结果成功)
-												(mortgagee == 1 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0 && entityZX_stzx_cczxsqys_cczxsqys != null && entityZX_stzx_cczxsqys_cczxsqys.getBusinessPleaseTransfer() == 2)) {//无抵押权、首封、无抵押权人
+												(mortgagee == 2 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0)) {//首封、无抵押权人
 											return taskNodeVO;
 										}
 									}

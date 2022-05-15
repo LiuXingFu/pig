@@ -170,6 +170,14 @@ public interface RemoteSubjectService {
 	R<SubjectVO> getByPhone(@PathVariable("phone") String phone, @RequestHeader(SecurityConstants.FROM) String form);
 
 	/**
+	 * 根据主体名称查询主体
+	 * @param subjectName 主体名称
+	 * @return R
+	 */
+	@GetMapping("/subject/queryBySubjectName/{subjectName}" )
+	R<Subject> queryBySubjectName(@PathVariable("subjectName") String subjectName, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
 	 * 通过身份证与电话查询主体信息
 	 * @param unifiedIdentity
 	 * @param phone

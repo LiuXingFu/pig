@@ -29,6 +29,11 @@ import java.time.LocalDate;
 @Data
 public class PaymentRecordPageDTO {
 
+	/**
+	 * 回款类型(100-法院领款 200-法院到款 300-履行到申请人 400-资产抵偿)
+	 */
+	private Integer paymentType;
+
     /**
      * 案件id
      */

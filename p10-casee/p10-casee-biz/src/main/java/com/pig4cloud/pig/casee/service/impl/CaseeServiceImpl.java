@@ -24,6 +24,7 @@ import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.admin.api.feign.RemoteOutlesTemplateReService;
 import com.pig4cloud.pig.casee.dto.CaseeAddDTO;
 import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.TargetAddDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.Project;

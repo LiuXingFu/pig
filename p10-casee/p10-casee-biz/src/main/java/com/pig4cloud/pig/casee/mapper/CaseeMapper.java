@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.CaseeGetListDTO;
+import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.vo.CaseeBizLiquiVO;
 import com.pig4cloud.pig.casee.vo.CaseeVO;

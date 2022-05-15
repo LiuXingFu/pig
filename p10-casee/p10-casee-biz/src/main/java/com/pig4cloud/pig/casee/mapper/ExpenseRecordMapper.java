@@ -53,4 +53,6 @@ public interface ExpenseRecordMapper extends BaseMapper<ExpenseRecord> {
 	IPage<ExpenseRecordPageVO> queryPaifuExpenseRecordPage(Page page, @Param("projectId")Integer projectId);
 
 	ExpenseRecordDetailVO queryDetailById(@Param("expenseRecordId")Integer expenseRecordId);
+
+	ExpenseRecord queryByAssetsReId(@Param("projectId")Integer projectId,@Param("assetsReId")Integer assetsReId);
 }

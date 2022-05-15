@@ -6,7 +6,6 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.SamplePreparationWorkListDetail;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_BMKY_BMKY;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_KYZBGZ_KYZBGZ;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
@@ -104,6 +103,7 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 				customerSubjectDTO.setProjectId(taskNode.getProjectId());
 				customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 				customerSubjectDTO.setCustomerType(20000);
+				customerSubjectDTO.setNatureType(0);
 				//添加客户信息
 				customerService.saveCustomer(customerSubjectDTO);
 			}
@@ -132,15 +132,17 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 
 		PaiFu_STCC_KYZBGZ_KYZBGZ paiFu_STCC_KYZBGZ_KYZBGZ = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_KYZBGZ_KYZBGZ.class);
 
-		List<Integer> collect = paiFu_STCC_KYZBGZ_KYZBGZ.getSamplePreparationWorkListDetails().stream().map(SamplePreparationWorkListDetail::getSamplePreparationWorkId).collect(Collectors.toList());
+		if (paiFu_STCC_KYZBGZ_KYZBGZ!=null){
+			List<Integer> collect = paiFu_STCC_KYZBGZ_KYZBGZ.getSamplePreparationWorkListDetails().stream().map(SamplePreparationWorkListDetail::getSamplePreparationWorkId).collect(Collectors.toList());
 
-		this.samplePreparationWorkService.removeByIds(collect);
+			this.samplePreparationWorkService.removeByIds(collect);
 
-		this.samplePreparationWorkSubjectReService.remove(new LambdaQueryWrapper<SamplePreparationWorkSubjectRe>().in(SamplePreparationWorkSubjectRe::getSamplePreparationWorkId, collect));
+			this.samplePreparationWorkSubjectReService.remove(new LambdaQueryWrapper<SamplePreparationWorkSubjectRe>().in(SamplePreparationWorkSubjectRe::getSamplePreparationWorkId, collect));
 
-		this.samplePreparationWorkUsetReService.remove(new LambdaQueryWrapper<SamplePreparationWorkUsetRe>().in(SamplePreparationWorkUsetRe::getSamplePreparationWorkId, collect));
+			this.samplePreparationWorkUsetReService.remove(new LambdaQueryWrapper<SamplePreparationWorkUsetRe>().in(SamplePreparationWorkUsetRe::getSamplePreparationWorkId, collect));
 
-		this.samplePreparationWorkAssetsReService.remove(new LambdaQueryWrapper<SamplePreparationWorkAssetsRe>().in(SamplePreparationWorkAssetsRe::getSamplePreparationWorkId, collect));
+			this.samplePreparationWorkAssetsReService.remove(new LambdaQueryWrapper<SamplePreparationWorkAssetsRe>().in(SamplePreparationWorkAssetsRe::getSamplePreparationWorkId, collect));
+		}
 
 		//拍辅看样准备工作
 		setPaiFuStccKyzbgzKyzbgz(taskNode);

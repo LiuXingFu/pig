@@ -77,4 +77,5 @@ public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 	 * @return
 	 */
 	List<InsOutlesCourtReVO> queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO);
+
 }
