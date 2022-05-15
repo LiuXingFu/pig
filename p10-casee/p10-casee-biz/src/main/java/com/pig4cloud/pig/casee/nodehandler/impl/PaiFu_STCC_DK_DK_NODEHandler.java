@@ -177,36 +177,38 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		PaiFu_STCC_DK_DK paiFu_STCC_DK_DK = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_DK_DK.class);
 
-		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), paiFu_STCC_DK_DK.getAssetsId());
+		if (paiFu_STCC_DK_DK!=null){
+			//查询当前财产关联债务人信息
+			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), paiFu_STCC_DK_DK.getAssetsId());
 
-		//查询拍辅项目
-		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
-
-		//将之前的拍辅费减除并修改
-		updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectPaifu.getProjectId());
-
-		//通过清收移交记录信息查询清收项目id
-		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_DK_DK.getAssetsId());
-
-		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
-
-			//查询清收项目
-			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
+			//查询拍辅项目
+			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
 			//将之前的拍辅费减除并修改
-			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectLiqui.getProjectId());
+			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectPaifu.getProjectId());
 
-			//删除到款的到款信息
-			paymentRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
+			//通过清收移交记录信息查询清收项目id
+			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_DK_DK.getAssetsId());
 
-			//删除回款记录财产关联信息
-			paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-					.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
+			if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 
-			//删除到款信息关联债务人
-			paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-					.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
+				//查询清收项目
+				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
+
+				//将之前的拍辅费减除并修改
+				updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectLiqui.getProjectId());
+
+				//删除到款的到款信息
+				paymentRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
+
+				//删除回款记录财产关联信息
+				paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
+						.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
+
+				//删除到款信息关联债务人
+				paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
+						.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
+			}
 		}
 
 		//拍辅到款

@@ -15,8 +15,6 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 package com.pig4cloud.pig.casee.dto.paifu;
-
-import com.pig4cloud.pig.casee.dto.AssetsReDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

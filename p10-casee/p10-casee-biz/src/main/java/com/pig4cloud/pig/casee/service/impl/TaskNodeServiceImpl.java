@@ -869,24 +869,24 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	public TaskNodeVO revoke(TaskNode taskNode) {
 		TaskNode taskNodePmgg = this.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, taskNode.getProjectId()).eq(TaskNode::getCaseeId, taskNode.getCaseeId()).eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMGG_CCZXPMGG").orderByDesc(TaskNode::getCreateTime).last("limit 1"));
 		TaskNodeVO taskNodeVO = new TaskNodeVO();
-		if (taskNodePmgg != null) {
-			if (taskNodePmgg.getFormData() == null) {
-				return taskNodeVO;
-			}
-
-			EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
-
-			if (entityZX_stzx_cczxpmgg_cczxpmgg.getRevoke() == 1) {
-				return taskNodeVO;
-			}
-			Date announcementReleaseTime = entityZX_stzx_cczxpmgg_cczxpmgg.getAnnouncementReleaseTime();
-			Date auctionStartDate = entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionEndDate();
-			Date nowTime = new Date();
-			boolean effectiveDate = DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
-			taskNodeVO.setRevokeSign(effectiveDate);
-			taskNodeVO.setNodeId(taskNodePmgg.getNodeId());
-			return taskNodeVO;
-		}
+//		if (taskNodePmgg != null) {
+//			if (taskNodePmgg.getFormData() == null) {
+//				return taskNodeVO;
+//			}
+//
+//			EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
+//
+//			if (entityZX_stzx_cczxpmgg_cczxpmgg.getRevoke() == 1) {
+//				return taskNodeVO;
+//			}
+//			Date announcementReleaseTime = entityZX_stzx_cczxpmgg_cczxpmgg.getAnnouncementReleaseTime();
+//			Date auctionStartDate = entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionEndDate();
+//			Date nowTime = new Date();
+//			boolean effectiveDate = DataUtils.isEffectiveDate(nowTime, announcementReleaseTime, auctionStartDate);
+//			taskNodeVO.setRevokeSign(effectiveDate);
+//			taskNodeVO.setNodeId(taskNodePmgg.getNodeId());
+//			return taskNodeVO;
+//		}
 		return taskNodeVO;
 	}
 

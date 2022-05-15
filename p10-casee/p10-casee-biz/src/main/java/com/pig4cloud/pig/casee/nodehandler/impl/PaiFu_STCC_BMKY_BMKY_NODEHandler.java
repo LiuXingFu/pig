@@ -6,10 +6,8 @@ import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.SignUpLookLike;
 import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.entity.paifu.detail.ReserveSeeSampleSeeSampleList;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ReserveSeeSampleSeeSampleListDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_BMKY_BMKY;
-import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_DK_DK;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -99,9 +97,11 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 
 		PaiFu_STCC_BMKY_BMKY paiFu_STCC_BMKY_BMKY = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_BMKY_BMKY.class);
 
-		List<Integer> collect = paiFu_STCC_BMKY_BMKY.getReserveSeeSampleSeeSampleLists().stream().map(ReserveSeeSampleSeeSampleListDetail::getSignUpLookLikeId).collect(Collectors.toList());
+		if (paiFu_STCC_BMKY_BMKY!=null){
+			List<Integer> collect = paiFu_STCC_BMKY_BMKY.getReserveSeeSampleSeeSampleLists().stream().map(ReserveSeeSampleSeeSampleListDetail::getSignUpLookLikeId).collect(Collectors.toList());
 
-		signUpLookLikeService.removeByIds(collect);
+			signUpLookLikeService.removeByIds(collect);
+		}
 
 		//拍辅报名看样
 		setPaiFuStccBmkyBmky(taskNode);
