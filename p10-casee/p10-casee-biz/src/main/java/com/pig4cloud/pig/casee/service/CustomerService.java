@@ -62,4 +62,12 @@ public interface CustomerService extends IService<Customer> {
 	 * @return R
 	 */
 	int updateCustomerById(CustomerSubjectDTO customerSubjectDTO);
+
+	/**
+	 * 验证身份证与电话客户信息是否存在
+	 * @param unifiedIdentity
+	 * @param phone
+	 * @return
+	 */
+	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone);
 }

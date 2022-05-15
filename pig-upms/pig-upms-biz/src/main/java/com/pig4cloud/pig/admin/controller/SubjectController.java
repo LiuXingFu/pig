@@ -93,10 +93,20 @@ public class SubjectController {
 	 * @param phone
 	 * @return
 	 */
-	@ApiOperation(value = "通过身份证查询主体信息", notes = "通过身份证查询主体信息")
+	@ApiOperation(value = "通过电话查询主体信息", notes = "通过电话查询主体信息")
 	@GetMapping("/getByPhone/{phone}" )
 	public R getByPhone(@PathVariable("phone") String phone) {
 		return R.ok(subjectService.getByPhone(phone));
+	}
+
+	/**
+	 * 通过身份证与电话查询主体信息
+	 * @return
+	 */
+	@ApiOperation(value = "通过电话查询主体信息", notes = "通过电话查询主体信息")
+	@GetMapping("/getByPhone/{unifiedIdentity}/{phone}")
+	public R getByUnifiedIdentityAndPhone(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("phone") String phone) {
+		return R.ok(subjectService.getByUnifiedIdentityAndPhone(unifiedIdentity, phone));
 	}
 
 	/**

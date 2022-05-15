@@ -180,4 +180,16 @@ public class CustomerController {
 		}
 	}
 
+	/**
+	 * 验证身份证与电话客户信息是否存在
+	 * @param unifiedIdentity
+	 * @param phone
+	 * @return
+	 */
+	@ApiOperation(value = "通过id查询客户与主体信息", notes = "通过id查询客户与主体信息")
+	@GetMapping("/verifyUnifiedIdentityAndPhone" )
+	public R verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone) {
+		return R.ok(customerService.verifyUnifiedIdentityAndPhone(unifiedIdentity, phone));
+	}
+
 }
