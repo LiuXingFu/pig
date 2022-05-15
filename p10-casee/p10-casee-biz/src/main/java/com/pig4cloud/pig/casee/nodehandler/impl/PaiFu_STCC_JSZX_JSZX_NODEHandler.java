@@ -102,6 +102,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 			customerSubjectDTO.setProjectId(taskNode.getProjectId());
 			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 			customerSubjectDTO.setCustomerType(10000);
+			customerSubjectDTO.setNatureType(0);
 			//添加客户信息
 			customerService.saveCustomer(customerSubjectDTO);
 		}

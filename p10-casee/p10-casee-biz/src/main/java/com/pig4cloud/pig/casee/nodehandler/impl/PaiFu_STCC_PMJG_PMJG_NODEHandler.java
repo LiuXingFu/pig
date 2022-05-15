@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -44,6 +45,8 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
 	private AuctionRecordService auctionRecordService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -104,6 +107,18 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 				//添加清收回款、费用明细信息
 				addPmjgRepaymentFee(paiFu_stcc_pmjg_pmjg,paiFu_stcc_pmgg_pmgg,projectLiqui,casee,assetsReSubjectDTO);
 			}
+			CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+			if (paiFu_stcc_pmjg_pmjg.getIdentityCard()!=null){
+				customerSubjectDTO.setUnifiedIdentity(paiFu_stcc_pmjg_pmjg.getIdentityCard());
+			}
+			customerSubjectDTO.setNatureType(0);
+			customerSubjectDTO.setPhone(paiFu_stcc_pmjg_pmjg.getPhone());
+			customerSubjectDTO.setName(paiFu_stcc_pmjg_pmjg.getBuyer());
+			customerSubjectDTO.setProjectId(taskNode.getProjectId());
+			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+			customerSubjectDTO.setCustomerType(20000);
+			//添加客户信息
+			customerService.saveCustomer(customerSubjectDTO);
 		}
 
 		//任务数据提交 保存程序、财产和行为

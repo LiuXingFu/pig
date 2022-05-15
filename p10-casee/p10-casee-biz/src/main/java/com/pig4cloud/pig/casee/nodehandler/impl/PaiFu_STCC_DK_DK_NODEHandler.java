@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -38,8 +39,6 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	@Autowired
 	private PaymentRecordService paymentRecordService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	private PaymentRecordAssetsReService paymentRecordAssetsReService;
@@ -49,6 +48,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	private LiquiTransferRecordService liquiTransferRecordService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	@Transactional
@@ -77,7 +78,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
 		//添加拍辅回款、费用明细信息
-		addDkRepaymentFee(paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO, 2);
+		addDkRepaymentFee(taskNode,paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectPaifu, casee, assetsReSubjectDTO, 2);
 
 		// 更新拍辅项目总金额
 		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
@@ -87,7 +88,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 			//添加清收回款、费用明细信息
-			addDkRepaymentFee(paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectLiqui, casee, assetsReSubjectDTO, 1);
+			addDkRepaymentFee(taskNode,paiFu_stcc_dk_dk, paiFu_stcc_pmgg_pmgg, projectLiqui, casee, assetsReSubjectDTO, 1);
 			// 更新清收项目总金额
 			projectLiquiService.modifyProjectAmount(liquiTransferRecord.getProjectId());
 		}
@@ -108,7 +109,20 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 
 
 	//添加回款、费用明细信息
-	public void addDkRepaymentFee(PaiFu_STCC_DK_DK paiFu_stcc_dk_dk, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, Integer type) {
+	public void addDkRepaymentFee(TaskNode taskNode,PaiFu_STCC_DK_DK paiFu_stcc_dk_dk, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, Integer type) {
+		CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+		if (paiFu_stcc_dk_dk.getIdentityCard()!=null){
+			customerSubjectDTO.setUnifiedIdentity(paiFu_stcc_dk_dk.getIdentityCard());
+		}
+		customerSubjectDTO.setNatureType(0);
+		customerSubjectDTO.setPhone(paiFu_stcc_dk_dk.getPhone());
+		customerSubjectDTO.setName(paiFu_stcc_dk_dk.getFinalPayer());
+		customerSubjectDTO.setProjectId(taskNode.getProjectId());
+		customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+		customerSubjectDTO.setCustomerType(30000);
+		//添加客户信息
+		customerService.saveCustomer(customerSubjectDTO);
+
 		//查询当前财产程序拍辅费
 		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), project.getProjectId(), 10007);
 		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));

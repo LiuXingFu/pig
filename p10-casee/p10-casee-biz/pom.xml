@@ -24,7 +24,7 @@
 		<version>3.3.0</version>
 	</parent>
 
-	<artifactId>p10-casee-biz</artifactId>
+	<artifactId>p10-casee-biz-mjh</artifactId>
 	<packaging>jar</packaging>
 
 	<description>p10 案件</description>

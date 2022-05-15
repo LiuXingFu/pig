@@ -104,6 +104,7 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 				customerSubjectDTO.setProjectId(taskNode.getProjectId());
 				customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 				customerSubjectDTO.setCustomerType(20000);
+				customerSubjectDTO.setNatureType(0);
 				//添加客户信息
 				customerService.saveCustomer(customerSubjectDTO);
 			}
