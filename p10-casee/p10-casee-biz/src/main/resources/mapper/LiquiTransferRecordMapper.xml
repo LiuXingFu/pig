@@ -48,7 +48,7 @@
 
 	<resultMap id="liquiTransferRecordDetailsVOMap" type="com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO"
 			   extends="liquiTransferRecordMap">
-		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsVO"
+		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsPaifuVO"
 					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsByLiQuiTransferRecordId"
 					column="liqui_transfer_record_id">
 		</collection>
@@ -67,6 +67,14 @@
 			   extends="liquiTransferRecordMap">
 		<collection property="assetsReLiquiVOS" ofType="com.pig4cloud.pig.casee.vo.AssetsReLiquiVO"
 					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsReDTOByLiQuiTransferRecordId"
+					column="liqui_transfer_record_id">
+		</collection>
+	</resultMap>
+
+	<resultMap id="liquiTransferRecordVOMap" type="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO"
+			   extends="liquiTransferRecordMap">
+		<collection property="assetsVOList" ofType="com.pig4cloud.pig.casee.vo.AssetsPaifuVO"
+					select="com.pig4cloud.pig.casee.mapper.AssetsLiquiTransferRecordReMapper.queryAssetsByLiQuiTransferRecordId"
 					column="liqui_transfer_record_id">
 		</collection>
 	</resultMap>
@@ -155,7 +163,8 @@
 		DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
-		p10_outles.outles_name outlesName
+		p10_outles.outles_name outlesName,
+		p10_task_node.node_id
 		FROM
 		`p10_liqui_transfer_record`
 		LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
@@ -164,15 +173,18 @@
 		WHERE p10_liqui_transfer_record.del_flag=0 AND p10_liqui_transfer_record.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
 
-	<select id="queryTransferRecord" resultType="com.pig4cloud.pig.casee.vo.LiquiTransferRecordVO">
+	<select id="queryTransferRecord" resultMap="liquiTransferRecordVOMap">
 		SELECT
 		p10_liqui_transfer_record.casee_number caseeNumber,
 		p10_liqui_transfer_record.*,
+		DATE_FORMAT(substring( JSON_EXTRACT( p10_task_node.form_data, "$.applicationSubmissionTime" ), 2, 10 ), '%Y-%m-%d') AS applicationSubmissionTime,
+		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
 		p10_outles.outles_name outlesName,
 		entrustedIns.ins_name entrustedInsName,
 		entrustedOutles.outles_name entrustedOutlesName
 		FROM `p10_liqui_transfer_record`
+		LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
 		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
 		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
 		LEFT JOIN p10_institution AS entrustedIns ON entrustedIns.ins_id = p10_liqui_transfer_record.entrusted_ins_id

@@ -22,6 +22,7 @@ import com.pig4cloud.pig.casee.entity.LiquiTransferRecord;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiVO;
 import com.pig4cloud.pig.casee.vo.AssetsVO;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
+import com.pig4cloud.pig.casee.vo.SubjectOptionVO;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -73,4 +74,5 @@ public class LiquiTransferRecordAssetsDetailsVO extends LiquiTransferRecord {
 	 * 移交的财产信息
 	 */
 	private List<AssetsReLiquiVO> assetsReLiquiVOS;
+
 }

@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.AssetsLiquiTransferRecordRe;
+import com.pig4cloud.pig.casee.vo.AssetsPaifuVO;
 import com.pig4cloud.pig.casee.vo.AssetsReLiquiVO;
 import com.pig4cloud.pig.casee.vo.AssetsVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,7 +36,7 @@ import java.util.List;
 @Mapper
 public interface AssetsLiquiTransferRecordReMapper extends BaseMapper<AssetsLiquiTransferRecordRe> {
 
-	List<AssetsVO> queryAssetsByLiQuiTransferRecordId(Integer liquiTransferRecordId);
+	List<AssetsPaifuVO> queryAssetsByLiQuiTransferRecordId(Integer liquiTransferRecordId);
 
 	List<AssetsReLiquiVO> queryAssetsReDTOByLiQuiTransferRecordId(Integer liquiTransferRecordId);
 
