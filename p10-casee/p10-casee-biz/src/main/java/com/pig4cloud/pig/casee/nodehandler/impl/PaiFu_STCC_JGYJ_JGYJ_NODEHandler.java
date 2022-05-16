@@ -140,38 +140,42 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		PaiFu_STCC_JGYJ_JGYJ paiFu_STCC_JGYJ_JGYJ = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_JGYJ_JGYJ.class);
 
-		if (paiFu_STCC_JGYJ_JGYJ!=null){
-			//删除费用明细记录
-			expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId());
+		if (paiFu_STCC_JGYJ_JGYJ != null) {
 
-			//删除费用明细记录财产关联信息
-			expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-					.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
-
-			//删除费用产生明细关联主体信息
-			expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-					.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
-
-			//通过清收移交记录信息查询清收项目id
-			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_JGYJ_JGYJ.getAssetsId());
-			if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
-				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
-
-				projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(paiFu_STCC_JGYJ_JGYJ.getPricingFee()));
-				projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-				//修改清收项目总金额
-				projectLiquiService.updateById(projectLiqui);
-
+			//添加定价费用需修改项目总金额
+			if (paiFu_STCC_JGYJ_JGYJ.getPricingManner() != 0) {
 				//删除费用明细记录
-				expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId());
+				expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId());
 
 				//删除费用明细记录财产关联信息
 				expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-						.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
+						.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
 
 				//删除费用产生明细关联主体信息
 				expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-						.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
+						.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
+
+				//通过清收移交记录信息查询清收项目id
+				LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_JGYJ_JGYJ.getAssetsId());
+				if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
+					ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
+
+					projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(paiFu_STCC_JGYJ_JGYJ.getPricingFee()));
+					projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+					//修改清收项目总金额
+					projectLiquiService.updateById(projectLiqui);
+
+					//删除费用明细记录
+					expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId());
+
+					//删除费用明细记录财产关联信息
+					expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
+							.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
+
+					//删除费用产生明细关联主体信息
+					expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
+							.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
+				}
 			}
 		}
 
