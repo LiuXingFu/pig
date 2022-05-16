@@ -474,6 +474,7 @@
 		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_assets_re.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id and p10_task_node.node_key = "entityZX_STZX_CCZXJGYJ_CCZXJGYJ"
 		where p10_project.del_flag = 0
+		and p10_project.project_type = 200
 		and p10_assets_re.casee_id is not null
 		and p10_target.goal_type = 20001
 		<if test="login.insId != null and login.insId > 0">
