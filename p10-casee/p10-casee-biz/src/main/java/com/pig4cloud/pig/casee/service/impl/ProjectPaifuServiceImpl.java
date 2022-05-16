@@ -702,6 +702,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer excelImport(ImportPaifuDTO importPaifuDTO){
+		// 在办案件
 		if(importPaifuDTO.getInProgressList()!=null){
 			for(ImportPaifu importPaifu : importPaifuDTO.getInProgressList()){
 				//----------------案件保存----------------------------
@@ -712,9 +713,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				Assets assets = saveOrUpdateAssets(importPaifu);
 				//----------------财产关联表保存----------------------------
 				saveOrUpdateAssetsRe(importPaifu,100,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
-
 			}
 		}
+		// 结案案件
 		if(importPaifuDTO.getClosedList()!=null){
 			for(ImportPaifu closedList : importPaifuDTO.getClosedList()){
 				//----------------案件保存----------------------------
