@@ -72,8 +72,16 @@ public class LiquiTransferRecordDetailsVO extends LiquiTransferRecord {
 	/**
 	 * 移交的财产信息
 	 */
-	private List<AssetsVO> assetsVOList;
+	private List<AssetsPaifuVO> assetsVOList;
 
+	/**
+	 * 案件申请人集合
+	 */
+	List<SubjectOptionVO> caseeApplicantList;
 
+	/**
+	 * 案件被执行人集合
+	 */
+	List<SubjectOptionVO> caseeExecutorList;
 
 }

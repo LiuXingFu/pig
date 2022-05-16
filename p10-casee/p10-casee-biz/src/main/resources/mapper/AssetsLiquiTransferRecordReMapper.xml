@@ -29,11 +29,11 @@
 		<result property="liquiTransferRecordId" column="liqui_transfer_record_id"/>
 	</resultMap>
 
-	<select id="queryAssetsByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
+	<select id="queryAssetsByLiQuiTransferRecordId" resultType="com.pig4cloud.pig.casee.vo.AssetsPaifuVO">
 		SELECT
 		p10_assets.*,
 		p10_address.*,
-		p10_assets_re.assets_re_id assetsReId
+		p10_assets_re.*
 		FROM
 		`p10_assets_liqui_transfer_record_re`
 		LEFT JOIN p10_assets_re ON p10_assets_re.assets_re_id = p10_assets_liqui_transfer_record_re.assets_re_id

@@ -22,6 +22,8 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * 清收移交记录表
  *
@@ -68,6 +70,17 @@ public class LiquiTransferRecordVO extends LiquiTransferRecord {
      * 申请提交时间
      */
     private String applicationSubmissionTime;
+
+	/**
+	 * 拍卖申请书
+	 */
+	private String auctionApplicationFile;
+
+
+	/**
+	 * 移交的财产信息
+	 */
+	private List<AssetsPaifuVO> assetsVOList;
 
 	/**
 	 * 是否编辑

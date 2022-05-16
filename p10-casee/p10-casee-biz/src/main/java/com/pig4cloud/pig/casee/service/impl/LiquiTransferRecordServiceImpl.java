@@ -108,9 +108,17 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	@Override
 	public LiquiTransferRecordDetailsVO getByLiquiTransferRecordId(Integer liquiTransferRecordId) {
 		LiquiTransferRecordDetailsVO liquiTransferRecordDetailsVO = this.baseMapper.getByLiquiTransferRecordId(liquiTransferRecordId);
+
+		//图片切割
 		if (Objects.nonNull(liquiTransferRecordDetailsVO.getAuctionApplicationFile())) {
 			liquiTransferRecordDetailsVO.setAuctionApplicationFile(liquiTransferRecordDetailsVO.getAuctionApplicationFile().substring(1, liquiTransferRecordDetailsVO.getAuctionApplicationFile().length() - 1));
 		}
+
+		//案件申请人列表
+		liquiTransferRecordDetailsVO.setCaseeApplicantList(caseeSubjectReService.querySubjectList(liquiTransferRecordDetailsVO.getCaseeId(), 0));
+
+		//案件被执行人列表
+		liquiTransferRecordDetailsVO.setCaseeExecutorList(caseeSubjectReService.querySubjectList(liquiTransferRecordDetailsVO.getCaseeId(), 1));
 
 		//根据案件id与type查询案件执行人与申请人
 		String executorSubjectName = getExecutorSubjectName(liquiTransferRecordDetailsVO.getCaseeId());
