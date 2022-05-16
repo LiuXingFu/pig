@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 拍卖记录表
@@ -192,7 +191,7 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 		auctionResults.setResultsTime(auctionRecordStatusSaveDTO.getChangeTime());
 		auctionResults.setAppendix(auctionRecordStatusSaveDTO.getAppendix());
 		auctionResults.setRemark(auctionRecordStatusSaveDTO.getRemark());
-		auctionResults.setResultsType(500);
+		auctionResults.setResultsType(30);
 		auctionResultsService.save(auctionResults);
 
 		// 更新拍卖表当前状态
@@ -225,6 +224,9 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 			//查询最后一条拍卖公告信息
 			TaskNode entityZX_stzx_cczxpmgg_cczxpmgg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG",target.getTargetId());
 			if (entityZX_stzx_cczxpmgg_cczxpmgg!=null){
+				//修改当前节点状态为删除
+				entityZX_stzx_cczxpmgg_cczxpmgg.setDelFlag("1");
+				taskNodeService.updateById(entityZX_stzx_cczxpmgg_cczxpmgg);
 				//复制拍卖公告节点
 				taskNodeService.copyTaskNode(entityZX_stzx_cczxpmgg_cczxpmgg);
 			}
@@ -232,12 +234,15 @@ public class AuctionRecordServiceImpl extends ServiceImpl<AuctionRecordMapper, A
 			//查询最后一条拍卖结果信息
 			TaskNode entityZX_stzx_cczxpmjg_cczxpmjg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMJG_CCZXPMJG",target.getTargetId());
 			if (entityZX_stzx_cczxpmjg_cczxpmjg!=null){
+				//修改当前节点状态为删除
+				entityZX_stzx_cczxpmjg_cczxpmjg.setDelFlag("1");
+				taskNodeService.updateById(entityZX_stzx_cczxpmjg_cczxpmjg);
 				//复制拍卖结果节点
 				taskNodeService.copyTaskNode(entityZX_stzx_cczxpmjg_cczxpmjg);
 			}
 		}else {//如果是拍辅撤销 同步联合拍卖财产程序
 			List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList = assetsReService.queryByAssetsReIdList(assetsReIdList);
-			taskNodeService.auctionResultsCopyTaskNode(jointAuctionAssetsDTOList,auctionRecordStatusSaveDTO.getProjectType());
+			taskNodeService.auctionResultsCopyTaskNode(jointAuctionAssetsDTOList);
 		}
 
 		return this.baseMapper.updateById(auctionRecord);
