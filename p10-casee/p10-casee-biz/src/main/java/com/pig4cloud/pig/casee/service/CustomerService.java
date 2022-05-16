@@ -69,5 +69,5 @@ public interface CustomerService extends IService<Customer> {
 	 * @param phone
 	 * @return
 	 */
-	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone);
+	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, Integer subjectId);
 }

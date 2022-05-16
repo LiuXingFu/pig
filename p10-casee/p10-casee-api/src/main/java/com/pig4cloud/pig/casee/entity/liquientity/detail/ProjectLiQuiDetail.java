@@ -32,7 +32,7 @@ public class ProjectLiQuiDetail {
 	 * 项目总金额
 	 */
 	@ApiModelProperty(value="项目总金额")
-	BigDecimal projectAmount;
+	BigDecimal projectAmount=BigDecimal.valueOf(0);
 
 	/**
 	 * 已回款金额
