@@ -42,6 +42,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.SubjectOptionVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
@@ -701,9 +702,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer excelImport(ImportPaifuDTO importPaifuDTO){
+		// 在办案件
 		if(importPaifuDTO.getInProgressList()!=null){
 			for(ImportPaifu importPaifu : importPaifuDTO.getInProgressList()){
-				System.out.println(importPaifu);
 				//----------------案件保存----------------------------
 				Casee casee = saveOrUpdateCasee(importPaifu,1,importPaifuDTO.getCourtId());
 				//----------------项目保存----------------------------
@@ -712,12 +713,11 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				Assets assets = saveOrUpdateAssets(importPaifu);
 				//----------------财产关联表保存----------------------------
 				saveOrUpdateAssetsRe(importPaifu,100,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
-
 			}
 		}
+		// 结案案件
 		if(importPaifuDTO.getClosedList()!=null){
 			for(ImportPaifu closedList : importPaifuDTO.getClosedList()){
-				System.out.println(closedList);
 				//----------------案件保存----------------------------
 				Casee casee = saveOrUpdateCasee(closedList,3,importPaifuDTO.getCourtId());
 				//----------------项目保存----------------------------
@@ -970,6 +970,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		queryWrapper.lambda().eq(AssetsRe::getAssetsId,assetsId);
 		queryWrapper.last("limit 1");
 		return assetsReService.getOne(queryWrapper);
+	}
+
+	@Override
+	public List<ProjectPaifuExportVO> projectPaifuExport(ProjectPaifuPageDTO projectPaifuPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.projectPaifuExport(projectPaifuPageDTO,insOutlesDTO);
 	}
 
 

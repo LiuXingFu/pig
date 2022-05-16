@@ -27,6 +27,7 @@ import com.pig4cloud.pig.casee.dto.paifu.excel.ImportPaifuDTO;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
@@ -207,4 +208,11 @@ public interface ProjectPaifuService extends IService<Project> {
 	 * @return
 	 */
 	Integer excelImport(ImportPaifuDTO importPaifuDTO);
+
+	/**
+	 * excel文件导出
+	 * @param projectPaifuPageDTO
+	 * @return
+	 */
+	List<ProjectPaifuExportVO> projectPaifuExport(ProjectPaifuPageDTO projectPaifuPageDTO);
 }
