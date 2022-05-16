@@ -102,6 +102,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private AssetsService assetsService;
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private ProjectLiquiService projectLiquiService;
 
 	@Override
 	@Transactional
@@ -914,6 +916,23 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			updateAssetsRe.setSubjectName(subjectName);
 			assetsReService.updateById(updateAssetsRe);
 			assetsReSubjectService.saveBatch(assetsReSubjects);
+
+			if (assetsReStatus==100){
+				Project project = projectLiquiService.getById(projectId);
+				//添加拍辅财产程序
+				TargetAddDTO targetAddDTO = new TargetAddDTO();
+				targetAddDTO.setCaseeId(caseeId);
+				targetAddDTO.setProcedureNature(6060);
+				targetAddDTO.setOutlesId(project.getOutlesId());
+				targetAddDTO.setProjectId(projectId);
+				targetAddDTO.setGoalId(assetsId);
+				targetAddDTO.setGoalType(20001);
+				try {
+					targetService.saveTargetAddDTO(targetAddDTO);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}else{
 			if(getAssetsRe.getStatus()!=100){
 				AssetsRe updateAssetsRe = new AssetsRe();
