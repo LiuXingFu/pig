@@ -442,6 +442,7 @@
 		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsCompletionRuling' ) is null or json_extract( p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is null)
 		and p10_target.goal_type = 20001
 		and if(json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null,p10_task_node.node_key = "paiFu_STCC_CJCD_CJCD",p10_task_node.node_key = "paiFu_STCC_DCCD_DCCD")
+		and p10_task_node.form_data is null
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
