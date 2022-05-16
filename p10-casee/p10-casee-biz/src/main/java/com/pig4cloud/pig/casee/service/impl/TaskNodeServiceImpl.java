@@ -377,7 +377,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer projectType) {
+	public void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList) {
 		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 			//查询联合拍卖财产程序id
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, jointAuctionAssetsDTO.getProjectId()).eq(Target::getCaseeId, jointAuctionAssetsDTO.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001));

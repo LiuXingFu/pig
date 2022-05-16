@@ -135,10 +135,9 @@ public interface TaskNodeService extends IService<TaskNode> {
 	/**
 	 * 	复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
 	 * @param jointAuctionAssetsDTOList 联合拍卖财产信息
-	 * @param projectType 项目类型
 	 * @return R
 	 */
-	void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer projectType);
+	void auctionResultsCopyTaskNode(List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList);
 
 	/**
 	 * 复制节点信息
