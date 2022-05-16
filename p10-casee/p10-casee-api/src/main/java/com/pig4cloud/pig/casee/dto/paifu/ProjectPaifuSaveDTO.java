@@ -69,6 +69,12 @@ public class ProjectPaifuSaveDTO {
 	private String caseeNumber;
 
 	/**
+	 * 案件类型(1010:诉前保全案件，2010:诉讼保全案件，2020:一审诉讼案件,，2021:二审诉讼案件，2030:其它案件，3010:首次执行案件，3031:执恢案件)
+	 */
+	@ApiModelProperty(value="案件类型(1010:诉前保全案件，2010:诉讼保全案件，2020:一审诉讼案件,，2021:二审诉讼案件，2030:其它案件，3010:首次执行案件，3031:执恢案件)")
+	private Integer caseeType;
+
+	/**
 	 * 立案日期
 	 */
 	@ApiModelProperty(value="立案日期")
