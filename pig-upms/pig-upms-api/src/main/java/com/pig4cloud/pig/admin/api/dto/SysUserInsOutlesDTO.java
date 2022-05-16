@@ -17,4 +17,10 @@ public class SysUserInsOutlesDTO {
 	 */
 	@ApiModelProperty(value = "真实姓名")
 	private String actualName;
+
+	/**
+	 * 电话
+	 */
+	@ApiModelProperty(value = "电话")
+	private String phone;
 }

@@ -208,6 +208,9 @@
 		<if test="query.actualName != null and query.actualName != ''">
 			and sys_user.actual_name LIKE CONCAT('%',#{query.actualName},'%')
 		</if>
+		<if test="query.phone != null and query.phone != ''">
+			and sys_user.phone LIKE CONCAT('%',#{query.phone},'%')
+		</if>
 	</select>
 
 	<select id="pageCooperateByUserId" resultType="com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO">
