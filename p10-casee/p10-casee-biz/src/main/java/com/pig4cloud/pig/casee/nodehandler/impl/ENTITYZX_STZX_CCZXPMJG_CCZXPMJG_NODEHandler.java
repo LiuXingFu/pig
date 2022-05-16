@@ -61,9 +61,15 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			//查询最后一条拍卖公告信息
 			TaskNode entityZX_stzx_cczxpmgg_cczxpmgg = taskNodeService.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG",taskNode.getTargetId());
 			if (entityZX_stzx_cczxpmgg_cczxpmgg!=null){
+				//修改当前节点状态为删除
+				entityZX_stzx_cczxpmgg_cczxpmgg.setDelFlag("1");
+				taskNodeService.updateById(entityZX_stzx_cczxpmgg_cczxpmgg);
 				//复制拍卖公告节点
 				taskNodeService.copyTaskNode(entityZX_stzx_cczxpmgg_cczxpmgg);
 			}
+			//修改当前节点状态为删除
+			taskNode.setDelFlag("1");
+			taskNodeService.updateById(taskNode);
 			//复制拍卖结果节点
 			taskNodeService.copyTaskNode(taskNode);
 
