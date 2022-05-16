@@ -39,12 +39,10 @@ import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.utils.DownloadUtils;
 import com.pig4cloud.pig.casee.vo.LiquiTransferRecordDetailsVO;
 import com.pig4cloud.pig.casee.vo.SubjectOptionVO;
-import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuDetailVO;
-import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO;
-import com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuPageVO;
-import com.pig4cloud.pig.casee.vo.paifu.ProjectSubjectReListVO;
+import com.pig4cloud.pig.casee.vo.paifu.*;
 import com.pig4cloud.pig.casee.vo.paifu.count.AssetsRePaifuFlowChartPageVO;
 import com.pig4cloud.pig.casee.vo.paifu.count.CountFlowChartVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -58,10 +56,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 拍辅项目表
@@ -104,6 +101,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private ProjectService projectService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
+	@Autowired
+	private DownloadUtils downloadUtils;
 
 	@Override
 	@Transactional
@@ -992,11 +991,31 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	}
 
 	@Override
-	public List<ProjectPaifuExportVO> projectPaifuExport(ProjectPaifuPageDTO projectPaifuPageDTO){
+	public void projectPaifuExport(HttpServletResponse response, ProjectPaifuPageDTO projectPaifuPageDTO){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.projectPaifuExport(projectPaifuPageDTO,insOutlesDTO);
+		List<String> yearList = this.baseMapper.getYearList(projectPaifuPageDTO, insOutlesDTO);
+		ProjectPaifuExcelExportVO projectPaifuExcelExportVO = new ProjectPaifuExcelExportVO();
+		List<ProjectPaifuInProgressVO> inProgressList = new ArrayList<>();
+		for (String year:yearList){
+
+			projectPaifuPageDTO.setYear(year);
+			projectPaifuPageDTO.setProjectStatus(1000);
+
+			List<ProjectPaifuExportVO> projectPaifuExportVOS = this.baseMapper.projectPaifuExport(projectPaifuPageDTO, insOutlesDTO);
+
+			ProjectPaifuInProgressVO projectPaifuInProgressVO = new ProjectPaifuInProgressVO();
+			projectPaifuInProgressVO.setYear(year);
+			projectPaifuInProgressVO.setExportVOS(projectPaifuExportVOS);
+			inProgressList.add(projectPaifuInProgressVO);
+		}
+		projectPaifuExcelExportVO.setInProgressList(inProgressList);
+		projectPaifuPageDTO.setProjectStatus(4000);
+		List<ProjectPaifuExportVO> caseClosed = this.baseMapper.projectPaifuExport(projectPaifuPageDTO, insOutlesDTO);
+		projectPaifuExcelExportVO.setCaseClosed(caseClosed);
+
+		downloadUtils.downloadPaifuLedger(response,projectPaifuExcelExportVO);
 	}
 
 

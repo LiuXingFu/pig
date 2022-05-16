@@ -74,5 +74,16 @@ public class ProjectPaifuPageDTO {
 	@ApiModelProperty(value="结束时间")
 	private LocalDate endDate;
 
+	/**
+	 * 年份
+	 */
+	@ApiModelProperty(value="年份")
+	private String year;
+
+	/**
+	 * 项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)
+	 */
+	@ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
+	private Integer projectStatus;
 
 }

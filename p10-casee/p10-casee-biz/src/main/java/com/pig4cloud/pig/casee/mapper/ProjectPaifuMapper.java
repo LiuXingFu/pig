@@ -73,4 +73,6 @@ public interface ProjectPaifuMapper extends BaseMapper<Project> {
 	ProjectPaifu getByPorjectId(@Param("projectId") Integer projectId);
 
 	List<ProjectPaifuExportVO> projectPaifuExport(@Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
+
+	List<String> getYearList(@Param("query") ProjectPaifuPageDTO projectPaifuPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 }

@@ -77,7 +77,7 @@ public class ProjectPaifuExportVO  {
 	 * 立案日期
 	 */
 	@ApiModelProperty(value="立案日期")
-	private LocalDate startTime;
+	private String startTime;
 
 	/**
 	 * 法官名称
@@ -96,10 +96,15 @@ public class ProjectPaifuExportVO  {
 	private BigDecimal pricingFee;
 
 	/**
+	 * 拍卖平台
+	 */
+	private Integer auctionPlatform;
+
+	/**
 	 * 退出日期
 	 */
 	@ApiModelProperty(value="退出日期")
-	private LocalDate closeTime;
+	private String closeTime;
 
 	/**
 	 * 办理人名称
@@ -107,5 +112,109 @@ public class ProjectPaifuExportVO  {
 	@ApiModelProperty(value="办理人名称")
 	private String userNickName;
 
+	//-----------一拍--------------------
+
+	/**
+	 * 一拍公告发布时间
+	 */
+	@ApiModelProperty(value="一拍公告发布时间")
+	private String oneBeatAnnouncementStartTime;
+	/**
+	 * 一拍开拍时间
+	 */
+	@ApiModelProperty(value="一拍开拍时间")
+	private String oneBeatAuctionStartTime;
+	/**
+	 * 一拍结束时间
+	 */
+	@ApiModelProperty(value="一拍结束时间")
+	private String oneBeatAuctionEndTime;
+	/**
+	 * 一拍起拍价
+	 */
+	private BigDecimal oneBeatStartingPrice;
+	/**
+	 * 一拍成交价格
+	 */
+	private BigDecimal oneBeatDealPrice;
+	/**
+	 * 结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）
+	 */
+	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
+	private Integer oneBeatResultsType;
+
+	//-----------二拍--------------------
+
+	/**
+	 * 二拍公告发布时间
+	 */
+	@ApiModelProperty(value="二拍公告发布时间")
+	private String twoBeatAnnouncementStartTime;
+	/**
+	 * 二拍开拍时间
+	 */
+	@ApiModelProperty(value="二拍开拍时间")
+	private String twoBeatAuctionStartTime;
+	/**
+	 * 二拍结束时间
+	 */
+	@ApiModelProperty(value="二拍结束时间")
+	private String twoBeatAuctionEndTime;
+	/**
+	 * 二拍起拍价
+	 */
+	private BigDecimal twoBeatStartingPrice;
+	/**
+	 * 二拍成交价格
+	 */
+	private BigDecimal twoBeatDealPrice;
+	/**
+	 * 结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）
+	 */
+	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
+	private Integer twoBeatResultsType;
+
+	//-----------变卖--------------------
+
+	/**
+	 * 变卖公告发布时间
+	 */
+	@ApiModelProperty(value="变卖公告发布时间")
+	private String sellOffAnnouncementStartTime;
+	/**
+	 * 变卖开拍时间
+	 */
+	@ApiModelProperty(value="变卖开拍时间")
+	private String sellOffAuctionStartTime;
+	/**
+	 * 变卖结束时间
+	 */
+	@ApiModelProperty(value="变卖结束时间")
+	private String sellOffAuctionEndTime;
+	/**
+	 * 变卖起拍价
+	 */
+	private BigDecimal sellOffStartingPrice;
+	/**
+	 * 变卖成交价格
+	 */
+	private BigDecimal sellOffDealPrice;
+	/**
+	 * 结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）
+	 */
+	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
+	private Integer sellOffResultsType;
+
+	/**
+	 * 回款时间
+	 */
+	@ApiModelProperty(value="回款时间")
+	private String paymentDate;
+
+	/**
+	 * 回款金额
+	 */
+	@ApiModelProperty(value="回款金额")
+	private BigDecimal paymentAmount;
 
 }

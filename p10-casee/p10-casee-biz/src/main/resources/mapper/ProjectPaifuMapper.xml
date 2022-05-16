@@ -466,17 +466,139 @@
 	</resultMap>
 
 	<select id="projectPaifuExport" resultMap="getAuctionRecord">
-		select p10_project.company_code,p10_casee.casee_number,p10_casee.applicant_name,p10_casee.executed_name,p10_assets.`owner`,p10_assets.assets_name,p10_assets.assets_type,p10_casee.start_time,p10_casee.judge_name,json_extract( p10_task_node.form_data,'$.pricingManner' ) as pricingManner,json_extract( p10_task_node.form_data,'$.listPrice' ) as listPrice,json_extract( p10_task_node.form_data,'$.listPrice' ) as listPrice,p10_project.close_time,p10_project.user_nick_name from p10_assets_re
-		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
-		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_court on p10_court.court_id = p10_casee.court_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_assets_re.assets_id
-		left join p10_task_node on p10_task_node.target_id = p10_target.target_id and p10_task_node.node_key = "entityZX_STZX_CCZXJGYJ_CCZXJGYJ"
+		SELECT
+		p10_project.company_code,
+		p10_casee.casee_number,
+		p10_casee.applicant_name,
+		p10_casee.executed_name,
+		p10_assets.`owner`,
+		p10_assets.assets_name,
+		p10_assets.assets_type,
+		p10_casee.start_time,
+		p10_casee.judge_name,
+		json_extract( p10_task_node.form_data, '$.pricingManner' ) AS pricingManner,
+		json_extract( p10_task_node.form_data, '$.listPrice' ) AS listPrice,
+		oneBeat.auction_platform,
+		p10_project.close_time,
+		p10_project.user_nick_name ,
+		oneBeat.announcement_start_time as oneBeatAnnouncementStartTime,
+		oneBeat.auction_start_time as oneBeatAuctionStartTime,
+		oneBeat.auction_end_time as oneBeatAuctionEndTime,
+		oneBeat.deal_price as oneBeatDealPrice,
+		oneBeat.results_type as oneBeatResultsType,
+		oneBeat.starting_price as oneBeatStartingPrice,
+		twoBeat.announcement_start_time as twoBeatAnnouncementStartTime,
+		twoBeat.auction_start_time as twoBeatAuctionStartTime,
+		twoBeat.auction_end_time as twoBeatAuctionEndTime,
+		twoBeat.deal_price as twoBeatDealPrice,
+		twoBeat.results_type as twoBeatResultsType,
+		twoBeat.starting_price as twoBeatStartingPrice,
+		sellOff.announcement_start_time as sellOffAnnouncementStartTime,
+		sellOff.auction_start_time as sellOffAuctionStartTime,
+		sellOff.auction_end_time as sellOffAuctionEndTime,
+		sellOff.deal_price as sellOffDealPrice,
+		sellOff.results_type as sellOffResultsType,
+		sellOff.starting_price as sellOffStartingPrice,
+		p10_payment_record.payment_amount,
+		p10_payment_record.payment_date
+		FROM
+		p10_assets_re
+		LEFT JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id
+		LEFT JOIN p10_casee ON p10_casee.casee_id = p10_assets_re.casee_id
+		LEFT JOIN p10_assets ON p10_assets.assets_id = p10_assets_re.assets_id
+		LEFT JOIN p10_court ON p10_court.court_id = p10_casee.court_id
+		LEFT JOIN p10_target ON p10_target.project_id = p10_project.project_id AND p10_target.casee_id = p10_casee.casee_id AND p10_target.goal_id = p10_assets_re.assets_id AND p10_target.goal_type = 20001
+		LEFT JOIN p10_task_node ON p10_task_node.target_id = p10_target.target_id AND p10_task_node.node_key = "entityZX_STZX_CCZXJGYJ_CCZXJGYJ"
+		left join (	select * from (
+					select p10_auction_record_assets_re.assets_re_id,p10_auction_record.*,p10_auction_results.deal_price,p10_auction_results.results_type from p10_auction_record
+					left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+					left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+					order by p10_auction_record.create_time
+					limit 99999999999999999
+					)p10_auction_record
+					where p10_auction_record.auction_type = 100
+					GROUP BY p10_auction_record.assets_re_id,p10_auction_record.auction_type
+				)oneBeat on oneBeat.assets_re_id = p10_assets_re.assets_re_id
+		left join (select * from (
+					select p10_auction_record_assets_re.assets_re_id,p10_auction_record.*,p10_auction_results.deal_price,p10_auction_results.results_type from p10_auction_record
+					left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+					left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+					order by p10_auction_record.create_time
+					limit 99999999999999999
+					)p10_auction_record
+					where p10_auction_record.auction_type = 200
+					GROUP BY p10_auction_record.assets_re_id,p10_auction_record.auction_type
+				)twoBeat on twoBeat.assets_re_id = p10_assets_re.assets_re_id
+		left join (select * from (
+					select p10_auction_record_assets_re.assets_re_id,p10_auction_record.*,p10_auction_results.deal_price,p10_auction_results.results_type from p10_auction_record
+					left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+					left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
+					order by p10_auction_record.create_time
+					limit 99999999999999999
+					)p10_auction_record
+					where p10_auction_record.auction_type = 300
+					GROUP BY p10_auction_record.assets_re_id,p10_auction_record.auction_type
+				)sellOff on sellOff.assets_re_id = p10_assets_re.assets_re_id
+		left join (	select SUM(p10_payment_record.payment_amount) as payment_amount,p10_payment_record.payment_date,p10_payment_record.project_id,p10_payment_record.assets_re_id from (
+					select p10_payment_record.payment_amount,p10_payment_record_assets_re.assets_re_id,p10_payment_record.payment_date,p10_payment_record.project_id from p10_payment_record
+					left join p10_payment_record_assets_re on p10_payment_record_assets_re.payment_record_id = p10_payment_record.payment_record_id
+					where p10_payment_record.father_id is null
+					and p10_payment_record.funds_type = 10007
+					order by p10_payment_record.payment_date desc
+					limit 99999999999999999
+					)p10_payment_record
+					GROUP BY p10_payment_record.project_id,p10_payment_record.assets_re_id
+				)p10_payment_record on  p10_payment_record.assets_re_id = p10_assets_re.assets_re_id
+		WHERE p10_project.del_flag = 0
+		AND p10_project.project_type = 200
+		AND p10_assets_re.casee_id IS NOT NULL
+		<if test="login.insId != null and login.insId > 0">
+			and p10_project.ins_id = #{login.insId}
+		</if>
+		<if test="login.outlesId != null and login.outlesId > 0">
+			and p10_project.outles_id = #{login.outlesId}
+		</if>
+		<if test="query.status != null and query.status >= 0">
+			and p10_project.status = #{query.status}
+		</if>
+		<if test="query.projectStatus != null and query.projectStatus >= 0">
+			<if test="query.projectStatus==1000">
+				and p10_project.status != 4000
+			</if>
+			<if test="query.projectStatus!=1000">
+				and p10_project.status = #{query.projectStatus}
+			</if>
+		</if>
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			and (p10_project.company_code like concat('%', #{query.caseeNumber}, '%')
+			or p10_casee.casee_number like concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			and (p10_project.proposers_names like concat('%', #{query.subjectName}, '%')
+			or p10_project.subject_persons like concat('%', #{query.subjectName}, '%'))
+		</if>
+		<if test="query.beginDate != null and query.endDate != null  ">
+			AND p10_project.take_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		<if test="query.userNickName != null and query.userNickName != ''">
+			and p10_project.user_nick_name like concat('%', #{query.userNickName}, '%')
+		</if>
+		<if test="query.judgeName != null and query.judgeName != ''">
+			and p10_casee.judge_name like concat('%', #{query.judgeName}, '%')
+		</if>
+		<if test="query.year != null and query.year != ''">
+			and p10_project.year = #{query.year}
+		</if>
+	</select>
+
+	<select id="getYearList" resultType="java.lang.String">
+		select p10_project.`year` from p10_project
+		left join (select * from (select * from p10_project_casee_re order by create_time desc)p10_project_casee_re GROUP BY p10_project_casee_re.project_id)p10_project_casee_re on p10_project_casee_re.project_id = p10_project.project_id
+		left join p10_casee on p10_casee.casee_id = p10_project_casee_re.casee_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 200
-		and p10_assets_re.casee_id is not null
-		and p10_target.goal_type = 20001
+		and p10_project.`status` = 1000
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
@@ -504,6 +626,7 @@
 		<if test="query.judgeName != null and query.judgeName != ''">
 			and p10_casee.judge_name like concat('%', #{query.judgeName}, '%')
 		</if>
+		GROUP BY p10_project.`year`
 	</select>
 
 </mapper>

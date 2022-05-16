@@ -30,6 +30,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * 拍辅项目表
@@ -289,6 +291,18 @@ public class ProjectPaifuController {
 	@PostMapping("/importExcel")
 	public R importExcel(@RequestBody ImportPaifuDTO importPaifuDTO) {
 		return R.ok(projectPaifuService.excelImport(importPaifuDTO));
+	}
+
+	/**
+	 * excel文件导出
+	 * @param projectPaifuPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "根据id查询拍辅项目", notes = "根据id查询拍辅项目")
+	@GetMapping("/projectPaifuExport" )
+	public R projectPaifuExport(HttpServletResponse response, ProjectPaifuPageDTO projectPaifuPageDTO) {
+		projectPaifuService.projectPaifuExport(response,projectPaifuPageDTO);
+		return R.ok("导出成功");
 	}
 
 }
