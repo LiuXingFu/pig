@@ -35,6 +35,7 @@ import com.pig4cloud.pig.casee.dto.paifu.excel.ImportPaifuDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.paifuentity.AssetsRePaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
+import com.pig4cloud.pig.casee.entity.paifuentity.detail.AssetsRePaifuDetail;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectPaifuMapper;
 import com.pig4cloud.pig.casee.service.*;
@@ -700,28 +701,32 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Override
 	@Transactional
 	public Integer excelImport(ImportPaifuDTO importPaifuDTO){
-		for(ImportPaifu importPaifu : importPaifuDTO.getInProgressList()){
-			System.out.println(importPaifu);
-			//----------------案件保存----------------------------
-			Casee casee = saveOrUpdateCasee(importPaifu,1,importPaifuDTO.getCourtId());
-			//----------------项目保存----------------------------
-			Project project = saveOrUpdateProject(importPaifu,1000,casee.getCaseeId(),importPaifuDTO.getInsId(),importPaifuDTO.getOutlesId(),importPaifuDTO.getUserId(),importPaifuDTO.getUserNickName());
-			//----------------财产保存----------------------------
-			Assets assets = saveOrUpdateAssets(importPaifu);
-			//----------------财产关联表保存----------------------------
-			saveOrUpdateAssetsRe(importPaifu,100,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
+		if(importPaifuDTO.getInProgressList()!=null){
+			for(ImportPaifu importPaifu : importPaifuDTO.getInProgressList()){
+				System.out.println(importPaifu);
+				//----------------案件保存----------------------------
+				Casee casee = saveOrUpdateCasee(importPaifu,1,importPaifuDTO.getCourtId());
+				//----------------项目保存----------------------------
+				Project project = saveOrUpdateProject(importPaifu,1000,casee.getCaseeId(),importPaifuDTO.getInsId(),importPaifuDTO.getOutlesId(),importPaifuDTO.getUserId(),importPaifuDTO.getUserNickName());
+				//----------------财产保存----------------------------
+				Assets assets = saveOrUpdateAssets(importPaifu);
+				//----------------财产关联表保存----------------------------
+				saveOrUpdateAssetsRe(importPaifu,100,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
 
+			}
 		}
-		for(ImportPaifu closedList : importPaifuDTO.getClosedList()){
-			System.out.println(closedList);
-			//----------------案件保存----------------------------
-			Casee casee = saveOrUpdateCasee(closedList,3,importPaifuDTO.getCourtId());
-			//----------------项目保存----------------------------
-			Project project = saveOrUpdateProject(closedList,4000,casee.getCaseeId(),importPaifuDTO.getInsId(),importPaifuDTO.getOutlesId(),importPaifuDTO.getUserId(),importPaifuDTO.getUserNickName());
-			//----------------财产保存----------------------------
-			Assets assets = saveOrUpdateAssets(closedList);
-			//----------------财产关联表保存----------------------------
-			saveOrUpdateAssetsRe(closedList,500,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
+		if(importPaifuDTO.getClosedList()!=null){
+			for(ImportPaifu closedList : importPaifuDTO.getClosedList()){
+				System.out.println(closedList);
+				//----------------案件保存----------------------------
+				Casee casee = saveOrUpdateCasee(closedList,3,importPaifuDTO.getCourtId());
+				//----------------项目保存----------------------------
+				Project project = saveOrUpdateProject(closedList,4000,casee.getCaseeId(),importPaifuDTO.getInsId(),importPaifuDTO.getOutlesId(),importPaifuDTO.getUserId(),importPaifuDTO.getUserNickName());
+				//----------------财产保存----------------------------
+				Assets assets = saveOrUpdateAssets(closedList);
+				//----------------财产关联表保存----------------------------
+				saveOrUpdateAssetsRe(closedList,500,project.getProjectId(),casee.getCaseeId(),assets.getAssetsId());
+			}
 		}
 		return 1;
 	}
@@ -737,7 +742,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		Casee casee = caseeService.getOne(caseeQueryWrapper);
 		String[] executedNames = splitSubject(importPaifu.getExecutedName());
 		String[] applicantNames = splitSubject(importPaifu.getApplicantName());
-		if(Objects.isNull(casee)){
+		if(casee==null){
 			Casee saveCasee = new Casee();
 			saveCasee.setCaseeNumber(caseeNumber);
 			saveCasee.setStartTime(importPaifu.getStartTime());
@@ -750,28 +755,33 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			casee = saveCasee;
 
 			List<CaseeSubjectRe> caseeSubjectRes = new ArrayList();
-			for(String executedName : executedNames){
-				if(Objects.nonNull(executedName)){
-					Integer subjectId = getSubjectId(executedName);
-					CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
-					caseeSubjectRe.setCaseeId(casee.getCaseeId());
-					caseeSubjectRe.setType(1);
-					caseeSubjectRe.setCaseePersonnelType(1);
-					caseeSubjectRe.setSubjectId(subjectId);
-					caseeSubjectRes.add(caseeSubjectRe);
+			if(executedNames!=null){
+				for(String executedName : executedNames){
+					if(executedName!=null){
+						Integer subjectId = getSubjectId(executedName);
+						CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+						caseeSubjectRe.setCaseeId(casee.getCaseeId());
+						caseeSubjectRe.setType(1);
+						caseeSubjectRe.setCaseePersonnelType(1);
+						caseeSubjectRe.setSubjectId(subjectId);
+						caseeSubjectRes.add(caseeSubjectRe);
+					}
 				}
 			}
-			for(String applicantName : applicantNames){
-				if(Objects.nonNull(applicantName)){
-					Integer subjectId = getSubjectId(applicantName);
-					CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
-					caseeSubjectRe.setCaseeId(casee.getCaseeId());
-					caseeSubjectRe.setType(0);
-					caseeSubjectRe.setCaseePersonnelType(0);
-					caseeSubjectRe.setSubjectId(subjectId);
-					caseeSubjectRes.add(caseeSubjectRe);
+			if(applicantNames!=null){
+				for(String applicantName : applicantNames){
+					if(applicantName!=null){
+						Integer subjectId = getSubjectId(applicantName);
+						CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+						caseeSubjectRe.setCaseeId(casee.getCaseeId());
+						caseeSubjectRe.setType(0);
+						caseeSubjectRe.setCaseePersonnelType(0);
+						caseeSubjectRe.setSubjectId(subjectId);
+						caseeSubjectRes.add(caseeSubjectRe);
+					}
 				}
 			}
+
 			caseeSubjectReService.saveBatch(caseeSubjectRes);
 		}else{
 			if(casee.getStatus()!=1){
@@ -788,20 +798,21 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	public Project saveOrUpdateProject(ImportPaifu importPaifu,Integer projectStatus,Integer caseeId,Integer insId,Integer outlesId,Integer userId,String userNickName){
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(insId);
-		insOutlesDTO.setInsId(outlesId);
+		insOutlesDTO.setOutlesId(outlesId);
 		// 查询案件案号是否有拍辅项目id，有则不添加项目和案件
 		Project project = projectService.getProjectIdByCaseeNumber(200,importPaifu.getCaseeNumber(),insOutlesDTO);
-		if(Objects.isNull(project)){
+		if(project==null){
 			Project projectPaifu = new Project();
 			String companyCode = importPaifu.getCompanyCode();
 			// 解析公司业务案号
-			String year = companyCode.substring(companyCode.indexOf("(")+1,companyCode.indexOf(")")-1);
+			String year = companyCode.substring(companyCode.indexOf("(")+1,companyCode.indexOf(")"));
 			String alias = companyCode.substring(companyCode.indexOf(")")+1,companyCode.lastIndexOf("法拍"));
 			Integer word = getWord(year,alias);
 			projectPaifu.setYear(year);
 			projectPaifu.setAlias(alias);
 			projectPaifu.setWord(word);
-			projectPaifu.setCompanyCode(companyCode);
+			String newCompanyCode = "（"+year+"）"+companyCode.substring(companyCode.indexOf(")")+1,companyCode.length());
+			projectPaifu.setCompanyCode(newCompanyCode);
 			projectPaifu.setProposersNames(importPaifu.getApplicantName());
 			projectPaifu.setSubjectPersons(importPaifu.getExecutedName());
 			projectPaifu.setInsId(insId);
@@ -818,14 +829,22 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			caseeSubjectReQueryWrapper.lambda().eq(CaseeSubjectRe::getCaseeId,caseeId);
 			List<CaseeSubjectRe> caseeSubjectRes = caseeSubjectReService.list(caseeSubjectReQueryWrapper);
 			List<ProjectSubjectRe> projectSubjectRes = new ArrayList();
-			for(CaseeSubjectRe caseeSubjectRe : caseeSubjectRes){
-				ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
-				projectSubjectRe.setProjectId(projectPaifu.getProjectId());
-				projectSubjectRe.setType(caseeSubjectRe.getCaseePersonnelType());
-				projectSubjectRe.setSubjectReId(caseeSubjectRe.getSubjectId());
-				projectSubjectRes.add(projectSubjectRe);
+			if(caseeSubjectRes!=null){
+				for(CaseeSubjectRe caseeSubjectRe : caseeSubjectRes){
+					ProjectSubjectRe projectSubjectRe = new ProjectSubjectRe();
+					projectSubjectRe.setProjectId(projectPaifu.getProjectId());
+					projectSubjectRe.setType(caseeSubjectRe.getCaseePersonnelType());
+					projectSubjectRe.setSubjectId(caseeSubjectRe.getSubjectId());
+					projectSubjectRes.add(projectSubjectRe);
+				}
 			}
 			projectSubjectReService.saveBatch(projectSubjectRes);
+			ProjectCaseeRe projectCaseeRe = new ProjectCaseeRe();
+			projectCaseeRe.setProjectId(project.getProjectId());
+			projectCaseeRe.setCaseeId(caseeId);
+			projectCaseeRe.setUserId(userId);
+			projectCaseeRe.setActualName(userNickName);
+			projectCaseeReService.save(projectCaseeRe);
 		}else{
 			Project updateProject = new Project();
 			updateProject.setProjectId(project.getProjectId());
@@ -842,7 +861,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		assetsQueryWrapper.lambda().eq(Assets::getAssetsName,assetsName);
 		assetsQueryWrapper.last("limit 1");
 		Assets assets = assetsService.getOne(assetsQueryWrapper);
-		if(Objects.isNull(assets)){
+		if(assets==null){
 			Assets saveAssets = new Assets();
 			saveAssets.setAssetsName(importPaifu.getAssetsName());
 			saveAssets.setAssetsType(importPaifu.getAssetsType());
@@ -856,36 +875,42 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	@Transactional
 	public void saveOrUpdateAssetsRe(ImportPaifu importPaifu,Integer assetsReStatus,Integer projectId,Integer caseeId,Integer assetsId){
 		AssetsRe getAssetsRe = getAssetsRe(projectId,assetsId);
-		String subjectName = "";
-		if(Objects.isNull(getAssetsRe)){
+		String subjectName = null;
+		if(getAssetsRe==null){
 			AssetsRePaifu assetsRePaifu = new AssetsRePaifu();
 			assetsRePaifu.setProjectId(projectId);
 			assetsRePaifu.setCaseeId(caseeId);
 			assetsRePaifu.setCreateCaseeId(caseeId);
 			assetsRePaifu.setAssetsId(assetsId);
 			assetsRePaifu.setStatus(assetsReStatus);
+			AssetsRePaifuDetail assetsRePaifuDetail = new AssetsRePaifuDetail();
+			assetsRePaifu.setAssetsRePaifuDetail(assetsRePaifuDetail);
 			assetsReService.save(assetsRePaifu);
 			List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
 
 			List<SubjectOptionVO> subjectOptionVOS = caseeSubjectReService.querySubjectList(caseeId,1);
 			String[] assetsSubjectNames = splitSubject(importPaifu.getOwner());
-			for(SubjectOptionVO subjectOptionVO:subjectOptionVOS){
-				for(String assetsSubject:assetsSubjectNames){
-					if(subjectOptionVO.getName().equals(assetsSubject)){
-						if(Objects.isNull(subjectName)){
-							subjectName = assetsSubject;
-						}else{
-							subjectName = subjectName+","+assetsSubject;
+			if(subjectOptionVOS!=null){
+				for(SubjectOptionVO subjectOptionVO:subjectOptionVOS){
+					if(assetsSubjectNames!=null){
+						for(String assetsSubject:assetsSubjectNames){
+							if(subjectOptionVO.getName().equals(assetsSubject)){
+								if(subjectName==null){
+									subjectName = assetsSubject;
+								}else{
+									subjectName = subjectName+","+assetsSubject;
+								}
+								AssetsReSubject assetsReSubject = new AssetsReSubject();
+								assetsReSubject.setSubjectId(subjectOptionVO.getSubjectId());
+								assetsReSubject.setAssetsReId(assetsRePaifu.getAssetsReId());
+								assetsReSubjects.add(assetsReSubject);
+							}
 						}
-						AssetsReSubject assetsReSubject = new AssetsReSubject();
-						assetsReSubject.setSubjectId(subjectOptionVO.getSubjectId());
-						assetsReSubject.setAssetsReId(assetsRePaifu.getAssetsReId());
-						assetsReSubjects.add(assetsReSubject);
 					}
 				}
 			}
 			AssetsRe updateAssetsRe = new AssetsRe();
-			updateAssetsRe.setAssetsId(assetsRePaifu.getAssetsReId());
+			updateAssetsRe.setAssetsReId(assetsRePaifu.getAssetsReId());
 			updateAssetsRe.setSubjectName(subjectName);
 			assetsReService.updateById(updateAssetsRe);
 			assetsReSubjectService.saveBatch(assetsReSubjects);
@@ -899,10 +924,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		}
 	}
 
-		public String[] splitSubject(String subjectNameList){
+	public String[] splitSubject(String subjectNameList){
 		String[] subjectName = null;
-		if(Objects.nonNull(subjectNameList)){
-			subjectName = subjectNameList.split("、");
+		if(subjectNameList!=null){
+			if(subjectNameList.indexOf("、")!=-1){
+				subjectName = subjectNameList.split("、");
+			}else{
+				subjectName = new String[]{subjectNameList};
+			}
 		}
 		return subjectName;
 	}
@@ -924,7 +953,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	public Integer getSubjectId(String subjectName){
 		R<Subject> subject = remoteSubjectService.queryBySubjectName(subjectName,SecurityConstants.FROM);
 		Integer subjectId = 0;
-		if(Objects.isNull(subject.getData())){
+		if(subject.getData()==null){
 			Subject saveSubject = new Subject();
 			saveSubject.setName(subjectName);
 			R<Subject> subjectR = remoteSubjectService.saveSubject(saveSubject,SecurityConstants.FROM);

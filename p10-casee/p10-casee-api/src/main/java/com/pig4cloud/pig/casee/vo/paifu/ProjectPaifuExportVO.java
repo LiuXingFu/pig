@@ -95,5 +95,17 @@ public class ProjectPaifuExportVO  {
 	 */
 	private BigDecimal pricingFee;
 
+	/**
+	 * 退出日期
+	 */
+	@ApiModelProperty(value="退出日期")
+	private LocalDate closeTime;
+
+	/**
+	 * 办理人名称
+	 */
+	@ApiModelProperty(value="办理人名称")
+	private String userNickName;
+
 
 }
