@@ -15,3 +15,20 @@ spring:
           - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
   profiles:
     active: @profiles.active@
+
+  #配置freemarker
+freemarker:
+  # 设置模板后缀名
+  suffix: .ftl
+  # 设置文档类型
+  content-type: text/html
+  # 设置页面编码格式
+  charset: UTF-8
+  # 设置页面缓存
+  cache: false
+  prefer-file-system-access: false
+  # 设置ftl文件路径
+  template-loader-path:
+    - classpath:/templates
+  settings:
+    classic_compatible: true

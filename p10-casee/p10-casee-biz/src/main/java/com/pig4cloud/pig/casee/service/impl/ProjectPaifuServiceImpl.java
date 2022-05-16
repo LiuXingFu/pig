@@ -1015,6 +1015,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		List<ProjectPaifuExportVO> caseClosed = this.baseMapper.projectPaifuExport(projectPaifuPageDTO, insOutlesDTO);
 		projectPaifuExcelExportVO.setCaseClosed(caseClosed);
 
+		System.out.println("--------------------"+projectPaifuExcelExportVO);
+
 		downloadUtils.downloadPaifuLedger(response,projectPaifuExcelExportVO);
 	}
 

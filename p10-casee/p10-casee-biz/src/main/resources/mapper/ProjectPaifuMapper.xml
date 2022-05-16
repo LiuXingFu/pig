@@ -461,11 +461,7 @@
 		</if>
 	</select>
 
-	<resultMap id="getAuctionRecord" type="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO">
-
-	</resultMap>
-
-	<select id="projectPaifuExport" resultMap="getAuctionRecord">
+	<select id="projectPaifuExport" resultType="com.pig4cloud.pig.casee.vo.paifu.ProjectPaifuExportVO">
 		SELECT
 		p10_project.company_code,
 		p10_casee.casee_number,
@@ -476,8 +472,10 @@
 		p10_assets.assets_type,
 		p10_casee.start_time,
 		p10_casee.judge_name,
-		json_extract( p10_task_node.form_data, '$.pricingManner' ) AS pricingManner,
-		json_extract( p10_task_node.form_data, '$.listPrice' ) AS listPrice,
+-- 		json_extract( p10_task_node.form_data, '$.pricingManner' ) AS pricingManner,
+-- 		json_extract( p10_task_node.form_data, '$.listPrice' ) AS listPrice,
+		null AS pricingManner,
+		null AS listPrice,
 		oneBeat.auction_platform,
 		p10_project.close_time,
 		p10_project.user_nick_name ,

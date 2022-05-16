@@ -10658,27 +10658,28 @@
                     <Data ss:Type="String">到账日期</Data>
                 </Cell>
             </Row>
+            <#list inProgress.exportVOS as export>
             <Row ss:Height="85.5">
                 <Cell ss:StyleID="s65">
-                    <Data ss:Type="Number">${inProgress_index+1}</Data>
+                    <Data ss:Type="Number">${export_index+1}</Data>
                 </Cell>
                 <Cell ss:StyleID="s66">
-                    <Data ss:Type="String">${inProgress.companyCode?if_exists}</Data>
+                    <Data ss:Type="String">${export.companyCode?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s66">
-                    <Data ss:Type="String">${inProgress.caseeNumber?if_exists}</Data>
+                    <Data ss:Type="String">${export.caseeNumber?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.applicantName?if_exists}</Data>
+                    <Data ss:Type="String">${export.applicantName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.executedName?if_exists}</Data>
+                    <Data ss:Type="String">${export.executedName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.owner?if_exists}</Data>
+                    <Data ss:Type="String">${export.owner?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
-                    <Data ss:Type="String">${inProgress.assetsName?if_exists}</Data>
+                    <Data ss:Type="String">${export.assetsName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s69">
                     <Data ss:Type="String">商铺</Data>
@@ -10687,64 +10688,64 @@
                     <Data ss:Type="Number"></Data>
                 </Cell>
                 <Cell ss:StyleID="s78">
-                    <Data ss:Type="String"><#if inProgressList.startTime??>${inProgressList.startTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.startTime}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
-                    <Data ss:Type="String">${inProgress.judgeName?if_exists}</Data>
+                    <Data ss:Type="String">${export.judgeName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
                     <Data ss:Type="String">评估报告</Data>
                 </Cell>
                 <Cell ss:StyleID="s79">
-                    <Data ss:Type="Number">${inProgress.pricingFee?if_exists}</Data>
+                    <Data ss:Type="Number">${export.pricingFee?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s65">
                     <Data ss:Type="String">淘宝</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.oneBeatAnnouncementStartTime??>${inProgressList.oneBeatAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.oneBeatAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.oneBeatAuctionStartTime??>${inProgressList.oneBeatAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.oneBeatAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.oneBeatStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.oneBeatStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.oneBeatDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.oneBeatDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s88">
                     <Data ss:Type="String">流拍</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.twoBeatAnnouncementStartTime??>${inProgressList.twoBeatAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.twoBeatAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.twoBeatAuctionStartTime??>${inProgressList.twoBeatAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.twoBeatAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.twoBeatStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.twoBeatStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.twoBeatDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.twoBeatDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s88">
                     <Data ss:Type="String">流拍</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAnnouncementStartTime??>${inProgressList.sellOffAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.sellOffAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAuctionStartTime??>${inProgressList.sellOffAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.sellOffAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAuctionEndTime??>${inProgressList.sellOffAuctionEndTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.sellOffAuctionEndTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.sellOffStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.sellOffStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.sellOffDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${export.sellOffDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s95">
                     <Data ss:Type="String">流拍</Data>
@@ -10762,21 +10763,22 @@
                     <Data ss:Type="Number"></Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.paymentDate??>${inProgressList.paymentDate?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${export.paymentDate?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.paymentAmount?if_exists}</Data>
+                    <Data ss:Type="Number">${export.paymentAmount?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.closeTime??>${inProgressList.closeTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String"${export.closeTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s95">
-                    <Data ss:Type="String">${inProgress.userNickName?if_exists}</Data>
+                    <Data ss:Type="String">${export.userNickName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s66">
                     <Data ss:Type="String">分开拍卖</Data>
                 </Cell>
             </Row>
+            </#list>
             <Row>
                 <Cell ss:StyleID="s70"/>
                 <Cell ss:StyleID="s71"/>
@@ -14766,16 +14768,16 @@
                     <Data ss:Type="String">${closeds.caseeNumber?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.applicantName?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.applicantName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.executedName?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.executedName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s67">
-                    <Data ss:Type="String">${inProgress.owner?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.owner?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
-                    <Data ss:Type="String">${inProgress.assetsName?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.assetsName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s69">
                     <Data ss:Type="String">商铺</Data>
@@ -14784,64 +14786,64 @@
                     <Data ss:Type="Number"></Data>
                 </Cell>
                 <Cell ss:StyleID="s78">
-                    <Data ss:Type="String"><#if inProgressList.startTime??>${inProgressList.startTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.startTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
-                    <Data ss:Type="String">${inProgress.judgeName?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.judgeName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s68">
                     <Data ss:Type="String">评估报告</Data>
                 </Cell>
                 <Cell ss:StyleID="s79">
-                    <Data ss:Type="Number">${inProgress.pricingFee?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.pricingFee?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s65">
                     <Data ss:Type="String">淘宝</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.oneBeatAnnouncementStartTime??>${inProgressList.oneBeatAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.oneBeatAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.oneBeatAuctionStartTime??>${inProgressList.oneBeatAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.oneBeatAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.oneBeatStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.oneBeatStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.oneBeatDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.oneBeatDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s88">
                     <Data ss:Type="String">流拍</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.twoBeatAnnouncementStartTime??>${inProgressList.twoBeatAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.twoBeatAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.twoBeatAuctionStartTime??>${inProgressList.twoBeatAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.twoBeatAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.twoBeatStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.twoBeatStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.twoBeatDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.twoBeatDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s88">
                     <Data ss:Type="String">流拍</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAnnouncementStartTime??>${inProgressList.sellOffAnnouncementStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.sellOffAnnouncementStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAuctionStartTime??>${inProgressList.sellOffAuctionStartTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.sellOffAuctionStartTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.sellOffAuctionEndTime??>${inProgressList.sellOffAuctionEndTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.sellOffAuctionEndTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.sellOffStartingPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.sellOffStartingPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.sellOffDealPrice?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.sellOffDealPrice?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s95">
                     <Data ss:Type="String">流拍</Data>
@@ -14859,16 +14861,16 @@
                     <Data ss:Type="Number"></Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.paymentDate??>${inProgressList.paymentDate?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.paymentDate?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s87">
-                    <Data ss:Type="Number">${inProgress.paymentAmount?if_exists}</Data>
+                    <Data ss:Type="Number">${closeds.paymentAmount?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s80">
-                    <Data ss:Type="String"><#if inProgressList.closeTime??>${inProgressList.closeTime?string("yyyy/MM/dd")}<#else></#if></Data>
+                    <Data ss:Type="String">${closeds.closeTime?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s95">
-                    <Data ss:Type="String">${inProgress.userNickName?if_exists}</Data>
+                    <Data ss:Type="String">${closeds.userNickName?if_exists}</Data>
                 </Cell>
                 <Cell ss:StyleID="s66">
                     <Data ss:Type="String">分开拍卖</Data>
