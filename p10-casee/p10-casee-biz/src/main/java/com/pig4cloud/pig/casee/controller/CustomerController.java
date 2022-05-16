@@ -188,8 +188,8 @@ public class CustomerController {
 	 */
 	@ApiOperation(value = "通过id查询客户与主体信息", notes = "通过id查询客户与主体信息")
 	@GetMapping("/verifyUnifiedIdentityAndPhone" )
-	public R verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone) {
-		return R.ok(customerService.verifyUnifiedIdentityAndPhone(unifiedIdentity, phone));
+	public R verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, Integer subjectId) {
+		return R.ok(customerService.verifyUnifiedIdentityAndPhone(unifiedIdentity, phone, subjectId));
 	}
 
 }
