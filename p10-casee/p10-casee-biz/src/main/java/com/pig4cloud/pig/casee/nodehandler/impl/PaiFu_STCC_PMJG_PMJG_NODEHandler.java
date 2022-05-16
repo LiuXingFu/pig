@@ -74,7 +74,7 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 
 		if (paiFu_stcc_pmjg_pmjg.getAuctionResults() == 20) {//流拍
 			//如果拍卖结果流拍则复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点
-			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),0);
+			taskNodeService.auctionResultsCopyTaskNode(paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList());
 		} else {//成交
 			//查询案件信息
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());

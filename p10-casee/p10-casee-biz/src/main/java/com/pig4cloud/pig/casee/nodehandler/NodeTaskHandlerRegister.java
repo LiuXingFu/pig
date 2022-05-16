@@ -98,6 +98,12 @@ public class NodeTaskHandlerRegister {
 	EntityZX_STZX_CCZXXK_CCZXXK_NODEHandler entityZX_stzx_cczxxk_cczxxk_nodeHandler;
 
 	@Autowired
+	EntityZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler entityZX_stzx_cczxpmgg_cczxpmgg_nodeHandler;
+
+	@Autowired
+	EntityZX_STZX_CCZXCJCD_CCZXCJCD_NODEHandler entityZX_stzx_cczxcjcd_cczxcjcd_nodeHandler;
+
+	@Autowired
 	PaiFu_STCC_PMGG_PMGG_NODEHandler paiFu_stcc_pmgg_pmgg_nodeHandler;
 
 	@Autowired
@@ -169,17 +175,24 @@ public class NodeTaskHandlerRegister {
 		submitHandlerMap.put("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", liqui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", liqui_sses_ssescpwszzsdqk_ssescpwszzsdqk_nodeHandler);
 		submitHandlerMap.put("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", liqui_ssqt_ssqtcpwszzsdqk_ssqtcpwszzsdqk_nodeHandler);
-		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX", limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
 		submitHandlerMap.put("liQui_SSQT_SSQTCPJGSX_SSQTCPJGSX", liQui_ssqt_ssqtcpjgsx_ssqtcpjgsx_nodeHandler);
 
+		//行为违法程序任务提交map实体类
+		submitHandlerMap.put("beIllegal_XWWF_XWWFXZCX_XWWFXZCX", beillegal_xwwf_xwwfxzcx_xwwfxzcx_nodeHandler);
+
+		//行为限制程序任务提交map实体类
+		submitHandlerMap.put("limit_XWXZ_XWXZXZCX_XWXZXZCX", limit_xwxz_xwxzxzcx_xwxzxzcx_nodeHandler);
+
 		//财产程序任务提交map实体类
-		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg_nodeHandler);
 		submitHandlerMap.put("fundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK", fundingZX_zjzx_zjzxzjhk_zjzxzjhk_nodeHandler);
+		submitHandlerMap.put("entityZX_STZX_CCZXPMJG_CCZXPMJG", entityzx_stzx_cczxpmjg_cczxpmjg_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXZCDC_CCZXZCDC", entityZX_stzx_cczxzcdc_cczxzcdc_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXDK_CCZXDK", entityZX_stzx_cczxdk_cczxdk_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXJGYJ_CCZXJGYJ", entityZX_stzx_cczxjgyj_cczxjgyj_nodeHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ", entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ_NODEHandler);
 		submitHandlerMap.put("entityZX_STZX_CCZXXK_CCZXXK", entityZX_stzx_cczxxk_cczxxk_nodeHandler);
+		submitHandlerMap.put("entityZX_STZX_CCZXPMGG_CCZXPMGG", entityZX_stzx_cczxpmgg_cczxpmgg_nodeHandler);
+		submitHandlerMap.put("entityZX_STZX_CCZXCJCD_CCZXCJCD", entityZX_stzx_cczxcjcd_cczxcjcd_nodeHandler);
 
 		//拍辅任务阶段提交map实现类
 		submitHandlerMap.put("paiFu_STCC_PMGG_PMGG", paiFu_stcc_pmgg_pmgg_nodeHandler);

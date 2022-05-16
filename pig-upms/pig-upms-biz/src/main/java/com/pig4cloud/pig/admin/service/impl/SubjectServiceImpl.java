@@ -71,6 +71,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
+	@Transactional
 	public boolean saveBatchSubject(List<Subject> subjectList) {
 		for (Subject subject : subjectList) {
 			if (subject.getUnifiedIdentity() != null && subject.getUnifiedIdentity() != "") {
@@ -104,6 +105,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 * @return
 	 */
 	@Override
+	@Transactional
 	public Subject saveSubject(Subject subject) {
 		if (StringUtil.isNotBlank(subject.getUnifiedIdentity())) {
 			if (subject.getNatureType() == null) {
@@ -132,6 +134,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
+	@Transactional
 	public Subject getPhoneAndUnifiedIdentityBySaveOrUpdateById(Subject subject) {
 		Subject subjectQuery = null;
 		if (Objects.isNull(subject.getUnifiedIdentity()) || !subject.getUnifiedIdentity().equals("")) {
@@ -391,6 +394,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 * @return
 	 */
 	@Override
+	@Transactional
 	public int addSubjectOrAddress(AddSubjectOrAddressDTO addSubjectOrAddressDTO) {
 		this.save(addSubjectOrAddressDTO);
 
