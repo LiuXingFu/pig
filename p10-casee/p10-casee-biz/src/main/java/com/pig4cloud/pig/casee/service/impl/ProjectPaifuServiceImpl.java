@@ -24,10 +24,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteRelationshipAuthenticateService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.LiquiTransferRecordPageDTO;
-import com.pig4cloud.pig.casee.dto.ProjectStatusSaveDTO;
-import com.pig4cloud.pig.casee.dto.TargetAddDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.paifu.*;
 import com.pig4cloud.pig.casee.dto.paifu.count.AssetsRePaifuFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.paifu.excel.ImportPaifu;
@@ -103,6 +100,8 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private DownloadUtils downloadUtils;
+	@Autowired
+	private CustomerService customerService;
 
 	@Override
 	@Transactional
@@ -123,6 +122,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		List<CaseeSubjectRe> caseeSubjectRes = new ArrayList();
 		String proposersNames = "";
 		String subjectPersons = "";
+		List<CustomerSubjectDTO> customerSubjectDTOS = new ArrayList<>();
 		// 遍历人员集合
 		for(CaseeSubjectReListDTO item : projectPaifuSaveDTO.getApplicantList()){
 			Subject subject = new Subject();
@@ -140,6 +140,16 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			caseeSubjectRe.setCaseePersonnelType(item.getCaseePersonnelType());
 			caseeSubjectRes.add(caseeSubjectRe);
 			if(item.getCaseePersonnelType()==0){
+				// 保存客户
+				CustomerSubjectDTO customerSubjectDTO = new CustomerSubjectDTO();
+				customerSubjectDTO.setSubjectId(subjectId);
+				customerSubjectDTO.setNatureType(30000);
+				customerSubjectDTO.setProjectId(projectPaifu.getProjectId());
+				customerSubjectDTO.setCaseeId(casee.getCaseeId());
+				customerSubjectDTO.setRecommenderId(projectPaifuSaveDTO.getUserId());
+				customerSubjectDTO.setInsId(projectPaifuSaveDTO.getInsId());
+				customerSubjectDTO.setOutlesId(projectPaifuSaveDTO.getOutlesId());
+				customerSubjectDTOS.add(customerSubjectDTO);
 				if(proposersNames.equals("")){
 					proposersNames = item.getName();
 				}else{
@@ -155,6 +165,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		}
 		projectSubjectReService.saveBatch(projectSubjectRes);
 		caseeSubjectReService.saveBatch(caseeSubjectRes);
+		customerService.saveCustomerList(customerSubjectDTOS);
 
 		//更新项目所有委托名称和所有债务人名称
 		ProjectPaifu updateProject = new ProjectPaifu();
@@ -233,6 +244,16 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			projectSubjectName = project.getProposersNames()+","+projectSubjectReSaveDTO.getName();
 			updateProject.setProposersNames(projectSubjectName);
 			updateCasee.setApplicantName(projectSubjectName);
+			// 保存客户
+			CustomerSubjectDTO customerSubjectDTO = new CustomerSubjectDTO();
+			customerSubjectDTO.setSubjectId(subjectId);
+			customerSubjectDTO.setNatureType(30000);
+			customerSubjectDTO.setProjectId(project.getProjectId());
+			customerSubjectDTO.setCaseeId(projectSubjectReSaveDTO.getCaseeId());
+			customerSubjectDTO.setRecommenderId(project.getUserId());
+			customerSubjectDTO.setInsId(project.getInsId());
+			customerSubjectDTO.setOutlesId(project.getOutlesId());
+			customerService.saveCustomer(customerSubjectDTO);
 		}else{
 			projectSubjectName = project.getSubjectPersons()+","+projectSubjectReSaveDTO.getName();
 			updateProject.setSubjectPersons(projectSubjectName);
