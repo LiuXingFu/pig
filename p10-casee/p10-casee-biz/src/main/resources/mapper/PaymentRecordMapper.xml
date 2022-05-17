@@ -113,11 +113,7 @@
 	<select id="paymentSumAmount" resultType="java.math.BigDecimal">
 		select if(ISNULL(payment_amount),0,SUM(payment_amount)) from p10_payment_record
 		where del_flag = 0
-			and funds_type = #{fundsType}
-			and project_id = #{projectId}
-			<if test="caseeId != null">
-				and casee_id = #{caseeId}
-			</if>
+		and expense_record_id = #{expenseRecordId}
 	</select>
 
 	<select id="getCourtPaymentPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO">
