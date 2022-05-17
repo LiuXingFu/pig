@@ -127,7 +127,7 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, paiFu_stcc_pmgg_pmgg);
 	}
 
 	public void addPmjgRepaymentFee(PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {

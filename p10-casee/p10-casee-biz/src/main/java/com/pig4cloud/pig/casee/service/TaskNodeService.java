@@ -25,6 +25,7 @@ import com.pig4cloud.pig.admin.api.entity.TaskNodeTemplate;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.TaskReminder;
+import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_PMGG_PMGG;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.vo.AgentMatterVO;
 import com.pig4cloud.pig.casee.vo.TaskNodeVO;
@@ -420,5 +421,5 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 * 发送拍辅任务信息
 	 * @param taskNode
 	 */
-	void sendPaifuTaskMessage(TaskNode taskNode);
+	void sendPaifuTaskMessage(TaskNode taskNode, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg);
 }

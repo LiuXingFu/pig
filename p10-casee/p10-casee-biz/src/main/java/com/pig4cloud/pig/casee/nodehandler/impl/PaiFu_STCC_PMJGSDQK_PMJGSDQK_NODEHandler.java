@@ -26,7 +26,7 @@ public class PaiFu_STCC_PMJGSDQK_PMJGSDQK_NODEHandler extends TaskNodeHandler {
 
 	private void setPMJGSDQK(TaskNode taskNode) {
 		//发送拍辅任务消息
-		this.taskNodeService.sendPaifuTaskMessage(taskNode);
+		this.taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);

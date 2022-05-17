@@ -27,7 +27,7 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 	public void handlerTaskSubmit(TaskNode taskNode) {
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//更新json
 		taskNodeService.setTaskDataSubmission(taskNode);
@@ -41,7 +41,7 @@ public class PAIFUGENERALLY_NODEHandler extends TaskNodeHandler {
 	public void handlerTaskMakeUp(TaskNode taskNode) {
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//更新json
 		taskNodeService.setTaskDataSubmission(taskNode);

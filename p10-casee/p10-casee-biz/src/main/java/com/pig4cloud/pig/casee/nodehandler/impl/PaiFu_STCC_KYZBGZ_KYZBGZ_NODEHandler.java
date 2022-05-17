@@ -117,7 +117,7 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 		taskNodeService.updateById(taskNode);
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);

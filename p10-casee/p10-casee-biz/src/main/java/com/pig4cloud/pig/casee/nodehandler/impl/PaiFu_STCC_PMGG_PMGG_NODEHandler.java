@@ -53,7 +53,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		taskNode.setFormData(json);
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//修改节点信息
 		taskNodeService.updateById(taskNode);
@@ -87,7 +87,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 				taskNodeService.updateById(taskNodePmgg);
 
 				//发送拍辅任务消息
-				taskNodeService.sendPaifuTaskMessage(taskNodePmgg);
+				taskNodeService.sendPaifuTaskMessage(taskNodePmgg, null);
 
 				taskNodeService.setTaskDataSubmission(taskNodePmgg);
 
@@ -135,7 +135,7 @@ public class PaiFu_STCC_PMGG_PMGG_NODEHandler extends TaskNodeHandler {
 		auctionRecordService.updateById(auctionRecord);
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);

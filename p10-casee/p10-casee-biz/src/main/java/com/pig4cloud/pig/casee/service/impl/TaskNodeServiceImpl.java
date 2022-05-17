@@ -364,7 +364,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					this.updateById(newTaskNode);
 
 					//发送拍辅任务消息
-					this.sendPaifuTaskMessage(newTaskNode);
+					this.sendPaifuTaskMessage(newTaskNode, null);
 
 					//任务数据提交 保存程序、财产和行为
 					this.setTaskDataSubmission(newTaskNode);
@@ -2185,7 +2185,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	 *
 	 * @param taskNode
 	 */
-	public void sendPaifuTaskMessage(TaskNode taskNode) {
+	@Transactional
+	public void sendPaifuTaskMessage(TaskNode taskNode, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg) {
 		//案件模块与用户模块的实体不一致 所以采取这个方法
 		com.pig4cloud.pig.admin.api.entity.TaskNode taskNode1 = new com.pig4cloud.pig.admin.api.entity.TaskNode();
 
@@ -2203,10 +2204,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//根据项目、案件、财产id查询程序信息
 			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, goalTarget.getGoalId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
 
-			//根据程序id、节点key查询节点信息
-			TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
+			if (Objects.nonNull(paiFu_stcc_pmgg_pmgg)) {
 
-			PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+			} else {
+				//根据程序id、节点key查询节点信息
+				TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
+				paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+			}
 
 			if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(100)){
 				taskNode1.setNodeName(taskNode1.getNodeName()+"(一拍)");

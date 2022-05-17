@@ -96,7 +96,7 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		//发送拍辅任务消息
-		taskNodeService.sendPaifuTaskMessage(taskNode);
+		taskNodeService.sendPaifuTaskMessage(taskNode, null);
 
 		leadTheWayActualLookSamplerReService.saveBatch(leadTheWayActualLookSamplerReList);
 
