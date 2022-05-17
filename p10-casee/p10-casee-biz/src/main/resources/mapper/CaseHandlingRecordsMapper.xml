@@ -54,8 +54,11 @@
 		LEFT JOIN p10_casee_handling_records_re on p10_casee_handling_records_re.casee_handling_records_id=p10_casee_handling_records.casee_handling_records_id
 		WHERE
 		p10_casee_handling_records.del_flag=0
-		<if test="caseeHandlingRecords.sourceId!=null and caseeHandlingRecords.sourceType!=null">
+		<if test="caseeHandlingRecords.sourceId!=null">
 			AND p10_casee_handling_records.source_id=#{caseeHandlingRecords.sourceId} and p10_casee_handling_records.source_type=#{caseeHandlingRecords.sourceType}
+		</if>
+		<if test="caseeHandlingRecords.sourceId==null">
+			AND p10_casee_handling_records.source_id is null
 		</if>
 		<if test="caseeHandlingRecords.projectId!=null">
 			AND (p10_casee_handling_records.project_id = #{caseeHandlingRecords.projectId} or (p10_casee_handling_records_re.project_id=#{caseeHandlingRecords.projectId} AND p10_casee_handling_records_re.project_type = #{caseeHandlingRecords.projectType}))
