@@ -124,7 +124,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Override
 	public List<AssetsReDTO> getTransferAssetsByProjectId(Integer projectId) {
 		//查询当前项目下所有实体财产信息
-		List<AssetsReDTO> assetsRes = this.baseMapper.getAssetsByProjectId(projectId);
+		List<AssetsReDTO> assetsRes = this.baseMapper.getAssetsByProjectId(projectId,null);
 
 		List<AssetsReDTO> assetsReLiquis=new ArrayList<>();
 
@@ -351,6 +351,11 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Override
 	public 	List<AssetsReDTO> queryTransferableAssetsReList(Integer projectId){
 		return this.baseMapper.queryTransferableAssetsReList(projectId);
+	}
+
+	@Override
+	public 	List<AssetsReDTO> getAssetsByProjectId(Integer projectId,Integer caseeId){
+		return this.baseMapper.getAssetsByProjectId(projectId,caseeId);
 	}
 
 }

@@ -13,6 +13,7 @@ import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 
 	@Override
+	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
 		taskNodeService.setTaskDataSubmission(taskNode);
 

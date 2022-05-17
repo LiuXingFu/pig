@@ -331,4 +331,16 @@ public class AssetsReLiquiController {
 	public R queryTransferableAssetsReList(@PathVariable Integer projectId) {
 		return R.ok(assetsReLiquiService.queryTransferableAssetsReList(projectId));
 	}
+
+	/**
+	 * 根据项目id查询财产关联和财产基本信息
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id查询财产关联和财产基本信息", notes = "根据项目id查询财产关联和财产基本信息")
+	@GetMapping("/getAssetsByProjectId" )
+	public R getAssetsByProjectId(Integer projectId,Integer caseeId) {
+		return R.ok(assetsReLiquiService.getAssetsByProjectId(projectId,caseeId));
+	}
+
 }

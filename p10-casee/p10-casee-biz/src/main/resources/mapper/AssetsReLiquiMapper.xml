@@ -75,6 +75,9 @@
 		left join p10_assets on p10_assets_re.assets_id=p10_assets.assets_id and p10_assets.type=20200
 		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
 		where p10_assets_re.project_id=#{projectId}
+		<if test="caseeId != null and caseeId != ''">
+			and p10_assets_re.create_casee_id = #{caseeId}
+		</if>
 	</select>
 
 	<select id="selectBySubject" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
@@ -772,10 +775,6 @@
 	<update id="updateAssetsRe">
 		UPDATE p10_assets_re set casee_id = #{newCaseeId}
 		where project_id = #{projectId}
-		and assets_id in (select p10_assets.assets_id from (select p10_assets_re.assets_id from p10_assets_re
-		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		where p10_assets.type = 20200
-		and p10_assets_re.project_id = #{projectId}
 		and p10_assets_re.status!=500
 	</update>
 

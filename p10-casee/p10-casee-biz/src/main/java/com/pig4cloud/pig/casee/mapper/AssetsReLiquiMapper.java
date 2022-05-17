@@ -38,7 +38,7 @@ import java.util.List;
 @Mapper
 public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
-	List<AssetsReDTO> getAssetsByProjectId(Integer projectId);
+	List<AssetsReDTO> getAssetsByProjectId(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId);
 
 	List<AssetsReDTO> selectBySubject(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId,@Param("subjectId")Integer subjectId);
 
