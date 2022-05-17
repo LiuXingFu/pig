@@ -177,8 +177,6 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		}
 
 		for (PaymentRecordAddDTO paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
-			paymentRecord.setCaseeId(paymentRecordDTO.getCaseeId());
-			paymentRecord.setCaseeNumber(paymentRecordDTO.getCaseeNumber());
 			paymentRecord.setProjectId(paymentRecordDTO.getProjectId());
 			paymentRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
 			paymentRecord.setCompanyCode(paymentRecordDTO.getCompanyCode());
