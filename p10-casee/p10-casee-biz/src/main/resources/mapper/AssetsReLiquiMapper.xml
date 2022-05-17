@@ -286,7 +286,7 @@
 		and p10_casee.casee_type in (3010,3031)
 		and p10_casee.`status` = 1
 		and p10_target.goal_type = 20001
-		and p10_assets_re.`status` in (100,200)
+		and p10_assets_re.`status` in (100,200,500)
 		<if test="query.nodeKey != null and query.nodeKey != ''">
 			and p10_task_node.node_key = #{query.nodeKey}
 		</if>
@@ -515,7 +515,7 @@
 		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
-		and json_extract( p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is not null
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract( p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK"
 		and p10_task_node.form_data is null
