@@ -2191,6 +2191,32 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		BeanCopyUtil.copyBean(taskNode, taskNode1);
 
+		if (taskNode1.getNodeKey().equals("paiFu_STCC_PMGG_PMGG")
+				|| taskNode1.getNodeKey().equals("paiFu_STCC_JSZX_JSZX")
+				|| taskNode1.getNodeKey().equals("paiFu_STCC_BMKY_BMKY")
+				|| taskNode1.getNodeKey().equals("paiFu_STCC_KYZBGZ_KYZBGZ")
+				|| taskNode1.getNodeKey().equals("paiFu_STCC_YLKY_YLKY")
+				|| taskNode1.getNodeKey().equals("paiFu_STCC_PMJG_PMJG")) {
+
+			Target goalTarget = this.targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getTargetId, taskNode1.getTargetId()).eq(Target::getGoalType, 20001));
+
+			//根据项目、案件、财产id查询程序信息
+			Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, goalTarget.getGoalId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature,6060));
+
+			//根据程序id、节点key查询节点信息
+			TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
+
+			PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+
+			if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(100)){
+				taskNode1.setNodeName(taskNode1.getNodeName()+"(一拍)");
+			}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(200)){
+				taskNode1.setNodeName(taskNode1.getNodeName()+"(二拍)");
+			}else if (paiFu_stcc_pmgg_pmgg.getAuctionType().equals(300)){
+				taskNode1.setNodeName(taskNode1.getNodeName()+"(变卖)");
+			}
+		}
+
 		//调用拍辅任务消息发送方法
 		remoteMessageRecordService.sendPaifuTaskMessage(taskNode1, SecurityConstants.FROM);
 	}

@@ -92,7 +92,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			// 添加或修改客户信息
 			addOrUpdateCustomer(customerSubjectDTO, subject);
 		} else {
-			if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity())) {
+			if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity()) && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
 				// 主体id为空 根据身份标识查询主体信息
 				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				// 判断主体信息是否为空
@@ -384,7 +384,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		for (CustomerSubjectDTO customerSubjectDTO : customerSubjectDTOList) {
 			if (customerSubjectDTO.getSubjectId() != null) {
 				saveUpdateSubject(customerSubjectDTO);
-			} else if (customerSubjectDTO.getUnifiedIdentity() != null) {
+			} else if ((customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.equals("")) && (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals(""))) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				if (subjectVO != null) {
 					saveUpdateSubject(customerSubjectDTO);
@@ -396,31 +396,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 					}
 				} else {
 					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
-					if (Objects.nonNull(subjectVO)) {
-						saveUpdateSubject(customerSubjectDTO);
-						customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
-
-						Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
-						if (customer != null) {
-							customerSubjectDTO.setCustomerId(customer.getCustomerId());
-						}
-					} else {
-						saveUpdateSubject(customerSubjectDTO);
-					}
+					saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 				}
-			} else if (customerSubjectDTO.getPhone() != null) {
+			}else if (customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
+				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
+				saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
+			} else if (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals("")) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
-				if (subjectVO != null) {
-					saveUpdateSubject(customerSubjectDTO);
-					customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
-
-					Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
-					if (customer != null) {
-						customerSubjectDTO.setCustomerId(customer.getCustomerId());
-					}
-				} else {
-					saveUpdateSubject(customerSubjectDTO);
-				}
+				saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 			} else {
 				return 0;
 			}
@@ -439,6 +422,19 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		this.saveOrUpdateBatch(customers);
 
 		return add + 1;
+	}
+
+	private void saveUpdateSubjectAndSetCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
+		if (Objects.nonNull(subjectVO)) {
+			saveUpdateSubject(customerSubjectDTO);
+			customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+			Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
+			if (customer != null) {
+				customerSubjectDTO.setCustomerId(customer.getCustomerId());
+			}
+		} else {
+			saveUpdateSubject(customerSubjectDTO);
+		}
 	}
 
 	public int isCustomer(Integer subjectId) {
