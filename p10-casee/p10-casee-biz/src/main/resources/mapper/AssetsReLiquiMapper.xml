@@ -62,7 +62,7 @@
 		<if test="query.createCaseeId != null and query.createCaseeId != 0">
 			and create_casee_id = #{query.createCaseeId}
 		</if>
-		<if test="query.subjectName = null and query.subjectName != ''">
+		<if test="query.subjectName != null and query.subjectName != ''">
 			and subject_name like concat('%', #{query.subjectName}, '%')
 		</if>
 		<if test="query.assetsSource != null and query.assetsSource != 0">
