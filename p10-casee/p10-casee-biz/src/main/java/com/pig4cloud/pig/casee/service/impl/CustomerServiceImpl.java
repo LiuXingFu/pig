@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,7 +97,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				// 判断主体信息是否为空
 				if (Objects.isNull(subjectVO)) {
-//					saveSubjectOrCustomer(customerSubjectDTO);
 					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
 					if (Objects.isNull(subjectVO)) {
 						saveSubjectOrCustomer(customerSubjectDTO);
@@ -372,17 +372,71 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 	/**
 	 * 批量添加客户信息
+	 *
 	 * @param customerSubjectDTOList
 	 * @return
 	 */
 	@Override
 	@Transactional
-	public int saveCustomerList(List<CustomerSubjectDTO> customerSubjectDTOList) {
+	public int saveCustomerBatch(List<CustomerSubjectDTO> customerSubjectDTOList) {
 		int add = 0;
 
 		for (CustomerSubjectDTO customerSubjectDTO : customerSubjectDTOList) {
-			saveUpdateCustomerAndSubject(customerSubjectDTO);
+			if (customerSubjectDTO.getSubjectId() != null) {
+				saveUpdateSubject(customerSubjectDTO);
+			} else if (customerSubjectDTO.getUnifiedIdentity() != null) {
+				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
+				if (subjectVO != null) {
+					saveUpdateSubject(customerSubjectDTO);
+					customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+
+					Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
+					if (customer != null) {
+						customerSubjectDTO.setCustomerId(customer.getCustomerId());
+					}
+				} else {
+					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+					if (Objects.nonNull(subjectVO)) {
+						saveUpdateSubject(customerSubjectDTO);
+						customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+
+						Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
+						if (customer != null) {
+							customerSubjectDTO.setCustomerId(customer.getCustomerId());
+						}
+					} else {
+						saveUpdateSubject(customerSubjectDTO);
+					}
+				}
+			} else if (customerSubjectDTO.getPhone() != null) {
+				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+				if (subjectVO != null) {
+					saveUpdateSubject(customerSubjectDTO);
+					customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+
+					Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
+					if (customer != null) {
+						customerSubjectDTO.setCustomerId(customer.getCustomerId());
+					}
+				} else {
+					saveUpdateSubject(customerSubjectDTO);
+				}
+			} else {
+				return 0;
+			}
 		}
+
+		List<Customer> customers = new ArrayList<>();
+
+		for (CustomerSubjectDTO customerSubjectDTO : customerSubjectDTOList) {
+			Customer customer = new Customer();
+
+			BeanUtil.copyProperties(customerSubjectDTO, customer);
+
+			customers.add(customer);
+		}
+
+		this.saveOrUpdateBatch(customers);
 
 		return add + 1;
 	}
@@ -404,7 +458,8 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	private void saveUpdateSubject(CustomerSubjectDTO customerSubjectDTO) {
 		Subject subject = new Subject();
 		BeanUtil.copyProperties(customerSubjectDTO, subject);
-		this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
+		Integer integer = this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM).getData();
+		customerSubjectDTO.setSubjectId(integer);
 	}
 
 	/**

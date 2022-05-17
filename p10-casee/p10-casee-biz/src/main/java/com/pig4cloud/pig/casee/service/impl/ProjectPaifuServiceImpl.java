@@ -165,7 +165,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		}
 		projectSubjectReService.saveBatch(projectSubjectRes);
 		caseeSubjectReService.saveBatch(caseeSubjectRes);
-		customerService.saveCustomerList(customerSubjectDTOS);
+		customerService.saveCustomerBatch(customerSubjectDTOS);
 
 		//更新项目所有委托名称和所有债务人名称
 		ProjectPaifu updateProject = new ProjectPaifu();
