@@ -155,14 +155,5 @@ public class TaskFlowDTO extends TaskNode {
 	@ApiModelProperty(value="消息代办类型（100-待处理 101-已处理 102-我的任务 200-待办理 201-已办理 202-我的委托）")
 	private Integer type;
 
-	/**
-	 * 财产id
-	 */
-	private Integer assetsId;
-
-	/**
-	 * 行为id
-	 */
-	private Integer behaviorId;
 
 }

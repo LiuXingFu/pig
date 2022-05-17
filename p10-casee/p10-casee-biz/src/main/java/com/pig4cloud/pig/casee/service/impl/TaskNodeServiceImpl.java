@@ -674,6 +674,8 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Override
 	@Transactional
 	public String saveNodeFormData(TaskFlowDTO taskFlowDTO) {
+		Target target = targetService.getById(taskFlowDTO.getTargetId());
+
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
@@ -684,12 +686,13 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
-					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
+					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
 				} else {
 					//添加清收任务办理记录
-					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
+					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, 0);
 				}
 			} else {
+
 				//添加清收任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords = new CaseeHandlingRecords();
 				BeanUtils.copyProperties(taskFlowDTO, caseeHandlingRecords);
@@ -709,12 +712,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 						caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(变卖)");
 					}
 				}
-				if (taskFlowDTO.getAssetsId() != null) {
-					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+				if (target.getProcedureNature().equals(4040)||target.getProcedureNature().equals(4041)){//清收实体财产、资金财产程序
+					caseeHandlingRecords.setSourceId(target.getGoalId());
 					caseeHandlingRecords.setSourceType(0);
 				}
-				if (taskFlowDTO.getBehaviorId() != null) {
-					caseeHandlingRecords.setSourceId(taskFlowDTO.getBehaviorId());
+				if (target.getProcedureNature().equals(5050)||target.getProcedureNature().equals(5051)){//清收行为违法、行为限制程序
+					caseeHandlingRecords.setSourceId(target.getGoalId());
 					caseeHandlingRecords.setSourceType(1);
 				}
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
@@ -962,6 +965,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	@Transactional
 	public String makeUpNode(TaskFlowDTO taskFlowDTO) {
 		if (Objects.nonNull(taskFlowDTO)) {
+			Target target = targetService.getById(taskFlowDTO.getTargetId());
 
 			//处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeMakeUp(taskFlowDTO);
@@ -989,10 +993,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
 					//添加拍辅任务办理记录
-					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
+					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
 				} else {
 					//添加拍辅任务办理记录
-					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
+					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, 0);
 				}
 			} else {
 				//添加清收任务办理记录
@@ -1001,9 +1005,14 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				caseeHandlingRecords.setCreateTime(LocalDateTime.now());
 				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
 				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
-				if (taskFlowDTO.getAssetsId() != null) {
-					caseeHandlingRecords.setSourceId(taskFlowDTO.getAssetsId());
+
+				if (target.getProcedureNature().equals(4040)||target.getProcedureNature().equals(4041)){//清收实体财产、资金财产程序
+					caseeHandlingRecords.setSourceId(target.getGoalId());
 					caseeHandlingRecords.setSourceType(0);
+				}
+				if (target.getProcedureNature().equals(5050)||target.getProcedureNature().equals(5051)){//清收行为违法、行为限制程序
+					caseeHandlingRecords.setSourceId(target.getGoalId());
+					caseeHandlingRecords.setSourceType(1);
 				}
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
 			}
