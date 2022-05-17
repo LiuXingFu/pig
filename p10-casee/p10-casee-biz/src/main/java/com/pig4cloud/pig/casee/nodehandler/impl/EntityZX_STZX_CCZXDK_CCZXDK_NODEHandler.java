@@ -38,6 +38,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	PaymentRecordAssetsReService paymentRecordAssetsReService;
 
 	@Override
 	@Transactional
@@ -95,5 +97,10 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		//添加到款信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 
+		//添加到款信息关联财产
+		PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
 	}
 }

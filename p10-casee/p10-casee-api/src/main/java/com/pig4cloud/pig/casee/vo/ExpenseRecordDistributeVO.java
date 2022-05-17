@@ -31,6 +31,11 @@ import java.time.LocalDate;
 public class ExpenseRecordDistributeVO {
 
 	/**
+	 * 费用财产关联表id
+	 */
+	private Integer assetsReId;
+
+	/**
 	 * 回款总金额
 	 */
 	private BigDecimal paymentSumAmount;
