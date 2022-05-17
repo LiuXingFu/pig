@@ -142,11 +142,13 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 			}
 
-			//添加到款信息关联财产
-			PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
-			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
-			paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+			if (paymentRecord.getAssetsReId()!=null){
+				//添加到款信息关联财产
+				PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
+				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+			}
 
 			//修改明细记录状态
 			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());
@@ -200,11 +202,13 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 			}
 
-			//添加到款信息关联财产
-			PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
-			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
-			paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+			if (paymentRecord.getAssetsReId()!=null){
+				//添加到款信息关联财产
+				PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
+				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+			}
 
 			//修改明细记录状态
 			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());

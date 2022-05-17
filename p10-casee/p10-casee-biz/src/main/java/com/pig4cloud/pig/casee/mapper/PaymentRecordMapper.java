@@ -50,7 +50,7 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
 	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
 
-	BigDecimal paymentSumAmount(@Param("projectId") Integer projectId,@Param("caseeId") Integer caseeId,@Param("fundsType") Integer fundsType);
+	BigDecimal paymentSumAmount(@Param("expenseRecordId") Integer expenseRecordId);
 
 	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, @Param("projectId")String projectId);
 

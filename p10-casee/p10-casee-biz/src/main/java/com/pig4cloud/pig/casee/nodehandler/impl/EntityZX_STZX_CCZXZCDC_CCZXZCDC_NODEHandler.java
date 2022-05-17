@@ -114,10 +114,13 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				paymentRecordSubjectRes.add(paymentRecordSubject);
 			}
 
-			PaymentRecordAssetsRe paymentRecordAssets=new PaymentRecordAssetsRe();
-			paymentRecordAssets.setPaymentRecordId(record.getPaymentRecordId());
-			paymentRecordAssets.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
-			paymentRecordAssetsReService.save(paymentRecordAssets);
+			if (record.getAssetsReId()!=null){
+				//添加到款信息关联财产
+				PaymentRecordAssetsRe PaymentRecordAssets=new PaymentRecordAssetsRe();
+				PaymentRecordAssets.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				PaymentRecordAssets.setAssetsReId(record.getAssetsReId());
+				paymentRecordAssetsReService.save(PaymentRecordAssets);
+			}
 
 			//如果费用已经还完则修改状态
 			ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
