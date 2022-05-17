@@ -28,15 +28,4 @@ public class CommonalityData {
 	 * 当前子节点进度
 	 */
 	private Integer process;
-
-	/**
-	 * 财产id
-	 */
-	private Integer assetsId;
-
-	/**
-	 * 行为id
-	 */
-	private Integer behaviorId;
-
 }

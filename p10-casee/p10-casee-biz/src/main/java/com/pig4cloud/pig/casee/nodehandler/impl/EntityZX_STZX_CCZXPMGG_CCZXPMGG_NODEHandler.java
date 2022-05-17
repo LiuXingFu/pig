@@ -4,6 +4,7 @@ import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.AuctionRecord;
+import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXPMGG_CCZXPMGG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
@@ -26,13 +27,16 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler extends TaskNodeHandler
 	AssetsReService assetsReService;
 	@Autowired
 	AssetsService assetsService;
-
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		Target target = targetService.getById(taskNode.getTargetId());
+
 		//拍卖公告
 		EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
-		AssetsRe assetsRe = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getAssetsId, entityZX_stzx_cczxpmgg_cczxpmgg.getAssetsId()).eq(AssetsRe::getProjectId, taskNode.getProjectId()).eq(AssetsRe::getCaseeId, taskNode.getCaseeId()));
+		AssetsRe assetsRe = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getAssetsId, target.getGoalId()).eq(AssetsRe::getProjectId, taskNode.getProjectId()).eq(AssetsRe::getCaseeId, taskNode.getCaseeId()));
 		AuctionRecordSaveDTO auctionRecordSaveDTO=new AuctionRecordSaveDTO();
 		JointAuctionAssetsDTO jointAuctionAssetsDTO=new JointAuctionAssetsDTO();
 		jointAuctionAssetsDTO.setAssetsReId(assetsRe.getAssetsReId());
