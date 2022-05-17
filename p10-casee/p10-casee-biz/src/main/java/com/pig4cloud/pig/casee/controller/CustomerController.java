@@ -124,22 +124,22 @@ public class CustomerController {
 		return R.ok(customerService.removeById(customerId));
     }
 
-	/**
-	 * 新增客户信息
-	 * @param customerSubjectDTO
-	 * @return R
-	 */
-	@ApiOperation(value = "新增客户信息", notes = "新增客户信息")
-	@SysLog("新增客户信息" )
-	@PostMapping("/saveCustomer")
-	public R saveCustomer(@RequestBody CustomerSubjectDTO customerSubjectDTO) {
-		int i = customerService.saveCustomer(customerSubjectDTO);
-		if(i > 0){
-			return R.ok("添加客户信息成功！");
-		} else {
-			return R.failed("添加客户信息失败！");
-		}
-	}
+//	/**
+//	 * 新增客户信息
+//	 * @param customerSubjectDTO
+//	 * @return R
+//	 */
+//	@ApiOperation(value = "新增客户信息", notes = "新增客户信息")
+//	@SysLog("新增客户信息" )
+//	@PostMapping("/saveCustomer")
+//	public R saveCustomer(@RequestBody CustomerSubjectDTO customerSubjectDTO) {
+//		int i = customerService.saveCustomer(customerSubjectDTO);
+//		if(i > 0){
+//			return R.ok("添加客户信息成功！");
+//		} else {
+//			return R.failed("添加客户信息失败！");
+//		}
+//	}
 
 	/**
 	 * 批量添加客户信息

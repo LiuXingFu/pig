@@ -129,38 +129,46 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 	}
 
 	public void addPmjgRepaymentFee(PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {
-		//添加费用明细记录
-		ExpenseRecord expenseRecord = new ExpenseRecord();
-		expenseRecord.setCostAmount(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee());
-		expenseRecord.setCostIncurredTime(paiFu_stcc_pmjg_pmjg.getClosingDate());
-		expenseRecord.setProjectId(project.getProjectId());
-		expenseRecord.setCaseeId(casee.getCaseeId());
-		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-		expenseRecord.setStatus(0);
-		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		expenseRecord.setCompanyCode(project.getCompanyCode());
-		expenseRecord.setCostType(10007);
-		expenseRecordService.save(expenseRecord);
+		ExpenseRecord pfExpenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10007);
+		if (pfExpenseRecord!=null){
+			pfExpenseRecord.setCostAmount(pfExpenseRecord.getCostAmount().add(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee()));
+			pfExpenseRecord.setStatus(0);
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(pfExpenseRecord);
+		}else {
+			//添加费用明细记录
+			ExpenseRecord expenseRecord = new ExpenseRecord();
+			expenseRecord.setCostAmount(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee());
+			expenseRecord.setCostIncurredTime(paiFu_stcc_pmjg_pmjg.getClosingDate());
+			expenseRecord.setProjectId(project.getProjectId());
+			expenseRecord.setCaseeId(casee.getCaseeId());
+			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
+			expenseRecord.setStatus(0);
+			expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
+			expenseRecord.setCompanyCode(project.getCompanyCode());
+			expenseRecord.setCostType(10007);
+			expenseRecordService.save(expenseRecord);
 
-		List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
-		//循环当前拍卖公告联合拍卖财产信息
-		for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
-			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
-			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordAssetsReList.add(expenseRecordAssetsRe);
-		}
-		// 添加费用产生记录财产关联信息
-		expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
+			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
+			//循环当前拍卖公告联合拍卖财产信息
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
+				ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
+				expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
+				expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordAssetsReList.add(expenseRecordAssetsRe);
+			}
+			// 添加费用产生记录财产关联信息
+			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
 
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
-		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
-			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+			List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
+			for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
+				ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+			}
+			//添加费用产生明细关联主体信息
+			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
 		}
-		//添加费用产生明细关联主体信息
-		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
 	}
 }

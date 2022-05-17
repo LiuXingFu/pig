@@ -79,12 +79,7 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			//查询当前财产关联债务人信息
 			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxpmjg_cczxpmjg.getAssetsId());
 
-
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee()));
-			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-			//修改项目总金额
-			projectLiquiService.updateById(projectLiqui);
 
 			//添加费用明细记录
 			ExpenseRecord expenseRecord=new ExpenseRecord();
@@ -115,6 +110,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			}
 			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
 
+			//修改项目总金额
+			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
 		}
 	}
 }

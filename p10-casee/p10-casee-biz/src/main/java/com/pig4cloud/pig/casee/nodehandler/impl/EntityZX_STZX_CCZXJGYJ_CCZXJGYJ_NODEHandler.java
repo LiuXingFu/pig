@@ -47,10 +47,7 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-			projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee()));
-			projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-			//修改项目总金额
-			projectLiquiService.updateById(projectLiqui);
+
 			//添加定价费用明细记录
 			ExpenseRecord expenseRecord=new ExpenseRecord();
 			expenseRecord.setCostAmount(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee());
@@ -79,7 +76,9 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 				expenseRecordSubjectRes.add(expenseRecordSubjectRe);
 			}
 			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
-		}
 
+			//修改项目总金额
+			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+		}
 	}
 }

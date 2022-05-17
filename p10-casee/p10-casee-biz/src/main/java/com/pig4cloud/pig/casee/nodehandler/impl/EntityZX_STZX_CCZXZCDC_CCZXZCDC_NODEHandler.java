@@ -52,6 +52,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),taskNode.getProjectId(),10007);
 		if (expenseRecord!=null){
 			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee()));
+			expenseRecord.setStatus(0);
 			//修改当前财产程序拍辅费
 			expenseRecordService.updateById(expenseRecord);
 		}
