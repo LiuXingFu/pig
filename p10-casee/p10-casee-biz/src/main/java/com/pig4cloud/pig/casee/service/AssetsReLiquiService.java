@@ -238,4 +238,6 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	List<AssetsReDTO> queryTransferableAssetsReList(Integer projectId);
+
+	List<AssetsReDTO> getAssetsByProjectId(Integer projectId,Integer caseeId);
 }

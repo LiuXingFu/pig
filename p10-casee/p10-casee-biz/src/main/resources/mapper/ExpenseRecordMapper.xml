@@ -59,6 +59,7 @@
 		select p10_expense_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from p10_expense_record
 		left join p10_project on p10_project.project_id=p10_expense_record.project_id
 		where p10_expense_record.del_flag=0 and p10_expense_record.project_id=#{query.projectId}
+		order by p10_expense_record.cost_incurred_time desc
 	</select>
 
 	<select id="getByPaymentType" resultMap="expenseRecordMapVO">
