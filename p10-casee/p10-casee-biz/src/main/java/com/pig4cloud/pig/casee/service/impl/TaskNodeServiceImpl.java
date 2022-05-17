@@ -690,10 +690,6 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecordsService.addCaseeHandlingRecords(taskFlowDTO.getAssetsId(), taskFlowDTO, 0);
 				}
 			} else {
-				//查询当前财产拍卖公告节点信息
-				TaskNode taskNodePmgg = this.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG", taskFlowDTO.getTargetId());
-				EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
-
 				//添加清收任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords = new CaseeHandlingRecords();
 				BeanUtils.copyProperties(taskFlowDTO, caseeHandlingRecords);
@@ -701,6 +697,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				caseeHandlingRecords.setInsId(securityUtilsService.getCacheUser().getInsId());
 				caseeHandlingRecords.setOutlesId(securityUtilsService.getCacheUser().getOutlesId());
 				if (taskFlowDTO.getNodeKey().equals("entityZX_STZX_CCZXPMGG_CCZXPMGG")||taskFlowDTO.getNodeKey().equals("entityZX_STZX_CCZXPMJG_CCZXPMJG")){
+					//查询当前财产拍卖公告节点信息
+					TaskNode taskNodePmgg = this.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG", taskFlowDTO.getTargetId());
+					EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
+
 					if (entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionType().equals(100)){
 						caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
 					}else if (entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionType().equals(200)){
