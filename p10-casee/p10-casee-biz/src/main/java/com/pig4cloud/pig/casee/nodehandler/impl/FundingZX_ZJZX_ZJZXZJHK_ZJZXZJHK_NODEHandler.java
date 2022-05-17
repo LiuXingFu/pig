@@ -2,10 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
-import com.pig4cloud.pig.casee.entity.Casee;
-import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.entity.PaymentRecordSubjectRe;
-import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.project.fundingzxprocedure.FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
@@ -33,6 +30,8 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 	AssetsReLiquiService assetsReLiquiService;
 	@Autowired
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	@Transactional
@@ -42,8 +41,10 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 		//资金划扣
 		FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK fundingZX_zjzx_zjzxzjhk_zjzxzjhk = JsonUtils.jsonToPojo(taskNode.getFormData(), FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK.class);
 
+		Target target = targetService.getById(taskNode.getTargetId());
+
 		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());

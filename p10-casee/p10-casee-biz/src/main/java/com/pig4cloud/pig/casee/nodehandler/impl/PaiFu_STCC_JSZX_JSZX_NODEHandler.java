@@ -57,7 +57,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		this.taskNodeService.updateById(taskNode);
 
 		//同步联合拍卖财产接受咨询节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_JSZX_JSZX");
 
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
@@ -141,7 +141,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 		taskNodeService.updateById(taskNode);
 
 		//同步联合拍卖财产接受咨询节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_jszx_jszx.getAssetsId(), taskNode, "paiFu_STCC_JSZX_JSZX");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_JSZX_JSZX");
 
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);

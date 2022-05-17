@@ -47,6 +47,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 	private PaymentRecordAssetsReService paymentRecordAssetsReService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	@Transactional
@@ -54,10 +56,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		//拍辅资产抵偿
 		getPaiFuStccZcdcZcdc(taskNode);
 
-		PaiFu_STCC_ZCDC_ZCDC paiFu_stcc_zcdc_zcdc = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_ZCDC_ZCDC.class);
-
 		//同步联合拍卖财产资产抵偿节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_zcdc_zcdc.getAssetsId(), taskNode, "paiFu_STCC_ZCDC_ZCDC");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_ZCDC_ZCDC");
 	}
 
 	private void getPaiFuStccZcdcZcdc(TaskNode taskNode) {
@@ -70,8 +70,10 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
+		Target target = targetService.getById(taskNode.getTargetId());
+
 		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_zcdc_zcdc.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
@@ -83,7 +85,7 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		projectPaifuService.updateRepaymentAmount(taskNode.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
-		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_zcdc_zcdc.getAssetsId());
+		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
 		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 
@@ -165,7 +167,9 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		PaiFu_STCC_ZCDC_ZCDC paiFu_STCC_ZCDC_ZCDC = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_ZCDC_ZCDC.class);
 
 		if (paiFu_STCC_ZCDC_ZCDC!=null){
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_STCC_ZCDC_ZCDC.getAssetsId());
+			Target target = targetService.getById(taskNode.getTargetId());
+
+			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
@@ -183,7 +187,7 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 					.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getPaiFuPaymentRecordId()));
 
 			//通过清收移交记录信息查询清收项目id
-			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_ZCDC_ZCDC.getAssetsId());
+			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
 			if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 
@@ -206,10 +210,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		//拍辅资产抵偿
 		getPaiFuStccZcdcZcdc(taskNode);
 
-		PaiFu_STCC_ZCDC_ZCDC paiFu_stcc_zcdc_zcdc = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_ZCDC_ZCDC.class);
-
 		//同步联合拍卖财产资产抵偿节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_zcdc_zcdc.getAssetsId(), taskNode, "paiFu_STCC_ZCDC_ZCDC");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_ZCDC_ZCDC");
 	}
 
 	/**

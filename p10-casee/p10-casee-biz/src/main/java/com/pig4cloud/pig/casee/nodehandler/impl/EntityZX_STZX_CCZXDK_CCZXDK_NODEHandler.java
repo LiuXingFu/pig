@@ -36,6 +36,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	AssetsReService assetsReService;
 	@Autowired
 	ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	@Transactional
@@ -47,9 +49,10 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
+		Target target = targetService.getById(taskNode.getTargetId());
 
 		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxdk_cczxdk.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 		//添加拍辅金额时需添加项目总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());

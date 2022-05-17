@@ -126,7 +126,7 @@ public class FindNodeTemplateChildrenUtils {
 					if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")) {//商情移送、资产处置移交
 						AssetsReLiqui assetsReLiqui = assetsReLiquiService.queryAssetsMortgage(taskNodeVO.getProjectId(), taskNodeVO.getCaseeId(), target.getGoalId());
 						Integer mortgagee = assetsReLiqui.getAssetsReCaseeDetail().getMortgagee();
-						TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXCF_CCZXCF").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXCF_CCZXCF").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						if (taskNode != null) {
 							EntityZX_STZX_CCZXCF_CCZXCF entityZX_stzx_cczxcf_cczxcf = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXCF_CCZXCF.class);
 							if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXSQYS_CCZXSQYS")) {//商情移送
@@ -138,7 +138,7 @@ public class FindNodeTemplateChildrenUtils {
 								if (list.size() > 0) {
 									return null;
 								} else {
-									TaskNode taskNodeSQYS = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXSQYS_CCZXSQYS").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+									TaskNode taskNodeSQYS = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXSQYS_CCZXSQYS").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 									EntityZX_STZX_CCZXSQYS_CCZXSQYS entityZX_stzx_cczxsqys_cczxsqys = JsonUtils.jsonToPojo(taskNodeSQYS.getFormData(), EntityZX_STZX_CCZXSQYS_CCZXSQYS.class);
 									if (entityZX_stzx_cczxcf_cczxcf != null) {
 										if ((mortgagee == 0 && entityZX_stzx_cczxcf_cczxcf.getSealUpCondition() == 0) ||//有抵押权、查封为首封
@@ -152,25 +152,25 @@ public class FindNodeTemplateChildrenUtils {
 						}
 						return null;
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJSDQK_CCZXZCCZYJSDQK")) {//资产处置移交送达情况
-						TaskNode taskNodeZCCZYJ = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodeZCCZYJ = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						if (taskNodeZCCZYJ.getStatus() != 0 && taskNodeZCCZYJ.getStatus() != 301) {//资产处置移交环节已完成
 							return taskNodeVO;
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXBDCXKRH_CCZXBDCXKRH")) {//不动产现勘入户
-						TaskNode taskNodeXk = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXXK_CCZXXK").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodeXk = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXXK_CCZXXK").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						EntityZX_STZX_CCZXXK_CCZXXK entityZX_stzx_cczxxk_cczxxk = JsonUtils.jsonToPojo(taskNodeXk.getFormData(), EntityZX_STZX_CCZXXK_CCZXXK.class);
 						if (entityZX_stzx_cczxxk_cczxxk != null && entityZX_stzx_cczxxk_cczxxk.getWhetherHomeInspection() != null && entityZX_stzx_cczxxk_cczxxk.getWhetherHomeInspection() == 0) {//不动产现勘未入户
 							return taskNodeVO;
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXPMJGSDQK_CCZXPMJGSDQK")) {//拍卖结果送达情况
-						TaskNode taskNodePMJG = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMJG_CCZXPMJG").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodePMJG = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXPMJG_CCZXPMJG").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						EntityZX_STZX_CCZXPMJG_CCZXPMJG entityZX_stzx_cczxpmjg_cczxpmjg = JsonUtils.jsonToPojo(taskNodePMJG.getFormData(), EntityZX_STZX_CCZXPMJG_CCZXPMJG.class);
 						//拍卖结果为成功
 						if (entityZX_stzx_cczxpmjg_cczxpmjg != null && entityZX_stzx_cczxpmjg_cczxpmjg.getAuctionResults() == 0) {
 							return taskNodeVO;
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCDC_CCZXZCDC")) {//成交裁定、资产抵偿
-						TaskNode taskNodeDK = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDK_CCZXDK").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodeDK = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDK_CCZXDK").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
 							//完成到款环节
 							if (taskNodeDK.getStatus() != 0) {
@@ -183,7 +183,7 @@ public class FindNodeTemplateChildrenUtils {
 							}
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {//抵偿裁定、到款
-						TaskNode taskNodeZCDC = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCDC_CCZXZCDC").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodeZCDC = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCDC_CCZXZCDC").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {//抵偿裁定
 							//完成资产抵偿环节
 							if (taskNodeZCDC.getStatus() != 0) {
@@ -196,7 +196,7 @@ public class FindNodeTemplateChildrenUtils {
 							}
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK")) {//抵偿裁定送达情况
-						TaskNode taskNodeDCCD = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDCCD_CCZXDCCD").eq(TaskNode::getProjectId, taskNodeVO.getProjectId()).eq(TaskNode::getCaseeId, taskNodeVO.getCaseeId()).eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
+						TaskNode taskNodeDCCD = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDCCD_CCZXDCCD").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
 						//抵偿裁定环节已完成
 						if (taskNodeDCCD.getStatus() != 0) {
 							return taskNodeVO;

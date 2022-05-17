@@ -34,6 +34,8 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 	private PaymentRecordService paymentRecordService;
 	@Autowired
 	ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -43,8 +45,10 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
+		Target target = targetService.getById(taskNode.getTargetId());
+
 		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), entityZX_stzx_cczxzcdc_cczxzcdc.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 

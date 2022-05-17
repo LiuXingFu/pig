@@ -3,10 +3,12 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_XK_XK;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.AssetsService;
+import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,18 @@ public class PaiFu_STCC_XK_XK_NODEHandler extends TaskNodeHandler {
 	RemoteSubjectService remoteSubjectService;
 	@Autowired
 	AssetsService assetsService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {//现勘
 
 		PaiFu_STCC_XK_XK paiFu_stcc_xk_xk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_XK_XK.class);
-		Assets assets = assetsService.getById(paiFu_stcc_xk_xk.getAssetsId());
+
+		Target target = targetService.getById(taskNode.getTargetId());
+
+		Assets assets = assetsService.getById(target.getGoalId());
 
 		TaskNode taskNodeBdcxkrh = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getNodeName, "不动产现勘入户"));
 
