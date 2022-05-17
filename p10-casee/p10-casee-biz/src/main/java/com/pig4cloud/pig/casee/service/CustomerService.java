@@ -78,5 +78,5 @@ public interface CustomerService extends IService<Customer> {
 	 * @param customerSubjectDTOList
 	 * @return
 	 */
-	int saveCustomerList(List<CustomerSubjectDTO> customerSubjectDTOList);
+	int saveCustomerBatch(List<CustomerSubjectDTO> customerSubjectDTOList);
 }
