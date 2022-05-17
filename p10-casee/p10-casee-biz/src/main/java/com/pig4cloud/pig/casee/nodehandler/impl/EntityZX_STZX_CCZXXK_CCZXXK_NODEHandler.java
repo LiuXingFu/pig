@@ -2,11 +2,13 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.casee.entity.Assets;
+import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXXK_CCZXXK;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.AssetsService;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
+import com.pig4cloud.pig.casee.service.TargetService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class EntityZX_STZX_CCZXXK_CCZXXK_NODEHandler extends TaskNodeHandler {
 	PaymentRecordService paymentRecordService;
 	@Autowired
 	AssetsService assetsService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -28,7 +32,9 @@ public class EntityZX_STZX_CCZXXK_CCZXXK_NODEHandler extends TaskNodeHandler {
 		//现勘
 		EntityZX_STZX_CCZXXK_CCZXXK entityZX_stzx_cczxxk_cczxxk = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXXK_CCZXXK.class);
 
-		Assets assets = assetsService.getById(entityZX_stzx_cczxxk_cczxxk.getAssetsId());
+		Target target = targetService.getById(taskNode.getTargetId());
+
+		Assets assets = assetsService.getById(target.getGoalId());
 
 		TaskNode taskNodeBdcxkrh = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getNodeName, "不动产现勘入户"));
 

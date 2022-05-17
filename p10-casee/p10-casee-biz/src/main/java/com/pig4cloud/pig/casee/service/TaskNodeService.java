@@ -126,11 +126,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 
 	/**
 	 * 同步联合拍卖财产节点数据
-	 * @param assetsId 当前提交节点财产id
 	 * @param taskNode 当前提交节点数据
 	 * @return R
 	 */
-	void synchronizeJointAuctionTaskNode(Integer assetsId,TaskNode taskNode,String nodeKey);
+	void synchronizeJointAuctionTaskNode(TaskNode taskNode,String nodeKey);
 
 	/**
 	 * 	复制新的拍卖公告到拍卖结果这一段环节节点并删除之前的节点

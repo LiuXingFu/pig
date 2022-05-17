@@ -336,9 +336,9 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 	@Override
 	@Transactional
-	public void synchronizeJointAuctionTaskNode(Integer assetsId, TaskNode taskNode, String nodeKey) {
+	public void synchronizeJointAuctionTaskNode(TaskNode taskNode, String nodeKey) {
 		//查询当前财产程序信息
-		Target target = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskNode.getProjectId()).eq(Target::getCaseeId, taskNode.getCaseeId()).eq(Target::getGoalId, assetsId).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
+		Target target = targetService.getById(taskNode.getTargetId());
 		//查询当前财产拍卖公告节点信息
 		TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", target.getTargetId());
 
@@ -351,7 +351,7 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				//根据程序id、节点key查询最新节点信息
 				TaskNode newTaskNode = this.queryLastTaskNode(nodeKey, jointAuctionTarget.getTargetId());
 				//如果当前财产不是提交任务财产则修改它们的节点信息和状态
-				if (!jointAuctionAssetsDTO.getAssetsId().equals(assetsId)) {
+				if (!jointAuctionAssetsDTO.getAssetsId().equals(target.getGoalId())) {
 					newTaskNode.setFormData(taskNode.getFormData());
 					if (newTaskNode.getNeedAudit() == 1) {//需要审核
 						newTaskNode.setStatus(101);

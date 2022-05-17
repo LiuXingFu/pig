@@ -47,10 +47,8 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 		//拍辅引领看样
 		setPaiFuStccYlkyYlky(taskNode);
 
-		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
-
 		//同步联合拍卖财产引领看样节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(), taskNode, "paiFu_STCC_YLKY_YLKY");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_YLKY_YLKY");
 	}
 
 	private void setPaiFuStccYlkyYlky(TaskNode taskNode) {
@@ -125,9 +123,7 @@ public class PaiFu_STCC_YLKY_YLKY_NODEHandler extends TaskNodeHandler {
 		//拍辅引领看样
 		setPaiFuStccYlkyYlky(taskNode);
 
-		PaiFu_STCC_YLKY_YLKY paiFu_stcc_ylky_ylky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_YLKY_YLKY.class);
-
 		//同步联合拍卖财产引领看样节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_ylky_ylky.getAssetsId(), taskNode, "paiFu_STCC_YLKY_YLKY");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_YLKY_YLKY");
 	}
 }

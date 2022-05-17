@@ -50,6 +50,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
 	CustomerService customerService;
+	@Autowired
+	TargetService targetService;
 
 	@Override
 	@Transactional
@@ -57,10 +59,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		//拍辅到款
 		setPaiFuStccDkDk(taskNode);
 
-		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DK_DK.class);
-
 		//同步联合拍卖财产到款节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_dk_dk.getAssetsId(), taskNode, "paiFu_STCC_DK_DK");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_DK_DK");
 	}
 
 	private void setPaiFuStccDkDk(TaskNode taskNode) {
@@ -72,8 +72,10 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		//查询案件信息
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
+		Target target = targetService.getById(taskNode.getTargetId());
+
 		//查询当前财产关联债务人信息
-		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), paiFu_stcc_dk_dk.getAssetsId());
+		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
 		ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
 
@@ -84,7 +86,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		projectPaifuService.updateProjectAmount(taskNode.getProjectId());
 
 		//通过清收移交记录信息查询清收项目id
-		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_stcc_dk_dk.getAssetsId());
+		LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
 		if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 			//添加清收回款、费用明细信息
@@ -178,8 +180,10 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		PaiFu_STCC_DK_DK paiFu_STCC_DK_DK = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_DK_DK.class);
 
 		if (paiFu_STCC_DK_DK!=null){
+			Target target = targetService.getById(taskNode.getTargetId());
+
 			//查询当前财产关联债务人信息
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), paiFu_STCC_DK_DK.getAssetsId());
+			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), target.getGoalId());
 
 			//查询拍辅项目
 			ProjectPaifu projectPaifu = projectPaifuService.queryById(taskNode.getProjectId());
@@ -188,7 +192,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 			updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectPaifu.getProjectId());
 
 			//通过清收移交记录信息查询清收项目id
-			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), paiFu_STCC_DK_DK.getAssetsId());
+			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
 
 			if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
 
@@ -214,10 +218,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		//拍辅到款
 		setPaiFuStccDkDk(taskNode);
 
-		PaiFu_STCC_DK_DK paiFu_stcc_dk_dk = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_DK_DK.class);
-
 		//同步联合拍卖财产到款节点数据
-		taskNodeService.synchronizeJointAuctionTaskNode(paiFu_stcc_dk_dk.getAssetsId(), taskNode, "paiFu_STCC_DK_DK");
+		taskNodeService.synchronizeJointAuctionTaskNode(taskNode, "paiFu_STCC_DK_DK");
 
 	}
 
