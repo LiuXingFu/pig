@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -73,6 +74,12 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	public int saveCustomer(CustomerSubjectDTO customerSubjectDTO) {
 		int add = 0;
 		// 判断主体id是否为空
+		saveUpdateCustomerAndSubject(customerSubjectDTO);
+
+		return add += 1;
+	}
+
+	private void saveUpdateCustomerAndSubject(CustomerSubjectDTO customerSubjectDTO) {
 		if (customerSubjectDTO.getSubjectId() != null) {
 
 			Subject subject = this.remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
@@ -126,7 +133,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				}
 			}
 		}
-		return add += 1;
 	}
 
 	/**
@@ -361,6 +367,24 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			}
 		}
 		return 0;
+	}
+
+
+	/**
+	 * 批量添加客户信息
+	 * @param customerSubjectDTOList
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public int saveCustomerList(List<CustomerSubjectDTO> customerSubjectDTOList) {
+		int add = 0;
+
+		for (CustomerSubjectDTO customerSubjectDTO : customerSubjectDTOList) {
+			saveUpdateCustomerAndSubject(customerSubjectDTO);
+		}
+
+		return add + 1;
 	}
 
 	public int isCustomer(Integer subjectId) {

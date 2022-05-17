@@ -35,6 +35,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -137,6 +138,23 @@ public class CustomerController {
 			return R.ok("添加客户信息成功！");
 		} else {
 			return R.failed("添加客户信息失败！");
+		}
+	}
+
+	/**
+	 * 批量添加客户信息
+	 * @param customerSubjectDTOList
+	 * @return
+	 */
+	@ApiOperation(value = "批量添加客户信息", notes = "批量添加客户信息")
+	@SysLog("批量添加客户信息" )
+	@PostMapping("/saveCustomer")
+	public R saveCustomerList(@RequestBody List<CustomerSubjectDTO> customerSubjectDTOList) {
+		int i = customerService.saveCustomerList(customerSubjectDTOList);
+		if(i > 0){
+			return R.ok("批量添加客户信息成功！");
+		} else {
+			return R.failed("批量添加客户信息失败！");
 		}
 	}
 

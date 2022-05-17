@@ -26,6 +26,8 @@ import com.pig4cloud.pig.casee.entity.Customer;
 import com.pig4cloud.pig.casee.vo.CustomerOrSubjectVO;
 import com.pig4cloud.pig.casee.vo.CustomerSubjectVO;
 
+import java.util.List;
+
 /**
  * 客户表
  *
@@ -70,4 +72,11 @@ public interface CustomerService extends IService<Customer> {
 	 * @return
 	 */
 	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, Integer subjectId);
+
+	/**
+	 * 批量添加客户信息
+	 * @param customerSubjectDTOList
+	 * @return
+	 */
+	int saveCustomerList(List<CustomerSubjectDTO> customerSubjectDTOList);
 }
