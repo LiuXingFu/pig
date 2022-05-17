@@ -50,6 +50,10 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler extends TaskNodeHandler
 
 		entityZX_stzx_cczxpmgg_cczxpmgg.setAuctionId(auctionRecord.getAuctionId());
 
+		String json = JsonUtils.objectToJson(entityZX_stzx_cczxpmgg_cczxpmgg);
+
+		taskNode.setFormData(json);
+
 		//修改节点信息
 		taskNodeService.updateById(taskNode);
 
