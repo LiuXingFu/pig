@@ -32,6 +32,8 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	PaymentRecordAssetsReService paymentRecordAssetsReService;
 
 	@Override
 	@Transactional
@@ -71,5 +73,11 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 		}
 		//添加抵偿回款信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectReList);
+
+		//添加到款信息关联财产
+		PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
 	}
 }

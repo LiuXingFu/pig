@@ -35,5 +35,10 @@ public class PaymentRecordAddDTO extends PaymentRecord {
 	 */
 	private BigDecimal paymentSumAmount;
 
+	/**
+	 * 费用财产关联表id
+	 */
+	private Integer assetsReId;
+
 
 }
