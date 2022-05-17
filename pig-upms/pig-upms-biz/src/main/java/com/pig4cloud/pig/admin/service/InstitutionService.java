@@ -157,4 +157,10 @@ public interface InstitutionService extends IService<Institution> {
 	 * @return
 	 */
 	Integer deleteByInsId(Integer insId);
+
+	/**
+	 * 查询当期机构的机构类型
+	 * @return
+	 */
+	Integer getInstitutionInsType();
 }

@@ -772,4 +772,13 @@ public class InstitutionServiceImpl extends ServiceImpl<InstitutionMapper, Insti
 		return 1;
 	}
 
+	/**
+	 * 查询当期机构的机构类型
+	 * @return
+	 */
+	@Override
+	public Integer getInstitutionInsType() {
+		return this.getById(securityUtilsService.getCacheUser().getInsId()).getInsType();
+	}
+
 }

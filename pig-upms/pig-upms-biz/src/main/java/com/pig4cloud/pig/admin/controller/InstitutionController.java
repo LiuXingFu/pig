@@ -133,6 +133,16 @@ public class InstitutionController {
 	}
 
 	/**
+	 * 查询当期机构的机构类型
+	 * @return
+	 */
+	@ApiOperation(value = "查询当期机构的机构类型", notes = "查询当期机构的机构类型")
+	@GetMapping("/getInstitutionInsType")
+	public R getInstitutionInsType() {
+		return R.ok(institutionService.getInstitutionInsType());
+	}
+
+	/**
 	 * 查询机构名称是否存在
 	 *
 	 * @return
