@@ -36,6 +36,8 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	PaymentRecordAssetsReService paymentRecordAssetsReService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -85,6 +87,12 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		//添加抵偿回款信息关联债务人
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectReList);
 
+		//添加抵偿回款信息关联财产
+		PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+
 		//抵偿分配记录
 		List<PaymentRecordAddDTO> paymentRecordList = entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordList();
 		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
@@ -105,6 +113,11 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				//添加抵偿分配记录与主体关联信息
 				paymentRecordSubjectRes.add(paymentRecordSubject);
 			}
+
+			PaymentRecordAssetsRe paymentRecordAssets=new PaymentRecordAssetsRe();
+			paymentRecordAssets.setPaymentRecordId(record.getPaymentRecordId());
+			paymentRecordAssets.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			paymentRecordAssetsReService.save(paymentRecordAssets);
 
 			//如果费用已经还完则修改状态
 			ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
