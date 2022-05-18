@@ -121,12 +121,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			Subject subjectQuery = this.getOne(subjectLambdaQueryWrapper);
 			//判断是否存在 存在并且未认证就进行修改 不存在就新增
 			if (subjectQuery != null && subjectQuery.getIsAuthentication() == 0) {
-				subject.setSubjectId(subjectQuery.getSubjectId());
-				subject.setName(subject.getName());
-				subject.setPhone(subject.getPhone());
-				subject.setLegalPerson(subject.getLegalPerson());
-				subject.setEmail(subject.getEmail());
-				subject.setRemark(subject.getRemark());
+				BeanUtils.copyProperties(subjectQuery,subject);
+				if (subjectQuery.getPhone()!=null){
+					subject.setPhone(subjectQuery.getPhone()+","+subject.getPhone());
+				}
 			}
 		}
 		this.saveOrUpdate(subject);
