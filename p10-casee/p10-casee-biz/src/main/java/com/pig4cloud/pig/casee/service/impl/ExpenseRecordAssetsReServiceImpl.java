@@ -22,6 +22,7 @@ import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper;
 import com.pig4cloud.pig.casee.service.ExpenseRecordAssetsReService;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordAssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,10 @@ public class ExpenseRecordAssetsReServiceImpl extends ServiceImpl<ExpenseRecordA
 	@Override
 	public ExpenseRecord queryAssetsReIdExpenseRecord(Integer assetsReId,Integer projectId,Integer costType) {
 		return this.baseMapper.queryAssetsReIdExpenseRecord(assetsReId,projectId,costType);
+	}
+
+	@Override
+	public List<ExpenseRecordAssetsRePaifuDetailVO> queryAssetsReList(Integer projectId, Integer costType, String assetsName){
+		return this.baseMapper.queryAssetsReList(projectId,costType,assetsName);
 	}
 }

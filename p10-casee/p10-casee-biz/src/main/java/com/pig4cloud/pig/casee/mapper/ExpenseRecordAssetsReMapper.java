@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordAssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -41,5 +42,7 @@ public interface ExpenseRecordAssetsReMapper extends BaseMapper<ExpenseRecordAss
 	List<AssetsRePaifuDetailVO> selectAssetsList(@Param("expenseRecordId")Integer expenseRecordId);
 
 	ExpenseRecord queryAssetsReIdExpenseRecord(@Param("assetsReId") Integer assetsReId,@Param("projectId") Integer projectId,@Param("costType")Integer costType);
+
+	List<ExpenseRecordAssetsRePaifuDetailVO> queryAssetsReList(@Param("projectId") Integer projectId, @Param("costType")Integer costType, @Param("assetsName") String assetsName);
 
 }
