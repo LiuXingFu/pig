@@ -50,6 +50,8 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
 	IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, @Param("query")PaymentRecordPageDTO paymentRecordPageDTO);
 
+	IPage<PaymentRecordVO> getByPaymentRecordPage(Page page,@Param("paymentRecordId") Integer paymentRecordId);
+
 	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);
 
 	BigDecimal paymentSumAmount(@Param("expenseRecordId") Integer expenseRecordId);

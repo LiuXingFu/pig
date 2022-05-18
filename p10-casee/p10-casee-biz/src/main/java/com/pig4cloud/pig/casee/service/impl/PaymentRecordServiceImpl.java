@@ -86,6 +86,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
+	public IPage<PaymentRecordVO> getByPaymentRecordPage(Page page, Integer paymentRecordId) {
+		return this.baseMapper.getByPaymentRecordPage(page,paymentRecordId);
+	}
+
+	@Override
 	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord){
 		return this.baseMapper.sumCourtPayment(paymentRecord);
 	}

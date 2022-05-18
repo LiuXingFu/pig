@@ -105,7 +105,6 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 		ExpenseRecord jgyjExpenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10006);
 		if (jgyjExpenseRecord!=null){//如果存在定价费则修改定价金额
 			jgyjExpenseRecord.setCostAmount(jgyjExpenseRecord.getCostAmount().add(paiFu_stcc_jgyj_jgyj.getPricingFee()));
-			jgyjExpenseRecord.setStatus(0);
 			//修改当前财产程序定价费
 			expenseRecordService.updateById(jgyjExpenseRecord);
 		}else {

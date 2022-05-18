@@ -90,7 +90,7 @@ public class PaymentRecordController {
 	@ApiOperation(value = "通过id查询回款详细记录分页记录", notes = "通过id查询回款详细记录分页记录")
 	@GetMapping("/getByPaymentRecordPage" )
 	public R getByPaymentRecordPage(Page page, Integer paymentRecordId) {
-		return R.ok(paymentRecordService.page(page,new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordId)));
+		return R.ok(paymentRecordService.getByPaymentRecordPage(page,paymentRecordId));
 	}
 
 	/**
