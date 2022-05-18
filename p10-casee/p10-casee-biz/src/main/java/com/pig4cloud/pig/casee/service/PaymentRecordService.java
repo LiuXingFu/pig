@@ -53,6 +53,8 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO);
 
+	IPage<PaymentRecordVO> getByPaymentRecordPage(Page page,Integer paymentRecordId);
+
 	BigDecimal sumCourtPayment(PaymentRecord paymentRecord);
 
 	IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId);
