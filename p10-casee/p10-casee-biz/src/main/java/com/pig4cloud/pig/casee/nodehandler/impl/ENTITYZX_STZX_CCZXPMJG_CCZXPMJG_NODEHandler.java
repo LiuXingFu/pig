@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -37,6 +38,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
 	TargetService targetService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -117,6 +120,18 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 
 			//修改项目总金额
 			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+
+			//添加成交客户信息
+			CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+			customerSubjectDTO.setName(entityZX_stzx_cczxpmjg_cczxpmjg.getBuyer());
+			customerSubjectDTO.setPhone(entityZX_stzx_cczxpmjg_cczxpmjg.getPhone());
+			customerSubjectDTO.setCustomerType(20000);
+			customerSubjectDTO.setProjectId(taskNode.getProjectId());
+			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+			if (entityZX_stzx_cczxpmjg_cczxpmjg.getIdentityCard()!=null){
+				customerSubjectDTO.setUnifiedIdentity(entityZX_stzx_cczxpmjg_cczxpmjg.getIdentityCard());
+			}
+			customerService.saveCustomer(customerSubjectDTO);
 		}
 	}
 }

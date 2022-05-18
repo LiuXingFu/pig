@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXDK_CCZXDK;
@@ -40,6 +41,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	TargetService targetService;
 	@Autowired
 	PaymentRecordAssetsReService paymentRecordAssetsReService;
+	@Autowired
+	CustomerService customerService;
 
 	@Override
 	@Transactional
@@ -102,5 +105,17 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
 		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+
+		//添加到款客户信息
+		CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
+		customerSubjectDTO.setName(entityZX_stzx_cczxdk_cczxdk.getFinalPayer());
+		customerSubjectDTO.setPhone(entityZX_stzx_cczxdk_cczxdk.getPhone());
+		customerSubjectDTO.setCustomerType(30000);
+		customerSubjectDTO.setProjectId(taskNode.getProjectId());
+		customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
+		if (entityZX_stzx_cczxdk_cczxdk.getIdentityCard()!=null){
+			customerSubjectDTO.setUnifiedIdentity(entityZX_stzx_cczxdk_cczxdk.getIdentityCard());
+		}
+		customerService.saveCustomer(customerSubjectDTO);
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,7 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 		PaiFu_STCC_BMKY_BMKY paiFu_stcc_bmky_bmky = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_BMKY_BMKY.class);
 		List<ReserveSeeSampleSeeSampleListDetail> reserveSeeSampleSeeSampleLists = paiFu_stcc_bmky_bmky.getReserveSeeSampleSeeSampleLists();
 
+		List<CustomerSubjectDTO> customerSubjectDTOList=new ArrayList<>();
 		for (ReserveSeeSampleSeeSampleListDetail reserveSeeSampleSeeSampleList : reserveSeeSampleSeeSampleLists) {
 			Subject subject = new Subject();
 			BeanUtils.copyProperties(reserveSeeSampleSeeSampleList,subject);
@@ -70,9 +72,10 @@ public class PaiFu_STCC_BMKY_BMKY_NODEHandler extends TaskNodeHandler {
 			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 			customerSubjectDTO.setCustomerType(20000);
 			customerSubjectDTO.setNatureType(0);
-			//添加客户信息
-			customerService.saveCustomer(customerSubjectDTO);
+			customerSubjectDTOList.add(customerSubjectDTO);
 		}
+		//添加客户信息
+		customerService.saveCustomerBatch(customerSubjectDTOList);
 
 		paiFu_stcc_bmky_bmky.setReserveSeeSampleSeeSampleLists(reserveSeeSampleSeeSampleLists);
 

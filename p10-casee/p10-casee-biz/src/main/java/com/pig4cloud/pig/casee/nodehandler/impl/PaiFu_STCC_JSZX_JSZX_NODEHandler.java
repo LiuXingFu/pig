@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,7 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 	 * @param reserveSeeSampleConsultingLists
 	 */
 	private void setReserveSeeSampleConsultingListDetailList(List<ReserveSeeSampleConsultingListDetail> reserveSeeSampleConsultingLists,TaskNode taskNode) {
+		List<CustomerSubjectDTO> customerSubjectDTOList=new ArrayList<>();
 		for (ReserveSeeSampleConsultingListDetail reserveSeeSampleConsulting : reserveSeeSampleConsultingLists) {
 			Subject subject = new Subject();
 			ReceiveConsultation receiveConsultation = new ReceiveConsultation();
@@ -103,9 +105,10 @@ public class PaiFu_STCC_JSZX_JSZX_NODEHandler extends TaskNodeHandler {
 			customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 			customerSubjectDTO.setCustomerType(10000);
 			customerSubjectDTO.setNatureType(0);
-			//添加客户信息
-			customerService.saveCustomer(customerSubjectDTO);
+			customerSubjectDTOList.add(customerSubjectDTO);
 		}
+		//添加客户信息
+		customerService.saveCustomerBatch(customerSubjectDTOList);
 	}
 
 	@Override

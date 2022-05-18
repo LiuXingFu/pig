@@ -85,9 +85,8 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 				samplePreparationWorkUsetReList.add(samplePreparationWorkUsetRe);
 			}
 
-			//预约看样人员信息
-			List<Subject> subjectList = samplePreparationWorkListDetail.getSubjectList();
-			for (Subject subject : subjectList) {
+			List<CustomerSubjectDTO> customerSubjectDTOList=new ArrayList<>();
+			for (Subject subject : samplePreparationWorkListDetail.getSubjectList()) {
 				R<Subject> saveOrUpdateById = remoteSubjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject, SecurityConstants.FROM);
 				Integer subjectId = Integer.valueOf(saveOrUpdateById.getData().getSubjectId().toString());
 
@@ -102,9 +101,10 @@ public class PaiFu_STCC_KYZBGZ_KYZBGZ_NODEHandler extends TaskNodeHandler {
 				customerSubjectDTO.setCaseeId(taskNode.getCaseeId());
 				customerSubjectDTO.setCustomerType(20000);
 				customerSubjectDTO.setNatureType(0);
-				//添加客户信息
-				customerService.saveCustomer(customerSubjectDTO);
+				customerSubjectDTOList.add(customerSubjectDTO);
 			}
+			//添加客户信息
+			customerService.saveCustomerBatch(customerSubjectDTOList);
 		}
 		samplePreparationWorkSubjectReService.saveBatch(samplePreparationWorkSubjectReList);
 		samplePreparationWorkUsetReService.saveBatch(samplePreparationWorkUsetReList);
