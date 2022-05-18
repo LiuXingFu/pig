@@ -58,6 +58,16 @@ public class LiquiTransferRecordDetailsVO extends LiquiTransferRecord {
      */
     private String executorSubjectName;
 
+	/**
+	 * 承办法院
+	 */
+	private String courtName;
+
+	/**
+	 * 承办法官
+	 */
+	private String judgeName;
+
     /**
      * 申请提交时间
      */

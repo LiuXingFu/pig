@@ -167,7 +167,7 @@
 	</select>
 
 	<select id="getByPhone" resultMap="SubjectVO">
-		select * from p10_subject where phone=#{phone} and del_flag = 0
+		select * from p10_subject where phone like concat('%', #{phone}, '%') and del_flag = 0
 	</select>
 
 	<select id="getByUnifiedIdentityAndPhone" resultMap="SubjectVO">

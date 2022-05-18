@@ -120,15 +120,6 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 		//案件被执行人列表
 		liquiTransferRecordDetailsVO.setCaseeExecutorList(caseeSubjectReService.querySubjectList(liquiTransferRecordDetailsVO.getCaseeId(), 1));
 
-		//根据案件id与type查询案件执行人与申请人
-		String executorSubjectName = getExecutorSubjectName(liquiTransferRecordDetailsVO.getCaseeId());
-
-		liquiTransferRecordDetailsVO.setExecutorSubjectName(executorSubjectName);
-
-		String applicantSubjectName = getApplicantSubjectName(liquiTransferRecordDetailsVO.getCaseeId());
-
-		liquiTransferRecordDetailsVO.setApplicantSubjectName(applicantSubjectName);
-
 		return liquiTransferRecordDetailsVO;
 	}
 

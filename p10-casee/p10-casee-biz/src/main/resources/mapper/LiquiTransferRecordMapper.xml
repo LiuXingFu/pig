@@ -161,12 +161,18 @@
 		JSON_EXTRACT( p10_task_node.form_data, "$.auctionApplicationFile" ) AS auctionApplicationFile,
 		p10_institution.ins_name insName,
 		p10_outles.outles_name outlesName,
-		p10_task_node.node_id
+		p10_task_node.node_id,
+		p10_casee.applicant_name AS applicantSubjectName,
+		p10_casee.executed_name AS executorSubjectName,
+		p10_casee.judge_name,
+		p10_court.court_name
 		FROM
 		`p10_liqui_transfer_record`
 		LEFT JOIN p10_task_node ON p10_task_node.node_id = p10_liqui_transfer_record.node_id
 		LEFT JOIN p10_institution ON p10_institution.ins_id = p10_liqui_transfer_record.entrust_ins_id
 		LEFT JOIN p10_outles ON p10_outles.outles_id = p10_liqui_transfer_record.entrust_outles_id
+		LEFT JOIN p10_casee ON p10_liqui_transfer_record.casee_id = p10_casee.casee_id
+		LEFT JOIN p10_court ON p10_casee.court_id = p10_court.court_id
 		WHERE p10_liqui_transfer_record.del_flag=0 AND p10_liqui_transfer_record.liqui_transfer_record_id=#{liquiTransferRecordId}
 	</select>
 
