@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordAssetsRe;
 import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordAssetsRePaifuDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 
 import java.util.List;
@@ -49,6 +50,12 @@ public interface ExpenseRecordAssetsReService extends IService<ExpenseRecordAsse
 	 */
 	ExpenseRecord queryAssetsReIdExpenseRecord(Integer assetsReId,Integer projectId,Integer costType);
 
-
+	/**
+	 * 根据项目id和费用类型查询未还款的财产关联id
+	 * @param projectId
+	 * @param costType
+	 * @return
+	 */
+	List<ExpenseRecordAssetsRePaifuDetailVO> queryAssetsReList(Integer projectId, Integer costType,String assetsName);
 
 }

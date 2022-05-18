@@ -71,7 +71,7 @@ public interface CustomerService extends IService<Customer> {
 	 * @param phone
 	 * @return
 	 */
-	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, Integer subjectId);
+	int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, String name, Integer subjectId);
 
 	/**
 	 * 批量添加客户信息

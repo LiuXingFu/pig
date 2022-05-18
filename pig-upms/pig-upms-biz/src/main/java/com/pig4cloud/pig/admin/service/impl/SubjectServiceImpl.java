@@ -143,7 +143,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			if (Objects.nonNull(subjectQuery)) {
 				setSubject(subject, subjectQuery);
 			} else {
-				subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+				subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getName, subject.getName()).like(Subject::getPhone, subject.getPhone()));
 				if (Objects.nonNull(subjectQuery)) {
 					setSubject(subject, subjectQuery);
 				}
@@ -154,7 +154,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 				setSubject(subject, subjectQuery);
 			}
 		} else if (Objects.nonNull(subject.getPhone()) && !subject.getPhone().equals("")) {
-			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getName, subject.getName()).like(Subject::getPhone, subject.getPhone()));
 			if (Objects.nonNull(subjectQuery)) {
 				setSubject(subject, subjectQuery);
 			}
@@ -482,8 +482,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 * @return
 	 */
 	@Override
-	public SubjectVO getByPhone(String phone) {
-		SubjectVO subjectVO = this.baseMapper.getByPhone(phone);
+	public SubjectVO getByPhone(String phone, String name) {
+		SubjectVO subjectVO = this.baseMapper.getByPhone(phone, name);
 
 		if (subjectVO != null) {
 			List<AddressVO> addressList = subjectVO.getAddressList();

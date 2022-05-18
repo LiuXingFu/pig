@@ -46,121 +46,132 @@ import java.util.Objects;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/subject" )
+@RequestMapping("/subject")
 @Api(value = "subject", tags = "主体管理")
 public class SubjectController {
 
 	@Autowired
-    private SubjectService subjectService;
+	private SubjectService subjectService;
 
-    /**
-     * 分页查询
-     * @param page 分页对象
-     * @param subject 主体
-     * @return
-     */
-    @ApiOperation(value = "分页查询", notes = "分页查询")
-    @GetMapping("/page" )
-    public R getSubjectPage(Page page, Subject subject) {
-        return R.ok(subjectService.page(page, Wrappers.query(subject)));
-    }
+	/**
+	 * 分页查询
+	 *
+	 * @param page    分页对象
+	 * @param subject 主体
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/page")
+	public R getSubjectPage(Page page, Subject subject) {
+		return R.ok(subjectService.page(page, Wrappers.query(subject)));
+	}
 
 
-    /**
-     * 通过id查询主体
-     * @param subjectId id
-     * @return R
-     */
-    @ApiOperation(value = "通过id查询", notes = "通过id查询")
-    @GetMapping("/{subjectId}" )
-    public R getById(@PathVariable("subjectId" ) Integer subjectId) {
-        return R.ok(subjectService.getById(subjectId));
-    }
+	/**
+	 * 通过id查询主体
+	 *
+	 * @param subjectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/{subjectId}")
+	public R getById(@PathVariable("subjectId") Integer subjectId) {
+		return R.ok(subjectService.getById(subjectId));
+	}
 
 	/**
 	 * 通过身份证查询主体信息
+	 *
 	 * @param unifiedIdentity 身份证
 	 * @return R
 	 */
 	@ApiOperation(value = "通过身份证查询主体信息", notes = "通过身份证查询主体信息")
-	@GetMapping("/getByUnifiedIdentity/{unifiedIdentity}" )
-	public R getByUnifiedIdentity(@PathVariable("unifiedIdentity" ) String unifiedIdentity) {
+	@GetMapping("/getByUnifiedIdentity/{unifiedIdentity}")
+	public R getByUnifiedIdentity(@PathVariable("unifiedIdentity") String unifiedIdentity) {
 		return R.ok(subjectService.getByUnifiedIdentity(unifiedIdentity));
 	}
 
 	/**
 	 * 通过电话查询主体信息
+	 *
 	 * @param phone
+	 * @param name
 	 * @return
 	 */
 	@ApiOperation(value = "通过电话查询主体信息", notes = "通过电话查询主体信息")
-	@GetMapping("/getByPhone/{phone}" )
-	public R getByPhone(@PathVariable("phone") String phone) {
-		return R.ok(subjectService.getByPhone(phone));
+	@GetMapping("/getByPhone/{phone}/{name}")
+	public R getByPhone(@PathVariable("phone") String phone, @PathVariable("name") String name) {
+		return R.ok(subjectService.getByPhone(phone, name));
 	}
 
 	/**
 	 * 通过身份证与电话查询主体信息
+	 *
 	 * @return
 	 */
 	@ApiOperation(value = "通过电话查询主体信息", notes = "通过电话查询主体信息")
-	@GetMapping("/getByPhone/{unifiedIdentity}/{phone}")
+	@GetMapping("/getByUnifiedIdentityAndPhone/{unifiedIdentity}/{phone}")
 	public R getByUnifiedIdentityAndPhone(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("phone") String phone) {
 		return R.ok(subjectService.getByUnifiedIdentityAndPhone(unifiedIdentity, phone));
 	}
 
 	/**
 	 * 通过id查询主体以及地址信息
+	 *
 	 * @param subjectId id
 	 * @return R
 	 */
 	@ApiOperation(value = "通过id查询主体以及地址信息", notes = "通过id查询主体以及地址信息")
-	@GetMapping("/getBySubjectId/{subjectId}" )
-	public R getBySubjectId(@PathVariable("subjectId" ) Integer subjectId) {
+	@GetMapping("/getBySubjectId/{subjectId}")
+	public R getBySubjectId(@PathVariable("subjectId") Integer subjectId) {
 		return R.ok(subjectService.getBySubjectId(subjectId));
 	}
 
 	/**
 	 * 通过主体id集合查询主体信息
+	 *
 	 * @param subjectIds 主体id集合
 	 * @return R
 	 */
 	@ApiOperation(value = "通过主体id集合查询主体信息", notes = "通过主体id集合查询主体信息")
-	@GetMapping("/getByIdList" )
-	public R getByIdList(@RequestParam(value = "subjectIds" ,required=false) List<Integer> subjectIds) {
+	@GetMapping("/getByIdList")
+	public R getByIdList(@RequestParam(value = "subjectIds", required = false) List<Integer> subjectIds) {
 		return R.ok(subjectService.listByIds(subjectIds));
 	}
 
 	/**
 	 * 通过银行借贷id查询主体信息
+	 *
 	 * @param bankLoanId id
 	 * @return R
 	 */
 	@ApiOperation(value = "通过银行借贷id查询主体信息", notes = "通过银行借贷id查询主体信息")
-	@GetMapping("getSubjectByBankLoanId/{bankLoanId}" )
-	public R getSubjectByBankLoanId(@PathVariable("bankLoanId" ) Integer bankLoanId) {
+	@GetMapping("getSubjectByBankLoanId/{bankLoanId}")
+	public R getSubjectByBankLoanId(@PathVariable("bankLoanId") Integer bankLoanId) {
 		return R.ok(subjectService.getSubjectByBankLoanId(bankLoanId));
 	}
 
-    /**
-     * 新增主体
-     * @param subject 主体
-     * @return R
-     */
-    @ApiOperation(value = "新增主体", notes = "新增主体")
-    @SysLog("新增主体" )
-    @PostMapping
-    public R save(@RequestBody Subject subject) {
-        return R.ok(subjectService.save(subject));
-    }
+	/**
+	 * 新增主体
+	 *
+	 * @param subject 主体
+	 * @return R
+	 */
+	@ApiOperation(value = "新增主体", notes = "新增主体")
+	@SysLog("新增主体")
+	@PostMapping
+	public R save(@RequestBody Subject subject) {
+		return R.ok(subjectService.save(subject));
+	}
 
 	/**
 	 * 批量新增主体
+	 *
 	 * @param subjectList 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "批量新增主体", notes = "批量新增主体")
-	@SysLog("批量新增主体" )
+	@SysLog("批量新增主体")
 	@PostMapping("/saveBatchSubject")
 	public R saveBatchSubject(@RequestBody List<Subject> subjectList) {
 
@@ -169,11 +180,12 @@ public class SubjectController {
 
 	/**
 	 * 新增主体
+	 *
 	 * @param subject 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "新增主体", notes = "新增主体")
-	@SysLog("新增主体" )
+	@SysLog("新增主体")
 	@PostMapping("/saveSubject")
 	public R saveSubject(@RequestBody Subject subject) {
 		return R.ok(subjectService.saveSubject(subject));
@@ -181,47 +193,51 @@ public class SubjectController {
 
 	/**
 	 * 新增主体、债务人地址信息以及主体关联债务人信息
+	 *
 	 * @param subjectAddressDTOList 新增主体、债务人地址信息以及主体关联债务人信息
 	 * @return R
 	 */
 	@ApiOperation(value = "新增主体、债务人地址信息以及主体关联债务人信息", notes = "新增主体、债务人地址信息以及主体关联债务人信息")
-	@SysLog("新增主体" )
+	@SysLog("新增主体")
 	@PostMapping("/saveSubjectAddress")
 	public R saveSubjectAddress(@RequestBody List<SubjectAddressDTO> subjectAddressDTOList) {
 		return R.ok(subjectService.saveSubjectAddress(subjectAddressDTOList));
 	}
 
-    /**
-     * 修改主体
-     * @param subject 主体
-     * @return R
-     */
-    @ApiOperation(value = "修改主体", notes = "修改主体")
-    @SysLog("修改主体" )
-    @PutMapping
-    public R updateById(@RequestBody Subject subject) {
-        return R.ok(subjectService.updateById(subject));
-    }
+	/**
+	 * 修改主体
+	 *
+	 * @param subject 主体
+	 * @return R
+	 */
+	@ApiOperation(value = "修改主体", notes = "修改主体")
+	@SysLog("修改主体")
+	@PutMapping
+	public R updateById(@RequestBody Subject subject) {
+		return R.ok(subjectService.updateById(subject));
+	}
 
-    /**
-     * 通过id删除主体
-     * @param subjectId id
-     * @return R
-     */
-    @ApiOperation(value = "通过id删除主体", notes = "通过id删除主体")
-    @SysLog("通过id删除主体" )
-    @DeleteMapping("/{subjectId}" )
-    public R removeById(@PathVariable Integer subjectId) {
-        return R.ok(subjectService.removeById(subjectId));
-    }
+	/**
+	 * 通过id删除主体
+	 *
+	 * @param subjectId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id删除主体", notes = "通过id删除主体")
+	@SysLog("通过id删除主体")
+	@DeleteMapping("/{subjectId}")
+	public R removeById(@PathVariable Integer subjectId) {
+		return R.ok(subjectService.removeById(subjectId));
+	}
 
 	/**
 	 * 新增或修改主体
+	 *
 	 * @param subject 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "新增或修改主体", notes = "新增或修改主体")
-	@SysLog("新增或修改主体" )
+	@SysLog("新增或修改主体")
 	@PostMapping("/saveOrUpdateById")
 	public R saveOrUpdateById(@RequestBody Subject subject) {
 		subjectService.saveOrUpdate(subject);
@@ -230,18 +246,20 @@ public class SubjectController {
 
 	/**
 	 * 根据手机号和身份证判断新增或修改主体
+	 *
 	 * @param subject 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "根据手机号判断新增或修改主体", notes = "根据手机号判断新增或修改主体")
-	@SysLog("新增或修改主体" )
+	@SysLog("新增或修改主体")
 	@PostMapping("/getPhoneAndUnifiedIdentityBySaveOrUpdateById")
 	public R getPhoneAndUnifiedIdentityBySaveOrUpdateById(@RequestBody Subject subject) {
 		return R.ok(subjectService.getPhoneAndUnifiedIdentityBySaveOrUpdateById(subject));
 	}
 
 	/**
-	 *	根据特定条件分页查询债务人
+	 * 根据特定条件分页查询债务人
+	 *
 	 * @param page
 	 * @param subjectPageDTO
 	 * @return
@@ -254,6 +272,7 @@ public class SubjectController {
 
 	/**
 	 * 根据id查询债务人信息
+	 *
 	 * @param subjectId
 	 * @return
 	 */
@@ -265,29 +284,31 @@ public class SubjectController {
 
 	/**
 	 * 根据id集合查询主体信息
+	 *
 	 * @param subjectIdList
 	 * @return
 	 */
 	@ApiOperation(value = "根据id集合查询主体信息", notes = "根据id集合查询主体信息")
 	@GetMapping("/queryBySubjectIdList")
-	public R queryBySubjectIdList(@RequestParam(value = "subjectIdList" ,required=false)List<Integer> subjectIdList) {
+	public R queryBySubjectIdList(@RequestParam(value = "subjectIdList", required = false) List<Integer> subjectIdList) {
 		return R.ok(subjectService.queryBySubjectIdList(subjectIdList));
 	}
 
 
 	/**
 	 * 分页查询项目或案件债务人列表
-	 * @param page 分页对象
+	 *
+	 * @param page                   分页对象
 	 * @param subjectProjectCaseeDTO
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
-	@GetMapping("/queryPageByProjectCasee" )
+	@GetMapping("/queryPageByProjectCasee")
 	public R queryPageByProjectCasee(Page page, SubjectProjectCaseeDTO subjectProjectCaseeDTO) {
 		IPage<SubjectProjectCaseeVO> subjectIPage = null;
-		if(Objects.nonNull(subjectProjectCaseeDTO.getProjectId())){
+		if (Objects.nonNull(subjectProjectCaseeDTO.getProjectId())) {
 			subjectIPage = subjectService.queryPageByProjectId(page, subjectProjectCaseeDTO);
-		}else if(Objects.nonNull(subjectProjectCaseeDTO.getCaseeId())){
+		} else if (Objects.nonNull(subjectProjectCaseeDTO.getCaseeId())) {
 			subjectIPage = subjectService.queryPageByCaseeId(page, subjectProjectCaseeDTO);
 		}
 		return R.ok(subjectIPage);
@@ -295,33 +316,36 @@ public class SubjectController {
 
 	/**
 	 * 根据id查询主体与主体地址（注意只有一个地址）
+	 *
 	 * @param subjectId
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询项目或案件债务人列表", notes = "分页查询项目或案件债务人列表")
 	@GetMapping("/getSubjectDetailBySubjectId/{subjectId}")
-	public R getSubjectDetailBySubjectId(@PathVariable Integer subjectId){
+	public R getSubjectDetailBySubjectId(@PathVariable Integer subjectId) {
 		return R.ok(this.subjectService.getSubjectDetailBySubjectId(subjectId));
 	}
 
 	/**
 	 * 根据编码查询机构主体是否存在
+	 *
 	 * @param unifiedIdentity
 	 * @return
 	 */
 	@ApiOperation(value = "根据编码查询机构主体是否存在", notes = "根据编码查询机构主体是否存在")
 	@GetMapping("/getIsThereASubjectByUnifiedIdentity/{unifiedIdentity}/{insId}")
-	public R getIsThereASubjectByUnifiedIdentity(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("insId") Integer insId){
+	public R getIsThereASubjectByUnifiedIdentity(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("insId") Integer insId) {
 		return R.ok(this.subjectService.getIsThereASubjectByUnifiedIdentity(unifiedIdentity, insId));
 	}
 
 	/**
 	 * 批量新增或修改主体
+	 *
 	 * @param subject 主体
 	 * @return R
 	 */
 	@ApiOperation(value = "批量新增或修改主体", notes = "批量新增或修改主体")
-	@SysLog("批量新增或修改主体" )
+	@SysLog("批量新增或修改主体")
 	@PostMapping("/saveOrUpdateBatch")
 	public R saveOrUpdateBatch(@RequestBody List<Subject> subject) {
 		return R.ok(subjectService.saveOrUpdateBatch(subject));
@@ -329,44 +353,48 @@ public class SubjectController {
 
 	/**
 	 * 通过机构id查询主体
+	 *
 	 * @param insId id
 	 * @return R
 	 */
 	@ApiOperation(value = "通过id查询", notes = "通过id查询")
-	@GetMapping("/getByInsId/{insId}" )
-	public R getByInsId(@PathVariable("insId" ) Integer insId) {
+	@GetMapping("/getByInsId/{insId}")
+	public R getByInsId(@PathVariable("insId") Integer insId) {
 		return R.ok(subjectService.getByInsId(insId));
 	}
 
 	/**
 	 * 分页查询项目主体列表
+	 *
 	 * @param subjectPageDTO
 	 * @return
 	 */
 	@ApiOperation(value = "分页查询项目主体列表", notes = "分页查询项目主体列表")
 	@GetMapping("/queryPageList")
-	public R queryPageList(Page page, SubjectPageDTO subjectPageDTO){
-		return R.ok(this.subjectService.queryPageList(page,subjectPageDTO));
+	public R queryPageList(Page page, SubjectPageDTO subjectPageDTO) {
+		return R.ok(this.subjectService.queryPageList(page, subjectPageDTO));
 	}
 
 	/**
 	 * 根据债务人id集合查询债务人姓名（多个用，号隔开）
+	 *
 	 * @param subjectIdList
 	 * @return
 	 */
 	@ApiOperation(value = "根据债务人id集合查询债务人姓名（多个用，号隔开）", notes = "根据债务人id集合查询债务人姓名（多个用，号隔开）")
 	@GetMapping("/querySubjectNameList")
-	public R querySubjectName(@RequestParam(value = "subjectIdList" ,required=false) List<Integer> subjectIdList) {
+	public R querySubjectName(@RequestParam(value = "subjectIdList", required = false) List<Integer> subjectIdList) {
 		return R.ok(this.subjectService.querySubjectName(subjectIdList));
 	}
 
 	/**
 	 * 根据主体名称查询主体
+	 *
 	 * @param subjectName 主体名称
 	 * @return R
 	 */
 	@ApiOperation(value = "根据主体名称查询主体", notes = "根据主体名称查询主体")
-	@GetMapping("/queryBySubjectName/{subjectName}" )
+	@GetMapping("/queryBySubjectName/{subjectName}")
 	public R queryBySubjectName(@PathVariable String subjectName) {
 		return R.ok(subjectService.queryBySubjectName(subjectName));
 	}

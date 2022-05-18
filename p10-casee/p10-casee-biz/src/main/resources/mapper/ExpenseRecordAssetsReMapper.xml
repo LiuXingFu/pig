@@ -47,4 +47,21 @@
 		left join p10_expense_record on p10_expense_record.expense_record_id=p10_expense_record_assets_re.expense_record_id and p10_expense_record.status=0
 		where assets_re_id = #{assetsReId} and  p10_expense_record.project_id=#{projectId} and p10_expense_record.cost_type=#{costType}
 	</select>
+
+	<select id="queryAssetsReList" resultType="com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordAssetsRePaifuDetailVO">
+		select if(p10_expense_record_assets_re.assets_re_id is null,false,true) as disabled,p10_assets_re.*,p10_assets.* from p10_assets_re
+		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
+		left join p10_project on p10_project.project_id = p10_assets_re.project_id
+		left join (select p10_expense_record_assets_re.assets_re_id from p10_expense_record
+							left join p10_expense_record_assets_re on p10_expense_record_assets_re.expense_record_id = p10_expense_record.expense_record_id
+							where p10_expense_record.del_flag = 0
+							and p10_expense_record.`status` = 0
+							and p10_expense_record.project_id = #{projectId}
+							and p10_expense_record.cost_type = #{costType}
+							)p10_expense_record_assets_re on p10_expense_record_assets_re.assets_re_id = p10_assets_re.assets_re_id
+		where p10_assets_re.project_id = #{projectId}
+		<if test="assetsName != null and assetsName != ''">
+			AND p10_assets.assets_name like concat('%',#{assetsName},'%')
+		</if>
+	</select>
 </mapper>

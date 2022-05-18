@@ -119,4 +119,15 @@ public class ExpenseRecordAssetsReController {
 	public R queryAssetsList(@PathVariable Integer expenseRecordId) {
 		return R.ok(expenseRecordAssetsReService.queryAssetsList(expenseRecordId));
 	}
+
+	/**
+	 * 根据项目id和费用类型查询未还款的财产关联id
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id和费用类型查询未还款的财产关联id", notes = "根据项目id和费用类型查询未还款的财产关联id")
+	@GetMapping("/queryAssetsReList" )
+	public R queryAssetsReList(Integer projectId,Integer costType,@RequestParam(value = "assetsName",required = false) String assetsName) {
+		return R.ok(expenseRecordAssetsReService.queryAssetsReList(projectId,costType,assetsName));
+	}
 }
