@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +66,9 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
 		//修改项目总金额
 		projectLiquiService.updateById(projectLiqui);
-
-		//查询当前财产程序拍辅费
-		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),taskNode.getProjectId(),10007);
-		if (expenseRecord!=null){
+		if (entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0){//判断拍辅费是否大于0
+			//查询当前财产程序拍辅费
+			ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), taskNode.getProjectId(), 10007);
 			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
 			expenseRecord.setStatus(0);
 			//修改当前财产程序拍辅费

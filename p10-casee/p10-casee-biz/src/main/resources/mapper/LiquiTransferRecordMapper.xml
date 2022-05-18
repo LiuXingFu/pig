@@ -138,10 +138,7 @@
 			or  a.applicantSubjectName like concat('%', #{query.subjectName}, '%')
 		</if>
 		<if test="query.insName != null and query.insName != ''">
-			AND a.insName LIKE concat( '%', #{query.insName}, '%' )
-		</if>
-		<if test="query.outlesName != null and query.outlesName != ''">
-			AND a.outlesName LIKE concat( '%', #{query.outlesName}, '%' )
+			AND (a.insName LIKE concat( '%', #{query.insName}, '%' ) or a.outlesName LIKE concat( '%', #{query.insName}, '%' ))
 		</if>
 		<if test="query.beginDate != null and query.endDate != null">
 			AND a.handover_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and

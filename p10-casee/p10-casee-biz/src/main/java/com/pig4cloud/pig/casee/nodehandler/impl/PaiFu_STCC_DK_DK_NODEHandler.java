@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,16 +126,23 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		//添加客户信息
 		customerService.saveCustomer(customerSubjectDTO);
 
-		//查询当前财产程序拍辅费
-		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), project.getProjectId(), 10007);
-		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));
-		//修改当前财产程序拍辅费
-		expenseRecordService.updateById(expenseRecord);
-
+		ExpenseRecord expenseRecord=null;
+		if (paiFu_stcc_dk_dk.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0){//判断拍辅费是否大于0
+			//查询当前财产程序拍辅费
+			expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), project.getProjectId(), 10007);
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));
+			expenseRecord.setStatus(0);
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 		if (type.equals(2)) {//拍辅
-			paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+			if (expenseRecord!=null){
+				paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+			}
 		} else {//清收
-			paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+			if (expenseRecord!=null){
+				paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+			}
 			//添加清收到款到款信息
 			PaymentRecord paymentRecord = new PaymentRecord();
 			paymentRecord.setPaymentType(200);
