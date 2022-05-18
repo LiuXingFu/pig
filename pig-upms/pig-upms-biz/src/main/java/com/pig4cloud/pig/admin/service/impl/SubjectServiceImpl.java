@@ -137,19 +137,46 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	@Transactional
 	public Subject getPhoneAndUnifiedIdentityBySaveOrUpdateById(Subject subject) {
 		Subject subjectQuery = null;
-		if (Objects.isNull(subject.getUnifiedIdentity()) || !subject.getUnifiedIdentity().equals("")) {
-			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
-		} else {
+
+		if ((Objects.nonNull(subject.getUnifiedIdentity()) && !subject.getUnifiedIdentity().equals(""))
+				&& (Objects.nonNull(subject.getPhone()) && !subject.getPhone().equals(""))) {
 			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getUnifiedIdentity, subject.getUnifiedIdentity()));
-			if (subjectQuery == null) {
+
+			if (Objects.nonNull(subjectQuery)) {
+				setSubject(subject, subjectQuery);
+			} else {
 				subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+				if (Objects.nonNull(subjectQuery)) {
+					setSubject(subject, subjectQuery);
+				}
 			}
-		}
-		if (subjectQuery != null) {
-			subject.setSubjectId(subjectQuery.getSubjectId());
+		} else if (Objects.nonNull(subject.getUnifiedIdentity()) && !subject.getUnifiedIdentity().equals("")) {
+			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getUnifiedIdentity, subject.getUnifiedIdentity()));
+			if (Objects.nonNull(subjectQuery)) {
+				setSubject(subject, subjectQuery);
+			}
+		} else if (Objects.nonNull(subject.getPhone()) && !subject.getPhone().equals("")) {
+			subjectQuery = this.getOne(new LambdaQueryWrapper<Subject>().eq(Subject::getPhone, subject.getPhone()));
+			if (Objects.nonNull(subjectQuery)) {
+				setSubject(subject, subjectQuery);
+			}
 		}
 		this.saveOrUpdate(subject);
 		return subject;
+	}
+
+	/**
+	 * 添加主体信息
+	 * @param subject
+	 * @param subjectQuery
+	 */
+	private void setSubject(Subject subject, Subject subjectQuery) {
+		subject.setSubjectId(subjectQuery.getSubjectId());
+		if (Objects.nonNull(subject.getPhone()) && Objects.nonNull(subjectQuery.getPhone())) {
+			if (!subjectQuery.getPhone().contains(subject.getPhone())) {
+				subject.setPhone(subjectQuery.getPhone() + ',' + subject.getPhone());
+			}
+		}
 	}
 
 	@Override
@@ -452,6 +479,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	/**
 	 * 通过电话查询主体信息
+	 *
 	 * @param phone
 	 * @return
 	 */
@@ -470,6 +498,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 
 	/**
 	 * 通过身份证与电话查询主体信息
+	 *
 	 * @return
 	 */
 	@Override
@@ -498,9 +527,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	}
 
 	@Override
-	public Subject queryBySubjectName(String subjectName){
+	public Subject queryBySubjectName(String subjectName) {
 		QueryWrapper<Subject> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(Subject::getName,subjectName);
+		queryWrapper.lambda().eq(Subject::getName, subjectName);
 		queryWrapper.last("limit 1");
 		return this.getOne(queryWrapper);
 	}

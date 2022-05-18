@@ -85,7 +85,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 			Subject subject = this.remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
 
-			setUpdateSubject(customerSubjectDTO, subject);
+			if (Objects.nonNull(subject.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
+				subject.setPhone(subject.getPhone() + "," + customerSubjectDTO.getPhone());
+			}
 
 			this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
 
@@ -101,20 +103,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 					if (Objects.isNull(subjectVO)) {
 						saveSubjectOrCustomer(customerSubjectDTO);
 					} else {
-						setUpdateSubject(customerSubjectDTO, subjectVO);
-
-						this.remoteSubjectService.saveOrUpdateById(subjectVO, SecurityConstants.FROM);
-
-						//添加或修改客户信息
-						addOrUpdateCustomer(customerSubjectDTO, subjectVO);
+						saveSubjectVOAndCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 					}
 				} else {
-					setUpdateSubject(customerSubjectDTO, subjectVO);
-
-					this.remoteSubjectService.saveOrUpdateById(subjectVO, SecurityConstants.FROM);
-
-					// 添加或修改客户信息
-					addOrUpdateCustomer(customerSubjectDTO, subjectVO);
+					saveSubjectVOAndCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 				}
 			} else {
 				//根据电话查询主体
@@ -124,15 +116,21 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 					saveSubjectOrCustomer(customerSubjectDTO);
 					//主体不为空
 				} else {
-					setUpdateSubject(customerSubjectDTO, subjectVO);
-
-					this.remoteSubjectService.saveOrUpdateById(subjectVO, SecurityConstants.FROM);
-
-					//添加或修改客户信息
-					addOrUpdateCustomer(customerSubjectDTO, subjectVO);
+					saveSubjectVOAndCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 				}
 			}
 		}
+	}
+
+	private void saveSubjectVOAndCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
+		if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
+			subjectVO.setPhone(subjectVO.getPhone() + "," + customerSubjectDTO.getPhone());
+		}
+
+		this.remoteSubjectService.saveOrUpdateById(subjectVO, SecurityConstants.FROM);
+
+		//添加或修改客户信息
+		addOrUpdateCustomer(customerSubjectDTO, subjectVO);
 	}
 
 	/**
@@ -151,6 +149,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			//客户信息不为空更新客户信息
 		} else {
 			customerSubjectDTO.setSubjectId(subject.getSubjectId());
+			customerSubjectDTO.setCustomerId(customer.getCustomerId());
 			//判断如果查询的主体有无身份证并分别修改主体信息
 			if (Objects.isNull(subject.getUnifiedIdentity())) {
 				saveUpdateSubject(customerSubjectDTO);
@@ -158,47 +157,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				customerSubjectDTO.setUnifiedIdentity(subject.getUnifiedIdentity());
 				saveUpdateSubject(customerSubjectDTO);
 			}
-			//如果某些字段为空则排除客户对象
-			setUpdateCustomer(customerSubjectDTO, customer);
 
-			//修改主体
+			BeanUtil.copyProperties(customerSubjectDTO, customer);
+
+			//修改客户
 			this.updateById(customer);
 		}
 	}
 
-	/**
-	 * 如果某些字段为空则排出客户对象
-	 *
-	 * @param customerSubjectDTO
-	 * @param customer
-	 */
-	private void setUpdateCustomer(CustomerSubjectDTO customerSubjectDTO, Customer customer) {
-
-		if (Objects.nonNull(customerSubjectDTO.getCaseeId()) && !customerSubjectDTO.getCaseeId().equals("")) {
-			customer.setCaseeId(customerSubjectDTO.getCaseeId());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getProjectId()) && !customerSubjectDTO.getProjectId().equals("")) {
-			customer.setProjectId(customerSubjectDTO.getProjectId());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getCustomerType()) && !customerSubjectDTO.getCustomerType().equals("")) {
-			customer.setCustomerType(customerSubjectDTO.getCustomerType());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getRecommenderId()) && !customerSubjectDTO.getRecommenderId().equals("")) {
-			customer.setRecommenderId(customerSubjectDTO.getRecommenderId());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getInsId()) && !customerSubjectDTO.getInsId().equals("")) {
-			customer.setInsId(customerSubjectDTO.getInsId());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getOutlesId()) && !customerSubjectDTO.getOutlesId().equals("")) {
-			customer.setOutlesId(customerSubjectDTO.getOutlesId());
-		}
-
-	}
 
 	/**
 	 * 添加主体与客户信息
@@ -254,54 +220,12 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		int update = 0;
 		Subject subject = this.remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
 
-		setUpdateSubject(customerSubjectDTO, subject);
-
 		this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
 
 		// 添加或修改客户信息
 		addOrUpdateCustomer(customerSubjectDTO, subject);
 
 		return update += 1;
-	}
-
-	/**
-	 * 如果某些字段为空则排出客户对象
-	 *
-	 * @param customerSubjectDTO
-	 * @param subject
-	 */
-	private void setUpdateSubject(CustomerSubjectDTO customerSubjectDTO, Subject subject) {
-		if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity()) && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
-			subject.setUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getName()) && !customerSubjectDTO.equals("")) {
-			subject.setName(customerSubjectDTO.getName());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals("")) {
-			subject.setPhone(customerSubjectDTO.getPhone());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getEmail()) && !customerSubjectDTO.getEmail().equals("")) {
-			subject.setEmail(customerSubjectDTO.getEmail());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getRemark()) && !customerSubjectDTO.getRemark().equals("")) {
-			subject.setRemark(customerSubjectDTO.getRemark());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getEmployer()) && !customerSubjectDTO.getEmployer().equals("")) {
-			subject.setEmployer(customerSubjectDTO.getEmployer());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getGender()) && !customerSubjectDTO.getGender().equals("")) {
-			subject.setGender(customerSubjectDTO.getGender());
-		}
-
-		if (Objects.nonNull(customerSubjectDTO.getEthnic()) && !customerSubjectDTO.getEthnic().equals("")) {
-			subject.setEthnic(customerSubjectDTO.getEthnic());
-		}
 	}
 
 	/**
@@ -387,6 +311,10 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			} else if ((customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.equals("")) && (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals(""))) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				if (subjectVO != null) {
+					if (Objects.nonNull(subjectVO.getPhone())) {
+						customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+					}
+
 					saveUpdateSubject(customerSubjectDTO);
 					customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
 
@@ -398,7 +326,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
 					saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 				}
-			}else if (customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
+			} else if (customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 			} else if (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals("")) {
@@ -426,8 +354,13 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 	private void saveUpdateSubjectAndSetCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
 		if (Objects.nonNull(subjectVO)) {
-			saveUpdateSubject(customerSubjectDTO);
 			customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
+
+			if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
+				customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+			}
+
+			saveUpdateSubject(customerSubjectDTO);
 			Customer customer = this.getOne(new LambdaQueryWrapper<Customer>().eq(Customer::getSubjectId, subjectVO.getSubjectId()));
 			if (customer != null) {
 				customerSubjectDTO.setCustomerId(customer.getCustomerId());
