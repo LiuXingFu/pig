@@ -15,6 +15,7 @@ import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,55 +131,24 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 		if (paiFu_stcc_dk_dk.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0){//判断拍辅费是否大于0
 			//查询当前财产程序拍辅费
 			expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), project.getProjectId(), 10007);
-			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));
-			expenseRecord.setStatus(0);
-			//修改当前财产程序拍辅费
-			expenseRecordService.updateById(expenseRecord);
+			if (expenseRecord!=null){//如果当前拍辅费没有还完则修改拍辅金额
+				expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(paiFu_stcc_dk_dk.getAuxiliaryFee()));
+				//修改当前财产程序拍辅费
+				expenseRecordService.updateById(expenseRecord);
+			}else {//如果没有拍辅费或者拍辅费已经还完则添加
+				//添加费用产生记录以及其它关联信息
+				 expenseRecord = expenseRecordService.addExpenseRecord(paiFu_stcc_dk_dk.getAuxiliaryFee(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),10007);
+			}
 		}
 		if (type.equals(2)) {//拍辅
-			if (expenseRecord!=null){
-				paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
-			}
+			paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
 		} else {//清收
-			if (expenseRecord!=null){
-				paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
-			}
-			//添加清收到款到款信息
-			PaymentRecord paymentRecord = new PaymentRecord();
-			paymentRecord.setPaymentType(200);
-			paymentRecord.setFundsType(20003);
-			paymentRecord.setStatus(0);
-			paymentRecord.setPaymentDate(paiFu_stcc_dk_dk.getFinalPaymentDate());
-			paymentRecord.setPaymentAmount(paiFu_stcc_dk_dk.getAmountReceived());
-			paymentRecord.setCaseeId(casee.getCaseeId());
-			paymentRecord.setProjectId(project.getProjectId());
-			paymentRecord.setCompanyCode(project.getCompanyCode());
-			paymentRecord.setCaseeNumber(casee.getCaseeNumber());
-			paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-			paymentRecordService.save(paymentRecord);
+			paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+
+			//添加到款记录以及其它关联信息
+			PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
 
 			paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
-			List<PaymentRecordAssetsRe> paymentRecordAssetsReList = new ArrayList<>();
-
-			//循环当前拍卖公告联合拍卖财产信息
-			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
-				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
-				paymentRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
-				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-				paymentRecordAssetsReList.add(paymentRecordAssetsRe);
-			}
-			// 添加回款记录财产关联信息
-			paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);
-
-			List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
-			for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
-				PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
-				paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
-				paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-				paymentRecordSubjectRes.add(paymentRecordSubjectRe);
-			}
-			//添加到款信息关联债务人
-			paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 		}
 	}
 

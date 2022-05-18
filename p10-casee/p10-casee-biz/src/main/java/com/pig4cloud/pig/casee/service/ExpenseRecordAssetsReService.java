@@ -43,7 +43,7 @@ public interface ExpenseRecordAssetsReService extends IService<ExpenseRecordAsse
 	List<AssetsRePaifuDetailVO> queryAssetsList(Integer expenseRecordId);
 
 	/**
-	 * 根据财产关联id查询产生费用信息
+	 * 根据财产关联id查询未还款产生费用信息
 	 * @param assetsReId
 	 * @return
 	 */

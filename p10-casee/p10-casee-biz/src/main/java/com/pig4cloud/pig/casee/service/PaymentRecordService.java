@@ -20,17 +20,22 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
 import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
+import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
 import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +64,20 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	boolean distribute(PaymentRecordDTO paymentRecordDTO);
 
 	boolean collection(PaymentRecordDTO paymentRecordDTO);
+
+	/**
+	 * 添加回款记录以及其它关联信息
+	 * @param amount					回款金额
+	 * @param paymentDate				回款时间
+	 * @param project					项目
+	 * @param casee 					案件
+	 * @param assetsReSubjectDTO		财产关联主体信息
+	 * @param jointAuctionAssetsDTOList	联合拍卖财产信息
+	 * @param paymentType				联合拍卖财产信息
+	 * @param fundsType					联合拍卖财产信息
+	 * @return
+	 */
+	PaymentRecord addPaymentRecord(BigDecimal amount, LocalDate paymentDate, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer paymentType, Integer fundsType);
 	/**
 	 * 较去年回款额
 	 * @return

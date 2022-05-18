@@ -1,6 +1,5 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.AuctionResultsSaveDTO;
@@ -14,8 +13,6 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler {
@@ -26,8 +23,6 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 	private ExpenseRecordService expenseRecordService;
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
-	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
@@ -89,34 +84,8 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
-			//添加费用明细记录
-			ExpenseRecord expenseRecord=new ExpenseRecord();
-			expenseRecord.setCostAmount(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee());
-			expenseRecord.setCostIncurredTime(entityZX_stzx_cczxpmjg_cczxpmjg.getClosingDate());
-			expenseRecord.setProjectId(taskNode.getProjectId());
-			expenseRecord.setCaseeId(taskNode.getCaseeId());
-			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-			expenseRecord.setStatus(0);
-			expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
-			expenseRecord.setCostType(10007);
-			expenseRecordService.save(expenseRecord);
-
-			//添加费用产生明细关联财产关联信息
-			ExpenseRecordAssetsRe expenseRecordAssetsRe=new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
-			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
-
-			//添加费用产生明细关联主体信息
-			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
-			for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-				ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordSubjectRes.add(expenseRecordSubjectRe);
-			}
-			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
+			//添加费用明细记录以及其它关联信息
+			expenseRecordService.addExpenseRecord(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee(),entityZX_stzx_cczxpmjg_cczxpmjg.getClosingDate(),projectLiqui,casee,assetsReSubjectDTO,null,10007);
 
 			//修改项目总金额
 			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());

@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,46 +132,17 @@ public class PaiFu_STCC_PMJG_PMJG_NODEHandler extends TaskNodeHandler {
 	}
 
 	public void addPmjgRepaymentFee(PaiFu_STCC_PMJG_PMJG paiFu_stcc_pmjg_pmjg, PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO) {
-		ExpenseRecord pfExpenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10007);
-		if (pfExpenseRecord!=null){
-			pfExpenseRecord.setCostAmount(pfExpenseRecord.getCostAmount().add(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee()));
-			pfExpenseRecord.setStatus(0);
-			//修改当前财产程序拍辅费
-			expenseRecordService.updateById(pfExpenseRecord);
-		}else {
-			//添加费用明细记录
-			ExpenseRecord expenseRecord = new ExpenseRecord();
-			expenseRecord.setCostAmount(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee());
-			expenseRecord.setCostIncurredTime(paiFu_stcc_pmjg_pmjg.getClosingDate());
-			expenseRecord.setProjectId(project.getProjectId());
-			expenseRecord.setCaseeId(casee.getCaseeId());
-			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-			expenseRecord.setStatus(0);
-			expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-			expenseRecord.setCompanyCode(project.getCompanyCode());
-			expenseRecord.setCostType(10007);
-			expenseRecordService.save(expenseRecord);
-
-			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
-			//循环当前拍卖公告联合拍卖财产信息
-			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
-				ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
-				expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
-				expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordAssetsReList.add(expenseRecordAssetsRe);
+		if (paiFu_stcc_pmjg_pmjg.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0) {//判断拍辅费是否大于0
+			//查询当前拍辅费是否存在以及状态是否正常
+			ExpenseRecord pfExpenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10007);
+			if (pfExpenseRecord!=null){//如果当前拍辅费没有还完则修改拍辅金额
+				pfExpenseRecord.setCostAmount(pfExpenseRecord.getCostAmount().add(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee()));
+				//修改当前财产程序拍辅费
+				expenseRecordService.updateById(pfExpenseRecord);
+			}else {//如果没有拍辅费或者拍辅费已经还完则添加
+				//添加费用产生记录以及其它关联信息
+				expenseRecordService.addExpenseRecord(paiFu_stcc_pmjg_pmjg.getAuxiliaryFee(),paiFu_stcc_pmjg_pmjg.getClosingDate(),project,casee,assetsReSubjectDTO,paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),10007);
 			}
-			// 添加费用产生记录财产关联信息
-			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
-
-			List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
-			for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
-				ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
-				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordSubjectReList.add(expenseRecordSubjectRe);
-			}
-			//添加费用产生明细关联主体信息
-			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
 		}
 	}
 }

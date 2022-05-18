@@ -20,10 +20,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
-import com.pig4cloud.pig.casee.dto.PaymentRecordAddDTO;
-import com.pig4cloud.pig.casee.dto.PaymentRecordDTO;
-import com.pig4cloud.pig.casee.dto.PaymentRecordPageDTO;
+import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
@@ -234,6 +232,54 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		}
 
 		return save;
+	}
+
+	@Override
+	public PaymentRecord addPaymentRecord(BigDecimal amount,LocalDate paymentDate,Project project,Casee casee,AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer paymentType,Integer fundsType) {
+		//添加清收到款到款信息
+		PaymentRecord paymentRecord = new PaymentRecord();
+		paymentRecord.setPaymentType(paymentType);
+		paymentRecord.setFundsType(fundsType);
+		paymentRecord.setStatus(0);
+		paymentRecord.setPaymentDate(paymentDate);
+		paymentRecord.setPaymentAmount(amount);
+		paymentRecord.setCaseeId(casee.getCaseeId());
+		paymentRecord.setProjectId(project.getProjectId());
+		paymentRecord.setCompanyCode(project.getCompanyCode());
+		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
+		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
+		this.save(paymentRecord);
+
+		List<PaymentRecordAssetsRe> paymentRecordAssetsReList = new ArrayList<>();
+
+		if (jointAuctionAssetsDTOList!=null){
+			//循环当前拍卖公告联合拍卖财产信息
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
+				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
+				paymentRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
+				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordAssetsReList.add(paymentRecordAssetsRe);
+			}
+			// 添加回款记录财产关联信息
+			paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);
+		}else {
+			//添加到款信息关联财产
+			PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+		}
+
+		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
+		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
+			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
+		}
+		//添加到款信息关联债务人
+		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
+		return paymentRecord;
 	}
 
 	/**

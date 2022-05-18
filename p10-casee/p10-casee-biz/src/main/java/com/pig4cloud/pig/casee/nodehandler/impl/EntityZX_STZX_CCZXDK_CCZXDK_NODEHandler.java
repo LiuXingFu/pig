@@ -69,42 +69,18 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		if (entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0){//判断拍辅费是否大于0
 			//查询当前财产程序拍辅费
 			ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), taskNode.getProjectId(), 10007);
-			expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
-			expenseRecord.setStatus(0);
-			//修改当前财产程序拍辅费
-			expenseRecordService.updateById(expenseRecord);
+			if (expenseRecord!=null){//如果当前拍辅费没有还完则修改拍辅金额
+				expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
+				//修改当前财产程序拍辅费
+				expenseRecordService.updateById(expenseRecord);
+			}else {//如果没有拍辅费或者拍辅费已经还完则添加
+				//添加费用明细记录以及其它关联信息
+				expenseRecordService.addExpenseRecord(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(),projectLiqui,casee,assetsReSubjectDTO,null,10007);
+			}
 		}
 
-		//添加到款回款信息
-		PaymentRecord paymentRecord=new PaymentRecord();
-		paymentRecord.setPaymentType(200);
-		paymentRecord.setFundsType(20003);
-		paymentRecord.setStatus(0);
-		paymentRecord.setPaymentDate(entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate());
-		paymentRecord.setPaymentAmount(entityZX_stzx_cczxdk_cczxdk.getAmountReceived());
-		paymentRecord.setCaseeId(taskNode.getCaseeId());
-		paymentRecord.setProjectId(taskNode.getProjectId());
-		paymentRecord.setCompanyCode(projectLiqui.getCompanyCode());
-		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
-		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		paymentRecordService.save(paymentRecord);
-
-		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
-		// 遍历财产关联多个债务人
-		for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
-			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
-		}
-		//添加到款信息关联债务人
-		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
-
-		//添加到款信息关联财产
-		PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
-		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
-		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+		//添加到款信息以及其它关联信息
+		PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(entityZX_stzx_cczxdk_cczxdk.getAmountReceived(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20003);
 
 		//添加到款客户信息
 		CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();

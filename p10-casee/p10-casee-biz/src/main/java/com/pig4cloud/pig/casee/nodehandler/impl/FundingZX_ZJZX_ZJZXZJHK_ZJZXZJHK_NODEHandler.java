@@ -1,6 +1,5 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandler {
@@ -28,8 +25,6 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 	CaseeLiquiService caseeLiquiService;
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
-	@Autowired
-	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 	@Autowired
 	TargetService targetService;
 	@Autowired
@@ -50,34 +45,7 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
-		PaymentRecord paymentRecord=new PaymentRecord();
-		paymentRecord.setPaymentDate(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionTime());
-		paymentRecord.setPaymentAmount(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount());
-		paymentRecord.setProjectId(taskNode.getProjectId());
-		paymentRecord.setCompanyCode(projectLiqui.getCompanyCode());
-		paymentRecord.setCaseeId(taskNode.getCaseeId());
-		paymentRecord.setCaseeNumber(casee.getCaseeNumber());
-		paymentRecord.setPaymentType(200);
-		paymentRecord.setFundsType(20004);
-		paymentRecord.setStatus(0);
-		paymentRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-		paymentRecordService.save(paymentRecord);
-
-		List<PaymentRecordSubjectRe> paymentRecordSubjectReList = new ArrayList<>();
-		// 遍历财产关联多个债务人
-		for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
-			paymentRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-			paymentRecordSubjectReList.add(paymentRecordSubjectRe);
-		}
-		//添加抵偿回款信息关联债务人
-		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectReList);
-
-		//添加到款信息关联财产
-		PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
-		paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-		paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
-		paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+		//添加资金划扣信息
+		paymentRecordService.addPaymentRecord(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount(), fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionTime(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20004);
 	}
 }
