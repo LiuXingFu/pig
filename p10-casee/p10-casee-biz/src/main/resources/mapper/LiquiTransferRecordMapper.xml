@@ -134,14 +134,14 @@
 			and a.status = #{query.status}
 		</if>
 		<if test="query.subjectName != null and query.subjectName != ''">
-			and a.executorSubjectName like concat('%', #{query.subjectName}, '%')
-			or  a.applicantSubjectName like concat('%', #{query.subjectName}, '%')
+			and (a.executorSubjectName like concat('%', #{query.subjectName}, '%')
+			or  a.applicantSubjectName like concat('%', #{query.subjectName}, '%'))
 		</if>
 		<if test="query.insName != null and query.insName != ''">
 			AND (a.insName LIKE concat( '%', #{query.insName}, '%' ) or a.outlesName LIKE concat( '%', #{query.insName}, '%' ))
 		</if>
 		<if test="query.beginDate != null and query.endDate != null">
-			AND a.handover_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			AND a.handoverTime BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
 	</select>
