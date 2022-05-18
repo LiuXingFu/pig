@@ -80,7 +80,7 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		}
 
 		//添加到款信息以及其它关联信息
-		PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(entityZX_stzx_cczxdk_cczxdk.getAmountReceived(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20003);
+		paymentRecordService.addPaymentRecord(entityZX_stzx_cczxdk_cczxdk.getAmountReceived(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20003);
 
 		//添加到款客户信息
 		CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
