@@ -24,15 +24,9 @@ import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsDTO;
 import com.pig4cloud.pig.casee.dto.MortgageAssetsDTO;
-import com.pig4cloud.pig.casee.entity.Assets;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
+import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.MortgageAssetsRecordsMapper;
-import com.pig4cloud.pig.casee.service.AssetsService;
-import com.pig4cloud.pig.casee.service.MortgageAssetsReService;
-import com.pig4cloud.pig.casee.service.MortgageAssetsRecordsService;
-import com.pig4cloud.pig.casee.service.MortgageAssetsSubjectReService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
@@ -63,7 +57,28 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 	AssetsService assetsService;
 	@Autowired
 	RemoteAddressService remoteAddressService;
-
+	@Autowired
+	AssetsReService assetsReService;
+	@Autowired
+	AssetsBankLoanReService assetsBankLoanReService;
+	@Autowired
+	AssetsReSubjectService assetsReSubjectService;
+	@Autowired
+	MortgageAssetsRecordsService mortgageAssetsRecordsService;
+	@Autowired
+	TargetService targetService;
+	@Autowired
+	ProjectLiquiService projectLiquiService;
+	@Autowired
+	ProjectCaseeReService projectCaseeReService;
+	@Autowired
+	CaseeHandlingRecordsReService caseeHandlingRecordsReService;
+	@Autowired
+	CaseeHandlingRecordsService caseeHandlingRecordsService;
+	@Autowired
+	PaymentRecordAssetsReService paymentRecordAssetsReService;
+	@Autowired
+	ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public List<AssetsInformationVO> getMortgageAssetsRecordsDetails(Integer bankLoanId) {
@@ -165,5 +180,56 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 			}
 		}
 		return this.updateById(mortgageAssetsRecords);//修改抵押信息
+	}
+
+	@Override
+	public void synchronize() {
+		List<AssetsBankLoanRe> AssetsBankLoanReList = assetsBankLoanReService.list();
+
+		List<MortgageAssetsSubjectRe> mortgageAssetsSubjectReList=new ArrayList<>();
+		for (AssetsBankLoanRe assetsBankLoanRe : AssetsBankLoanReList) {
+			MortgageAssetsRecords mortgageAssetsRecords=new MortgageAssetsRecords();
+			BeanCopyUtil.copyBean(assetsBankLoanRe,mortgageAssetsRecords);
+			mortgageAssetsRecords.setMortgageStartTime(assetsBankLoanRe.getMortgageTime());
+			mortgageAssetsRecords.setJointMortgage(0);
+			R<Subject> serviceById = remoteSubjectService.getById(assetsBankLoanRe.getSubjectId(), SecurityConstants.FROM);
+			mortgageAssetsRecords.setSubjectName(serviceById.getData().getName());
+			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
+
+			MortgageAssetsRe mortgageAssetsRe=new MortgageAssetsRe();
+			mortgageAssetsRe.setAssetsId(assetsBankLoanRe.getAssetsId());
+			mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+			mortgageAssetsReService.save(mortgageAssetsRe);
+
+			MortgageAssetsSubjectRe mortgageAssetsSubjectRe=new MortgageAssetsSubjectRe();
+			mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+			mortgageAssetsSubjectRe.setSubjectId(assetsBankLoanRe.getSubjectId());
+			mortgageAssetsSubjectReList.add(mortgageAssetsSubjectRe);
+		}
+		mortgageAssetsSubjectReService.saveBatch(mortgageAssetsSubjectReList);
+
+
+		List<AssetsRe> list = assetsReService.list();
+		List<AssetsReSubject> assetsReSubjectList=new ArrayList<>();
+
+		for (AssetsRe assetsRe : list) {
+			AssetsReSubject assetsReSubject=new AssetsReSubject();
+			assetsReSubject.setSubjectId(assetsRe.getSubjectId());
+			assetsReSubject.setAssetsReId(assetsRe.getAssetsReId());
+			assetsReSubjectList.add(assetsReSubject);
+		}
+
+		assetsReSubjectService.saveBatch(assetsReSubjectList);
+
+
+		List<Target> targetList = targetService.list();
+		List<Target> targets = new ArrayList();
+
+		for (Target target : targetList) {
+			ProjectCaseeRe projectCaseeRe = projectCaseeReService.getOne(new LambdaQueryWrapper<ProjectCaseeRe>().eq(ProjectCaseeRe::getCaseeId, target.getCaseeId()));
+			target.setProjectId(projectCaseeRe.getProjectId());
+			targets.add(target);
+		}
+		targetService.updateBatchById(targets);
 	}
 }

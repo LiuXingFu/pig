@@ -38,4 +38,7 @@ public interface MortgageAssetsRecordsService extends IService<MortgageAssetsRec
 	MortgageAssetsRecordsVO getByMortgageAssetsRecordsId(Integer mortgageAssetsRecordsId);
 
 	boolean updateByMortgageAssets(MortgageAssetsDTO mortgageAssetsDTO);
+
+	void synchronize();
+
 }
