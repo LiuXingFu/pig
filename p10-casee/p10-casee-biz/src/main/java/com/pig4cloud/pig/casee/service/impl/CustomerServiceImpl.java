@@ -85,21 +85,18 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 			Subject subject = this.remoteSubjectService.getById(customerSubjectDTO.getSubjectId(), SecurityConstants.FROM).getData();
 
-			if (Objects.nonNull(subject.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
-				subject.setPhone(subject.getPhone() + "," + customerSubjectDTO.getPhone());
-			}
+			SubjectVO subjectVO = new SubjectVO();
 
-			this.remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
+			BeanUtil.copyProperties(subject, subjectVO);
 
-			// 添加或修改客户信息
-			addOrUpdateCustomer(customerSubjectDTO, subject);
+			saveSubjectVOAndCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 		} else {
 			if (Objects.nonNull(customerSubjectDTO.getUnifiedIdentity()) && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
 				// 主体id为空 根据身份标识查询主体信息
 				SubjectVO subjectVO = remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				// 判断主体信息是否为空
 				if (Objects.isNull(subjectVO)) {
-					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), customerSubjectDTO.getName(), SecurityConstants.FROM).getData();
 					if (Objects.isNull(subjectVO)) {
 						saveSubjectOrCustomer(customerSubjectDTO);
 					} else {
@@ -110,7 +107,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				}
 			} else {
 				//根据电话查询主体
-				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), customerSubjectDTO.getName(), SecurityConstants.FROM).getData();
 				// 主体信息为空 添加主体信息
 				if (Objects.isNull(subjectVO)) {
 					saveSubjectOrCustomer(customerSubjectDTO);
@@ -124,7 +121,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 	private void saveSubjectVOAndCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
 		if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
-			subjectVO.setPhone(subjectVO.getPhone() + "," + customerSubjectDTO.getPhone());
+			if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
+				customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+			}
 		}
 
 		this.remoteSubjectService.saveOrUpdateById(subjectVO, SecurityConstants.FROM);
@@ -236,7 +235,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	 * @return
 	 */
 	@Override
-	public int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, Integer subjectId) {
+	public int verifyUnifiedIdentityAndPhone(String unifiedIdentity, String phone, String name, Integer subjectId) {
 		if ((Objects.nonNull(unifiedIdentity) && !unifiedIdentity.equals("")) && (Objects.nonNull(phone) && !phone.equals(""))) {
 			SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentityAndPhone(unifiedIdentity, phone, SecurityConstants.FROM).getData();
 			if (Objects.nonNull(subjectVO)) {
@@ -255,7 +254,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 						return isCustomer(subjectVO.getSubjectId());
 					}
 				} else {
-					subjectVO = this.remoteSubjectService.getByPhone(phone, SecurityConstants.FROM).getData();
+					subjectVO = this.remoteSubjectService.getByPhone(phone, name, SecurityConstants.FROM).getData();
 					if (Objects.nonNull(subjectVO)) {
 						if (subjectVO.getSubjectId().equals(subjectId)) {
 							return 0;
@@ -279,7 +278,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				return 0;
 			}
 		} else if (Objects.nonNull(phone) && (unifiedIdentity == null || unifiedIdentity.equals(""))) {
-			SubjectVO subjectVO = this.remoteSubjectService.getByPhone(phone, SecurityConstants.FROM).getData();
+			SubjectVO subjectVO = this.remoteSubjectService.getByPhone(phone, name, SecurityConstants.FROM).getData();
 			if (Objects.nonNull(subjectVO)) {
 				if (subjectVO.getSubjectId().equals(subjectId)) {
 					return 0;
@@ -312,7 +311,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				if (subjectVO != null) {
 					if (Objects.nonNull(subjectVO.getPhone())) {
-						customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+						if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
+							customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+						}
 					}
 
 					saveUpdateSubject(customerSubjectDTO);
@@ -323,14 +324,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 						customerSubjectDTO.setCustomerId(customer.getCustomerId());
 					}
 				} else {
-					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+					subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), customerSubjectDTO.getName(), SecurityConstants.FROM).getData();
 					saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 				}
 			} else if (customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.getUnifiedIdentity().equals("")) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 			} else if (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals("")) {
-				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), SecurityConstants.FROM).getData();
+				SubjectVO subjectVO = this.remoteSubjectService.getByPhone(customerSubjectDTO.getPhone(), customerSubjectDTO.getName(), SecurityConstants.FROM).getData();
 				saveUpdateSubjectAndSetCustomerSubjectDTO(customerSubjectDTO, subjectVO);
 			} else {
 				return 0;
@@ -352,12 +353,19 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		return add + 1;
 	}
 
+	/**
+	 * 保存或修改主体客户信息
+	 * @param customerSubjectDTO
+	 * @param subjectVO
+	 */
 	private void saveUpdateSubjectAndSetCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
 		if (Objects.nonNull(subjectVO)) {
 			customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
 
 			if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
-				customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+				if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
+					customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+				}
 			}
 
 			saveUpdateSubject(customerSubjectDTO);

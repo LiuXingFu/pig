@@ -128,7 +128,7 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	}
 
 	@Override
-	public R<SubjectVO> getByPhone(String phone, String form) {
+	public R<SubjectVO> getByPhone(String phone, String name, String form) {
 		log.error("通过电话查询主体信息失败", cause);
 		return null;
 	}

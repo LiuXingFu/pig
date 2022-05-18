@@ -91,7 +91,7 @@ public interface SubjectService extends IService<Subject> {
 
 	String querySubjectName(List<Integer> subjectIdList);
 
-	SubjectVO getByPhone(String phone);
+	SubjectVO getByPhone(String phone, String name);
 
 	/**
 	 * 根据主体名称查询主体
