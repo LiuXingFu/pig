@@ -66,6 +66,8 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private PaymentRecordAssetsReService paymentRecordAssetsReService;
 	@Autowired
 	private ProjectPaifuService projectPaifuService;
+	@Autowired
+	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
@@ -150,11 +152,13 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 			}
 
-			if (paymentRecord.getAssetsReId()!=null){
+			Integer expenseRecordId = paymentRecord.getExpenseRecordId();
+			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = expenseRecordAssetsReService.list(new LambdaQueryWrapper<ExpenseRecordAssetsRe>().eq(ExpenseRecordAssetsRe::getExpenseRecordId, expenseRecordId));
+			for (ExpenseRecordAssetsRe expenseRecordAssetsRe : expenseRecordAssetsReList) {
 				//添加到款信息关联财产
 				PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
 				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-				paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
+				paymentRecordAssetsRe.setAssetsReId(expenseRecordAssetsRe.getAssetsReId());
 				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
 			}
 
@@ -210,11 +214,13 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 				this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 			}
 
-			if (paymentRecord.getAssetsReId()!=null){
+			Integer expenseRecordId = paymentRecord.getExpenseRecordId();
+			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = expenseRecordAssetsReService.list(new LambdaQueryWrapper<ExpenseRecordAssetsRe>().eq(ExpenseRecordAssetsRe::getExpenseRecordId, expenseRecordId));
+			for (ExpenseRecordAssetsRe expenseRecordAssetsRe : expenseRecordAssetsReList) {
 				//添加到款信息关联财产
 				PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
 				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
-				paymentRecordAssetsRe.setAssetsReId(paymentRecord.getAssetsReId());
+				paymentRecordAssetsRe.setAssetsReId(expenseRecordAssetsRe.getAssetsReId());
 				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
 			}
 
