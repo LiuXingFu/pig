@@ -44,7 +44,7 @@
 
 	<select id="queryAssetsReIdExpenseRecord" resultType="com.pig4cloud.pig.casee.entity.ExpenseRecord">
 		select p10_expense_record.* from p10_expense_record_assets_re
-		left join p10_expense_record on p10_expense_record.expense_record_id=p10_expense_record_assets_re.expense_record_id
+		left join p10_expense_record on p10_expense_record.expense_record_id=p10_expense_record_assets_re.expense_record_id and p10_expense_record.status=0
 		where assets_re_id = #{assetsReId} and  p10_expense_record.project_id=#{projectId} and p10_expense_record.cost_type=#{costType}
 	</select>
 </mapper>

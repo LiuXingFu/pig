@@ -21,7 +21,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -41,6 +44,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +74,8 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	private ProjectPaifuService projectPaifuService;
 	@Autowired
 	private PaymentRecordService paymentRecordService;
+	@Autowired
+	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 
 	@Override
 	public IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
@@ -151,6 +157,53 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	@Override
 	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
 		return this.baseMapper.selectByProjectCaseeAssetsId(projectId,caseeId,assetsId);
+	}
+
+	@Override
+	public ExpenseRecord addExpenseRecord(BigDecimal auxiliaryFee, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType) {
+		//添加费用明细记录
+		ExpenseRecord expenseRecord = new ExpenseRecord();
+		expenseRecord.setCostAmount(auxiliaryFee);
+		expenseRecord.setCostIncurredTime(date);
+		expenseRecord.setProjectId(project.getProjectId());
+		expenseRecord.setCaseeId(casee.getCaseeId());
+		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
+		expenseRecord.setStatus(0);
+		expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
+		expenseRecord.setCompanyCode(project.getCompanyCode());
+		expenseRecord.setCostType(costType);
+		this.save(expenseRecord);
+
+		if (jointAuctionAssetsDTOList!=null){//联合拍卖
+			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
+			//循环当前拍卖公告联合拍卖财产信息
+			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
+				ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
+				expenseRecordAssetsRe.setAssetsReId(jointAuctionAssetsDTO.getAssetsReId());
+				expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordAssetsReList.add(expenseRecordAssetsRe);
+			}
+			// 添加费用产生记录财产关联信息
+			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
+		}else {
+			//循环当前拍卖公告联合拍卖财产信息
+			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
+			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
+			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			// 添加费用产生记录财产关联信息
+			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
+		}
+
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
+		for (Subject subject : assetsReSubjectDTO.getSubjectList()) {
+			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+		}
+		//添加费用产生明细关联主体信息
+		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
+		return expenseRecord;
 	}
 
 	@Override

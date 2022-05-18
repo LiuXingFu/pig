@@ -20,8 +20,12 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
+import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
+import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
@@ -29,6 +33,7 @@ import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -49,6 +54,18 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO>getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId);
+
+	/**
+	 * 添加费用产生记录以及其它关联信息
+	 * @param auxiliaryFee				费用
+	 * @param date						费用产生时间
+	 * @param project					项目
+	 * @param casee 					案件
+	 * @param assetsReSubjectDTO		回款类型
+	 * @param jointAuctionAssetsDTOList	款项类型
+	 * @return
+	 */
+	ExpenseRecord addExpenseRecord(BigDecimal auxiliaryFee, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType);
 
 	/**
 	 * 根据项目id统计总金额

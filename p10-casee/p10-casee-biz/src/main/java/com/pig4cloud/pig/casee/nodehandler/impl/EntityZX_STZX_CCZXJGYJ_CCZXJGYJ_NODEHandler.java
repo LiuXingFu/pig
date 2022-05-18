@@ -53,33 +53,7 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
 			//添加定价费用明细记录
-			ExpenseRecord expenseRecord=new ExpenseRecord();
-			expenseRecord.setCostAmount(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee());
-			expenseRecord.setCostIncurredTime(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingDate());
-			expenseRecord.setProjectId(taskNode.getProjectId());
-			expenseRecord.setCaseeId(taskNode.getCaseeId());
-			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
-			expenseRecord.setStatus(0);
-			expenseRecord.setSubjectName(assetsReSubjectDTO.getSubjectName());
-			expenseRecord.setCompanyCode(projectLiqui.getCompanyCode());
-			expenseRecord.setCostType(10006);
-			expenseRecordService.save(expenseRecord);
-
-			//添加费用产生明细关联财产关联信息
-			ExpenseRecordAssetsRe expenseRecordAssetsRe=new ExpenseRecordAssetsRe();
-			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
-			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-			expenseRecordAssetsReService.save(expenseRecordAssetsRe);
-
-			//添加费用产生明细关联主体信息
-			List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
-			for (Subject subject:assetsReSubjectDTO.getSubjectList()){
-				ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
-				expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
-				expenseRecordSubjectRes.add(expenseRecordSubjectRe);
-			}
-			expenseRecordSubjectReService.saveBatch(expenseRecordSubjectRes);
+			expenseRecordService.addExpenseRecord(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(), entityZX_stzx_cczxjgyj_cczxjgyj.getPricingDate(), projectLiqui, casee, assetsReSubjectDTO, null, 10006);
 
 			//修改项目总金额
 			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());

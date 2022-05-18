@@ -52,6 +52,13 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="PaymentRecordCourtPaymentVO" type="com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO" extends="paymentRecordMap">
+		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" column="payment_record_id"
+					select="com.pig4cloud.pig.casee.mapper.PaymentRecordAssetsReMapper.selectAssetsList">
+		</collection>
+	</resultMap>
+
+
 	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
 		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from
 		p10_payment_record
@@ -130,7 +137,7 @@
 		and expense_record_id = #{expenseRecordId}
 	</select>
 
-	<select id="getCourtPaymentPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO">
+	<select id="getCourtPaymentPage" resultMap="PaymentRecordCourtPaymentVO">
 		SELECT
 			p10_payment_record.*,
 			lumpSum.courtPayment as courtPayment
