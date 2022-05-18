@@ -59,7 +59,7 @@
 	</resultMap>
 
 
-	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+	<select id="getPaymentRecordPage" resultMap="PaymentRecordVO">
 		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from
 		p10_payment_record
 		left join p10_project on p10_project.project_id=p10_payment_record.project_id
@@ -92,7 +92,7 @@
 		order by p10_payment_record.create_time desc
 	</select>
 
-	<select id="getByUnassignedPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+	<select id="getByUnassignedPaymentRecordPage" resultMap="PaymentRecordVO">
 		select p10_payment_record.* from
 		p10_payment_record
 		where
@@ -111,6 +111,14 @@
 			AND p10_payment_record.payment_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
+		order by p10_payment_record.create_time desc
+	</select>
+
+	<select id="getByPaymentRecordPage" resultMap="PaymentRecordVO">
+		select p10_payment_record.* from
+		p10_payment_record
+		where
+		p10_payment_record.del_flag=0 and father_id =#{paymentRecordId}
 		order by p10_payment_record.create_time desc
 	</select>
 
@@ -160,7 +168,7 @@
 			AND p10_payment_record.payment_type = 200
 	</select>
 
-	<select id="getCourtPaymentUnpaid" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
+	<select id="getCourtPaymentUnpaid" resultMap="PaymentRecordVO">
 		select p10_payment_record.*,p10_payment_record.subject_name as name from p10_payment_record
 		where p10_payment_record.del_flag = 0
 		and p10_payment_record.project_id=#{projectId}

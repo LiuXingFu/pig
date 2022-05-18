@@ -17,9 +17,11 @@
 package com.pig4cloud.pig.casee.vo;
 
 
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 费用产生记录表
@@ -29,6 +31,10 @@ import java.time.LocalDate;
  */
 @Data
 public class ExpenseRecordDistributeVO {
+	/**
+	 * 财产关联集合
+	 */
+	List<AssetsRePaifuDetailVO> assetsReList;
 
 	/**
 	 * 费用财产关联表id
