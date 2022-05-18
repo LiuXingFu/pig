@@ -46,6 +46,12 @@
 		<result property="appendixFile" column="appendix_file"/>
 	</resultMap>
 
+	<resultMap id="PaymentRecordVO" type="com.pig4cloud.pig.casee.vo.PaymentRecordVO" extends="paymentRecordMap">
+		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" column="payment_record_id"
+					select="com.pig4cloud.pig.casee.mapper.PaymentRecordAssetsReMapper.selectAssetsList">
+		</collection>
+	</resultMap>
+
 	<select id="getPaymentRecordPage" resultType="com.pig4cloud.pig.casee.vo.PaymentRecordVO">
 		select p10_payment_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from
 		p10_payment_record
@@ -68,6 +74,14 @@
 			AND p10_payment_record.payment_date BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
 			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
 		</if>
+		order by p10_payment_record.create_time desc
+	</select>
+
+	<select id="getProjectIdByPaymentRecordPage" resultMap="PaymentRecordVO">
+		select p10_payment_record.* from
+		p10_payment_record
+		where
+		p10_payment_record.del_flag=0 and father_id is not null and p10_payment_record.project_id=#{projectId}
 		order by p10_payment_record.create_time desc
 	</select>
 

@@ -46,6 +46,8 @@ public interface PaymentRecordMapper extends BaseMapper<PaymentRecord> {
 
 	IPage<PaymentRecordVO> getPaymentRecordPage(Page page, @Param("query") PaymentRecordPageDTO paymentRecordPageDTO, @Param("login") InsOutlesDTO insOutlesDTO);
 
+	IPage<PaymentRecordVO> getProjectIdByPaymentRecordPage(Page page, @Param("projectId") String projectId);
+
 	IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, @Param("query")PaymentRecordPageDTO paymentRecordPageDTO);
 
 	BigDecimal sumCourtPayment(@Param("query") PaymentRecord paymentRecord);

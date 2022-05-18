@@ -101,7 +101,7 @@ public class PaymentRecordController {
 	@ApiOperation(value = "通过项目id查询回款详细记录表", notes = "通过项目id查询回款详细记录表")
 	@GetMapping("/getProjectIdByPaymentRecord" )
 	public R getProjectIdByPaymentRecord(Page page, String projectId) {
-		return R.ok(paymentRecordService.page(page,new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getProjectId, projectId).isNotNull(PaymentRecord::getFatherId)));
+		return R.ok(paymentRecordService.getProjectIdByPaymentRecordPage(page,projectId));
 	}
 
 	/**

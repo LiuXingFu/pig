@@ -78,6 +78,11 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
+	public IPage<PaymentRecordVO> getProjectIdByPaymentRecordPage(Page page, String projectId) {
+		return this.baseMapper.getProjectIdByPaymentRecordPage(page,projectId);
+	}
+
+	@Override
 	public IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
 		return this.baseMapper.getByUnassignedPaymentRecordPage(page,paymentRecordPageDTO);
 	}
