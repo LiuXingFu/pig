@@ -680,19 +680,36 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//提交办理任务生成任务流并保存任务数据
 			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
-				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
-					//查询当前财产拍卖公告节点信息
-					TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
-					PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
+				//查询当前财产拍卖公告节点信息
+				TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
+				PaiFu_STCC_PMGG_PMGG paiFu_stcc_pmgg_pmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), PaiFu_STCC_PMGG_PMGG.class);
 
-					//添加拍辅任务办理记录
+				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {
+					//添加拍辅任务办理记录(判断当前节点是一拍、二拍或者还是变卖)
 					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, paiFu_stcc_pmgg_pmgg.getAuctionType());
 				} else {
-					//添加清收任务办理记录
+					//添加拍辅任务办理记录
 					caseeHandlingRecordsService.addCaseeHandlingRecords(target.getGoalId(), taskFlowDTO, 0);
 				}
-			} else {
 
+				if (null!=paiFu_stcc_pmgg_pmgg&&paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()!=null){
+					if (paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList().size()>1){//如果拍卖公告联合拍卖财产是多个则修改其它财产程序节点状态
+						for (JointAuctionAssetsDTO jointAuctionAssetsDTO : paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList()) {
+							//联合拍卖财产程序
+							Target jointAuctionAssetsTarget = targetService.getOne(new LambdaQueryWrapper<Target>().eq(Target::getProjectId, taskFlowDTO.getProjectId()).eq(Target::getCaseeId, taskFlowDTO.getCaseeId()).eq(Target::getGoalId, jointAuctionAssetsDTO.getAssetsId()).eq(Target::getGoalType, 20001).eq(Target::getProcedureNature, 6060));
+							TaskNode jointAuctionAssetsTaskNode = this.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, jointAuctionAssetsTarget.getTargetId()).eq(TaskNode::getNodeKey, taskFlowDTO.getNodeKey()));
+							//修改比当前节点顺序小的节点状态为跳过
+							this.updateTaskNodeStatus(jointAuctionAssetsTaskNode);
+						}
+					}else {
+						//修改比当前节点顺序小的节点状态为跳过
+						this.updateTaskNodeStatus(taskFlowDTO);
+					}
+				}else {
+					//修改比当前节点顺序小的节点状态为跳过
+					this.updateTaskNodeStatus(taskFlowDTO);
+				}
+			} else {
 				//添加清收任务办理记录
 				CaseeHandlingRecords caseeHandlingRecords = new CaseeHandlingRecords();
 				BeanUtils.copyProperties(taskFlowDTO, caseeHandlingRecords);
@@ -721,13 +738,10 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 					caseeHandlingRecords.setSourceType(1);
 				}
 				caseeHandlingRecordsService.save(caseeHandlingRecords);
-			}
 
-			//修改比当前节点顺序小的节点状态为跳过
-			LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper = new LambdaUpdateWrapper<>();
-			lambdaQueryWrapper.set(TaskNode::getStatus, 301);
-			lambdaQueryWrapper.eq(TaskNode::getTargetId, taskFlowDTO.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0).le(TaskNode::getSort, taskFlowDTO.getSort());
-			this.update(lambdaQueryWrapper);
+				//修改比当前节点顺序小的节点状态为跳过
+				this.updateTaskNodeStatus(taskFlowDTO);
+			}
 
 			// 处理特殊节点与一般节点
 			nodeHandlerRegister.onTaskNodeSubmit(taskFlowDTO);
@@ -735,6 +749,15 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 //			taskRecordService.addTaskRecord(taskFlowDTO, CaseeOrTargetTaskFlowConstants.TASK_OBJECT);
 		}
 		return taskFlowDTO.getNodeId();
+	}
+
+	@Override
+	public void updateTaskNodeStatus(TaskNode taskNode) {
+		//修改比当前节点顺序小的节点状态为跳过
+		LambdaUpdateWrapper<TaskNode> lambdaQueryWrapper = new LambdaUpdateWrapper<>();
+		lambdaQueryWrapper.set(TaskNode::getStatus, 301);
+		lambdaQueryWrapper.eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getStatus, 0).le(TaskNode::getSort, taskNode.getSort());
+		this.update(lambdaQueryWrapper);
 	}
 
 	@Override

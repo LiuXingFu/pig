@@ -174,6 +174,12 @@ public interface TaskNodeService extends IService<TaskNode> {
 	 */
 	String saveNodeFormData(TaskFlowDTO taskFlowDTO);
 
+	/**
+	 * 根据当前节点顺序大小修改其它节点状态
+	 * @param taskNode
+	 * @return
+	 */
+	void updateTaskNodeStatus(TaskNode taskNode);
 
 	/**
 	 * 委托办理任务
