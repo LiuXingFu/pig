@@ -38,6 +38,7 @@
 		<result property="remark" column="remark"/>
 		<result property="assetsSource" column="assets_source"/>
 		<result property="mortgageAssetsRecordsId" column="mortgage_assets_records_id"/>
+		<result property="subjectId" column="subject_id"/>
 	</resultMap>
 
 	<select id="getProjectIdStatusByAssets" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
