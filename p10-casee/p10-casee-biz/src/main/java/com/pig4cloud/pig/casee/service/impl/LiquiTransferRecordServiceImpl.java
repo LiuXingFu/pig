@@ -323,6 +323,7 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	}
 
 	@Override
+	@Transactional
 	public Integer returnTransfer(LiquiTransferRecordDetailsDTO liquiTransferRecordDetailsDTO) {
 		List<AssetsVO> assetsVOList = liquiTransferRecordDetailsDTO.getAssetsVOList();
 		for (AssetsVO assetsVO : assetsVOList) {
