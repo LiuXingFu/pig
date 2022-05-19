@@ -94,4 +94,6 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	List<AssetsReDTO> queryTransferableAssetsReList(@Param("projectId")Integer projectId);
 
+	List<AssetsReDTO> queryAssetsReByProjectId(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId);
+
 }

@@ -358,4 +358,9 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.getAssetsByProjectId(projectId,caseeId);
 	}
 
+	@Override
+	public List<AssetsReDTO> queryAssetsReByProjectId(Integer projectId,Integer caseeId){
+		return this.baseMapper.queryAssetsReByProjectId(projectId,caseeId);
+	}
+
 }

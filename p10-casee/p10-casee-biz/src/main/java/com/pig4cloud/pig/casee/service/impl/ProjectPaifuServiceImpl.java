@@ -143,7 +143,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				// 保存客户
 				CustomerSubjectDTO customerSubjectDTO = new CustomerSubjectDTO();
 				customerSubjectDTO.setSubjectId(subjectId);
-				customerSubjectDTO.setNatureType(30000);
+				customerSubjectDTO.setCustomerType(40000);
 				customerSubjectDTO.setProjectId(projectPaifu.getProjectId());
 				customerSubjectDTO.setCaseeId(casee.getCaseeId());
 				customerSubjectDTO.setRecommenderId(projectPaifuSaveDTO.getUserId());
