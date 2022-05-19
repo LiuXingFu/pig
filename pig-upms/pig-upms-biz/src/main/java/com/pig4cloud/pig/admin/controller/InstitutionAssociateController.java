@@ -135,8 +135,8 @@ public class InstitutionAssociateController {
 	 * @return
 	 */
 	@ApiOperation(value = "查询合作法院", notes = "查询合作法院")
-	@GetMapping("/getAssociateCourt/{courtName}")
-	public R getAssociateCourt(@PathVariable("courtName") String courtName) {
+	@GetMapping("/getAssociateCourt")
+	public R getAssociateCourt(String courtName) {
 		return R.ok(institutionAssociateService.getAssociateCourt(courtName));
 	}
 
