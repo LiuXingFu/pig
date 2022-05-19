@@ -170,7 +170,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 	 */
 	private void setSubject(Subject subject, Subject subjectQuery) {
 		subject.setSubjectId(subjectQuery.getSubjectId());
-		if (Objects.nonNull(subject.getPhone()) && Objects.nonNull(subjectQuery.getPhone())) {
+		if ((Objects.nonNull(subject.getPhone()) && !subject.getPhone().equals(""))  && (Objects.nonNull(subjectQuery.getPhone()) && !subjectQuery.getPhone().equals(""))) {
 			if (!subjectQuery.getPhone().contains(subject.getPhone())) {
 				subject.setPhone(subjectQuery.getPhone() + ',' + subject.getPhone());
 			}

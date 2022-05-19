@@ -120,7 +120,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	}
 
 	private void saveSubjectVOAndCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
-		if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
+		if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 			if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
 				customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
 			}
@@ -310,7 +310,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 			} else if ((customerSubjectDTO.getUnifiedIdentity() != null && !customerSubjectDTO.equals("")) && (customerSubjectDTO.getPhone() != null && !customerSubjectDTO.getPhone().equals(""))) {
 				SubjectVO subjectVO = this.remoteSubjectService.getByUnifiedIdentity(customerSubjectDTO.getUnifiedIdentity(), SecurityConstants.FROM).getData();
 				if (subjectVO != null) {
-					if (Objects.nonNull(subjectVO.getPhone())) {
+					if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 						if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
 							customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
 						}
@@ -362,7 +362,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 		if (Objects.nonNull(subjectVO)) {
 			customerSubjectDTO.setSubjectId(subjectVO.getSubjectId());
 
-			if (Objects.nonNull(subjectVO.getPhone()) && Objects.nonNull(customerSubjectDTO.getPhone())) {
+			if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 				if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
 					customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
 				}

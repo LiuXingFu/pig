@@ -343,4 +343,15 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.getAssetsByProjectId(projectId,caseeId));
 	}
 
+	/**
+	 * 根据项目id查询财产关联和财产基本信息
+	 * @param projectId
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id查询财产关联和财产基本信息", notes = "根据项目id查询财产关联和财产基本信息")
+	@GetMapping("/queryAssetsReByProjectId" )
+	public R queryAssetsReByProjectId(Integer projectId,@RequestParam(value = "caseeId", required = false) Integer caseeId) {
+		return R.ok(assetsReLiquiService.queryAssetsReByProjectId(projectId,caseeId));
+	}
+
 }

@@ -240,4 +240,12 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	List<AssetsReDTO> queryTransferableAssetsReList(Integer projectId);
 
 	List<AssetsReDTO> getAssetsByProjectId(Integer projectId,Integer caseeId);
+
+	/**
+	 * 根据项目id案件id查询财产关联信息和财产基本信息
+	 * @param projectId
+	 * @param caseeId
+	 * @return
+	 */
+	List<AssetsReDTO> queryAssetsReByProjectId(Integer projectId,Integer caseeId);
 }
