@@ -29,7 +29,6 @@ public class LiQuiTaskScheduling {
 	 * 1.诉讼案件自动结案
 	 */
 	@XxlJob("refreshEveryDay")
-	@Transactional
 	public void refreshEveryDay() {
 		String param = XxlJobHelper.getJobParam(); // 获取参数
 		int shardIndex = XxlJobHelper.getShardIndex();// 获取分片参数
@@ -40,9 +39,6 @@ public class LiQuiTaskScheduling {
 
 			//刷新拍卖状态
 			liQuiTaskScheduling.refreshAuctionStatus();
-
-			//同步数据
-			liQuiTaskScheduling.synchronize();
 
 			XxlJobHelper.handleSuccess(); // v2.3.0 设置任务结果
 		} catch (Exception e) {
