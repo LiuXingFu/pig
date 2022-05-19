@@ -81,8 +81,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private ExpenseRecordService expenseRecordService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private PaymentRecordService paymentRecordService;
 	@Autowired
 	private BehaviorLiquiService behaviorLiquiService;
@@ -127,42 +125,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//查询银行借贷债务人信息
 		List<Integer> subjectIdList = subjectBankLoanReService.selectSubjectId(transferRecordBankLoanVO.getSourceId());
 		R<List<Subject>> result = remoteSubjectService.queryBySubjectIdList(subjectIdList, SecurityConstants.FROM);
-		//添加项目费用产生记录 本金
-		ExpenseRecord expenseRecordPrincipal = new ExpenseRecord();
-		expenseRecordPrincipal.setProjectId(projectLiqui.getProjectId());
-		expenseRecordPrincipal.setCostType(10001);
-		expenseRecordPrincipal.setCostIncurredTime(projectLiqui.getTakeTime());
-		expenseRecordPrincipal.setCostAmount(projectLiqui.getProjectLiQuiDetail().getPrincipal());
-		expenseRecordPrincipal.setStatus(0);
-		expenseRecordPrincipal.setCompanyCode(projectLiqui.getCompanyCode());
-		expenseRecordPrincipal.setSubjectName(transferRecordBankLoanVO.getSubjectName());
-		expenseRecordService.save(expenseRecordPrincipal);
 
-		//添加费用记录关联主体信息
-		ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
-		for (Subject subject : result.getData()) {
-			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectRe.setExpenseRecordId(expenseRecordPrincipal.getExpenseRecordId());
-			expenseRecordSubjectReService.save(expenseRecordSubjectRe);
-		}
+		if (transferRecordBankLoanVO.getTransferRecordLiquiDetail().getInterest()!=null&&transferRecordBankLoanVO.getTransferRecordLiquiDetail().getPrincipal()!=null){
+			//添加项目费用产生记录 本金
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getPrincipal(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),10001);
 
-		//添加项目费用产生记录 利息
-		ExpenseRecord expenseRecordInterest = new ExpenseRecord();
-		expenseRecordInterest.setProjectId(projectLiqui.getProjectId());
-		expenseRecordInterest.setCostType(30001);
-		expenseRecordInterest.setCostIncurredTime(projectLiqui.getTakeTime());
-		expenseRecordInterest.setCostAmount(projectLiqui.getProjectLiQuiDetail().getInterest());
-		expenseRecordInterest.setStatus(0);
-		expenseRecordInterest.setCompanyCode(projectLiqui.getCompanyCode());
-		expenseRecordInterest.setSubjectName(transferRecordBankLoanVO.getSubjectName());
-		expenseRecordService.save(expenseRecordInterest);
-
-		//添加费用记录关联主体信息
-		ExpenseRecordSubjectRe expenseRecordSubjectInterestRe = new ExpenseRecordSubjectRe();
-		for (Subject subject : result.getData()) {
-			expenseRecordSubjectInterestRe.setSubjectId(subject.getSubjectId());
-			expenseRecordSubjectInterestRe.setExpenseRecordId(expenseRecordInterest.getExpenseRecordId());
-			expenseRecordSubjectReService.save(expenseRecordSubjectInterestRe);
+			//添加项目费用产生记录 利息
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getInterest(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),30001);
+		}else {
+			//添加项目费用产生记录 移送总金额
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getProjectAmount(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),50001);
 		}
 
 		// 保存项目状态变更记录表

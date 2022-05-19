@@ -160,10 +160,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public ExpenseRecord addExpenseRecord(BigDecimal auxiliaryFee, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType) {
+	public ExpenseRecord addExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType) {
 		//添加费用明细记录
 		ExpenseRecord expenseRecord = new ExpenseRecord();
-		expenseRecord.setCostAmount(auxiliaryFee);
+		expenseRecord.setCostAmount(amount);
 		expenseRecord.setCostIncurredTime(date);
 		expenseRecord.setProjectId(project.getProjectId());
 		expenseRecord.setCaseeId(casee.getCaseeId());
@@ -202,6 +202,36 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
 		}
 		//添加费用产生明细关联主体信息
+		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
+		return expenseRecord;
+	}
+
+	@Override
+	public ExpenseRecord addCommonExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee,List<Subject> subjectList, String subjectName, Integer costType) {
+		//添加项目费用产生记录
+		ExpenseRecord expenseRecord = new ExpenseRecord();
+		expenseRecord.setProjectId(project.getProjectId());
+		expenseRecord.setCostType(costType);
+		expenseRecord.setCostIncurredTime(date);
+		expenseRecord.setCostAmount(amount);
+		expenseRecord.setStatus(0);
+		expenseRecord.setCompanyCode(project.getCompanyCode());
+		expenseRecord.setSubjectName(subjectName);
+		if (casee!=null){
+			expenseRecord.setCaseeId(casee.getCaseeId());
+			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
+		}
+
+		this.save(expenseRecord);
+
+		//添加费用记录关联主体信息
+		ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList=new ArrayList<>();
+		for (Subject subject : subjectList) {
+			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
+			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+		}
 		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
 		return expenseRecord;
 	}

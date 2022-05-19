@@ -20,6 +20,7 @@ package com.pig4cloud.pig.casee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
@@ -57,15 +58,28 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 
 	/**
 	 * 添加费用产生记录以及其它关联信息
-	 * @param auxiliaryFee				费用
+	 * @param amount					费用
 	 * @param date						费用产生时间
 	 * @param project					项目
 	 * @param casee 					案件
-	 * @param assetsReSubjectDTO		回款类型
-	 * @param jointAuctionAssetsDTOList	款项类型
+	 * @param assetsReSubjectDTO		财产信息
+	 * @param jointAuctionAssetsDTOList	联合拍卖财产信息
+	 * @param costType					款项类型
 	 * @return
 	 */
-	ExpenseRecord addExpenseRecord(BigDecimal auxiliaryFee, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType);
+	ExpenseRecord addExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType);
+
+	/**
+	 * 添加费用产生记录以及其它关联信息
+	 * @param amount					费用
+	 * @param date						费用产生时间
+	 * @param project					项目
+	 * @param casee 					案件
+	 * @param subjectName				主体名称
+	 * @param costType					款项类型
+	 * @return
+	 */
+	ExpenseRecord addCommonExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, List<Subject> subjectList, String subjectName, Integer costType);
 
 	/**
 	 * 根据项目id统计总金额

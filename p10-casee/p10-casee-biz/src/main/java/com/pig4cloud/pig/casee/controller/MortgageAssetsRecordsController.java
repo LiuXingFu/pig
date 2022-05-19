@@ -159,4 +159,15 @@ public class MortgageAssetsRecordsController {
 		return R.ok(mortgageAssetsRecordsService.removeById(mortgageAssetsRecordsId));
 	}
 
+	/**
+	 * 同步数据
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/synchronize" )
+	public R synchronize() {
+		mortgageAssetsRecordsService.synchronize();
+		return R.ok();
+	}
+
 }
