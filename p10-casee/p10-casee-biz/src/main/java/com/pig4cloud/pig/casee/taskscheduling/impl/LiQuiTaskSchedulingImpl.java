@@ -39,8 +39,4 @@ public class LiQuiTaskSchedulingImpl {
 	public void refreshAuctionStatus(){
 		auctionRecordService.refreshAuctionStatus();
 	}
-
-	public void synchronize(){
-		mortgageAssetsRecordsService.synchronize();
-	}
 }
