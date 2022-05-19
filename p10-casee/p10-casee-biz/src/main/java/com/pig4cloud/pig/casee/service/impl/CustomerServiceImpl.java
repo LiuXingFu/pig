@@ -122,7 +122,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 	private void saveSubjectVOAndCustomerSubjectDTO(CustomerSubjectDTO customerSubjectDTO, SubjectVO subjectVO) {
 		if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 			if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
-				customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+				if (!subjectVO.equals("无")) {
+					customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+				}
 			}
 		}
 
@@ -312,7 +314,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 				if (subjectVO != null) {
 					if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 						if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
-							customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+							if (!subjectVO.equals("无")) {
+								customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+							}
 						}
 					}
 
@@ -364,7 +368,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
 			if ((Objects.nonNull(subjectVO.getPhone()) && !subjectVO.equals("")) && (Objects.nonNull(customerSubjectDTO.getPhone()) && !customerSubjectDTO.getPhone().equals(""))) {
 				if (!subjectVO.getPhone().contains(customerSubjectDTO.getPhone())) {
-					customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+					if (!subjectVO.equals("无")) {
+						customerSubjectDTO.setPhone(subjectVO.getPhone() + ',' + customerSubjectDTO.getPhone());
+					}
 				}
 			}
 
