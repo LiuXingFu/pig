@@ -64,7 +64,7 @@
 		p10_payment_record
 		left join p10_project on p10_project.project_id=p10_payment_record.project_id
 		where
-		p10_payment_record.del_flag=0 and ISNULL(p10_payment_record.father_id)
+		p10_payment_record.del_flag=0 and ISNULL(p10_payment_record.father_id) and p10_payment_record.payment_type!=200
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
 		</if>
