@@ -35,6 +35,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +184,7 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 	}
 
 	@Override
+	@Transactional
 	public void synchronize() {
 		List<AssetsBankLoanRe> AssetsBankLoanReList = assetsBankLoanReService.list();
 
