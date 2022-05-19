@@ -39,6 +39,9 @@ public class LiQuiTaskScheduling {
 			//刷新拍卖状态
 			liQuiTaskScheduling.refreshAuctionStatus();
 
+			//同步数据
+			liQuiTaskScheduling.synchronize();
+
 			XxlJobHelper.handleSuccess(); // v2.3.0 设置任务结果
 		} catch (Exception e) {
 			XxlJobHelper.handleFail(); // v2.3.0 设置任务结果

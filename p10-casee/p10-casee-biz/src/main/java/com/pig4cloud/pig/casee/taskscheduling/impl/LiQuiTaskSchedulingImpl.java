@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.taskscheduling.impl;
 
 import com.pig4cloud.pig.casee.service.AuctionRecordService;
 import com.pig4cloud.pig.casee.service.CaseeLiquiService;
+import com.pig4cloud.pig.casee.service.MortgageAssetsRecordsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,9 @@ public class LiQuiTaskSchedulingImpl {
 	@Autowired
 	AuctionRecordService auctionRecordService;
 
+	@Autowired
+	MortgageAssetsRecordsService mortgageAssetsRecordsService;
+
 	/**
 	 * 诉讼案件自动结案
 	 */
@@ -36,4 +40,7 @@ public class LiQuiTaskSchedulingImpl {
 		auctionRecordService.refreshAuctionStatus();
 	}
 
+	public void synchronize(){
+		mortgageAssetsRecordsService.synchronize();
+	}
 }
