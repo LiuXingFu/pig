@@ -7,6 +7,7 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @PACKAGE_NAME: com.pig4cloud.pig.casee.taskscheduling
@@ -28,6 +29,7 @@ public class LiQuiTaskScheduling {
 	 * 1.诉讼案件自动结案
 	 */
 	@XxlJob("refreshEveryDay")
+	@Transactional
 	public void refreshEveryDay() {
 		String param = XxlJobHelper.getJobParam(); // 获取参数
 		int shardIndex = XxlJobHelper.getShardIndex();// 获取分片参数
