@@ -300,9 +300,8 @@ public class ProjectPaifuController {
 	 */
 	@ApiOperation(value = "根据id查询拍辅项目", notes = "根据id查询拍辅项目")
 	@GetMapping("/projectPaifuExport" )
-	public R projectPaifuExport(HttpServletResponse response, ProjectPaifuPageDTO projectPaifuPageDTO) {
+	public void projectPaifuExport(HttpServletResponse response, ProjectPaifuPageDTO projectPaifuPageDTO) {
 		projectPaifuService.projectPaifuExport(response,projectPaifuPageDTO);
-		return R.ok("导出成功");
 	}
 
 }

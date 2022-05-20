@@ -16,7 +16,7 @@ spring:
   profiles:
     active: @profiles.active@
 
-  #配置freemarker
+#配置freemarker
 freemarker:
   # 设置模板后缀名
   suffix: .ftl
@@ -30,5 +30,3 @@ freemarker:
   # 设置ftl文件路径
   template-loader-path:
     - classpath:/templates
-  settings:
-    classic_compatible: true
