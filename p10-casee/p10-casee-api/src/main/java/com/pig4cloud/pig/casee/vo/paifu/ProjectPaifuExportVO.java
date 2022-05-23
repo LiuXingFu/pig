@@ -71,7 +71,7 @@ public class ProjectPaifuExportVO  {
 	 * 财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））
 	 */
 	@ApiModelProperty(value="财产性质（资金财产：(20101:银行存款，20102：住房公积金)，实体财产：（20201：房产，20202：车辆，20203：股权，20204：土地，20205：其它））")
-	private Integer assetsType;
+	private String assetsType;
 
 	/**
 	 * 立案日期
@@ -99,7 +99,7 @@ public class ProjectPaifuExportVO  {
 	/**
 	 * 拍卖平台
 	 */
-	private Integer auctionPlatform;
+	private String auctionPlatform;
 
 	/**
 	 * 退出日期
@@ -143,6 +143,11 @@ public class ProjectPaifuExportVO  {
 	 */
 	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
 	private Integer oneBeatResultsType;
+	/**
+	 * 一拍结果
+	 */
+	@ApiModelProperty(value="一拍结果")
+	private String oneResultType;
 
 	//-----------二拍--------------------
 
@@ -174,6 +179,11 @@ public class ProjectPaifuExportVO  {
 	 */
 	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
 	private Integer twoBeatResultsType;
+	/**
+	 * 一拍结果
+	 */
+	@ApiModelProperty(value="一拍结果")
+	private String twoResultType;
 
 	//-----------变卖--------------------
 
@@ -205,6 +215,11 @@ public class ProjectPaifuExportVO  {
 	 */
 	@ApiModelProperty(value="结果类型（10-成交，20-流拍，30-撤回，40-中止，50-抵偿）")
 	private Integer sellOffResultsType;
+	/**
+	 * 一拍结果
+	 */
+	@ApiModelProperty(value="一拍结果")
+	private String sellResultType;
 
 	/**
 	 * 回款时间
@@ -217,5 +232,10 @@ public class ProjectPaifuExportVO  {
 	 */
 	@ApiModelProperty(value="回款金额")
 	private BigDecimal paymentAmount;
+	/**
+	 * 定价方式
+	 */
+	@ApiModelProperty(value="定价方式")
+	private String pricingMethodType;
 
 }

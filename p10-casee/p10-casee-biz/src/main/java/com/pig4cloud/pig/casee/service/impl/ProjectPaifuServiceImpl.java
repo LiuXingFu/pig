@@ -1021,18 +1021,19 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		ProjectPaifuExcelExportVO projectPaifuExcelExportVO = new ProjectPaifuExcelExportVO();
 		List<ProjectPaifuInProgressVO> inProgressList = new ArrayList<>();
 		for (String year : yearList) {
-
 			projectPaifuPageDTO.setYear(year);
 			projectPaifuPageDTO.setProjectStatus(1000);
 
 			List<ProjectPaifuExportVO> projectPaifuExportVOS = this.baseMapper.projectPaifuExport(projectPaifuPageDTO, insOutlesDTO);
-
-			ProjectPaifuInProgressVO projectPaifuInProgressVO = new ProjectPaifuInProgressVO();
-			projectPaifuInProgressVO.setYear(year);
-			projectPaifuInProgressVO.setExportVOS(projectPaifuExportVOS);
-			inProgressList.add(projectPaifuInProgressVO);
+			if(projectPaifuExportVOS.size()!=0){
+				ProjectPaifuInProgressVO projectPaifuInProgressVO = new ProjectPaifuInProgressVO();
+				projectPaifuInProgressVO.setYear(year);
+				projectPaifuInProgressVO.setExportVOS(projectPaifuExportVOS);
+				inProgressList.add(projectPaifuInProgressVO);
+			}
 		}
 		projectPaifuExcelExportVO.setInProgressList(inProgressList);
+		projectPaifuPageDTO.setYear(null);
 		projectPaifuPageDTO.setProjectStatus(4000);
 		List<ProjectPaifuExportVO> caseClosed = this.baseMapper.projectPaifuExport(projectPaifuPageDTO, insOutlesDTO);
 		projectPaifuExcelExportVO.setCaseClosed(caseClosed);
