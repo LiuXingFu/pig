@@ -134,4 +134,29 @@ public class CourtController {
 		return R.ok(courtService.getByRegionCodeOrCourtName(regionCode,courtName));
 	}
 
+	/**
+	 *	查询入驻法院
+	 * @param courtName
+	 * @return
+	 */
+	@ApiOperation(value = "查询入驻法院", notes = "查询入驻法院")
+	@GetMapping("/queryCourtPage")
+	public R queryCourtPage(Page page, String courtName) {
+		return R.ok(courtService.queryCourtPage(page, courtName));
+	}
+
+	/**
+	 * 查询未入驻的法院
+	 * @param page
+	 * @param insId
+	 * @param outlesId
+	 * @param courtName
+	 * @return
+	 */
+	@ApiOperation(value = "查询入驻法院", notes = "查询入驻法院")
+	@GetMapping("/queryCourtPageByInsIdAndOutlesId")
+	public R queryCourtPageByInsIdAndOutlesId(Page page, Integer insId, Integer outlesId, String courtName){
+		return R.ok(courtService.queryCourtPageByInsIdAndOutlesId(page, insId, outlesId, courtName));
+	}
+
 }

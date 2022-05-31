@@ -158,8 +158,8 @@ public class MessageRecordController {
 	@ApiOperation(value = "查询当前机构的所有合作消息", notes = "查询当前机构的所有合作消息")
 	@SysLog("查询当前机构的所有合作消息" )
 	@GetMapping("/withCooperativeAgencies")
-	public R withCooperativeAgencies(Integer messageId){
-		return R.ok(this.messageRecordService.withCooperativeAgencies(messageId));
+	public R withCooperativeAgencies(Page page, Integer messageId){
+		return R.ok(this.messageRecordService.withCooperativeAgencies(page, messageId));
 	}
 	/**
 	 *	查询消息气泡数

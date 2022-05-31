@@ -48,7 +48,7 @@ public interface MessageRecordMapper extends BaseMapper<MessageRecord> {
 
 	MessageRecordVO getById(@Param("messageId")Integer messageId);
 
-	List<CooperationNewsVO> withCooperativeAgencies(@Param("messageId") Integer messageId, @Param("insId") Integer insId);
+	IPage<CooperationNewsVO> withCooperativeAgencies(Page page, @Param("messageId") Integer messageId, @Param("insId") Integer insId);
 	//查询消息通知未读数
 	Integer selectMessageNumber(@Param("insId") Integer insId, @Param("userId") Integer userId);
 	//查询待办理

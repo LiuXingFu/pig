@@ -50,4 +50,8 @@ public interface CourtService extends IService<Court> {
 	 * @return
 	 */
 	IPage<Court> getCourtPageList(Page page, Court court);
+
+	IPage<Court> queryCourtPage(Page page, String courtName);
+
+	IPage<Court> queryCourtPageByInsIdAndOutlesId(Page page, Integer insId, Integer outlesId, String courtName);
 }

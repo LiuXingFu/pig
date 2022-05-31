@@ -154,8 +154,8 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 	 * @return
 	 */
 	@Override
-	public List<CooperationNewsVO> withCooperativeAgencies(Integer messageId) {
-		return this.baseMapper.withCooperativeAgencies(messageId, securityUtilsService.getCacheUser().getInsId());
+	public IPage<CooperationNewsVO> withCooperativeAgencies(Page page, Integer messageId) {
+		return this.baseMapper.withCooperativeAgencies(page, messageId, securityUtilsService.getCacheUser().getInsId());
 	}
 
 	@Override

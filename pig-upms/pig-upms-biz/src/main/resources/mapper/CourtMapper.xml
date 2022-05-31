@@ -58,4 +58,17 @@
 			and court.court_id = #{query.courtId}
 		</if>
 	</select>
+
+	<select id="queryCourtPage" resultType="com.pig4cloud.pig.admin.api.entity.Court">
+		SELECT * FROM p10_court court WHERE court.del_flag = '0'
+		<if test="courtName != null and courtName != ''">
+			and court.court_name LIKE CONCAT('%',#{courtName},'%')
+		</if>
+		<if test="courtIds != null and courtIds.size() > 0">
+			AND court.court_id not in
+			<foreach collection="courtIds" item="item" open="(" close=")" separator="," >
+				#{item}
+			</foreach>
+		</if>
+	</select>
 </mapper>

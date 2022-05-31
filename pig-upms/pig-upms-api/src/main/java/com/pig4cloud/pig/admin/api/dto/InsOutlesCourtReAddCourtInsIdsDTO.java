@@ -12,7 +12,7 @@ public class InsOutlesCourtReAddCourtInsIdsDTO {
 	/**
 	 * 法院机构id
 	 */
-	List<Integer> courtInsIds;
+	List<Integer> courtIds;
 
 	/**
 	 * 入驻法院的网点id集合

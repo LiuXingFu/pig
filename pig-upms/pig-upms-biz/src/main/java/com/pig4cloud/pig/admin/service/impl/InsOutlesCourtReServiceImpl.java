@@ -73,7 +73,7 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 	 */
 	@Override
 	@Transactional
-	public int addInsOutlesCourtReByOutlesIds(InsOutlesCourtReAddOutlesIdsDTO insOutlesCourtReAddOutlesIdsDTO) {
+		public int addInsOutlesCourtReByOutlesIds(InsOutlesCourtReAddOutlesIdsDTO insOutlesCourtReAddOutlesIdsDTO) {
 
 		int add = 0;
 
@@ -88,7 +88,7 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 			insOutlesCourtRe.setInsId(insOutlesCourtReAddOutlesIdsDTO.getInsId());
 			insOutlesCourtRe.setOutlesId(outlesId);
 			insOutlesCourtRe.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
-			insOutlesCourtRe.setCourtInsId(insOutlesCourtReAddOutlesIdsDTO.getCourtInsId());
+//			insOutlesCourtRe.setCourtInsId(insOutlesCourtReAddOutlesIdsDTO.getCourtInsId());
 			list.add(insOutlesCourtRe);
 		}
 
@@ -115,16 +115,13 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 
 		List<InsOutlesCourtRe> list = new ArrayList<>();
 
-		for (int i = 0; i < insOutlesCourtReAddCourtInsIdsDTO.getCourtInsIds().size(); i++) {
-			Integer courtInsId = insOutlesCourtReAddCourtInsIdsDTO.getCourtInsIds().get(i);
-			RelationshipAuthenticate relationshipAuthenticate = relationshipAuthenticateService.getOne(new LambdaQueryWrapper<RelationshipAuthenticate>()
-					.eq(RelationshipAuthenticate::getAuthenticateId, courtInsId));
+		for (int i = 0; i < insOutlesCourtReAddCourtInsIdsDTO.getCourtIds().size(); i++) {
+			Integer courtId = insOutlesCourtReAddCourtInsIdsDTO.getCourtIds().get(i);
 
 			InsOutlesCourtRe insOutlesCourtRe = new InsOutlesCourtRe();
 			insOutlesCourtRe.setInsId(insOutlesCourtReAddCourtInsIdsDTO.getInsId());
 			insOutlesCourtRe.setOutlesId(insOutlesCourtReAddCourtInsIdsDTO.getOutlesId());
-			insOutlesCourtRe.setCourtId(relationshipAuthenticate.getAuthenticateGoalId());
-			insOutlesCourtRe.setCourtInsId(courtInsId);
+			insOutlesCourtRe.setCourtId(courtId);
 			list.add(insOutlesCourtRe);
 		}
 

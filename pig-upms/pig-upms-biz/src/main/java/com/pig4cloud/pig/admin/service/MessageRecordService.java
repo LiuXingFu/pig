@@ -79,7 +79,7 @@ public interface MessageRecordService extends IService<MessageRecord> {
 	 * @param messageId
 	 * @return
 	 */
-	List<CooperationNewsVO> withCooperativeAgencies(Integer messageId);
+	IPage<CooperationNewsVO> withCooperativeAgencies(Page page, Integer messageId);
 
 	/**
 	 * 查询消息气泡数

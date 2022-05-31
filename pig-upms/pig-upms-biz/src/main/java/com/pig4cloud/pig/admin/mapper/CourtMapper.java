@@ -15,4 +15,6 @@ public interface CourtMapper extends BaseMapper<Court> {
 	List<Court> getByRegionCodeOrCourtName(@Param("regionCode") Integer regionCode,@Param("courtName") String courtName);
 
 	IPage<Court> getCourtPageList(Page page, @Param("query") Court court);
+
+	IPage<Court> queryCourtPage(Page page, @Param("courtName")  String courtName, @Param("courtIds")  List<Integer> courtIds);
 }

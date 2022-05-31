@@ -11,8 +11,6 @@ public class CourtAndCourtInsIdVO extends Court {
 	/**
 	 * 关联法院id
 	 */
-	private Integer courtInsId;
-
-//	private
+//	private Integer courtInsId;
 
 }

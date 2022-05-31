@@ -243,12 +243,12 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 
 	@Override
 	public List<CourtAndCourtInsIdVO> getAssociateCourtByInsIdAndOutlesId(Integer insId, Integer outlesId, String courtName) {
-		List<Integer> courtInsIds = this.insOutlesCourtReService.list(new LambdaQueryWrapper<InsOutlesCourtRe>()
+		List<Integer> courIds = this.insOutlesCourtReService.list(new LambdaQueryWrapper<InsOutlesCourtRe>()
 				.eq(InsOutlesCourtRe::getInsId, insId)
 				.eq(InsOutlesCourtRe::getOutlesId, outlesId))
-				.stream().map(InsOutlesCourtRe::getCourtInsId)
+				.stream().map(InsOutlesCourtRe::getCourtId)
 				.collect(Collectors.toList());
-		return this.baseMapper.getAssociateCourt(insId, courtName, courtInsIds);
+		return this.baseMapper.getAssociateCourt(insId, courtName, courIds);
 	}
 
 	/**

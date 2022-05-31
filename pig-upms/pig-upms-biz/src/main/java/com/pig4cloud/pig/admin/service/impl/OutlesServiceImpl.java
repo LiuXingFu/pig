@@ -333,11 +333,11 @@ public class OutlesServiceImpl extends ServiceImpl<OutlesMapper, Outles> impleme
 		insOutlesUserService.addInsOutlesUser(insOutlesUserAddDTO);
 
 		//筛选法院机构id
-		List<Integer> courtInsIds = outlesAddDTO.getCourtAndCourtInsIdVOS().stream().map(CourtAndCourtInsIdVO::getCourtInsId).collect(Collectors.toList());
+		List<Integer> courtIds = outlesAddDTO.getCourtAndCourtInsIdVOS().stream().map(CourtAndCourtInsIdVO::getCourtId).collect(Collectors.toList());
 
 		//将法院机构id集合、机构id与网点id传给机构网点法院service添加入驻方法中
 		InsOutlesCourtReAddCourtInsIdsDTO insOutlesCourtReAddCourtInsIdsDTO = new InsOutlesCourtReAddCourtInsIdsDTO();
-		insOutlesCourtReAddCourtInsIdsDTO.setCourtInsIds(courtInsIds);
+		insOutlesCourtReAddCourtInsIdsDTO.setCourtIds(courtIds);
 		insOutlesCourtReAddCourtInsIdsDTO.setInsId(securityUtilsService.getCacheUser().getInsId());
 		insOutlesCourtReAddCourtInsIdsDTO.setOutlesId(outles.getOutlesId());
 		insOutlesCourtReService.addInsOutlesCourtReByCourtInsIds(insOutlesCourtReAddCourtInsIdsDTO);
