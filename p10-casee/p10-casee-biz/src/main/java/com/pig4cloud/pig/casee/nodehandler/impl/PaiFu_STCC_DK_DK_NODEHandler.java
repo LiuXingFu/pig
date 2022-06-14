@@ -1,11 +1,9 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
-import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -15,13 +13,9 @@ import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
@@ -58,6 +52,11 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		//修改资产抵偿环节为跳过
+		TaskNode paiFu_stcc_zcdc_zcdc = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_ZCDC_ZCDC").eq(TaskNode::getNodeAttributes, 400));
+		paiFu_stcc_zcdc_zcdc.setStatus(301);
+		taskNodeService.updateById(paiFu_stcc_zcdc_zcdc);
+
 		//拍辅到款
 		setPaiFuStccDkDk(taskNode);
 
