@@ -64,23 +64,23 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int addInsOutlesUser(InsOutlesUserObjectDTO insOutlesUserAddDTO){
+	public int addInsOutlesUser(InsOutlesUserObjectDTO insOutlesUserAddDTO) {
 		Institution institution = institutionService.getById(insOutlesUserAddDTO.getInsId());
 
 		List<SysUser> userList = insOutlesUserAddDTO.getUserList();
 		List<InsOutlesUser> insOutlesUserList = new ArrayList<>();
-		userList.stream().forEach(item ->{
+		userList.stream().forEach(item -> {
 			// 用户已存在的情况下，验证此网点下是否有已存在记录
-			if(Objects.nonNull(item.getUserId())){
+			if (Objects.nonNull(item.getUserId())) {
 				QueryWrapper<InsOutlesUser> queryWrapper = new QueryWrapper<>();
-				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag,0);
-				queryWrapper.lambda().eq(InsOutlesUser::getUserId,item.getUserId());
-				queryWrapper.lambda().eq(InsOutlesUser::getInsId,insOutlesUserAddDTO.getInsId());
-				if(Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
+				queryWrapper.lambda().eq(InsOutlesUser::getDelFlag, 0);
+				queryWrapper.lambda().eq(InsOutlesUser::getUserId, item.getUserId());
+				queryWrapper.lambda().eq(InsOutlesUser::getInsId, insOutlesUserAddDTO.getInsId());
+				if (Objects.nonNull(insOutlesUserAddDTO.getOutlesId())) {
 					queryWrapper.lambda().and(wrapper -> wrapper.isNull(InsOutlesUser::getOutlesId).or().eq(InsOutlesUser::getOutlesId, insOutlesUserAddDTO.getOutlesId()));
 				}
 				List<InsOutlesUser> users = insOutlesUserService.list(queryWrapper);
-				if(users.size() > 0){
+				if (users.size() > 0) {
 					throw new RuntimeException("此用户已是负责人或员工！");
 				}
 			}
@@ -94,10 +94,10 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 			SysUser user = sysUserService.getByPhone(item.getPhone());
 			// 判断用户是否存在
-			if(Objects.nonNull(user)){
+			if (Objects.nonNull(user)) {
 				insOutlesUser.setUserId(user.getUserId());
 				// 用户已存在，状态为删除或冻结时，解除冻结和删除
-				if(!user.getDelFlag().equals(CommonConstants.STATUS_NORMAL)){
+				if (!user.getDelFlag().equals(CommonConstants.STATUS_NORMAL)) {
 					UserDTO sysUser = new UserDTO();
 					sysUser.setUserId(user.getUserId());
 					sysUser.setPassword("123456");
@@ -107,7 +107,7 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 					sysUser.setNickName(item.getActualName());
 					sysUserService.updateByUserId(sysUser);
 				}
-			}else{
+			} else {
 				UserDTO sysUser = new UserDTO();
 				sysUser.setPassword("123456");
 				sysUser.setNickName(item.getActualName());
@@ -135,18 +135,18 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 		Integer insId = insOutlesUserAddDTO.getInsId();
 		Integer outlesId = insOutlesUserAddDTO.getOutlesId();
 		String typeName = "";
-		if(userType==1 && Objects.nonNull(insId) && Objects.isNull(outlesId)){
+		if (userType == 1 && Objects.nonNull(insId) && Objects.isNull(outlesId)) {
 			typeName = "_ADMIN";
-		}else if(userType==1 && Objects.nonNull(insId) && Objects.nonNull(outlesId)){
+		} else if (userType == 1 && Objects.nonNull(insId) && Objects.nonNull(outlesId)) {
 			typeName = "_OUTLES_ADMIN";
-		}else if(userType==2){
+		} else if (userType == 2) {
 			typeName = "_STAFF_GENERAL";
 		}
 		// 6.根据角色标识查询角色信息
 		SysRole role = this.sysRoleService.getOne(new LambdaQueryWrapper<SysRole>().eq(SysRole::getRoleCode, dictItem.getLabel() + typeName).eq(SysRole::getDelFlag, 0));
 
 		List<StaffRole> staffRoleList = new ArrayList<>();
-		insOutlesUserList.stream().forEach(item ->{
+		insOutlesUserList.stream().forEach(item -> {
 			StaffRole staffRole = new StaffRole();
 			staffRole.setRoleId(role.getRoleId());
 			staffRole.setStaffId(item.getInsOutlesUserId());
@@ -159,30 +159,30 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	@Override
 	@Transactional
-	public int removeInsOutlesUser(Integer insOutlesUserId){
+	public int removeInsOutlesUser(Integer insOutlesUserId) {
 		int modify = 0;
 		InsOutlesUser insOutlesUser = new InsOutlesUser();
 		insOutlesUser.setDelFlag(CommonConstants.STATUS_DEL);
 		insOutlesUser.setInsOutlesUserId(insOutlesUserId);
 		modify = this.baseMapper.deleteById(insOutlesUser);
 		// 删除角色权限
-		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId,insOutlesUserId));
+		staffRoleService.remove(new LambdaQueryWrapper<StaffRole>().eq(StaffRole::getStaffId, insOutlesUserId));
 		return modify;
 	}
 
 	@Override
 	@Transactional
-	public List<InsOutlesUserListVO> queryUserList(Integer type,Integer insId, Integer outlesId){
-		return this.baseMapper.selectUserList(type,insId,outlesId);
+	public List<InsOutlesUserListVO> queryUserList(Integer type, Integer insId, Integer outlesId) {
+		return this.baseMapper.selectUserList(type, insId, outlesId);
 	}
 
 	@Override
-	public List<InsOutlesUserInsOutlesVO> queryOutlesName(Integer userId,Integer insId){
-		return this.baseMapper.selectOutlesName(userId,insId);
+	public List<InsOutlesUserInsOutlesVO> queryOutlesName(Integer userId, Integer insId) {
+		return this.baseMapper.selectOutlesName(userId, insId);
 	}
 
 	@Override
-	public List<InsOutlesUserInsOutlesVO> queryInsName(Integer userId){
+	public List<InsOutlesUserInsOutlesVO> queryInsName(Integer userId) {
 		return this.baseMapper.selectInsName(userId);
 	}
 
@@ -193,26 +193,53 @@ public class InsOutlesUserServiceImpl extends ServiceImpl<InsOutlesUserMapper, I
 
 	/**
 	 * 根据网点id添加这个网点的普通用户
+	 *
 	 * @param insOutlesUserAddOutlesListDTO
 	 * @return
 	 */
 	@Override
 	public int addInsOutlesUserByOutlesId(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO) {
 
-				InsOutlesUserObjectDTO insOutlesUserObjectDTO = new InsOutlesUserObjectDTO();
-				insOutlesUserObjectDTO.setInsId(insOutlesUserAddOutlesListDTO.getInsId());
-				insOutlesUserObjectDTO.setType(insOutlesUserAddOutlesListDTO.getType());
-				insOutlesUserObjectDTO.setOutlesId(insOutlesUserAddOutlesListDTO.getOutlesId());
-				insOutlesUserObjectDTO.setPosition(insOutlesUserAddOutlesListDTO.getPosition());
-				List<SysUser> sysUserList = new ArrayList<>();
-				SysUser sysUser = new SysUser();
-				sysUser.setPhone(insOutlesUserAddOutlesListDTO.getPhone());
-				sysUser.setUserId(insOutlesUserAddOutlesListDTO.getUserId());
-				sysUser.setActualName(insOutlesUserAddOutlesListDTO.getActualName());
-				sysUserList.add(sysUser);
-				insOutlesUserObjectDTO.setUserList(sysUserList);
-				insOutlesUserService.addInsOutlesUser(insOutlesUserObjectDTO);
+		InsOutlesUserObjectDTO insOutlesUserObjectDTO = new InsOutlesUserObjectDTO();
+		insOutlesUserObjectDTO.setInsId(insOutlesUserAddOutlesListDTO.getInsId());
+		insOutlesUserObjectDTO.setType(insOutlesUserAddOutlesListDTO.getType());
+		insOutlesUserObjectDTO.setOutlesId(insOutlesUserAddOutlesListDTO.getOutlesId());
+		insOutlesUserObjectDTO.setPosition(insOutlesUserAddOutlesListDTO.getPosition());
+		List<SysUser> sysUserList = new ArrayList<>();
+		SysUser sysUser = new SysUser();
+		sysUser.setPhone(insOutlesUserAddOutlesListDTO.getPhone());
+		sysUser.setUserId(insOutlesUserAddOutlesListDTO.getUserId());
+		sysUser.setActualName(insOutlesUserAddOutlesListDTO.getActualName());
+		sysUserList.add(sysUser);
+		insOutlesUserObjectDTO.setUserList(sysUserList);
+		insOutlesUserService.addInsOutlesUser(insOutlesUserObjectDTO);
 		return 1;
+	}
+
+	/**
+	 * 根据机构/网点用户关联表id查询机构/网点用户关联表与用户信息
+	 *
+	 * @param insOutlesUserId
+	 * @return
+	 */
+	@Override
+	public InsOutlesUserInsOutlesVO queryById(Integer insOutlesUserId) {
+		return this.baseMapper.queryById(insOutlesUserId);
+	}
+
+	/**
+	 * 修改网点用户关联表信息
+	 *
+	 * @param insOutlesUser
+	 * @return
+	 */
+	@Override
+	public int updateInsOutlesUser(InsOutlesUser insOutlesUser) {
+		int update = 0;
+
+		this.updateById(insOutlesUser);
+
+		return update += 1;
 	}
 
 

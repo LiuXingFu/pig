@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAssociatePageDTO;
 import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
 import com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO;
@@ -48,10 +49,10 @@ public interface InstitutionAssociateService extends IService<InstitutionAssocia
 	/**
 	 * 根据机构ID分页查询合作机构
 	 * @param page
-	 * @param institutionAssociate
+	 * @param institutionAssociatePageDTO
 	 * @return
 	 */
-	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate);
+	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociatePageDTO institutionAssociatePageDTO);
 
 	/**
 	 * 根据机构关联id查询相关信息

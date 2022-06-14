@@ -760,13 +760,13 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 		String caseeNumber = importPaifu.getCaseeNumber();
 		//----------------案件验证----------------------------
 		QueryWrapper<Casee> caseeQueryWrapper = new QueryWrapper<>();
-		caseeQueryWrapper.lambda().eq(Casee::getCaseeNumber, caseeNumber);
-		caseeQueryWrapper.lambda().eq(Casee::getDelFlag, 0);
-		caseeQueryWrapper.last("limit 1");
-		Casee casee = caseeService.getOne(caseeQueryWrapper);
-		String[] executedNames = splitSubject(importPaifu.getExecutedName());
-		String[] applicantNames = splitSubject(importPaifu.getApplicantName());
-		if (casee == null) {
+			caseeQueryWrapper.lambda().eq(Casee::getCaseeNumber, caseeNumber);
+			caseeQueryWrapper.lambda().eq(Casee::getDelFlag, 0);
+			caseeQueryWrapper.last("limit 1");
+			Casee casee = caseeService.getOne(caseeQueryWrapper);
+			String[] executedNames = splitSubject(importPaifu.getExecutedName());
+			String[] applicantNames = splitSubject(importPaifu.getApplicantName());
+			if (casee == null) {
 			Casee saveCasee = new Casee();
 			saveCasee.setCaseeNumber(caseeNumber);
 			saveCasee.setStartTime(importPaifu.getStartTime());
@@ -783,12 +783,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				for (String executedName : executedNames) {
 					if (executedName != null) {
 						Integer subjectId = getSubjectId(executedName);
-						CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
-						caseeSubjectRe.setCaseeId(casee.getCaseeId());
-						caseeSubjectRe.setType(1);
-						caseeSubjectRe.setCaseePersonnelType(1);
-						caseeSubjectRe.setSubjectId(subjectId);
-						caseeSubjectRes.add(caseeSubjectRe);
+						if(subjectId>0){
+							CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+							caseeSubjectRe.setCaseeId(casee.getCaseeId());
+							caseeSubjectRe.setType(1);
+							caseeSubjectRe.setCaseePersonnelType(1);
+							caseeSubjectRe.setSubjectId(subjectId);
+							caseeSubjectRes.add(caseeSubjectRe);
+						}
 					}
 				}
 			}
@@ -796,12 +798,14 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 				for (String applicantName : applicantNames) {
 					if (applicantName != null) {
 						Integer subjectId = getSubjectId(applicantName);
-						CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
-						caseeSubjectRe.setCaseeId(casee.getCaseeId());
-						caseeSubjectRe.setType(0);
-						caseeSubjectRe.setCaseePersonnelType(0);
-						caseeSubjectRe.setSubjectId(subjectId);
-						caseeSubjectRes.add(caseeSubjectRe);
+						if(subjectId>0){
+							CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
+							caseeSubjectRe.setCaseeId(casee.getCaseeId());
+							caseeSubjectRe.setType(0);
+							caseeSubjectRe.setCaseePersonnelType(0);
+							caseeSubjectRe.setSubjectId(subjectId);
+							caseeSubjectRes.add(caseeSubjectRe);
+						}
 					}
 				}
 			}
@@ -992,6 +996,9 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 
 	@Transactional
 	public Integer getSubjectId(String subjectName) {
+		if(subjectName.equals("（刑事案件）")){
+			return 0;
+		}
 		R<Subject> subject = remoteSubjectService.queryBySubjectName(subjectName, SecurityConstants.FROM);
 		Integer subjectId = 0;
 		if (subject.getData() == null) {
