@@ -198,9 +198,10 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 	private void updateExpenseRecord(PaiFu_STCC_ZCDC_ZCDC paiFu_STCC_ZCDC_ZCDC, Integer assetsReId, Integer projectId) {
 		//查询当前财产程序拍辅费
 		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReId, projectId, 10007);
-
-		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_ZCDC_ZCDC.getAuxiliaryFee()));
-		//修改当前财产程序拍辅费
-		expenseRecordService.updateById(expenseRecord);
+		if (expenseRecord!=null){
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_ZCDC_ZCDC.getAuxiliaryFee()));
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 	}
 }

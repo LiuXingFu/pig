@@ -1,11 +1,9 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
-import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
@@ -15,13 +13,9 @@ import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
@@ -58,6 +52,11 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		//修改资产抵偿环节为跳过
+		TaskNode paiFu_stcc_zcdc_zcdc = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_ZCDC_ZCDC").eq(TaskNode::getNodeAttributes, 400));
+		paiFu_stcc_zcdc_zcdc.setStatus(301);
+		taskNodeService.updateById(paiFu_stcc_zcdc_zcdc);
+
 		//拍辅到款
 		setPaiFuStccDkDk(taskNode);
 
@@ -139,16 +138,16 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 				//添加费用产生记录以及其它关联信息
 				 expenseRecord = expenseRecordService.addExpenseRecord(paiFu_stcc_dk_dk.getAuxiliaryFee(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),10007);
 			}
-		}
-		if (type.equals(2)) {//拍辅
-			paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
-		} else {//清收
-			paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+			if (type.equals(2)) {//拍辅
+				paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+			} else {//清收
+				paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
 
-			//添加到款记录以及其它关联信息
-			PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
+				//添加到款记录以及其它关联信息
+				PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
 
-			paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
+			}
 		}
 	}
 
@@ -211,8 +210,10 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	private void updateExpenseRecord(PaiFu_STCC_DK_DK paiFu_STCC_DK_DK, Integer assetsReId, Integer projectId) {
 		//查询当前财产程序拍辅费
 		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReId, projectId, 10007);
-		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
-		//修改当前财产程序拍辅费
-		expenseRecordService.updateById(expenseRecord);
+		if (expenseRecord!=null){
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 	}
 }

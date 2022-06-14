@@ -11,6 +11,7 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,22 +42,24 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 		EntityZX_STZX_CCZXJGYJ_CCZXJGYJ entityZX_stzx_cczxjgyj_cczxjgyj = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXJGYJ_CCZXJGYJ.class);
 
 		//添加定价费用需修改项目总金额
-		if (entityZX_stzx_cczxjgyj_cczxjgyj.getPricingManner()!=0){
-			Target target = targetService.getById(taskNode.getTargetId());
+		if (entityZX_stzx_cczxjgyj_cczxjgyj.getPricingManner() != 0) {
+			if (entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee().compareTo(BigDecimal.ZERO) != 0) {//判断询价费是否大于0
+				Target target = targetService.getById(taskNode.getTargetId());
 
-			//查询当前财产关联债务人信息
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
+				//查询当前财产关联债务人信息
+				AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
-			//查询案件信息
-			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
+				//查询案件信息
+				Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
-			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
+				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
-			//添加定价费用明细记录
-			expenseRecordService.addExpenseRecord(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(), entityZX_stzx_cczxjgyj_cczxjgyj.getPricingDate(), projectLiqui, casee, assetsReSubjectDTO, null, 10006);
+				//添加定价费用明细记录
+				expenseRecordService.addExpenseRecord(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(), entityZX_stzx_cczxjgyj_cczxjgyj.getPricingDate(), projectLiqui, casee, assetsReSubjectDTO, null, 10006);
 
-			//修改项目总金额
-			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+				//修改项目总金额
+				projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+			}
 		}
 	}
 }

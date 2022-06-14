@@ -14,6 +14,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler {
 
@@ -74,21 +76,23 @@ public class ENTITYZX_STZX_CCZXPMJG_CCZXPMJG_NODEHandler extends TaskNodeHandler
 			taskNodeService.copyTaskNode(taskNode);
 
 		}else {//成交
-			//查询案件信息
-			Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
+			if (entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee().compareTo(BigDecimal.ZERO) != 0) {//判断拍辅费是否大于0
+				//查询案件信息
+				Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 
-			Target target = targetService.getById(taskNode.getTargetId());
+				Target target = targetService.getById(taskNode.getTargetId());
 
-			//查询当前财产关联债务人信息
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
+				//查询当前财产关联债务人信息
+				AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
-			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
+				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
-			//添加费用明细记录以及其它关联信息
-			expenseRecordService.addExpenseRecord(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee(),entityZX_stzx_cczxpmjg_cczxpmjg.getClosingDate(),projectLiqui,casee,assetsReSubjectDTO,null,10007);
+				//添加费用明细记录以及其它关联信息
+				expenseRecordService.addExpenseRecord(entityZX_stzx_cczxpmjg_cczxpmjg.getAuxiliaryFee(),entityZX_stzx_cczxpmjg_cczxpmjg.getClosingDate(),projectLiqui,casee,assetsReSubjectDTO,null,10007);
 
-			//修改项目总金额
-			projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+				//修改项目总金额
+				projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+			}
 
 			//添加成交客户信息
 			CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
