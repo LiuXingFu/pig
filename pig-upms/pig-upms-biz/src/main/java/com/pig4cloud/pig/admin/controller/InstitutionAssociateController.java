@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAssociatePageDTO;
 import com.pig4cloud.pig.admin.service.InstitutionAssociateService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -48,13 +49,13 @@ public class InstitutionAssociateController {
     /**
      * 根据机构ID分页查询合作机构
      * @param page 分页对象
-     * @param institutionAssociate 机构关联表
+     * @param institutionAssociatePageDTO
      * @return
      */
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @GetMapping("/page" )
-    public R getInstitutionAssociatePage(Page page, InstitutionAssociate institutionAssociate) {
-		return R.ok(institutionAssociateService.pageInstitutionAssociate(page, institutionAssociate));
+    public R getInstitutionAssociatePage(Page page, InstitutionAssociatePageDTO institutionAssociatePageDTO) {
+		return R.ok(institutionAssociateService.pageInstitutionAssociate(page, institutionAssociatePageDTO));
 	}
 
 

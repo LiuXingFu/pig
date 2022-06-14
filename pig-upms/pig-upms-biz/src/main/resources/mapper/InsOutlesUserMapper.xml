@@ -85,4 +85,11 @@
 		</if>
 	</select>
 
+	<select id="queryById" resultType="com.pig4cloud.pig.admin.api.vo.InsOutlesUserInsOutlesVO">
+		select * from p10_ins_outles_user
+		left join sys_user on sys_user.user_id = p10_ins_outles_user.user_id
+		where p10_ins_outles_user.del_flag = 0
+		and p10_ins_outles_user.ins_outles_user_id = #{insOutlesUserId}
+	</select>
+
 </mapper>

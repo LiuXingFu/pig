@@ -72,4 +72,8 @@ public interface InsOutlesUserService extends IService<InsOutlesUser> {
 	IPage<InsOutlesUserInsOutlesVO> queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO);
 
 	int addInsOutlesUserByOutlesId(InsOutlesUserAddOutlesListDTO insOutlesUserAddOutlesListDTO);
+
+	InsOutlesUserInsOutlesVO queryById(Integer insOutlesUserId);
+
+	int updateInsOutlesUser(InsOutlesUser insOutlesUser);
 }
