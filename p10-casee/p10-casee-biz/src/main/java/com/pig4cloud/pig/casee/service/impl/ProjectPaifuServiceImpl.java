@@ -137,6 +137,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 			CaseeSubjectRe caseeSubjectRe = new CaseeSubjectRe();
 			caseeSubjectRe.setCaseeId(casee.getCaseeId());
 			caseeSubjectRe.setSubjectId(subjectId);
+			caseeSubjectRe.setType(item.getCaseePersonnelType());
 			caseeSubjectRe.setCaseePersonnelType(item.getCaseePersonnelType());
 			caseeSubjectRes.add(caseeSubjectRe);
 			if (item.getCaseePersonnelType() == 0) {
