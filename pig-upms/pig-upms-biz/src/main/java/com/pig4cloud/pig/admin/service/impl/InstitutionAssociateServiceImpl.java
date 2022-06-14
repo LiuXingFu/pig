@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.appserver.RequestAppService;
 import com.pig4cloud.pig.admin.api.dto.CertificationRelationshipDTO;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAssociatePageDTO;
 import com.pig4cloud.pig.admin.api.dto.MessageRecordDTO;
 import com.pig4cloud.pig.admin.api.dto.TaskMessageDTO;
 import com.pig4cloud.pig.admin.api.entity.*;
@@ -130,13 +131,13 @@ public class InstitutionAssociateServiceImpl extends ServiceImpl<InstitutionAsso
 	 * 根据机构ID分页查询合作机构
 	 *
 	 * @param page
-	 * @param institutionAssociate
+	 * @param institutionAssociatePageDTO
 	 * @return
 	 */
 	@Override
-	public IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociate institutionAssociate) {
-		institutionAssociate.setInsId(securityUtilsService.getCacheUser().getInsId());
-		return this.baseMapper.pageInstitutionAssociate(page, institutionAssociate);
+	public IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, InstitutionAssociatePageDTO institutionAssociatePageDTO) {
+		institutionAssociatePageDTO.setInsId(securityUtilsService.getCacheUser().getInsId());
+		return this.baseMapper.pageInstitutionAssociate(page, institutionAssociatePageDTO);
 	}
 
 	/**

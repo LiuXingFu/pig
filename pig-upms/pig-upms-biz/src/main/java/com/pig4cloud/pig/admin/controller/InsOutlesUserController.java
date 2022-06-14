@@ -57,7 +57,6 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "分页查询", notes = "分页查询")
 	@GetMapping("/page")
-	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')")
 	public R getInsOutlesUserPage(Page page, InsOutlesUser insOutlesUser) {
 		return R.ok(insOutlesUserService.page(page, Wrappers.query(insOutlesUser)));
 	}
@@ -71,7 +70,6 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "通过id查询", notes = "通过id查询")
 	@GetMapping("/{insOutlesUserId}")
-	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_get')")
 	public R getById(@PathVariable("insOutlesUserId") Integer insOutlesUserId) {
 		return R.ok(insOutlesUserService.getById(insOutlesUserId));
 	}
@@ -85,7 +83,6 @@ public class InsOutlesUserController {
 	@ApiOperation(value = "新增机构/网点用户关联表", notes = "新增机构/网点用户关联表")
 	@SysLog("新增机构/网点用户关联表")
 	@PostMapping
-	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_add')")
 	public R save(@RequestBody InsOutlesUser insOutlesUser) {
 		return R.ok(insOutlesUserService.save(insOutlesUser));
 	}
@@ -99,7 +96,6 @@ public class InsOutlesUserController {
 	@ApiOperation(value = "修改机构/网点用户关联表", notes = "修改机构/网点用户关联表")
 	@SysLog("修改机构/网点用户关联表")
 	@PutMapping
-	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_edit')")
 	public R updateById(@RequestBody InsOutlesUser insOutlesUser) {
 		return R.ok(insOutlesUserService.updateById(insOutlesUser));
 	}
@@ -112,12 +108,9 @@ public class InsOutlesUserController {
 	 */
 	@ApiOperation(value = "通过id删除机构/网点用户关联表", notes = "通过id删除机构/网点用户关联表")
 	@SysLog("通过id删除机构/网点用户关联表")
-	@DeleteMapping("/{insOutlesUserId}")
-	@PreAuthorize("@pms.hasPermission('admin_insoutlesuser_del')")
 	public R removeById(@PathVariable Integer insOutlesUserId) {
 		return R.ok(insOutlesUserService.removeById(insOutlesUserId));
 	}
-
 
 	/**
 	 * 移除用户
@@ -233,6 +226,34 @@ public class InsOutlesUserController {
 	@GetMapping("/queryInsOutlesUserByOutles")
 	public R queryInsOutlesUserByOutles(Page page, InsOutlesUserByOutlesDTO insOutlesUserByOutlesDTO) {
 		return R.ok(insOutlesUserService.queryInsOutlesUserByOutles(page, insOutlesUserByOutlesDTO));
+	}
+
+	/**
+	 *	根据机构/网点用户关联表id查询机构/网点用户关联表与用户信息
+	 * @param insOutlesUserId
+	 * @return
+	 */
+	@ApiOperation(value = "根据机构/网点用户关联表id查询机构/网点用户关联表与用户信息", notes = "根据机构/网点用户关联表id查询机构/网点用户关联表与用户信息")
+	@GetMapping("/queryById/{insOutlesUserId}")
+	public R queryById(@PathVariable("insOutlesUserId") Integer insOutlesUserId) {
+		return R.ok(insOutlesUserService.queryById(insOutlesUserId));
+	}
+
+	/**
+	 * 修改网点用户关联表信息
+	 * @param insOutlesUser
+	 * @return
+	 */
+	@ApiOperation(value = "修改网点用户关联表信息", notes = "修改网点用户关联表信息")
+	@PutMapping("/updateInsOutlesUser")
+	public R updateInsOutlesUser(@RequestBody InsOutlesUser insOutlesUser) {
+		int count = insOutlesUserService.updateInsOutlesUser(insOutlesUser);
+
+		if (count > 0) {
+			return R.ok("修改成功！");
+		} else {
+			return R.failed("修改失败！");
+		}
 	}
 
 }

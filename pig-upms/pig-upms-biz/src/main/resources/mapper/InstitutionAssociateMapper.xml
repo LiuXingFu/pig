@@ -44,7 +44,6 @@
 		p10_address.area,
 		p10_address.information_address,
 		p10_address.code
--- 		institution.ins_principal_name
 		from
 		p10_institution_associate institution_associate
 		LEFT JOIN p10_institution associate_institution ON associate_institution.ins_id = institution_associate.ins_associate_id
@@ -54,6 +53,9 @@
 		institution.del_flag = '0'
 		<if test="query.insId != null and query.insId != ''">
 			AND institution_associate.ins_id = #{query.insId}
+		</if>
+		<if test="query.insName != null and query.insName != ''">
+			AND associate_institution.ins_name LIKE concat('%', #{query.insName}, '%')
 		</if>
 	</select>
 

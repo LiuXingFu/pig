@@ -19,8 +19,10 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
+import com.pig4cloud.pig.casee.entity.BankLoan;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
+import com.pig4cloud.pig.casee.service.BankLoanService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.annotation.SysLog;
@@ -45,6 +47,8 @@ import java.util.List;
 public class TransferRecordliquiController {
 
 	private final TransferRecordLiquiService transferRecordLiquiService;
+
+	private final BankLoanService bankLoanService;
 
 	/**
 	 * 分页查询
@@ -112,6 +116,24 @@ public class TransferRecordliquiController {
 	@PostMapping("/saveTransferRecord")
 	public R saveTransferRecord(@RequestBody TransferRecordLiqui transferRecordLiqui) {
 		return R.ok(transferRecordLiquiService.save(transferRecordLiqui));
+	}
+
+	/**
+	 * 修改移交记录表
+	 * @param transferRecordLiqui 移交记录表
+	 * @return R
+	 */
+	@ApiOperation(value = "修改移交记录表", notes = "修改移交记录表")
+	@SysLog("修改移交记录表" )
+	@PostMapping("/updateTransferRecord")
+	public R updateTransferRecord(@RequestBody TransferRecordLiqui transferRecordLiqui) {
+		BankLoan bankLoan=new BankLoan();
+		bankLoan.setPrincipal(transferRecordLiqui.getTransferRecordLiquiDetail().getPrincipal());
+		bankLoan.setInterest(transferRecordLiqui.getTransferRecordLiquiDetail().getInterest());
+		bankLoan.setRental(transferRecordLiqui.getTransferRecordLiquiDetail().getHandoverAmount());
+		bankLoan.setBankLoanId(transferRecordLiqui.getSourceId());
+		bankLoanService.updateById(bankLoan);
+		return R.ok(transferRecordLiquiService.updateById(transferRecordLiqui));
 	}
 
 	/**

@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.InstitutionAssociatePageDTO;
 import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.api.entity.InstitutionAssociate;
 import com.pig4cloud.pig.admin.api.vo.CourtAndCourtInsIdVO;
@@ -40,7 +41,7 @@ import java.util.List;
 @Mapper
 public interface InstitutionAssociateMapper extends BaseMapper<InstitutionAssociate> {
 
-	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociate institutionAssociate);
+	IPage<InstitutionAssociatePageVO> pageInstitutionAssociate(Page page, @Param("query") InstitutionAssociatePageDTO institutionAssociatePageDTO);
 
 	InstitutionAssociateDetailsVO queryById(Integer associateId);
 
