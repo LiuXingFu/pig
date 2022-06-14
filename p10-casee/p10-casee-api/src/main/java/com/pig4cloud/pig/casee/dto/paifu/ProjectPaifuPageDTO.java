@@ -86,4 +86,22 @@ public class ProjectPaifuPageDTO {
 	@ApiModelProperty(value="项目状态(1000-在办、2000-暂缓、3000-和解、4000-退出)")
 	private Integer projectStatus;
 
+	/**
+	 * 承办法院
+	 */
+	@ApiModelProperty(value="承办法院")
+	private String courtName;
+
+	/**
+	 * 机构名称
+	 */
+	@ApiModelProperty(value="机构名称")
+	private String insName;
+
+	/**
+	 * 网点名称
+	 */
+	@ApiModelProperty(value="网点名称")
+	private String outlesName;
+
 }
