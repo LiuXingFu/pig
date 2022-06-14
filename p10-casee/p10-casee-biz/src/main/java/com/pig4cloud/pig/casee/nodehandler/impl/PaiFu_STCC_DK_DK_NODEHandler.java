@@ -139,16 +139,16 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 				//添加费用产生记录以及其它关联信息
 				 expenseRecord = expenseRecordService.addExpenseRecord(paiFu_stcc_dk_dk.getAuxiliaryFee(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(),10007);
 			}
-		}
-		if (type.equals(2)) {//拍辅
-			paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
-		} else {//清收
-			paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+			if (type.equals(2)) {//拍辅
+				paiFu_stcc_dk_dk.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+			} else {//清收
+				paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
 
-			//添加到款记录以及其它关联信息
-			PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
+				//添加到款记录以及其它关联信息
+				PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
 
-			paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
+			}
 		}
 	}
 
@@ -211,8 +211,10 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 	private void updateExpenseRecord(PaiFu_STCC_DK_DK paiFu_STCC_DK_DK, Integer assetsReId, Integer projectId) {
 		//查询当前财产程序拍辅费
 		ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReId, projectId, 10007);
-		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
-		//修改当前财产程序拍辅费
-		expenseRecordService.updateById(expenseRecord);
+		if (expenseRecord!=null){
+			expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(paiFu_STCC_DK_DK.getAuxiliaryFee()));
+			//修改当前财产程序拍辅费
+			expenseRecordService.updateById(expenseRecord);
+		}
 	}
 }
