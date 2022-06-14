@@ -1,5 +1,6 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
@@ -27,6 +28,16 @@ public class PaiFu_STCC_CJCD_CJCD_NODEHandler extends TaskNodeHandler {
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {//成交裁定
+		//修改抵偿裁定环节为跳过
+		TaskNode paiFu_stcc_dccd_dccd = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_DCCD_DCCD").eq(TaskNode::getNodeAttributes, 400));
+		paiFu_stcc_dccd_dccd.setStatus(301);
+		taskNodeService.updateById(paiFu_stcc_dccd_dccd);
+
+		//修改抵偿裁定送达情况环节为跳过
+		TaskNode paiFu_stcc_dccdsdqk_dccdsdqk = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeKey, "paiFu_STCC_DCCDSDQK_DCCDSDQK").eq(TaskNode::getNodeAttributes, 400));
+		paiFu_stcc_dccdsdqk_dccdsdqk.setStatus(301);
+		taskNodeService.updateById(paiFu_stcc_dccdsdqk_dccdsdqk);
+
 		setPaiFuStccCjcdCjcd(taskNode);
 	}
 

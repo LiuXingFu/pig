@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,17 +104,21 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 	//添加回款、费用明细信息
 	public void addJgyjRepaymentFee(PaiFu_STCC_JGYJ_JGYJ paiFu_stcc_jgyj_jgyj, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, Integer type) {
 		ExpenseRecord jgyjExpenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(),project.getProjectId(),10006);
+		BigDecimal pricingFee = paiFu_stcc_jgyj_jgyj.getPricingFee();
 		if (jgyjExpenseRecord!=null){//如果存在定价费则修改定价金额
 			jgyjExpenseRecord.setCostAmount(jgyjExpenseRecord.getCostAmount().add(paiFu_stcc_jgyj_jgyj.getPricingFee()));
 			//修改当前财产程序定价费
 			expenseRecordService.updateById(jgyjExpenseRecord);
 		}else {
-			//添加定价费用明细记录以及其它关联信息
-			ExpenseRecord expenseRecord = expenseRecordService.addExpenseRecord(paiFu_stcc_jgyj_jgyj.getPricingFee(), paiFu_stcc_jgyj_jgyj.getPricingDate(), project, casee, assetsReSubjectDTO, null, 10006);
-			if (type.equals(1)) {
-				paiFu_stcc_jgyj_jgyj.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
-			} else {
-				paiFu_stcc_jgyj_jgyj.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+			//如果当前询价费不为0
+			if(pricingFee.compareTo(BigDecimal.ZERO)!=0){
+				//添加定价费用明细记录以及其它关联信息
+				ExpenseRecord expenseRecord = expenseRecordService.addExpenseRecord(paiFu_stcc_jgyj_jgyj.getPricingFee(), paiFu_stcc_jgyj_jgyj.getPricingDate(), project, casee, assetsReSubjectDTO, null, 10006);
+				if (type.equals(1)) {
+					paiFu_stcc_jgyj_jgyj.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
+				} else {
+					paiFu_stcc_jgyj_jgyj.setPaiFuExpenseRecordId(expenseRecord.getExpenseRecordId());
+				}
 			}
 		}
 	}
