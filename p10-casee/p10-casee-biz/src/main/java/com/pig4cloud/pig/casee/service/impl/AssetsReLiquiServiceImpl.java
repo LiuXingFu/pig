@@ -33,6 +33,7 @@ import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
+import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,15 +84,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 			assetsService.save(assets);
 			assetsId = assets.getAssetsId();
 			assetsAddDTO.setAssetsId(assets.getAssetsId());
-			// 保存财产地址信息
-			if(Objects.nonNull(assetsAddDTO.getCode())){
-				Address address = new Address();
-				// 4=财产地址
-				address.setType(4);
-				address.setUserId(assets.getAssetsId());
-				BeanCopyUtil.copyBean(assetsAddDTO,address);
-				addressService.saveAddress(address, SecurityConstants.FROM);
-			}
+
 		}
 		AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
 		// 财产来源2=案件
@@ -123,6 +116,20 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 			assetsReSubjects.add(assetsReSubject);
 		}
 		assetsReSubjectService.saveBatch(assetsReSubjects);
+
+		// 保存财产地址信息
+		if(Objects.nonNull(assetsAddDTO.getCode())){
+			R<Address> addressR = addressService.queryAssetsByTypeIdAndType(assetsId,4,SecurityConstants.FROM);
+			Address address = new Address();
+			BeanCopyUtil.copyBean(assetsAddDTO,address);
+			// 4=财产地址
+			address.setType(4);
+			address.setUserId(assetsId);
+			if(addressR.getData()!=null){
+				address.setAddressId(addressR.getData().getAddressId());
+			}
+			addressService.saveOrUpdate(address, SecurityConstants.FROM);
+		}
 		return save;
 	}
 
