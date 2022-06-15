@@ -113,10 +113,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiqui.setProjectType(100);
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
 		BeanCopyUtil.copyBean(transferRecordBankLoanVO.getTransferRecordLiquiDetail(),projectLiQuiDetail);
+		projectLiQuiDetail.setPrincipalInterestAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setRepaymentAmount(BigDecimal.valueOf(0));
-		projectLiQuiDetail.setLitigation(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getLitigation());
-		projectLiQuiDetail.setStartingTime(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getStartingTime());
+		projectLiQuiDetail.setMortgageSituation(transferRecordBankLoanVO.getMortgageSituation());
+
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		projectLiqui.setProposersNames(transferRecordBankLoanVO.getInsName());
 		projectLiqui.setSubjectPersons(transferRecordBankLoanVO.getSubjectName());

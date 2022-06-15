@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
+import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
@@ -29,6 +30,7 @@ import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CC
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
+import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
@@ -67,6 +69,8 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	CaseeHandlingRecordsService caseeHandlingRecordsService;
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
+	@Autowired
+	RemoteAddressService addressService;
 
 	@Override
 	@Transactional
@@ -86,6 +90,7 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 				address.setType(4);
 				address.setUserId(assets.getAssetsId());
 				BeanCopyUtil.copyBean(assetsAddDTO,address);
+				addressService.saveAddress(address, SecurityConstants.FROM);
 			}
 		}
 		AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
