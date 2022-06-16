@@ -27,5 +27,5 @@ import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
  * @date 2022-04-13 11:24:36
  */
 public interface MortgageAssetsReService extends IService<MortgageAssetsRe> {
-
+	boolean removeMortgageAssets(Integer mortgageAssetsReId);
 }

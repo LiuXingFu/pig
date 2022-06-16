@@ -103,4 +103,15 @@ public class MortgageAssetsReController {
         return R.ok(mortgageAssetsReService.removeById(mortgageAssetsRe));
     }
 
+	/**
+	 * 通过财产id抵押财产关联表id删除抵押记录相关信息
+	 * @param mortgageAssetsReId
+	 * @return R
+	 */
+	@ApiOperation(value = "通过财产id抵押财产关联表id删除抵押记录相关信息", notes = "通过财产id抵押财产关联表id删除抵押记录相关信息")
+	@SysLog("通过财产id抵押财产关联表id删除抵押记录相关信息" )
+	@DeleteMapping("/removeMortgageAssets/{mortgageAssetsReId}" )
+	public R removeMortgageAssetsRecords(@PathVariable Integer mortgageAssetsReId) {
+		return R.ok(mortgageAssetsReService.removeMortgageAssets(mortgageAssetsReId));
+	}
 }

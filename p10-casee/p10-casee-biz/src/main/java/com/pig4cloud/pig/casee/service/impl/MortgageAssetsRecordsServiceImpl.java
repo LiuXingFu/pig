@@ -111,6 +111,14 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 		Assets assets=new Assets();
 
 		for (AssetsDTO assetsDTO : assetsList) {
+			//如果抵押财产发生改变则删除关联关系
+			if (assetsDTO.getMortgageAssetsReId()!=null){
+				//删除抵押财产关联信息
+				mortgageAssetsReService.removeById(assetsDTO.getMortgageAssetsReId());
+				//删除抵押财产关联债务人信息
+				mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsDTO.getMortgageAssetsReId()));
+			}
+
 			Integer assetsId = assetsDTO.getAssetsId();
 			if (assetsId!=null){//财产已存在
 				//修改财产信息

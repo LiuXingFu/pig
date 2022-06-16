@@ -122,9 +122,6 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
 			//判断是否存在 存在并且未认证就进行修改 不存在就新增
 			if (subjectQuery != null && subjectQuery.getIsAuthentication() == 0) {
 				BeanUtils.copyProperties(subjectQuery,subject);
-				if (subjectQuery.getPhone()!=null){
-					subject.setPhone(subjectQuery.getPhone()+","+subject.getPhone());
-				}
 			}
 		}
 		this.saveOrUpdate(subject);

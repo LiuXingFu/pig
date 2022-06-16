@@ -35,6 +35,11 @@ public class AssetsDTO extends Assets {
 	private Integer addressAsId;
 
 	/**
+	 * 标记的抵押财产关联id
+	 */
+	private Integer mortgageAssetsReId;
+
+	/**
 	 * 省
 	 */
 	private String province;

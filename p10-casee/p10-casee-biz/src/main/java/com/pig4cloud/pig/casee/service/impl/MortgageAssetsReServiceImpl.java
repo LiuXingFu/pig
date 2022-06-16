@@ -16,10 +16,14 @@
  */
 package com.pig4cloud.pig.casee.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
+import com.pig4cloud.pig.casee.entity.MortgageAssetsSubjectRe;
 import com.pig4cloud.pig.casee.mapper.MortgageAssetsReMapper;
 import com.pig4cloud.pig.casee.service.MortgageAssetsReService;
+import com.pig4cloud.pig.casee.service.MortgageAssetsSubjectReService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,5 +34,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MortgageAssetsReServiceImpl extends ServiceImpl<MortgageAssetsReMapper, MortgageAssetsRe> implements MortgageAssetsReService {
+	@Autowired
+	MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
 
+
+	@Override
+	public boolean removeMortgageAssets(Integer mortgageAssetsReId) {
+		mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,mortgageAssetsReId));
+		return this.removeById(mortgageAssetsReId);
+	}
 }
