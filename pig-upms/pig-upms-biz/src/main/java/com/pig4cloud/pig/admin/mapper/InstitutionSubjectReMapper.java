@@ -19,6 +19,7 @@ package com.pig4cloud.pig.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -30,4 +31,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface InstitutionSubjectReMapper extends BaseMapper<InstitutionSubjectRe> {
 
+	Subject getSubjectByInsId(Integer insId);
 }

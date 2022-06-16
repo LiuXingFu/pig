@@ -19,6 +19,7 @@ package com.pig4cloud.pig.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 
 /**
  * 机构主体关联关系
@@ -28,4 +29,10 @@ import com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe;
  */
 public interface InstitutionSubjectReService extends IService<InstitutionSubjectRe> {
 
+	/**
+	 * 根据机构id查询主体信息
+	 * @param insId
+	 * @return
+	 */
+	Subject getSubjectByInsId(Integer insId);
 }

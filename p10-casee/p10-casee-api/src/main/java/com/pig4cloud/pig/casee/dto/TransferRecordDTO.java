@@ -73,16 +73,4 @@ public class TransferRecordDTO extends TransferRecord {
 	 */
 	@ApiModelProperty(value="字号")
 	private Integer word;
-
-
-	/**
-	 * 项目详情数据
-	 */
-	@ApiModelProperty(value="项目详情数据")
-	private ProjectLiqui projectDetail;
-	/**
-	 * 债务人名称
-	 */
-	private String subjectName;
-
 }
