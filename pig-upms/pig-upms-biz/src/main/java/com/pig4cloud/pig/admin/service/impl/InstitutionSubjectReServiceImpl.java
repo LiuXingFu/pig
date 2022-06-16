@@ -18,6 +18,7 @@ package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe;
+import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.mapper.InstitutionSubjectReMapper;
 import com.pig4cloud.pig.admin.service.InstitutionSubjectReService;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class InstitutionSubjectReServiceImpl extends ServiceImpl<InstitutionSubjectReMapper, InstitutionSubjectRe> implements InstitutionSubjectReService {
 
+	/**
+	 * 根据机构id查询主体信息
+	 * @param insId
+	 * @return
+	 */
+	@Override
+	public Subject getSubjectByInsId(Integer insId) {
+		return this.baseMapper.getSubjectByInsId(insId);
+	}
 }

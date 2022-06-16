@@ -109,4 +109,15 @@ public class InstitutionSubjectReController {
         return R.ok(institutionSubjectReService.removeById(insSubjectReId));
     }
 
+	/**
+	 * 根据机构id查询主体信息
+	 * @param insId
+	 * @return
+	 */
+	@ApiOperation(value = "根据机构id查询主体信息", notes = "根据机构id查询主体信息")
+	@GetMapping("/getSubjectByInsId/{insId}")
+	public R getSubjectByInsId(@PathVariable Integer insId) {
+		return R.ok(institutionSubjectReService.getSubjectByInsId(insId));
+	}
+
 }
