@@ -23,14 +23,20 @@
 
 <mapper namespace="com.pig4cloud.pig.admin.mapper.InstitutionSubjectReMapper">
 
-  <resultMap id="institutionSubjectReMap" type="com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe">
-    <id property="insSubjectReId" column="ins_subject_re_id"/>
-    <result property="createTime" column="create_time"/>
-    <result property="createBy" column="create_by"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="updateBy" column="update_by"/>
-    <result property="delFlag" column="del_flag"/>
-    <result property="insId" column="ins_id"/>
-    <result property="subjectId" column="subject_id"/>
-  </resultMap>
+	<resultMap id="institutionSubjectReMap" type="com.pig4cloud.pig.admin.api.entity.InstitutionSubjectRe">
+		<id property="insSubjectReId" column="ins_subject_re_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createBy" column="create_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="delFlag" column="del_flag"/>
+		<result property="insId" column="ins_id"/>
+		<result property="subjectId" column="subject_id"/>
+	</resultMap>
+	<select id="getSubjectByInsId" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
+		SELECT p10_subject.* FROM
+		`p10_institution_subject_re`
+		LEFT JOIN p10_subject ON p10_institution_subject_re.subject_id = p10_subject.subject_id
+		WHERE p10_institution_subject_re.ins_id = #{insId}
+	</select>
 </mapper>

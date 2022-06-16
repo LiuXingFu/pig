@@ -56,4 +56,13 @@ public class ProjectLiquiPageDTO {
 	@ApiModelProperty(value="结束时间")
 	private LocalDate endDate;
 
+	@ApiModelProperty(value="机构名称")
+	private String insName;
+
+	@ApiModelProperty(value="网点名称")
+	private String outlesName;
+
+	@ApiModelProperty(value="抵押情况（0-有，1-无）")
+	private Integer mortgageSituation;
+
 }
