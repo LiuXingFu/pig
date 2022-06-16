@@ -1228,7 +1228,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
 		BeanCopyUtil.copyBean(transferRecordDTO,projectLiquiSaveDTO);
 		transferRecordDTO.setReturnTime(projectLiquiSaveDTO.getTakeTime());
-		transferRecordDTO.setSubjectName(projectLiquiSaveDTO.getSubjectPersons());
 		transferRecordLiquiService.reception(transferRecordDTO);
 
 		return 1;
