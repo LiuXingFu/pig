@@ -17,7 +17,6 @@
 package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.TransferRecord;
-import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -73,16 +72,5 @@ public class TransferRecordDTO extends TransferRecord {
 	 */
 	@ApiModelProperty(value="字号")
 	private Integer word;
-
-	/**
-	 * 项目详情数据
-	 */
-	@ApiModelProperty(value="项目详情数据")
-	private ProjectLiqui projectDetail;
-
-	/**
-	 * 债务人名称
-	 */
-	private String subjectName;
 
 }
