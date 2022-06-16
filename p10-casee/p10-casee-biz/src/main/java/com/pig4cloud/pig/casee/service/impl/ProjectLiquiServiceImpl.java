@@ -1182,7 +1182,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		bankLoanService.save(bankLoan);
 
 		List<SubjectBankLoanRe> subjectBankLoanReList = new ArrayList<>();
-		List<Address> addresses = new ArrayList<>();
+		List<Address> addressList = new ArrayList<>();
 		for(ProjectSaveSubjectDTO projectSaveSubjectDTO :projectLiquiSaveDTO.getSubjectPersonsList()){
 			// 保存主体信息
 			Subject subject = new Subject();
@@ -1203,13 +1203,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				// 保存地址
 				address.setUserId(subjectId.getData());
 				address.setType(1);
-				addresses.add(address);
+				addressList.add(address);
 			}
 		}
 		subjectBankLoanReService.saveBatch(subjectBankLoanReList);
-//		addressService.
-
-
+		addressService.saveOrUpdateBatch(addressList,SecurityConstants.FROM);
 
 		// 保存抵押物
 		assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
