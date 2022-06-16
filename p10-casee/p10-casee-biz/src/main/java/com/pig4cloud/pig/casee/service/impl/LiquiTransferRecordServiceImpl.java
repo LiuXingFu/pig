@@ -308,6 +308,7 @@ public class LiquiTransferRecordServiceImpl extends ServiceImpl<LiquiTransferRec
 	}
 
 	@Override
+	@Transactional
 	public boolean reception(LiquiTransferRecordDTO liquiTransferRecordDTO) {
 		LiquiTransferRecord liquiTransferRecord=new LiquiTransferRecord();
 		BeanUtils.copyProperties(liquiTransferRecordDTO,liquiTransferRecord);

@@ -42,4 +42,9 @@ public class MortgageAssetsDTO extends MortgageAssetsRecords {
 	 */
 	private List<Integer> subjectId;
 
+	/**
+	 * 身份证集合
+	 */
+	private List<String> unifiedIdentityList;
+
 }

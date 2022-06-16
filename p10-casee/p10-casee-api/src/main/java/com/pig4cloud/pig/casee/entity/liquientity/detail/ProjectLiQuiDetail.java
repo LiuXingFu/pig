@@ -35,6 +35,12 @@ public class ProjectLiQuiDetail {
 	BigDecimal projectAmount=BigDecimal.valueOf(0);
 
 	/**
+	 * 利率
+	 */
+	@ApiModelProperty(value="利率")
+	private BigDecimal interestRate;
+
+	/**
 	 * 已回款金额
 	 */
 	@ApiModelProperty(value="已回款金额")

@@ -59,4 +59,7 @@ public interface RemoteAddressService {
 	@GetMapping("/address/queryAssetsByTypeIdAndType/{typeId}/{type}")
 	R<Address> queryAssetsByTypeIdAndType(@PathVariable("typeId") Integer typeId, @PathVariable("type") Integer type, @RequestHeader(SecurityConstants.FROM) String from);
 
+	@PostMapping("/address/saveOrUpdateBatch")
+	R saveOrUpdateBatch(@RequestBody List<Address> addressList, @RequestHeader(SecurityConstants.FROM) String from);
+
 }

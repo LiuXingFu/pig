@@ -23,6 +23,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
+import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
+import com.pig4cloud.pig.admin.api.vo.SubjectVO;
 import com.pig4cloud.pig.casee.SysUserEXport;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
@@ -34,6 +36,7 @@ import com.pig4cloud.pig.casee.vo.AssetsPageVO;
 import com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.BeanUtils;
@@ -66,6 +69,8 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 	MortgageAssetsReService mortgageAssetsReService;
 	@Autowired
 	MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
+	@Autowired
+	private RemoteSubjectService remoteSubjectService;
 
 	@Override
 	public AssetsGetByIdDTO getByAssets(Integer assetsId) {
@@ -85,8 +90,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 			//抵押财产关联信息
 			MortgageAssetsRe mortgageAssetsRe = new MortgageAssetsRe();
-			//财产关联债务人信息
-			MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
+
 
 			assets.setType(20200);//默认实体财产类型
 
@@ -108,11 +112,27 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
 					mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
 
-					for (Integer subjectId : subjectIdList) {
-						mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
-						mortgageAssetsSubjectRe.setSubjectId(subjectId);
-						mortgageAssetsSubjectReService.save(mortgageAssetsSubjectRe);//添加财产关联债务人信息
+					//财产关联债务人信息
+					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = new ArrayList<>();
+					if(subjectIdList.size()>0){
+						for (Integer subjectId : subjectIdList) {
+							MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
+							mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+
+							mortgageAssetsSubjectRe.setSubjectId(subjectId);
+
+							mortgageAssetsSubjectRes.add(mortgageAssetsSubjectRe);
+						}
+					}else if(mortgageAssetsDTO.getUnifiedIdentityList().size()>0){
+						for (String unifiedIdentity : mortgageAssetsDTO.getUnifiedIdentityList()) {
+							MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
+							mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
+							R<SubjectVO> subjectVOR =  remoteSubjectService.getByUnifiedIdentity(unifiedIdentity,SecurityConstants.FROM);
+							mortgageAssetsSubjectRe.setSubjectId(subjectVOR.getData().getSubjectId());
+							mortgageAssetsSubjectRes.add(mortgageAssetsSubjectRe);
+						}
 					}
+					mortgageAssetsSubjectReService.saveBatch(mortgageAssetsSubjectRes);//添加财产关联债务人信息
 				}
 			}
 		}

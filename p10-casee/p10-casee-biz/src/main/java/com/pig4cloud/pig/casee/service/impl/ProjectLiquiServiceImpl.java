@@ -23,7 +23,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
@@ -31,6 +33,7 @@ import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
@@ -92,6 +95,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	private AssetsReSubjectService assetsReSubjectService;
 	@Autowired
 	private MortgageAssetsSubjectReService mortgageAssetsSubjectReService;
+	@Autowired
+	private BankLoanService bankLoanService;
+	@Autowired
+	private RemoteAddressService addressService;
+	@Autowired
+	private AssetsService assetsService;
+
+
 
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO) {
@@ -1158,6 +1169,66 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return this.baseMapper.updateById(projectLiqui);
 	}
 
+	@Override
+	@Transactional
+	public Integer saveProject(ProjectLiquiSaveDTO projectLiquiSaveDTO){
+		// 保存银行借贷信息
+		BankLoan bankLoan = new BankLoan();
+		BeanCopyUtil.copyBean(bankLoan,projectLiquiSaveDTO);
+		bankLoan.setInsId(projectLiquiSaveDTO.getBankLoanInsId());
+		bankLoan.setOutlesId(projectLiquiSaveDTO.getBankLoanOutlesId());
+		bankLoan.setRental(projectLiquiSaveDTO.getPrincipalInterestAmount());
+		bankLoan.setSubjectName(projectLiquiSaveDTO.getSubjectPersons());
+		bankLoanService.save(bankLoan);
 
+		List<SubjectBankLoanRe> subjectBankLoanReList = new ArrayList<>();
+		List<Address> addressList = new ArrayList<>();
+		for(ProjectSaveSubjectDTO projectSaveSubjectDTO :projectLiquiSaveDTO.getSubjectPersonsList()){
+			// 保存主体信息
+			Subject subject = new Subject();
+			BeanCopyUtil.copyBean(subject,projectSaveSubjectDTO);
+			R<Integer> subjectId = remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
+			subject.setSubjectId(subjectId.getData());
+
+
+
+			// 保存银行借贷主体关联信息
+			SubjectBankLoanRe subjectBankLoanRe = new SubjectBankLoanRe();
+			subjectBankLoanRe.setDebtType(projectSaveSubjectDTO.getType());
+			subjectBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
+			subjectBankLoanRe.setSubjectId(subjectId.getData());
+			subjectBankLoanReList.add(subjectBankLoanRe);
+
+			for(Address address : projectSaveSubjectDTO.getAddressList()){
+				// 保存地址
+				address.setUserId(subjectId.getData());
+				address.setType(1);
+				addressList.add(address);
+			}
+		}
+		subjectBankLoanReService.saveBatch(subjectBankLoanReList);
+		addressService.saveOrUpdateBatch(addressList,SecurityConstants.FROM);
+
+		// 保存抵押物
+		assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
+
+		// 保存移交记录
+		TransferRecordLiqui transferRecordLiqui = new TransferRecordLiqui();
+		transferRecordLiqui.setEntrustedInsId(projectLiquiSaveDTO.getInsId());
+		transferRecordLiqui.setEntrustedOutlesId(projectLiquiSaveDTO.getOutlesId());
+		transferRecordLiqui.setSourceId(bankLoan.getBankLoanId());
+		transferRecordLiqui.setHandoverTime(projectLiquiSaveDTO.getTakeTime());
+		transferRecordLiqui.setStatus(0);
+		transferRecordLiqui.setTransferType(0);
+		transferRecordLiquiService.save(transferRecordLiqui);
+
+		// 保存接收记录
+		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
+		BeanCopyUtil.copyBean(transferRecordDTO,projectLiquiSaveDTO);
+		transferRecordDTO.setReturnTime(projectLiquiSaveDTO.getTakeTime());
+		transferRecordLiquiService.reception(transferRecordDTO);
+
+		return 1;
+	}
 
 }
