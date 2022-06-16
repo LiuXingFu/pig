@@ -40,6 +40,7 @@ import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -89,6 +90,7 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	}
 
 	@Override
+	@Transactional
 	public boolean reception(TransferRecordDTO transferRecordDTO) {
 		ProjectLiquiAddDTO projectLiquiAddDTO =new ProjectLiquiAddDTO();
 		BeanUtils.copyProperties(transferRecordDTO,projectLiquiAddDTO);

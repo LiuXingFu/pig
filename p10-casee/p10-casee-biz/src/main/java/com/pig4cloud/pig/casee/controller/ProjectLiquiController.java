@@ -19,10 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pig4cloud.pig.casee.dto.ProjectLiquiPageDTO;
-import com.pig4cloud.pig.casee.dto.ProjectModifyStatusDTO;
-import com.pig4cloud.pig.casee.dto.ProjectNoProcessedDTO;
-import com.pig4cloud.pig.casee.dto.ProjectSubjectDTO;
+import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.dto.count.CountLineChartColumnarChartDTO;
 import com.pig4cloud.pig.casee.dto.count.CountPolylineLineChartDTO;
 import com.pig4cloud.pig.casee.dto.count.ExpirationReminderDTO;
@@ -37,6 +34,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -329,6 +327,17 @@ public class ProjectLiquiController {
 	@GetMapping("/queryStatisticsReminder" )
 	public R queryStatisticsReminder(Page page, ExpirationReminderDTO expirationReminderDTO) {
 		return R.ok(projectLiquiService.queryStatisticsReminder(page,expirationReminderDTO));
+	}
+
+	/**
+	 * 新增清收项目表
+	 * @return R
+	 */
+	@ApiOperation(value = "新增清收项目表", notes = "新增清收项目表")
+	@SysLog("新增清收项目表" )
+	@PostMapping("/saveProject")
+	public R save(@RequestBody ProjectLiquiSaveDTO projectLiquiSaveDTO) {
+		return R.ok(projectLiquiService.saveProject(projectLiquiSaveDTO));
 	}
 
 }
