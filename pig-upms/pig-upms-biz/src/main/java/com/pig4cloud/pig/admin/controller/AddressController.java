@@ -117,7 +117,7 @@ public class AddressController {
 	}
 
 	/**
-	 * 新增或修改地址表
+	 * 根据AddressDTO里的
 	 *
 	 * @param addressDTO 地址表
 	 * @return R
@@ -179,5 +179,16 @@ public class AddressController {
 	@GetMapping("/queryAssetsByTypeIdAndType/{typeId}/{type}")
 	public R queryAssetsByTypeIdAndType(@PathVariable("typeId") Integer typeId, @PathVariable("type") Integer type) {
 		return R.ok(addressService.queryAssetsByTypeIdAndType(typeId, type));
+	}
+
+	/**
+	 * 将address集合进行修添加或修改
+	 * @param addressList
+	 * @return
+	 */
+	@SysLog("将address集合进行修添加或修改")
+	@PostMapping("/saveOrUpdateBatch")
+	public R saveOrUpdateBatch(@RequestBody List<Address> addressList) {
+		return R.ok(addressService.saveOrUpdateBatch(addressList));
 	}
 }
