@@ -15,6 +15,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public interface RemoteInstitutionSubjectReService {
 
 	@GetMapping("/institutionsubjectre/getSubjectByInsId/{insId}")
-	R<Subject> getSubjectByInsId(@PathVariable Integer insId, @RequestHeader(SecurityConstants.FROM) String from);
+	R<Subject> getSubjectByInsId(@PathVariable("insId") Integer insId, @RequestHeader(SecurityConstants.FROM) String from);
 
 }

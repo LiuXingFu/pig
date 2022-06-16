@@ -16,7 +16,6 @@ public class RemoteInstitutionSubjectReServiceFallbackImpl implements RemoteInst
 
 	@Override
 	public R<Subject> getSubjectByInsId(Integer insId, String from) {
-		log.error("根据机构id查询主体信息失败", cause);
 		return null;
 	}
 }

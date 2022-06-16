@@ -116,7 +116,7 @@ public class InstitutionSubjectReController {
 	 */
 	@ApiOperation(value = "根据机构id查询主体信息", notes = "根据机构id查询主体信息")
 	@GetMapping("/getSubjectByInsId/{insId}")
-	public R getSubjectByInsId(@PathVariable Integer insId) {
+	public R getSubjectByInsId(@PathVariable("insId") Integer insId) {
 		return R.ok(institutionSubjectReService.getSubjectByInsId(insId));
 	}
 
