@@ -74,7 +74,16 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		String[] split = subjectName.split(",");
 		if (split.length>1){
 			if (subjectName.contains(name)){
-				subjectName=subjectName.replaceAll(name+",","");
+				int index = subjectName.indexOf(name);
+				if (index!=0){
+					if (subjectName.substring(index-1,index).equals(",")){
+						subjectName=subjectName.replaceAll(","+name,"");
+					}else {
+						subjectName=subjectName.replaceAll(name+",","");
+					}
+				}else {
+					subjectName=subjectName.replaceAll(name+",","");
+				}
 			}
 		}else {
 			if (subjectName.contains(name)){
