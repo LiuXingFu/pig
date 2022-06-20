@@ -182,6 +182,17 @@ public class AddressController {
 	}
 
 	/**
+	 * 根据详细地址查询地址信息
+	 * @param informationAddress	详细地址
+	 * @return
+	 */
+	@ApiOperation(value = "分页查询", notes = "分页查询")
+	@GetMapping("/queryAssetsByInformationAddress/{informationAddress}")
+	public R queryAssetsByTypeIdAndType(@PathVariable("informationAddress") String informationAddress) {
+		return R.ok(addressService.queryAssetsByInformationAddress(informationAddress));
+	}
+
+	/**
 	 * 将address集合进行修添加或修改
 	 * @param addressList
 	 * @return

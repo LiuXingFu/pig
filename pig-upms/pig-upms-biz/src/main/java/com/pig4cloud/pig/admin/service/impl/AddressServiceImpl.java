@@ -16,11 +16,14 @@
  */
 package com.pig4cloud.pig.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.mapper.AddressMapper;
 import com.pig4cloud.pig.admin.service.AddressService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 地址表
@@ -68,5 +71,10 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 	@Override
 	public Address queryAssetsByTypeIdAndType(Integer typeId, Integer type) {
 		return this.baseMapper.queryAssetsByTypeIdAndType(typeId, type);
+	}
+
+	@Override
+	public List<Address> queryAssetsByInformationAddress(String informationAddress) {
+		return this.list(new LambdaQueryWrapper<Address>().like(Address::getInformationAddress,informationAddress).eq(Address::getDelFlag,0));
 	}
 }

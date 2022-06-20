@@ -21,6 +21,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 地址表
  *
@@ -36,4 +38,7 @@ public interface AddressService extends IService<Address> {
 	Address getByUserId(Integer userId, Integer type);
 
 	Address queryAssetsByTypeIdAndType(Integer typeId, Integer type);
+
+	List<Address> queryAssetsByInformationAddress(String informationAddress);
+
 }
