@@ -25,6 +25,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 项目主体关联表
@@ -36,4 +37,6 @@ import java.math.BigDecimal;
 public interface ProjectSubjectReMapper extends BaseMapper<ProjectSubjectRe> {
 
 	ProjectSubjectVO getProjectSubjectDetail(@Param("projectId")Integer projectId,@Param("subjectId")Integer subjectId);
+
+	List<ProjectSubjectVO> queryByProjectId(@Param("projectId")Integer projectId,@Param("type")Integer type);
 }

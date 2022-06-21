@@ -78,4 +78,10 @@ public interface InsOutlesCourtReService extends IService<InsOutlesCourtRe> {
 	 */
 	List<InsOutlesCourtReVO> queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO);
 
+	/**
+	 * 根据登录权限查询机构网点法院关联信息
+	 * @return
+	 */
+	InsOutlesCourtRe getInsOutlesCourtRe();
+
 }

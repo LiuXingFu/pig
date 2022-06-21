@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,6 +29,7 @@ import com.pig4cloud.pig.admin.api.vo.OrganizationQueryVO;
 import com.pig4cloud.pig.admin.mapper.InsOutlesCourtReMapper;
 import com.pig4cloud.pig.admin.service.InsOutlesCourtReService;
 import com.pig4cloud.pig.admin.service.RelationshipAuthenticateService;
+import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import com.pig4cloud.pig.common.security.service.SecurityUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,9 +49,8 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 
 	@Autowired
 	RelationshipAuthenticateService relationshipAuthenticateService;
-
 	@Autowired
-	private SecurityUtilsService securityUtilsService;
+	private JurisdictionUtilsService jurisdictionUtilsService;
 
 	@Override
 	public IPage<InsOutlesCourtReVO> queryInsOutlesCourtPage(Page page, InsOutlesCourtRePageDTO insOutlesCourtRePageDTO) {
@@ -138,5 +139,14 @@ public class InsOutlesCourtReServiceImpl extends ServiceImpl<InsOutlesCourtReMap
 	@Override
 	public List<InsOutlesCourtReVO> queryByInsOutlesCourtReQueryDTO(InsOutlesCourtReQueryDTO insOutlesCourtReQueryDTO) {
 		return this.baseMapper.queryByInsOutlesCourtReQueryDTO(insOutlesCourtReQueryDTO);
+	}
+
+	@Override
+	public InsOutlesCourtRe getInsOutlesCourtRe(){
+		QueryWrapper<InsOutlesCourtRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(InsOutlesCourtRe::getInsId,jurisdictionUtilsService.queryByInsId("PLAT_"));
+		queryWrapper.lambda().eq(InsOutlesCourtRe::getOutlesId,jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		queryWrapper.last("limit 1");
+		return this.getOne(queryWrapper);
 	}
 }

@@ -31,4 +31,13 @@
 		limit 1
 	</select>
 
+	<select id="queryByProjectId" resultType="com.pig4cloud.pig.casee.vo.ProjectSubjectVO">
+		select * from p10_project_subject_re
+		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
+		where p10_project_subject_re.project_id = #{projectId}
+		<if test="type != null and type >= 0">
+			and p10_project_subject_re.type = #{type}
+		</if>
+	</select>
+
 </mapper>

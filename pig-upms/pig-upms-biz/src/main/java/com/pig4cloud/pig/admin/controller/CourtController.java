@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.admin.api.entity.Court;
@@ -157,6 +158,19 @@ public class CourtController {
 	@GetMapping("/queryCourtPageByInsIdAndOutlesId")
 	public R queryCourtPageByInsIdAndOutlesId(Page page, Integer insId, Integer outlesId, String courtName){
 		return R.ok(courtService.queryCourtPageByInsIdAndOutlesId(page, insId, outlesId, courtName));
+	}
+
+	/**
+	 * 查询所有法院
+	 * @return
+	 */
+	@ApiOperation(value = "查询所有法院", notes = "查询所有法院")
+	@GetMapping("/queryCourtList")
+	public R queryCourtList(String courtName){
+		QueryWrapper<Court> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().like(Court::getCourtName,courtName);
+		queryWrapper.lambda().eq(Court::getDelFlag,0);
+		return R.ok(courtService.list(queryWrapper));
 	}
 
 }

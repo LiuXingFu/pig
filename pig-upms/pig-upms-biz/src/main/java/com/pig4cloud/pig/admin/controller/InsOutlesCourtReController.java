@@ -187,4 +187,15 @@ public class InsOutlesCourtReController {
 		return R.ok(insOutlesCourtReService.queryByInsOutlesCourtReQueryDTO(insOutlesCourtReQueryDTO));
 	}
 
+	/**
+	 * 根据登录权限查询机构网点法院关联信息
+	 * @return
+	 */
+	@ApiOperation(value = "根据登录权限查询机构网点法院关联信息", notes = "根据登录权限查询机构网点法院关联信息")
+	@SysLog("根据登录权限查询机构网点法院关联信息" )
+	@GetMapping("/getInsOutlesCourtRe")
+	public R getInsOutlesCourtRe() {
+		return R.ok(insOutlesCourtReService.getInsOutlesCourtRe());
+	}
+
 }

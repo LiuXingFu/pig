@@ -30,6 +30,11 @@ import com.pig4cloud.pig.casee.vo.ProjectSubjectVO;
  */
 public interface ProjectSubjectReService extends IService<ProjectSubjectRe> {
 
+	/**
+	 * 单条新增或修改项目主体，更新项目所有债务人名称
+	 * @param projectSubjectReModifyDTO
+	 * @return
+	 */
 	Integer modifySubjectBySubjectReId(ProjectSubjectReModifyDTO projectSubjectReModifyDTO);
 
 	/**
@@ -39,5 +44,12 @@ public interface ProjectSubjectReService extends IService<ProjectSubjectRe> {
 	 * @return
 	 */
 	ProjectSubjectVO getProjectSubjectDetail(Integer projectId,Integer subjectId);
+
+	/**
+	 * 删除项目主体关联表
+	 * @param subjectReId
+	 * @return
+	 */
+	Integer removeProjectSubjectRe(Integer projectId,Integer subjectReId);
 
 }

@@ -67,5 +67,9 @@ public class ProjectSubjectRe extends BaseEntity {
     @ApiModelProperty(value="删除标识（0-正常,1-删除）")
     private String delFlag;
 
-
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value="备注")
+	private String describes;
 }

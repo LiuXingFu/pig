@@ -244,7 +244,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		// 获取项目基本信息及办理机构名称和网点名称
 		ProjectLiquiDetailsVO projectLiquiDetailsVO = this.baseMapper.selectByProjectId(projectId);
 
-
 		// 查询银行借贷和移送记录表
 		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(null, projectId);
 		projectLiquiDetailsVO.setTransferRecordBankLoanVO(transferRecordBankLoanVO);
@@ -1190,8 +1189,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			R<Integer> subjectId = remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
 			subject.setSubjectId(subjectId.getData());
 
-
-
 			// 保存银行借贷主体关联信息
 			SubjectBankLoanRe subjectBankLoanRe = new SubjectBankLoanRe();
 			subjectBankLoanRe.setDebtType(projectSaveSubjectDTO.getType());
@@ -1227,6 +1224,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		BeanCopyUtil.copyBean(transferRecordDTO,projectLiquiSaveDTO);
 		transferRecordDTO.setReturnTime(projectLiquiSaveDTO.getTakeTime());
 		transferRecordLiquiService.reception(transferRecordDTO);
+
+		if(projectLiquiSaveDTO.getMortgageSituation()==0){
+			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
+		}
 
 		return 1;
 	}

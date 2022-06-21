@@ -126,4 +126,16 @@ public class ProjectSubjectReController {
 		return R.ok(projectSubjectReService.getProjectSubjectDetail(projectId,subjectId));
 	}
 
+	/**
+	 * 删除项目主体关联表
+	 * @param subjectReId id
+	 * @return R
+	 */
+	@ApiOperation(value = "删除项目主体关联表", notes = "删除项目主体关联表")
+	@SysLog("删除项目主体关联表" )
+	@DeleteMapping("/removeProjectSubjectRe" )
+	public R removeProjectSubjectRe( Integer projectId,Integer subjectReId) {
+		return R.ok(projectSubjectReService.removeProjectSubjectRe(projectId,subjectReId));
+	}
+
 }
