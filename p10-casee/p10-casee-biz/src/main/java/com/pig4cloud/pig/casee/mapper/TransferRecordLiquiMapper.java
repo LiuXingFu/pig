@@ -25,6 +25,7 @@ import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
+import com.pig4cloud.pig.casee.vo.MortgageAssetsVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -47,4 +48,6 @@ public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 	TransferRecordBankLoanVO getTransferRecordBankLoan(@Param("transferRecordId") Integer transferRecordId, @Param("projectId")Integer projectId);
 
 	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
+
+	List<MortgageAssetsVO> getProjectIdByMortgageAssets(Integer projectId);
 }

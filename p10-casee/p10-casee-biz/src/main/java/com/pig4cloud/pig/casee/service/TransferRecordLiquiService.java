@@ -25,6 +25,8 @@ import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
+import com.pig4cloud.pig.casee.vo.MortgageAssetsRecordsVO;
+import com.pig4cloud.pig.casee.vo.MortgageAssetsVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
 
 import java.util.List;
@@ -46,4 +48,7 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 	boolean reception(TransferRecordDTO transferRecordDTO);
 
 	List<AssetsInformationVO> getProjectIdByAssets(Integer projectId);
+
+	List<MortgageAssetsVO> getProjectIdByMortgageAssets(Integer projectId);
+
 }
