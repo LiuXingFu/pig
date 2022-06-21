@@ -20,6 +20,9 @@ package com.pig4cloud.pig.casee.vo;
 import com.pig4cloud.pig.casee.entity.Assets;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 财产表
  *
@@ -28,6 +31,10 @@ import lombok.Data;
  */
 @Data
 public class AssetsVO extends Assets {
+	/**
+	 * 抵押财产记录表id
+	 */
+	private Integer mortgageAssetsRecordsId;
 
 	/**
 	 * 抵押财产关联表id
@@ -74,4 +81,9 @@ public class AssetsVO extends Assets {
 	 * 财产性质名称
 	 */
 	private String assetsTypeName;
+
+	/**
+	 * 债务人id
+	 */
+	List<Integer> subjectId=new ArrayList<>();
 }

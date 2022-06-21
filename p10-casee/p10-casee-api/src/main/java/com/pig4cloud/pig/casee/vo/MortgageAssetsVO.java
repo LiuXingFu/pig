@@ -14,29 +14,30 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.vo;
 
-package com.pig4cloud.pig.casee.mapper;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.casee.entity.MortgageAssetsRecords;
+import io.swagger.annotations.ApiModel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pig4cloud.pig.casee.entity.MortgageAssetsRe;
-import com.pig4cloud.pig.casee.vo.AssetsVO;
-import org.apache.ibatis.annotations.Mapper;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 抵押财产关联表
+ * 抵押记录表
  *
  * @author Mjh
- * @date 2022-04-13 11:24:36
+ * @date 2022-04-13 11:24:18
  */
-@Mapper
-public interface MortgageAssetsReMapper extends BaseMapper<MortgageAssetsRe> {
+@Data
+@TableName("p10_mortgage_assets_records")
+@EqualsAndHashCode(callSuper = true)
+@ApiModel(value = "抵押记录表")
+public class MortgageAssetsVO extends MortgageAssetsRecords {
 
-	List<AssetsVO> getAssetsDetails(Integer mortgageAssetsRecordsId);
-
-	List<AssetsVO> getAssetsUpdateDetails(Integer mortgageAssetsRecordsId);
-
-	List<AssetsVO> getAssetsList(Integer mortgageAssetsRecordsId);
+	//财产信息
+	List<AssetsVO> assetsVoList=new ArrayList<>();
 
 }

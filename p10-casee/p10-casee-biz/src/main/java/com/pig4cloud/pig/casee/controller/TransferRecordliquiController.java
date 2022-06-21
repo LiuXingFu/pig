@@ -173,6 +173,17 @@ public class TransferRecordliquiController {
 	}
 
 	/**
+	 * 通过项目id查询抵押财产信息
+	 * @param projectId 项目id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过项目id查询抵押财产信息", notes = "通过项目id查询抵押财产信息")
+	@GetMapping("/getProjectIdByMortgageAssets/{projectId}" )
+	public R getProjectIdByMortgageAssets(@PathVariable("projectId" ) Integer projectId) {
+		return R.ok(transferRecordLiquiService.getProjectIdByMortgageAssets(projectId));
+	}
+
+	/**
 	 * 接收移交记录
 	 * @param transferRecordDTO 接收移交记录
 	 * @return R

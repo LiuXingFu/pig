@@ -29,6 +29,11 @@
     <result property="assetsId" column="assets_id"/>
   </resultMap>
 
+	<resultMap id="AssetsVOMap" type="com.pig4cloud.pig.casee.vo.AssetsVO" extends="mortgageAssetsReMap">
+		<collection property="subjectId" ofType="java.util.List"
+					select="com.pig4cloud.pig.casee.mapper.MortgageAssetsSubjectReMapper.getMortgageAssetsSubject" column="mortgage_assets_re_id"></collection>
+	</resultMap>
+
 	<select id="getAssetsDetails" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
 		select * from p10_mortgage_assets_re
 		left join p10_assets on p10_mortgage_assets_re.assets_id=p10_assets.assets_id
@@ -38,6 +43,13 @@
 
 	<select id="getAssetsUpdateDetails" resultType="com.pig4cloud.pig.casee.vo.AssetsVO">
 		select *,p10_address.address_id as addressAsId from p10_mortgage_assets_re
+		left join p10_assets on p10_mortgage_assets_re.assets_id=p10_assets.assets_id
+		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
+		where p10_mortgage_assets_re.mortgage_assets_records_id=#{mortgageAssetsRecordsId}
+	</select>
+
+	<select id="getAssetsList" resultMap="AssetsVOMap">
+		select * from p10_mortgage_assets_re
 		left join p10_assets on p10_mortgage_assets_re.assets_id=p10_assets.assets_id
 		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
 		where p10_mortgage_assets_re.mortgage_assets_records_id=#{mortgageAssetsRecordsId}
