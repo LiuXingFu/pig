@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.api.feign.fallback;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 
@@ -142,6 +143,12 @@ public class RemoteSubjectServiceFallbackImpl implements RemoteSubjectService {
 	@Override
 	public R<SubjectVO> getByUnifiedIdentityAndPhone(String unifiedIdentity, String phone, String from) {
 		log.error("通过身份证与电话查询主体信息", cause);
+		return null;
+	}
+
+	@Override
+	public R saveSubjectAddress(List<SubjectAddressDTO> subjectAddressDTOList, String from) {
+		log.error("新增主体、债务人地址信息以及主体关联债务人信息", cause);
 		return null;
 	}
 }

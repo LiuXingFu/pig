@@ -143,6 +143,12 @@ public class ProjectLiquiSaveDTO {
 	private Integer litigation;
 
 	/**
+	 * 借贷日期
+	 */
+	@ApiModelProperty(value="借贷日期")
+	private LocalDate transferDate;
+
+	/**
 	 * 申请诉讼/执行时效开始时间
 	 */
 	@ApiModelProperty(value="申请诉讼/执行时效开始时间")

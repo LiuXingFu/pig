@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.admin.api.feign;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.factory.RemoteSubjectServiceFallbackFactory;
@@ -185,5 +186,14 @@ public interface RemoteSubjectService {
 	 */
 	@GetMapping("/subject/getByUnifiedIdentityAndPhone/{unifiedIdentity}/{phone}")
 	R<SubjectVO> getByUnifiedIdentityAndPhone(@PathVariable("unifiedIdentity") String unifiedIdentity, @PathVariable("phone") String phone, @RequestHeader(SecurityConstants.FROM) String from);
+
+	/**
+	 *  新增主体、债务人地址信息以及主体关联债务人信息
+	 * @param subjectAddressDTOList
+	 * @param from 内部调用标志
+	 * @return
+	 */
+	@PostMapping("/subject/saveSubjectAddress")
+	R saveSubjectAddress(@RequestBody List<SubjectAddressDTO> subjectAddressDTOList, @RequestHeader(SecurityConstants.FROM) String from);
 
 }
