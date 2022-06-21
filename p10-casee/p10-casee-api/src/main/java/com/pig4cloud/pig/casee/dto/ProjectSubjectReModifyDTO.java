@@ -18,12 +18,15 @@ package com.pig4cloud.pig.casee.dto;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.common.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 /**
  * 项目主体关联表
@@ -39,6 +42,18 @@ public class ProjectSubjectReModifyDTO {
      */
     @ApiModelProperty(value="id")
     private Integer subjectReId;
+
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
+
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value = "备注")
+	private String describes;
 
     /**
      * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人）
@@ -83,12 +98,6 @@ public class ProjectSubjectReModifyDTO {
 	private String email;
 
 	/**
-	 * 备注
-	 */
-	@ApiModelProperty(value = "备注")
-	private String remark;
-
-	/**
 	 * 工作单位
 	 */
 	@ApiModelProperty(value = "工作单位")
@@ -106,7 +115,7 @@ public class ProjectSubjectReModifyDTO {
 	@ApiModelProperty(value = "民族")
 	private String ethnic;
 
-
-
+	//债务人联系地址
+	List<Address> addressList;
 
 }

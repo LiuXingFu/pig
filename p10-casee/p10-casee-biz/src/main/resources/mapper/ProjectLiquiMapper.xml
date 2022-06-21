@@ -105,7 +105,7 @@
 	</select>
 
 	<select id="selectProjectSubject" resultType="com.pig4cloud.pig.casee.vo.ProjectSubjectVO">
-		select p10_subject.*,p10_project_subject_re.type,p10_project_subject_re.subject_re_id from p10_project_subject_re
+		select p10_subject.*,p10_project_subject_re.type,p10_project_subject_re.subject_re_id, p10_project_subject_re.describes from p10_project_subject_re
 		left join p10_subject on p10_subject.subject_id = p10_project_subject_re.subject_id
 		where p10_project_subject_re.del_flag = 0
 		and p10_project_subject_re.project_id = #{query.projectId}

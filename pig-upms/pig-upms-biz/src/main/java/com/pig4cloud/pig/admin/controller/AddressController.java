@@ -72,7 +72,6 @@ public class AddressController {
 	 */
 	@ApiOperation(value = "通过id查询", notes = "通过id查询")
 	@GetMapping("/{addressId}")
-	@PreAuthorize("@pms.hasPermission('generator_address_get')")
 	public R getById(@PathVariable("addressId") Integer addressId) {
 		return R.ok(addressService.getById(addressId));
 	}

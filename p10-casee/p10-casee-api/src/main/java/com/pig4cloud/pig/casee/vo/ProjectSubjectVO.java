@@ -19,4 +19,10 @@ public class ProjectSubjectVO extends Subject {
 	 */
 	@ApiModelProperty(value="项目主体关联id")
 	private Integer subjectReId;
+
+	/**
+	 * 备注
+	 */
+	@ApiModelProperty(value = "备注")
+	private String describes;
 }
