@@ -31,5 +31,9 @@ import java.math.BigDecimal;
 @Data
 public class ProjectLiquiPageVO extends ProjectLiqui {
 
+	/**
+	 * 网点名称
+	 */
+	private String outlesName;
 
 }
