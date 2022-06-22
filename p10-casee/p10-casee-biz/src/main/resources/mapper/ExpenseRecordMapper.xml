@@ -46,7 +46,7 @@
 					select="com.pig4cloud.pig.casee.mapper.PaymentRecordMapper.paymentSumAmount">
 		</collection>
 		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO" column="expense_record_id"
-					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.selectAssetsList">
+					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.queryAssetsList">
 		</collection>
 	</resultMap>
 
@@ -133,8 +133,8 @@
 	</select>
 
 	<resultMap id="getAssetsReList" type="com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO" extends="expenseRecordMap">
-		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" column="expense_record_id"
-					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.selectAssetsList">
+		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.AssetsReVO" column="expense_record_id"
+					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.queryAssetsList">
 		</collection>
 	</resultMap>
 

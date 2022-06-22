@@ -24,4 +24,15 @@ public class LIQUIGENERALLY_NODEHandler extends TaskNodeHandler {
 		taskNodeService.setTaskDataSubmission(taskNode);
 	}
 
+
+	/**
+	 * 补录程序
+	 * @param taskNode
+	 */
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		//更新json
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
+
 }

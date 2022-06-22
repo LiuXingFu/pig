@@ -155,10 +155,10 @@ public interface TaskNodeService extends IService<TaskNode> {
 
 	/**
 	 * 判断当前节点是否可跳过
-	 * @param taskNode
+	 * @param
 	 * @return
 	 */
-	TaskReminder judgmentTaskJumpOver(TaskNode taskNode);
+	TaskReminder judgmentTaskJumpOver(Integer targetId,Integer sort);
 
 	/**
 	 * 根据条件判断节点状态

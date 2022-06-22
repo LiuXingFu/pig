@@ -246,12 +246,12 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
-	public PaymentRecord addPaymentRecord(BigDecimal amount,LocalDate paymentDate,Project project,Casee casee,AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer paymentType,Integer fundsType) {
+	public PaymentRecord addPaymentRecord(BigDecimal amount,LocalDate paymentDate,Integer status,Project project,Casee casee,AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer paymentType,Integer fundsType) {
 		//添加清收到款到款信息
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setPaymentType(paymentType);
 		paymentRecord.setFundsType(fundsType);
-		paymentRecord.setStatus(0);
+		paymentRecord.setStatus(status);
 		paymentRecord.setPaymentDate(paymentDate);
 		paymentRecord.setPaymentAmount(amount);
 		paymentRecord.setCaseeId(casee.getCaseeId());

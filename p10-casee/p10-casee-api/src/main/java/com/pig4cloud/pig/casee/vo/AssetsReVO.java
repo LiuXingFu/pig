@@ -14,27 +14,30 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo.paifu;
+package com.pig4cloud.pig.casee.vo;
 
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
-import com.pig4cloud.pig.casee.vo.AssetsReVO;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 /**
- * 费用产生记录表
+ * 财产表
  *
- * @author Mjh
- * @date 2022-02-17 17:53:07
+ * @author ligt
+ * @date 2022-01-11 10:29:44
  */
 @Data
+public class AssetsReVO {
 
-public class ExpenseRecordPageVO extends ExpenseRecord {
 	/**
-	 * 财产关联集合
+	 * 财产关联表id
 	 */
-	List<AssetsReVO> assetsReList;
+	private Integer assetsReId;
+
+	/**
+	 * 财产名称
+	 */
+	@ApiModelProperty(value="财产名称")
+	private String assetsName;
 
 }

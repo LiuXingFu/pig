@@ -46,6 +46,6 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 		Casee casee = caseeLiquiService.getById(taskNode.getCaseeId());
 		//添加资金划扣信息
-		paymentRecordService.addPaymentRecord(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount(), fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionTime(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20004);
+		paymentRecordService.addPaymentRecord(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount(), fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionTime(),0, projectLiqui, casee, assetsReSubjectDTO, null, 200, 20004);
 	}
 }

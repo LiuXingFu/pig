@@ -35,4 +35,9 @@ public class EntityZX_STZX_CCZXDCCD_CCZXDCCD_NODEHandler extends TaskNodeHandler
 		assetsReDTO.setStatus(500);
 		assetsReService.updateById(assetsReDTO);
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
 }

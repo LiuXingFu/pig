@@ -144,7 +144,7 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 				paiFu_stcc_dk_dk.setLiQuiExpenseRecordId(expenseRecord.getExpenseRecordId());
 
 				//添加到款记录以及其它关联信息
-				PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
+				PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_dk_dk.getAmountReceived(), paiFu_stcc_dk_dk.getFinalPaymentDate(),0, project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 200, 20003);
 
 				paiFu_stcc_dk_dk.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());
 			}
