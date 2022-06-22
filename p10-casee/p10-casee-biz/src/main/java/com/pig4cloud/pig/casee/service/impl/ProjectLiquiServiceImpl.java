@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
@@ -38,6 +39,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.detail.AssetsReCaseeDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.TransferRecordLiquiDetail;
 import com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
@@ -1173,41 +1175,27 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	public Integer saveProject(ProjectLiquiSaveDTO projectLiquiSaveDTO){
 		// 保存银行借贷信息
 		BankLoan bankLoan = new BankLoan();
-		BeanCopyUtil.copyBean(bankLoan,projectLiquiSaveDTO);
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO,bankLoan);
 		bankLoan.setInsId(projectLiquiSaveDTO.getBankLoanInsId());
 		bankLoan.setOutlesId(projectLiquiSaveDTO.getBankLoanOutlesId());
 		bankLoan.setRental(projectLiquiSaveDTO.getPrincipalInterestAmount());
 		bankLoan.setSubjectName(projectLiquiSaveDTO.getSubjectPersons());
 		bankLoanService.save(bankLoan);
 
-		List<SubjectBankLoanRe> subjectBankLoanReList = new ArrayList<>();
-		List<Address> addressList = new ArrayList<>();
+		List<SubjectAddressDTO> subjectAddressDTOList = new ArrayList<>();
 		for(ProjectSaveSubjectDTO projectSaveSubjectDTO :projectLiquiSaveDTO.getSubjectPersonsList()){
-			// 保存主体信息
-			Subject subject = new Subject();
-			BeanCopyUtil.copyBean(subject,projectSaveSubjectDTO);
-			R<Integer> subjectId = remoteSubjectService.saveOrUpdateById(subject,SecurityConstants.FROM);
-			subject.setSubjectId(subjectId.getData());
-
-			// 保存银行借贷主体关联信息
-			SubjectBankLoanRe subjectBankLoanRe = new SubjectBankLoanRe();
-			subjectBankLoanRe.setDebtType(projectSaveSubjectDTO.getType());
-			subjectBankLoanRe.setBankLoanId(bankLoan.getBankLoanId());
-			subjectBankLoanRe.setSubjectId(subjectId.getData());
-			subjectBankLoanReList.add(subjectBankLoanRe);
-
-			for(Address address : projectSaveSubjectDTO.getAddressList()){
-				// 保存地址
-				address.setUserId(subjectId.getData());
-				address.setType(1);
-				addressList.add(address);
-			}
+			SubjectAddressDTO subjectAddressDTO = new SubjectAddressDTO();
+			BeanCopyUtil.copyBean(projectSaveSubjectDTO,subjectAddressDTO);
+			subjectAddressDTO.setBankLoanId(bankLoan.getBankLoanId());
+			subjectAddressDTO.setSubjectName(projectLiquiSaveDTO.getSubjectPersons());
+			subjectAddressDTO.setAddressList(projectSaveSubjectDTO.getAddressList());
+			subjectAddressDTOList.add(subjectAddressDTO);
 		}
-		subjectBankLoanReService.saveBatch(subjectBankLoanReList);
-		addressService.saveOrUpdateBatch(addressList,SecurityConstants.FROM);
-
+		remoteSubjectService.saveSubjectAddress(subjectAddressDTOList,SecurityConstants.FROM);
 		// 保存抵押物
-		assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
+		if(projectLiquiSaveDTO.getMortgageSituation()==0){
+			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
+		}
 
 		// 保存移交记录
 		TransferRecordLiqui transferRecordLiqui = new TransferRecordLiqui();
@@ -1217,17 +1205,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		transferRecordLiqui.setHandoverTime(projectLiquiSaveDTO.getTakeTime());
 		transferRecordLiqui.setStatus(0);
 		transferRecordLiqui.setTransferType(0);
+		transferRecordLiqui.setReturnTime(projectLiquiSaveDTO.getTakeTime());
+		TransferRecordLiquiDetail transferRecordLiquiDetail = new TransferRecordLiquiDetail();
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO,transferRecordLiquiDetail);
+		transferRecordLiquiDetail.setHandoverAmount(projectLiquiSaveDTO.getPrincipalInterestAmount());
+		transferRecordLiqui.setTransferRecordLiquiDetail(transferRecordLiquiDetail);
 		transferRecordLiquiService.save(transferRecordLiqui);
 
 		// 保存接收记录
 		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
-		BeanCopyUtil.copyBean(transferRecordDTO,projectLiquiSaveDTO);
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO,transferRecordDTO);
+		transferRecordDTO.setStatus(1);
 		transferRecordDTO.setReturnTime(projectLiquiSaveDTO.getTakeTime());
+		transferRecordDTO.setTransferRecordId(transferRecordLiqui.getTransferRecordId());
 		transferRecordLiquiService.reception(transferRecordDTO);
-
-		if(projectLiquiSaveDTO.getMortgageSituation()==0){
-			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
-		}
 
 		return 1;
 	}

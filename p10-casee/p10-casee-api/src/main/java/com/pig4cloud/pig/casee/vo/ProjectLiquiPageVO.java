@@ -34,6 +34,6 @@ public class ProjectLiquiPageVO extends ProjectLiqui {
 	/**
 	 * 网点名称
 	 */
-	private String outlesName;
+	private String entrustOutlesName;
 
 }

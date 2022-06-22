@@ -13,7 +13,7 @@ public class ProjectSaveSubjectDTO {
 	 * 类型（0-申请人，1-借款人，2-共同借款人，3-担保人）
 	 */
 	@ApiModelProperty(value="类型（0-申请人，1-借款人，2-共同借款人，3-担保人）")
-	private Integer type;
+	private Integer debtType;
 
 	/**
 	 * 主体表id
