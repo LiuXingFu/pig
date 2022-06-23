@@ -21,6 +21,7 @@ package com.pig4cloud.pig.admin.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.pig4cloud.pig.admin.api.dto.CourtExcelDTO;
 import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.api.entity.Outles;
 import com.pig4cloud.pig.admin.api.vo.InsOutlesCourtReVO;
@@ -54,4 +55,8 @@ public interface CourtService extends IService<Court> {
 	IPage<Court> queryCourtPage(Page page, String courtName);
 
 	IPage<Court> queryCourtPageByInsIdAndOutlesId(Page page, Integer insId, Integer outlesId, String courtName);
+
+	void importCourt(List<CourtExcelDTO> courtExcelDTOList);
+
+	void setRegion();
 }
