@@ -21,6 +21,10 @@ public class limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		addData(taskNode);
+	}
+
+	private void addData(TaskNode taskNode){
 		Target target = targetService.getById(taskNode.getTargetId());
 
 		taskNodeService.setTaskDataSubmission(taskNode);
@@ -30,4 +34,10 @@ public class limit_XWXZ_XWXZXZCX_XWXZXZCX_NODEHandler extends TaskNodeHandler {
 		//修改行为状态
 		behaviorLiquiService.updateById(behaviorLiqui);
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		addData(taskNode);
+	}
+
 }

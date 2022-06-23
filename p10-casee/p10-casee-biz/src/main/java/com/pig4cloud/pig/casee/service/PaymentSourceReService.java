@@ -18,29 +18,14 @@
 package com.pig4cloud.pig.casee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
-import com.pig4cloud.pig.casee.dto.ProjectSubjectReModifyDTO;
-import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
-import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
-import com.pig4cloud.pig.casee.vo.SubjectIdsOrSubjectBankLoanReIdsVO;
-
-import java.util.List;
+import com.pig4cloud.pig.casee.entity.PaymentSourceRe;
 
 /**
- * 主体关联银行借贷表
+ * 回款来源表
  *
  * @author Mjh
- * @date 2022-01-28 18:52:44
+ * @date 2022-06-23 17:07:54
  */
-public interface SubjectBankLoanReService extends IService<SubjectBankLoanRe> {
+public interface PaymentSourceReService extends IService<PaymentSourceRe> {
 
-	boolean	removeSubjectAndBankLoan(Integer bankLoanId, List<Integer> subjectIds);
-
-	boolean removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId,Integer subjectId,String name);
-
-	Integer modifySubjectBySubjectBankLoanId(SubjectBankLoanReDTO subjectBankLoanReDTO);
-
-	SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectOrSubjectBankLoanRe(List<SubjectAddressDTO> subjectAddressDTOList);
-
-	List<Integer> selectSubjectId(Integer bankLoanId);
 }

@@ -12,6 +12,12 @@ import java.time.LocalDate;
  */
 @Data
 public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK extends CommonalityData implements Serializable {
+
+	/**
+	 * 回款记录id
+	 */
+	private Integer paymentRecordId;
+
 	/**
 	 * 划扣时间
 	 */

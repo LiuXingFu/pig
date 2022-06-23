@@ -678,7 +678,15 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 
 		if (taskFlowDTO != null) {  // 需要修改平行节点概念
 			//提交办理任务生成任务流并保存任务数据
-			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
+//			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
+			if (taskFlowDTO.getNeedAudit() == 0) {
+				taskFlowDTO.setStatus(403);
+			} else {
+				taskFlowDTO.setStatus(101);
+			}
+
+			// 保存任务数据
+			this.updateById(taskFlowDTO);
 			if (taskFlowDTO.getInsType().equals(1100)) {
 				//查询当前财产拍卖公告节点信息
 				TaskNode taskNodePmgg = this.queryLastTaskNode("paiFu_STCC_PMGG_PMGG", taskFlowDTO.getTargetId());
@@ -1006,8 +1014,17 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 			//添加任务记录数据
 			taskRecordService.save(taskRecord);
 
+			if (taskFlowDTO.getNeedAudit() == 0) {
+				taskFlowDTO.setStatus(403);
+			} else {
+				taskFlowDTO.setStatus(101);
+			}
+
+			// 保存任务数据
+			this.updateById(taskFlowDTO);
+
 			//提交补录办理任务生成任务流并保存任务数据
-			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
+//			taskFlowDTO = makeUpEntrustOrSubmit(taskFlowDTO);
 
 			if (taskFlowDTO.getInsType().equals(1100)) {
 				if (!taskFlowDTO.getNodeKey().equals("paiFu_STCC_XK_XK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_BDCXKRH_BDCXKRH") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_JGYJ_JGYJ") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_ZCDC_ZCDC") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DK_DK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_CJCD_CJCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCD_DCCD") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_DCCDSDQK_DCCDSDQK") && !taskFlowDTO.getNodeKey().equals("paiFu_STCC_TTCG_TTCG")) {

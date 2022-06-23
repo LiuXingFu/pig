@@ -15,27 +15,19 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.casee.service;
+package com.pig4cloud.pig.casee.mapper;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.dto.BankLoanDTO;
-import com.pig4cloud.pig.casee.dto.BankLoanInformationDTO;
-import com.pig4cloud.pig.casee.entity.BankLoan;
-import com.pig4cloud.pig.casee.vo.BankLoanInformationVO;
-import com.pig4cloud.pig.casee.vo.BankLoanVO;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.pig4cloud.pig.casee.entity.PaymentSourceRe;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 银行借贷表
+ * 回款来源表
  *
  * @author Mjh
- * @date 2022-01-29 10:20:00
+ * @date 2022-06-23 17:07:54
  */
-public interface BankLoanService extends IService<BankLoan> {
-	IPage<BankLoanVO>  bankLoanPage(Page page, BankLoanDTO bankLoanDTO);
+@Mapper
+public interface PaymentSourceReMapper extends BaseMapper<PaymentSourceRe> {
 
-	BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId);
-
-	int updateBankLoan(BankLoan bankLoan);
 }

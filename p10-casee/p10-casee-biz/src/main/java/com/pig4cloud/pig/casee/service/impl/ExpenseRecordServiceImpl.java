@@ -141,10 +141,6 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		//修改项目金额
 		projectLiquiService.updateById(project);
 
-		if(expenseRecord.getExpenseRecordId()!=null){
-			ExpenseRecord record = this.getById(expenseRecord.getExpenseRecordId());
-			record.setCostAmount(record.getCostAmount().add(expenseRecord.getCostAmount()));
-		}
 		//修改费用产生信息
 		return this.updateById(expenseRecord);
 	}
