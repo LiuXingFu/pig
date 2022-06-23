@@ -18,6 +18,8 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
+import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
@@ -25,11 +27,13 @@ import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper;
 import com.pig4cloud.pig.casee.service.*;
+import com.pig4cloud.pig.casee.vo.SubjectIdsOrSubjectBankLoanReIdsVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -134,6 +138,59 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		remoteSubjectService.saveOrUpdateById(subject, SecurityConstants.FROM);
 
 		return this.baseMapper.updateById(subjectBankLoanRe);
+	}
+
+	@Override
+	public SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectOrSubjectBankLoanRe(List<SubjectAddressDTO> subjectAddressDTOList) {
+
+		SubjectIdsOrSubjectBankLoanReIdsVO subjectIdsOrSubjectBankLoanReIdsVO = new SubjectIdsOrSubjectBankLoanReIdsVO();
+
+		List<Integer> subjectIds = new ArrayList();
+		BankLoan bankLoan = new BankLoan();
+		List<Integer> subjectBankLoanReListIds = new ArrayList<>();
+
+		String subjectNames = "";//银行借贷所有债务人名称
+		for (SubjectAddressDTO subjectAddressDTO : subjectAddressDTOList) {
+			//添加债务人主体信息
+			Subject subject = new Subject();
+			BeanCopyUtil.copyBean(subjectAddressDTO, subject);
+			Subject subjectData = remoteSubjectService.saveSubject(subject, SecurityConstants.FROM).getData();
+			bankLoan = bankLoanService.getById(subjectAddressDTO.getBankLoanId());
+			if (bankLoan != null) {
+				if (bankLoan.getSubjectName() == null) {
+					if (subjectNames == "") {
+						subjectNames = subject.getName();
+					} else {
+						subjectNames += "," + subject.getName();
+					}
+				} else {
+					if (!bankLoan.getSubjectName().contains(subject.getName())) {
+						subjectNames = bankLoan.getSubjectName() + "," + subject.getName();
+					}
+				}
+			}
+			List<Address> addressList = subjectAddressDTO.getAddressList();
+			for (Address address : addressList) {
+				address.setUserId(subjectData.getSubjectId());
+				address.setType(1);
+				//添加债务人地址信息
+				remoteAddressService.saveOrUpdate(address,SecurityConstants.FROM);
+			}
+			//添加主体关联银行借贷信息
+			SubjectBankLoanRe subjectBankLoanRe = new SubjectBankLoanRe();
+			subjectBankLoanRe.setSubjectId(subjectData.getSubjectId());
+			subjectBankLoanRe.setDebtType(subjectAddressDTO.getDebtType());
+			subjectBankLoanRe.setBankLoanId(subjectAddressDTO.getBankLoanId());
+			this.save(subjectBankLoanRe);
+			subjectBankLoanReListIds.add(subjectBankLoanRe.getSubjectBankLoanId());
+			subjectIds.add(subjectData.getSubjectId());
+		}
+		bankLoan.setSubjectName(subjectNames);
+		bankLoanService.updateById(bankLoan);
+
+		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectIds(subjectIds);
+		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectBankLoanReListIds(subjectBankLoanReListIds);
+		return null;
 	}
 
 	@Override

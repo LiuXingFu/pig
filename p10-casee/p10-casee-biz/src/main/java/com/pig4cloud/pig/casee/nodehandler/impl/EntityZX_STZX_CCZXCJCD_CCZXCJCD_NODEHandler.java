@@ -26,6 +26,10 @@ public class EntityZX_STZX_CCZXCJCD_CCZXCJCD_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		addData(taskNode);
+	}
+
+	private void addData(TaskNode taskNode){
 		Target target = targetService.getById(taskNode.getTargetId());
 		taskNodeService.setTaskDataSubmission(taskNode);
 		AssetsRe assetsReDTO = assetsReService.getOne(new LambdaQueryWrapper<AssetsRe>().eq(AssetsRe::getProjectId, taskNode.getProjectId()).eq(AssetsRe::getCaseeId, taskNode.getCaseeId()).eq(AssetsRe::getAssetsId, target.getGoalId()));
@@ -36,6 +40,6 @@ public class EntityZX_STZX_CCZXCJCD_CCZXCJCD_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskMakeUp(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
+		addData(taskNode);
 	}
 }

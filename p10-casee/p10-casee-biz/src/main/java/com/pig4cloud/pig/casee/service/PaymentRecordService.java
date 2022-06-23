@@ -68,6 +68,14 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	boolean collection(PaymentRecordDTO paymentRecordDTO);
 
 	/**
+	 * 根据回款记录id删除回款记录信息以及相关关联信息
+	 * @param paymentRecordId		回款id
+	 * @return
+	 */
+	boolean deletePaymentRecordRe(Integer paymentRecordId);
+
+
+	/**
 	 * 添加回款记录以及其它关联信息
 	 * @param amount					回款金额
 	 * @param paymentDate				回款时间

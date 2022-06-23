@@ -19,6 +19,7 @@ package com.pig4cloud.pig.casee.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.casee.dto.SubjectBankLoanReDTO;
 import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
@@ -82,6 +83,18 @@ public class SubjectBankLoanReController {
 		subjectBankLoanReService.save(subjectBankLoanRe);
         return R.ok(subjectBankLoanRe.getSubjectBankLoanId());
     }
+
+	/**
+	 * 新增主体关联银行借贷表
+	 * @param subjectAddressDTOList 新增主体、债务人地址信息以及主体关联债务人信息
+	 * @return R
+	 */
+	@ApiOperation(value = "新增主体关联银行借贷表", notes = "新增主体关联银行借贷表")
+	@SysLog("新增主体关联银行借贷表" )
+	@PostMapping("/saveSubjectOrSubjectBankLoanRe")
+	public R saveSubjectOrSubjectBankLoanRe(@RequestBody List<SubjectAddressDTO> subjectAddressDTOList) {
+		return R.ok(subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList));
+	}
 
     /**
      * 修改主体关联银行借贷表

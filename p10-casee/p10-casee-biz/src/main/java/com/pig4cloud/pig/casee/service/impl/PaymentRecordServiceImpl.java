@@ -68,6 +68,8 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	private ProjectPaifuService projectPaifuService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
+	@Autowired
+	private PaymentSourceReService paymentSourceReService;
 
 	@Override
 	public IPage<PaymentRecordVO> getPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
@@ -235,10 +237,19 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 		//修改到款记录状态
 		List<PaymentRecord> courtPayment = paymentRecordDTO.getCourtPayment();
+		List<PaymentSourceRe> paymentSourceReList=new ArrayList<>();
 		if (courtPayment!=null&&courtPayment.size()>0){
 			for (PaymentRecord paymentRecord : courtPayment) {
+				PaymentSourceRe paymentSourceRe=new PaymentSourceRe();
+				paymentSourceRe.setSourceId(paymentRecord.getPaymentRecordId());
+				paymentSourceRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
+				paymentSourceRe.setType(100);
+				paymentSourceReList.add(paymentSourceRe);
+
 				paymentRecord.setStatus(1);
 			}
+			//添加回款来源信息
+			paymentSourceReService.saveBatch(paymentSourceReList);
 			this.updateBatchById(courtPayment);
 		}
 
@@ -246,8 +257,22 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
+	public boolean deletePaymentRecordRe(Integer paymentRecordId) {
+
+		//删除回款关联信息
+		paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
+				.eq(PaymentRecordAssetsRe::getPaymentRecordId, paymentRecordId));
+
+		//删除回款关联债务人信息
+		paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
+				.eq(PaymentRecordSubjectRe::getPaymentRecordId, paymentRecordId));
+
+		//删除回款信息
+		return this.removeById(paymentRecordId);
+	}
+
+	@Override
 	public PaymentRecord addPaymentRecord(BigDecimal amount,LocalDate paymentDate,Integer status,Project project,Casee casee,AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer paymentType,Integer fundsType) {
-		//添加清收到款到款信息
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setPaymentType(paymentType);
 		paymentRecord.setFundsType(fundsType);
@@ -274,7 +299,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			// 添加回款记录财产关联信息
 			paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);
 		}else {
-			//添加到款信息关联财产
+			//添加关联财产信息
 			PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
 			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
@@ -288,7 +313,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordSubjectRes.add(paymentRecordSubjectRe);
 		}
-		//添加到款信息关联债务人
+		//添加关联债务人信息
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 		return paymentRecord;
 	}

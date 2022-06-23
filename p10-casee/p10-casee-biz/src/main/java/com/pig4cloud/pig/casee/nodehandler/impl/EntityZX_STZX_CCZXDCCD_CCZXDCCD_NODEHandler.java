@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.Target;
 import com.pig4cloud.pig.casee.entity.TaskNode;
+import com.pig4cloud.pig.casee.entity.liquientity.BehaviorLiqui;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.AssetsReService;
 import com.pig4cloud.pig.casee.service.PaymentRecordService;
@@ -26,6 +27,10 @@ public class EntityZX_STZX_CCZXDCCD_CCZXDCCD_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		addData(taskNode);
+	}
+
+	private void addData(TaskNode taskNode){
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 		Target target = targetService.getById(taskNode.getTargetId());
@@ -38,6 +43,6 @@ public class EntityZX_STZX_CCZXDCCD_CCZXDCCD_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskMakeUp(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
+		addData(taskNode);
 	}
 }

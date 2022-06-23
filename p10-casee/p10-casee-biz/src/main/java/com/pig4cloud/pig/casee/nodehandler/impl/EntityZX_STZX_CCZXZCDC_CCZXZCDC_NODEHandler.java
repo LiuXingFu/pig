@@ -47,10 +47,10 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		getLiQiuStccZcdcZcdc(taskNode);
+		addLiQiuStccZcdcZcdc(taskNode);
 	}
 
-	private void getLiQiuStccZcdcZcdc(TaskNode taskNode) {
+	private void addLiQiuStccZcdcZcdc(TaskNode taskNode) {
 		//资产抵偿
 		EntityZX_STZX_CCZXZCDC_CCZXZCDC entityZX_stzx_cczxzcdc_cczxzcdc = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXZCDC_CCZXZCDC.class);
 		//查询案件信息
@@ -208,6 +208,6 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 			projectLiquiService.updateById(projectLiqui);
 
 		}
-		getLiQiuStccZcdcZcdc(taskNode);
+		addLiQiuStccZcdcZcdc(taskNode);
 	}
 }

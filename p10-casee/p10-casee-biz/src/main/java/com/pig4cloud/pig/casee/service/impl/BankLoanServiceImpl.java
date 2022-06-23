@@ -32,6 +32,9 @@ import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 
 /**
  * 银行借贷表
@@ -71,6 +74,16 @@ public class BankLoanServiceImpl extends ServiceImpl<BankLoanMapper, BankLoan> i
 	public BankLoanInformationVO getByBankLoanInformation(Integer bankLoanId) {
 		BankLoanInformationVO bankLoanInformation = this.baseMapper.getByBankLoanInformation(bankLoanId);
 		return bankLoanInformation;
+	}
+
+	@Override
+	public int updateBankLoan(BankLoan bankLoan) {
+		BigDecimal principal = bankLoan.getPrincipal();
+		BigDecimal interest = bankLoan.getInterest();
+		if(Objects.nonNull(principal) && Objects.nonNull(interest)){
+			bankLoan.setRental(principal.add(interest));
+		}
+		return this.baseMapper.updateById(bankLoan);
 	}
 }
 
