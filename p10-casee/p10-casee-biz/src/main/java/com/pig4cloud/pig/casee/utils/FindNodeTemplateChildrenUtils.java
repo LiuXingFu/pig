@@ -116,7 +116,7 @@ public class FindNodeTemplateChildrenUtils {
 				//查询当前财产是否移交过
 				List<AssetsLiquiTransferRecordRe> assetsLiquiTransferRecordReList = assetsLiquiTransferRecordReService.list(new LambdaQueryWrapper<AssetsLiquiTransferRecordRe>().eq(AssetsLiquiTransferRecordRe::getAssetsReId, assetsRe.getAssetsReId()));
 				if (assetsLiquiTransferRecordReList.size() >= 1) {//已移交
-					if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF") || taskNodeVO.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
+					if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCF_CCZXCF") || taskNodeVO.getNodeKey().equals("entityZX_STZX_STZXCFSDQK_STZXCFSDQK")||taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJ_CCZXZCCZYJ")||taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCCZYJSDQK_CCZXZCCZYJSDQK") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJ_ZJZXDJ") || taskNodeVO.getNodeKey().equals("fundingZX_ZJZX_ZJZXDJSDQK_ZJZXDJSDQK")) {
 						return taskNodeVO;
 					}
 				} else {
@@ -169,31 +169,17 @@ public class FindNodeTemplateChildrenUtils {
 						if (entityZX_stzx_cczxpmjg_cczxpmjg != null && entityZX_stzx_cczxpmjg_cczxpmjg.getAuctionResults() == 0) {
 							return taskNodeVO;
 						}
-					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCDC_CCZXZCDC")) {//成交裁定、资产抵偿
+					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXZCDC_CCZXZCDC")) {//抵偿裁定、资产抵偿
 						TaskNode taskNodeDK = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDK_CCZXDK").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
-						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD")) {
-							//完成到款环节
-							if (taskNodeDK.getStatus() != 0) {
-								return taskNodeVO;
-							}
-						} else {
-							//没有完成到款环节
-							if (taskNodeDK.getStatus() == 0) {
-								return taskNodeVO;
-							}
+						//没有完成到款环节
+						if (taskNodeDK.getStatus() == 0 || taskNodeDK.getStatus() == 301) {
+							return taskNodeVO;
 						}
-					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {//抵偿裁定、到款
+					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXCJCD_CCZXCJCD") || taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDK_CCZXDK")) {//成交裁定、到款
 						TaskNode taskNodeZCDC = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXZCDC_CCZXZCDC").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));
-						if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCD_CCZXDCCD")) {//抵偿裁定
-							//完成资产抵偿环节
-							if (taskNodeZCDC.getStatus() != 0) {
-								return taskNodeVO;
-							}
-						} else {
-							//没有完成资产抵偿环节
-							if (taskNodeZCDC.getStatus() == 0) {
-								return taskNodeVO;
-							}
+						//没有完成抵偿裁定环节
+						if (taskNodeZCDC.getStatus() == 0 || taskNodeZCDC.getStatus() == 301) {
+							return taskNodeVO;
 						}
 					} else if (taskNodeVO.getNodeKey().equals("entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK")) {//抵偿裁定送达情况
 						TaskNode taskNodeDCCD = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeKey, "entityZX_STZX_CCZXDCCD_CCZXDCCD").eq(TaskNode::getTargetId, taskNodeVO.getTargetId()).eq(TaskNode::getDelFlag,"0"));

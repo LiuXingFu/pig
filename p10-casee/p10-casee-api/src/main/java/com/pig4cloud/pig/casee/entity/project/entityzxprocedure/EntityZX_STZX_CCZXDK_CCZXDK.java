@@ -12,6 +12,11 @@ import java.time.LocalDate;
 @Data
 public class EntityZX_STZX_CCZXDK_CCZXDK extends CommonalityData implements Serializable {
 	/**
+	 * 清收回款记录id
+	 */
+	private Integer paymentRecordId;
+
+	/**
 	 * 到款金额
 	 */
 	private BigDecimal amountReceived;

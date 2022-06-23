@@ -60,4 +60,9 @@ public class EntityZX_STZX_CCZXPMGG_CCZXPMGG_NODEHandler extends TaskNodeHandler
 		taskNodeService.setTaskDataSubmission(taskNode);
 
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
 }

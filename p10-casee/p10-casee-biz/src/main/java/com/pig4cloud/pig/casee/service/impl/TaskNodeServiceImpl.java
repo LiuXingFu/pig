@@ -478,12 +478,12 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 	}
 
 	@Override
-	public TaskReminder judgmentTaskJumpOver(TaskNode taskNode) {
+	public TaskReminder judgmentTaskJumpOver(Integer targetId,Integer sort) {
 		TaskReminder taskReminder=new TaskReminder();
 		//查询当前程序所有不可跳过任务节点并且没有提交的
-		List<TaskNode> notSkippedList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, taskNode.getTargetId()).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getCanSkip, 0).eq(TaskNode::getStatus,0));
+		List<TaskNode> notSkippedList = this.list(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getTargetId, targetId).eq(TaskNode::getNodeAttributes, 400).eq(TaskNode::getCanSkip, 0).eq(TaskNode::getStatus,0));
 		for (TaskNode notSkippedNode : notSkippedList) {
-			if (taskNode.getSort()>notSkippedNode.getSort()){//如果当前节点在不可跳过节点后面要判断不可跳过节点是否提交
+			if (sort>notSkippedNode.getSort()){//如果当前节点在不可跳过节点后面要判断不可跳过节点是否提交
 				taskReminder.setHint(1);
 				taskReminder.setHintInformation("节点前有不可跳过节点 无法填写。请填写【" + notSkippedNode.getNodeName() +"】节点。");
 				return taskReminder;
@@ -1032,6 +1032,18 @@ public class TaskNodeServiceImpl extends ServiceImpl<TaskNodeMapper, TaskNode> i
 				if (target.getProcedureNature().equals(4040)||target.getProcedureNature().equals(4041)){//清收实体财产、资金财产程序
 					caseeHandlingRecords.setSourceId(target.getGoalId());
 					caseeHandlingRecords.setSourceType(0);
+					if (taskFlowDTO.getNodeKey().equals("entityZX_STZX_CCZXPMGG_CCZXPMGG")||taskFlowDTO.getNodeKey().equals("entityZX_STZX_CCZXPMJG_CCZXPMJG")){
+						//查询当前财产拍卖公告节点信息
+						TaskNode taskNodePmgg = this.queryLastTaskNode("entityZX_STZX_CCZXPMGG_CCZXPMGG", taskFlowDTO.getTargetId());
+						EntityZX_STZX_CCZXPMGG_CCZXPMGG entityZX_stzx_cczxpmgg_cczxpmgg = JsonUtils.jsonToPojo(taskNodePmgg.getFormData(), EntityZX_STZX_CCZXPMGG_CCZXPMGG.class);
+						if (entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionType().equals(100)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(一拍)");
+						}else if (entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionType().equals(200)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(二拍)");
+						}else if (entityZX_stzx_cczxpmgg_cczxpmgg.getAuctionType().equals(300)){
+							caseeHandlingRecords.setNodeName(caseeHandlingRecords.getNodeName()+"(变卖)");
+						}
+					}
 				}
 				if (target.getProcedureNature().equals(5050)||target.getProcedureNature().equals(5051)){//清收行为违法、行为限制程序
 					caseeHandlingRecords.setSourceId(target.getGoalId());

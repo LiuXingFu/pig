@@ -20,6 +20,7 @@ package com.pig4cloud.pig.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pig4cloud.pig.admin.api.dto.CourtExcelDTO;
 import com.pig4cloud.pig.admin.api.entity.Court;
 import com.pig4cloud.pig.admin.service.CourtService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -30,6 +31,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -171,6 +174,28 @@ public class CourtController {
 		queryWrapper.lambda().like(Court::getCourtName,courtName);
 		queryWrapper.lambda().eq(Court::getDelFlag,0);
 		return R.ok(courtService.list(queryWrapper));
+	}
+
+	/**
+	 * 导入法院数据
+	 * @return
+	 */
+	@ApiOperation(value = "新增法院表", notes = "新增法院表")
+	@PostMapping("/importCourt")
+	public R importCourt(@RequestBody List<CourtExcelDTO> courtExcelDTOList) {
+		courtService.importCourt(courtExcelDTOList);
+		return R.ok();
+	}
+
+	/**
+	 * 将法院的省市区存入对应的法院表中
+	 * @return
+	 */
+	@ApiOperation(value = "将法院的省市区存入对应的法院表中", notes = "将法院的省市区存入对应的法院表中")
+	@PostMapping("/setRegion")
+	public R setRegion() {
+		courtService.setRegion();
+		return R.ok();
 	}
 
 }

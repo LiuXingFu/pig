@@ -16,6 +16,11 @@ import java.util.List;
 public class EntityZX_STZX_CCZXZCDC_CCZXZCDC extends CommonalityData implements Serializable {
 
 	/**
+	 * 回款记录id
+	 */
+	private Integer paymentRecordId;
+
+	/**
 	 * 抵偿金额
 	 */
 	private BigDecimal compensationAmount;

@@ -1,6 +1,6 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.pig4cloud.pig.admin.api.entity.Subject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -12,10 +12,7 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
@@ -31,8 +28,6 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
-	private PaymentRecordSubjectReService paymentRecordSubjectReService;
-	@Autowired
 	private PaymentRecordService paymentRecordService;
 	@Autowired
 	AssetsReService assetsReService;
@@ -44,11 +39,16 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	PaymentRecordAssetsReService paymentRecordAssetsReService;
 	@Autowired
 	CustomerService customerService;
+	@Autowired
+	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 
 	@Override
 	@Transactional
 	public void handlerTaskSubmit(TaskNode taskNode) {
-		taskNodeService.setTaskDataSubmission(taskNode);
+		setLiQuiStccDkDk(taskNode);
+	}
+
+	private void setLiQuiStccDkDk(TaskNode taskNode) {
 		//到款
 		EntityZX_STZX_CCZXDK_CCZXDK entityZX_stzx_cczxdk_cczxdk = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXDK_CCZXDK.class);
 
@@ -60,12 +60,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		//查询当前财产关联债务人信息
 		AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(taskNode.getProjectId(), taskNode.getCaseeId(), target.getGoalId());
 
-		//添加拍辅金额时需添加项目总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
-		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-		//修改项目总金额
-		projectLiquiService.updateById(projectLiqui);
+
 		if (entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee().compareTo(BigDecimal.ZERO)!=0){//判断拍辅费是否大于0
 			//查询当前财产程序拍辅费
 			ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), taskNode.getProjectId(), 10007);
@@ -80,7 +76,9 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 		}
 
 		//添加到款信息以及其它关联信息
-		paymentRecordService.addPaymentRecord(entityZX_stzx_cczxdk_cczxdk.getAmountReceived(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(), projectLiqui, casee, assetsReSubjectDTO, null, 200, 20003);
+		PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(entityZX_stzx_cczxdk_cczxdk.getAmountReceived(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(),0, projectLiqui, casee, assetsReSubjectDTO, null, 200, 20003);
+
+		entityZX_stzx_cczxdk_cczxdk.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 
 		//添加到款客户信息
 		CustomerSubjectDTO customerSubjectDTO=new CustomerSubjectDTO();
@@ -93,5 +91,51 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 			customerSubjectDTO.setUnifiedIdentity(entityZX_stzx_cczxdk_cczxdk.getIdentityCard());
 		}
 		customerService.saveCustomer(customerSubjectDTO);
+
+		// 更新清收项目总金额
+		projectLiquiService.modifyProjectAmount(projectLiqui.getProjectId());
+
+		String json = JsonUtils.objectToJson(entityZX_stzx_cczxdk_cczxdk);
+
+		taskNode.setFormData(json);
+
+		//节点信息更新
+		this.taskNodeService.updateById(taskNode);
+
+		//任务数据提交 保存程序、财产和行为
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
+
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
+		EntityZX_STZX_CCZXDK_CCZXDK entityZX_stzx_cczxdk_cczxdk = JsonUtils.jsonToPojo(node.getFormData(), EntityZX_STZX_CCZXDK_CCZXDK.class);
+		if (entityZX_stzx_cczxdk_cczxdk!=null) {
+			Target target = targetService.getById(taskNode.getTargetId());
+
+			//查询当前财产关联债务人信息
+			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), target.getGoalId());
+
+			//查询当前财产程序拍辅费
+			ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), taskNode.getProjectId(), 10007);
+			if (expenseRecord!=null){
+				expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
+				//修改当前财产程序拍辅费
+				expenseRecordService.updateById(expenseRecord);
+			}
+
+			//删除到款的到款信息
+			paymentRecordService.removeById(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
+
+			//删除回款记录财产关联信息
+			paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
+					.eq(PaymentRecordAssetsRe::getPaymentRecordId, entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId()));
+
+			//删除到款信息关联债务人
+			paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
+					.eq(PaymentRecordSubjectRe::getPaymentRecordId, entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId()));
+		}
+		setLiQuiStccDkDk(taskNode);
 	}
 }

@@ -44,12 +44,6 @@ public class Court implements Serializable {
 	private String regionCode;
 
 	/**
-	 * 详细地址
-	 */
-	@ApiModelProperty(value = "详细地址")
-	private String address;
-
-	/**
 	 * 描述
 	 */
 	@ApiModelProperty(value = "描述")
@@ -60,4 +54,34 @@ public class Court implements Serializable {
 	 */
 	@TableLogic
 	private String delFlag;
+
+	/**
+	 * 法院代字
+	 */
+	private String courtCode;
+
+	/**
+	 * 地区别称
+	 */
+	private String areaAnotherName;
+
+	/**
+	 * 省
+	 */
+	private String province;
+
+	/**
+	 * 市
+	 */
+	private String city;
+
+	/**
+	 * 区
+	 */
+	private String area;
+
+	/**
+	 * 详细地址
+	 */
+	private String informationAddress;
 }
