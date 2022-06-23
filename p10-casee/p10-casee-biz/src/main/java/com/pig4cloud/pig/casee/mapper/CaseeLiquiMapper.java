@@ -90,4 +90,6 @@ public interface CaseeLiquiMapper extends BaseMapper<Casee> {
 	CaseeLiqui getCaseeLiqui(@Param("query") Casee casee);
 
 	CaseeLiqui selectLastCasee(@Param("projectId") Integer projectId);
+
+	IPage<QueryCaseeLiquiPageVO> queryCaseeLiquiPage(Page page, @Param("query") QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO);
 }
