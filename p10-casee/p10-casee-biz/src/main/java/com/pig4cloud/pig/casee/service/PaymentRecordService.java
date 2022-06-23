@@ -71,6 +71,7 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * 添加回款记录以及其它关联信息
 	 * @param amount					回款金额
 	 * @param paymentDate				回款时间
+	 * @param status				    状态
 	 * @param project					项目
 	 * @param casee 					案件
 	 * @param assetsReSubjectDTO		财产关联主体信息
@@ -79,7 +80,7 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @param fundsType					联合拍卖财产信息
 	 * @return
 	 */
-	PaymentRecord addPaymentRecord(BigDecimal amount, LocalDate paymentDate, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer paymentType, Integer fundsType);
+	PaymentRecord addPaymentRecord(BigDecimal amount, LocalDate paymentDate,Integer status, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer paymentType, Integer fundsType);
 	/**
 	 * 较去年回款额
 	 * @return

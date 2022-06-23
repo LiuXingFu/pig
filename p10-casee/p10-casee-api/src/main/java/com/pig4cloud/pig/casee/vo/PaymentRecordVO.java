@@ -17,7 +17,6 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
-import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -50,5 +49,5 @@ public class PaymentRecordVO extends PaymentRecord {
 	/**
 	 * 财产关联集合
 	 */
-	List<AssetsRePaifuDetailVO> assetsReList;
+	List<AssetsReVO> assetsReList;
 }

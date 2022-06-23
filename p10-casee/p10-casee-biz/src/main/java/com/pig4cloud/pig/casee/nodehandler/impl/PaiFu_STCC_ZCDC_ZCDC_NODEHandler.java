@@ -126,7 +126,7 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 		}
 
 		//添加资产抵偿回款信息以及其它关联信息
-		PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_zcdc_zcdc.getCompensationAmount(), paiFu_stcc_zcdc_zcdc.getSettlementDate(), project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 400, 40001);
+		PaymentRecord paymentRecord = paymentRecordService.addPaymentRecord(paiFu_stcc_zcdc_zcdc.getCompensationAmount(), paiFu_stcc_zcdc_zcdc.getSettlementDate(),0, project, casee, assetsReSubjectDTO, paiFu_stcc_pmgg_pmgg.getJointAuctionAssetsDTOList(), 400, 40001);
 
 		if (type.equals(1)) {
 			paiFu_stcc_zcdc_zcdc.setLiQuiPaymentRecordId(paymentRecord.getPaymentRecordId());

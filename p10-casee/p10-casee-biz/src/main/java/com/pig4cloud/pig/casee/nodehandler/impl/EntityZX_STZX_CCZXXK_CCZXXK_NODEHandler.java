@@ -48,4 +48,9 @@ public class EntityZX_STZX_CCZXXK_CCZXXK_NODEHandler extends TaskNodeHandler {
 			taskNodeService.updateById(taskNodeBdcxkrh);
 		}
 	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		taskNodeService.setTaskDataSubmission(taskNode);
+	}
 }

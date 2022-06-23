@@ -19,7 +19,7 @@ package com.pig4cloud.pig.casee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pig4cloud.pig.casee.entity.PaymentRecordAssetsRe;
-import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import com.pig4cloud.pig.casee.vo.AssetsReVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -34,5 +34,5 @@ import java.util.List;
 @Mapper
 public interface PaymentRecordAssetsReMapper extends BaseMapper<PaymentRecordAssetsRe> {
 
-	List<AssetsRePaifuDetailVO> selectAssetsList(@Param("paymentRecordId") Integer paymentRecordId);
+	List<AssetsReVO> selectAssetsList(@Param("paymentRecordId") Integer paymentRecordId);
 }

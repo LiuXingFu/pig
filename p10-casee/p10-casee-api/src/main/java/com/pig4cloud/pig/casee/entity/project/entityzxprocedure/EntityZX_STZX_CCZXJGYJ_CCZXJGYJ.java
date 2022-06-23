@@ -13,6 +13,11 @@ import java.time.LocalDate;
 public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ extends CommonalityData implements Serializable {
 
 	/**
+	 * 费用记录id
+	 */
+	private Integer expenseRecordId;
+
+	/**
 	 * 定价日期
 	 */
 	private LocalDate pricingDate;

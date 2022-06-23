@@ -17,9 +17,12 @@
 package com.pig4cloud.pig.casee.dto;
 
 import com.pig4cloud.pig.casee.entity.PaymentRecord;
+import com.pig4cloud.pig.casee.vo.AssetsReVO;
+import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 回款详细记录表
@@ -29,6 +32,11 @@ import java.math.BigDecimal;
  */
 @Data
 public class PaymentRecordAddDTO extends PaymentRecord {
+
+	/**
+	 * 财产关联集合
+	 */
+	List<AssetsReVO> assetsReList;
 
 	/**
 	 * 费用记录回款总额

@@ -184,8 +184,8 @@ public class TaskNodeController {
 	 */
 	@ApiOperation(value = "判断当前节点是否可跳过", notes = "判断当前节点是否可跳过")
 	@GetMapping("/judgmentTaskJumpOver")
-	public R judgmentTaskJumpOver(TaskNode taskNode){
-		return R.ok(taskNodeService.judgmentTaskJumpOver(taskNode));
+	public R judgmentTaskJumpOver(Integer targetId,Integer sort){
+		return R.ok(taskNodeService.judgmentTaskJumpOver(targetId,sort));
 	}
 
 	/**
