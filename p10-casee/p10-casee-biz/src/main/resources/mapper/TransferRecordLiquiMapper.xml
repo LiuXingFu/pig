@@ -134,4 +134,12 @@
 		WHERE
 			p10_transfer_record.del_flag = 0 and p10_transfer_record.project_id=#{projectId}
 	</select>
+
+	<select id="getByProjectId" resultType="com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui">
+		select * from p10_transfer_record
+		where del_flag = 0 and project_id = #{projectId}
+		<if test="transferType != null">
+			and transfer_type = #{transferType}
+		</if>
+	</select>
 </mapper>

@@ -51,4 +51,11 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 
 	List<MortgageAssetsVO> getProjectIdByMortgageAssets(Integer projectId);
 
+	/**
+	 * 根据项目id查询银行借贷移交详情
+	 * @param projectId
+	 * @return
+	 */
+	TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType);
+
 }

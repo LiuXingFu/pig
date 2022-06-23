@@ -102,7 +102,7 @@ public class TransferRecordliquiController {
 	 */
 	@ApiOperation(value = "通过移交id或项目id查询移交记录和银行借贷信息", notes = "通过移交id或项目id查询移交记录和银行借贷信息")
 	@GetMapping("/getByTransferRecordBankLoan" )
-	public R getByTransferRecordBankLoan(Integer transferRecordId,Integer projectId) {
+	public R getByTransferRecordBankLoan(@RequestParam(value = "transferRecordId",required = false)Integer transferRecordId,@RequestParam(value = "projectId",required = false)Integer projectId) {
 		return R.ok(transferRecordLiquiService.getTransferRecordBankLoan(transferRecordId,projectId));
 	}
 

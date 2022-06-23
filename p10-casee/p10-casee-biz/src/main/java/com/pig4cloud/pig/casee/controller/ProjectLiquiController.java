@@ -340,4 +340,28 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.saveProject(projectLiquiSaveDTO));
 	}
 
+	/**
+	 * 根据项目id更新项目基本信息
+	 * @param projectLiquiModifyDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id更新项目基本信息", notes = "根据项目id更新项目基本信息")
+	@SysLog("更新清收项目基本信息" )
+	@PutMapping("/modifyProjectById")
+	public R modifyProjectById(@RequestBody ProjectLiquiModifyDTO projectLiquiModifyDTO) {
+		return R.ok(projectLiquiService.modifyProjectById(projectLiquiModifyDTO));
+	}
+
+	/**
+	 * 根据项目id更新项目基本信息
+	 * @param projectLiquiModifyBankLoanDTO
+	 * @return R
+	 */
+	@ApiOperation(value = "修改项目银行借贷信息", notes = "修改项目银行借贷信息")
+	@SysLog("修改项目银行借贷信息" )
+	@PutMapping("/modifyProjectBankLoan")
+	public R modifyProjectBankLoan(@RequestBody ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO) {
+		return R.ok(projectLiquiService.modifyProjectBankLoan(projectLiquiModifyBankLoanDTO));
+	}
+
 }

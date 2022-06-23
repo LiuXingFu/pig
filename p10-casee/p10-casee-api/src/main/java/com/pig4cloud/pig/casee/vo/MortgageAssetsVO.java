@@ -32,9 +32,6 @@ import java.util.List;
  * @date 2022-04-13 11:24:18
  */
 @Data
-@TableName("p10_mortgage_assets_records")
-@EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "抵押记录表")
 public class MortgageAssetsVO extends MortgageAssetsRecords {
 
 	//财产信息

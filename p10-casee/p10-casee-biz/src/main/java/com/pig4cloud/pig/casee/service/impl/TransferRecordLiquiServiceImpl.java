@@ -97,4 +97,9 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	public List<MortgageAssetsVO> getProjectIdByMortgageAssets(Integer projectId) {
 		return this.baseMapper.getProjectIdByMortgageAssets(projectId);
 	}
+
+	@Override
+	public TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType){
+		return this.baseMapper.getByProjectId(projectId,transferType);
+	}
 }

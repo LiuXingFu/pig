@@ -66,7 +66,7 @@ public class ProjectPaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "新增拍辅项目案件", notes = "新增拍辅项目案件")
-	@SysLog("新增拍辅项目案件" )
+	@SysLog("新增拍辅项目、案件" )
 	@PostMapping("/saveProjectCasee")
 	public R saveProjectCasee(@RequestBody ProjectPaifuSaveDTO projectPaifuSaveDTO) {
 		return R.ok(projectPaifuService.saveProjectCasee(projectPaifuSaveDTO));
@@ -89,7 +89,7 @@ public class ProjectPaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "新增拍辅项目主体关联表", notes = "新增拍辅项目主体关联表")
-	@SysLog("新增拍辅项目主体关联表" )
+	@SysLog("新增拍辅项目主体" )
 	@PostMapping("/addProjectSubjectRe")
 	public R addProjectSubjectRe(@RequestBody ProjectSubjectReSaveDTO projectSubjectReSaveDTO) {
 		return R.ok(projectPaifuService.addProjectSubjectRe(projectSubjectReSaveDTO));
@@ -112,7 +112,7 @@ public class ProjectPaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "根据项目id修改项目和案件基本信息", notes = "根据项目id修改项目和案件基本信息")
-	@SysLog("根据项目id修改项目和案件基本信息" )
+	@SysLog("更新拍辅项目、案件基本信息" )
 	@PutMapping("/modifyByProjectId")
 	public R modifyByProjectId(@RequestBody ProjectPaifuModifyDTO projectPaifuModifyDTO) {
 		return R.ok(projectPaifuService.modifyByProjectId(projectPaifuModifyDTO));
@@ -124,7 +124,7 @@ public class ProjectPaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "修改项目主体关联表", notes = "修改项目主体关联表")
-	@SysLog("修改项目主体关联表" )
+	@SysLog("修改拍辅项目主体" )
 	@PutMapping("/modifyProjectSubjectRe")
 	public R modifyProjectSubjectRe(@RequestBody ProjectSubjectReSaveDTO projectSubjectReSaveDTO) {
 		return R.ok(projectPaifuService.modifyProjectSubjectRe(projectSubjectReSaveDTO));
@@ -136,7 +136,7 @@ public class ProjectPaifuController {
 	 * @return R
 	 */
 	@ApiOperation(value = "删除项目主体关联表", notes = "删除项目主体关联表")
-	@SysLog("删除项目主体关联表" )
+	@SysLog("删除拍辅项目主体" )
 	@DeleteMapping("/removeProjectSubjectRe" )
 	public R removeProjectSubjectRe(ProjectSubjectReRemoveDTO projectSubjectReRemoveDTO) {
 		return R.ok(projectPaifuService.removeProjectSubjectRe(projectSubjectReRemoveDTO));

@@ -25,7 +25,6 @@
 
   <resultMap id="transferRecordMap" type="com.pig4cloud.pig.casee.entity.TransferRecord">
     <id property="transferRecordId" column="transfer_record_id"/>
-    <result property="bankLoanId" column="bank_loan_id"/>
     <result property="entrustedInsId" column="entrusted_ins_id"/>
     <result property="entrustedOutlesId" column="entrusted_outles_id"/>
     <result property="projectId" column="project_id"/>

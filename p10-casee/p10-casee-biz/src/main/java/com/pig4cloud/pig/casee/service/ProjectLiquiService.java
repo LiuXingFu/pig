@@ -144,5 +144,18 @@ public interface ProjectLiquiService extends IService<Project> {
 	 */
 	Integer saveProject(ProjectLiquiSaveDTO projectLiquiSaveDTO);
 
+	/**
+	 * 根据项目id更新项目基本信息
+	 * @param projectLiquiModifyDTO
+	 * @return
+	 */
+	Integer modifyProjectById(ProjectLiquiModifyDTO projectLiquiModifyDTO);
+
+	/**
+	 * 修改项目银行借贷信息
+	 * @param projectLiquiModifyBankLoanDTO
+	 * @return
+	 */
+	Integer modifyProjectBankLoan(ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO);
 
 }

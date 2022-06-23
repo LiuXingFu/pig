@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -1221,6 +1222,57 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		transferRecordLiquiService.reception(transferRecordDTO);
 
 		return 1;
+	}
+
+	@Override
+	@Transactional
+	public 	Integer modifyProjectById(ProjectLiquiModifyDTO projectLiquiModifyDTO){
+		ProjectLiqui projectLiqui = new ProjectLiqui();
+		BeanCopyUtil.copyBean(projectLiquiModifyDTO,projectLiqui);
+		// 更新银行借贷移交记录受托网点
+		if(Objects.nonNull(projectLiquiModifyDTO.getOutlesId())){
+			UpdateWrapper<TransferRecord> updateWrapper = new UpdateWrapper<>();
+			updateWrapper.lambda().eq(TransferRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
+			updateWrapper.lambda().set(TransferRecord::getEntrustedOutlesId,projectLiquiModifyDTO.getOutlesId());
+			transferRecordLiquiService.update(updateWrapper);
+		}
+		return this.baseMapper.updateById(projectLiqui);
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyProjectBankLoan(ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO){
+		// 更新项目
+		ProjectLiqui projectLiqui = this.baseMapper.selectProjectDetails(projectLiquiModifyBankLoanDTO.getProjectId());
+		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		projectLiQuiDetail.setInterestRate(projectLiquiModifyBankLoanDTO.getInterestRate());
+		projectLiQuiDetail.setMortgageSituation(projectLiquiModifyBankLoanDTO.getMortgageSituation());
+		projectLiQuiDetail.setLitigation(projectLiquiModifyBankLoanDTO.getLitigation());
+		projectLiQuiDetail.setStartingTime(projectLiquiModifyBankLoanDTO.getStartingTime());
+		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+		Integer modify = this.baseMapper.updateById(projectLiqui);
+
+		// 更新银行借贷移交信息
+		TransferRecordLiqui transferRecordLiqui = transferRecordLiquiService.getByProjectId(projectLiquiModifyBankLoanDTO.getProjectId(),0);
+		TransferRecordLiquiDetail transferRecordLiquiDetail = new TransferRecordLiquiDetail();
+		BeanCopyUtil.copyBean(transferRecordLiqui.getTransferRecordLiquiDetail(),transferRecordLiquiDetail);
+		transferRecordLiquiDetail.setStartingTime(projectLiquiModifyBankLoanDTO.getStartingTime());
+		transferRecordLiquiDetail.setLitigation(projectLiquiModifyBankLoanDTO.getLitigation());
+//		transferRecordLiquiDetail.set(projectLiquiModifyBankLoanDTO.getInterestRate());
+		transferRecordLiqui.setTransferRecordLiquiDetail(transferRecordLiquiDetail);
+		transferRecordLiquiService.updateById(transferRecordLiqui);
+
+		UpdateWrapper<BankLoan> updateWrapper = new UpdateWrapper<>();
+		updateWrapper.lambda().eq(BankLoan::getBankLoanId,transferRecordLiqui.getSourceId());
+		updateWrapper.lambda().set(BankLoan::getOutlesId,projectLiquiModifyBankLoanDTO.getBankLoanOutlesId());
+		updateWrapper.lambda().set(BankLoan::getMortgageSituation,projectLiquiModifyBankLoanDTO.getMortgageSituation());
+		updateWrapper.lambda().set(BankLoan::getTransferDate,projectLiquiModifyBankLoanDTO.getTransferDate());
+		updateWrapper.lambda().set(BankLoan::getLoanContract,projectLiquiModifyBankLoanDTO.getLoanContract());
+		updateWrapper.lambda().set(BankLoan::getOtherFile,projectLiquiModifyBankLoanDTO.getOtherFile());
+		bankLoanService.update(updateWrapper);
+
+		return modify;
 	}
 
 }
