@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 public class QueryCaseeLiquiPageVO {
 
 	/**
+	 * 项目id
+	 */
+	private Integer projectId;
+
+	/**
 	 * 公司业务案号
 	 */
 	private String companyCode;
