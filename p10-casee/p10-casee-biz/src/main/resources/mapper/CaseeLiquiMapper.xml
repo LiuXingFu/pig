@@ -707,6 +707,7 @@
 
 	<select id="queryCaseeLiquiPage" resultType="com.pig4cloud.pig.casee.vo.QueryCaseeLiquiPageVO">
 		SELECT
+		p10_project.project_id,
 		p10_project.company_code,
 		p10_casee.*,
 		IFNULL(p10_casee.judicial_expenses,0) AS judicialExpenses,
