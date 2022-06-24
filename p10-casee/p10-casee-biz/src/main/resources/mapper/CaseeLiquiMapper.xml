@@ -705,4 +705,51 @@
 		limit 1
 	</select>
 
+	<select id="queryCaseeLiquiPage" resultType="com.pig4cloud.pig.casee.vo.QueryCaseeLiquiPageVO">
+		SELECT
+		p10_project.project_id,
+		p10_project.company_code,
+		p10_casee.*,
+		IFNULL(p10_casee.judicial_expenses,0) AS judicialExpenses,
+		p10_court.court_name
+		FROM
+		p10_casee
+		LEFT JOIN p10_project_casee_re ON p10_casee.casee_id = p10_project_casee_re.casee_id
+		LEFT JOIN p10_project ON p10_project.project_id = p10_project_casee_re.project_id
+		LEFT JOIN p10_court ON p10_court.court_id = p10_casee.court_id
+		WHERE
+		p10_casee.del_flag = 0
+		<if test="query.caseeNumber != null and query.caseeNumber != ''">
+			AND (p10_project.company_code LIKE concat('%', #{query.caseeNumber}, '%')
+			OR p10_casee.casee_number LIKE concat('%', #{query.caseeNumber}, '%'))
+		</if>
+		<if test="query.subjectName != null and query.subjectName != ''">
+			AND (p10_casee.executed_name LIKE concat('%', #{query.subjectName}, '%')
+			OR applicant_name LIKE concat('%', #{query.subjectName}, '%'))
+		</if>
+		<if test="query.courtName != null and query.courtName != ''">
+			AND p10_court.court_name LIKE concat('%', #{query.courtName}, '%')
+		</if>
+		<if test="query.judgeName != null and query.judgeName != ''">
+			AND p10_casee.judge_name LIKE concat('%', #{query.judgeName}, '%')
+		</if>
+		<if test="query.status != null">
+			AND p10_casee.status = #{query.status}
+		</if>
+		<if test="query.beginDate != null and query.endDate != null">
+			AND p10_casee.start_time BETWEEN DATE_FORMAT(#{query.beginDate}, '%Y-%m-%d 00:00:00') and
+			DATE_FORMAT(#{query.endDate}, '%Y-%m-%d 23:59:59')
+		</if>
+		<if test="query.caseeType != null">
+			AND p10_casee.casee_type = #{query.caseeType}
+		</if>
+		<if test="query.totalType != -1">
+			AND p10_casee.casee_type in
+			<foreach collection="query.caseeTypeList" item="item" open="(" close=")" separator="," >
+				#{item}
+			</foreach>
+		</if>
+
+	</select>
+
 </mapper>

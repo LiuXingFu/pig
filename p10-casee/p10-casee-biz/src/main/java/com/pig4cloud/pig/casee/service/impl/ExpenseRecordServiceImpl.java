@@ -32,6 +32,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
@@ -148,6 +149,11 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	@Override
 	public List<ExpenseRecordDistributeVO> getByPaymentType(ExpenseRecord expenseRecord) {
 		return this.baseMapper.getByPaymentType(expenseRecord);
+	}
+
+	@Override
+	public ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord) {
+		return this.baseMapper.getByExpenseRecordMoneyBack(expenseRecord);
 	}
 
 	@Override

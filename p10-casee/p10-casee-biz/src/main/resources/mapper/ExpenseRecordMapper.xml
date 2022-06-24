@@ -56,6 +56,13 @@
 		</collection>
 	</resultMap>
 
+	<resultMap id="ExpenseRecordMoneyBackVO" type="com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO" extends="expenseRecordMap">
+		<collection property="moneyBackAmount" ofType="java.math.BigDecimal" column="expense_record_id"
+					select="com.pig4cloud.pig.casee.mapper.PaymentRecordMapper.paymentSumAmount">
+		</collection>
+	</resultMap>
+
+
 	<select id="getExpenseRecordPage" resultMap="expenseRecordPageMapVO">
 		select p10_expense_record.*,json_extract(p10_project.project_detail,'$.projectAmount') as projectAmount from p10_expense_record
 		left join p10_project on p10_project.project_id=p10_expense_record.project_id
@@ -78,6 +85,19 @@
 		where p10_expense_record.del_flag=0
 		and p10_expense_record.project_id=#{query.projectId}
 		and p10_expense_record.status=0
+		<if test="query.caseeId != null">
+			and p10_expense_record.casee_id = #{query.caseeId}
+		</if>
+	</select>
+
+	<select id="getByExpenseRecordMoneyBack" resultMap="ExpenseRecordMoneyBackVO">
+		select
+		p10_expense_record.*
+		from p10_expense_record
+		where p10_expense_record.del_flag=0
+		and p10_expense_record.project_id=#{query.projectId}
+		and p10_expense_record.status=0
+		and p10_expense_record.cost_type=#{query.costType}
 		<if test="query.caseeId != null">
 			and p10_expense_record.casee_id = #{query.caseeId}
 		</if>

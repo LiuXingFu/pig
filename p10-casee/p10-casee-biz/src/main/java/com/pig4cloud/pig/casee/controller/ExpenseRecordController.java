@@ -91,6 +91,17 @@ public class ExpenseRecordController {
 	}
 
 	/**
+	 * 根据项目id、案件id费用类型和状态查询该费用已回多少款
+	 * @param expenseRecord
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id、案件id费用类型和状态查询该费用已回多少款", notes = "根据项目id、案件id、费用类型和状态查询该费用已回多少款")
+	@GetMapping("/getByExpenseRecordMoneyBack" )
+	public R getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord) {
+		return R.ok(expenseRecordService.getByExpenseRecordMoneyBack(expenseRecord));
+	}
+
+	/**
 	 * 根据项目id、案件id和财产id查询财产债务人费用信息
 	 * @param projectId
 	 * @return R

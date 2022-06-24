@@ -241,4 +241,6 @@ public interface CaseeLiquiService extends IService<Casee> {
 	 * @return
 	 */
 	CaseeLiquiPageVO getCaseeDetails(Integer caseeId);
+
+	IPage<QueryCaseeLiquiPageVO> queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO);
 }

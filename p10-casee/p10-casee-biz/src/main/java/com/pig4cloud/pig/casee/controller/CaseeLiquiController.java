@@ -32,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -390,5 +391,17 @@ public class CaseeLiquiController {
 	@GetMapping("/getCaseeDetails/{caseeId}")
 	public R getCaseeDetails(@PathVariable("caseeId") Integer caseeId) {
 		return R.ok(this.caseeLiquiService.getCaseeDetails(caseeId));
+	}
+
+	/**
+	 * 查询清收案件列表
+	 * @param page
+	 * @param queryCaseeLiquiPageDTO
+	 * @return
+	 */
+	@ApiOperation(value = "查询清收案件列表", notes = "查询清收案件列表")
+	@GetMapping("/queryCaseeLiquiPage")
+	public R queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO) {
+		return R.ok(caseeLiquiService.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO));
 	}
 }
