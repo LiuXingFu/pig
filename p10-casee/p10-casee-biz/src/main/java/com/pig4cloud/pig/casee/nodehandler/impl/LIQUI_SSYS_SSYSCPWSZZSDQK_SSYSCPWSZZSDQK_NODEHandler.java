@@ -1,26 +1,12 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
-import com.alibaba.nacos.shaded.com.google.common.collect.Lists;
-import com.pig4cloud.pig.casee.dto.SaveCaseeLiQuiDTO;
 import com.pig4cloud.pig.casee.entity.TaskNode;
-import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
-import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS.LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK;
-import com.pig4cloud.pig.casee.entity.project.liquiprocedure.ShareEntity.ReceiptRecord;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
-import com.pig4cloud.pig.casee.service.CaseeLiquiService;
 import com.pig4cloud.pig.casee.service.TaskNodeService;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @PACKAGE_NAME: com.pig4cloud.pig.casee.nodehandler.impl
@@ -38,6 +24,10 @@ public class LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler extends TaskNo
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
+		addData(taskNode);
+	}
+
+	private void addData(TaskNode taskNode){
 		//任务数据提交 保存程序、财产和行为
 		taskNodeService.setTaskDataSubmission(taskNode);
 
@@ -46,5 +36,10 @@ public class LIQUI_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK_NODEHandler extends TaskNo
 			LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK.class);
 			taskNodeService.updateFinalReceiptTimeOrEffectiveDate(taskNode, liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk.getReceiptRecordList(), liQui_ssys_ssyscpwszzsdqk_ssyscpwszzsdqk.getEffectiveDate());
 		}
+	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		addData(taskNode);
 	}
 }

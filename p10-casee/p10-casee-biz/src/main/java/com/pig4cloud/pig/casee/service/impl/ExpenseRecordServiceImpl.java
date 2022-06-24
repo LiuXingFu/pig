@@ -25,10 +25,14 @@ import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
+import com.pig4cloud.pig.casee.dto.RefereeResultTakeEffectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
+import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.FirstTrialRefereeResult;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
@@ -39,6 +43,7 @@ import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +53,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 费用产生记录表
@@ -77,6 +83,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	private PaymentRecordService paymentRecordService;
 	@Autowired
 	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
+	@Autowired
+	private CaseeService caseeService;
+	@Autowired
+	private CaseeLiquiService caseeLiquiService;
 
 	@Override
 	public IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
@@ -154,6 +164,78 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	@Override
 	public ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord) {
 		return this.baseMapper.getByExpenseRecordMoneyBack(expenseRecord);
+	}
+
+	@Override
+	public void refereeResultTakeEffectUpdateExpenseRecord(RefereeResultTakeEffectDTO refereeResultTakeEffectDTO) {
+		Casee casee=new Casee();
+		casee.setCaseeId(refereeResultTakeEffectDTO.getCaseeId());
+		casee.setJudicialExpenses(refereeResultTakeEffectDTO.getLitigationCosts());
+		//修改案件案件受理费
+		caseeService.updateById(casee);
+
+		//查询案件与案件详情
+		Casee queryCasee = new Casee();
+		queryCasee.setCaseeId(refereeResultTakeEffectDTO.getCaseeId());
+		CaseeLiqui caseeLiqui = caseeLiquiService.getCaseeLiqui(queryCasee);
+
+
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(refereeResultTakeEffectDTO.getProjectId());
+		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		projectLiQuiDetail.setPrincipal(refereeResultTakeEffectDTO.getPrincipal());
+		projectLiQuiDetail.setInterest(refereeResultTakeEffectDTO.getInterest());
+		projectLiQuiDetail.setPrincipalInterestAmount(refereeResultTakeEffectDTO.getRefereeAmount());
+		projectLiQuiDetail.setProjectAmount(refereeResultTakeEffectDTO.getRefereeAmount());
+
+		//查询项目本金费用产生记录并修改本金金额
+		ExpenseRecord bjExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 10001).eq(ExpenseRecord::getStatus,0));
+		if (bjExpenseRecord!=null){
+			bjExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getPrincipal());
+			this.updateById(bjExpenseRecord);
+		}
+
+		//查询项目利息费用产生记录并修改利息金额
+		ExpenseRecord lxExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 30001).eq(ExpenseRecord::getStatus,0));
+		if (lxExpenseRecord!=null){
+			lxExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getInterest());
+			this.updateById(lxExpenseRecord);
+		}
+
+		//查询一审诉讼费并修改诉讼金额
+		ExpenseRecord ysExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCaseeId, refereeResultTakeEffectDTO.getCaseeId()).eq(ExpenseRecord::getCostType, 10003).eq(ExpenseRecord::getStatus,0));
+
+		if (ysExpenseRecord!=null){
+			ysExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getLitigationCosts());
+			this.updateById(ysExpenseRecord);
+		}else {
+			List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, refereeResultTakeEffectDTO.getProjectId()).ne(ProjectSubjectRe::getType,0));
+
+			//添加一审诉讼费用产生明显
+			ExpenseRecord expenseRecordPrincipal = new ExpenseRecord();
+			expenseRecordPrincipal.setProjectId(refereeResultTakeEffectDTO.getProjectId());
+			expenseRecordPrincipal.setCaseeId(refereeResultTakeEffectDTO.getCaseeId());
+			expenseRecordPrincipal.setCaseeNumber(caseeLiqui.getCaseeNumber());
+			expenseRecordPrincipal.setCostType(10003);
+			expenseRecordPrincipal.setCostIncurredTime(refereeResultTakeEffectDTO.getRefereeMediationTime());
+			expenseRecordPrincipal.setCostAmount(refereeResultTakeEffectDTO.getLitigationCosts());
+			expenseRecordPrincipal.setStatus(0);
+			expenseRecordPrincipal.setCompanyCode(projectLiqui.getCompanyCode());
+			expenseRecordPrincipal.setSubjectName(projectLiqui.getSubjectPersons());
+			this.save(expenseRecordPrincipal);
+
+			//添加费用记录关联主体信息
+			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+			for (ProjectSubjectRe projectSubjectRe : projectSubjectReList) {
+				expenseRecordSubjectRe.setSubjectId(projectSubjectRe.getSubjectId());
+				expenseRecordSubjectRe.setExpenseRecordId(expenseRecordPrincipal.getExpenseRecordId());
+				expenseRecordSubjectReService.save(expenseRecordSubjectRe);
+			}
+		}
+		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(refereeResultTakeEffectDTO.getLitigationCosts()));
+		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
+		//修改项目本金、利息、以及本金利息总额
+		projectLiquiService.updateById(projectLiqui);
 	}
 
 	@Override
