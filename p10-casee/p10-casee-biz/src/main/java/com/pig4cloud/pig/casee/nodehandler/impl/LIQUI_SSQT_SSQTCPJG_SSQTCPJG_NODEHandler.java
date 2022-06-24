@@ -82,16 +82,18 @@ public class LIQUI_SSQT_SSQTCPJG_SSQTCPJG_NODEHandler extends TaskNodeHandler {
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		//查询其它案件诉讼费并修改诉讼金额
 		ExpenseRecord qtExpenseRecord = expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, taskNode.getProjectId()).eq(ExpenseRecord::getCaseeId, taskNode.getCaseeId()).eq(ExpenseRecord::getCostType, 10009));
-		qtExpenseRecord.setCostAmount(liQui_ssqt_ssqtcpjg_ssqtcpjg.getLitigationCosts());
+		if (qtExpenseRecord!=null){
+			qtExpenseRecord.setCostAmount(liQui_ssqt_ssqtcpjg_ssqtcpjg.getLitigationCosts());
+			//修改项目总金额
+			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(qtExpenseRecord.getCostAmount()));
+			expenseRecordService.updateById(qtExpenseRecord);
 
-		//修改项目总金额
-		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(qtExpenseRecord.getCostAmount()));
+		}
 		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(liQui_ssqt_ssqtcpjg_ssqtcpjg.getLitigationCosts()));
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 
 		//修改项目本金、利息、以及本金利息总额
 		projectLiquiService.updateById(projectLiqui);
-		expenseRecordService.updateById(qtExpenseRecord);
 
 		List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, taskNode.getProjectId()).ne(ProjectSubjectRe::getType,0));
 

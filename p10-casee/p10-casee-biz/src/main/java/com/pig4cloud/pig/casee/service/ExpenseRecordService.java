@@ -28,6 +28,7 @@ import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
@@ -53,6 +54,12 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	boolean updateExpenseRecordStatusAndProjectAmount(ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
+
+	/**
+	 * 根据项目id、案件id费用类型和状态查询该费用已回多少款
+	 * @return
+	 */
+	ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO>getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId);
 

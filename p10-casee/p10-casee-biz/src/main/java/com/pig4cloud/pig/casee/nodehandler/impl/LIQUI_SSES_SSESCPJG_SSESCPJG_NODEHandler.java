@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.SecondTrialRefereeResult;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXZCDC_CCZXZCDC;
 import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESCPJG_SSESCPJG;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
@@ -84,15 +85,16 @@ public class LIQUI_SSES_SSESCPJG_SSESCPJG_NODEHandler extends TaskNodeHandler {
 		projectLiqui.setProjectLiQuiDetail(projectLiQuiDetail);
 		//查询二审诉讼费并修改诉讼金额
 		ExpenseRecord esExpenseRecord = expenseRecordService.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, taskNode.getProjectId()).eq(ExpenseRecord::getCaseeId, taskNode.getCaseeId()).eq(ExpenseRecord::getCostType, 10004));
-		esExpenseRecord.setCostAmount(liQui_SSES_SSESCPJG_SSESCPJG.getLitigationCosts());
-
-		//修改项目总金额
-		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(esExpenseRecord.getCostAmount()));
+		if (esExpenseRecord!=null){
+			esExpenseRecord.setCostAmount(liQui_SSES_SSESCPJG_SSESCPJG.getLitigationCosts());
+			//修改项目总金额
+			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(esExpenseRecord.getCostAmount()));
+			expenseRecordService.updateById(esExpenseRecord);
+		}
 		projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(liQui_SSES_SSESCPJG_SSESCPJG.getLitigationCosts()));
 
 		//修改项目本金、利息、以及本金利息总额
 		projectLiquiService.updateById(projectLiqui);
-		expenseRecordService.updateById(esExpenseRecord);
 
 		List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, taskNode.getProjectId()).ne(ProjectSubjectRe::getType,0));
 
@@ -147,4 +149,32 @@ public class LIQUI_SSES_SSESCPJG_SSESCPJG_NODEHandler extends TaskNodeHandler {
 		//修改项目总金额
 		projectLiquiService.modifyProjectAmount(taskNode.getProjectId());
 	}
+
+	private void addData(TaskNode taskNode){
+
+
+
+
+	}
+
+	@Override
+	public void handlerTaskMakeUp(TaskNode taskNode) {
+		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
+		LiQui_SSES_SSESCPJG_SSESCPJG liQui_sses_ssescpjg_ssescpjg = JsonUtils.jsonToPojo(node.getFormData(), LiQui_SSES_SSESCPJG_SSESCPJG.class);
+		if (liQui_sses_ssescpjg_ssescpjg!=null) {
+			//更改立案录入的诉讼费
+			Casee casee=new Casee();
+			casee.setCaseeId(taskNode.getCaseeId());
+			casee.setJudicialExpenses(casee.getJudicialExpenses().subtract(liQui_sses_ssescpjg_ssescpjg.getLitigationCosts()));
+			//修改案件受理费
+			caseeService.updateById(casee);
+
+
+
+
+		}
+
+		addData(taskNode);
+	}
+
 }

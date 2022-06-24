@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import com.pig4cloud.pig.casee.entity.ExpenseRecordSubjectRe;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
+import com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO;
 import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
@@ -43,6 +44,8 @@ public interface ExpenseRecordMapper extends BaseMapper<ExpenseRecord> {
 	IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, @Param("query")ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO> getByPaymentType(@Param("query") ExpenseRecord expenseRecord);
+
+	ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(@Param("query") ExpenseRecord expenseRecord);
 
 	List<ExpenseRecordDistributeVO> getAssetsByPaymentType(@Param("expenseRecordSubjectReList") List<ExpenseRecordSubjectRe> expenseRecordSubjectReList,@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId);
 

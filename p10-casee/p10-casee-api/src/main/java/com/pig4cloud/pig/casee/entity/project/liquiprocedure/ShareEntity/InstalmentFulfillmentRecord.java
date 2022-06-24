@@ -31,5 +31,5 @@ public class InstalmentFulfillmentRecord extends CommonalityData implements Seri
 	/**
 	 * 履行人
 	 */
-	private Integer fulfillName;
+	private String fulfillName;
 }
