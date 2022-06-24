@@ -1192,7 +1192,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			subjectAddressDTO.setAddressList(projectSaveSubjectDTO.getAddressList());
 			subjectAddressDTOList.add(subjectAddressDTO);
 		}
-		remoteSubjectService.saveSubjectAddress(subjectAddressDTOList,SecurityConstants.FROM);
+		subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList);
 		// 保存抵押物
 		if(projectLiquiSaveDTO.getMortgageSituation()==0){
 			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
