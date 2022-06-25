@@ -41,6 +41,13 @@ public interface ProjectLiquiService extends IService<Project> {
 
 	IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO);
 
+	/**
+	 * 统计项目金额合计
+	 * @param projectLiquiPageDTO
+	 * @return
+	 */
+	ProjectLiquiSumAmountDTO getProjectSumAmount(ProjectLiquiPageDTO projectLiquiPageDTO);
+
 	Integer addProjectLiqui(ProjectLiquiAddDTO projectLiquiAddVO);
 
 	ProjectLiquiDetailsVO getProjectDetails(Integer projectId);
