@@ -505,6 +505,17 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	public void litigationCaseeClose() {
 		// 查询一审、二审案件判决结果生效日期
 		List<CaseeLiqui> caseeList = this.baseMapper.selectJudgmentTakesEffect();
+		List<Casee> casees = new ArrayList<>();
+		for (CaseeLiqui caseeLiqui : caseeList) {
+			// 转时间类型
+			LocalDate effectiveDate =  caseeLiqui.getCaseeLiquiDetail().getEffectiveDate();
+			Casee casee = new Casee();
+			casee.setCaseeId(caseeLiqui.getCaseeId());
+			casee.setStatus(3);
+			casee.setCloseTime(effectiveDate);
+			casees.add(casee);
+		}
+		this.updateBatchById(casees);
 	}
 
 	@Override
