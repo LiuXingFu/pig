@@ -672,6 +672,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			}
 			queryCaseeLiquiPageDTO.setCaseeTypeList(list);
 		}
-		return this.baseMapper.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO);
+		return this.baseMapper.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 }

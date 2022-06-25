@@ -76,10 +76,10 @@ public class SubjectAddressDTO {
 	 */
 	private String email;
 
-	/**
-	 * 备注
-	 */
-	private String remark;
+//	/**
+//	 * 备注
+//	 */
+//	private String remark;
 
 	/**
 	 * 是否认证(0-否，1-是)
@@ -115,6 +115,11 @@ public class SubjectAddressDTO {
 	 * 民族
 	 */
 	private String ethnic;
+
+	/**
+	 * 描述
+	 */
+	private String describes;
 
 	//债务人联系地址
 	List<Address> addressList;

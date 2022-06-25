@@ -95,8 +95,8 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 			assets.setType(20200);//默认实体财产类型
 
 			if (mortgageAssetsDTO.getAssetsDTOList() != null) {
-				List<Integer> subjectIdList = mortgageAssetsDTO.getSubjectId();
 				for (AssetsDTO assetsDTO : mortgageAssetsDTO.getAssetsDTOList()) {
+					List<Integer> subjectIdList = assetsDTO.getSubjectId();
 					if (assetsDTO.getAssetsId() == null) {
 						BeanCopyUtil.copyBean(assetsDTO, assets);
 						this.save(assets);//添加财产信息
@@ -110,6 +110,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 						mortgageAssetsRe.setAssetsId(assetsDTO.getAssetsId());
 					}
 					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+					mortgageAssetsRe.setSubjectName(assetsDTO.getSubjectName());
 					mortgageAssetsReService.save(mortgageAssetsRe);//添加抵押财产关联信息
 
 					//财产关联债务人信息
@@ -123,8 +124,8 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 							mortgageAssetsSubjectRes.add(mortgageAssetsSubjectRe);
 						}
-					}else if(mortgageAssetsDTO.getUnifiedIdentityList().size()>0){
-						for (String unifiedIdentity : mortgageAssetsDTO.getUnifiedIdentityList()) {
+					} else if(assetsDTO.getUnifiedIdentityList().size()>0){
+						for (String unifiedIdentity : assetsDTO.getUnifiedIdentityList()) {
 							MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 							mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
 							R<SubjectVO> subjectVOR =  remoteSubjectService.getByUnifiedIdentity(unifiedIdentity,SecurityConstants.FROM);

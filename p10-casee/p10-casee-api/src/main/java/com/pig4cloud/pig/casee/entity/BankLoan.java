@@ -70,6 +70,12 @@ public class BankLoan extends BaseEntity {
     @ApiModelProperty(value="本金")
     private BigDecimal principal;
 
+	/**
+	 * 利率
+	 */
+	@ApiModelProperty(value="利率")
+	private BigDecimal interestRate;
+
     /**
      * 利息
      */
