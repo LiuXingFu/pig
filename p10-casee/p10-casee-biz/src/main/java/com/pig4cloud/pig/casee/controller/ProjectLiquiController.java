@@ -66,6 +66,16 @@ public class ProjectLiquiController {
 	}
 
 	/**
+	 * 统计项目金额合计
+	 * @return
+	 */
+	@ApiOperation(value = "统计项目金额合计", notes = "统计项目金额合计")
+	@GetMapping("/getProjectSumAmount" )
+	public R getProjectSumAmount(ProjectLiquiPageDTO projectLiquiPageDTO) {
+		return R.ok(projectLiquiService.getProjectSumAmount(projectLiquiPageDTO));
+	}
+
+	/**
 	 * 通过id查询项目清收详情
 	 * @param projectId id
 	 * @return R
