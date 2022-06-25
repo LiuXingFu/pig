@@ -76,12 +76,6 @@ public class MortgageAssetsRecords extends BaseEntity {
     private Integer jointMortgage;
 
     /**
-     * 财产关联所有债务人名称
-     */
-    @ApiModelProperty(value="财产关联所有债务人名称")
-    private String subjectName;
-
-    /**
      * 描述
      */
     @ApiModelProperty(value="描述")

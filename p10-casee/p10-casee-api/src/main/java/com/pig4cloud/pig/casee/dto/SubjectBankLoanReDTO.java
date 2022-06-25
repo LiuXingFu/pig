@@ -79,11 +79,11 @@ public class SubjectBankLoanReDTO {
 	@ApiModelProperty(value = "电子邮件")
 	private String email;
 
-	/**
-	 * 备注
-	 */
-	@ApiModelProperty(value = "备注")
-	private String remark;
+//	/**
+//	 * 备注
+//	 */
+//	@ApiModelProperty(value = "备注")
+//	private String remark;
 
 	/**
 	 * 工作单位
@@ -102,5 +102,11 @@ public class SubjectBankLoanReDTO {
 	 */
 	@ApiModelProperty(value = "民族")
 	private String ethnic;
+
+	/**
+	 * 描述
+	 */
+	@ApiModelProperty(value = "描述")
+	private String describes;
 
 }

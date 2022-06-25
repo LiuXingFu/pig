@@ -32,6 +32,7 @@ import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 	}
 
 	@Override
+	@Transactional
 	public boolean removeSubjectBankLoanRe(Integer subjectBankLoanId,Integer bankLoanId,Integer subjectId, String name) {
 		BankLoan bankLoan = bankLoanService.getById(bankLoanId);
 		String subjectName = bankLoan.getSubjectName();
@@ -101,22 +103,45 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		//查询抵押信息
 		List<MortgageAssetsRecords> mortgageAssetsRecordsList = mortgageAssetsRecordsService.list(new LambdaQueryWrapper<MortgageAssetsRecords>().eq(MortgageAssetsRecords::getBankLoanId, bankLoanId));
 		for (MortgageAssetsRecords mortgageAssetsRecords : mortgageAssetsRecordsList) {
-			String mortgageAssetsRecordsSubjectName = mortgageAssetsRecords.getSubjectName();
-			if (mortgageAssetsRecordsSubjectName.contains(name)){
-				mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(name+",","");
-			}
-			mortgageAssetsRecords.setSubjectName(mortgageAssetsRecordsSubjectName);
-			//修改抵押信息
-			mortgageAssetsRecordsService.updateById(mortgageAssetsRecords);
 
 			//查询抵押关联财产信息
 			List<MortgageAssetsRe> mortgageAssetsReList = mortgageAssetsReService.list(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsRecords.getMortgageAssetsRecordsId()));
 
 			for (MortgageAssetsRe mortgageAssetsRe : mortgageAssetsReList) {
+//				String mortgageAssetsRecordsSubjectName = mortgageAssetsRe.getSubjectName();
+//				if (mortgageAssetsRecordsSubjectName.contains(name)){
+//					mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(name+",","");
+//				}
+
+				String mortgageAssetsRecordsSubjectName = mortgageAssetsRe.getSubjectName();
+				String[] mortgageAssetsRecordsSubjectNameSplit = mortgageAssetsRecordsSubjectName.split(",");
+				if (mortgageAssetsRecordsSubjectNameSplit.length>1){
+					if (mortgageAssetsRecordsSubjectName.contains(name)){
+						int index = mortgageAssetsRecordsSubjectName.indexOf(name);
+						if (index!=0){
+							if (mortgageAssetsRecordsSubjectName.substring(index-1,index).equals(",")){
+								mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(","+name,"");
+							}else {
+								mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(name+",","");
+							}
+						}else {
+							mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(name+",","");
+						}
+					}
+				}else {
+					if (mortgageAssetsRecordsSubjectName.contains(name)){
+						mortgageAssetsRecordsSubjectName=mortgageAssetsRecordsSubjectName.replaceAll(name,"");
+					}
+				}
+
+				mortgageAssetsRe.setSubjectName(mortgageAssetsRecordsSubjectName);
+				//修改财产关联信息
+				mortgageAssetsReService.updateById(mortgageAssetsRe);
+
 				//查询财产关联债务人信息
 				List<MortgageAssetsSubjectRe> mortgageAssetsSubjectReList = mortgageAssetsSubjectReService.list(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId, mortgageAssetsRe.getMortgageAssetsReId()));
-				if (mortgageAssetsSubjectReList.size()==1){//如果当前财产只关联了一个债务人，删除债务人时需把抵押信息和财产关联信息删除
-					mortgageAssetsRecordsService.removeById(mortgageAssetsRecords);
+
+				if (mortgageAssetsSubjectReList.size()==1 && mortgageAssetsSubjectReList.get(0).getSubjectId() == subjectId){//如果当前财产只关联了一个债务人，删除债务人时需把抵押信息和财产关联信息删除
 					mortgageAssetsReService.remove(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsReId,mortgageAssetsRe.getMortgageAssetsReId()));
 				}
 				for (MortgageAssetsSubjectRe mortgageAssetsSubjectRe : mortgageAssetsSubjectReList) {//删除财产关联债务人信息
@@ -132,6 +157,7 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 		SubjectBankLoanRe subjectBankLoanRe=new SubjectBankLoanRe();
 		subjectBankLoanRe.setSubjectBankLoanId(subjectBankLoanReDTO.getSubjectBankLoanId());
 		subjectBankLoanRe.setDebtType(subjectBankLoanReDTO.getDebtType());
+		subjectBankLoanRe.setDescribes(subjectBankLoanReDTO.getDescribes());
 
 		Subject subject = new Subject();
 		BeanCopyUtil.copyBean(subjectBankLoanReDTO,subject);
@@ -181,6 +207,7 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 			subjectBankLoanRe.setSubjectId(subjectData.getSubjectId());
 			subjectBankLoanRe.setDebtType(subjectAddressDTO.getDebtType());
 			subjectBankLoanRe.setBankLoanId(subjectAddressDTO.getBankLoanId());
+			subjectBankLoanRe.setDescribes(subjectAddressDTO.getDescribes());
 			this.save(subjectBankLoanRe);
 			subjectBankLoanReListIds.add(subjectBankLoanRe.getSubjectBankLoanId());
 			subjectIds.add(subjectData.getSubjectId());

@@ -83,7 +83,12 @@ public class AssetsVO extends Assets {
 	private String assetsTypeName;
 
 	/**
+	 * 财产关联所有债务人名称
+	 */
+	private String subjectName;
+
+	/**
 	 * 债务人id
 	 */
-	List<Integer> subjectId=new ArrayList<>();
+	List<Integer> subjectId = new ArrayList<>();
 }

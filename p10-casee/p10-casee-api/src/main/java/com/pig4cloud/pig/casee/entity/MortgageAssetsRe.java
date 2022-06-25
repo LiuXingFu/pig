@@ -52,5 +52,11 @@ public class MortgageAssetsRe {
     @ApiModelProperty(value="财产表id")
     private Integer assetsId;
 
+	/**
+	 * 财产关联所有债务人名称
+	 */
+	@ApiModelProperty(value="财产关联所有债务人名称")
+	private String subjectName;
+
 
 }

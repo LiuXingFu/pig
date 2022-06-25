@@ -221,7 +221,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 						assetsReSubjects.add(assetsReSubject);
 
 						assetsRe.setAssetsReId(assetsReLiqui.getAssetsReId());
-						assetsRe.setSubjectName(assetsInformationVO.getSubjectName());
+//						assetsRe.setSubjectName(assetsInformationVO.getSubjectName());
 					}
 					assetsReList.add(assetsRe);
 				}

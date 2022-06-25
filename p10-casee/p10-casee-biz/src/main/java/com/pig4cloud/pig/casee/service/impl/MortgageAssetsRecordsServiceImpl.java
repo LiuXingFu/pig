@@ -89,15 +89,6 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 	@Override
 	public MortgageAssetsRecordsVO getByMortgageAssetsRecordsId(Integer mortgageAssetsRecordsId) {
 		MortgageAssetsRecordsVO mortgageAssetsRecordsVO = this.baseMapper.getByMortgageAssetsRecordsId(mortgageAssetsRecordsId);
-		List<MortgageAssetsRe> list = mortgageAssetsReService.list(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsRecordsId));
-		List<MortgageAssetsSubjectRe> mortgageAssetsSubjectReList=new ArrayList<>();
-		for (MortgageAssetsRe mortgageAssetsRe : list) {
-			mortgageAssetsSubjectReList = mortgageAssetsSubjectReService.list(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId, mortgageAssetsRe.getMortgageAssetsReId()));
-		}
-		for (MortgageAssetsSubjectRe mortgageAssetsSubjectRe : mortgageAssetsSubjectReList) {
-			R<Subject> serviceById = remoteSubjectService.getById(mortgageAssetsSubjectRe.getSubjectId(), SecurityConstants.FROM);
-			mortgageAssetsRecordsVO.getSubjectId().add(serviceById.getData().getSubjectId());
-		}
 
 		return mortgageAssetsRecordsVO;
 	}
@@ -141,9 +132,12 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 				//查询该财产是否关联抵押信息
 				MortgageAssetsRe mortgageAssetsRe = mortgageAssetsReService.getOne(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getAssetsId, assetsId).eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsRecords.getMortgageAssetsRecordsId()));
 				if (mortgageAssetsRe!=null){//有关联则修改
+					//修改抵押财产关联信息
+					mortgageAssetsRe.setSubjectName(assetsDTO.getSubjectName());
+					mortgageAssetsReService.updateById(mortgageAssetsRe);
 					//清除该财产关联债务人信息
 					mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,mortgageAssetsRe.getMortgageAssetsReId()));
-					List<Integer> subjectId = mortgageAssetsDTO.getSubjectId();
+					List<Integer> subjectId = assetsDTO.getSubjectId();
 					for (Integer id : subjectId) {
 						MortgageAssetsSubjectRe mortgageAssetsSubjectRe=new MortgageAssetsSubjectRe();
 						mortgageAssetsSubjectRe.setSubjectId(id);
@@ -154,8 +148,9 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 					mortgageAssetsRe=new MortgageAssetsRe();
 					mortgageAssetsRe.setAssetsId(assetsId);
 					mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+					mortgageAssetsRe.setSubjectName(assetsDTO.getSubjectName());
 					mortgageAssetsReService.save(mortgageAssetsRe);//添加财产关联抵押信息
-					List<Integer> subjectId = mortgageAssetsDTO.getSubjectId();
+					List<Integer> subjectId = assetsDTO.getSubjectId();
 					for (Integer id : subjectId) {
 						MortgageAssetsSubjectRe mortgageAssetsSubjectRe=new MortgageAssetsSubjectRe();
 						mortgageAssetsSubjectRe.setSubjectId(id);
@@ -177,9 +172,10 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 				MortgageAssetsRe mortgageAssetsRe=new MortgageAssetsRe();
 				mortgageAssetsRe.setAssetsId(assets.getAssetsId());
 				mortgageAssetsRe.setMortgageAssetsRecordsId(mortgageAssetsRecords.getMortgageAssetsRecordsId());
+				mortgageAssetsRe.setSubjectName(assetsDTO.getSubjectName());
 				mortgageAssetsReService.save(mortgageAssetsRe);//添加财产关联抵押信息
 
-				List<Integer> subjectId = mortgageAssetsDTO.getSubjectId();
+				List<Integer> subjectId = assetsDTO.getSubjectId();
 				for (Integer id : subjectId) {
 					MortgageAssetsSubjectRe mortgageAssetsSubjectRe=new MortgageAssetsSubjectRe();
 					mortgageAssetsSubjectRe.setSubjectId(id);
@@ -203,7 +199,7 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 			mortgageAssetsRecords.setMortgageStartTime(assetsBankLoanRe.getMortgageTime());
 			mortgageAssetsRecords.setJointMortgage(0);
 			R<Subject> serviceById = remoteSubjectService.getById(assetsBankLoanRe.getSubjectId(), SecurityConstants.FROM);
-			mortgageAssetsRecords.setSubjectName(serviceById.getData().getName());
+//			mortgageAssetsRecords.setSubjectName(serviceById.getData().getName());
 			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
 
 			MortgageAssetsRe mortgageAssetsRe=new MortgageAssetsRe();

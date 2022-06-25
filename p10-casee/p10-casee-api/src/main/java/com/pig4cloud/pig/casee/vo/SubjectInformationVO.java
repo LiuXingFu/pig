@@ -2,6 +2,7 @@ package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.vo.AddressVO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -27,4 +28,9 @@ public class SubjectInformationVO extends Subject {
 	 * 地址信息
 	 */
 	private List<AddressVO> addressList=new ArrayList<>();
+
+	/**
+	 * 描述
+	 */
+	private String describes;
 }

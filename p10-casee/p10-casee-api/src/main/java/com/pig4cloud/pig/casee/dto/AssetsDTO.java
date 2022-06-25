@@ -18,7 +18,10 @@ package com.pig4cloud.pig.casee.dto;
 
 
 import com.pig4cloud.pig.casee.entity.Assets;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 财产表
@@ -70,5 +73,18 @@ public class AssetsDTO extends Assets {
 	 */
 	private String assetsTypeName;
 
+	/**
+	 * 债务人id
+	 */
+	private List<Integer> subjectId;
 
+	/**
+	 * 财产关联所有债务人名称
+	 */
+	private String subjectName;
+
+	/**
+	 * 身份证集合
+	 */
+	private List<String> unifiedIdentityList;
 }
