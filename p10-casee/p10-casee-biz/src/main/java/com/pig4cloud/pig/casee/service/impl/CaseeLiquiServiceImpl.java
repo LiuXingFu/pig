@@ -18,7 +18,6 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,14 +27,19 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSES.LiQui_SSES_SSESCPJG_SSESCPJG;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSQT.LiQui_SSQT_SSQTCPJG_SSQTCPJG;
+import com.pig4cloud.pig.casee.entity.project.liquiprocedure.SSYS.LiQui_SSYS_SSYSCPJG_SSYSCPJG;
 import com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.common.core.constant.CommonConstants;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
+import com.pig4cloud.pig.common.core.util.JsonUtils;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.service.JurisdictionUtilsService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -514,6 +518,51 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			casee.setStatus(3);
 			casee.setCloseTime(effectiveDate);
 			casees.add(casee);
+
+			ProjectCaseeRe projectCaseeRe = projectCaseeReLiquiService.getOne(new LambdaQueryWrapper<ProjectCaseeRe>().eq(ProjectCaseeRe::getCaseeId, casee.getCaseeId()));
+
+			//如果一审裁判结果不为空，二审案件裁判结果为空则以一审案件裁判结果为准
+			if (caseeLiqui.getCaseeLiquiDetail().getFirstTrialRefereeResult()!=null&&caseeLiqui.getCaseeLiquiDetail().getSecondTrialRefereeResult()==null){
+				//查询一审案件裁判结果节点信息
+				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, projectCaseeRe.getProjectId()).eq(TaskNode::getCaseeId, projectCaseeRe.getCaseeId()).eq(TaskNode::getNodeKey, "liQui_SSYS_SSYSCPJG_SSYSCPJG"));
+				LiQui_SSYS_SSYSCPJG_SSYSCPJG liQui_ssys_ssyscpjg_ssyscpjg = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSYS_SSYSCPJG_SSYSCPJG.class);
+
+				RefereeResultTakeEffectDTO refereeResultTakeEffectDTO=new RefereeResultTakeEffectDTO();
+				refereeResultTakeEffectDTO.setProjectId(projectCaseeRe.getProjectId());
+				refereeResultTakeEffectDTO.setCaseeId(projectCaseeRe.getCaseeId());
+				BeanUtils.copyProperties(liQui_ssys_ssyscpjg_ssyscpjg,refereeResultTakeEffectDTO);
+
+				//裁判结果生效修改项目本金、利息以及诉讼费用
+				expenseRecordService.refereeResultTakeEffectUpdateExpenseRecord(refereeResultTakeEffectDTO);
+
+				//如果二审案件裁判结果不为空则以二审案件裁判结果为准
+			}else if (caseeLiqui.getCaseeLiquiDetail().getSecondTrialRefereeResult()!=null){
+				//查询二审案件裁判结果节点信息
+				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, projectCaseeRe.getProjectId()).eq(TaskNode::getCaseeId, projectCaseeRe.getCaseeId()).eq(TaskNode::getNodeKey, "liQui_SSES_SSESCPJG_SSESCPJG"));
+				LiQui_SSES_SSESCPJG_SSESCPJG liQui_sses_ssescpjg_ssescpjg = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSES_SSESCPJG_SSESCPJG.class);
+
+				RefereeResultTakeEffectDTO refereeResultTakeEffectDTO=new RefereeResultTakeEffectDTO();
+				refereeResultTakeEffectDTO.setProjectId(projectCaseeRe.getProjectId());
+				refereeResultTakeEffectDTO.setCaseeId(projectCaseeRe.getCaseeId());
+				BeanUtils.copyProperties(liQui_sses_ssescpjg_ssescpjg,refereeResultTakeEffectDTO);
+
+				//裁判结果生效修改项目本金、利息以及诉讼费用
+				expenseRecordService.refereeResultTakeEffectUpdateExpenseRecord(refereeResultTakeEffectDTO);
+
+				//如果其它案件裁判结果不为空则以其它案件裁判结果为准
+			}else if (caseeLiqui.getCaseeLiquiDetail().getOtherRefereeResult()!=null){
+				//查询其它案件裁判结果节点信息
+				TaskNode taskNode = taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getProjectId, projectCaseeRe.getProjectId()).eq(TaskNode::getCaseeId, projectCaseeRe.getCaseeId()).eq(TaskNode::getNodeKey, "liQui_SSQT_SSQTCPJG_SSQTCPJG"));
+				LiQui_SSQT_SSQTCPJG_SSQTCPJG liQui_ssqt_ssqtcpjg_ssqtcpjg = JsonUtils.jsonToPojo(taskNode.getFormData(), LiQui_SSQT_SSQTCPJG_SSQTCPJG.class);
+
+				RefereeResultTakeEffectDTO refereeResultTakeEffectDTO=new RefereeResultTakeEffectDTO();
+				refereeResultTakeEffectDTO.setProjectId(projectCaseeRe.getProjectId());
+				refereeResultTakeEffectDTO.setCaseeId(projectCaseeRe.getCaseeId());
+				BeanUtils.copyProperties(liQui_ssqt_ssqtcpjg_ssqtcpjg,refereeResultTakeEffectDTO);
+
+				//裁判结果生效修改项目本金、利息以及诉讼费用
+				expenseRecordService.refereeResultTakeEffectUpdateExpenseRecord(refereeResultTakeEffectDTO);
+			}
 		}
 		this.updateBatchById(casees);
 	}

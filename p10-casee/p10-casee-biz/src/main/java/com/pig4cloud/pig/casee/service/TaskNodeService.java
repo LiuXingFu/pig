@@ -119,7 +119,7 @@ public interface TaskNodeService extends IService<TaskNode> {
 	List<TaskNodeVO> queryNodeTemplateByCaseeId(Integer projectId,Integer caseeId,Integer procedureNature,Integer id);
 
 	/**
-	 * 根据节点key以及项目、案件信息查询最后一条节点信息
+	 * 根据节点key以及程序id查询最后一条节点信息
 	 * @param taskNodeKey 节点key
 	 * @return R
 	 */
