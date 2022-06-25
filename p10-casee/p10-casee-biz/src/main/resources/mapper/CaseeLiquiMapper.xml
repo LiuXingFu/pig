@@ -286,7 +286,7 @@
 		</if>
 	</select>
 
-	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.entity.Casee">
+	<select id="selectJudgmentTakesEffect" resultType="com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui">
 		select p10_casee.casee_id,substring(JSON_EXTRACT(p10_casee.casee_detail, "$.effectiveDate"),2,10) close_time,3 as status from p10_casee
 		where del_flag = 0
 		and status = 1

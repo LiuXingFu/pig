@@ -504,10 +504,7 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	@Override
 	public void litigationCaseeClose() {
 		// 查询一审、二审案件判决结果生效日期
-		List<Casee> caseeList = this.baseMapper.selectJudgmentTakesEffect();
-
-		// 批量更新案件状态=结案
-		this.updateBatchById(caseeList);
+		List<CaseeLiqui> caseeList = this.baseMapper.selectJudgmentTakesEffect();
 	}
 
 	@Override
