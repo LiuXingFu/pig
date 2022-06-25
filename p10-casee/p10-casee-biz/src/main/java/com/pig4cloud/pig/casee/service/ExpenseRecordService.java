@@ -23,6 +23,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.dto.JointAuctionAssetsDTO;
+import com.pig4cloud.pig.casee.dto.RefereeResultTakeEffectDTO;
 import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.Casee;
 import com.pig4cloud.pig.casee.entity.ExpenseRecord;
@@ -56,10 +57,16 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 
 	/**
-	 * 根据项目id、案件id费用类型和状态查询该费用已回多少款
+	 * 根据项目id、案件id费用类型或者费用id和状态查询该费用已回多少款
 	 * @return
 	 */
 	ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord);
+
+	/**
+	 * 裁判结果生效修改项目本金、利息以及诉讼费用
+	 * @return
+	 */
+	void refereeResultTakeEffectUpdateExpenseRecord(RefereeResultTakeEffectDTO refereeResultTakeEffectDTO);
 
 	List<ExpenseRecordDistributeVO>getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId);
 

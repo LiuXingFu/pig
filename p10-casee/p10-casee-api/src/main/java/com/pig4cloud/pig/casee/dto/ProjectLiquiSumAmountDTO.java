@@ -14,35 +14,33 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
-package com.pig4cloud.pig.casee.vo;
+package com.pig4cloud.pig.casee.dto;
 
-import com.pig4cloud.pig.casee.entity.ExpenseRecord;
-import com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
 import java.math.BigDecimal;
-import java.util.List;
 
-/**
- * 费用产生记录表
- *
- * @author Mjh
- * @date 2022-02-17 17:53:07
- */
 @Data
-
-public class ExpenseRecordVO extends ExpenseRecord {
-	/**
-	 * 项目金额
-	 */
-	private BigDecimal projectAmount;
+public class ProjectLiquiSumAmountDTO {
 
 	/**
-	 * 费用记录已回款金额
+	 * 本金总和
 	 */
-	private BigDecimal moneyBackAmount;
+	@ApiModelProperty(value="本金总和")
+	private BigDecimal sumPrincipal;
 
 	/**
-	 * 财产关联集合
+	 * 本金总和
 	 */
-	List<AssetsRePaifuDetailVO> assetsReList;
+	@ApiModelProperty(value="利息总和")
+	private BigDecimal sumInterest;
+
+	/**
+	 * 本金总和
+	 */
+	@ApiModelProperty(value="项目金额总和")
+	private BigDecimal sumProjectAmount;
+
+
 }

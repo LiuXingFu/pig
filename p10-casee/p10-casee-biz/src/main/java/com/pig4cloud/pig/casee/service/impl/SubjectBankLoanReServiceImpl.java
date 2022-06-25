@@ -167,6 +167,7 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 	}
 
 	@Override
+	@Transactional
 	public SubjectIdsOrSubjectBankLoanReIdsVO saveSubjectOrSubjectBankLoanRe(List<SubjectAddressDTO> subjectAddressDTOList) {
 
 		SubjectIdsOrSubjectBankLoanReIdsVO subjectIdsOrSubjectBankLoanReIdsVO = new SubjectIdsOrSubjectBankLoanReIdsVO();

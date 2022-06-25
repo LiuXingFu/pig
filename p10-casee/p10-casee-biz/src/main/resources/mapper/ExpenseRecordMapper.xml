@@ -54,6 +54,9 @@
 		<collection property="assetsReList" ofType="com.pig4cloud.pig.casee.vo.paifu.AssetsRePaifuDetailVO" column="expense_record_id"
 					select="com.pig4cloud.pig.casee.mapper.ExpenseRecordAssetsReMapper.selectAssetsList">
 		</collection>
+		<collection property="moneyBackAmount" ofType="java.math.BigDecimal" column="expense_record_id"
+					select="com.pig4cloud.pig.casee.mapper.PaymentRecordMapper.paymentSumAmount">
+		</collection>
 	</resultMap>
 
 	<resultMap id="ExpenseRecordMoneyBackVO" type="com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO" extends="expenseRecordMap">
@@ -95,9 +98,16 @@
 		p10_expense_record.*
 		from p10_expense_record
 		where p10_expense_record.del_flag=0
-		and p10_expense_record.project_id=#{query.projectId}
 		and p10_expense_record.status=0
-		and p10_expense_record.cost_type=#{query.costType}
+		<if test="query.expenseRecordId != null">
+			and p10_expense_record.expense_record_id=#{query.expenseRecordId}
+		</if>
+		<if test="query.projectId != null">
+			and p10_expense_record.project_id=#{query.projectId}
+		</if>
+		<if test="query.costType != null">
+			and p10_expense_record.cost_type=#{query.costType}
+		</if>
 		<if test="query.caseeId != null">
 			and p10_expense_record.casee_id = #{query.caseeId}
 		</if>

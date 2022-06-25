@@ -105,14 +105,20 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Autowired
 	private AssetsService assetsService;
 
-
-
 	@Override
 	public IPage<ProjectLiquiPageVO> queryPageLiqui(Page page, ProjectLiquiPageDTO projectLiquiPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 		return this.baseMapper.selectPageLiqui(page, projectLiquiPageDTO, insOutlesDTO);
+	}
+
+	@Override
+	public ProjectLiquiSumAmountDTO getProjectSumAmount(ProjectLiquiPageDTO projectLiquiPageDTO){
+		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
+		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
+		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+		return this.baseMapper.getProjectSumAmount(projectLiquiPageDTO, insOutlesDTO);
 	}
 
 	@Override
@@ -1192,7 +1198,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			subjectAddressDTO.setAddressList(projectSaveSubjectDTO.getAddressList());
 			subjectAddressDTOList.add(subjectAddressDTO);
 		}
-		remoteSubjectService.saveSubjectAddress(subjectAddressDTOList,SecurityConstants.FROM);
+		subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList);
 		// 保存抵押物
 		if(projectLiquiSaveDTO.getMortgageSituation()==0){
 			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
