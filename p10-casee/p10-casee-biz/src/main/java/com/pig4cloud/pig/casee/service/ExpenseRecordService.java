@@ -57,7 +57,7 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO>getByPaymentType(ExpenseRecord expenseRecord);
 
 	/**
-	 * 根据项目id、案件id费用类型和状态查询该费用已回多少款
+	 * 根据项目id、案件id费用类型或者费用id和状态查询该费用已回多少款
 	 * @return
 	 */
 	ExpenseRecordMoneyBackVO getByExpenseRecordMoneyBack(ExpenseRecord expenseRecord);

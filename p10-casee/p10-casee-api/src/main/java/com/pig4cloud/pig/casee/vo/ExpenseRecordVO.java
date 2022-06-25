@@ -37,6 +37,11 @@ public class ExpenseRecordVO extends ExpenseRecord {
 	private BigDecimal projectAmount;
 
 	/**
+	 * 费用记录已回款金额
+	 */
+	private BigDecimal moneyBackAmount;
+
+	/**
 	 * 财产关联集合
 	 */
 	List<AssetsRePaifuDetailVO> assetsReList;
