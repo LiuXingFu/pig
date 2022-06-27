@@ -163,15 +163,15 @@ public class PaymentRecordController {
     }
 
 	/**
-	 * 新增回款详细记录及关联主体信息
+	 * 新增到款记录及关联信息
 	 * @param paymentRecordDTO
 	 * @return R
 	 */
-	@ApiOperation(value = "新增回款详细记录及关联主体信息", notes = "新增回款详细记录及关联主体信息")
-	@SysLog("新增回款详细记录及关联主体信息" )
-	@PostMapping("/savePaymentRecord")
-	public R savePaymentRecord(@RequestBody PaymentRecordDTO paymentRecordDTO) {
-		return R.ok(paymentRecordService.savePaymentRecord(paymentRecordDTO));
+	@ApiOperation(value = "新增到款记录及关联信息", notes = "新增到款记录及关联信息")
+	@SysLog("新增到款记录及关联信息" )
+	@PostMapping("/saveCourtPayment")
+	public R saveCourtPayment(@RequestBody PaymentRecordDTO paymentRecordDTO) {
+		return R.ok(paymentRecordService.saveCourtPayment(paymentRecordDTO));
 	}
 
     /**

@@ -110,12 +110,26 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
-	public boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO) {
-		this.save(paymentRecordDTO);
-		PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
-		paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
-		paymentRecordSubjectRe.setSubjectId(paymentRecordDTO.getSubjectId());
-		return this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+	@Transactional
+	public boolean saveCourtPayment(PaymentRecordDTO paymentRecordDTO) {
+		boolean save = this.save(paymentRecordDTO);
+		if (paymentRecordDTO.getFundsType().equals(20003)){
+			for (Integer assetsReId : paymentRecordDTO.getAssetsReIdList()) {
+				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
+				paymentRecordAssetsRe.setAssetsReId(assetsReId);
+				paymentRecordAssetsRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
+				// 添加回款记录财产关联信息
+				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
+			}
+		}
+		for (Integer subjectId : paymentRecordDTO.getSubjectIdList()) {
+			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
+			paymentRecordSubjectRe.setSubjectId(subjectId);
+			paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
+			//添加关联债务人信息
+			paymentRecordSubjectReService.save(paymentRecordSubjectRe);
+		}
+		return save;
 	}
 
 	@Override
