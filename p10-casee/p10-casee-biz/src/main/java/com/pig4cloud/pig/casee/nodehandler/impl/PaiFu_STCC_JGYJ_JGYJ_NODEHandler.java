@@ -1,7 +1,6 @@
 package com.pig4cloud.pig.casee.nodehandler.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
 import com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
@@ -14,10 +13,7 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
@@ -36,8 +32,6 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 	private ProjectPaifuService projectPaifuService;
 	@Autowired
 	private ExpenseRecordService expenseRecordService;
-	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 	@Autowired
 	private ExpenseRecordAssetsReService expenseRecordAssetsReService;
 	@Autowired
@@ -135,16 +129,8 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 
 				Target target = targetService.getById(taskNode.getTargetId());
 
-				//删除费用明细记录
-				expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId());
-
-				//删除费用明细记录财产关联信息
-				expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-						.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
-
-				//删除费用产生明细关联主体信息
-				expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-						.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId()));
+				//删除费用明细记录以及关联信息
+				expenseRecordService.deleteExpenseRecordRe(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId());
 
 				//通过清收移交记录信息查询清收项目id
 				LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
@@ -156,16 +142,8 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 					//修改清收项目总金额
 					projectLiquiService.updateById(projectLiqui);
 
-					//删除费用明细记录
-					expenseRecordService.removeById(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId());
-
-					//删除费用明细记录财产关联信息
-					expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-							.eq(ExpenseRecordAssetsRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
-
-					//删除费用产生明细关联主体信息
-					expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-							.eq(ExpenseRecordSubjectRe::getExpenseRecordId, paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId()));
+					//删除费用明细记录以及关联信息
+					expenseRecordService.deleteExpenseRecordRe(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId());
 				}
 			}
 		}

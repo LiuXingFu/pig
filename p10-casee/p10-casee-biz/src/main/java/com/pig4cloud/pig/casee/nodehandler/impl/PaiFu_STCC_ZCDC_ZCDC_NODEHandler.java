@@ -149,16 +149,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 
 			updateExpenseRecord(paiFu_STCC_ZCDC_ZCDC, assetsReSubjectDTO.getAssetsReId(), projectPaifu.getProjectId());
 
-			//删除到款的到款信息
-			paymentRecordService.removeById(paiFu_STCC_ZCDC_ZCDC.getPaiFuPaymentRecordId());
-
-			//删除回款记录财产关联信息
-			paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-					.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getPaiFuPaymentRecordId()));
-
-			//删除到款信息关联债务人
-			paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-					.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getPaiFuPaymentRecordId()));
+			//删除资产抵偿记录以及关联信息
+			paymentRecordService.deletePaymentRecordRe(paiFu_STCC_ZCDC_ZCDC.getPaiFuPaymentRecordId());
 
 			//通过清收移交记录信息查询清收项目id
 			LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
@@ -167,16 +159,8 @@ public class PaiFu_STCC_ZCDC_ZCDC_NODEHandler extends TaskNodeHandler {
 
 				updateExpenseRecord(paiFu_STCC_ZCDC_ZCDC, assetsReSubjectDTO.getAssetsReId(), projectLiqui.getProjectId());
 
-				//删除到款的到款信息
-				paymentRecordService.removeById(paiFu_STCC_ZCDC_ZCDC.getLiQuiPaymentRecordId());
-
-				//删除回款记录财产关联信息
-				paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-						.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getLiQuiPaymentRecordId()));
-
-				//删除到款信息关联债务人
-				paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-						.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_ZCDC_ZCDC.getLiQuiPaymentRecordId()));
+				//删除资产抵偿记录以及关联信息
+				paymentRecordService.deletePaymentRecordRe(paiFu_STCC_ZCDC_ZCDC.getLiQuiPaymentRecordId());
 
 			}
 		}

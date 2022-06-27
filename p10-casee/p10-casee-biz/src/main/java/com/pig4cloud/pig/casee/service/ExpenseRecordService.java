@@ -71,6 +71,13 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	List<ExpenseRecordDistributeVO>getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId);
 
 	/**
+	 * 根据费用产生记录id删除费用产生记录信息以及相关关联信息
+	 * @param expenseRecordId		费用产生记录id
+	 * @return
+	 */
+	boolean deleteExpenseRecordRe(Integer expenseRecordId);
+
+	/**
 	 * 添加费用产生记录以及其它关联信息
 	 * @param amount					费用
 	 * @param date						费用产生时间

@@ -179,16 +179,8 @@ public class PaiFu_STCC_DK_DK_NODEHandler extends TaskNodeHandler {
 				//将之前的拍辅费减除并修改
 				updateExpenseRecord(paiFu_STCC_DK_DK, assetsReSubjectDTO.getAssetsReId(), projectLiqui.getProjectId());
 
-				//删除到款的到款信息
-				paymentRecordService.removeById(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
-
-				//删除回款记录财产关联信息
-				paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-						.eq(PaymentRecordAssetsRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
-
-				//删除到款信息关联债务人
-				paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-						.eq(PaymentRecordSubjectRe::getPaymentRecordId, paiFu_STCC_DK_DK.getLiQuiPaymentRecordId()));
+				//删除到款信息以及关联信息
+				paymentRecordService.deletePaymentRecordRe(paiFu_STCC_DK_DK.getLiQuiPaymentRecordId());
 			}
 		}
 

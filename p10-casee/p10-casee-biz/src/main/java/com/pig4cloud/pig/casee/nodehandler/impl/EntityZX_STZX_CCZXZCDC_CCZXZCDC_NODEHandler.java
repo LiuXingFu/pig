@@ -152,24 +152,14 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 		EntityZX_STZX_CCZXZCDC_CCZXZCDC entityZX_stzx_cczxzcdc_cczxzcdc = JsonUtils.jsonToPojo(node.getFormData(), EntityZX_STZX_CCZXZCDC_CCZXZCDC.class);
 
 		if (entityZX_stzx_cczxzcdc_cczxzcdc!=null) {
-			Page page=new Page();
-			page.setSize(9999);
-			IPage<PaymentRecordVO> byPaymentRecordPage = paymentRecordService.getByPaymentRecordPage(page, entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId());
-			for (PaymentRecordVO record : byPaymentRecordPage.getRecords()) {
+			List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId()).eq(PaymentRecord::getDelFlag, 0));
+			for (PaymentRecord record : paymentRecordList) {
 				ExpenseRecord expenseRecord = expenseRecordService.getById(record.getExpenseRecordId());
 				expenseRecord.setStatus(0);
 				expenseRecordService.updateById(expenseRecord);
 
 				//删除资产抵偿的分配款项信息
-				paymentRecordService.removeById(record.getPaymentRecordId());
-
-				//删除资产抵偿分配款项关联信息
-				paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-						.eq(PaymentRecordAssetsRe::getPaymentRecordId, record.getPaymentRecordId()));
-
-				//删除资产抵偿分配款项关联债务人信息
-				paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-						.eq(PaymentRecordSubjectRe::getPaymentRecordId, record.getPaymentRecordId()));
+				paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
 			}
 
 			Target target = targetService.getById(taskNode.getTargetId());
@@ -184,16 +174,8 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				expenseRecordService.updateById(expenseRecord);
 			}
 
-			//删除资产抵偿的抵偿信息
-			paymentRecordService.removeById(entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId());
-
-			//删除资产抵偿关联信息
-			paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-					.eq(PaymentRecordAssetsRe::getPaymentRecordId, entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId()));
-
-			//删除资产抵偿关联债务人
-			paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-					.eq(PaymentRecordSubjectRe::getPaymentRecordId, entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId()));
+			//删除资产抵偿信息
+			paymentRecordService.deletePaymentRecordRe(entityZX_stzx_cczxzcdc_cczxzcdc.getPaymentRecordId());
 
 			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 

@@ -39,8 +39,6 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	PaymentRecordAssetsReService paymentRecordAssetsReService;
 	@Autowired
 	CustomerService customerService;
-	@Autowired
-	private PaymentRecordSubjectReService paymentRecordSubjectReService;
 
 	@Override
 	@Transactional
@@ -125,16 +123,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 				expenseRecordService.updateById(expenseRecord);
 			}
 
-			//删除到款的到款信息
-			paymentRecordService.removeById(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
-
-			//删除回款记录财产关联信息
-			paymentRecordAssetsReService.remove(new LambdaQueryWrapper<PaymentRecordAssetsRe>()
-					.eq(PaymentRecordAssetsRe::getPaymentRecordId, entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId()));
-
-			//删除到款信息关联债务人
-			paymentRecordSubjectReService.remove(new LambdaQueryWrapper<PaymentRecordSubjectRe>()
-					.eq(PaymentRecordSubjectRe::getPaymentRecordId, entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId()));
+			////删除到款以及关联信息
+			paymentRecordService.deletePaymentRecordRe(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
 		}
 		setLiQuiStccDkDk(taskNode);
 	}
