@@ -30,6 +30,10 @@ import java.util.List;
  */
 @Data
 public class MortgageAssetsAllDTO {
+	/**
+	 * 银行借贷表id
+	 */
+	private Integer bankLoanId;
 
 	List<MortgageAssetsDTO> mortgageAssetsDTOList;
 

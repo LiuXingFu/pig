@@ -86,6 +86,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 			//抵押信息
 			MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
 			BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
+			mortgageAssetsRecords.setBankLoanId(mortgageAssetsAllDTO.getBankLoanId());
 			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
 
 			//抵押财产关联信息
