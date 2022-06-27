@@ -22,8 +22,6 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 	@Autowired
 	AssetsReLiquiService assetsReLiquiService;
 	@Autowired
-	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
-	@Autowired
 	private CaseeLiquiService caseeLiquiService;
 	@Autowired
 	private ProjectLiquiService projectLiquiService;
@@ -80,16 +78,8 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 		if (entityZX_stzx_cczxjgyj_cczxjgyj!=null) {
 
 			if (entityZX_stzx_cczxjgyj_cczxjgyj.getPricingManner()!=0){
-				//删除费用明细记录
-				expenseRecordService.removeById(entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId());
 
-				//删除费用明细记录财产关联信息
-				expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
-						.eq(ExpenseRecordAssetsRe::getExpenseRecordId, entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId()));
-
-				//删除费用产生明细关联主体信息
-				expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
-						.eq(ExpenseRecordSubjectRe::getExpenseRecordId, entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId()));
+				expenseRecordService.deleteExpenseRecordRe(entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId());
 
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 

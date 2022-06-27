@@ -293,6 +293,21 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
+	public boolean deleteExpenseRecordRe(Integer expenseRecordId) {
+
+		//删除费用明细记录财产关联信息
+		expenseRecordAssetsReService.remove(new LambdaQueryWrapper<ExpenseRecordAssetsRe>()
+				.eq(ExpenseRecordAssetsRe::getExpenseRecordId, expenseRecordId));
+
+		//删除费用产生明细关联主体信息
+		expenseRecordSubjectReService.remove(new LambdaQueryWrapper<ExpenseRecordSubjectRe>()
+				.eq(ExpenseRecordSubjectRe::getExpenseRecordId, expenseRecordId));
+
+		//删除费用明细记录
+		return this.removeById(expenseRecordId);
+	}
+
+	@Override
 	public ExpenseRecord addExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType) {
 		//添加费用明细记录
 		ExpenseRecord expenseRecord = new ExpenseRecord();
