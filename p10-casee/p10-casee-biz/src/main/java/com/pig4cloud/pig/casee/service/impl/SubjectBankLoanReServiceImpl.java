@@ -191,8 +191,9 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 						subjectNames += "," + subject.getName();
 					}
 				} else {
+					subjectNames = bankLoan.getSubjectName();
 					if (!bankLoan.getSubjectName().contains(subject.getName())) {
-						subjectNames = bankLoan.getSubjectName() + "," + subject.getName();
+						subjectNames += "," + subject.getName();
 					}
 				}
 			}
