@@ -218,7 +218,7 @@ public class SubjectBankLoanReServiceImpl extends ServiceImpl<SubjectBankLoanReM
 
 		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectIds(subjectIds);
 		subjectIdsOrSubjectBankLoanReIdsVO.setSubjectBankLoanReListIds(subjectBankLoanReListIds);
-		return null;
+		return subjectIdsOrSubjectBankLoanReIdsVO;
 	}
 
 	@Override

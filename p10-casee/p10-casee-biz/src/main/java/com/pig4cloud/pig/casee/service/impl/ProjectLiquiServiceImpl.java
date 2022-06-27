@@ -178,6 +178,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			projectSubjectRe.setSubjectId(item.getSubjectId());
 			projectSubjectRe.setProjectId(projectLiqui.getProjectId());
 			projectSubjectRe.setType(item.getDebtType());
+			projectSubjectRe.setDescribes(item.getDescribes());
 			projectSubjectRes.add(projectSubjectRe);
 		});
 		R<Subject> subject = remoteSubjectService.getByInsId(transferRecordBankLoanVO.getInsId(), SecurityConstants.FROM);
@@ -227,7 +228,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 						assetsReSubjects.add(assetsReSubject);
 
 						assetsRe.setAssetsReId(assetsReLiqui.getAssetsReId());
-//						assetsRe.setSubjectName(assetsInformationVO.getSubjectName());
 					}
 					assetsReList.add(assetsRe);
 				}
