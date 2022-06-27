@@ -18,6 +18,12 @@ public class TransferRecordLiquiDetail {
 	private BigDecimal principal;
 
 	/**
+	 * 利率
+	 */
+	@ApiModelProperty(value="利率")
+	private BigDecimal interestRate;
+
+	/**
 	 * 利息
 	 */
 	@ApiModelProperty(value="利息")

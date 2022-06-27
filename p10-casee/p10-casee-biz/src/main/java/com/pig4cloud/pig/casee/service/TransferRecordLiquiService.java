@@ -58,4 +58,5 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 	 */
 	TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType);
 
+	Boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui);
 }

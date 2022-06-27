@@ -115,7 +115,7 @@ public class TransferRecordliquiController {
 	@SysLog("新增移交记录表" )
 	@PostMapping("/saveTransferRecord")
 	public R saveTransferRecord(@RequestBody TransferRecordLiqui transferRecordLiqui) {
-		return R.ok(transferRecordLiquiService.save(transferRecordLiqui));
+		return R.ok(transferRecordLiquiService.saveTransferRecord(transferRecordLiqui));
 	}
 
 	/**
@@ -131,6 +131,7 @@ public class TransferRecordliquiController {
 		bankLoan.setPrincipal(transferRecordLiqui.getTransferRecordLiquiDetail().getPrincipal());
 		bankLoan.setInterest(transferRecordLiqui.getTransferRecordLiquiDetail().getInterest());
 		bankLoan.setRental(transferRecordLiqui.getTransferRecordLiquiDetail().getHandoverAmount());
+		bankLoan.setInterestRate(transferRecordLiqui.getTransferRecordLiquiDetail().getInterestRate());
 		bankLoan.setBankLoanId(transferRecordLiqui.getSourceId());
 		bankLoanService.updateById(bankLoan);
 		return R.ok(transferRecordLiquiService.updateById(transferRecordLiqui));

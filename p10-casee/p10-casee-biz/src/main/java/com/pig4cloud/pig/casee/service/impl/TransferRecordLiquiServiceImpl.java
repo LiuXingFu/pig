@@ -22,10 +22,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.casee.dto.InsOutlesDTO;
 import com.pig4cloud.pig.casee.dto.ProjectLiquiAddDTO;
 import com.pig4cloud.pig.casee.dto.TransferRecordDTO;
+import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
+import com.pig4cloud.pig.casee.service.BankLoanService;
 import com.pig4cloud.pig.casee.service.ProjectLiquiService;
+import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
 import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.MortgageAssetsVO;
@@ -51,6 +55,9 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 
 	@Autowired
 	private JurisdictionUtilsService jurisdictionUtilsService;
+
+	@Autowired
+	private BankLoanService bankLoanService;
 
 	@Override
 	public IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
@@ -101,5 +108,26 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Override
 	public TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType){
 		return this.baseMapper.getByProjectId(projectId,transferType);
+	}
+
+	/**
+	 * 新增移交记录表
+	 * @param transferRecordLiqui 移交记录表
+	 * @return R
+	 */
+	@Override
+	public Boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui) {
+
+		//修改银行借贷信息
+		BankLoan bankLoan = bankLoanService.getById(transferRecordLiqui.getSourceId());
+
+		bankLoan.setPrincipal(transferRecordLiqui.getTransferRecordLiquiDetail().getPrincipal());
+		bankLoan.setRental(transferRecordLiqui.getTransferRecordLiquiDetail().getHandoverAmount());
+		bankLoan.setInterest(transferRecordLiqui.getTransferRecordLiquiDetail().getInterest());
+		bankLoan.setInterestRate(transferRecordLiqui.getTransferRecordLiquiDetail().getInterestRate());
+
+		bankLoanService.updateById(bankLoan);
+
+		return this.save(transferRecordLiqui);
 	}
 }
