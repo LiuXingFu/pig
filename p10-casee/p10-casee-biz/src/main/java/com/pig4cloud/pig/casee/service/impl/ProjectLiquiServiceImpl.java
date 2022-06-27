@@ -1202,6 +1202,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList);
 		// 保存抵押物
 		if(projectLiquiSaveDTO.getMortgageSituation()==0){
+
 			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
 		}
 
@@ -1266,7 +1267,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		BeanCopyUtil.copyBean(transferRecordLiqui.getTransferRecordLiquiDetail(),transferRecordLiquiDetail);
 		transferRecordLiquiDetail.setStartingTime(projectLiquiModifyBankLoanDTO.getStartingTime());
 		transferRecordLiquiDetail.setLitigation(projectLiquiModifyBankLoanDTO.getLitigation());
-//		transferRecordLiquiDetail.set(projectLiquiModifyBankLoanDTO.getInterestRate());
+		transferRecordLiquiDetail.setInterestRate(projectLiquiModifyBankLoanDTO.getInterestRate());
 		transferRecordLiqui.setTransferRecordLiquiDetail(transferRecordLiquiDetail);
 		transferRecordLiquiService.updateById(transferRecordLiqui);
 
