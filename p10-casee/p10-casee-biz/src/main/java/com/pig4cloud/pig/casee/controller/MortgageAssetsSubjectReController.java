@@ -17,6 +17,7 @@
 
 package com.pig4cloud.pig.casee.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.common.core.util.R;
@@ -103,5 +104,18 @@ public class MortgageAssetsSubjectReController {
     public R removeById(@PathVariable Integer mortgageAssetsSubjectReId) {
         return R.ok(mortgageAssetsSubjectReService.removeById(mortgageAssetsSubjectReId));
     }
+
+	/**
+	 * 根据抵押记录id查询集合
+	 * @param mortgageAssetsReId id
+	 * @return R
+	 */
+	@ApiOperation(value = "通过id查询", notes = "通过id查询")
+	@GetMapping("/getByMortgageAssetsReId/{mortgageAssetsReId}" )
+	public R getByMortgageAssetsReId(@PathVariable("mortgageAssetsReId" ) Integer mortgageAssetsReId) {
+		QueryWrapper<MortgageAssetsSubjectRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,mortgageAssetsReId);
+		return R.ok(mortgageAssetsSubjectReService.list(queryWrapper));
+	}
 
 }

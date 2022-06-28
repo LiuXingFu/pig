@@ -99,7 +99,7 @@
 	</select>
 
 	<select id="getProjectSumAmount" resultType="com.pig4cloud.pig.casee.dto.ProjectLiquiSumAmountDTO">
-		select sum(json_extract(p10_project.project_detail,'$.principal')) sumPrincipal,sum(json_extract(p10_project.project_detail,'$.interest')) sumInterest,sum(json_extract(p10_project.project_detail,'$.projectAmount')) sumProjectAmount from p10_project
+		select sum(json_extract(p10_project.project_detail,'$.principal')) sumPrincipal,sum(json_extract(p10_project.project_detail,'$.interest')) sumPrincipalInterestAmount,sum(json_extract(p10_project.project_detail,'$.principalInterestAmount')) sumProjectAmount from p10_project
 		left join p10_institution on p10_institution.ins_id = p10_project.ins_id
 		left join p10_outles on p10_outles.outles_id = p10_project.outles_id
 		left join p10_project_outles_deal_re on p10_project_outles_deal_re.project_id = p10_project.project_id
