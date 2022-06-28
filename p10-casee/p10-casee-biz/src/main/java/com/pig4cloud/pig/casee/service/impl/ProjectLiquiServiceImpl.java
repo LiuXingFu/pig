@@ -1202,7 +1202,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList);
 		// 保存抵押物
 		if(projectLiquiSaveDTO.getMortgageSituation()==0){
-
 			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
 		}
 

@@ -146,7 +146,7 @@ public class SubjectController {
 	 * @return R
 	 */
 	@ApiOperation(value = "通过银行借贷id查询主体信息", notes = "通过银行借贷id查询主体信息")
-	@GetMapping("getSubjectByBankLoanId/{bankLoanId}")
+	@GetMapping("/getSubjectByBankLoanId/{bankLoanId}")
 	public R getSubjectByBankLoanId(@PathVariable("bankLoanId") Integer bankLoanId) {
 		return R.ok(subjectService.getSubjectByBankLoanId(bankLoanId));
 	}

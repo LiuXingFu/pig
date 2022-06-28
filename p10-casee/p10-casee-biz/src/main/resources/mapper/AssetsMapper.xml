@@ -210,9 +210,10 @@
 	</select>
 
 	<select id="getByAssetsId" resultType="com.pig4cloud.pig.casee.vo.AssetsPageVO">
-		select DISTINCT p10_assets.*,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address from p10_assets
+		select p10_assets.*,p10_address.address_id,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address from p10_assets
 		left join p10_address on p10_address.user_id = p10_assets.assets_id and p10_address.type = 4
 		where p10_assets.assets_id = #{assetsId}
+		limit 1
 	</select>
 
 	<select id="getListAssetsManage" resultType="com.pig4cloud.pig.casee.vo.ExportXlsAssetsOrProjectVO">
