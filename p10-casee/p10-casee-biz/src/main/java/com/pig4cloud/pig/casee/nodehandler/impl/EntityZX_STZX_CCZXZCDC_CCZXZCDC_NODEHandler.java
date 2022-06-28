@@ -89,6 +89,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 			record.setFatherId(paymentRecord.getPaymentRecordId());
 			record.setCaseeId(taskNode.getCaseeId());
 			record.setCaseeNumber(casee.getCaseeNumber());
+			record.setStatus(1);
 			//添加抵偿分配记录
 			paymentRecordService.save(record);
 			List<AssetsReVO> assetsReList = record.getAssetsReList();
