@@ -61,7 +61,7 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 
 	List<PaymentRecordVO> getCourtPaymentUnpaid(Integer projectId);
 
-	boolean savePaymentRecord(PaymentRecordDTO paymentRecordDTO);
+	boolean saveCourtPayment(PaymentRecordDTO paymentRecordDTO);
 
 	boolean distribute(PaymentRecordDTO paymentRecordDTO);
 

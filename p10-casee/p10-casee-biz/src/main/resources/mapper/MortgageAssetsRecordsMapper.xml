@@ -30,7 +30,6 @@
     <result property="mortgageStartTime" column="mortgage_start_time"/>
     <result property="mortgageEndTime" column="mortgage_end_time"/>
     <result property="jointMortgage" column="joint_mortgage"/>
-    <result property="subjectName" column="subject_name"/>
     <result property="describes" column="describes"/>
     <result property="createTime" column="create_time"/>
     <result property="createBy" column="create_by"/>

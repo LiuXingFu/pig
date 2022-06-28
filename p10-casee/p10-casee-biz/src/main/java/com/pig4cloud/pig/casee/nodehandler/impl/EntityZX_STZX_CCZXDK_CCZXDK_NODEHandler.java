@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
@@ -39,6 +40,8 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 	PaymentRecordAssetsReService paymentRecordAssetsReService;
 	@Autowired
 	CustomerService customerService;
+	@Autowired
+	PaymentSourceReService paymentSourceReService;
 
 	@Override
 	@Transactional
@@ -121,6 +124,40 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 				expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
 				//修改当前财产程序拍辅费
 				expenseRecordService.updateById(expenseRecord);
+			}
+			//查询到款记录是否分配
+			PaymentRecord paymentRecord = paymentRecordService.getById(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
+			if (paymentRecord.getStatus()==1){//已分配
+				//到款id查询领款来源信息
+				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getSourceId, paymentRecord.getPaymentRecordId()).eq(PaymentSourceRe::getType,100));
+
+				//删除回款来源信息
+				paymentSourceReService.removeById(paymentSourceRe.getPaymentSourceReId());
+
+				//查询领款记录
+				PaymentRecord collectionPaymentRecord = paymentRecordService.getById(paymentSourceRe.getPaymentRecordId());
+
+				////删除领款以及关联信息
+				paymentRecordService.deletePaymentRecordRe(collectionPaymentRecord.getPaymentRecordId());
+
+				//查询领款分配记录信息
+				List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, collectionPaymentRecord.getPaymentRecordId()));
+				for (PaymentRecord record : paymentRecordList) {
+					////删除领款分配信息以及关联信息
+					paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
+
+					ExpenseRecord expenseRecordById = expenseRecordService.getById(record.getExpenseRecordId());
+					expenseRecordById.setStatus(0);
+					expenseRecordService.updateById(expenseRecordById);
+				}
+
+				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
+
+				//修改项目回款总金额
+				projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(paymentRecord.getPaymentAmount()));
+				projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+				//修改项目总金额以及回款总金额
+				projectLiquiService.updateById(projectLiqui);
 			}
 
 			////删除到款以及关联信息

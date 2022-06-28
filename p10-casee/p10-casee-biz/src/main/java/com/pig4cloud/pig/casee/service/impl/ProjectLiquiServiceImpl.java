@@ -202,6 +202,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 				for(AssetsVO assetsVO : assetsInformationVO.getAssetsDTOList()){
 					AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
 					assetsReLiqui.setAssetsId(assetsVO.getAssetsId());
+					assetsReLiqui.setSubjectName(assetsVO.getSubjectName());
 					assetsReLiqui.setProjectId(projectLiqui.getProjectId());
 					// 案件来源1=抵押财产
 					assetsReLiqui.setAssetsSource(1);

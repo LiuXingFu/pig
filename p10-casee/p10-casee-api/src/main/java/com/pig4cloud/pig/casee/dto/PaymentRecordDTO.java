@@ -35,14 +35,14 @@ public class PaymentRecordDTO extends PaymentRecord {
 	List<PaymentRecordAddDTO> paymentRecordList;
 
 	/**
-	 * 主体id
-	 */
-	private Integer subjectId;
-
-	/**
-	 * 主体id
+	 * 主体id集合
 	 */
 	private List<Integer> subjectIdList;
+
+	/**
+	 * 财产关联id集合
+	 */
+	private List<Integer> assetsReIdList;
 
 	/**
 	 * 到款记录
