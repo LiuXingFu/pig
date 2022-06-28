@@ -166,6 +166,7 @@
 			p10_payment_record.project_id = #{projectId}
 			AND p10_payment_record.funds_type LIKE concat( '%', 200, '%' )
 			AND p10_payment_record.payment_type = 200
+			ORDER BY `status` asc
 	</select>
 
 	<select id="getCourtPaymentUnpaid" resultMap="PaymentRecordVO">

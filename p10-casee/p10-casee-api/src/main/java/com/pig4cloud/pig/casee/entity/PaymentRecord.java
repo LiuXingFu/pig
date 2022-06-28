@@ -120,7 +120,7 @@ public class PaymentRecord extends BaseEntity {
 	/**
 	 * 状态(0-未分配 1-已分配)
 	 */
-	@ApiModelProperty(value="状态(0-未分配 1-已分配)")
+	@ApiModelProperty(value="状态(0-未分配 1-已分配 2-作废)")
 	private Integer status;
 
 	/**
