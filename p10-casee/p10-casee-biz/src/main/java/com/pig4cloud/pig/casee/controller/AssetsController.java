@@ -289,8 +289,8 @@ public class AssetsController {
 	 * @return
 	 */
 	@ApiOperation(value = "获取财产信息", notes = "获取财产信息")
-	@GetMapping("/getByAssetsId" )
-	public R getByAssetsId(Integer assetsId) {
+	@GetMapping("/getByAssetsId/{assetsId}" )
+	public R getByAssetsId(@PathVariable Integer assetsId) {
 		return R.ok(assetsService.getByAssetsId(assetsId));
 	}
 

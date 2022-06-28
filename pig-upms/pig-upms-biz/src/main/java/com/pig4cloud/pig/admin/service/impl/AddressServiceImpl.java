@@ -75,6 +75,6 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
 
 	@Override
 	public List<Address> queryAssetsByInformationAddress(String informationAddress) {
-		return this.list(new LambdaQueryWrapper<Address>().like(Address::getInformationAddress,informationAddress).eq(Address::getDelFlag,0));
+		return this.baseMapper.queryAssetsByInformationAddress(informationAddress);
 	}
 }

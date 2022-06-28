@@ -43,4 +43,7 @@ public interface AddressMapper extends BaseMapper<Address> {
 	List<Address> selectAddressList(@Param("userId") Integer userId,@Param("type") Integer type);
 
 	Address queryAssetsByTypeIdAndType(@Param("typeId") Integer typeId, @Param("type") Integer type);
+
+	List<Address> queryAssetsByInformationAddress(@Param("informationAddress")String informationAddress);
+
 }

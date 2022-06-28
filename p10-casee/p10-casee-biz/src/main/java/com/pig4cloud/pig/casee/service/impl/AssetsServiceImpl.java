@@ -86,6 +86,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 			//抵押信息
 			MortgageAssetsRecords mortgageAssetsRecords = new MortgageAssetsRecords();
 			BeanCopyUtil.copyBean(mortgageAssetsDTO, mortgageAssetsRecords);
+			mortgageAssetsRecords.setBankLoanId(mortgageAssetsAllDTO.getBankLoanId());
 			mortgageAssetsRecordsService.save(mortgageAssetsRecords);
 
 			//抵押财产关联信息
@@ -115,7 +116,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 					//财产关联债务人信息
 					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = new ArrayList<>();
-					if(subjectIdList.size()>0){
+					if(subjectIdList != null && subjectIdList.size()>0){
 						for (Integer subjectId : subjectIdList) {
 							MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 							mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());
@@ -124,7 +125,7 @@ public class AssetsServiceImpl extends ServiceImpl<AssetsMapper, Assets> impleme
 
 							mortgageAssetsSubjectRes.add(mortgageAssetsSubjectRe);
 						}
-					} else if(assetsDTO.getUnifiedIdentityList().size()>0){
+					} else if(assetsDTO.getUnifiedIdentityList() != null && assetsDTO.getUnifiedIdentityList().size()>0){
 						for (String unifiedIdentity : assetsDTO.getUnifiedIdentityList()) {
 							MortgageAssetsSubjectRe mortgageAssetsSubjectRe = new MortgageAssetsSubjectRe();
 							mortgageAssetsSubjectRe.setMortgageAssetsReId(mortgageAssetsRe.getMortgageAssetsReId());

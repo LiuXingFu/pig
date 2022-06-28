@@ -31,6 +31,12 @@ import lombok.Data;
 public class AssetsPageVO extends Assets {
 
 	/**
+	 * 地址id
+	 */
+	@ApiModelProperty(value = "地址id")
+	private Integer addressId;
+
+	/**
 	 * 省
 	 */
 	@ApiModelProperty(value = "省")

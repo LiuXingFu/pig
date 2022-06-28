@@ -135,4 +135,17 @@
 		AND user_id = #{typeId}
 		AND type = #{type}
 	</select>
+
+	<select id="queryAssetsByInformationAddress" resultType="com.pig4cloud.pig.admin.api.entity.Address">
+		SELECT
+			*
+		FROM
+			`p10_address`
+		WHERE
+			del_flag = 0
+			and information_address LIKE concat('%', #{informationAddress}, '%')
+		GROUP BY
+			`information_address`,
+			`code`
+	</select>
 </mapper>

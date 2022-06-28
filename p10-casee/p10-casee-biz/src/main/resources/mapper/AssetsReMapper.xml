@@ -47,7 +47,10 @@
 		left join p10_assets on p10_assets.assets_id=p10_assets_re.assets_id
 		left join p10_address on p10_address.user_id=p10_assets_re.assets_id and p10_address.type=4
 		left join p10_assets_bank_loan_re on p10_assets_bank_loan_re.assets_id=p10_assets.assets_id
-		where p10_assets_re.project_id=#{projectId} and p10_assets_re.status=#{status}
+		where p10_assets_re.project_id=#{projectId}
+		<if test="status != null and status != ''">
+			and p10_assets_re.status=#{status}
+		</if>
 	</select>
 
 	<select id="selectCaseeOrAssets" resultType="com.pig4cloud.pig.casee.vo.CaseeOrAssetsVO">

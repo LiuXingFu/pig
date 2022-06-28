@@ -155,49 +155,49 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		}
 
 
-		//查询该费用记录回款记录信息
-		List<PaymentRecord> list = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, expenseRecord.getExpenseRecordId()));
-		for (PaymentRecord paymentRecord : list) {
-
-			//根据该条回款记录父id查询分配类型
-			PaymentRecord paymentRecordFather = paymentRecordService.getById(paymentRecord.getFatherId());
-
-			//修改项目回款总金额
-			projectLiQuiDetail.setRepaymentAmount(projectLiQuiDetail.getRepaymentAmount().subtract(paymentRecordFather.getPaymentAmount()));
-			project.setProjectLiQuiDetail(projectLiQuiDetail);
-
-			//根据该条回款记录父id查询所有分配款项记录
-			List<PaymentRecord> paymentRecordFatherList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordFather.getPaymentRecordId()));
-			for (PaymentRecord record : paymentRecordFatherList) {
-				//删除分配款项记录信息以及相关关联信息
-				paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
-
-				//修改费用产生记录状态为正常
-				ExpenseRecord expenseRecordUpdate = this.getById(record.getExpenseRecordId());
-				if (expenseRecord.getExpenseRecordId()!=expenseRecordUpdate.getExpenseRecordId()){
-					expenseRecordUpdate.setStatus(0);
-					this.updateById(expenseRecordUpdate);
-				}
-			}
-
-			//如果当前分配类型是履行到申请人或资产抵偿则修改该状态为未分配
-			if (paymentRecordFather.getPaymentType()==300||paymentRecordFather.getPaymentType()==400){
-				paymentRecordFather.setStatus(0);
-				paymentRecordService.updateById(paymentRecordFather);
-			}else if (paymentRecordFather.getPaymentType()==100){//如果当前分配类型是领款，删除领款信息并修改到款状态为未分配
-				//删除领款记录信息以及相关关联信息
-				paymentRecordService.deletePaymentRecordRe(paymentRecordFather.getPaymentRecordId());
-
-				//根据领款记录id查询到款信息
-				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getPaymentRecordId, paymentRecordFather.getPaymentRecordId()).eq(PaymentSourceRe::getType,100));
-
-				PaymentRecord paymentRecordDk = paymentRecordService.getById(paymentSourceRe.getSourceId());
-
-				paymentRecordDk.setStatus(0);
-				//修改到款信息状态
-				paymentRecordService.updateById(paymentRecordDk);
-			}
-		}
+//		//查询该费用记录回款记录信息
+//		List<PaymentRecord> list = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, expenseRecord.getExpenseRecordId()));
+//		for (PaymentRecord paymentRecord : list) {
+//
+//			//根据该条回款记录父id查询分配类型
+//			PaymentRecord paymentRecordFather = paymentRecordService.getById(paymentRecord.getFatherId());
+//
+//			//修改项目回款总金额
+//			projectLiQuiDetail.setRepaymentAmount(projectLiQuiDetail.getRepaymentAmount().subtract(paymentRecordFather.getPaymentAmount()));
+//			project.setProjectLiQuiDetail(projectLiQuiDetail);
+//
+//			//根据该条回款记录父id查询所有分配款项记录
+//			List<PaymentRecord> paymentRecordFatherList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentRecordFather.getPaymentRecordId()));
+//			for (PaymentRecord record : paymentRecordFatherList) {
+//				//删除分配款项记录信息以及相关关联信息
+//				paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
+//
+//				//修改费用产生记录状态为正常
+//				ExpenseRecord expenseRecordUpdate = this.getById(record.getExpenseRecordId());
+//				if (expenseRecord.getExpenseRecordId()!=expenseRecordUpdate.getExpenseRecordId()){
+//					expenseRecordUpdate.setStatus(0);
+//					this.updateById(expenseRecordUpdate);
+//				}
+//			}
+//
+//			//如果当前分配类型是履行到申请人或资产抵偿则修改该状态为未分配
+//			if (paymentRecordFather.getPaymentType()==300||paymentRecordFather.getPaymentType()==400){
+//				paymentRecordFather.setStatus(0);
+//				paymentRecordService.updateById(paymentRecordFather);
+//			}else if (paymentRecordFather.getPaymentType()==100){//如果当前分配类型是领款，删除领款信息并修改到款状态为未分配
+//				//删除领款记录信息以及相关关联信息
+//				paymentRecordService.deletePaymentRecordRe(paymentRecordFather.getPaymentRecordId());
+//
+//				//根据领款记录id查询到款信息
+//				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getPaymentRecordId, paymentRecordFather.getPaymentRecordId()).eq(PaymentSourceRe::getType,100));
+//
+//				PaymentRecord paymentRecordDk = paymentRecordService.getById(paymentSourceRe.getSourceId());
+//
+//				paymentRecordDk.setStatus(0);
+//				//修改到款信息状态
+//				paymentRecordService.updateById(paymentRecordDk);
+//			}
+//		}
 
 		//修改项目金额
 		projectLiquiService.updateById(project);
