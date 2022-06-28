@@ -1,11 +1,13 @@
 package com.pig4cloud.pig.casee.entity.liquientity.detail;
 
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @ApiModel(value = "移送详情表")
@@ -70,4 +72,9 @@ public class TransferRecordLiquiDetail {
 	 */
 	@ApiModelProperty(value="主动履行到期日")
 	private LocalDate activeFulfillmentDueDate;
+
+	/**
+	 * 费用产生记录集合
+	 */
+	private List<ExpenseRecord> expenseRecordList;
 }

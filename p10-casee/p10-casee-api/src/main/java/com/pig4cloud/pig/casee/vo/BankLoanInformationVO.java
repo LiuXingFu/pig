@@ -17,6 +17,7 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
 import lombok.Data;
 
 
@@ -71,4 +72,9 @@ public class BankLoanInformationVO extends BankLoan {
 	 * 移送时间
 	 */
 	private LocalDate handoverTime;
+
+	/**
+	 * 费用产生记录集合
+	 */
+	private String expenseRecordList;
 }
