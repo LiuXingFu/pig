@@ -52,6 +52,7 @@
 	</resultMap>
 
 	<resultMap id="BankLoanInformationVO" type="com.pig4cloud.pig.casee.vo.BankLoanInformationVO" extends="bankLoanMap">
+		<result property="expenseRecordList" column="expenseRecordList"></result>
 		<collection property="subjectInformationVOList" ofType="com.pig4cloud.pig.casee.vo.SubjectInformationVO"
 					select="com.pig4cloud.pig.casee.mapper.SubjectBankLoanReMapper.getSubjectBankLoanReInformationVO" column="bank_loan_id">
 		</collection>
@@ -118,7 +119,8 @@
 		p10_transfer_record.handover_time as handoverTime,
 		json_extract(p10_transfer_record.transfer_detail,'$.principal') as transferPrincipal,
 		json_extract(p10_transfer_record.transfer_detail,'$.interest') as transferInterest,
-		json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as transferRental
+		json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as transferRental,
+		json_extract(p10_transfer_record.transfer_detail,'$.expenseRecordList') as expenseRecordList
 		from p10_bank_loan
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
