@@ -42,5 +42,4 @@ public class ProjectLiquiSumAmountDTO {
 	@ApiModelProperty(value="项目金额总和")
 	private BigDecimal sumPrincipalInterestAmount;
 
-
 }
