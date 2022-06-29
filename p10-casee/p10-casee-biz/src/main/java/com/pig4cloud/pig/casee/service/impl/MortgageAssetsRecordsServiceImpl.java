@@ -117,10 +117,15 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 				assetsService.updateById(assets);
 
 				Address address=new Address();
+
+				Address data = this.remoteAddressService.queryAssetsByTypeIdAndType(assetsId, 4, SecurityConstants.FROM).getData();
+
 				BeanUtils.copyProperties(assetsDTO, address);
+
+
 				//如果当前财产地址不为空则修改地址信息否则添加地址信息
-				if (assetsDTO.getAddressAsId()!=null){
-					address.setAddressId(assetsDTO.getAddressAsId());
+				if (data!=null){
+					address.setAddressId(data.getAddressId());
 					address.setType(4);
 					remoteAddressService.updateByAddressId(address,SecurityConstants.FROM);
 				}else {

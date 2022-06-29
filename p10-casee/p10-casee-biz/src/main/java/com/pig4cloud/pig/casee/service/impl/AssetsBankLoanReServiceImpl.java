@@ -46,23 +46,26 @@ public class AssetsBankLoanReServiceImpl extends ServiceImpl<AssetsBankLoanReMap
 
 	@Override
 	public Integer modifAssetsByAssetsBankLoanReId(AssetsDTO assetsDTO) {
-		Assets assets=new Assets();
-		BeanCopyUtil.copyBean(assetsDTO,assets);
+		Assets assets = new Assets();
+		BeanCopyUtil.copyBean(assetsDTO, assets);
 		assetsService.updateById(assets);
 
-		AssetsBankLoanRe assetsBankLoanRe=new AssetsBankLoanRe();
-		BeanCopyUtil.copyBean(assetsDTO,assetsBankLoanRe);
+		AssetsBankLoanRe assetsBankLoanRe = new AssetsBankLoanRe();
+		BeanCopyUtil.copyBean(assetsDTO, assetsBankLoanRe);
 
-		Address address=new Address();
+		Address address = new Address();
 		BeanUtils.copyProperties(assetsDTO, address);
-		if (assetsDTO.getAddressAsId()!=null){
-			address.setAddressId(assetsDTO.getAddressAsId());
+
+		Address data = this.remoteAddressService.queryAssetsByTypeIdAndType(assetsDTO.getAssetsId(), 4, SecurityConstants.FROM).getData();
+
+		if (data != null) {
+			address.setAddressId(data.getAddressId());
 			address.setType(4);
-			remoteAddressService.updateByAddressId(address,SecurityConstants.FROM);
-		}else {
+			remoteAddressService.updateByAddressId(address, SecurityConstants.FROM);
+		} else {
 			address.setType(4);
 			address.setUserId(assets.getAssetsId());
-			remoteAddressService.saveAddress(address,SecurityConstants.FROM);
+			remoteAddressService.saveAddress(address, SecurityConstants.FROM);
 		}
 
 		return this.baseMapper.updateById(assetsBankLoanRe);

@@ -32,10 +32,10 @@ import java.util.List;
 @Data
 public class AssetsDTO extends Assets {
 
-	/**
-	 * 地址id
-	 */
-	private Integer addressAsId;
+//	/**
+//	 * 地址id
+//	 */
+//	private Integer addressAsId;
 
 	/**
 	 * 标记的抵押财产关联id
