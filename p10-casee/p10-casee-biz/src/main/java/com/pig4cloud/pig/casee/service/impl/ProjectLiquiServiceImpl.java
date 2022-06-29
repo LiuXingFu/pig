@@ -300,6 +300,38 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
+	public boolean addProjectAmount(ProjectLiqui projectLiqui,BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean subtractProjectAmount(ProjectLiqui projectLiqui,BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean addRepaymentAmount(ProjectLiqui projectLiqui, BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean subtractRepaymentAmount(ProjectLiqui projectLiqui, BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
 	public IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, Integer subjectId) {
 		return this.baseMapper.queryPageProjectLiqui(page, subjectId);
 	}

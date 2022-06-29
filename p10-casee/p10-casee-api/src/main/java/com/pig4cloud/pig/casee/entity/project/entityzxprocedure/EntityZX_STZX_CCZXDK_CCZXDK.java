@@ -17,6 +17,11 @@ public class EntityZX_STZX_CCZXDK_CCZXDK extends CommonalityData implements Seri
 	private Integer paymentRecordId;
 
 	/**
+	 * 清收拍辅费用产生记录id
+	 */
+	private Integer expenseRecordId;
+
+	/**
 	 * 到款金额
 	 */
 	private BigDecimal amountReceived;

@@ -80,30 +80,10 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 		if (fundingZX_zjzx_zjzxzjhk_zjzxzjhk!=null){
 			PaymentRecord paymentRecord = paymentRecordService.getById(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getPaymentRecordId());
 
-			//删除资金划扣回款信息以及关联信息
-			paymentRecordService.deletePaymentRecordRe(paymentRecord.getPaymentRecordId());
-
 			if (paymentRecord.getStatus()==1){//如果当前资金划扣已分配
-				//查询资金划扣回款来源信息
-				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getSourceId, paymentRecord.getPaymentRecordId()));
+				//根据回款记录id删除法院到款记录信息、领款记录信息以及相关关联信息
+				paymentRecordService.updateCourtPaymentRecordRe(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getPaymentRecordId());
 
-				//删除资金划扣领款信息以及关联信息
-				paymentRecordService.deletePaymentRecordRe(paymentSourceRe.getPaymentRecordId());
-
-				//根据划扣回款来源信息回款id删除回款信息
-				List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentSourceRe.getPaymentRecordId()));
-				for (PaymentRecord record : paymentRecordList) {
-
-					//删除资金划扣领款分配信息以及关联信息
-					paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
-
-					//修改费用明细记录状态
-					ExpenseRecord expenseRecord = expenseRecordService.getById(record.getExpenseRecordId());
-					if (expenseRecord.getStatus()!=2){
-						expenseRecord.setStatus(0);
-						expenseRecordService.updateById(expenseRecord);
-					}
-				}
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 
 				//添加修改项目回款总金额
@@ -112,6 +92,8 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 				//修改项目回款总金额
 				projectLiquiService.updateById(projectLiqui);
 			}
+			//删除资金划扣到款信息以及关联信息
+			paymentRecordService.deletePaymentRecordRe(paymentRecord.getPaymentRecordId());
 		}
 
 		addLiQiuZjhk(taskNode);

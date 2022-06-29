@@ -21,6 +21,11 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC extends CommonalityData implements 
 	private Integer paymentRecordId;
 
 	/**
+	 * 拍辅费用产生明细id
+	 */
+	private Integer expenseRecordId;
+
+	/**
 	 * 抵偿金额
 	 */
 	private BigDecimal compensationAmount;
