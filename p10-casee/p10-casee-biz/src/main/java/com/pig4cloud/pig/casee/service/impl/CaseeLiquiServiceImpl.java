@@ -651,21 +651,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	public IPage<QueryCaseeLiquiPageVO> queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO) {
-		if (!queryCaseeLiquiPageDTO.getTotalType().equals(-1)) {
-			List<Integer> list = new ArrayList<>();
-			if (queryCaseeLiquiPageDTO.getTotalType().equals(0)) {
-				list.add(1010);
-				list.add(2010);
-			} else if (queryCaseeLiquiPageDTO.getTotalType().equals(1)) {
-				list.add(2020);
-				list.add(2021);
-				list.add(2030);
-			} else {
-				list.add(3010);
-				list.add(3031);
-			}
-			queryCaseeLiquiPageDTO.setCaseeTypeList(list);
-		}
 		return this.baseMapper.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 	}
 

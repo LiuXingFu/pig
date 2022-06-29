@@ -120,7 +120,8 @@
 		json_extract(p10_transfer_record.transfer_detail,'$.principal') as transferPrincipal,
 		json_extract(p10_transfer_record.transfer_detail,'$.interest') as transferInterest,
 		json_extract(p10_transfer_record.transfer_detail,'$.handoverAmount') as transferRental,
-		json_extract(p10_transfer_record.transfer_detail,'$.expenseRecordList') as expenseRecordList
+		json_extract(p10_transfer_record.transfer_detail,'$.expenseRecordList') as expenseRecordList,
+		json_extract(p10_transfer_record.transfer_detail, '$.litigation') AS litigation
 		from p10_bank_loan
 		left join p10_institution on p10_institution.ins_id=p10_bank_loan.ins_id
 		left join p10_outles on p10_outles.outles_id=p10_bank_loan.outles_id
