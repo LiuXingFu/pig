@@ -36,6 +36,18 @@ public class CaseeLiquiDetailsVO extends CaseeLiqui {
 	private String companyCode;
 
 	/**
+	 * 机构id
+	 */
+	@ApiModelProperty(value="机构id")
+	private Integer insId;
+
+	/**
+	 * 网点id
+	 */
+	@ApiModelProperty(value="网点id")
+	private Integer outlesId;
+
+	/**
 	 * 代理律师名称
 	 */
 	@ApiModelProperty(value="代理律师名称")

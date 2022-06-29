@@ -11,12 +11,6 @@ import java.util.List;
 public class CaseeSecondInstanceDTO extends CaseeLiquiAddDTO {
 
 	/**
-	 * 律师名称
-	 */
-	@ApiModelProperty(value = "律师名称")
-	private String lawyerName;
-
-	/**
 	 * 案外人信息
 	 */
 	@ApiModelProperty(value = "案外人信息")

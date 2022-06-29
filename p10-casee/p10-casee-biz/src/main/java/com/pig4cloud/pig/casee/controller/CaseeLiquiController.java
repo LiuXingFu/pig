@@ -404,4 +404,15 @@ public class CaseeLiquiController {
 	public R queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO) {
 		return R.ok(caseeLiquiService.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO));
 	}
+
+	/**
+	 * 根据项目id更新案件信息
+	 * @return R
+	 */
+	@ApiOperation(value = "根据项目id更新案件信息", notes = "根据项目id更新案件信息")
+	@SysLog("根据项目id更新案件信息" )
+	@PutMapping("/modifyByCaseeId")
+	public R modifyByCaseeId(@RequestBody CaseeLiquiModifyDTO caseeLiquiModifyDTO) {
+		return R.ok(caseeLiquiService.modifyByCaseeId(caseeLiquiModifyDTO));
+	}
 }

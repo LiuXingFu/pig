@@ -1244,6 +1244,17 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			updateWrapper.lambda().set(TransferRecord::getEntrustedOutlesId,projectLiquiModifyDTO.getOutlesId());
 			transferRecordLiquiService.update(updateWrapper);
 		}
+		// 更新回款记录公司业务案号
+		UpdateWrapper<PaymentRecord> paymentRecordUpdateWrapper = new UpdateWrapper<>();
+		paymentRecordUpdateWrapper.lambda().eq(PaymentRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
+		paymentRecordUpdateWrapper.lambda().set(PaymentRecord::getCompanyCode,projectLiquiModifyDTO.getCompanyCode());
+		paymentRecordService.update(paymentRecordUpdateWrapper);
+		// 更新产生费用记录公司业务案号
+		UpdateWrapper<ExpenseRecord> expenseRecordUpdateWrapper = new UpdateWrapper<>();
+		expenseRecordUpdateWrapper.lambda().eq(ExpenseRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
+		expenseRecordUpdateWrapper.lambda().set(ExpenseRecord::getCompanyCode,projectLiquiModifyDTO.getCompanyCode());
+		expenseRecordService.update(expenseRecordUpdateWrapper);
+
 		return this.baseMapper.updateById(projectLiqui);
 	}
 
