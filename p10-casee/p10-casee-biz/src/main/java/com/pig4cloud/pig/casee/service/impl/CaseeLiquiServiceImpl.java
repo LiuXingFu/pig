@@ -18,6 +18,7 @@ package com.pig4cloud.pig.casee.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -84,6 +85,8 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 	private ExpenseRecordSubjectReService expenseRecordSubjectReService;
 	@Autowired
 	private AssetsReLiquiService assetsReLiquiService;
+	@Autowired
+	private PaymentRecordService paymentRecordService;
 
 	@Override
 	@Transactional
@@ -171,6 +174,14 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		targetAddDTO.setGoalType(10001);
 		targetService.saveTargetAddDTO(targetAddDTO);
 
+		// 保存案件代理律师
+		if (Objects.nonNull(caseeLiquiAddDTO.getLawyerName())) {
+			CaseeLawyerRe caseeLawyerRe = new CaseeLawyerRe();
+			caseeLawyerRe.setActualName(caseeLiquiAddDTO.getLawyerName());
+			caseeLawyerRe.setCaseeId(caseeLiqui.getCaseeId());
+			caseeLawyerReService.save(caseeLawyerRe);
+		}
+
 		//添加各各案件司法费产生记录
 		if (caseeLiquiAddDTO.getJudicialExpenses() != null) {
 			ExpenseRecord expenseRecord = new ExpenseRecord();
@@ -251,13 +262,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		CaseeLiquiAddDTO caseeLiquiAddDTO = new CaseeLiquiAddDTO();
 		BeanCopyUtil.copyBean(caseeLawsuitsDTO, caseeLiquiAddDTO);
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
-		// 保存案件代理律师
-		if (Objects.nonNull(caseeLawsuitsDTO.getLawyerName())) {
-			CaseeLawyerRe caseeLawyerRe = new CaseeLawyerRe();
-			caseeLawyerRe.setActualName(caseeLawsuitsDTO.getLawyerName());
-			caseeLawyerRe.setCaseeId(caseeId);
-			caseeLawyerReService.save(caseeLawyerRe);
-		}
 		return caseeId;
 	}
 
@@ -286,13 +290,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 		}
 
 		Integer caseeId = addCaseeLiqui(caseeLiquiAddDTO);
-		// 保存案件代理律师
-		if (Objects.nonNull(caseeSecondInstanceDTO.getLawyerName())) {
-			CaseeLawyerRe caseeLawyerRe = new CaseeLawyerRe();
-			caseeLawyerRe.setActualName(caseeSecondInstanceDTO.getLawyerName());
-			caseeLawyerRe.setCaseeId(caseeId);
-			caseeLawyerReService.save(caseeLawyerRe);
-		}
 		return caseeId;
 	}
 
@@ -388,9 +385,6 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 			}
 			taskNodeService.updateBatchById(list);
 		}
-
-
-
 		assetsReLiquiService.updateAssetsRe(caseeReinstatementDTO.getProjectId(),caseeId);
 		return caseeId;
 	}
@@ -657,21 +651,34 @@ public class CaseeLiquiServiceImpl extends ServiceImpl<CaseeLiquiMapper, Casee> 
 
 	@Override
 	public IPage<QueryCaseeLiquiPageVO> queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO) {
-		if (!queryCaseeLiquiPageDTO.getTotalType().equals(-1)) {
-			List<Integer> list = new ArrayList<>();
-			if (queryCaseeLiquiPageDTO.getTotalType().equals(0)) {
-				list.add(1010);
-				list.add(2010);
-			} else if (queryCaseeLiquiPageDTO.getTotalType().equals(1)) {
-				list.add(2020);
-				list.add(2021);
-				list.add(2030);
-			} else {
-				list.add(3010);
-				list.add(3031);
-			}
-			queryCaseeLiquiPageDTO.setCaseeTypeList(list);
-		}
 		return this.baseMapper.queryCaseeLiquiPage(page, queryCaseeLiquiPageDTO, jurisdictionUtilsService.queryByInsId("PLAT_"), jurisdictionUtilsService.queryByOutlesId("PLAT_"));
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyByCaseeId(CaseeLiquiModifyDTO caseeLiquiModifyDTO){
+		CaseeLiqui caseeLiqui = new CaseeLiqui();
+		BeanCopyUtil.copyBean(caseeLiquiModifyDTO,caseeLiqui);
+
+		if(Objects.nonNull(caseeLiquiModifyDTO.getLawyerName())){
+			UpdateWrapper<CaseeLawyerRe> updateWrapper = new UpdateWrapper<>();
+			updateWrapper.lambda().eq(CaseeLawyerRe::getCaseeId,caseeLiquiModifyDTO.getCaseeId());
+			updateWrapper.lambda().set(CaseeLawyerRe::getActualName,caseeLiquiModifyDTO.getLawyerName());
+			caseeLawyerReService.update(updateWrapper);
+		}
+
+		// 更新产生费用记录案件案号
+		UpdateWrapper<ExpenseRecord> expenseRecordUpdateWrapper = new UpdateWrapper<>();
+		expenseRecordUpdateWrapper.lambda().eq(ExpenseRecord::getCaseeId,caseeLiquiModifyDTO.getCaseeId());
+		expenseRecordUpdateWrapper.lambda().set(ExpenseRecord::getCaseeNumber,caseeLiquiModifyDTO.getCaseeNumber());
+		expenseRecordService.update(expenseRecordUpdateWrapper);
+
+		// 更新回款记录案件案号
+		UpdateWrapper<PaymentRecord> paymentRecordUpdateWrapper = new UpdateWrapper<>();
+		paymentRecordUpdateWrapper.lambda().eq(PaymentRecord::getCaseeId,caseeLiquiModifyDTO.getCaseeId());
+		paymentRecordUpdateWrapper.lambda().set(PaymentRecord::getCaseeNumber,caseeLiquiModifyDTO.getCaseeNumber());
+		paymentRecordService.update(paymentRecordUpdateWrapper);
+
+		return this.baseMapper.updateById(caseeLiqui);
 	}
 }

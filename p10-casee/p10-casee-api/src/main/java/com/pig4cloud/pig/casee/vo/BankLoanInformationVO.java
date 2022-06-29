@@ -17,6 +17,8 @@
 package com.pig4cloud.pig.casee.vo;
 
 import com.pig4cloud.pig.casee.entity.BankLoan;
+import com.pig4cloud.pig.casee.entity.ExpenseRecord;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
@@ -71,4 +73,14 @@ public class BankLoanInformationVO extends BankLoan {
 	 * 移送时间
 	 */
 	private LocalDate handoverTime;
+
+	/**
+	 * 诉讼情况(0-未诉讼 1-已诉讼)
+	 */
+	private Integer litigation;
+
+	/**
+	 * 费用产生记录集合
+	 */
+	private String expenseRecordList;
 }

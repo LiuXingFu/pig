@@ -243,4 +243,12 @@ public interface CaseeLiquiService extends IService<Casee> {
 	CaseeLiquiPageVO getCaseeDetails(Integer caseeId);
 
 	IPage<QueryCaseeLiquiPageVO> queryCaseeLiquiPage(Page page, QueryCaseeLiquiPageDTO queryCaseeLiquiPageDTO);
+
+	/**
+	 * 根据项目id更新案件信息
+	 * @param caseeLiquiModifyDTO
+	 * @return
+	 */
+	Integer modifyByCaseeId(CaseeLiquiModifyDTO caseeLiquiModifyDTO);
+
 }
