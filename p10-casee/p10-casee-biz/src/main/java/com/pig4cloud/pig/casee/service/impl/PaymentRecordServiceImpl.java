@@ -26,7 +26,6 @@ import com.pig4cloud.pig.casee.dto.paifu.PaymentRecordSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
-import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
@@ -251,8 +250,13 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		if (fatherIPaymentRecord.getPaymentType()==300||fatherIPaymentRecord.getPaymentType()==400) {
 			this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
 		}else {//如果当前分配类型是领款，修改领款、到款状态为未分配
-			//修改领款状态为作废
-			this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),2);
+			if (fatherIPaymentRecord.getPaymentType()==200){
+				//修改到款款状态为未领款
+				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
+			}else {
+				//修改领款状态为作废
+				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),2);
+			}
 
 			//领款时可能领多条到款信息所以这里可能会查出多条到款记录
 			List<PaymentSourceRe> paymentSourceReList = paymentSourceReService.list(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getPaymentRecordId, fatherIPaymentRecord.getPaymentRecordId()).eq(PaymentSourceRe::getType, 100));

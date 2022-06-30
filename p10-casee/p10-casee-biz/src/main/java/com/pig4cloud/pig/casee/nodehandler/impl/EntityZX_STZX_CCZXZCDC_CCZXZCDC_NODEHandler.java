@@ -191,9 +191,10 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 				paymentRecordService.updateBatchById(paymentRecordList);
 
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-
-				//修改项目总金额以及回款总金额
-				projectLiquiService.subtractRepaymentAmount(projectLiqui,paymentRecord.getPaymentAmount());
+				if (paymentRecord.getStatus()==1){
+					//修改项目回款总金额
+					projectLiquiService.subtractRepaymentAmount(projectLiqui,paymentRecord.getPaymentAmount());
+				}
 
 				//修改资产抵偿状态为作废
 				paymentRecord.setStatus(2);
