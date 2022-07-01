@@ -24,6 +24,7 @@ import com.pig4cloud.pig.casee.dto.*;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.vo.*;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -95,5 +96,7 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 	List<AssetsReDTO> queryTransferableAssetsReList(@Param("projectId")Integer projectId);
 
 	List<AssetsReDTO> queryAssetsReByProjectId(@Param("projectId")Integer projectId,@Param("caseeId")Integer caseeId);
+
+	Integer removeNotInAssetsId(@Param("projectId")Integer projectId,@Param("mortgageAssetsRecordsId")Integer mortgageAssetsRecordsId,@Param("assetsIdList")List<Integer> assetsIdList);
 
 }

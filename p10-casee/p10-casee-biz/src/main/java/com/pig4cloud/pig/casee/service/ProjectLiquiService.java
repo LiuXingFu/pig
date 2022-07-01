@@ -194,4 +194,12 @@ public interface ProjectLiquiService extends IService<Project> {
 	 */
 	Integer modifyProjectBankLoan(ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO);
 
+	/**
+	 * 更新项目抵押财产
+	 * @return
+	 */
+	Integer modifyProjectMortgagedProperty(ProjectLiquiModifyMortgagedPropertyDTO projectLiquiModifyMortgagedPropertyDTO);
+
+
+
 }

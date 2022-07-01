@@ -39,4 +39,6 @@ public interface AssetsReSubjectMapper extends BaseMapper<AssetsReSubject> {
 	List<Integer> selectByAssetsReId(@Param("assetsReId")Integer assetsReId);
 
 	List<Integer> selectByAssetsIdList(@Param("assetsReIdList")List<Integer> assetsReIdList);
+
+	Integer removeByProjectId(@Param("projectId")Integer projectId,@Param("mortgageAssetsRecordsId")Integer mortgageAssetsRecordsId);
 }

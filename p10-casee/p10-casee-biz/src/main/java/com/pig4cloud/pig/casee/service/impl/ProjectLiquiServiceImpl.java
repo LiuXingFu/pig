@@ -113,7 +113,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public ProjectLiquiSumAmountDTO getProjectSumAmount(ProjectLiquiPageDTO projectLiquiPageDTO){
+	public ProjectLiquiSumAmountDTO getProjectSumAmount(ProjectLiquiPageDTO projectLiquiPageDTO) {
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
@@ -131,7 +131,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		projectLiqui.setOutlesId(transferRecordBankLoanVO.getEntrustedOutlesId());
 		projectLiqui.setProjectType(100);
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
-		BeanCopyUtil.copyBean(transferRecordBankLoanVO.getTransferRecordLiquiDetail(),projectLiQuiDetail);
+		BeanCopyUtil.copyBean(transferRecordBankLoanVO.getTransferRecordLiquiDetail(), projectLiQuiDetail);
 		projectLiQuiDetail.setPrincipalInterestAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setProjectAmount(transferRecordBankLoanVO.getTransferRecordLiquiDetail().getHandoverAmount());
 		projectLiQuiDetail.setRepaymentAmount(BigDecimal.valueOf(0));
@@ -146,15 +146,15 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		List<Integer> subjectIdList = subjectBankLoanReService.selectSubjectId(transferRecordBankLoanVO.getSourceId());
 		R<List<Subject>> result = remoteSubjectService.queryBySubjectIdList(subjectIdList, SecurityConstants.FROM);
 
-		if (transferRecordBankLoanVO.getTransferRecordLiquiDetail().getInterest()!=null&&transferRecordBankLoanVO.getTransferRecordLiquiDetail().getPrincipal()!=null){
+		if (transferRecordBankLoanVO.getTransferRecordLiquiDetail().getInterest() != null && transferRecordBankLoanVO.getTransferRecordLiquiDetail().getPrincipal() != null) {
 			//添加项目费用产生记录 本金
-			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getPrincipal(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),10001);
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getPrincipal(), projectLiqui.getTakeTime(), projectLiqui, null, result.getData(), transferRecordBankLoanVO.getSubjectName(), 10001);
 
 			//添加项目费用产生记录 利息
-			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getInterest(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),30001);
-		}else {
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getInterest(), projectLiqui.getTakeTime(), projectLiqui, null, result.getData(), transferRecordBankLoanVO.getSubjectName(), 30001);
+		} else {
 			//添加项目费用产生记录 移送总金额
-			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getProjectAmount(),projectLiqui.getTakeTime(),projectLiqui,null,result.getData(),transferRecordBankLoanVO.getSubjectName(),50001);
+			expenseRecordService.addCommonExpenseRecord(projectLiqui.getProjectLiQuiDetail().getProjectAmount(), projectLiqui.getTakeTime(), projectLiqui, null, result.getData(), transferRecordBankLoanVO.getSubjectName(), 50001);
 		}
 
 		// 保存项目状态变更记录表
@@ -196,19 +196,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 			List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
 			List<AssetsRe> assetsReList = new ArrayList<>();
 			// 抵押记录
-			for(AssetsInformationVO assetsInformationVO:assetsInformationVOS){
+			for (AssetsInformationVO assetsInformationVO : assetsInformationVOS) {
 				// 抵押财产关联
-				for(AssetsVO assetsVO : assetsInformationVO.getAssetsDTOList()){
+				for (AssetsVO assetsVO : assetsInformationVO.getAssetsDTOList()) {
 					AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
 					assetsReLiqui.setAssetsId(assetsVO.getAssetsId());
 					assetsReLiqui.setSubjectName(assetsVO.getSubjectName());
 					assetsReLiqui.setProjectId(projectLiqui.getProjectId());
 					// 案件来源1=抵押财产
 					assetsReLiqui.setAssetsSource(1);
-					// 是否联合抵押1=是
-					if(assetsInformationVO.getJointMortgage()==1){
-						assetsReLiqui.setMortgageAssetsRecordsId(assetsInformationVO.getMortgageAssetsRecordsId());
-					}
+					assetsReLiqui.setMortgageAssetsRecordsId(assetsInformationVO.getMortgageAssetsRecordsId());
 					AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
 					assetsReCaseeDetail.setMortgagee(0);
 					assetsReCaseeDetail.setMortgageStartTime(assetsInformationVO.getMortgageStartTime());
@@ -218,10 +215,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 					assetsReLiquiService.save(assetsReLiqui);
 
 					QueryWrapper<MortgageAssetsSubjectRe> mortgageAssetsSubjectReQuery = new QueryWrapper<>();
-					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsVO.getMortgageAssetsReId());
+					mortgageAssetsSubjectReQuery.lambda().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId, assetsVO.getMortgageAssetsReId());
 					List<MortgageAssetsSubjectRe> mortgageAssetsSubjectRes = mortgageAssetsSubjectReService.list(mortgageAssetsSubjectReQuery);
 					AssetsReLiqui assetsRe = new AssetsReLiqui();
-					for(MortgageAssetsSubjectRe mortgageAssetsSubjectRe:mortgageAssetsSubjectRes){
+					for (MortgageAssetsSubjectRe mortgageAssetsSubjectRe : mortgageAssetsSubjectRes) {
 						AssetsReSubject assetsReSubject = new AssetsReSubject();
 						assetsReSubject.setSubjectId(mortgageAssetsSubjectRe.getSubjectId());
 						assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
@@ -277,7 +274,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		ProjectLiqui projectLiqui = new ProjectLiqui();
 		projectLiqui.setProjectId(projectModifyStatusDTO.getProjectId());
 		projectLiqui.setStatus(projectModifyStatusDTO.getStatus());
-		if(projectModifyStatusDTO.getStatus()==4000){
+		if (projectModifyStatusDTO.getStatus() == 4000) {
 			projectLiqui.setCloseTime(projectModifyStatusDTO.getChangeTime());
 		}
 		// 保存项目状态变更记录表
@@ -438,15 +435,15 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return transferRecordPage.getTotal();
 	}
 
-	public Long queryCaseNodePage(String nodeKey, Integer caseeType,Integer status) {
+	public Long queryCaseNodePage(String nodeKey, Integer caseeType, Integer status) {
 		Page page = new Page();
 		page.setCurrent(1);
 		page.setSize(10);
 
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
-		if(status!=null){
+		if (status != null) {
 			caseeLiquiFlowChartPageDTO.setStatus(status);
-		}else{
+		} else {
 			caseeLiquiFlowChartPageDTO.setStatus(1);
 		}
 
@@ -490,10 +487,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		preLitigationStageVO.setSeizedUndoneCount(queryCaseeAssetsNotFreeze(1010));
 
 		//**********立案未送达统计********************************
-		preLitigationStageVO.setStartCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQLASDQK_SQLASDQK", 1010,null));
+		preLitigationStageVO.setStartCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQLASDQK_SQLASDQK", 1010, null));
 
 		//**********结案未送达统计********************************
-		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK", 1010,3));
+		preLitigationStageVO.setCloseCaseeDeliveredCount(queryCaseNodePage("liQui_SQ_SQBQJGSDQK_SQBQJGSDQK", 1010, 3));
 
 		//**********保全完成未结案统计********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageDTO = new CaseeLiquiFlowChartPageDTO();
@@ -528,19 +525,19 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//***********一审节点统计Start*************************************************
 
 		//**********立案未送达统计********************************
-		countLitigationVO.setLitigationFirstInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSYS_SSYSLASDQK_SSYSLASDQK", 2020,null));
+		countLitigationVO.setLitigationFirstInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSYS_SSYSLASDQK_SSYSLASDQK", 2020, null));
 
 		//**********送达未庭审********************************
-		countLitigationVO.setLitigationFirstInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSYS_SSYSTSXX_SSYSTSXX", 2020,null));
+		countLitigationVO.setLitigationFirstInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSYS_SSYSTSXX_SSYSTSXX", 2020, null));
 
 		//**********庭审未判决********************************
-		countLitigationVO.setLitigationFirstInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSYS_SSYSCPJG_SSYSCPJG", 2020,null));
+		countLitigationVO.setLitigationFirstInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSYS_SSYSCPJG_SSYSCPJG", 2020, null));
 
 		//**********裁判文书未送达********************************
-		countLitigationVO.setLitigationFirstInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", 2020,null));
+		countLitigationVO.setLitigationFirstInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSYS_SSYSCPWSZZSDQK_SSYSCPWSZZSDQK", 2020, null));
 
 		//**********上诉确认********************************
-		countLitigationVO.setLitigationFirstInstanceAppealConfirmation(queryCaseNodePage("liQui_SSYS_SSYSYGSSQK_SSYSYGSSQK", 2020,null));
+		countLitigationVO.setLitigationFirstInstanceAppealConfirmation(queryCaseNodePage("liQui_SSYS_SSYSYGSSQK_SSYSYGSSQK", 2020, null));
 
 		//**********上诉到期未确认********************************
 		CaseeLiquiFlowChartPageDTO caseeLiquiFlowChartPageVO = new CaseeLiquiFlowChartPageDTO();
@@ -562,10 +559,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countLitigationVO.setLitigationHoldServiceNotAddProperty(litigationHoldServiceNotAddProperty.getTotal());
 
 		//**********立案未送达统计********************************
-		countLitigationVO.setLitigationHoldStandCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQLASDQK_SSBQLASDQK", 2010,null));
+		countLitigationVO.setLitigationHoldStandCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQLASDQK_SSBQLASDQK", 2010, null));
 
 		//**********结案未送达统计********************************
-		countLitigationVO.setLitigationHoldKnotCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQBQJGSDQK_SSBQBQJGSDQK", 2010,3));
+		countLitigationVO.setLitigationHoldKnotCaseUndelivered(queryCaseNodePage("liQui_SSBQ_SSBQBQJGSDQK_SSBQBQJGSDQK", 2010, 3));
 
 		//**********诉讼保全未完成统计********************************
 		countLitigationVO.setLitigationHoldCheckControlPreservationUndone(queryCaseeAssetsNotFreeze(2010));
@@ -582,16 +579,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//***********二审节点统计Start*************************************************
 
 		//**********立案未送达统计********************************
-		countLitigationVO.setLitigationSecondInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSES_SSESLASDQK_SSESLASDQK", 2021,null));
+		countLitigationVO.setLitigationSecondInstanceStandCaseUndelivered(queryCaseNodePage("liQui_SSES_SSESLASDQK_SSESLASDQK", 2021, null));
 
 		//**********送达未庭审********************************
-		countLitigationVO.setLitigationSecondInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSES_SSESTSXX_SSESTSXX", 2021,null));
+		countLitigationVO.setLitigationSecondInstanceServiceNotCourtTrial(queryCaseNodePage("liQui_SSES_SSESTSXX_SSESTSXX", 2021, null));
 
 		//**********庭审未判决********************************
-		countLitigationVO.setLitigationSecondInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSES_SSESCPJG_SSESCPJG", 2021,null));
+		countLitigationVO.setLitigationSecondInstanceCourtTrialNotJudgment(queryCaseNodePage("liQui_SSES_SSESCPJG_SSESCPJG", 2021, null));
 
 		//**********裁判文书未送达********************************
-		countLitigationVO.setLitigationSecondInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", 2021,null));
+		countLitigationVO.setLitigationSecondInstanceJudgmentPaperworkNotService(queryCaseNodePage("liQui_SSES_SSESCPWSZZSDQK_SSESCPWSZZSDQK", 2021, null));
 
 		//***********二审节点统计end*************************************************
 
@@ -599,16 +596,16 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//***********其它案件节点统计Start*************************************************
 
 		//**********立案未送达统计********************************
-		countLitigationVO.setLitigationOthersStandCaseUndelivered(queryCaseNodePage("liQui_SSQT_SSQTLASDQK_SSQTLASDQK", 2030,null));
+		countLitigationVO.setLitigationOthersStandCaseUndelivered(queryCaseNodePage("liQui_SSQT_SSQTLASDQK_SSQTLASDQK", 2030, null));
 
 		//**********送达未庭审********************************
-		countLitigationVO.setLitigationOthersServiceNotCourtTrial(queryCaseNodePage("liQui_SSQT_SSQTTSXX_SSQTTSXX", 2030,null));
+		countLitigationVO.setLitigationOthersServiceNotCourtTrial(queryCaseNodePage("liQui_SSQT_SSQTTSXX_SSQTTSXX", 2030, null));
 
 		//**********庭审未判决********************************
-		countLitigationVO.setLitigationOthersCourtTrialNotJudgment(queryCaseNodePage("liQui_SSQT_SSQTCPJG_SSQTCPJG", 2030,null));
+		countLitigationVO.setLitigationOthersCourtTrialNotJudgment(queryCaseNodePage("liQui_SSQT_SSQTCPJG_SSQTCPJG", 2030, null));
 
 		//**********裁判文书未送达********************************
-		countLitigationVO.setLitigationOthersJudgmentNotService(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030,null));
+		countLitigationVO.setLitigationOthersJudgmentNotService(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030, null));
 
 		//**********送达未生效********************************
 //		countLitigationVO.setLitigationOthersServiceNotActive(queryCaseNodePage("liQui_SSQT_SSQTCPWSZZSDQK_SSQTCPWSZZSDQK", 2030));
@@ -659,7 +656,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		//***********首执案件节点统计Start*************************************************
 
 		//**********首执立案未送达********************************
-		countImplementVO.setChiefExecutiveStandCaseUndelivered(queryCaseNodePage("liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK", 3010,null));
+		countImplementVO.setChiefExecutiveStandCaseUndelivered(queryCaseNodePage("liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK", 3010, null));
 
 		//**********首执送达未查控********************************
 		countImplementVO.setChiefExecutiveHeadExecuteServiceNotCheckControl(queryCaseeAssetsNotFreeze(3010));
@@ -675,7 +672,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		countImplementVO.setReinstateResumeExecutionTreatFileACase(caseeLiquiFlowChartPageVOIPage.getTotal());
 
 		//**********执恢立案未送达********************************
-		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK", 3031,null));
+		countImplementVO.setReinstateStandCaseUndelivered(queryCaseNodePage("liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK", 3031, null));
 
 		//**********执恢送达未查控********************************
 		countImplementVO.setReinstateExecuteRestoreServiceUnchecked(queryCaseeAssetsNotFreeze(3031));
@@ -1073,7 +1070,6 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		}
 
 
-
 		countPolylineLineChartVO.setTimelineList(timelineList);
 
 		countPolylineLineChartVO.setProjectList(projectList);
@@ -1197,10 +1193,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	}
 
 	@Override
-	public	Integer modifyProjectAmount(Integer projectId){
+	public Integer modifyProjectAmount(Integer projectId) {
 		ProjectLiqui projectLiqui = this.getByProjectId(projectId);
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
-		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(), projectLiQuiDetail);
 		// 统计产生费用总金额
 		BigDecimal projectAmount = expenseRecordService.totalAmountByProjectId(projectId);
 		projectLiQuiDetail.setProjectAmount(projectAmount);
@@ -1211,10 +1207,10 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	@Override
 	@Transactional
-	public Integer saveProject(ProjectLiquiSaveDTO projectLiquiSaveDTO){
+	public Integer saveProject(ProjectLiquiSaveDTO projectLiquiSaveDTO) {
 		// 保存银行借贷信息
 		BankLoan bankLoan = new BankLoan();
-		BeanCopyUtil.copyBean(projectLiquiSaveDTO,bankLoan);
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO, bankLoan);
 		bankLoan.setInsId(projectLiquiSaveDTO.getBankLoanInsId());
 		bankLoan.setOutlesId(projectLiquiSaveDTO.getBankLoanOutlesId());
 		bankLoan.setRental(projectLiquiSaveDTO.getPrincipalInterestAmount());
@@ -1222,9 +1218,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		bankLoanService.save(bankLoan);
 
 		List<SubjectAddressDTO> subjectAddressDTOList = new ArrayList<>();
-		for(ProjectSaveSubjectDTO projectSaveSubjectDTO :projectLiquiSaveDTO.getSubjectPersonsList()){
+		for (ProjectSaveSubjectDTO projectSaveSubjectDTO : projectLiquiSaveDTO.getSubjectPersonsList()) {
 			SubjectAddressDTO subjectAddressDTO = new SubjectAddressDTO();
-			BeanCopyUtil.copyBean(projectSaveSubjectDTO,subjectAddressDTO);
+			BeanCopyUtil.copyBean(projectSaveSubjectDTO, subjectAddressDTO);
 			subjectAddressDTO.setBankLoanId(bankLoan.getBankLoanId());
 			subjectAddressDTO.setSubjectName(projectLiquiSaveDTO.getSubjectPersons());
 			subjectAddressDTO.setAddressList(projectSaveSubjectDTO.getAddressList());
@@ -1232,7 +1228,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		}
 		subjectBankLoanReService.saveSubjectOrSubjectBankLoanRe(subjectAddressDTOList);
 		// 保存抵押物
-		if(projectLiquiSaveDTO.getMortgageSituation()==0){
+		if (projectLiquiSaveDTO.getMortgageSituation() == 0) {
 			projectLiquiSaveDTO.getMortgageAssetsAllDTO().setBankLoanId(bankLoan.getBankLoanId());
 			assetsService.saveMortgageAssets(projectLiquiSaveDTO.getMortgageAssetsAllDTO());
 		}
@@ -1247,14 +1243,14 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		transferRecordLiqui.setTransferType(0);
 		transferRecordLiqui.setReturnTime(projectLiquiSaveDTO.getTakeTime());
 		TransferRecordLiquiDetail transferRecordLiquiDetail = new TransferRecordLiquiDetail();
-		BeanCopyUtil.copyBean(projectLiquiSaveDTO,transferRecordLiquiDetail);
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO, transferRecordLiquiDetail);
 		transferRecordLiquiDetail.setHandoverAmount(projectLiquiSaveDTO.getPrincipalInterestAmount());
 		transferRecordLiqui.setTransferRecordLiquiDetail(transferRecordLiquiDetail);
 		transferRecordLiquiService.save(transferRecordLiqui);
 
 		// 保存接收记录
 		TransferRecordDTO transferRecordDTO = new TransferRecordDTO();
-		BeanCopyUtil.copyBean(projectLiquiSaveDTO,transferRecordDTO);
+		BeanCopyUtil.copyBean(projectLiquiSaveDTO, transferRecordDTO);
 		transferRecordDTO.setStatus(1);
 		transferRecordDTO.setReturnTime(projectLiquiSaveDTO.getTakeTime());
 		transferRecordDTO.setTransferRecordId(transferRecordLiqui.getTransferRecordId());
@@ -1265,25 +1261,25 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	@Override
 	@Transactional
-	public 	Integer modifyProjectById(ProjectLiquiModifyDTO projectLiquiModifyDTO){
+	public Integer modifyProjectById(ProjectLiquiModifyDTO projectLiquiModifyDTO) {
 		ProjectLiqui projectLiqui = new ProjectLiqui();
-		BeanCopyUtil.copyBean(projectLiquiModifyDTO,projectLiqui);
+		BeanCopyUtil.copyBean(projectLiquiModifyDTO, projectLiqui);
 		// 更新银行借贷移交记录受托网点
-		if(Objects.nonNull(projectLiquiModifyDTO.getOutlesId())){
+		if (Objects.nonNull(projectLiquiModifyDTO.getOutlesId())) {
 			UpdateWrapper<TransferRecord> updateWrapper = new UpdateWrapper<>();
-			updateWrapper.lambda().eq(TransferRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
-			updateWrapper.lambda().set(TransferRecord::getEntrustedOutlesId,projectLiquiModifyDTO.getOutlesId());
+			updateWrapper.lambda().eq(TransferRecord::getProjectId, projectLiquiModifyDTO.getProjectId());
+			updateWrapper.lambda().set(TransferRecord::getEntrustedOutlesId, projectLiquiModifyDTO.getOutlesId());
 			transferRecordLiquiService.update(updateWrapper);
 		}
 		// 更新回款记录公司业务案号
 		UpdateWrapper<PaymentRecord> paymentRecordUpdateWrapper = new UpdateWrapper<>();
-		paymentRecordUpdateWrapper.lambda().eq(PaymentRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
-		paymentRecordUpdateWrapper.lambda().set(PaymentRecord::getCompanyCode,projectLiquiModifyDTO.getCompanyCode());
+		paymentRecordUpdateWrapper.lambda().eq(PaymentRecord::getProjectId, projectLiquiModifyDTO.getProjectId());
+		paymentRecordUpdateWrapper.lambda().set(PaymentRecord::getCompanyCode, projectLiquiModifyDTO.getCompanyCode());
 		paymentRecordService.update(paymentRecordUpdateWrapper);
 		// 更新产生费用记录公司业务案号
 		UpdateWrapper<ExpenseRecord> expenseRecordUpdateWrapper = new UpdateWrapper<>();
-		expenseRecordUpdateWrapper.lambda().eq(ExpenseRecord::getProjectId,projectLiquiModifyDTO.getProjectId());
-		expenseRecordUpdateWrapper.lambda().set(ExpenseRecord::getCompanyCode,projectLiquiModifyDTO.getCompanyCode());
+		expenseRecordUpdateWrapper.lambda().eq(ExpenseRecord::getProjectId, projectLiquiModifyDTO.getProjectId());
+		expenseRecordUpdateWrapper.lambda().set(ExpenseRecord::getCompanyCode, projectLiquiModifyDTO.getCompanyCode());
 		expenseRecordService.update(expenseRecordUpdateWrapper);
 
 		return this.baseMapper.updateById(projectLiqui);
@@ -1291,11 +1287,11 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 
 	@Override
 	@Transactional
-	public Integer modifyProjectBankLoan(ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO){
+	public Integer modifyProjectBankLoan(ProjectLiquiModifyBankLoanDTO projectLiquiModifyBankLoanDTO) {
 		// 更新项目
 		ProjectLiqui projectLiqui = this.baseMapper.selectProjectDetails(projectLiquiModifyBankLoanDTO.getProjectId());
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
-		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(), projectLiQuiDetail);
 		projectLiQuiDetail.setInterestRate(projectLiquiModifyBankLoanDTO.getInterestRate());
 		projectLiQuiDetail.setMortgageSituation(projectLiquiModifyBankLoanDTO.getMortgageSituation());
 		projectLiQuiDetail.setLitigation(projectLiquiModifyBankLoanDTO.getLitigation());
@@ -1304,9 +1300,9 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		Integer modify = this.baseMapper.updateById(projectLiqui);
 
 		// 更新银行借贷移交信息
-		TransferRecordLiqui transferRecordLiqui = transferRecordLiquiService.getByProjectId(projectLiquiModifyBankLoanDTO.getProjectId(),0);
+		TransferRecordLiqui transferRecordLiqui = transferRecordLiquiService.getByProjectId(projectLiquiModifyBankLoanDTO.getProjectId(), 0);
 		TransferRecordLiquiDetail transferRecordLiquiDetail = new TransferRecordLiquiDetail();
-		BeanCopyUtil.copyBean(transferRecordLiqui.getTransferRecordLiquiDetail(),transferRecordLiquiDetail);
+		BeanCopyUtil.copyBean(transferRecordLiqui.getTransferRecordLiquiDetail(), transferRecordLiquiDetail);
 		transferRecordLiquiDetail.setStartingTime(projectLiquiModifyBankLoanDTO.getStartingTime());
 		transferRecordLiquiDetail.setLitigation(projectLiquiModifyBankLoanDTO.getLitigation());
 		transferRecordLiquiDetail.setInterestRate(projectLiquiModifyBankLoanDTO.getInterestRate());
@@ -1314,15 +1310,72 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		transferRecordLiquiService.updateById(transferRecordLiqui);
 
 		UpdateWrapper<BankLoan> updateWrapper = new UpdateWrapper<>();
-		updateWrapper.lambda().eq(BankLoan::getBankLoanId,transferRecordLiqui.getSourceId());
-		updateWrapper.lambda().set(BankLoan::getOutlesId,projectLiquiModifyBankLoanDTO.getBankLoanOutlesId());
-		updateWrapper.lambda().set(BankLoan::getMortgageSituation,projectLiquiModifyBankLoanDTO.getMortgageSituation());
-		updateWrapper.lambda().set(BankLoan::getTransferDate,projectLiquiModifyBankLoanDTO.getTransferDate());
-		updateWrapper.lambda().set(BankLoan::getLoanContract,projectLiquiModifyBankLoanDTO.getLoanContract());
-		updateWrapper.lambda().set(BankLoan::getOtherFile,projectLiquiModifyBankLoanDTO.getOtherFile());
+		updateWrapper.lambda().eq(BankLoan::getBankLoanId, transferRecordLiqui.getSourceId());
+		updateWrapper.lambda().set(BankLoan::getOutlesId, projectLiquiModifyBankLoanDTO.getBankLoanOutlesId());
+		updateWrapper.lambda().set(BankLoan::getMortgageSituation, projectLiquiModifyBankLoanDTO.getMortgageSituation());
+		updateWrapper.lambda().set(BankLoan::getTransferDate, projectLiquiModifyBankLoanDTO.getTransferDate());
+		updateWrapper.lambda().set(BankLoan::getLoanContract, projectLiquiModifyBankLoanDTO.getLoanContract());
+		updateWrapper.lambda().set(BankLoan::getOtherFile, projectLiquiModifyBankLoanDTO.getOtherFile());
 		bankLoanService.update(updateWrapper);
 
 		return modify;
+	}
+
+	@Override
+	@Transactional
+	public Integer modifyProjectMortgagedProperty(ProjectLiquiModifyMortgagedPropertyDTO projectLiquiModifyMortgagedPropertyDTO) {
+		MortgageAssetsDTO mortgageAssetsDTO = projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO();
+
+		mortgageAssetsRecordsService.updateByMortgageAssets(projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO());
+
+		MortgageAssetsRecordsVO mortgageAssetsRecordsVO = mortgageAssetsRecordsService.getByMortgageAssetsRecordsId(mortgageAssetsDTO.getMortgageAssetsRecordsId());
+
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getProjectId, projectLiquiModifyMortgagedPropertyDTO.getProjectId());
+		queryWrapper.lambda().eq(AssetsRe::getMortgageAssetsRecordsId, mortgageAssetsDTO.getMortgageAssetsRecordsId());
+		List<AssetsRe> assetsReList = assetsReLiquiService.list(queryWrapper);
+		List<Integer> assetsIdList = new ArrayList<>();
+		List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+
+		for (AssetsVO assetsVO : mortgageAssetsRecordsVO.getAssetsDTOList()) {
+			assetsIdList.add(assetsVO.getAssetsId());
+
+			AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
+			assetsReLiqui.setAssetsId(assetsVO.getAssetsId());
+			assetsReLiqui.setProjectId(projectLiquiModifyMortgagedPropertyDTO.getProjectId());
+			assetsReLiqui.setMortgageAssetsRecordsId(mortgageAssetsRecordsVO.getMortgageAssetsRecordsId());
+			assetsReLiqui.setSubjectName(assetsVO.getSubjectName());
+			assetsReLiqui.setAssetsSource(1);
+			for (AssetsRe assetsRe : assetsReList) {
+				if(assetsRe.getAssetsId()==assetsVO.getAssetsId()){
+					assetsReLiqui.setAssetsReId(assetsRe.getAssetsReId());
+					QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
+					assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsReLiqui.getAssetsReId());
+					assetsReSubjectService.remove(assetsReSubjectQueryWrapper);
+				}
+			}
+			AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+			assetsReCaseeDetail.setMortgagee(0);
+			assetsReCaseeDetail.setMortgageStartTime(projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO().getMortgageStartTime());
+			assetsReCaseeDetail.setMortgageEndTime(mortgageAssetsDTO.getMortgageEndTime());
+			assetsReCaseeDetail.setMortgageAmount(mortgageAssetsDTO.getMortgageAmount());
+			assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+			assetsReLiquiService.saveOrUpdate(assetsReLiqui);
+
+
+			for (Integer subjectId : assetsVO.getSubjectId()) {
+				AssetsReSubject assetsReSubject = new AssetsReSubject();
+				assetsReSubject.setSubjectId(subjectId);
+				assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
+				assetsReSubjects.add(assetsReSubject);
+			}
+
+		}
+		assetsReSubjectService.removeByProjectId(projectLiquiModifyMortgagedPropertyDTO.getProjectId(),mortgageAssetsDTO.getMortgageAssetsRecordsId());
+		assetsReLiquiService.removeNotInAssetsId(projectLiquiModifyMortgagedPropertyDTO.getProjectId(),mortgageAssetsDTO.getMortgageAssetsRecordsId(),assetsIdList);
+		assetsReSubjectService.saveBatch(assetsReSubjects);
+
+		return 1;
 	}
 
 }

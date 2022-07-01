@@ -248,4 +248,13 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	List<AssetsReDTO> queryAssetsReByProjectId(Integer projectId,Integer caseeId);
+
+	/**
+	 * 根据项目id、抵押记录id移除财产id集合以外的数据
+	 * @param projectId
+	 * @param mortgageAssetsRecordsId
+	 * @param assetsIdList
+	 * @return
+	 */
+	Integer removeNotInAssetsId(Integer projectId,Integer mortgageAssetsRecordsId,List<Integer> assetsIdList);
 }

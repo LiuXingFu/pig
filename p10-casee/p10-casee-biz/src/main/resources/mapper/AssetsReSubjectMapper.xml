@@ -23,11 +23,11 @@
 
 <mapper namespace="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper">
 
-  <resultMap id="assetsReSubjectMap" type="com.pig4cloud.pig.casee.entity.AssetsReSubject">
-    <id property="assetsReSubjectId" column="assets_re_subject_id"/>
-    <result property="assetsReId" column="assets_re_id"/>
-    <result property="subjectId" column="subject_id"/>
-  </resultMap>
+	<resultMap id="assetsReSubjectMap" type="com.pig4cloud.pig.casee.entity.AssetsReSubject">
+		<id property="assetsReSubjectId" column="assets_re_subject_id"/>
+		<result property="assetsReId" column="assets_re_id"/>
+		<result property="subjectId" column="subject_id"/>
+	</resultMap>
 
 	<select id="selectByAssetsReIdSubjectList" resultType="com.pig4cloud.pig.admin.api.entity.Subject">
 		select p10_subject.* from p10_assets_re_subject
@@ -48,4 +48,9 @@
 			#{item}
 		</foreach>
 	</select>
+
+	<delete id="removeByProjectId">
+		DELETE from p10_assets_re_subject
+		where assets_re_id in (select assets_re_id from p10_assets_re where project_id = #{projectId} and mortgage_assets_records_id = #{mortgageAssetsRecordsId})
+	</delete>
 </mapper>

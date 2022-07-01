@@ -21,6 +21,7 @@ import com.pig4cloud.pig.casee.entity.AssetsReSubject;
 import com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper;
 import com.pig4cloud.pig.casee.service.AssetsReSubjectService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,5 +37,11 @@ public class AssetsReSubjectServiceImpl extends ServiceImpl<AssetsReSubjectMappe
 	@Override
 	public List<Integer> queryByAssetsIdList(List<Integer> assetsReIdList){
 		return this.baseMapper.selectByAssetsIdList(assetsReIdList);
+	}
+
+	@Override
+	@Transactional
+	public Integer removeByProjectId(Integer projectId,Integer mortgageAssetsRecordsId){
+		return this.baseMapper.removeByProjectId(projectId,mortgageAssetsRecordsId);
 	}
 }
