@@ -385,6 +385,30 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
+	public void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId) {
+		//拍辅费要是已分配，修改已回款记录作废
+		List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, ExpenseRecordId).eq(PaymentRecord::getStatus,1));
+		if (paymentRecordList.size() > 0) {//已回款
+			for (PaymentRecord paymentRecord : paymentRecordList) {
+				//修改项目回款总金额、已回款记录作废
+				paymentRecordService.paymentCancellation(paymentRecord.getPaymentRecordId());
+			}
+		}
+		//修改费用金额
+		ExpenseRecord expenseRecord = this.getById(ExpenseRecordId);
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(costAmount));
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(updateCostAmount));
+		//修改当前财产程序拍辅费
+		this.updateById(expenseRecord);
+
+		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(projectId);
+		//减去补录前的拍辅费用
+		projectLiquiService.subtractProjectAmount(projectLiqui, costAmount);
+		//加上补录后的拍辅费用
+		projectLiquiService.addProjectAmount(projectLiqui, updateCostAmount);
+	}
+
+	@Override
 	public BigDecimal totalAmountByProjectId(Integer projectId){
 		return this.baseMapper.totalAmountByProjectId(projectId);
 	}

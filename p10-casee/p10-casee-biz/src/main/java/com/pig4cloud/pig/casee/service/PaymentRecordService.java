@@ -74,6 +74,27 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 */
 	boolean deletePaymentRecordRe(Integer paymentRecordId);
 
+	/**
+	 * 根据回款记录id修改回款记录状态
+	 * @param paymentRecordId		回款id
+	 * @param status		状态
+	 * @return
+	 */
+	boolean updatePaymentRecord(Integer paymentRecordId,Integer status);
+
+	/**
+	 * 根据回款记录id修改法院到款记录信息、领款记录信息以及相关关联信息
+	 * @param paymentRecordId		回款id
+	 * @return
+	 */
+	void updateCourtPaymentRecordRe(Integer paymentRecordId);
+
+	/**
+	 * 作废回款记录信息、修改项目回款总金额
+	 * @param paymentRecordId		回款id
+	 * @return
+	 */
+	boolean paymentCancellation(Integer paymentRecordId);
 
 	/**
 	 * 添加回款记录以及其它关联信息
