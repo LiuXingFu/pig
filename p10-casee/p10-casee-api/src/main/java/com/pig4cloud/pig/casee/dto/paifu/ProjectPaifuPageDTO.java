@@ -16,6 +16,8 @@
  */
 package com.pig4cloud.pig.casee.dto.paifu;
 
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.pig4cloud.pig.casee.entity.paifuentity.detail.ProjectPaifuDetail;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -104,4 +106,13 @@ public class ProjectPaifuPageDTO {
 	@ApiModelProperty(value="网点名称")
 	private String outlesName;
 
+	/**
+	 * 排序json
+	 */
+	private String ordersJson;
+
+	/**
+	 * 排序列集合
+	 */
+	private List<OrderItem> orders;
 }
