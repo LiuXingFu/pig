@@ -28,7 +28,6 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.casee.vo.count.*;
-import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -201,4 +200,12 @@ public interface ProjectLiquiService extends IService<Project> {
 	 * @return
 	 */
 	ProjectLiQuiAndSubjectListVO selectProjectLiquiAndSubject(Integer projectId);
+	/**
+	 * 更新项目抵押财产
+	 * @return
+	 */
+	Integer modifyProjectMortgagedProperty(ProjectLiquiModifyMortgagedPropertyDTO projectLiquiModifyMortgagedPropertyDTO);
+
+
+
 }

@@ -205,9 +205,10 @@ public class PaymentRecordController {
 	 */
 	@ApiOperation(value = "作废回款记录信息", notes = "作废回款记录信息")
 	@SysLog("作废回款记录信息" )
-	@GetMapping("/paymentCancellation/{paymentRecordId}" )
-	public R paymentCancellation(@PathVariable Integer paymentRecordId) {
-		return R.ok(paymentRecordService.paymentCancellation(paymentRecordId));
+	@GetMapping("/paymentCancellation" )
+	public R paymentCancellation(Integer paymentRecordId,Integer projectType) {
+		paymentRecordService.paymentCancellation(paymentRecordId,projectType);
+		return R.ok();
 	}
 
 	/**

@@ -108,9 +108,10 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	 * @param costAmount						费用金额
 	 * @param updateCostAmount					费用改动金额
 	 * @param projectId 						项目id
+	 * @param projectType 						项目类型
 	 * @return
 	 */
-	void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId);
+	void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId,Integer projectType);
 
 	/**
 	 * 根据项目id统计总金额

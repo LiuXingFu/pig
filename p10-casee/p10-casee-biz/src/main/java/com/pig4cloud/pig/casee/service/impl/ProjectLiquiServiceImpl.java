@@ -1348,4 +1348,61 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		return projectSubjectVOList;
 	}
 
+	@Override
+	@Transactional
+	public Integer modifyProjectMortgagedProperty(ProjectLiquiModifyMortgagedPropertyDTO projectLiquiModifyMortgagedPropertyDTO) {
+		MortgageAssetsDTO mortgageAssetsDTO = projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO();
+
+		mortgageAssetsRecordsService.updateByMortgageAssets(projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO());
+
+		MortgageAssetsRecordsVO mortgageAssetsRecordsVO = mortgageAssetsRecordsService.getByMortgageAssetsRecordsId(mortgageAssetsDTO.getMortgageAssetsRecordsId());
+
+		QueryWrapper<AssetsRe> queryWrapper = new QueryWrapper<>();
+		queryWrapper.lambda().eq(AssetsRe::getProjectId, projectLiquiModifyMortgagedPropertyDTO.getProjectId());
+		queryWrapper.lambda().eq(AssetsRe::getMortgageAssetsRecordsId, mortgageAssetsDTO.getMortgageAssetsRecordsId());
+		List<AssetsRe> assetsReList = assetsReLiquiService.list(queryWrapper);
+		List<Integer> assetsIdList = new ArrayList<>();
+		List<AssetsReSubject> assetsReSubjects = new ArrayList<>();
+
+		for (AssetsVO assetsVO : mortgageAssetsRecordsVO.getAssetsDTOList()) {
+			assetsIdList.add(assetsVO.getAssetsId());
+
+			AssetsReLiqui assetsReLiqui = new AssetsReLiqui();
+			assetsReLiqui.setAssetsId(assetsVO.getAssetsId());
+			assetsReLiqui.setProjectId(projectLiquiModifyMortgagedPropertyDTO.getProjectId());
+			assetsReLiqui.setMortgageAssetsRecordsId(mortgageAssetsRecordsVO.getMortgageAssetsRecordsId());
+			assetsReLiqui.setSubjectName(assetsVO.getSubjectName());
+			assetsReLiqui.setAssetsSource(1);
+			for (AssetsRe assetsRe : assetsReList) {
+				if(assetsRe.getAssetsId()==assetsVO.getAssetsId()){
+					assetsReLiqui.setAssetsReId(assetsRe.getAssetsReId());
+					QueryWrapper<AssetsReSubject> assetsReSubjectQueryWrapper = new QueryWrapper<>();
+					assetsReSubjectQueryWrapper.lambda().eq(AssetsReSubject::getAssetsReId,assetsReLiqui.getAssetsReId());
+					assetsReSubjectService.remove(assetsReSubjectQueryWrapper);
+				}
+			}
+			AssetsReCaseeDetail assetsReCaseeDetail = new AssetsReCaseeDetail();
+			assetsReCaseeDetail.setMortgagee(0);
+			assetsReCaseeDetail.setMortgageStartTime(projectLiquiModifyMortgagedPropertyDTO.getMortgageAssetsDTO().getMortgageStartTime());
+			assetsReCaseeDetail.setMortgageEndTime(mortgageAssetsDTO.getMortgageEndTime());
+			assetsReCaseeDetail.setMortgageAmount(mortgageAssetsDTO.getMortgageAmount());
+			assetsReLiqui.setAssetsReCaseeDetail(assetsReCaseeDetail);
+			assetsReLiquiService.saveOrUpdate(assetsReLiqui);
+
+
+			for (Integer subjectId : assetsVO.getSubjectId()) {
+				AssetsReSubject assetsReSubject = new AssetsReSubject();
+				assetsReSubject.setSubjectId(subjectId);
+				assetsReSubject.setAssetsReId(assetsReLiqui.getAssetsReId());
+				assetsReSubjects.add(assetsReSubject);
+			}
+
+		}
+		assetsReSubjectService.removeByProjectId(projectLiquiModifyMortgagedPropertyDTO.getProjectId(),mortgageAssetsDTO.getMortgageAssetsRecordsId());
+		assetsReLiquiService.removeNotInAssetsId(projectLiquiModifyMortgagedPropertyDTO.getProjectId(),mortgageAssetsDTO.getMortgageAssetsRecordsId(),assetsIdList);
+		assetsReSubjectService.saveBatch(assetsReSubjects);
+
+		return 1;
+	}
+
 }

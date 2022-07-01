@@ -123,7 +123,7 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 			//如果补录到款拍辅费用发生改变
 			if (entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee().compareTo(makeUpEntityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()) != 0) {
 				//拍辅费要是已分配，修改已回款记录作废，修改拍辅费、修改项目回款总金额以及项目总金额
-				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxdk_cczxdk.getExpenseRecordId(),entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),makeUpEntityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),taskNode.getProjectId());
+				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxdk_cczxdk.getExpenseRecordId(),entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),makeUpEntityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),taskNode.getProjectId(),100);
 			}
 			//如果补录到款金额发生改变
 			if (entityZX_stzx_cczxdk_cczxdk.getAmountReceived().compareTo(makeUpEntityZX_stzx_cczxdk_cczxdk.getAmountReceived())!=0){

@@ -95,7 +95,7 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @param paymentRecordId		回款id
 	 * @return
 	 */
-	boolean paymentCancellation(Integer paymentRecordId);
+	void paymentCancellation(Integer paymentRecordId,Integer projectType);
 
 	/**
 	 * 添加回款记录以及其它关联信息

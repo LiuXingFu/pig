@@ -375,4 +375,10 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 		return this.baseMapper.queryAssetsReByProjectId(projectId,caseeId);
 	}
 
+	@Override
+	@Transactional
+	public Integer removeNotInAssetsId(Integer projectId,Integer mortgageAssetsRecordsId,List<Integer> assetsIdList){
+		return this.baseMapper.removeNotInAssetsId(projectId,mortgageAssetsRecordsId,assetsIdList);
+	}
+
 }

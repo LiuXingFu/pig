@@ -14,24 +14,31 @@
  * this software without specific prior written permission.
  * Author: lengleng (wangiegie@gmail.com)
  */
+package com.pig4cloud.pig.casee.dto;
 
-package com.pig4cloud.pig.casee.service;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.pig4cloud.pig.casee.entity.AssetsReSubject;
-
-import java.util.List;
+import java.time.LocalDate;
 
 /**
- * 项目案件财产关联主体
+ * 项目表DTO
  *
- * @author pig code generator
- * @date 2022-04-14 17:09:52
+ * @author ligt
+ * @date 2022-01-10 15:05:49
  */
-public interface AssetsReSubjectService extends IService<AssetsReSubject> {
+@Data
+public class ProjectLiquiModifyMortgagedPropertyDTO {
 
-	List<Integer> queryByAssetsIdList(List<Integer> assetsReIdList);
+	/**
+	 * 项目id
+	 */
+	@ApiModelProperty(value="项目id")
+	private Integer projectId;
 
-	Integer removeByProjectId(Integer projectId,Integer mortgageAssetsRecordsId);
+	MortgageAssetsDTO mortgageAssetsDTO;
+
+
+
 
 }

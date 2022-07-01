@@ -42,7 +42,8 @@
 
 	<resultMap id="assetsSubjectMap" type="com.pig4cloud.pig.casee.dto.AssetsReSubjectDTO" extends="assetsMap">
 		<collection property="subjectList" ofType="com.pig4cloud.pig.admin.api.entity.Subject"
-					select="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper.selectByAssetsReIdSubjectList" column="assets_re_id"></collection>
+					select="com.pig4cloud.pig.casee.mapper.AssetsReSubjectMapper.selectByAssetsReIdSubjectList"
+					column="assets_re_id"></collection>
 	</resultMap>
 
 	<select id="getAssetsReCasee" resultType="com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui">
@@ -81,7 +82,9 @@
 	</select>
 
 	<select id="selectBySubject" resultType="com.pig4cloud.pig.casee.dto.AssetsReDTO">
-		select p10_assets_re.*,p10_assets.type,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id from p10_assets_re
+		select
+		p10_assets_re.*,p10_assets.type,p10_assets.assets_name,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_address.`code`,p10_address.address_id
+		from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_assets_re_subject on p10_assets_re_subject.assets_re_id = p10_assets_re.assets_re_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
@@ -107,11 +110,14 @@
 	</select>
 
 	<select id="selectAssetsNotSeizeAndFreeze" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
@@ -149,7 +155,8 @@
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		and p10_project.project_id = p10_target.project_id
 		left join p10_task_node node on node.target_id = p10_target.target_id
 		left join p10_task_node on p10_task_node.node_id = node.node_id
 		where p10_project.del_flag = 0
@@ -184,12 +191,14 @@
 	</select>
 
 	<select id="selectFundDeduction" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
-		 from p10_assets_re
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id =
+		p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
@@ -222,20 +231,27 @@
 	</select>
 
 	<select id="selectPropertyToBeAuctioned" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_address on p10_address.user_id=p10_assets.assets_id and p10_address.type=4
 		left join (select p10_assets_re.assets_re_id,p10_target.target_id from p10_assets_re
-		left join p10_target on p10_target.project_id = p10_assets_re.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_assets_re.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets_re.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_assets_re.`status` = 100
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "entityZX_STZX_CCZXSQYS_CCZXSQYS"
-		and ((json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
-		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 1 and json_extract( p10_task_node.form_data,'$.businessPleaseTransfer' ) = "0")
-		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 2 and json_extract( p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+		and ((json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
+		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 0 and json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 1 and json_extract(
+		p10_task_node.form_data,'$.businessPleaseTransfer' ) = "0")
+		or (json_extract( p10_assets_re.assets_re_detail,'$.mortgagee' ) = 2 and json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsSeizure.sealUpCondition' ) = 0)
 		)
 		)p10_target on p10_target.assets_re_id = p10_assets_re.assets_re_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
@@ -263,12 +279,14 @@
 	</select>
 
 	<select id="selectPropertyFlowChartPage" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
 		from p10_assets_re
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_target on p10_target.goal_id = p10_assets_re.assets_id and p10_assets_re.casee_id =
+		p10_target.casee_id and p10_project.project_id = p10_target.project_id
 		left join (select * from (
 		select p10_task_node.target_id,p10_task_node.node_key,p10_task_node.node_id from p10_task_node
 		where p10_task_node.`status` = 0
@@ -315,12 +333,16 @@
 		</if>
 	</select>
 
-	<select id="selectRealEstateSurveyNotRegistered" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+	<select id="selectRealEstateSurveyNotRegistered"
+			resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
 		left join (
 		select p10_task_node.* from p10_task_node
 		left join (
@@ -361,7 +383,8 @@
 
 	<select id="queryComparePropertyNumbersCount" resultType="java.lang.Long">
 		SELECT
-		IFNULL((sum( YEAR ( p10_assets_re.create_time )= YEAR (NOW())) - sum( ( YEAR ( p10_assets_re.create_time )= YEAR (
+		IFNULL((sum( YEAR ( p10_assets_re.create_time )= YEAR (NOW())) - sum( ( YEAR ( p10_assets_re.create_time )= YEAR
+		(
 		NOW())- 1 ) ) ), 0)
 		FROM
 		p10_assets_re
@@ -381,9 +404,9 @@
 
 	<select id="queryPropertyCategoryTotalList" resultType="com.pig4cloud.pig.casee.vo.PropertyCategoryTotalVO">
 		SELECT
-			p10_assets.type, count(0) AS numberOfProperties
+		p10_assets.type, count(0) AS numberOfProperties
 		FROM
-			p10_assets_re
+		p10_assets_re
 		LEFT JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE p10_project.del_flag = 0
@@ -400,9 +423,9 @@
 
 	<select id="queryTotalProperty" resultType="java.lang.Long">
 		SELECT
-			count(0)
+		count(0)
 		FROM
-			p10_assets_re
+		p10_assets_re
 		LEFT JOIN p10_project ON p10_project.project_id = p10_assets_re.project_id and p10_assets_re.del_flag = 0
 		LEFT JOIN p10_assets ON p10_assets_re.assets_id = p10_assets.assets_id and p10_assets.del_flag = 0
 		WHERE p10_project.del_flag = 0
@@ -415,13 +438,18 @@
 		</if>
 	</select>
 
-	<select id="selectPropertyAuctionAnnouncementPeriod" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction_record.auction_start_time as auctionStartDate
+	<select id="selectPropertyAuctionAnnouncementPeriod"
+			resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction_record.auction_start_time
+		as auctionStartDate
 		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
-		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from
+		p10_auction_record_assets_re
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
-		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on
+		p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_auction_record_assets_re.auction_record_id
@@ -471,20 +499,26 @@
 	</select>
 
 	<select id="selectDispositionRuling" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
-		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract( p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
-		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsCompletionRuling' ) is null or json_extract( p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is null)
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsCompletionRuling' ) is null or json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsCompensationAward' ) is null)
 		and p10_target.goal_type = 20001
-		and if(json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null,p10_task_node.node_key = "entityZX_STZX_CCZXCJCD_CCZXCJCD",p10_task_node.node_key = "entityZX_STZX_CCZXDCCD_CCZXDCCD")
+		and if(json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null,p10_task_node.node_key =
+		"entityZX_STZX_CCZXCJCD_CCZXCJCD",p10_task_node.node_key = "entityZX_STZX_CCZXDCCD_CCZXDCCD")
 		and p10_task_node.form_data is null
 		<if test="login.insId != null and login.insId > 0">
 			and p10_project.ins_id = #{login.insId}
@@ -505,17 +539,21 @@
 	</select>
 
 	<select id="selectRulingNotService" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_assets_re
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
 		and p10_project.`status` = 1000
 		and p10_assets.type = 20200
-		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract( p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
+		and (json_extract( p10_assets_re.assets_re_detail,'$.assetsPayment' ) is not null or json_extract(
+		p10_assets_re.assets_re_detail,'$.assetsAssetCompensate' ) is not null)
 		and p10_target.goal_type = 20001
 		and p10_task_node.node_key = "entityZX_STZX_CCZXDCCDSDQK_CCZXDCCDSDQK"
 		and p10_task_node.form_data is null
@@ -538,17 +576,22 @@
 	</select>
 
 	<select id="selectPropertyAuctionDue" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,
-		p10_auction_record.auction_type as auctionAnnouncementStage,p10_auction_record.auction_end_time as auctionEndDate
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,
+		p10_auction_record.auction_type as auctionAnnouncementStage,p10_auction_record.auction_end_time as
+		auctionEndDate
 		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
-		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from
+		p10_auction_record_assets_re
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
-		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on
+		p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_auction_record_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_casee.casee_id and p10_target.goal_id = p10_auction_record_assets_re.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_auction_record.auction_status in (100,200,300)
 		and p10_project.del_flag = 0
@@ -576,14 +619,18 @@
 	</select>
 
 	<select id="selectPropertyAuctionSuccess" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_task_node.node_name from p10_auction_record
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id,p10_task_node.node_name
+		from p10_auction_record
 		left join p10_auction_results on p10_auction_results.auction_record_id = p10_auction_record.auction_record_id
-		left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		left join p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id =
+		p10_auction_record.auction_record_id
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
@@ -613,13 +660,16 @@
 	</select>
 
 	<select id="selectPropertyAuctionFailed" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_auction
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_auction
 		left join p10_auction_assets_re on p10_auction_assets_re.auction_id = p10_auction.auction_id
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_assets_re.assets_re_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
-		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id = p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
+		left join p10_target on p10_target.project_id = p10_project.project_id and p10_target.casee_id =
+		p10_assets_re.casee_id and p10_target.goal_id = p10_assets.assets_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
@@ -648,11 +698,15 @@
 	</select>
 
 	<select id="selectPropertyAuctionAbnormal" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction_record.auction_record_id from p10_auction_record
-		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from p10_auction_record_assets_re
+		select
+		p10_project.company_code,p10_project.ins_id,p10_project.outles_id,p10_casee.casee_number,p10_auction_record_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_auction_record.auction_record_id
+		from p10_auction_record
+		left join (select p10_auction_record_assets_re.auction_record_id,p10_assets_re.* from
+		p10_auction_record_assets_re
 		left join p10_assets_re on p10_assets_re.assets_re_id = p10_auction_record_assets_re.assets_re_id
 		where p10_assets_re.status in (300,400,600)
-		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
+		GROUP BY p10_auction_record_assets_re.auction_record_id)p10_auction_record_assets_re on
+		p10_auction_record_assets_re.auction_record_id = p10_auction_record.auction_record_id
 		left join p10_project on p10_project.project_id = p10_auction_record_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_auction_record_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_auction_record_assets_re.assets_id
@@ -687,20 +741,25 @@
 	</select>
 
 	<select id="selectCaseeAssetsNotFreeze" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiFlowChartPageVO">
-		select p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id from p10_casee
+		select
+		p10_project.company_code,p10_casee.casee_number,p10_assets_re.*,p10_assets.assets_name,p10_assets.type,p10_assets.assets_type,p10_assets.`owner`,p10_assets.account_number,p10_task_node.node_id
+		from p10_casee
 		left join (select p10_casee.* from p10_casee
-					left join p10_target on p10_target.casee_id = p10_casee.casee_id
-					left join p10_task_node on p10_task_node.target_id = p10_target.target_id
-					where p10_casee.`status` = 1
-					and p10_casee.casee_type = #{query.caseeType}
-					and p10_target.goal_type = 10001
-					and (p10_task_node.node_key = "liQui_SSBQ_SSBQLASDQK_SSBQLASDQK" or p10_task_node.node_key = "liQui_SQ_SQLASDQK_SQLASDQK" or p10_task_node.node_key = "liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK" or p10_task_node.node_key = "liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK")
-					and p10_task_node.node_attributes = 400
-					and p10_task_node.form_data is not null) casee on casee.casee_id = p10_casee.casee_id
+		left join p10_target on p10_target.casee_id = p10_casee.casee_id
+		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
+		where p10_casee.`status` = 1
+		and p10_casee.casee_type = #{query.caseeType}
+		and p10_target.goal_type = 10001
+		and (p10_task_node.node_key = "liQui_SSBQ_SSBQLASDQK_SSBQLASDQK" or p10_task_node.node_key =
+		"liQui_SQ_SQLASDQK_SQLASDQK" or p10_task_node.node_key = "liQui_ZXSZ_ZXSZLASDQK_ZXSZLASDQK" or
+		p10_task_node.node_key = "liQui_ZXZH_ZXZHLASDQK_ZXZHLASDQK")
+		and p10_task_node.node_attributes = 400
+		and p10_task_node.form_data is not null) casee on casee.casee_id = p10_casee.casee_id
 		left join p10_assets_re on p10_assets_re.casee_id = p10_casee.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
-		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id and p10_project.project_id = p10_target.project_id
+		left join p10_target on p10_target.goal_id = p10_assets.assets_id and p10_casee.casee_id = p10_target.casee_id
+		and p10_project.project_id = p10_target.project_id
 		left join p10_task_node on p10_task_node.target_id = p10_target.target_id
 		where p10_project.del_flag = 0
 		and p10_project.project_type = 100
@@ -740,7 +799,9 @@
 	</resultMap>
 
 	<select id="queryAssetsReBySubjectId" resultMap="resultSubject">
-		select p10_assets_re.*,p10_project.project_id,p10_project.company_code,p10_project.status projectStatus,p10_casee.casee_id,p10_casee.casee_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_casee.`status` as caseeStatus from p10_assets_re
+		select p10_assets_re.*,p10_project.project_id,p10_project.company_code,p10_project.status
+		projectStatus,p10_casee.casee_id,p10_casee.casee_number,p10_address.province,p10_address.city,p10_address.area,p10_address.information_address,p10_casee.`status`
+		as caseeStatus from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		left join p10_assets on p10_assets.assets_id = p10_assets_re.assets_id
@@ -759,7 +820,8 @@
 	</select>
 
 	<select id="selectByAssetsId" resultType="com.pig4cloud.pig.casee.vo.AssetsReLiquiProjectVO">
-		select p10_project.company_code,p10_project.`status` as projectStatus,p10_casee.casee_number,p10_casee.`status` as caseeStatus,p10_assets_re.* from p10_assets_re
+		select p10_project.company_code,p10_project.`status` as projectStatus,p10_casee.casee_number,p10_casee.`status`
+		as caseeStatus,p10_assets_re.* from p10_assets_re
 		left join p10_project on p10_project.project_id = p10_assets_re.project_id
 		left join p10_casee on p10_casee.casee_id = p10_assets_re.casee_id
 		where p10_project.del_flag = 0
@@ -804,6 +866,15 @@
 			and p10_assets_re.create_casee_id = #{caseeId}
 		</if>
 	</select>
+
+	<delete id="removeNotInAssetsId">
+		DELETE from p10_assets_re
+		where project_id = #{projectId} and mortgage_assets_records_id = #{mortgageAssetsRecordsId} and assets_id not in
+		<foreach item="item" index="index" collection="assetsIdList"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
 
 
 </mapper>

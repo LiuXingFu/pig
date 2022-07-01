@@ -168,7 +168,7 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 			//如果补录到款拍辅费用发生改变
 			if (makeUpEntityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee().compareTo(entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee())!=0) {
 				//拍辅费要是已分配，修改已回款记录作废，修改拍辅费、修改项目回款总金额以及项目总金额
-				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxzcdc_cczxzcdc.getExpenseRecordId(),entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee(),makeUpEntityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee(),taskNode.getProjectId());
+				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxzcdc_cczxzcdc.getExpenseRecordId(),entityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee(),makeUpEntityZX_stzx_cczxzcdc_cczxzcdc.getAuxiliaryFee(),taskNode.getProjectId(),100);
 			}
 
 			//如果补录抵偿金额发生改变
@@ -192,8 +192,10 @@ public class EntityZX_STZX_CCZXZCDC_CCZXZCDC_NODEHandler extends TaskNodeHandler
 
 				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
 				if (paymentRecord.getStatus()==1){
+					projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(paymentRecord.getPaymentAmount()));
+					projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
 					//修改项目回款总金额
-					projectLiquiService.subtractRepaymentAmount(projectLiqui,paymentRecord.getPaymentAmount());
+					projectLiquiService.updateById(projectLiqui);
 				}
 
 				//修改资产抵偿状态为作废
