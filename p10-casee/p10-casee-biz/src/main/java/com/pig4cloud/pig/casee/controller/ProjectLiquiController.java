@@ -374,4 +374,15 @@ public class ProjectLiquiController {
 		return R.ok(projectLiquiService.modifyProjectBankLoan(projectLiquiModifyBankLoanDTO));
 	}
 
+	/**
+	 * 更新项目抵押财产
+	 * @return R
+	 */
+	@ApiOperation(value = "更新项目抵押财产", notes = "更新项目抵押财产")
+	@SysLog("更新项目抵押财产" )
+	@PutMapping("/modifyProjectMortgagedProperty")
+	public R modifyProjectMortgagedProperty(@RequestBody ProjectLiquiModifyMortgagedPropertyDTO projectLiquiModifyMortgagedPropertyDTO) {
+		return R.ok(projectLiquiService.modifyProjectMortgagedProperty(projectLiquiModifyMortgagedPropertyDTO));
+	}
+
 }
