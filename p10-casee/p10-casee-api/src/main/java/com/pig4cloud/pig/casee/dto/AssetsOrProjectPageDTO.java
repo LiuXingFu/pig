@@ -1,7 +1,10 @@
 package com.pig4cloud.pig.casee.dto;
 
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @PACKAGE_NAME: com.pig4cloud.pig.casee.dto
@@ -55,5 +58,15 @@ public class AssetsOrProjectPageDTO {
 	 */
 	@ApiModelProperty(value="所有权人")
 	private String owner;
+
+	/**
+	 * 排序json
+	 */
+	private String ordersJson;
+
+	/**
+	 * 排序列集合
+	 */
+	private List<OrderItem> orders;
 
 }
