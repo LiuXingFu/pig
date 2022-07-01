@@ -435,7 +435,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	 */
 	@Override
 	@Transactional
-	public int addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList) {
+	public void addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList) {
 		int add = 0;
 
 		this.saveBatch(paymentRecordList);
@@ -455,8 +455,6 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
 
 		projectPaifuService.updateRepaymentAmount(projectLiQuiAndSubjectListVO.getProjectLiqui().getProjectId());
-
-		return add += 1;
 	}
 
 

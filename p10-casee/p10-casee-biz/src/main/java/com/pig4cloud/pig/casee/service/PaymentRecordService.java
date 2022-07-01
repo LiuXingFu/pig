@@ -157,5 +157,5 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @param paymentRecordList
 	 * @return
 	 */
-	int addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList);
+	void addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList);
 }

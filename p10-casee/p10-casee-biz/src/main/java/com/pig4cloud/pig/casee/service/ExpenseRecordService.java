@@ -170,6 +170,6 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	 * @param transferRecordId 移送记录id
 	 * @return
 	 */
-	int addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId);
+	void addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId);
 
 }

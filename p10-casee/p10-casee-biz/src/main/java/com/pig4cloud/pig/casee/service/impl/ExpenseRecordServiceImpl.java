@@ -549,9 +549,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	 */
 	@Override
 	@Transactional
-	public int addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId) {
-
-		int add = 0;
+	public void addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId) {
 
 		TransferRecordLiqui recordLiqui = transferRecordLiquiService.queryTransferRecordLiquiById(transferRecordId);
 
@@ -599,8 +597,6 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
  		if (paymentRecordList.size() > 0){
 			this.paymentRecordService.addPaymentRecordByProjectIdAndPaymentRecordList(projectLiQuiAndSubjectListVO, paymentRecordList);
 		}
-
-		return add += 1;
 	}
 
 }
