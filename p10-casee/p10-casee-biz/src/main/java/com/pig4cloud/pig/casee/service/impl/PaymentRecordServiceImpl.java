@@ -28,9 +28,7 @@ import com.pig4cloud.pig.casee.dto.count.CountMoneyBackMonthlyRankDTO;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.mapper.PaymentRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
-import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
-import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
 import com.pig4cloud.pig.common.core.util.BeanCopyUtil;
@@ -76,32 +74,32 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
-		return this.baseMapper.getPaymentRecordPage(page,paymentRecordPageDTO,insOutlesDTO);
+		return this.baseMapper.getPaymentRecordPage(page, paymentRecordPageDTO, insOutlesDTO);
 	}
 
 	@Override
 	public IPage<PaymentRecordVO> getProjectIdByPaymentRecordPage(Page page, String projectId) {
-		return this.baseMapper.getProjectIdByPaymentRecordPage(page,projectId);
+		return this.baseMapper.getProjectIdByPaymentRecordPage(page, projectId);
 	}
 
 	@Override
 	public IPage<PaymentRecordVO> getByUnassignedPaymentRecordPage(Page page, PaymentRecordPageDTO paymentRecordPageDTO) {
-		return this.baseMapper.getByUnassignedPaymentRecordPage(page,paymentRecordPageDTO);
+		return this.baseMapper.getByUnassignedPaymentRecordPage(page, paymentRecordPageDTO);
 	}
 
 	@Override
 	public IPage<PaymentRecordVO> getByPaymentRecordPage(Page page, Integer paymentRecordId) {
-		return this.baseMapper.getByPaymentRecordPage(page,paymentRecordId);
+		return this.baseMapper.getByPaymentRecordPage(page, paymentRecordId);
 	}
 
 	@Override
-	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord){
+	public BigDecimal sumCourtPayment(PaymentRecord paymentRecord) {
 		return this.baseMapper.sumCourtPayment(paymentRecord);
 	}
 
 	@Override
 	public IPage<PaymentRecordCourtPaymentVO> getCourtPaymentPage(Page page, String projectId) {
-		return this.baseMapper.getCourtPaymentPage(page,projectId);
+		return this.baseMapper.getCourtPaymentPage(page, projectId);
 	}
 
 	@Override
@@ -113,7 +111,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Transactional
 	public boolean saveCourtPayment(PaymentRecordDTO paymentRecordDTO) {
 		boolean save = this.save(paymentRecordDTO);
-		if (paymentRecordDTO.getFundsType().equals(20003)){
+		if (paymentRecordDTO.getFundsType().equals(20003)) {
 			for (Integer assetsReId : paymentRecordDTO.getAssetsReIdList()) {
 				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
 				paymentRecordAssetsRe.setAssetsReId(assetsReId);
@@ -143,7 +141,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		List<PaymentRecordSubjectRe> paymentRecordSubjectReList = paymentRecordSubjectReService.list(new LambdaQueryWrapper<PaymentRecordSubjectRe>().eq(PaymentRecordSubjectRe::getPaymentRecordId, record.getPaymentRecordId()));
 
 		//添加分配款项记录以及关联信息
-		allotmentRecords(paymentRecordDTO,null,paymentRecordSubjectReList,projectLiquiService);
+		allotmentRecords(paymentRecordDTO, null, paymentRecordSubjectReList, projectLiquiService);
 		return update;
 	}
 
@@ -155,21 +153,21 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		List<Integer> subjectIdList = paymentRecordDTO.getSubjectIdList();
 		//添加领款记录与主体关联信息
 		for (Integer integer : subjectIdList) {
-			PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
 			paymentRecordSubjectRe.setSubjectId(integer);
 			this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 		}
 
 		//添加分配款项记录以及关联信息
-		allotmentRecords(paymentRecordDTO,subjectIdList,null,projectLiquiService);
+		allotmentRecords(paymentRecordDTO, subjectIdList, null, projectLiquiService);
 
 		//修改到款记录状态
 		List<PaymentRecord> courtPayment = paymentRecordDTO.getCourtPayment();
-		List<PaymentSourceRe> paymentSourceReList=new ArrayList<>();
-		if (courtPayment!=null&&courtPayment.size()>0){
+		List<PaymentSourceRe> paymentSourceReList = new ArrayList<>();
+		if (courtPayment != null && courtPayment.size() > 0) {
 			for (PaymentRecord paymentRecord : courtPayment) {
-				PaymentSourceRe paymentSourceRe=new PaymentSourceRe();
+				PaymentSourceRe paymentSourceRe = new PaymentSourceRe();
 				paymentSourceRe.setSourceId(paymentRecord.getPaymentRecordId());
 				paymentSourceRe.setPaymentRecordId(paymentRecordDTO.getPaymentRecordId());
 				paymentSourceRe.setType(100);
@@ -210,7 +208,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	@Override
 	public void updateCourtPaymentRecordRe(Integer paymentRecordId) {
 		//修改到款信息为未分配
-		this.updatePaymentRecord(paymentRecordId,0);
+		this.updatePaymentRecord(paymentRecordId, 0);
 
 		//查询回款来源信息
 		List<PaymentSourceRe> paymentSourceReList = paymentSourceReService.list(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getSourceId, paymentRecordId));
@@ -230,7 +228,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			}
 			this.updateBatchById(paymentRecordList);
 			//修改领款信息为作废
-			this.updatePaymentRecord(paymentSourceRe.getPaymentRecordId(),2);
+			this.updatePaymentRecord(paymentSourceRe.getPaymentRecordId(), 2);
 		}
 	}
 
@@ -244,18 +242,18 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		ProjectLiqui project = projectLiquiService.getByProjectId(paymentRecord.getProjectId());
 
 		//修改项目回款总金额
-		projectLiquiService.subtractRepaymentAmount(project,fatherIPaymentRecord.getPaymentAmount());
+		projectLiquiService.subtractRepaymentAmount(project, fatherIPaymentRecord.getPaymentAmount());
 
 		//如果当前分配类型是履行到申请人或资产抵偿则修改该状态为未分配
-		if (fatherIPaymentRecord.getPaymentType()==300||fatherIPaymentRecord.getPaymentType()==400) {
-			this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
-		}else {//如果当前分配类型是领款，修改领款、到款状态为未分配
-			if (fatherIPaymentRecord.getPaymentType()==200){
+		if (fatherIPaymentRecord.getPaymentType() == 300 || fatherIPaymentRecord.getPaymentType() == 400) {
+			this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(), 0);
+		} else {//如果当前分配类型是领款，修改领款、到款状态为未分配
+			if (fatherIPaymentRecord.getPaymentType() == 200) {
 				//修改到款款状态为未领款
-				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
-			}else {
+				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(), 0);
+			} else {
 				//修改领款状态为作废
-				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),2);
+				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(), 2);
 			}
 
 			//领款时可能领多条到款信息所以这里可能会查出多条到款记录
@@ -274,7 +272,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 			//修改费用产生记录状态为正常
 			ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
-			if (expenseRecordUpdate.getStatus()!=2){
+			if (expenseRecordUpdate.getStatus() != 2) {
 				expenseRecordUpdate.setStatus(0);
 				expenseRecordService.updateById(expenseRecordUpdate);
 			}
@@ -283,7 +281,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
-	public PaymentRecord addPaymentRecord(BigDecimal amount,LocalDate paymentDate,Integer status,Project project,Casee casee,AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer paymentType,Integer fundsType) {
+	public PaymentRecord addPaymentRecord(BigDecimal amount, LocalDate paymentDate, Integer status, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer paymentType, Integer fundsType) {
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setPaymentType(paymentType);
 		paymentRecord.setFundsType(fundsType);
@@ -299,7 +297,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 		List<PaymentRecordAssetsRe> paymentRecordAssetsReList = new ArrayList<>();
 
-		if (jointAuctionAssetsDTOList!=null){
+		if (jointAuctionAssetsDTOList != null) {
 			//循环当前拍卖公告联合拍卖财产信息
 			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
 				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
@@ -309,9 +307,9 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			}
 			// 添加回款记录财产关联信息
 			paymentRecordAssetsReService.saveBatch(paymentRecordAssetsReList);
-		}else {
+		} else {
 			//添加关联财产信息
-			PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+			PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
 			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 			paymentRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
 			paymentRecordAssetsReService.save(paymentRecordAssetsRe);
@@ -331,6 +329,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	/**
 	 * 查询较去年回款额
+	 *
 	 * @return
 	 */
 	@Override
@@ -340,6 +339,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	/**
 	 * 本月回款额月排名
+	 *
 	 * @return
 	 */
 	@Override
@@ -349,6 +349,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	/**
 	 * 本月总回款额
+	 *
 	 * @return
 	 */
 	@Override
@@ -358,6 +359,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	/**
 	 * 根据时间集合查询回款额
+	 *
 	 * @param polylineColumnActive
 	 * @param difference
 	 * @return
@@ -368,17 +370,17 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 	}
 
 	@Override
-	public List<PaymentRecordListVO> queryPaifuPaymentRecordList(Integer projectId){
+	public List<PaymentRecordListVO> queryPaifuPaymentRecordList(Integer projectId) {
 		return this.baseMapper.queryPaifuPaymentRecordList(projectId);
 	}
 
 	@Override
 	@Transactional
-	public Integer savePaifuPaymentRecord(PaymentRecordSaveDTO paymentRecordSaveDTO){
+	public Integer savePaifuPaymentRecord(PaymentRecordSaveDTO paymentRecordSaveDTO) {
 		// 查询费用产生记录详情
 		ExpenseRecordPaifuAssetsReListVO expenseRecordPaifuAssetsReListVO = expenseRecordService.queryPaifuExpenseRecordAssetsReList(paymentRecordSaveDTO.getExpenseRecordId());
 
-		if(paymentRecordSaveDTO.getExpenseRecordStatus()==1){
+		if (paymentRecordSaveDTO.getExpenseRecordStatus() == 1) {
 			// 更新费用产生记录状态1=已还款
 			ExpenseRecord expenseRecord = new ExpenseRecord();
 			expenseRecord.setExpenseRecordId(paymentRecordSaveDTO.getExpenseRecordId());
@@ -387,7 +389,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		}
 
 		PaymentRecord paymentRecord = new PaymentRecord();
-		BeanCopyUtil.copyBean(paymentRecordSaveDTO,paymentRecord);
+		BeanCopyUtil.copyBean(paymentRecordSaveDTO, paymentRecord);
 		paymentRecord.setProjectId(expenseRecordPaifuAssetsReListVO.getProjectId());
 		paymentRecord.setCompanyCode(expenseRecordPaifuAssetsReListVO.getCompanyCode());
 		paymentRecord.setCaseeId(expenseRecordPaifuAssetsReListVO.getCaseeId());
@@ -397,7 +399,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		Integer save = this.baseMapper.insert(paymentRecord);
 		// 批量保存回款主体关联
 		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
-		for(Integer subjectId:paymentRecordSaveDTO.getSubjectIdList()){
+		for (Integer subjectId : paymentRecordSaveDTO.getSubjectIdList()) {
 			PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
 			paymentRecordSubjectRe.setSubjectId(subjectId);
 			paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
@@ -405,7 +407,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		}
 		// 批量保存回款财产关联
 		List<PaymentRecordAssetsRe> paymentRecordAssetsRes = new ArrayList<>();
-		for(Integer assetsId : expenseRecordPaifuAssetsReListVO.getAssetsReIdList()){
+		for (Integer assetsId : expenseRecordPaifuAssetsReListVO.getAssetsReIdList()) {
 			PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
 			paymentRecordAssetsRe.setAssetsReId(assetsId);
 			paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
@@ -418,10 +420,44 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		return save;
 	}
 
-	public void allotmentRecords(PaymentRecordDTO paymentRecordDTO,List<Integer> subjectIdList,List<PaymentRecordSubjectRe> paymentRecordSubjectReList,ProjectLiquiService projectLiquiService){//分配款项记录
+	/**
+	 * 将项目id与回款详细记录集合添加到回款详细记录表与相关表中
+	 *
+	 * @param projectLiQuiAndSubjectListVO
+	 * @param paymentRecordList
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public int addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList) {
+		int add = 0;
+
+		this.saveBatch(paymentRecordList);
+
+		// 批量保存回款财产关联
+		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();
+		for (ProjectSubjectVO projectSubjectVO : projectLiQuiAndSubjectListVO.getProjectSubjectVOList()) {
+			for (PaymentRecord paymentRecord : paymentRecordList) {
+				PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
+				paymentRecordSubjectRe.setSubjectId(projectSubjectVO.getSubjectId());
+				paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
+				paymentRecordSubjectRes.add(paymentRecordSubjectRe);
+			}
+		}
+
+		//添加关联债务人信息
+		paymentRecordSubjectReService.saveBatch(paymentRecordSubjectRes);
+
+		projectPaifuService.updateRepaymentAmount(projectLiQuiAndSubjectListVO.getProjectLiqui().getProjectId());
+
+		return add += 1;
+	}
+
+
+	public void allotmentRecords(PaymentRecordDTO paymentRecordDTO, List<Integer> subjectIdList, List<PaymentRecordSubjectRe> paymentRecordSubjectReList, ProjectLiquiService projectLiquiService) {//分配款项记录
 		//修改项目回款总金额
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(paymentRecordDTO.getProjectId());
-		projectLiquiService.addRepaymentAmount(projectLiqui,paymentRecordDTO.getPaymentAmount());
+		projectLiquiService.addRepaymentAmount(projectLiqui, paymentRecordDTO.getPaymentAmount());
 
 		for (PaymentRecordAddDTO paymentRecord : paymentRecordDTO.getPaymentRecordList()) {
 			paymentRecord.setProjectId(paymentRecordDTO.getProjectId());
@@ -434,18 +470,18 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 			//添加分配款项信息
 			this.save(paymentRecord);
 
-			if (subjectIdList!=null){
+			if (subjectIdList != null) {
 				//添加分配款项明细与主体关联信息
 				for (Integer integer : subjectIdList) {
-					PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+					PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
 					paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 					paymentRecordSubjectRe.setSubjectId(integer);
 					this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
 				}
-			}else {
+			} else {
 				//添加分配款项明细与主体关联信息
 				for (PaymentRecordSubjectRe subjectRe : paymentRecordSubjectReList) {
-					PaymentRecordSubjectRe paymentRecordSubjectRe=new PaymentRecordSubjectRe();
+					PaymentRecordSubjectRe paymentRecordSubjectRe = new PaymentRecordSubjectRe();
 					paymentRecordSubjectRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 					paymentRecordSubjectRe.setSubjectId(subjectRe.getSubjectId());
 					this.paymentRecordSubjectReService.save(paymentRecordSubjectRe);
@@ -456,7 +492,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 			for (ExpenseRecordAssetsRe expenseRecordAssetsRe : expenseRecordAssetsReList) {
 				//添加到款信息关联财产
-				PaymentRecordAssetsRe paymentRecordAssetsRe=new PaymentRecordAssetsRe();
+				PaymentRecordAssetsRe paymentRecordAssetsRe = new PaymentRecordAssetsRe();
 				paymentRecordAssetsRe.setPaymentRecordId(paymentRecord.getPaymentRecordId());
 				paymentRecordAssetsRe.setAssetsReId(expenseRecordAssetsRe.getAssetsReId());
 				paymentRecordAssetsReService.save(paymentRecordAssetsRe);
@@ -464,7 +500,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 			//修改明细记录状态
 			ExpenseRecord expenseRecord = expenseRecordService.getById(paymentRecord.getExpenseRecordId());
-			if (expenseRecord.getCostAmount().compareTo(paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount()))==0){
+			if (expenseRecord.getCostAmount().compareTo(paymentRecord.getPaymentAmount().add(paymentRecord.getPaymentSumAmount())) == 0) {
 				expenseRecord.setExpenseRecordId(paymentRecord.getExpenseRecordId());
 				expenseRecord.setStatus(1);
 				expenseRecordService.updateById(expenseRecord);

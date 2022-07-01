@@ -27,10 +27,7 @@ import com.pig4cloud.pig.casee.entity.SubjectBankLoanRe;
 import com.pig4cloud.pig.casee.entity.TransferRecord;
 import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.mapper.TransferRecordLiquiMapper;
-import com.pig4cloud.pig.casee.service.BankLoanService;
-import com.pig4cloud.pig.casee.service.ProjectLiquiService;
-import com.pig4cloud.pig.casee.service.SubjectBankLoanReService;
-import com.pig4cloud.pig.casee.service.TransferRecordLiquiService;
+import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.casee.vo.AssetsInformationVO;
 import com.pig4cloud.pig.casee.vo.MortgageAssetsVO;
 import com.pig4cloud.pig.casee.vo.TransferRecordBankLoanVO;
@@ -59,39 +56,46 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	@Autowired
 	private BankLoanService bankLoanService;
 
+	@Autowired
+	private ExpenseRecordService expenseRecordService;
+
 	@Override
 	public IPage<TransferRecordBankLoanVO> getTransferRecordPage(Page page, TransferRecordDTO transferRecordDTO) {
-		if (transferRecordDTO.getHandoverTime()!=null){
-			String andoverTime =transferRecordDTO.getHandoverTime().toString();
+		if (transferRecordDTO.getHandoverTime() != null) {
+			String andoverTime = transferRecordDTO.getHandoverTime().toString();
 		}
 		InsOutlesDTO insOutlesDTO = new InsOutlesDTO();
 		insOutlesDTO.setInsId(jurisdictionUtilsService.queryByInsId("PLAT_"));
 		insOutlesDTO.setOutlesId(jurisdictionUtilsService.queryByOutlesId("PLAT_"));
 
-		return this.baseMapper.getTransferRecordPage(page,transferRecordDTO,insOutlesDTO);
+		return this.baseMapper.getTransferRecordPage(page, transferRecordDTO, insOutlesDTO);
 	}
 
 	@Override
 	public List<TransferRecordLiqui> getBankLoanIdTransferRecord(Integer sourceId) {
-		return this.baseMapper.getBankLoanIdTransferRecord(sourceId,0);
+		return this.baseMapper.getBankLoanIdTransferRecord(sourceId, 0);
 	}
 
 	@Override
-	public TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId,Integer projectId) {
-		return this.baseMapper.getTransferRecordBankLoan(transferRecordId,projectId);
+	public TransferRecordBankLoanVO getTransferRecordBankLoan(Integer transferRecordId, Integer projectId) {
+		return this.baseMapper.getTransferRecordBankLoan(transferRecordId, projectId);
 	}
 
 	@Override
 	@Transactional
 	public boolean reception(TransferRecordDTO transferRecordDTO) {
-		ProjectLiquiAddDTO projectLiquiAddDTO =new ProjectLiquiAddDTO();
-		BeanUtils.copyProperties(transferRecordDTO,projectLiquiAddDTO);
-		TransferRecordLiqui transferRecordLiqui=new TransferRecordLiqui();
-		BeanUtils.copyProperties(transferRecordDTO,transferRecordLiqui);
+		ProjectLiquiAddDTO projectLiquiAddDTO = new ProjectLiquiAddDTO();
+		BeanUtils.copyProperties(transferRecordDTO, projectLiquiAddDTO);
+		TransferRecordLiqui transferRecordLiqui = new TransferRecordLiqui();
+		BeanUtils.copyProperties(transferRecordDTO, transferRecordLiqui);
 		projectLiquiAddDTO.setTakeTime(transferRecordDTO.getReturnTime());
 		//添加项目信息
 		Integer projectId = projectLiquiService.addProjectLiqui(projectLiquiAddDTO);
 		transferRecordLiqui.setProjectId(projectId);
+		System.out.println(transferRecordLiqui);
+
+		expenseRecordService.addExpenseRecordByProjectIdAndExpenseRecordList(projectId, transferRecordLiqui.getTransferRecordId());
+
 		return this.updateById(transferRecordLiqui);
 	}
 
@@ -106,12 +110,13 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 	}
 
 	@Override
-	public TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType){
-		return this.baseMapper.getByProjectId(projectId,transferType);
+	public TransferRecordLiqui getByProjectId(Integer projectId, Integer transferType) {
+		return this.baseMapper.getByProjectId(projectId, transferType);
 	}
 
 	/**
 	 * 新增移交记录表
+	 *
 	 * @param transferRecordLiqui 移交记录表
 	 * @return R
 	 */
@@ -129,5 +134,10 @@ public class TransferRecordLiquiServiceImpl extends ServiceImpl<TransferRecordLi
 		bankLoanService.updateById(bankLoan);
 
 		return this.save(transferRecordLiqui);
+	}
+
+	@Override
+	public TransferRecordLiqui queryTransferRecordLiquiById(Integer transferRecordId) {
+		return this.baseMapper.queryTransferRecordLiquiById(transferRecordId);
 	}
 }

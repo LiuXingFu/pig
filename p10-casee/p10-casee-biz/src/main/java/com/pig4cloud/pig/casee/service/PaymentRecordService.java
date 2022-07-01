@@ -32,6 +32,7 @@ import com.pig4cloud.pig.casee.entity.Project;
 import com.pig4cloud.pig.casee.vo.MoneyBackMonthlyRank;
 import com.pig4cloud.pig.casee.vo.PaymentRecordCourtPaymentVO;
 import com.pig4cloud.pig.casee.vo.PaymentRecordVO;
+import com.pig4cloud.pig.casee.vo.ProjectLiQuiAndSubjectListVO;
 import com.pig4cloud.pig.casee.vo.paifu.PaymentRecordListVO;
 
 import java.math.BigDecimal;
@@ -149,4 +150,12 @@ public interface PaymentRecordService extends IService<PaymentRecord> {
 	 * @return
 	 */
 	Integer savePaifuPaymentRecord(PaymentRecordSaveDTO paymentRecordSaveDTO);
+
+	/**
+	 * 将项目id与回款详细记录集合添加到回款详细记录表与相关表中
+	 * @param projectLiQuiAndSubjectListVO 项目详情与债务人集合
+	 * @param paymentRecordList
+	 * @return
+	 */
+	int addPaymentRecordByProjectIdAndPaymentRecordList(ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO, List<PaymentRecord> paymentRecordList);
 }

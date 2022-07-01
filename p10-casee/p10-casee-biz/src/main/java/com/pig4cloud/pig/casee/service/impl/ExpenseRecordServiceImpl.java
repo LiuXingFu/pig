@@ -30,14 +30,13 @@ import com.pig4cloud.pig.casee.dto.paifu.ExpenseRecordPaifuSaveDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.CaseeLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.CaseeLiquiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.ProjectLiQuiDetail;
 import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.FirstTrialRefereeResult;
 import com.pig4cloud.pig.casee.mapper.ExpenseRecordMapper;
 import com.pig4cloud.pig.casee.service.*;
-import com.pig4cloud.pig.casee.vo.ExpenseRecordDistributeVO;
-import com.pig4cloud.pig.casee.vo.ExpenseRecordMoneyBackVO;
-import com.pig4cloud.pig.casee.vo.ExpenseRecordVO;
+import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordDetailVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPaifuAssetsReListVO;
 import com.pig4cloud.pig.casee.vo.paifu.ExpenseRecordPageVO;
@@ -90,31 +89,33 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	private CaseeService caseeService;
 	@Autowired
 	private CaseeLiquiService caseeLiquiService;
+	@Autowired
+	private TransferRecordLiquiService transferRecordLiquiService;
 
 	@Override
 	public IPage<ExpenseRecordVO> getExpenseRecordPage(Page page, ExpenseRecord expenseRecord) {
-		return this.baseMapper.getExpenseRecordPage(page,expenseRecord);
+		return this.baseMapper.getExpenseRecordPage(page, expenseRecord);
 	}
 
 	@Override
 	public boolean saveExpenseRecordUpdateProject(ExpenseRecord expenseRecord) {
-		ExpenseRecord record = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId,expenseRecord.getProjectId()).eq(ExpenseRecord::getCaseeNumber, expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getCostType, expenseRecord.getCostType()).eq(ExpenseRecord::getStatus,0));
+		ExpenseRecord record = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, expenseRecord.getProjectId()).eq(ExpenseRecord::getCaseeNumber, expenseRecord.getCaseeNumber()).eq(ExpenseRecord::getCostType, expenseRecord.getCostType()).eq(ExpenseRecord::getStatus, 0));
 		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
 		expenseRecord.setSubjectName(project.getSubjectPersons());
 
-		if (record!=null){//如果当前费用类型的案件费用信息已经存在则费用金额累加
+		if (record != null) {//如果当前费用类型的案件费用信息已经存在则费用金额累加
 			record.setCostAmount(record.getCostAmount().add(expenseRecord.getCostAmount()));
 			record.setCostIncurredTime(expenseRecord.getCostIncurredTime());
 			this.updateById(record);
-		}else {
+		} else {
 			//添加费用产出记录
 			this.save(expenseRecord);
 
 			//查询项目关联主体信息
 			List<ProjectSubjectRe> list = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, project.getProjectId()));
 
-			List<ExpenseRecordSubjectRe> expenseRecordSubjectReList=new ArrayList<>();
-			ExpenseRecordSubjectRe expenseRecordSubjectRe=new ExpenseRecordSubjectRe();
+			List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
+			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
 			for (ProjectSubjectRe projectSubjectRe : list) {
 				expenseRecordSubjectRe.setSubjectId(projectSubjectRe.getSubjectId());
 				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
@@ -146,10 +147,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		ProjectLiqui project = projectLiquiService.getByProjectId(expenseRecord.getProjectId());
 		ProjectLiQuiDetail projectLiQuiDetail = project.getProjectLiQuiDetail();
 		//修改项目总金额
-		if (expenseRecord.getStatus()==0){//恢复正常
+		if (expenseRecord.getStatus() == 0) {//恢复正常
 			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().add(expenseRecord.getCostAmount()));
 			project.setProjectLiQuiDetail(projectLiQuiDetail);
-		}else if (expenseRecord.getStatus()==2){//作废
+		} else if (expenseRecord.getStatus() == 2) {//作废
 			projectLiQuiDetail.setProjectAmount(projectLiQuiDetail.getProjectAmount().subtract(expenseRecord.getCostAmount()));
 			project.setProjectLiQuiDetail(projectLiQuiDetail);
 		}
@@ -217,7 +218,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 
 	@Override
 	public void refereeResultTakeEffectUpdateExpenseRecord(RefereeResultTakeEffectDTO refereeResultTakeEffectDTO) {
-		Casee casee=new Casee();
+		Casee casee = new Casee();
 		casee.setCaseeId(refereeResultTakeEffectDTO.getCaseeId());
 		casee.setJudicialExpenses(refereeResultTakeEffectDTO.getLitigationCosts());
 		//修改案件案件受理费
@@ -231,34 +232,34 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 
 		ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(refereeResultTakeEffectDTO.getProjectId());
 		ProjectLiQuiDetail projectLiQuiDetail = new ProjectLiQuiDetail();
-		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(),projectLiQuiDetail);
+		BeanCopyUtil.copyBean(projectLiqui.getProjectLiQuiDetail(), projectLiQuiDetail);
 		projectLiQuiDetail.setPrincipal(refereeResultTakeEffectDTO.getPrincipal());
 		projectLiQuiDetail.setInterest(refereeResultTakeEffectDTO.getInterest());
 		projectLiQuiDetail.setPrincipalInterestAmount(refereeResultTakeEffectDTO.getRefereeAmount());
 		projectLiQuiDetail.setProjectAmount(refereeResultTakeEffectDTO.getRefereeAmount());
 
 		//查询项目本金费用产生记录并修改本金金额
-		ExpenseRecord bjExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 10001).eq(ExpenseRecord::getStatus,0));
-		if (bjExpenseRecord!=null){
+		ExpenseRecord bjExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 10001).eq(ExpenseRecord::getStatus, 0));
+		if (bjExpenseRecord != null) {
 			bjExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getPrincipal());
 			this.updateById(bjExpenseRecord);
 		}
 
 		//查询项目利息费用产生记录并修改利息金额
-		ExpenseRecord lxExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 30001).eq(ExpenseRecord::getStatus,0));
-		if (lxExpenseRecord!=null){
+		ExpenseRecord lxExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCostType, 30001).eq(ExpenseRecord::getStatus, 0));
+		if (lxExpenseRecord != null) {
 			lxExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getInterest());
 			this.updateById(lxExpenseRecord);
 		}
 
 		//查询一审诉讼费并修改诉讼金额
-		ExpenseRecord ysExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCaseeId, refereeResultTakeEffectDTO.getCaseeId()).eq(ExpenseRecord::getCostType, 10003).eq(ExpenseRecord::getStatus,0));
+		ExpenseRecord ysExpenseRecord = this.getOne(new LambdaQueryWrapper<ExpenseRecord>().eq(ExpenseRecord::getProjectId, refereeResultTakeEffectDTO.getProjectId()).eq(ExpenseRecord::getCaseeId, refereeResultTakeEffectDTO.getCaseeId()).eq(ExpenseRecord::getCostType, 10003).eq(ExpenseRecord::getStatus, 0));
 
-		if (ysExpenseRecord!=null){
+		if (ysExpenseRecord != null) {
 			ysExpenseRecord.setCostAmount(refereeResultTakeEffectDTO.getLitigationCosts());
 			this.updateById(ysExpenseRecord);
-		}else {
-			List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, refereeResultTakeEffectDTO.getProjectId()).ne(ProjectSubjectRe::getType,0));
+		} else {
+			List<ProjectSubjectRe> projectSubjectReList = projectSubjectReService.list(new LambdaQueryWrapper<ProjectSubjectRe>().eq(ProjectSubjectRe::getProjectId, refereeResultTakeEffectDTO.getProjectId()).ne(ProjectSubjectRe::getType, 0));
 
 			//添加一审诉讼费用产生明显
 			ExpenseRecord expenseRecordPrincipal = new ExpenseRecord();
@@ -288,8 +289,8 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId,Integer caseeId,Integer assetsId) {
-		return this.baseMapper.selectByProjectCaseeAssetsId(projectId,caseeId,assetsId);
+	public List<ExpenseRecordDistributeVO> getAssetsByPaymentType(Integer projectId, Integer caseeId, Integer assetsId) {
+		return this.baseMapper.selectByProjectCaseeAssetsId(projectId, caseeId, assetsId);
 	}
 
 	@Override
@@ -308,7 +309,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public ExpenseRecord addExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO,List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList,Integer costType) {
+	public ExpenseRecord addExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, AssetsReSubjectDTO assetsReSubjectDTO, List<JointAuctionAssetsDTO> jointAuctionAssetsDTOList, Integer costType) {
 		//添加费用明细记录
 		ExpenseRecord expenseRecord = new ExpenseRecord();
 		expenseRecord.setCostAmount(amount);
@@ -322,7 +323,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		expenseRecord.setCostType(costType);
 		this.save(expenseRecord);
 
-		if (jointAuctionAssetsDTOList!=null){//联合拍卖
+		if (jointAuctionAssetsDTOList != null) {//联合拍卖
 			List<ExpenseRecordAssetsRe> expenseRecordAssetsReList = new ArrayList<>();
 			//循环当前拍卖公告联合拍卖财产信息
 			for (JointAuctionAssetsDTO jointAuctionAssetsDTO : jointAuctionAssetsDTOList) {
@@ -333,7 +334,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 			}
 			// 添加费用产生记录财产关联信息
 			expenseRecordAssetsReService.saveBatch(expenseRecordAssetsReList);
-		}else {
+		} else {
 			//循环当前拍卖公告联合拍卖财产信息
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
 			expenseRecordAssetsRe.setAssetsReId(assetsReSubjectDTO.getAssetsReId());
@@ -355,7 +356,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public ExpenseRecord addCommonExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee,List<Subject> subjectList, String subjectName, Integer costType) {
+	public ExpenseRecord addCommonExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, List<Subject> subjectList, String subjectName, Integer costType) {
 		//添加项目费用产生记录
 		ExpenseRecord expenseRecord = new ExpenseRecord();
 		expenseRecord.setProjectId(project.getProjectId());
@@ -365,7 +366,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		expenseRecord.setStatus(0);
 		expenseRecord.setCompanyCode(project.getCompanyCode());
 		expenseRecord.setSubjectName(subjectName);
-		if (casee!=null){
+		if (casee != null) {
 			expenseRecord.setCaseeId(casee.getCaseeId());
 			expenseRecord.setCaseeNumber(casee.getCaseeNumber());
 		}
@@ -373,9 +374,9 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		this.save(expenseRecord);
 
 		//添加费用记录关联主体信息
-		ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
-		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList=new ArrayList<>();
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
 		for (Subject subject : subjectList) {
+			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
 			expenseRecordSubjectRe.setSubjectId(subject.getSubjectId());
 			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
 			expenseRecordSubjectReList.add(expenseRecordSubjectRe);
@@ -385,9 +386,9 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId) {
+	public void updateExpenseRecordProjectAmount(Integer ExpenseRecordId, BigDecimal costAmount, BigDecimal updateCostAmount, Integer projectId) {
 		//拍辅费要是已分配，修改已回款记录作废
-		List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, ExpenseRecordId).eq(PaymentRecord::getStatus,1));
+		List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, ExpenseRecordId).eq(PaymentRecord::getStatus, 1));
 		if (paymentRecordList.size() > 0) {//已回款
 			for (PaymentRecord paymentRecord : paymentRecordList) {
 				//修改项目回款总金额、已回款记录作废
@@ -409,13 +410,13 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public BigDecimal totalAmountByProjectId(Integer projectId){
+	public BigDecimal totalAmountByProjectId(Integer projectId) {
 		return this.baseMapper.totalAmountByProjectId(projectId);
 	}
 
 	@Override
 	@Transactional
-	public Integer savePaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO){
+	public Integer savePaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO) {
 		// 查询项目最后一条案件信息
 		Casee casee = projectCaseeReService.getImplementCaseeByProjectId(expenseRecordPaifuSaveDTO.getProjectId());
 		// 查询财产债务人名称
@@ -423,7 +424,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		R<String> subjectNames = remoteSubjectService.querySubjectName(subjectIdList, SecurityConstants.FROM);
 
 		ExpenseRecord expenseRecord = new ExpenseRecord();
-		BeanCopyUtil.copyBean(expenseRecordPaifuSaveDTO,expenseRecord);
+		BeanCopyUtil.copyBean(expenseRecordPaifuSaveDTO, expenseRecord);
 		expenseRecord.setStatus(0);
 		expenseRecord.setCaseeId(casee.getCaseeId());
 		expenseRecord.setCaseeNumber(casee.getCaseeNumber());
@@ -431,7 +432,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		Integer save = this.baseMapper.insert(expenseRecord);
 
 		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
-		for(Integer subjectId:subjectIdList){
+		for (Integer subjectId : subjectIdList) {
 			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
 			expenseRecordSubjectRe.setSubjectId(subjectId);
 			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
@@ -440,7 +441,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		recordSubjectReService.saveBatch(expenseRecordSubjectRes);
 
 		List<ExpenseRecordAssetsRe> expenseRecordAssetsRes = new ArrayList<>();
-		for(Integer assetsReId : expenseRecordPaifuSaveDTO.getAssetsReIdList()){
+		for (Integer assetsReId : expenseRecordPaifuSaveDTO.getAssetsReIdList()) {
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
 			expenseRecordAssetsRe.setAssetsReId(assetsReId);
 			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
@@ -455,26 +456,26 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 
 	@Override
 	@Transactional
-	public Integer modifyPaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO){
+	public Integer modifyPaifuExpenseRecord(ExpenseRecordPaifuSaveDTO expenseRecordPaifuSaveDTO) {
 		// 查询财产债务人名称
 		List<Integer> subjectIdList = assetsReSubjectService.queryByAssetsIdList(expenseRecordPaifuSaveDTO.getAssetsReIdList());
 		R<String> subjectNames = remoteSubjectService.querySubjectName(subjectIdList, SecurityConstants.FROM);
 
 		ExpenseRecord expenseRecord = new ExpenseRecord();
-		BeanCopyUtil.copyBean(expenseRecordPaifuSaveDTO,expenseRecord);
+		BeanCopyUtil.copyBean(expenseRecordPaifuSaveDTO, expenseRecord);
 		expenseRecord.setSubjectName(subjectNames.getData());
 		Integer save = this.baseMapper.updateById(expenseRecord);
 
 		QueryWrapper<ExpenseRecordAssetsRe> queryWrapper = new QueryWrapper<>();
-		queryWrapper.lambda().eq(ExpenseRecordAssetsRe::getExpenseRecordId,expenseRecordPaifuSaveDTO.getExpenseRecordId());
+		queryWrapper.lambda().eq(ExpenseRecordAssetsRe::getExpenseRecordId, expenseRecordPaifuSaveDTO.getExpenseRecordId());
 		expenseRecordAssetsReService.remove(queryWrapper);
 
 		QueryWrapper<ExpenseRecordSubjectRe> expenseRecordSubjectReQueryWrapper = new QueryWrapper<>();
-		expenseRecordSubjectReQueryWrapper.lambda().eq(ExpenseRecordSubjectRe::getExpenseRecordId,expenseRecordPaifuSaveDTO.getExpenseRecordId());
+		expenseRecordSubjectReQueryWrapper.lambda().eq(ExpenseRecordSubjectRe::getExpenseRecordId, expenseRecordPaifuSaveDTO.getExpenseRecordId());
 		recordSubjectReService.remove(expenseRecordSubjectReQueryWrapper);
 
 		List<ExpenseRecordSubjectRe> expenseRecordSubjectRes = new ArrayList<>();
-		for(Integer subjectId:subjectIdList){
+		for (Integer subjectId : subjectIdList) {
 			ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
 			expenseRecordSubjectRe.setSubjectId(subjectId);
 			expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
@@ -483,7 +484,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		recordSubjectReService.saveBatch(expenseRecordSubjectRes);
 
 		List<ExpenseRecordAssetsRe> expenseRecordAssetsRes = new ArrayList<>();
-		for(Integer assetsReId : expenseRecordPaifuSaveDTO.getAssetsReIdList()){
+		for (Integer assetsReId : expenseRecordPaifuSaveDTO.getAssetsReIdList()) {
 			ExpenseRecordAssetsRe expenseRecordAssetsRe = new ExpenseRecordAssetsRe();
 			expenseRecordAssetsRe.setAssetsReId(assetsReId);
 			expenseRecordAssetsRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
@@ -497,10 +498,10 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public 	ExpenseRecordPaifuAssetsReListVO queryPaifuExpenseRecordAssetsReList(Integer expenseRecordId){
+	public ExpenseRecordPaifuAssetsReListVO queryPaifuExpenseRecordAssetsReList(Integer expenseRecordId) {
 		ExpenseRecordPaifuAssetsReListVO expenseRecordPaifuAssetsReListVOS = new ExpenseRecordPaifuAssetsReListVO();
 		ExpenseRecord expenseRecord = this.baseMapper.selectById(expenseRecordId);
-		BeanCopyUtil.copyBean(expenseRecord,expenseRecordPaifuAssetsReListVOS);
+		BeanCopyUtil.copyBean(expenseRecord, expenseRecordPaifuAssetsReListVOS);
 
 		List<Integer> assetsReIdList = expenseRecordAssetsReService.queryByExpenseRecordId(expenseRecordId);
 		expenseRecordPaifuAssetsReListVOS.setAssetsReIdList(assetsReIdList);
@@ -509,18 +510,18 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public IPage<ExpenseRecordPageVO> queryPaifuExpenseRecordPage(Page page, Integer projectId){
-		return this.baseMapper.queryPaifuExpenseRecordPage(page,projectId);
+	public IPage<ExpenseRecordPageVO> queryPaifuExpenseRecordPage(Page page, Integer projectId) {
+		return this.baseMapper.queryPaifuExpenseRecordPage(page, projectId);
 	}
 
 	@Override
-	public ExpenseRecordDetailVO queryDetailById(Integer expenseRecordId){
+	public ExpenseRecordDetailVO queryDetailById(Integer expenseRecordId) {
 		ExpenseRecordDetailVO expenseRecordDetailVO = this.baseMapper.queryDetailById(expenseRecordId);
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setExpenseRecordId(expenseRecordId);
 		BigDecimal paymentAmount = paymentRecordService.sumCourtPayment(paymentRecord);
 		BigDecimal outstandingAmount = expenseRecordDetailVO.getCostAmount();
-		if(paymentAmount!=null){
+		if (paymentAmount != null) {
 			outstandingAmount = outstandingAmount.subtract(paymentAmount);
 		}
 		expenseRecordDetailVO.setOutstandingAmount(outstandingAmount);
@@ -528,7 +529,71 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
-	public 	ExpenseRecord queryByAssetsReId(Integer projectId,Integer assetsReId){
-		return this.baseMapper.queryByAssetsReId(projectId,assetsReId);
+	public ExpenseRecord queryByAssetsReId(Integer projectId, Integer assetsReId) {
+		return this.baseMapper.queryByAssetsReId(projectId, assetsReId);
 	}
+
+	/**
+	 * 将项目id和费用产生记录集合添加费用产生记录以及其它关联信息
+	 *
+	 * @param projectId        项目id
+	 * @param transferRecordId 移送记录id
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public int addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId) {
+
+		int add = 0;
+
+		TransferRecordLiqui recordLiqui = transferRecordLiquiService.queryTransferRecordLiquiById(transferRecordId);
+
+		ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO = projectLiquiService.selectProjectLiquiAndSubject(projectId);
+
+		List<ExpenseRecord> expenseRecordList = recordLiqui.getTransferRecordLiquiDetail().getExpenseRecordList();
+
+		List<PaymentRecord> paymentRecordList = new ArrayList<>();
+
+		for (ExpenseRecord expenseRecord : expenseRecordList) {
+			expenseRecord.setProjectId(projectId);
+			expenseRecord.setCompanyCode(projectLiQuiAndSubjectListVO.getProjectLiqui().getCompanyCode());
+			expenseRecord.setSubjectName(projectLiQuiAndSubjectListVO.getProjectLiqui().getSubjectPersons());
+		}
+
+		this.saveBatch(expenseRecordList);
+
+		List<ExpenseRecordSubjectRe> expenseRecordSubjectReList = new ArrayList<>();
+		for (ProjectSubjectVO projectSubjectVO : projectLiQuiAndSubjectListVO.getProjectSubjectVOList()) {
+			for (ExpenseRecord expenseRecord : expenseRecordList) {
+				ExpenseRecordSubjectRe expenseRecordSubjectRe = new ExpenseRecordSubjectRe();
+				expenseRecordSubjectRe.setSubjectId(projectSubjectVO.getSubjectId());
+				expenseRecordSubjectRe.setExpenseRecordId(expenseRecord.getExpenseRecordId());
+				expenseRecordSubjectReList.add(expenseRecordSubjectRe);
+			}
+		}
+
+		expenseRecordSubjectReService.saveBatch(expenseRecordSubjectReList);
+
+		for (ExpenseRecord expenseRecord : expenseRecordList) {
+			if (expenseRecord.getStatus().equals(1)) {
+				PaymentRecord paymentRecord = new PaymentRecord();
+				BeanCopyUtil.copyBean(expenseRecord, paymentRecord);
+				paymentRecord.setFundsType(expenseRecord.getCostType());
+				paymentRecord.setPaymentType(100);
+				paymentRecord.setPaymentAmount(expenseRecord.getCostAmount());
+				paymentRecord.setPaymentDate(expenseRecord.getCostIncurredTime());
+				paymentRecordList.add(paymentRecord);
+			}
+		}
+
+		// 更新项目总金额
+		projectPaifuService.updateProjectAmount(projectId);
+
+ 		if (paymentRecordList.size() > 0){
+			this.paymentRecordService.addPaymentRecordByProjectIdAndPaymentRecordList(projectLiQuiAndSubjectListVO, paymentRecordList);
+		}
+
+		return add += 1;
+	}
+
 }

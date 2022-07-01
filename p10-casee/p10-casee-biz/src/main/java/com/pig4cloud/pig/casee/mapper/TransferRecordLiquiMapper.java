@@ -52,4 +52,6 @@ public interface TransferRecordLiquiMapper extends BaseMapper<TransferRecord> {
 	List<MortgageAssetsVO> getProjectIdByMortgageAssets(Integer projectId);
 
 	TransferRecordLiqui getByProjectId(@Param("projectId")Integer projectId,@Param("transferType") Integer transferType);
+
+	TransferRecordLiqui queryTransferRecordLiquiById(Integer transferRecordId);
 }

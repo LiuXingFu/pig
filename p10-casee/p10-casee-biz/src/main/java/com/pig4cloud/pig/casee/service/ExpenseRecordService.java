@@ -163,4 +163,12 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	 */
 	ExpenseRecord queryByAssetsReId(Integer projectId,Integer assetsReId);
 
+	/**
+	 * 将项目id和费用产生记录集合添加费用产生记录以及其它关联信息
+	 * @param projectId 项目id
+	 * @param transferRecordId 移送记录id
+	 * @return
+	 */
+	int addExpenseRecordByProjectIdAndExpenseRecordList(Integer projectId, Integer transferRecordId);
+
 }

@@ -59,4 +59,11 @@ public interface TransferRecordLiquiService extends IService<TransferRecord> {
 	TransferRecordLiqui getByProjectId(Integer projectId,Integer transferType);
 
 	Boolean saveTransferRecord(TransferRecordLiqui transferRecordLiqui);
+
+	/**
+	 * 根据银行借贷移送记录id查询银行借贷移送记录详情信息
+	 * @param transferRecordId
+	 * @return
+	 */
+	TransferRecordLiqui queryTransferRecordLiquiById(Integer transferRecordId);
 }

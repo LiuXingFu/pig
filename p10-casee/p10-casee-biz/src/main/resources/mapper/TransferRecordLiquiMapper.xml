@@ -142,4 +142,9 @@
 			and transfer_type = #{transferType}
 		</if>
 	</select>
+
+	<select id="queryTransferRecordLiquiById" resultType="com.pig4cloud.pig.casee.entity.liquientity.TransferRecordLiqui">
+		select * from p10_transfer_record
+		where del_flag = 0 and transfer_record_id = #{transferRecordId}
+	</select>
 </mapper>

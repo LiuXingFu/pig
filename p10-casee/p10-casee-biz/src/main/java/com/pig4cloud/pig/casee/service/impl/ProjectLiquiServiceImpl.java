@@ -258,16 +258,7 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		TransferRecordBankLoanVO transferRecordBankLoanVO = transferRecordLiquiService.getTransferRecordBankLoan(null, projectId);
 		projectLiquiDetailsVO.setTransferRecordBankLoanVO(transferRecordBankLoanVO);
 
-		ProjectSubjectDTO projectSubjectDTO = new ProjectSubjectDTO();
-		projectSubjectDTO.setProjectId(projectId);
-		List<Integer> typeList = new ArrayList<>();
-		typeList.add(1);
-		typeList.add(2);
-		typeList.add(3);
-		projectSubjectDTO.setTypeList(typeList);
-		// 债务人列表
-		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectSubjectDTO);
-		projectLiquiDetailsVO.setProjectSubjectVOList(projectSubjectVOList);
+		projectLiquiDetailsVO.setProjectSubjectVOList(queryProjectSubjectVOList(projectId));
 
 		return projectLiquiDetailsVO;
 	}
@@ -1324,6 +1315,37 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 		bankLoanService.update(updateWrapper);
 
 		return modify;
+	}
+
+	/**
+	 * 根据项目id查询项目详细信息与项目债务人集合
+	 * @param projectId 项目id
+	 * @return
+	 */
+	@Override
+	public ProjectLiQuiAndSubjectListVO selectProjectLiquiAndSubject(Integer projectId) {
+
+		ProjectLiQuiAndSubjectListVO projectLiQuiAndSubjectListVO = new ProjectLiQuiAndSubjectListVO();
+
+		projectLiQuiAndSubjectListVO.setProjectLiqui(this.baseMapper.selectProjectDetails(projectId));
+
+		projectLiQuiAndSubjectListVO.setProjectSubjectVOList(queryProjectSubjectVOList(projectId));
+
+		return projectLiQuiAndSubjectListVO;
+	}
+
+	private List<ProjectSubjectVO> queryProjectSubjectVOList(Integer projectId) {
+		ProjectSubjectDTO projectSubjectDTO = new ProjectSubjectDTO();
+		projectSubjectDTO.setProjectId(projectId);
+		List<Integer> typeList = new ArrayList<>();
+		typeList.add(1);
+		typeList.add(2);
+		typeList.add(3);
+		projectSubjectDTO.setTypeList(typeList);
+		// 债务人列表
+		List<ProjectSubjectVO> projectSubjectVOList = this.baseMapper.selectProjectSubject(projectSubjectDTO);
+
+		return projectSubjectVOList;
 	}
 
 }
