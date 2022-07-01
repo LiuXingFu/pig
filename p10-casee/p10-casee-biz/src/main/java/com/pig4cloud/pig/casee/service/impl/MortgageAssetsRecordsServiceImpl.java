@@ -34,6 +34,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,15 +99,17 @@ public class MortgageAssetsRecordsServiceImpl extends ServiceImpl<MortgageAssets
 		List<AssetsDTO> assetsList = mortgageAssetsDTO.getAssetsDTOList();
 		Assets assets=new Assets();
 
-		for (AssetsDTO assetsDTO : assetsList) {
-			//如果抵押财产发生改变则删除关联关系
-			if (assetsDTO.getMortgageAssetsReId()!=null){
-				//删除抵押财产关联信息
-				mortgageAssetsReService.removeById(assetsDTO.getMortgageAssetsReId());
+		if (mortgageAssetsDTO.getMortgageAssetsRecordsId()!=null){
+			List<MortgageAssetsRe> mortgageAssetsReList = mortgageAssetsReService.list(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId, mortgageAssetsDTO.getMortgageAssetsRecordsId()));
+			for (MortgageAssetsRe mortgageAssetsRe : mortgageAssetsReList) {
 				//删除抵押财产关联债务人信息
-				mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,assetsDTO.getMortgageAssetsReId()));
+				mortgageAssetsSubjectReService.remove(new LambdaQueryWrapper<MortgageAssetsSubjectRe>().eq(MortgageAssetsSubjectRe::getMortgageAssetsReId,mortgageAssetsRe.getMortgageAssetsReId()));
 			}
+			//删除抵押财产关联信息
+			mortgageAssetsReService.remove(new LambdaQueryWrapper<MortgageAssetsRe>().eq(MortgageAssetsRe::getMortgageAssetsRecordsId,mortgageAssetsDTO.getMortgageAssetsRecordsId()));
+		}
 
+		for (AssetsDTO assetsDTO : assetsList) {
 			Integer assetsId = assetsDTO.getAssetsId();
 			if (assetsId!=null){//财产已存在
 				//修改财产信息
