@@ -103,6 +103,17 @@ public interface ExpenseRecordService extends IService<ExpenseRecord> {
 	ExpenseRecord addCommonExpenseRecord(BigDecimal amount, LocalDate date, Project project, Casee casee, List<Subject> subjectList, String subjectName, Integer costType);
 
 	/**
+	 * 修改定价、拍辅费用产生记录、项目回款总金额、项目总金额、作废已回款记录
+	 * @param ExpenseRecordId					费用产生记录id
+	 * @param costAmount						费用金额
+	 * @param updateCostAmount					费用改动金额
+	 * @param projectId 						项目id
+	 * @param projectType 						项目类型
+	 * @return
+	 */
+	void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId,Integer projectType);
+
+	/**
 	 * 根据项目id统计总金额
 	 * @param projectId
 	 * @return

@@ -7,6 +7,7 @@ import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.paifuentity.ProjectPaifu;
 import com.pig4cloud.pig.casee.entity.paifuentity.entityzxprocedure.PaiFu_STCC_JGYJ_JGYJ;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXJGYJ_CCZXJGYJ;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
@@ -119,36 +120,33 @@ public class PaiFu_STCC_JGYJ_JGYJ_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskMakeUp(TaskNode taskNode) {
+		//补录的节点数据
+		PaiFu_STCC_JGYJ_JGYJ makeUpPaiFu_STCC_JGYJ_JGYJ = JsonUtils.jsonToPojo(taskNode.getFormData(), PaiFu_STCC_JGYJ_JGYJ.class);
+
+		//查询补录之前的数据
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		PaiFu_STCC_JGYJ_JGYJ paiFu_STCC_JGYJ_JGYJ = JsonUtils.jsonToPojo(node.getFormData(), PaiFu_STCC_JGYJ_JGYJ.class);
 
 		if (paiFu_STCC_JGYJ_JGYJ != null) {
-
-			//添加定价费用需修改项目总金额
-			if (paiFu_STCC_JGYJ_JGYJ.getPricingManner() != 0) {
+			//如果补录定价费用发生改变
+			if (paiFu_STCC_JGYJ_JGYJ.getPricingManner() != 0 && makeUpPaiFu_STCC_JGYJ_JGYJ.getPricingFee().compareTo(paiFu_STCC_JGYJ_JGYJ.getPricingFee()) != 0) {
+				//拍辅定价费要是已分配，修改已回款记录作废，修改费用金额，修改项目回款总金额以及项目总金额
+				expenseRecordService.updateExpenseRecordProjectAmount(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId(),paiFu_STCC_JGYJ_JGYJ.getPricingFee(),makeUpPaiFu_STCC_JGYJ_JGYJ.getPricingFee(),taskNode.getProjectId(),200);
 
 				Target target = targetService.getById(taskNode.getTargetId());
 
-				//删除费用明细记录以及关联信息
-				expenseRecordService.deleteExpenseRecordRe(paiFu_STCC_JGYJ_JGYJ.getPaiFuExpenseRecordId());
-
 				//通过清收移交记录信息查询清收项目id
 				LiquiTransferRecord liquiTransferRecord = liquiTransferRecordService.getByPaifuProjectIdAndAssetsId(taskNode.getProjectId(), target.getGoalId());
-				if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要添加清收回款、费用产生记录明细
+				if (liquiTransferRecord != null) {//如果当前财产是清收移交过来的财产那么也要修改清收回款、费用产生记录明细
 					ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(liquiTransferRecord.getProjectId());
 
-					projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(paiFu_STCC_JGYJ_JGYJ.getPricingFee()));
-					projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-					//修改清收项目总金额
-					projectLiquiService.updateById(projectLiqui);
-
-					//删除费用明细记录以及关联信息
-					expenseRecordService.deleteExpenseRecordRe(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId());
+					//清收定价费要是已分配，修改已回款记录作废，修改费用金额，修改项目回款总金额以及项目总金额
+					expenseRecordService.updateExpenseRecordProjectAmount(paiFu_STCC_JGYJ_JGYJ.getLiQuiExpenseRecordId(),paiFu_STCC_JGYJ_JGYJ.getPricingFee(),makeUpPaiFu_STCC_JGYJ_JGYJ.getPricingFee(),projectLiqui.getProjectId(),100);
 				}
 			}
+		}else {
+			//拍辅价格依据
+			setPaiFuStccJgyjJgyj(taskNode);
 		}
-
-		//拍辅价格依据
-		setPaiFuStccJgyjJgyj(taskNode);
 	}
 }

@@ -29,6 +29,7 @@ import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.vo.*;
 import com.pig4cloud.pig.casee.vo.count.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -55,6 +56,34 @@ public interface ProjectLiquiService extends IService<Project> {
 	Integer modifyStatusById(ProjectModifyStatusDTO projectModifyStatusDTO);
 
 	ProjectLiqui getByProjectId(Integer projectId);
+
+	/**
+	 * 添加项目总金额
+	 * @param projectLiqui
+	 * @return
+	 */
+	boolean addProjectAmount(ProjectLiqui projectLiqui, BigDecimal amount);
+
+	/**
+	 * 扣除项目总金额
+	 * @param projectLiqui
+	 * @return
+	 */
+	boolean subtractProjectAmount(ProjectLiqui projectLiqui,BigDecimal amount);
+
+	/**
+	 * 添加项目回款总金额
+	 * @param projectLiqui
+	 * @return
+	 */
+	boolean addRepaymentAmount(ProjectLiqui projectLiqui, BigDecimal amount);
+
+	/**
+	 * 扣除项目回款总金额
+	 * @param projectLiqui
+	 * @return
+	 */
+	boolean subtractRepaymentAmount(ProjectLiqui projectLiqui,BigDecimal amount);
 
 	IPage<ProjectLiquiOrBehaviorPageVO> queryPageProjectLiqui(Page page, Integer subjectId);
 

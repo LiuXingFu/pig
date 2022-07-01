@@ -201,11 +201,11 @@ public class MessageRecordServiceImpl extends ServiceImpl<MessageRecordMapper, M
 
 			//消息内容
 			messageRecordDTO.setMessageContent("执行案号：" + liquiTransferRecord.getCaseeNumber()
-					+ "。财产：" + assets.getAssetsName() + "。申请人："
-					+ caseeLiqui.getApplicantName() + "，债务人："
+					+ "&财产：" + assets.getAssetsName() + "&申请人："
+					+ caseeLiqui.getApplicantName() + "&债务人："
 					+ caseeLiqui.getExecutedName()
-					+ "。" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "任务节点“" + taskNode.getNodeName()
-					+ "”，请点击按钮查看详情。");
+					+ "&" + (taskNode.getSubmissionStatus() == 0 ? "添加" : "补录") + "任务节点“" + taskNode.getNodeName()
+					+ "”，请点击按钮查看详情");
 
 			NodeMessageRecordVO nodeMessageRecordVO = new NodeMessageRecordVO();
 

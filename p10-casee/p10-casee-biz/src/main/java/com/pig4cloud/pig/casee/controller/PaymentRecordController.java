@@ -199,6 +199,19 @@ public class PaymentRecordController {
     }
 
 	/**
+	 * 作废回款记录信息
+	 * @param paymentRecordId id
+	 * @return R
+	 */
+	@ApiOperation(value = "作废回款记录信息", notes = "作废回款记录信息")
+	@SysLog("作废回款记录信息" )
+	@GetMapping("/paymentCancellation" )
+	public R paymentCancellation(Integer paymentRecordId,Integer projectType) {
+		paymentRecordService.paymentCancellation(paymentRecordId,projectType);
+		return R.ok();
+	}
+
+	/**
 	 * 查询回款额排名
 	 * @param page
 	 * @param countMoneyBackMonthlyRankDTO

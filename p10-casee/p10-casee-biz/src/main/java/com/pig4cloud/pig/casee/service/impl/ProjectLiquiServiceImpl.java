@@ -25,7 +25,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pig4cloud.pig.admin.api.dto.SubjectAddressDTO;
 import com.pig4cloud.pig.admin.api.dto.SubjectPageDTO;
-import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.entity.Subject;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.admin.api.feign.RemoteSubjectService;
@@ -294,6 +293,38 @@ public class ProjectLiquiServiceImpl extends ServiceImpl<ProjectLiquiMapper, Pro
 	@Override
 	public ProjectLiqui getByProjectId(Integer projectId) {
 		return this.baseMapper.selectProjectDetails(projectId);
+	}
+
+	@Override
+	public boolean addProjectAmount(ProjectLiqui projectLiqui,BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().add(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean subtractProjectAmount(ProjectLiqui projectLiqui,BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setProjectAmount(projectLiqui.getProjectLiQuiDetail().getProjectAmount().subtract(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean addRepaymentAmount(ProjectLiqui projectLiqui, BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().add(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
+	}
+
+	@Override
+	public boolean subtractRepaymentAmount(ProjectLiqui projectLiqui, BigDecimal amount) {
+		projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(amount));
+		projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
+		//修改清收项目总金额
+		return this.updateById(projectLiqui);
 	}
 
 	@Override

@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-
 @Component
 public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandler {
 
@@ -74,46 +71,32 @@ public class FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK_NODEHandler extends TaskNodeHandle
 
 	@Override
 	public void handlerTaskMakeUp(TaskNode taskNode) {
+		//补录的节点数据
+		FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK makeUpFundingZX_zjzx_zjzxzjhk_zjzxzjhk = JsonUtils.jsonToPojo(taskNode.getFormData(), FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK.class);
 
+		//查询补录之前的数据
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK fundingZX_zjzx_zjzxzjhk_zjzxzjhk = JsonUtils.jsonToPojo(node.getFormData(), FundingZX_ZJZX_ZJZXZJHK_ZJZXZJHK.class);
 		if (fundingZX_zjzx_zjzxzjhk_zjzxzjhk!=null){
-			PaymentRecord paymentRecord = paymentRecordService.getById(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getPaymentRecordId());
+			//如果补录划扣金额发生改变
+			if (makeUpFundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount().compareTo(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount())!=0) {
+				PaymentRecord paymentRecord = paymentRecordService.getById(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getPaymentRecordId());
+				if (paymentRecord.getStatus()==1){//如果当前资金划扣已分配
+					//根据回款记录id修改法院到款记录信息、领款记录信息
+					paymentRecordService.updateCourtPaymentRecordRe(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getPaymentRecordId());
 
-			//删除资金划扣回款信息以及关联信息
-			paymentRecordService.deletePaymentRecordRe(paymentRecord.getPaymentRecordId());
-
-			if (paymentRecord.getStatus()==1){//如果当前资金划扣已分配
-				//查询资金划扣回款来源信息
-				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getSourceId, paymentRecord.getPaymentRecordId()));
-
-				//删除资金划扣领款信息以及关联信息
-				paymentRecordService.deletePaymentRecordRe(paymentSourceRe.getPaymentRecordId());
-
-				//根据划扣回款来源信息回款id删除回款信息
-				List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, paymentSourceRe.getPaymentRecordId()));
-				for (PaymentRecord record : paymentRecordList) {
-
-					//删除资金划扣领款分配信息以及关联信息
-					paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
-
-					//修改费用明细记录状态
-					ExpenseRecord expenseRecord = expenseRecordService.getById(record.getExpenseRecordId());
-					if (expenseRecord.getStatus()!=2){
-						expenseRecord.setStatus(0);
-						expenseRecordService.updateById(expenseRecord);
-					}
+					ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
+					//修改项目总金额以及回款总金额
+					projectLiquiService.subtractRepaymentAmount(projectLiqui,paymentRecord.getPaymentAmount());
 				}
-				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-
-				//添加修改项目回款总金额
-				projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(fundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount()));
-				projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-				//修改项目回款总金额
-				projectLiquiService.updateById(projectLiqui);
+				//修改划扣金额
+				paymentRecord.setPaymentAmount(makeUpFundingZX_zjzx_zjzxzjhk_zjzxzjhk.getDeductionAmount());
+				paymentRecordService.updateById(paymentRecord);
 			}
+			//更新json数据
+			taskNodeService.setTaskDataSubmission(taskNode);
+		}else {
+			addLiQiuZjhk(taskNode);
 		}
-
-		addLiQiuZjhk(taskNode);
 	}
 }

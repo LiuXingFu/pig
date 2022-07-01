@@ -385,6 +385,36 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 	}
 
 	@Override
+	public void updateExpenseRecordProjectAmount(Integer ExpenseRecordId,BigDecimal costAmount,BigDecimal updateCostAmount,Integer projectId,Integer projectType) {
+		//拍辅费要是已分配，修改已回款记录作废
+		List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getExpenseRecordId, ExpenseRecordId).eq(PaymentRecord::getStatus,1));
+		if (paymentRecordList.size() > 0) {//已回款
+			for (PaymentRecord paymentRecord : paymentRecordList) {
+				//修改项目回款总金额、已回款记录作废
+				paymentRecordService.paymentCancellation(paymentRecord.getPaymentRecordId(),projectType);
+			}
+		}
+		//修改费用金额
+		ExpenseRecord expenseRecord = this.getById(ExpenseRecordId);
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(costAmount));
+		expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(updateCostAmount));
+		expenseRecord.setStatus(0);
+		//修改当前财产程序拍辅费
+		this.updateById(expenseRecord);
+
+		if (projectType==100){//清收
+			ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(projectId);
+			//减去补录前的拍辅费用
+			projectLiquiService.subtractProjectAmount(projectLiqui, costAmount);
+			//加上补录后的拍辅费用
+			projectLiquiService.addProjectAmount(projectLiqui, updateCostAmount);
+		}else {//拍辅
+			// 更新项目总金额
+			projectPaifuService.updateProjectAmount(projectId);
+		}
+	}
+
+	@Override
 	public BigDecimal totalAmountByProjectId(Integer projectId){
 		return this.baseMapper.totalAmountByProjectId(projectId);
 	}
@@ -494,6 +524,7 @@ public class ExpenseRecordServiceImpl extends ServiceImpl<ExpenseRecordMapper, E
 		ExpenseRecordDetailVO expenseRecordDetailVO = this.baseMapper.queryDetailById(expenseRecordId);
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setExpenseRecordId(expenseRecordId);
+		paymentRecord.setStatus(1);
 		BigDecimal paymentAmount = paymentRecordService.sumCourtPayment(paymentRecord);
 		BigDecimal outstandingAmount = expenseRecordDetailVO.getCostAmount();
 		if(paymentAmount!=null){

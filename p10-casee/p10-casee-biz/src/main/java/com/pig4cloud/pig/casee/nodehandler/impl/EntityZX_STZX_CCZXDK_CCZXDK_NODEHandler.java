@@ -6,6 +6,7 @@ import com.pig4cloud.pig.casee.dto.CustomerSubjectDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXDK_CCZXDK;
+import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXJGYJ_CCZXJGYJ;
 import com.pig4cloud.pig.casee.nodehandler.TaskNodeHandler;
 import com.pig4cloud.pig.casee.service.*;
 import com.pig4cloud.pig.common.core.util.JsonUtils;
@@ -70,9 +71,11 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 				expenseRecord.setCostAmount(expenseRecord.getCostAmount().add(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
 				//修改当前财产程序拍辅费
 				expenseRecordService.updateById(expenseRecord);
+				entityZX_stzx_cczxdk_cczxdk.setExpenseRecordId(expenseRecord.getExpenseRecordId());
 			}else {//如果没有拍辅费或者拍辅费已经还完则添加
 				//添加费用明细记录以及其它关联信息
-				expenseRecordService.addExpenseRecord(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(),projectLiqui,casee,assetsReSubjectDTO,null,10007);
+				ExpenseRecord addExpenseRecord = expenseRecordService.addExpenseRecord(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(), entityZX_stzx_cczxdk_cczxdk.getFinalPaymentDate(), projectLiqui, casee, assetsReSubjectDTO, null, 10007);
+				entityZX_stzx_cczxdk_cczxdk.setExpenseRecordId(addExpenseRecord.getExpenseRecordId());
 			}
 		}
 
@@ -110,59 +113,38 @@ public class EntityZX_STZX_CCZXDK_CCZXDK_NODEHandler extends TaskNodeHandler {
 
 	@Override
 	public void handlerTaskMakeUp(TaskNode taskNode) {
+		//补录的节点数据
+		EntityZX_STZX_CCZXDK_CCZXDK makeUpEntityZX_stzx_cczxdk_cczxdk = JsonUtils.jsonToPojo(taskNode.getFormData(), EntityZX_STZX_CCZXDK_CCZXDK.class);
+
+		//查询补录之前的数据
 		TaskNode node = this.taskNodeService.getOne(new LambdaQueryWrapper<TaskNode>().eq(TaskNode::getNodeId, taskNode.getNodeId()));
 		EntityZX_STZX_CCZXDK_CCZXDK entityZX_stzx_cczxdk_cczxdk = JsonUtils.jsonToPojo(node.getFormData(), EntityZX_STZX_CCZXDK_CCZXDK.class);
 		if (entityZX_stzx_cczxdk_cczxdk!=null) {
-			Target target = targetService.getById(taskNode.getTargetId());
-
-			//查询当前财产关联债务人信息
-			AssetsReSubjectDTO assetsReSubjectDTO = assetsReLiquiService.queryAssetsSubject(node.getProjectId(), node.getCaseeId(), target.getGoalId());
-
-			//查询当前财产程序拍辅费
-			ExpenseRecord expenseRecord = expenseRecordAssetsReService.queryAssetsReIdExpenseRecord(assetsReSubjectDTO.getAssetsReId(), taskNode.getProjectId(), 10007);
-			if (expenseRecord!=null){
-				expenseRecord.setCostAmount(expenseRecord.getCostAmount().subtract(entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()));
-				//修改当前财产程序拍辅费
-				expenseRecordService.updateById(expenseRecord);
+			//如果补录到款拍辅费用发生改变
+			if (entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee().compareTo(makeUpEntityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee()) != 0) {
+				//拍辅费要是已分配，修改已回款记录作废，修改拍辅费、修改项目回款总金额以及项目总金额
+				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxdk_cczxdk.getExpenseRecordId(),entityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),makeUpEntityZX_stzx_cczxdk_cczxdk.getAuxiliaryFee(),taskNode.getProjectId(),100);
 			}
-			//查询到款记录是否分配
-			PaymentRecord paymentRecord = paymentRecordService.getById(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
-			if (paymentRecord.getStatus()==1){//已分配
-				//到款id查询领款来源信息
-				PaymentSourceRe paymentSourceRe = paymentSourceReService.getOne(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getSourceId, paymentRecord.getPaymentRecordId()).eq(PaymentSourceRe::getType,100));
+			//如果补录到款金额发生改变
+			if (entityZX_stzx_cczxdk_cczxdk.getAmountReceived().compareTo(makeUpEntityZX_stzx_cczxdk_cczxdk.getAmountReceived())!=0){
+				//查询到款记录是否分配
+				PaymentRecord paymentRecord = paymentRecordService.getById(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
+				if (paymentRecord.getStatus()==1){//已分配
+					//根据回款记录id修改法院到款记录信息、领款记录信息
+					paymentRecordService.updateCourtPaymentRecordRe(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
 
-				//删除回款来源信息
-				paymentSourceReService.removeById(paymentSourceRe.getPaymentSourceReId());
-
-				//查询领款记录
-				PaymentRecord collectionPaymentRecord = paymentRecordService.getById(paymentSourceRe.getPaymentRecordId());
-
-				////删除领款以及关联信息
-				paymentRecordService.deletePaymentRecordRe(collectionPaymentRecord.getPaymentRecordId());
-
-				//查询领款分配记录信息
-				List<PaymentRecord> paymentRecordList = paymentRecordService.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, collectionPaymentRecord.getPaymentRecordId()));
-				for (PaymentRecord record : paymentRecordList) {
-					////删除领款分配信息以及关联信息
-					paymentRecordService.deletePaymentRecordRe(record.getPaymentRecordId());
-
-					ExpenseRecord expenseRecordById = expenseRecordService.getById(record.getExpenseRecordId());
-					expenseRecordById.setStatus(0);
-					expenseRecordService.updateById(expenseRecordById);
+					ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
+					//修改项目总金额以及回款总金额
+					projectLiquiService.subtractRepaymentAmount(projectLiqui,paymentRecord.getPaymentAmount());
 				}
-
-				ProjectLiqui projectLiqui = projectLiquiService.getByProjectId(taskNode.getProjectId());
-
-				//修改项目回款总金额
-				projectLiqui.getProjectLiQuiDetail().setRepaymentAmount(projectLiqui.getProjectLiQuiDetail().getRepaymentAmount().subtract(paymentRecord.getPaymentAmount()));
-				projectLiqui.setProjectLiQuiDetail(projectLiqui.getProjectLiQuiDetail());
-				//修改项目总金额以及回款总金额
-				projectLiquiService.updateById(projectLiqui);
+				//修改到款金额
+				paymentRecord.setPaymentAmount(makeUpEntityZX_stzx_cczxdk_cczxdk.getAmountReceived());
+				paymentRecordService.updateById(paymentRecord);
 			}
-
-			////删除到款以及关联信息
-			paymentRecordService.deletePaymentRecordRe(entityZX_stzx_cczxdk_cczxdk.getPaymentRecordId());
+			//更新json数据
+			taskNodeService.setTaskDataSubmission(taskNode);
+		}else {
+			setLiQuiStccDkDk(taskNode);
 		}
-		setLiQuiStccDkDk(taskNode);
 	}
 }
