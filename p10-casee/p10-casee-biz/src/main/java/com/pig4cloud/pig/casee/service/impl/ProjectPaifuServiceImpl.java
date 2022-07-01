@@ -709,6 +709,7 @@ public class ProjectPaifuServiceImpl extends ServiceImpl<ProjectPaifuMapper, Pro
 	public Integer updateRepaymentAmount(Integer projectId) {
 		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setProjectId(projectId);
+		paymentRecord.setStatus(1);
 		// 统计回款总金额
 		BigDecimal repaymentAmount = paymentRecordService.sumCourtPayment(paymentRecord);
 		ProjectPaifu projectPaifu = this.queryById(projectId);

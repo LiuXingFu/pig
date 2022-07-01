@@ -236,50 +236,59 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 
 	@Override
 	@Transactional
-	public boolean paymentCancellation(Integer paymentRecordId) {
+	public void paymentCancellation(Integer paymentRecordId,Integer projectType) {
 		PaymentRecord paymentRecord = this.getById(paymentRecordId);
-		//根据该条回款记录父id查询分配类型
-		PaymentRecord fatherIPaymentRecord = this.getById(paymentRecord.getFatherId());
+		if (projectType==100){//清收
+			//根据该条回款记录父id查询分配类型
+			PaymentRecord fatherIPaymentRecord = this.getById(paymentRecord.getFatherId());
 
-		ProjectLiqui project = projectLiquiService.getByProjectId(paymentRecord.getProjectId());
+			ProjectLiqui project = projectLiquiService.getByProjectId(paymentRecord.getProjectId());
 
-		//修改项目回款总金额
-		projectLiquiService.subtractRepaymentAmount(project,fatherIPaymentRecord.getPaymentAmount());
+			//修改项目回款总金额
+			projectLiquiService.subtractRepaymentAmount(project,fatherIPaymentRecord.getPaymentAmount());
 
-		//如果当前分配类型是履行到申请人或资产抵偿则修改该状态为未分配
-		if (fatherIPaymentRecord.getPaymentType()==300||fatherIPaymentRecord.getPaymentType()==400) {
-			this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
-		}else {//如果当前分配类型是领款，修改领款、到款状态为未分配
-			if (fatherIPaymentRecord.getPaymentType()==200){
-				//修改到款款状态为未领款
+			//如果当前分配类型是履行到申请人或资产抵偿则修改该状态为未分配
+			if (fatherIPaymentRecord.getPaymentType()==300||fatherIPaymentRecord.getPaymentType()==400) {
 				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
-			}else {
-				//修改领款状态为作废
-				this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),2);
+			}else {//如果当前分配类型是领款，修改领款、到款状态为未分配
+				if (fatherIPaymentRecord.getPaymentType()==200){
+					//修改到款款状态为未领款
+					this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),0);
+				}else {
+					//修改领款状态为作废
+					this.updatePaymentRecord(fatherIPaymentRecord.getPaymentRecordId(),2);
+				}
+
+				//领款时可能领多条到款信息所以这里可能会查出多条到款记录
+				List<PaymentSourceRe> paymentSourceReList = paymentSourceReService.list(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getPaymentRecordId, fatherIPaymentRecord.getPaymentRecordId()).eq(PaymentSourceRe::getType, 100));
+				for (PaymentSourceRe paymentSourceRe : paymentSourceReList) {
+					//查询到款信息
+					PaymentRecord dkPaymentRecord = this.getById(paymentSourceRe.getSourceId());
+					dkPaymentRecord.setStatus(0);
+					this.updateById(dkPaymentRecord);
+				}
 			}
 
-			//领款时可能领多条到款信息所以这里可能会查出多条到款记录
-			List<PaymentSourceRe> paymentSourceReList = paymentSourceReService.list(new LambdaQueryWrapper<PaymentSourceRe>().eq(PaymentSourceRe::getPaymentRecordId, fatherIPaymentRecord.getPaymentRecordId()).eq(PaymentSourceRe::getType, 100));
-			for (PaymentSourceRe paymentSourceRe : paymentSourceReList) {
-				//查询到款信息
-				PaymentRecord dkPaymentRecord = this.getById(paymentSourceRe.getSourceId());
-				dkPaymentRecord.setStatus(0);
-				this.updateById(dkPaymentRecord);
+			List<PaymentRecord> paymentRecordList = this.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, fatherIPaymentRecord.getPaymentRecordId()));
+			for (PaymentRecord record : paymentRecordList) {
+				record.setStatus(2);
+
+				//修改费用产生记录状态为正常
+				ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
+				if (expenseRecordUpdate.getStatus()!=2){
+					expenseRecordUpdate.setStatus(0);
+					expenseRecordService.updateById(expenseRecordUpdate);
+				}
+			}
+			this.updateBatchById(paymentRecordList);
+		}else {//拍辅
+			if (paymentRecord.getStatus()==1){
+				paymentRecord.setStatus(2);
+				this.updateById(paymentRecord);
+				//修改项目回款总金额
+				projectPaifuService.updateRepaymentAmount(paymentRecord.getProjectId());
 			}
 		}
-
-		List<PaymentRecord> paymentRecordList = this.list(new LambdaQueryWrapper<PaymentRecord>().eq(PaymentRecord::getFatherId, fatherIPaymentRecord.getPaymentRecordId()));
-		for (PaymentRecord record : paymentRecordList) {
-			record.setStatus(2);
-
-			//修改费用产生记录状态为正常
-			ExpenseRecord expenseRecordUpdate = expenseRecordService.getById(record.getExpenseRecordId());
-			if (expenseRecordUpdate.getStatus()!=2){
-				expenseRecordUpdate.setStatus(0);
-				expenseRecordService.updateById(expenseRecordUpdate);
-			}
-		}
-		return this.updateBatchById(paymentRecordList);
 	}
 
 	@Override
@@ -394,6 +403,7 @@ public class PaymentRecordServiceImpl extends ServiceImpl<PaymentRecordMapper, P
 		paymentRecord.setCaseeNumber(expenseRecordPaifuAssetsReListVO.getCaseeNumber());
 		paymentRecord.setFundsType(expenseRecordPaifuAssetsReListVO.getCostType());
 		paymentRecord.setPaymentType(100);
+		paymentRecord.setStatus(1);
 		Integer save = this.baseMapper.insert(paymentRecord);
 		// 批量保存回款主体关联
 		List<PaymentRecordSubjectRe> paymentRecordSubjectRes = new ArrayList<>();

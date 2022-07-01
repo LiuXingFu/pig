@@ -11,7 +11,6 @@ import com.pig4cloud.pig.common.core.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Component
 public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler {
@@ -28,8 +27,6 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 	private ProjectLiquiService projectLiquiService;
 	@Autowired
 	private TargetService targetService;
-	@Autowired
-	private PaymentRecordService paymentRecordService;
 
 	@Override
 	public void handlerTaskSubmit(TaskNode taskNode) {
@@ -83,7 +80,7 @@ public class EntityZX_STZX_CCZXJGYJ_CCZXJGYJ_NODEHandler extends TaskNodeHandler
 			//如果补录定价费用发生改变
 			if (entityZX_stzx_cczxjgyj_cczxjgyj.getPricingManner() != 0 && makeUpEntityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee().compareTo(entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee()) != 0) {
 				//定价费要是已分配，修改已回款记录作废，修改费用金额，修改项目回款总金额以及项目总金额
-				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId(),entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(),makeUpEntityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(),taskNode.getProjectId());
+				expenseRecordService.updateExpenseRecordProjectAmount(entityZX_stzx_cczxjgyj_cczxjgyj.getExpenseRecordId(),entityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(),makeUpEntityZX_stzx_cczxjgyj_cczxjgyj.getPricingFee(),taskNode.getProjectId(),100);
 			}
 			//更新json数据
 			taskNodeService.setTaskDataSubmission(taskNode);
