@@ -38,6 +38,12 @@ public class AssetsReCaseeDetail {
 	private BigDecimal mortgageAmount;
 
 	/**
+	 * 财产解封/解冻
+	 */
+	@ApiModelProperty(value = "财产解封/解冻")
+	private AssetsReUnravel assetsReUnravel;
+
+	/**
 	 * 资金资产冻结实体
 	 */
 	@ApiModelProperty(value = "资金资产冻结")

@@ -99,4 +99,6 @@ public interface AssetsReLiquiMapper extends BaseMapper<AssetsRe> {
 
 	Integer removeNotInAssetsId(@Param("projectId")Integer projectId,@Param("mortgageAssetsRecordsId")Integer mortgageAssetsRecordsId,@Param("assetsIdList")List<Integer> assetsIdList);
 
+	AssetsReLiqui selectByAssetsReId(@Param("assetsReId") Integer assetsReId);
+
 }

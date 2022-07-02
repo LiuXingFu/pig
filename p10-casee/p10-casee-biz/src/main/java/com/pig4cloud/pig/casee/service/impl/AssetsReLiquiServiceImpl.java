@@ -23,8 +23,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.admin.api.entity.Address;
 import com.pig4cloud.pig.admin.api.feign.RemoteAddressService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.liqui.AssetsReUnravelDTO;
 import com.pig4cloud.pig.casee.entity.*;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
+import com.pig4cloud.pig.casee.entity.liquientity.detail.detailentity.AssetsReUnravel;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXCF_CCZXCF;
 import com.pig4cloud.pig.casee.entity.project.entityzxprocedure.EntityZX_STZX_CCZXSQYS_CCZXSQYS;
 import com.pig4cloud.pig.casee.mapper.AssetsReLiquiMapper;
@@ -379,6 +381,22 @@ public class AssetsReLiquiServiceImpl extends ServiceImpl<AssetsReLiquiMapper, A
 	@Transactional
 	public Integer removeNotInAssetsId(Integer projectId,Integer mortgageAssetsRecordsId,List<Integer> assetsIdList){
 		return this.baseMapper.removeNotInAssetsId(projectId,mortgageAssetsRecordsId,assetsIdList);
+	}
+
+	@Override
+	@Transactional
+	public Integer assetsUnravelByAssetsReId(AssetsReUnravelDTO assetsReUnravelDTO){
+		AssetsReLiqui assetsReLiqui = this.baseMapper.selectByAssetsReId(assetsReUnravelDTO.getAssetsReId());
+		assetsReLiqui.setStatus(assetsReUnravelDTO.getStatus());
+		AssetsReUnravel assetsReUnravel = new AssetsReUnravel();
+		BeanCopyUtil.copyBean(assetsReUnravelDTO,assetsReUnravel);
+		assetsReLiqui.getAssetsReCaseeDetail().setAssetsReUnravel(assetsReUnravel);
+		return this.baseMapper.updateById(assetsReLiqui);
+	}
+
+	@Override
+	public 	AssetsReLiqui getByAssetsReId(Integer assetsReId){
+		return this.baseMapper.selectByAssetsReId(assetsReId);
 	}
 
 }

@@ -22,6 +22,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pig4cloud.pig.casee.dto.AssetsAddDTO;
 import com.pig4cloud.pig.casee.dto.AssetsReLiquiFlowChartPageDTO;
 import com.pig4cloud.pig.casee.dto.DelAssetsTransferDTO;
+import com.pig4cloud.pig.casee.dto.liqui.AssetsReUnravelDTO;
+import com.pig4cloud.pig.casee.entity.Assets;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.service.AssetsReLiquiService;
 import com.pig4cloud.pig.common.core.util.R;
@@ -29,6 +31,7 @@ import com.pig4cloud.pig.common.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -354,4 +357,25 @@ public class AssetsReLiquiController {
 		return R.ok(assetsReLiquiService.queryAssetsReByProjectId(projectId,caseeId));
 	}
 
+	/**
+	 * 财产解封/解冻
+	 * @param assetsReUnravelDTO 财产解封/解冻
+	 * @return R
+	 */
+	@ApiOperation(value = "财产解封/解冻", notes = "财产解封/解冻")
+	@SysLog("财产解封/解冻" )
+	@PutMapping("/assetsUnravelByAssetsReId")
+	public R assetsUnravelByAssetsReId(@RequestBody AssetsReUnravelDTO assetsReUnravelDTO) {
+		return R.ok(assetsReLiquiService.assetsUnravelByAssetsReId(assetsReUnravelDTO));
+	}
+
+	/**
+	 * 根据id获取详情
+	 * @return R
+	 */
+	@ApiOperation(value = "根据id获取详情", notes = "根据id获取详情")
+	@GetMapping("/getByAssetsReId/{assetsId}" )
+	public R getByAssetsReId(@PathVariable Integer assetsId) {
+		return R.ok(assetsReLiquiService.getByAssetsReId(assetsId));
+	}
 }

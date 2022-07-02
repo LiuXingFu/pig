@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pig4cloud.pig.casee.dto.*;
+import com.pig4cloud.pig.casee.dto.liqui.AssetsReUnravelDTO;
 import com.pig4cloud.pig.casee.entity.AssetsRe;
 import com.pig4cloud.pig.casee.entity.liquientity.AssetsReLiqui;
 import com.pig4cloud.pig.casee.vo.*;
@@ -257,4 +258,18 @@ public interface AssetsReLiquiService extends IService<AssetsRe> {
 	 * @return
 	 */
 	Integer removeNotInAssetsId(Integer projectId,Integer mortgageAssetsRecordsId,List<Integer> assetsIdList);
+
+	/**
+	 * 财产解封/解冻
+	 * @param assetsReUnravelDTO
+	 * @return
+	 */
+	Integer assetsUnravelByAssetsReId(AssetsReUnravelDTO assetsReUnravelDTO);
+
+	/**
+	 * 根据id获取详情
+	 * @param assetsReId
+	 * @return
+	 */
+	AssetsReLiqui getByAssetsReId(Integer assetsReId);
 }

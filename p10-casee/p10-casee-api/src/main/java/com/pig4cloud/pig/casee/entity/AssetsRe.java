@@ -52,7 +52,7 @@ public class AssetsRe extends BaseEntity {
 	/**
 	 * 状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）
 	 */
-	@ApiModelProperty(value="状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中）")
+	@ApiModelProperty(value="状态（100-在办，200-拍卖中，300-暂缓，400-中止，500-已完成，600-其它，700-移送中，800解除）")
 	private Integer status;
 
 	/**
