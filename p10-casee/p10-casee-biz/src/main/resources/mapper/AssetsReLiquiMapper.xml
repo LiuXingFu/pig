@@ -480,9 +480,9 @@
 
 	<resultMap id="assetsReDetails" type="com.pig4cloud.pig.casee.vo.AssetsReLiquiDetailsVO" extends="assetsMap">
 		<result property="assetsTargetId" column="assetsTargetId"/>
-		<collection property="projectLiqui" ofType="com.pig4cloud.pig.casee.entity.liquientity.ProjectLiqui"
+		<collection property="projectLiqui" ofType="com.pig4cloud.pig.casee.vo.ProjectLiquiDetailsVO"
 					column="project_id"
-					select="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper.selectProjectDetails"></collection>
+					select="com.pig4cloud.pig.casee.mapper.ProjectLiquiMapper.selectByProjectId"></collection>
 		<collection property="caseeLiqui" ofType="com.pig4cloud.pig.casee.vo.CaseeLiquiPageVO"
 					column="casee_id"
 					select="com.pig4cloud.pig.casee.mapper.CaseeLiquiMapper.selectCaseeDetails"></collection>

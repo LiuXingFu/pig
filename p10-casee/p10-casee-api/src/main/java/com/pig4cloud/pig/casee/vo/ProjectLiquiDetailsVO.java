@@ -32,15 +32,15 @@ import java.util.List;
 public class ProjectLiquiDetailsVO extends ProjectLiqui {
 
 	/**
-	 * 机构id
+	 * 机构名称
 	 */
-	@ApiModelProperty(value="机构id")
+	@ApiModelProperty(value="机构名称")
 	private String insName;
 
 	/**
-	 * 网点id
+	 * 网点名称
 	 */
-	@ApiModelProperty(value="网点id")
+	@ApiModelProperty(value="网点名称")
 	private String outlesName;
 
 	/**

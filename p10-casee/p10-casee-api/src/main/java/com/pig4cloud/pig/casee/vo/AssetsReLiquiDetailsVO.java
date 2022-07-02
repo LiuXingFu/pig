@@ -17,7 +17,7 @@ public class AssetsReLiquiDetailsVO extends AssetsReLiqui {
 	 * 项目详情
 	 */
 	@ApiModelProperty(value="项目详情")
-	private ProjectLiqui projectLiqui;
+	private ProjectLiquiDetailsVO projectLiqui;
 
 	/**
 	 * 案件详情
